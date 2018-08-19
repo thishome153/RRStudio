@@ -39,7 +39,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::XMLReaderCS.Properties.Resources.Refresh;
-            this.pictureBox1.Location = new System.Drawing.Point(439, 42);
+            this.pictureBox1.Location = new System.Drawing.Point(445, 61);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(57, 54);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -85,7 +85,7 @@
             this.linkLabel_GUID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.linkLabel_GUID.Image = global::XMLReaderCS.Properties.Resources.page_white_code;
             this.linkLabel_GUID.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel_GUID.Location = new System.Drawing.Point(12, 33);
+            this.linkLabel_GUID.Location = new System.Drawing.Point(12, 42);
             this.linkLabel_GUID.Name = "linkLabel_GUID";
             this.linkLabel_GUID.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.linkLabel_GUID.Size = new System.Drawing.Size(303, 25);
@@ -111,7 +111,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Генератор GUID aa";
+            this.Text = "Генератор GUID ";
             this.Load += new System.EventHandler(this.GUIDfrm_Load);
             this.Shown += new System.EventHandler(this.GUIDfrm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
