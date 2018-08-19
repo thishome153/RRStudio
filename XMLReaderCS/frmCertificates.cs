@@ -80,7 +80,7 @@ namespace XMLReaderCS
 
 
                 //Если это ГОСТ (Крипто про):
-
+                /*
                 if (x509.SignatureAlgorithm.Value == "1.2.643.2.2.3")
                     try
                     {
@@ -104,6 +104,7 @@ namespace XMLReaderCS
                         subExp23.SubItems.Add(ex.Message);
                         listView1.Items.Add(subExp23);
                     }
+                */
                 toolStripButton1.Enabled = true; toolStripButton3.Enabled = true;
                 return x509;
             }
@@ -114,9 +115,11 @@ namespace XMLReaderCS
 
         private void SignFile(string SubjectCNName)
         {
+            /*
             OpenFileDialog fd = new OpenFileDialog();
             if (fd.ShowDialog(this) == DialogResult.OK)
                 netFteo.IO.CadesWrapper.SignFile(fd.FileName, SubjectCNName);
+            */
         }
 
         private void SignFile_cspUtils(string SubjectCNName)

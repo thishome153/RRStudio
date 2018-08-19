@@ -111,7 +111,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Генератор GUID a";
+            this.Text = "Генератор GUID aa";
             this.Load += new System.EventHandler(this.GUIDfrm_Load);
             this.Shown += new System.EventHandler(this.GUIDfrm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
