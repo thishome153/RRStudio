@@ -16,7 +16,7 @@ namespace XMLReaderCS
             InitializeComponent();
             
 #if (DEBUG)
-            this.labelProductName.Text = AssemblyProduct + " /DEBUG ver$ion ";
+            this.labelProductName.Text = AssemblyProduct + " /DEBUG ver$$$ion ";
 #else
             this.labelProductName.Text = AssemblyProduct;
 #endif
