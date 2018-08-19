@@ -25,7 +25,7 @@ namespace XMLReaderCS
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
-            this.textBoxDescription.AppendText("\r\n IDE:");
+            this.textBoxDescription.AppendText("\r\n IDE :");
             this.textBoxDescription.AppendText("\r\n MSVC 2010.Express Edition");
             this.textBoxDescription.AppendText("\r\n Visual Studio 2017 Community");
             this.textBoxDescription.AppendText("\r\n \r\n Assemblys:");
