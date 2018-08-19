@@ -39,7 +39,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::XMLReaderCS.Properties.Resources.Refresh;
-            this.pictureBox1.Location = new System.Drawing.Point(482, 73);
+            this.pictureBox1.Location = new System.Drawing.Point(467, 59);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(57, 54);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -53,7 +53,7 @@
             this.linkLabel_GKUOKS.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.linkLabel_GKUOKS.Image = global::XMLReaderCS.Properties.Resources.building;
             this.linkLabel_GKUOKS.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel_GKUOKS.Location = new System.Drawing.Point(36, 138);
+            this.linkLabel_GKUOKS.Location = new System.Drawing.Point(36, 120);
             this.linkLabel_GKUOKS.Name = "linkLabel_GKUOKS";
             this.linkLabel_GKUOKS.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.linkLabel_GKUOKS.Size = new System.Drawing.Size(425, 25);
@@ -69,7 +69,7 @@
             this.linkLabel_GKUZU.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.linkLabel_GKUZU.Image = global::XMLReaderCS.Properties.Resources.ЗУ_1;
             this.linkLabel_GKUZU.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkLabel_GKUZU.Location = new System.Drawing.Point(36, 87);
+            this.linkLabel_GKUZU.Location = new System.Drawing.Point(36, 73);
             this.linkLabel_GKUZU.Name = "linkLabel_GKUZU";
             this.linkLabel_GKUZU.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.linkLabel_GKUZU.Size = new System.Drawing.Size(396, 25);
@@ -99,7 +99,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 202);
+            this.ClientSize = new System.Drawing.Size(570, 178);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.linkLabel_GKUOKS);
             this.Controls.Add(this.linkLabel_GKUZU);
