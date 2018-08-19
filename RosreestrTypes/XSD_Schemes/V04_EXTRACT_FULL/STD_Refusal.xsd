@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!--Подключение схемы Субъекта-->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Справочник типов отказов -->
+	<xs:include schemaLocation="dRefusal.xsd"/>
+	<!-- Подключения атрибутов документа-->
+	<xs:include schemaLocation="STD_ExtrAtribut.xsd"/>
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<xs:complexType name="tRefusalSubj">
+		<xs:annotation>
+			<xs:documentation>отказ в выдаче сведений о субъекте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HeadContent" type="tHeadContent">
+				<xs:annotation>
+					<xs:documentation>Текстовое описание запроса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RefusalSubj" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>текст отказа</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TypeInfoText">
+							<xs:annotation>
+								<xs:documentation>Вид запрошенной информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="Subject" type="tSubject">
+								<xs:annotation>
+									<xs:documentation>описание запрошенного субъекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="SubjectInfo">
+								<xs:annotation>
+									<xs:documentation>тектосвое описание запрошенного субъекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="TextRefusal">
+							<xs:annotation>
+								<xs:documentation>текст отказа</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="RefusalType" type="dRefusal" use="required">
+						<xs:annotation>
+							<xs:documentation>тип отказа</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="RefusalTypeText" use="required">
+						<xs:annotation>
+							<xs:documentation>текст типа отказа</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FootContent" type="tFootContent">
+				<xs:annotation>
+					<xs:documentation>Завершающийтекст (ссылка на закон и т.п.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tRefusalObj">
+		<xs:annotation>
+			<xs:documentation>отказ в выдаче информации об объекте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HeadContent" type="tHeadContent">
+				<xs:annotation>
+					<xs:documentation>Текстовое описание запроса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RefusalObj" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>текст отказа</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TypeInfoText">
+							<xs:annotation>
+								<xs:documentation>Вид запрошенной информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="ObjectDetail">
+								<xs:annotation>
+									<xs:documentation>структурированное описание запрошенного объекта</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:choice minOccurs="0">
+											<xs:element name="CadastralNumber">
+												<xs:annotation>
+													<xs:documentation>Кадастровый номер объекта недвижимого имущества. </xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:maxLength value="3000"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="ConditionalNumber">
+												<xs:annotation>
+													<xs:documentation>Условный номер</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:maxLength value="3000"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:choice>
+										<xs:element name="ObjectType" type="dRealty" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Код типа объекта недвижимости</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ObjectTypeText" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Текстовое описание типа объекта недвижимости</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="1000"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Name">
+											<xs:annotation>
+												<xs:documentation>Наименование  объекта недвижимости. </xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="4000"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ObjectAddress" type="tAddress" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>адрес объекта недвижимости</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ObjectInfo">
+								<xs:annotation>
+									<xs:documentation>тектосвое описание запрошенного объекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="TextRefusal">
+							<xs:annotation>
+								<xs:documentation>текст отказа</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="RefusalType" type="dRefusal" use="required">
+						<xs:annotation>
+							<xs:documentation>тип отказа</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="RefusalTypeText" use="required">
+						<xs:annotation>
+							<xs:documentation>текст типа отказа</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FootContent" type="tFootContent">
+				<xs:annotation>
+					<xs:documentation>Завершающего текста (ссылка на закон и т.п.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNoticeSubj">
+		<xs:annotation>
+			<xs:documentation>уведомление об отсутствии сведений о субъекте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HeadContent" type="tHeadContent">
+				<xs:annotation>
+					<xs:documentation>Текстовое описание запроса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoticeSubj" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>текст уведомления</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TypeInfoText">
+							<xs:annotation>
+								<xs:documentation>Вид запрошенной информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="Subject" type="tSubject">
+								<xs:annotation>
+									<xs:documentation>описание запрошенного субъекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="SubjectInfo">
+								<xs:annotation>
+									<xs:documentation>тектосвое описание запрошенного субъекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="ArrestInfo" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>информация о недееспособности из КУА</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FootContent" type="tFootContent">
+				<xs:annotation>
+					<xs:documentation>Завершающийтекст (ссылка на закон и т.п.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNoticeObj">
+		<xs:annotation>
+			<xs:documentation>Уведомление об отсутствии сведений об объектеъ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HeadContent" type="tHeadContent">
+				<xs:annotation>
+					<xs:documentation>Текстовое описание запроса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoticeObj" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>текст уведомления</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TypeInfoText">
+							<xs:annotation>
+								<xs:documentation>Вид запрошенной информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="ObjectDetail">
+								<xs:annotation>
+									<xs:documentation>структурированное описание запрошенного объекта</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:choice minOccurs="0">
+											<xs:element name="CadastralNumber">
+												<xs:annotation>
+													<xs:documentation>Кадастровый номер объекта недвижимого имущества. </xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:maxLength value="3000"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="ConditionalNumber">
+												<xs:annotation>
+													<xs:documentation>Условный номер</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:maxLength value="3000"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:choice>
+										<xs:element name="ObjectType" type="dRealty" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Код типа объекта недвижимости</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ObjectTypeText" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Текстовое описание типа объекта недвижимости</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="1000"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Name">
+											<xs:annotation>
+												<xs:documentation>Наименование  объекта недвижимости. </xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="4000"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ObjectAddress" type="tAddress" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>адрес объекта недвижимости</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ObjectInfo">
+								<xs:annotation>
+									<xs:documentation>тектосвое описание запрошенного объекта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="RightAssert">
+							<xs:annotation>
+								<xs:documentation>правопритязания</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="ClaimArrests">
+							<xs:annotation>
+								<xs:documentation>право требования</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FootContent" type="tFootContent">
+				<xs:annotation>
+					<xs:documentation>Завершающий текст (ссылка на закон и т.п.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,13 @@
+   
+
+
+ Here on server hidded files : 
+
+
+	https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/schema/KVOKS_v07/KVOKS/KVOKS_v07.xsd
+	https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/schema/KVOKS_v07/SchemaCommon/
+	https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/schema/KVOKS_v07/SchemaCommon/
+
+
+  pathes from styleshet xsl:
+	 https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/Common.xsl

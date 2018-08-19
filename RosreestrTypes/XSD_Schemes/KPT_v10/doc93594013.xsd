@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" />
+  <xs:element name="Organization" type="xs:string" />
+  <xs:element name="Date" type="xs:date" />
+  <xs:element name="Number" type="xs:string" />
+  <xs:element name="Official">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Appointment" type="xs:string" />
+        <xs:element xmlns:q1="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" ref="q1:FamilyName" />
+        <xs:element xmlns:q2="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" ref="q2:FirstName" />
+        <xs:element xmlns:q3="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" ref="q3:Patronymic" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

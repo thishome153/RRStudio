@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by potapova (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхемы Типы-->
+	<xs:include schemaLocation="dRefusal.xsd"/>
+	<!--Классификатор назначений объектов технического учета-->
+	<xs:include schemaLocation="dAssignation.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Подключение подсхемы Документ   -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!-- Подключение подсхемы Субъект   -->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!-- Подключение подсхемы ОБЪЕКТ  -->
+	<xs:include schemaLocation="STD_Object.xsd"/>
+	<!-- Подключение подсхемы Права -->
+	<xs:include schemaLocation="STD_Rights.xsd"/>
+	<!-- Подключение подсхемы Объекты долевого строительства-->
+	<xs:include schemaLocation="STD_ShereHolding.xsd"/>
+	<!-- Подключение подсхемы Информация о документе -->
+	<xs:include schemaLocation="STD_ServisInf.xsd"/>
+	<!-- Подключение подсхемы Информация о запросе-->
+	<xs:include schemaLocation="STD_ExtrAtribut.xsd"/>
+	<!-- Подключение подсхемы Отказ по объекту-->
+	<xs:include schemaLocation="STD_Refusal.xsd"/>
+	<xs:complexType name="tObjectRight">
+		<xs:annotation>
+			<xs:documentation> раздел ЕГРП</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Right" type="tRefusalObj" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Права</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShareHolding" type="tShareHolding" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Описание объектов долевого строительства </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Extract">
+		<xs:annotation>
+			<xs:documentation>Пакет информации - ответ на запрос сведений ЕГРП</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument" type="tServisInf">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ReestrExtract">
+					<xs:annotation>
+						<xs:documentation>Выписка о содержании правоустанавливающих документов</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DeclarAttribute" type="tExtrAttribut">
+								<xs:annotation>
+									<xs:documentation>Информация о запросе</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ExtractObjectRight" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Выписка о содержании правоустанавливающих документов</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="HeadContent" type="tHeadContent">
+											<xs:annotation>
+												<xs:documentation>Объединенное текстовое описание запроса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ExtractObject" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>текст выписки</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ObjectDesc" type="tObject">
+														<xs:annotation>
+															<xs:documentation>Описание объекта</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:choice>
+														<xs:sequence>
+															<xs:element name="Owner" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Правообладатель</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:complexContent>
+																		<xs:extension base="tSubject">
+																			<xs:attribute name="OwnerNumber" type="xs:decimal"/>
+																		</xs:extension>
+																	</xs:complexContent>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="Registration" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Зарегистрированное право</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:complexContent>
+																		<xs:extension base="tOpenRegistration">
+																			<xs:attribute name="RegistrNumber" type="xs:decimal"/>
+																		</xs:extension>
+																	</xs:complexContent>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:sequence>
+															<xs:element name="NoOwner">
+																<xs:annotation>
+																	<xs:documentation>Правообладатель отсутствует</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Encumbrance" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Регистрация обременения</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:complexContent>
+																		<xs:extension base="tEmcumbrance">
+																			<xs:attribute name="EncumbNumber" type="xs:decimal"/>
+																		</xs:extension>
+																	</xs:complexContent>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:sequence>
+															<xs:element name="AllOwner">
+																<xs:annotation>
+																	<xs:documentation>участники общедолевой собственности</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="PartRegistration">
+																<xs:annotation>
+																	<xs:documentation>общедолевая собственность</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+														<xs:sequence>
+															<xs:element name="RtEndTxt">
+																<xs:annotation>
+																	<xs:documentation>Информация о прекращении права(органичения)</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:choice>
+													<xs:element name="DocFound" type="tDocRight" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Документы - основания регистрации ограничения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FootContent" type="tFootContent">
+											<xs:annotation>
+												<xs:documentation>Объединенное  описание завершающего текста (ссылка на закон и т.п.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="NoticelObj" type="tNoticeObj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>уведомление об отсутствии сведений о содержании правоустанавливающих документов</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RefusalObj" type="tRefusalObj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>отказ в выдаче выписки о  содержании правоустанавливающих документов</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

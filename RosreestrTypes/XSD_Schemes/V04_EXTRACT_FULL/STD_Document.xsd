@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Urick (Urick) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--19.09.2005 Вставлен элемент Image -->
+	<!--Классификатор "Типы документов, удостоверяющих личность физического лица"-->
+	<xs:include schemaLocation="dCertificates.xsd"/>
+	<!--Классификатор Виды документов-оснований-->
+	<xs:include schemaLocation="dDocuments.xsd"/>
+	<xs:simpleType name="tDate">
+		<xs:annotation>
+			<xs:documentation>Дата. Строка ДД.ММ.ГГГГ</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-3][0-9].[0-1][0-9].\d{4})?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="tDocRight">
+		<xs:annotation>
+			<xs:documentation>Документ - описание</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_Document">
+				<xs:annotation>
+					<xs:documentation>уникальный идентификатор документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное описание</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type_Document" type="dDocuments">
+				<xs:annotation>
+					<xs:documentation>Тип документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Series" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Number" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Date" type="tDate" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueOrgan" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Организация, выдавшая документ</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tDocPerson">
+		<xs:annotation>
+			<xs:documentation>Документ - описание</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное описание</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type_Document" type="dCertificates">
+				<xs:annotation>
+					<xs:documentation>Тип документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Series" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Number" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Date" type="tDate" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueOrgan" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Организация, выдавшая документ</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DeptCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код подразделения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

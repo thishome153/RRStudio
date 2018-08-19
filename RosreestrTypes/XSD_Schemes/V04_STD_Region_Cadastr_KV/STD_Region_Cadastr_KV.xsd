@@ -1,0 +1,2128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by fcc (FGUP FKC Zemlja) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Версия 1 (Основа - 28 версия Region_Cadastr )-->
+	<!--11.09.09 Изменениы типы данных на integer для элементов tRight/Share/Numerator и tRight/Share/Denominator-->
+	<!--16.09.09 Добавлен элемент OwnerNeighbours– сведения о смежных ЗУ-->
+	<!--16.09.09 Удален элемент Cadastral_Record-->
+	<!--16.09.09 Добавлен элемент tParcel/SpecialNote - особые отметки (строка 16)-->
+	<!--23.09.09  Атрибут Coord_System/Description и элемент Coord_System/Dim сделаны необязательными-->
+	<!--02.10.09 Элемент tContour/Entity_Spatial сделан необязательным-->
+	<!--21.10.09 Добавлен атрибут tParcel/DateCreatedDoc-->
+	<!--26.10.09 Обновлен классификатор dMethod-->
+	<!--02.11.09 Увеличена длина элемента tEncumbrance/Name-->
+	<!--18.01.10 Добавлен элемент Signature для ЭЦП-->
+	<!--18.01.2010 Справочник dDocument изменен на обобщенный справочник dALLDocument. Стандартная подсхема V021_STD_Document.xsd изменена на R01_Document.xsd.-->
+	<!--+++Стандартная подсхема V041_STD_Person.xsd изменена на R01_ Person.xsd.-->
+	<!--+++Стандартная подсхема V041_STD_Organization.xsd изменена на R01_Organization.xsd-->
+	<!--+++Изменены справочники dCurrentChanges.xsd, dRealty.xsd,dEncumbrances.xsd-->
+	<!--10.02.2010 В стандартной подсхеме R01_Document наименование элемента Cod_Document изменено на Code_Document-->
+	<!--08.02.2010. Увеличены длины полей Адрес по документу (tAdress/Note) до 2500, Наименование юр. лица (tOrganization/Name) до 500 символов,Разрешенное использование по документу (Utilization/ByDoc) до 4000-->
+	<!--16.02.2010 Удален элемент ds:Signature -->
+	<!--Справочник "Агенства  и их филиалы" -->
+	<!--Справочник "Предмет регистрации и учета (вид права)"-->
+	<xs:include schemaLocation="dRights.xsd"/>
+	<!--Справочник "Виды обременений (вид права)"-->
+	<xs:include schemaLocation="dEncumbrances.xsd"/>
+	<!--Справочник "Типы адресных объектов (по КЛАДР). 2-й уровень (Тип населенного пункта)"	-->
+	<!--Справочник "Типы адресных объектов (по КЛАДР). 3-й уровень (Тип населенного пункта)"	-->
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!--Справочник "Разрешенное использование"-->
+	<xs:include schemaLocation="dUtilizations.xsd"/>
+	<!--Справочник "Типы адресных объектов (по КЛАДР). 4-й уровень (Тип населенного пункта)"	-->
+	<!--Справочник "Типы адресных объектов (по КЛАДР). 5-й уровень (геоним)"-->
+	<!--Справочник субъектов РФ-->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!--Справочник "Единицы измерений по ОКЕИ"-->
+	<xs:include schemaLocation="dUnit.xsd"/>
+	<!--Справочник "Документы, удостоверяющие личность физического лица"-->
+	<!--Классификатор Виды документов-оснований-->
+	<!--Справочник видов платежей (Экономические характеристики)-->
+	<xs:include schemaLocation="dGroundPayments.xsd"/>
+	<!--Справочник "Вид статуса земельного участка"-->
+	<xs:include schemaLocation="dStates.xsd"/>
+	<!--Справочник "Вид земельного участка"-->
+	<xs:include schemaLocation="dParcels.xsd"/>
+	<!--Справочник "Целевое назначение (категории) земель"-->
+	<xs:include schemaLocation="dCategories.xsd"/>
+	<!--Справочник способ определения точки-->
+	<!--Справочник способ закрепления точки-->
+	<xs:include schemaLocation="dGeopoint_Zacrep.xsd"/>
+	<!--Справочник площадей-->
+	<xs:include schemaLocation="dArea.xsd"/>
+	<!--Справочник изменений-->
+	<xs:include schemaLocation="dCurrentChanges.xsd"/>
+	<!--Спрапвочник документов, являющихся основанием для внесения уточнений в сведения ГЗК -->
+	<!--Справочник способов образования-->
+	<xs:include schemaLocation="dMethod.xsd"/>
+	<!--Подключение подсхемы Документ -->
+	<xs:include schemaLocation="R03_Document.xsd"/>
+	<!--Подключение подсхемы АДРЕС-->
+	<xs:include schemaLocation="V037_STD_Address.xsd"/>
+	<xs:include schemaLocation="dAllDocuments.xsd"/>
+	<!--Подключение подсхемы ЕDocument-->
+	<!--25.06.2010 Снято ограничение длины для Parcel/SpecialNote-->
+	<!--!!! 4 версия схемы (05.05.2011)-->
+	<!--05.05.2011 Обновлен классификатор dRealty, dUtilization. Изменено название корневого элемента.-->
+	<!--05.05.2011 Обновлен тип tAddress-->
+	<!--10.05.2011 Увеличена длина  tUtilization/Fakt-->
+	<!--12.05.2011 Обновлен классификатор dAllDocuments-->
+	<!--13.05.2011 Обновлен тип tAddress-->
+	<xs:annotation>
+		<xs:documentation>25.05.2011г. Изменены общие подсхемы tAddress, tDocument, tPerson, tOrganization, tGovernance</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>25.05.2011г. Обновлены классификаторы</xs:documentation>
+	</xs:annotation>
+	<!--06.06.2011 Снято ограничение длины элемента tParcel/Old_CadastralNumbers-->
+	<!--30.06.2011 Добавлен раздел Parcels/OffspringParcel-->
+	<!--01.08.2011 Длина поля Governance/Name увеличена-->
+	<xs:element name="Region_Cadastr_Vidimus_KV">
+		<xs:annotation>
+			<xs:documentation>ОСНОВНОЙ КОРНЕВОЙ ЭЛЕМЕНТ</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Sender">
+								<xs:annotation>
+									<xs:documentation>Отправитель</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Kod" use="required">
+										<xs:annotation>
+											<xs:documentation>Код </xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="12"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Name" use="required">
+										<xs:annotation>
+											<xs:documentation>Наименование</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="255"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Date_Upload" type="xs:date" use="required">
+										<xs:annotation>
+											<xs:documentation>Дата выгрузки</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="Appointment" use="optional">
+										<xs:annotation>
+											<xs:documentation>Должность</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="50"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="FIO" use="optional">
+										<xs:annotation>
+											<xs:documentation>ФИО</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="100"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="E_Mail">
+										<xs:annotation>
+											<xs:documentation>Адрес электронной почты отправителя</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="60"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Telephone" use="optional">
+										<xs:annotation>
+											<xs:documentation>Телефон</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="50"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Recipient">
+								<xs:annotation>
+									<xs:documentation>Получатель</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Kod" use="optional">
+										<xs:annotation>
+											<xs:documentation>Код организации получателя</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="12"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="Name" use="optional">
+										<xs:annotation>
+											<xs:documentation>Наименование ор-ганизации получа-теля</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:maxLength value="255"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="CodeType" type="xs:string" use="required" fixed="114">
+							<xs:annotation>
+								<xs:documentation>Тип программы</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Version" type="xs:string" use="required" fixed="04">
+							<xs:annotation>
+								<xs:documentation>Версия схемы.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+        
+        <!-- Пакаджь вызывает проблемы...: -->
+        
+				<xs:element name="Package">
+					<xs:annotation>
+						<xs:documentation>Пакет ДОКУМЕНТОВ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+              
+              
+							<xs:element name="Federal">
+								<xs:annotation>
+									<xs:documentation>Кадастровый округ Общероссийский</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Cadastral_Regions" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кадастровые округа</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Cadastral_Region" type="tCadastral_Region" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Кадастровый округ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="CadastralNumber" type="xs:string" use="optional" default="00">
+										<xs:annotation>
+											<xs:documentation>Кадастровый номер</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+
+     <!-- До сюда Federal  -->
+          
+							<xs:element name="Certification_Doc" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Сведения об удостоверении документа</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Organization">
+											<xs:annotation>
+												<xs:documentation>Наименование органа кадастрового учета</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="255"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Date" type="xs:date">
+											<xs:annotation>
+												<xs:documentation>Дата формирования документа</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Number">
+											<xs:annotation>
+												<xs:documentation>Номер документа</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="100"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Appointment">
+											<xs:annotation>
+												<xs:documentation>Должность удостоверяющего</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="255"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="FIO">
+											<xs:annotation>
+												<xs:documentation>Инициалы, фамилия удостоверяющего</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="100"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+                
+
+              
+              </xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+        <!-- До сюда Package  -->   
+        
+				<xs:element name="Reestr_Contractors" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Реестр исполнителей  работ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+              <!--Заменим здесь 
+							<xs:element name="Reestr_Contractor" type="tReestr_Contractor" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Реестр исполнителей  работ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+       чему то не хавает MSVC:  -->
+            <xs:element name="Reestr_Contractor" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>Реестр исполнителей  работ</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="tReestr_Contractor"></xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+            <!-- вот до сюда. -->
+              
+            </xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="Coord_Systems" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="GUID_FL">
+			<xs:selector xpath="./Reestr_Contractors/Reestr_Contractor/Cadastral_Engineer"/>
+			<xs:field xpath="GUID_FL"/>
+		</xs:key>
+		<xs:key name="GUID_UL">
+			<xs:selector xpath="./Reestr_Contractors/Reestr_Contractor/Cadastral_Organization"/>
+			<xs:field xpath="GUID_UL"/>
+		</xs:key>
+		<xs:keyref name="GUID_FL_Cadastral_Engineer" refer="GUID_UL">
+			<xs:selector xpath="./Reestr_Contractors/Reestr_Contractor/Cadastral_Engineer"/>
+			<xs:field xpath="GUID_UL"/>
+		</xs:keyref>
+		<xs:keyref name="GUID_FL_Contactor" refer="GUID_FL">
+			<xs:selector xpath="./Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block/Parcels/Parcel/Contactor"/>
+			<xs:field xpath="GUID_FL"/>
+		</xs:keyref>
+		<xs:keyref name="GUID_UL_Contactor" refer="GUID_UL">
+			<xs:selector xpath="./Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block/Parcels/Parcel/Contactor"/>
+			<xs:field xpath="GUID_UL"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="tArea">
+		<xs:annotation>
+			<xs:documentation>Площади по справочнику</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AreaCode" type="dArea">
+				<xs:annotation>
+					<xs:documentation>Наименование вида площади по справочнику</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Area">
+				<xs:annotation>
+					<xs:documentation>Значение площади</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:totalDigits value="20"/>
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="dUnit">
+				<xs:annotation>
+					<xs:documentation>Единица измерений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tBorder">
+		<xs:annotation>
+			<xs:documentation>Описание границы</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Edge" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ребро </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Neighbours" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Соседи</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="CadastralNumber" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Кадастровый номер соседа, примыкающего к этой границе</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:restriction base="tCadastral_Number">
+													<xs:maxLength value="40"/>
+												</xs:restriction>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Length" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Длина границы</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:decimal">
+									<xs:totalDigits value="20"/>
+									<xs:fractionDigits value="2"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Direction_Angle" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дирекционный угол (в градусах)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Degree">
+										<xs:annotation>
+											<xs:documentation>Градусы</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:totalDigits value="3"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Minute">
+										<xs:annotation>
+											<xs:documentation>Минуты</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:totalDigits value="2"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Definition" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Описание  границы</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="1000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Spatial" use="required">
+			<xs:annotation>
+				<xs:documentation>Порядковый номер элемента контура</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+					<xs:totalDigits value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Point1" use="required">
+			<xs:annotation>
+				<xs:documentation>Порядковый номер точки1 в элементе</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+					<xs:totalDigits value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Point2" use="required">
+			<xs:annotation>
+				<xs:documentation>Порядковый номер точки2 в элементе</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+					<xs:totalDigits value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ByDef" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>По описанию (0 - нет, 1- да)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+  
+  
+  
+  <!-- Кадастровый квартал-->
+	<xs:complexType name="tCadastral_Block">
+		<xs:annotation>
+			<xs:documentation>Кадастровый блок</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Location">
+				<xs:annotation>
+					<xs:documentation>Уточнение местополож. квартала</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Code_OKATO">
+							<xs:annotation>
+								<xs:documentation>Код ОКАТО</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="11"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+   <!-- ref ?  <xs:element ref="Parcels" minOccurs="0"/>  -->
+      <xs:element ref="Parcels" minOccurs="0"/>
+      
+      <!--- -->
+      
+    </xs:sequence>
+		<xs:attribute name="CadastralNumber" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+  <!-- End Кадастровый квартал-->
+  
+  
+  <!-- Кадастровый район-->
+	<xs:complexType name="tCadastr_District">
+		<xs:annotation>
+			<xs:documentation>Кадастровый район</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Cadastral_Blocks" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровые кварталы</xs:documentation>
+				</xs:annotation>
+     
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cadastral_Block" type="tCadastral_Block" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый квартал</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+     
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+  <!-- End Кадастровый район-->
+  
+  
+	<xs:complexType name="tCadastral_Engineer">
+		<xs:sequence>
+			<xs:element name="FIO" type="tFIO">
+				<xs:annotation>
+					<xs:documentation>Фамилия, имя, отчество для Физ. лиц</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GUID_FL">
+				<xs:annotation>
+					<xs:documentation>Уникальный номер кадастрового инжененра</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GUID_UL" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Уникальный номер юридической организации</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastral_Number">
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="tCadastr_Number_Block">
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="tCadastral_Organization">
+		<xs:sequence>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Название организации Юр. лица</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GUID_UL">
+				<xs:annotation>
+					<xs:documentation>Уникальный номер юридической организации</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+  
+  <!-- Кадастровый район-->
+	<xs:complexType name="tCadastral_Region">
+		<xs:annotation>
+			<xs:documentation>Кадастровый округ</xs:documentation>
+		</xs:annotation>
+    
+		<xs:sequence>
+			<xs:element name="Cadastral_Districts" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровые районы</xs:documentation>
+				</xs:annotation>
+      
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cadastral_District" type="tCadastr_District" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый район</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+
+			</xs:element>
+		</xs:sequence>
+    
+		<xs:attribute name="CadastralNumber" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+  
+	<xs:complexType name="tCategory">
+		<xs:annotation>
+			<xs:documentation>Наименование категории земель</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Category" type="dCategories" use="required">
+			<xs:annotation>
+				<xs:documentation>Код категории</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tContactor">
+		<xs:annotation>
+			<xs:documentation>Исполнитель </xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:choice>
+				<xs:element name="GUID_UL">
+					<xs:annotation>
+						<xs:documentation>Уникальный номер юридической организации</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GUID_FL">
+					<xs:annotation>
+						<xs:documentation>Уникальный номер кадастрового инжененра</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="Date" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата проведения кадастровых работ</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tContact_Owner">
+		<xs:sequence>
+			<xs:element name="Contact_Adress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес   правообладателя</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Phone" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Телефон</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="E_mail" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Электронный адрес</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tContour">
+		<xs:annotation>
+			<xs:documentation>Описание контура участка</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Areas">
+				<xs:annotation>
+					<xs:documentation>Основная площадь и другие площади</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Area" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Основная площадь и другие площади</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="tArea">
+										<xs:sequence>
+											<xs:element name="Innccuracy" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Погрешность измерения</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:decimal">
+														<xs:totalDigits value="20"/>
+														<xs:fractionDigits value="2"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Entity_Spatial" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Number_PP" use="required">
+			<xs:annotation>
+				<xs:documentation>Учетный номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Coord_System" id="CS_KEY">
+		<xs:annotation>
+			<xs:documentation>Система координат. Наименование системы в значении элемента</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Dim" type="tDIM_PARM" minOccurs="0" maxOccurs="2">
+					<xs:annotation>
+						<xs:documentation>Измерение системы координат(например Х)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование системы координат</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2046"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Cs_Id" use="required">
+				<xs:annotation>
+					<xs:documentation>Код системы координат, на который ссылаются пространственные объекты (ENTITY_SPATIAL)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:ID">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Description">
+				<xs:annotation>
+					<xs:documentation>Формальное описание системы координат - WKT (определено OpenGIS)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2046"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Coord_Systems">
+		<xs:annotation>
+			<xs:documentation>Перечень систем координат</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Coord_System" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tDIM_PARM">
+		<xs:annotation>
+			<xs:documentation>Параметры измерения (оси координат)</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Name">
+			<xs:annotation>
+				<xs:documentation>Наименовавание измерения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Lowerbound">
+			<xs:annotation>
+				<xs:documentation>Нижняя граница значений измерения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Upperbound">
+			<xs:annotation>
+				<xs:documentation>Верхняя граница значений измерения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Tolerance">
+			<xs:annotation>
+				<xs:documentation>Точность значений измерения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tElaboration_Location">
+		<xs:annotation>
+			<xs:documentation>Уточнение местоположения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ReferenceMark" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование ориентира</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Distance" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Расстояние</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Direction" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Направление</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocUtilization" type="tDocument">
+		<xs:annotation>
+			<xs:documentation>Документ, удостоверяющий сведения об использовании </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="tEncumbrance">
+		<xs:annotation>
+			<xs:documentation>Обременения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид обременения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type">
+				<xs:annotation>
+					<xs:documentation>Код обременения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dEncumbrances">
+						<xs:maxLength value="12"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Owner_Restriction_InFavorem" type="tRight_Owner" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Лица, в пользу которых ограничиваютя права</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralNumber_Restriction" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер ЗУ, в пользу которого установлен сервитут </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:restriction base="tCadastral_Number">
+							<xs:maxLength value="40"/>
+						</xs:restriction>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+  
+  
+  <!--************* Наш любимый ES ***************-->
+	<xs:element name="Entity_Spatial">
+		<xs:annotation>
+			<xs:documentation>Это описание пространственной составляющей сущности данных</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+      
+      
+      
+			<xs:sequence>
+        <!-- в оригинале:
+			<xs:element name="Spatial_Element" type="tSPATIAL_ELEMENT" maxOccurs="unbounded">          
+					<xs:annotation>
+						<xs:documentation>Элемент контура</xs:documentation>
+					</xs:annotation>
+          </xs:element>
+             -->
+   <!-- Вот проработанная вставочка, замена :-->
+        <xs:element name="Spatial_Element" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Контур (внешний или внутренний)</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="tSPATIAL_ELEMENT"></xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    <!-- hide Borders 
+      
+   
+        <xs:element name="Borders" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Граница участка</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Border" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Описание границы</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="tBorder"/>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+       </xs:sequence>
+   -->
+			
+      
+      
+ 
+      
+			<xs:attribute name="Ent_Sys" type="xs:IDREF">
+				<xs:annotation>
+					<xs:documentation>Ссылка на систему координат</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Map_Id">
+				<xs:annotation>
+					<xs:documentation>Идентификатор карты</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Sp_Obj_Id">
+				<xs:annotation>
+					<xs:documentation>Идентификатор пространственного объекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tGroundPayment">
+		<xs:annotation>
+			<xs:documentation>Базовые платежи</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Kind" type="dGroundPayments" use="required">
+			<xs:annotation>
+				<xs:documentation>Виды платежей</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Value" use="required">
+			<xs:annotation>
+				<xs:documentation>Значения платежей</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="20"/>
+					<xs:fractionDigits value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Unit" type="dUnit" use="optional">
+			<xs:annotation>
+				<xs:documentation>Единица платежа </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tLocation">
+		<xs:annotation>
+			<xs:documentation>Данные по местоположению участка</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="inBounds" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>в границах</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Placed" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Положение на ДКК</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="6"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Elaboration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Уточнение  местоположения</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tElaboration_Location"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Address" type="tAddress" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tOld_CadastralNumbers"/>
+	<xs:complexType name="tOrdinate">
+		<xs:annotation>
+			<xs:documentation>Координата</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="X" use="required">
+			<xs:annotation>
+				<xs:documentation>Координата X</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Y" use="required">
+			<xs:annotation>
+				<xs:documentation>Координата Y</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Z">
+			<xs:annotation>
+				<xs:documentation>Координата Z</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="38"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Ord_Nmb" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер точки (порядок обхода)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Num_Geopoint" type="xs:integer">
+			<xs:annotation>
+				<xs:documentation>Номер межевой точки</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Geopoint_Zacrep" type="dGeopoint_Zacrep">
+			<xs:annotation>
+				<xs:documentation>Способ закрепления точки</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Delta_Geopoint">
+			<xs:annotation>
+				<xs:documentation>Погрешность</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="20"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Point_Pref" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Префикс номера точки</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tOrganization_OKU"/>
+  
+	<xs:element name="Parcels">
+		<xs:annotation>
+			<xs:documentation>Участки</xs:documentation>
+		</xs:annotation>
+    
+		<xs:complexType>
+			<xs:sequence>
+        
+				<xs:element name="Parcel" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Участок</xs:documentation>
+					</xs:annotation>
+        
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="tParcel"/>
+						</xs:complexContent>
+					</xs:complexType>
+   				</xs:element>
+				<xs:element name="OffspringParcel" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Участки-потомки ЗУ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Entity_Spatial"/>
+						</xs:sequence>
+						<xs:attribute name="CadastralNumber" use="optional">
+							<xs:annotation>
+								<xs:documentation>Кадастровый номер</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="40"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+      
+		</xs:complexType>
+	</xs:element>
+  
+	<xs:complexType name="tParcel">
+		<xs:annotation>
+			<xs:documentation>Описание земельного участка</xs:documentation>
+		</xs:annotation>
+  
+		<xs:sequence>
+      <!--
+			<xs:element name="Contactor" type="tContactor" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Исполнитель работ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Old_CadastralNumbers" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ранее присвоенные кадастровые или условные номера</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Prev_CadastralNumbers" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номера зем. участков, из которых образован данный участок. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CadastralNumber" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Кадастровый номер</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:restriction base="tCadastral_Number">
+										<xs:maxLength value="40"/>
+									</xs:restriction>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      -->
+      
+			<xs:element name="Areas">
+				<xs:annotation>
+					<xs:documentation>Основная площадь и другие площади</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Area" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Основная площадь и другие площади</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="tArea">
+										<xs:sequence>
+											<xs:element name="Innccuracy" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Погрешность измерения</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:decimal">
+														<xs:totalDigits value="20"/>
+														<xs:fractionDigits value="2"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+     
+      <!--
+			<xs:element name="Location" type="tLocation">
+				<xs:annotation>
+					<xs:documentation>Данные по местополож. участка. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+      -->
+			<xs:element name="Category">
+				<xs:annotation>
+					<xs:documentation>Наименование категории земель в соответствии со справочником </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tCategory"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+
+
+      <!-- Замена: 
+			<xs:element name="Utilization" type="tUtilization" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Использование участка. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+       на :-->
+      <xs:element name="Utilization">
+        <xs:annotation>
+          <xs:documentation>Использование участка. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="tUtilization"/>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      
+      
+      <!-- -->
+			<xs:element name="Rights" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Права</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Right" type="tRight" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Право</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      <!--  
+			<xs:element name="SubParcels" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Части участка</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SubParcel" type="tSubParcel" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Часть участка</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      -->
+
+      <xs:element name="SubParcels" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Части участка</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="SubParcel" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="tSubParcel"></xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+            
+            <!--
+            <xs:element name="SubParcel" type="tSubParcel" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>Часть участка</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            -->
+            
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+   
+      
+      
+			<xs:element name="Contours" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Контура многоконтурного участка</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Contour" type="tContour" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Контур</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+      <!-- 
+			<xs:element name="Encumbrances" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения об ограничениях (обременениях) вещных прав </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Encumbrance" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Сведения об ограничениях (обременениях) вещных прав </xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="tEncumbrance"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Ground_Payments" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Базовые платежи</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Ground_Payment" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Базовый платеж</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="tGroundPayment"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      -->
+      
+			<xs:element ref="Entity_Spatial" minOccurs="0"/>
+    
+      <!--
+			<xs:element name="OwnerNeighbours" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Правообладатели смежных земельных участков</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OwnerNeighbour" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Neighbour" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="ContactAddress">
+													<xs:annotation>
+														<xs:documentation>Контактный адрес правообладателя</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:maxLength value="500"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="CadastralNumber" use="required">
+									<xs:annotation>
+										<xs:documentation>Кадастровый номер смежного участка</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:maxLength value="40"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SpecialNote" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки (строка 16)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+      -->
+		</xs:sequence>
+    
+
+    
+		<xs:attribute name="CadastralNumber" use="optional">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Name" type="dParcels" use="optional">
+			<xs:annotation>
+				<xs:documentation>Название участка</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="State" type="dStates">
+			<xs:annotation>
+				<xs:documentation>Статус</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DateCreated" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата постановки на учет</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DateRemoved" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата снятия с учета</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AdditionalName">
+			<xs:annotation>
+				<xs:documentation>Дополнительное наименование </xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="DateCreatedDoc" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата постановки на учет по документу (для ранее учтенных участков)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+  
+	<xs:complexType name="tRealty">
+		<xs:annotation>
+			<xs:documentation>Сведения об объектах недвижимости</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование объекта недвижимости</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type" type="dRealty" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип ОН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Using">
+				<xs:annotation>
+					<xs:documentation>Сведения о использовании ОН</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Registration" type="tRegistration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Регистрация объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CadastralNumber">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ConditionalCadastralNumber">
+			<xs:annotation>
+				<xs:documentation>Условный кадастро-вый номер</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tRecord"/>
+	<xs:complexType name="tReestr_Contractor">
+    
+	<!--	<xs:choice> -->
+    <xs:sequence>
+			<xs:element name="Cadastral_Engineer" type="tCadastral_Engineer">
+				<xs:annotation>
+					<xs:documentation>Кадастровый инженер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cadastral_Organization" type="tCadastral_Organization">
+				<xs:annotation>
+					<xs:documentation>Кадастровая организация</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+    </xs:sequence>
+	<!--	</xs:choice> -->
+      
+    
+	</xs:complexType>
+	<xs:complexType name="tRegistration">
+		<xs:sequence>
+			<xs:element name="RegNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер регистрационной записи</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата государственной регистрации </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateClose" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата регистрации прекращения  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrgRegister" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кто зарегистрировал</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tRight">
+		<xs:annotation>
+			<xs:documentation>Сведения о правах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид права</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type" type="dRights">
+				<xs:annotation>
+					<xs:documentation>Код  права</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Owner" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Правообладатель</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tRight_Owner"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			
+      <xs:sequence minOccurs="0">
+				<xs:element name="Share" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Доля</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="Numerator" type="xs:integer" use="required">
+							<xs:annotation>
+								<xs:documentation>Числитель</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="Denominator" type="xs:integer" use="required">
+							<xs:annotation>
+								<xs:documentation>Знаменатель</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ShareText" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Значение Доли текстом</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+      
+			<xs:element name="Desc" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+      <xs:element name="Documents" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Document" type="tDocument" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Документы - осно-вания для внесения сведений </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tRight_Owner">
+		<xs:annotation>
+			<xs:documentation>Обладатели прав</xs:documentation>
+		</xs:annotation>
+
+    <!--  <xs:choice> -->
+      <xs:sequence>
+			<xs:element name="Person">
+				<xs:annotation>
+					<xs:documentation>Физические лица</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FIO" type="tFIO">
+							<xs:annotation>
+								<xs:documentation>Фамилия, имя, отчество для Физ. лиц</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Organization">
+				<xs:annotation>
+					<xs:documentation>Юридические лица</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name">
+							<xs:annotation>
+								<xs:documentation>Название организации Юр. лица</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="500"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Governance">
+				<xs:annotation>
+					<xs:documentation>Субъект публичного права  или Иностранное юридическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name">
+							<xs:annotation>
+								<xs:documentation>Название</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="500"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      </xs:sequence>
+      <!-- </xs:choice> -->
+    </xs:complexType>
+  
+  <!--Здес ь тоже пришлось менять: -->
+	<xs:complexType name="tSPATIAL_ELEMENT">
+		<xs:annotation>
+			<xs:documentation>Элемент контура</xs:documentation>
+		</xs:annotation>
+       <!--  Отсюда замена
+       <xs:sequence maxOccurs="unbounded"> 
+			<xs:element name="Spelement_Unit" type="tSPELEMENT_UNIT" minOccurs="0">
+      <xs:annotation>
+					<xs:documentation>Часть элемента</xs:documentation>
+				</xs:annotation>
+			</xs:element> 
+        </xs:sequence> 
+        на вот это :-->
+    <xs:sequence minOccurs="0">
+        <xs:element name="Spelement_Unit" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="tSPELEMENT_UNIT"></xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+	</xs:complexType>
+  
+	<xs:complexType name="tSPELEMENT_UNIT">
+		<xs:annotation>
+			<xs:documentation>Часть элемента</xs:documentation>
+		</xs:annotation>
+    
+		<xs:sequence>
+			<xs:element name="Ordinate" type="tOrdinate" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>Координата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Type_Unit">
+			<xs:annotation>
+				<xs:documentation>"Элементарный"  тип для части элемента</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="Type_Unit">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Su_Nmb">
+			<xs:annotation>
+				<xs:documentation>Номер части элемента (порядок обхода)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:totalDigits value="22"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+  
+  
+	<xs:complexType name="tSubParcel">
+		<xs:annotation>
+			<xs:documentation>Описание части земельного участка</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Areas">
+				<xs:annotation>
+					<xs:documentation>Основная площадь и другие площади</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Area" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Основная площадь и другие площади</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="tArea">
+										<xs:sequence>
+											<xs:element name="Innccuracy" minOccurs="0">
+												<xs:simpleType>
+													<xs:restriction base="xs:decimal">
+														<xs:totalDigits value="20"/>
+														<xs:fractionDigits value="2"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      
+		<!--	<xs:choice minOccurs="0"> -->
+        <xs:sequence minOccurs="0" >
+				<xs:element name="Encumbrances">
+					<xs:annotation>
+						<xs:documentation>Сведения о частях, сформированных в связи с наложением обременений</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Encumbrance" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Сведения о части, сформированных в связи с наложением обременений</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="tEncumbrance"/>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Object_Entry">
+					<xs:annotation>
+						<xs:documentation>Объект, входящий в состав единого землепользования</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="CadastralNumber" use="required">
+							<xs:annotation>
+								<xs:documentation>Кадастровый номер</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="40"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Type" type="dRealty" use="required">
+							<xs:annotation>
+								<xs:documentation>Тип по справочнику</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+        </xs:sequence>
+	<!--		</xs:choice> -->
+      
+			<xs:element ref="Entity_Spatial" minOccurs="0"/>
+      
+		</xs:sequence>
+		<xs:attribute name="Number_PP" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер по порядку</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Full" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Весь участок (если часть совпадает со всем учвастком - то 1, иначе 0)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DateCreated" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата возникновения части</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DateRemoved" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>Дата прекращения существования части</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+  
+	<xs:complexType name="tUtilization">
+		<xs:annotation>
+			<xs:documentation>Вид использования ЗУ</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Kind" type="dUtilizations" use="optional">
+			<xs:annotation>
+				<xs:documentation>по справочнику</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+    
+		<xs:attribute name="Fakt" use="optional">
+			<xs:annotation>
+				<xs:documentation>фактическое </xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="4000"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ByDoc" use="optional">
+			<xs:annotation>
+				<xs:documentation>по документу</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="4000"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="Type_Unit">
+		<xs:annotation>
+			<xs:documentation>"Элементарный" тип для части элемента</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Точка"/>
+			<xs:enumeration value="Линия"/>
+			<xs:enumeration value="Дуга"/>
+			<xs:enumeration value="Прямоугольник"/>
+			<xs:enumeration value="Окружность"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="eDocument">
+		<xs:annotation>
+			<xs:documentation>Электронный документ</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+  
+	<xs:complexType name="tFIO">
+		<xs:annotation>
+			<xs:documentation>Фамилия, Имя, Отчество</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Surname">
+				<xs:annotation>
+					<xs:documentation>Фамилия</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="First">
+				<xs:annotation>
+					<xs:documentation>Имя</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Patronymic" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Отчество</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

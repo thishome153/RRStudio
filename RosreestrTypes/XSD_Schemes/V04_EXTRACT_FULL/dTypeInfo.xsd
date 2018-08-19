@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="dTypeInfo">
+		<xs:annotation>
+			<xs:documentation>Виды документов и запрашиваемой информации</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="010000">
+				<xs:annotation>
+					<xs:documentation>выписка из Единого государственного реестра прав на недвижимое имущество и сделок с ним</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="020000">
+				<xs:annotation>
+					<xs:documentation>выписка из Единого государственного реестра прав на недвижимое имущество и сделок с ним о переходе прав на объект недвижимого имущества</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="030000">
+				<xs:annotation>
+					<xs:documentation>справка о содержании правоустанавливающего документа</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="040000">
+				<xs:annotation>
+					<xs:documentation>копия договора или иного документа, выражающего содержание односторонней сделки, совершенного в простой письменной форме</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="050100">
+				<xs:annotation>
+					<xs:documentation>выписка из Единого государственного реестра прав на недвижимое имущество и сделок с ним о правах отдельного лица на имеющиеся у него объекты  недвижимого имущества</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="050200">
+				<xs:annotation>
+					<xs:documentation>выписка из Единого государственного реестра прав на недвижимое имущество и сделок с ним о правах отдельного лица на имевшиеся (имеющиеся) у него объекты недвижимого имущества</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="060000">
+				<xs:annotation>
+					<xs:documentation>выписка из Единого государственного реестра прав на недвижимое имущество и сделок с ним о признании правообладателя недееспособным или ограниченно дееспособным</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="070000">
+				<xs:annotation>
+					<xs:documentation>справка о лицах, получивших сведения об объекте недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

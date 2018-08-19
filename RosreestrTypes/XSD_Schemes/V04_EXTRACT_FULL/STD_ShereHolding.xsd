@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхемы Права-->
+	<xs:include schemaLocation="STD_Rights.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Подключение подсхемы Документ   -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!-- Подключение подсхемы Субъект   -->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<xs:complexType name="tShareHolding">
+		<xs:annotation>
+			<xs:documentation> объекты долевого строительства</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_DDU">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор договора долевого участия</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ShareHolding" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описание объекта долевого строительства </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ShareObjects" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>элемент объекта долевого строительства </xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Owner" type="tSubject" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Участники долевого строительства</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Encumbrance" type="tEmcumbrance" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Описание ипотеки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

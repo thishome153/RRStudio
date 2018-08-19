@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by potapova (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<xs:complexType name="tServisInf">
+		<xs:annotation>
+			<xs:documentation>Сервисная информация</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Sender">
+				<xs:annotation>
+					<xs:documentation>Отправитель</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="Kod" use="required">
+						<xs:annotation>
+							<xs:documentation>Код</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="12"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="Name" use="required">
+						<xs:annotation>
+							<xs:documentation>Наименование</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="Region" type="dRegionsRF" use="optional">
+						<xs:annotation>
+							<xs:documentation>Регион</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Date_Upload" type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Дата выгрузки</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Appointment" use="optional">
+						<xs:annotation>
+							<xs:documentation>Должность</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="250"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="FIO" use="optional">
+						<xs:annotation>
+							<xs:documentation>ФИО</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="100"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="E_Mail">
+						<xs:annotation>
+							<xs:documentation>Адрес электронной почты отправителя</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="60"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="Telephone" use="optional">
+						<xs:annotation>
+							<xs:documentation>Телефон</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="100"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Recipient">
+				<xs:annotation>
+					<xs:documentation>Получатель</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="Kod" use="required">
+						<xs:annotation>
+							<xs:documentation>Код организации получателя</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="12"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="Name" use="optional">
+						<xs:annotation>
+							<xs:documentation>Наименование организации получателя</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CodeType" use="required">
+			<xs:annotation>
+				<xs:documentation>Тип передаваемой информации</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:length value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Version" type="xs:string" use="required" fixed="04">
+			<xs:annotation>
+				<xs:documentation>Версия схемы</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Scope" use="required">
+			<xs:annotation>
+				<xs:documentation>Тип учетной системы</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="10"/>
+					<xs:enumeration value="EGRP"/>
+					<xs:enumeration value="GKN"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

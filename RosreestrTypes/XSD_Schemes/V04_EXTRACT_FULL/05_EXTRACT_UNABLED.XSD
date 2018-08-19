@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхемы Типы-->
+	<xs:include schemaLocation="dRefusal.xsd"/>
+	<!--Классификатор назначений объектов технического учета-->
+	<xs:include schemaLocation="dAssignation.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Классификатор "Предмет регистрации и учета"(Права)  -->
+	<!-- Подключение подсхемы Документ   -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!-- Подключение подсхемы Субъект-->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Подключение подсхемы Права -->
+	<xs:include schemaLocation="STD_Rights.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!-- Подключение подсхемы Информация о документе -->
+	<xs:include schemaLocation="STD_ServisInf.xsd"/>
+	<!-- Подключение подсхемы Информация о запросе -->
+	<xs:include schemaLocation="STD_ExtrAtribut.xsd"/>
+	<!-- Подключение подсхемы Отказ по субъекту-->
+	<xs:include schemaLocation="STD_Refusal.xsd"/>
+	<xs:element name="Extract">
+		<xs:annotation>
+			<xs:documentation>Пакет информации - ответ на запрос сведений</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument" type="tServisInf">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ReestrExtract">
+					<xs:annotation>
+						<xs:documentation>Выписка о признании правообладателя недеемпособным</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DeclarAttribute" type="tExtrAttribut">
+								<xs:annotation>
+									<xs:documentation>Информация о запросе</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ExtractSubjectRights" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>выписка о недееспособности</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="HeadContent" type="tHeadContent">
+											<xs:annotation>
+												<xs:documentation>Текстовое описание запроса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ExtractSubj" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>выписка об обобщенных правах субъекта</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ID_Subject">
+														<xs:annotation>
+															<xs:documentation>Уникальный мдентификатор субъекта</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Person" type="tPerson">
+														<xs:annotation>
+															<xs:documentation>Описание Физ.лица</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="StageUnabled">
+														<xs:annotation>
+															<xs:documentation>вид недееспособности</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="JudicialName">
+														<xs:annotation>
+															<xs:documentation>наименование суда</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="4000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="DecisionAttribut">
+														<xs:annotation>
+															<xs:documentation>дата решения, номер решения, дата вступления в законную силу</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="4000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FootContent" type="tFootContent">
+											<xs:annotation>
+												<xs:documentation>Завершающийтекст (ссылка на закон и т.п.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="NoticeSubj" type="tNoticeSubj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>уведомление об отсутствии сведений о недееспособности</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RefusalSubj" type="tRefusalSubj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>отказ в выдаче выписки о недееспособности</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

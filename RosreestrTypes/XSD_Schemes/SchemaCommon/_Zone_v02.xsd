@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:dRe1="urn://x-artefacts-rosreestr-ru/commons/directories/realty/1.0.1" xmlns:dZo1="urn://x-artefacts-rosreestr-ru/commons/directories/zone/1.0.1" xmlns:dUtz1="urn://x-artefacts-rosreestr-ru/commons/directories/utilizations/1.0.1" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1"  xmlns:Zon2="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<!--Подсхема "Адрес (описание местоположения)"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" schemaLocation="_AddressInp_v02.xsd"/>
+	<!--Справочник "Территориальные зоны и зоны с особыми условиями использования территорий"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/zone/1.0.1" schemaLocation="dZone_v01.xsd"/>
+	<!--Справочник "Классификатор видов использования земель"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/utilizations/1.0.1" schemaLocation="dUtilizations_v01.xsd"/>
+	<!--06.11.2014 Изменено наименование поля Ohter-->
+	<!--Повторно используемая подсхема "Территориальная зона и специальная зона"-->
+	<xs:complexType name="tZone">
+		<xs:annotation>
+			<xs:documentation>Терзоны и спецзоны</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralDistrict" type="Simple4:sCadastralNumberDistrict">
+				<xs:annotation>
+					<xs:documentation>Кадастровый район</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeZone" type="dZo1:dZone">
+				<xs:annotation>
+					<xs:documentation>Вид зоны (по классификатору)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeZoneDoc" type="Simple4:sNe255">
+				<xs:annotation>
+					<xs:documentation>Вид зоны (по документу)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumberZone" type="Simple4:sNe255">
+				<xs:annotation>
+					<xs:documentation>Номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="Simple4:sNe1000">
+				<xs:annotation>
+					<xs:documentation>Наименование объекта землеустройства</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Index" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Индекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Authority" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Орган власти</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Locations">
+				<xs:annotation>
+					<xs:documentation>Местоположения объекта землеустройства</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Location" type="adrInp2:tAddressInp" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Местоположение объекта землеустройства</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Other" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Иные идентифицирующие сведения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Note" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="TerritorialZone" type="Zon2:tTerritorialZone">
+					<xs:annotation>
+						<xs:documentation>Территориальная зона</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SpecialZone" type="Zon2:tSpecialZones">
+					<xs:annotation>
+						<xs:documentation>Зона с особыми условиями использования территорий</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tPermitedPrimary">
+		<xs:annotation>
+			<xs:documentation>Основной и условно разрешенный вид разрешенного использования</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Zon2:tPermittedUse">
+				<xs:sequence>
+					<xs:element name="PermitedAncillary" type="Zon2:tPermittedUse" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Вспомогательные виды</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LimitSize" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Предельные размеры участков</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Max" type="xs:decimal" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Максимум</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="Min" type="xs:decimal" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Минимум</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tPermittedUse">
+		<xs:annotation>
+			<xs:documentation>Разрешенное использование</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PermittedUse" type="Simple4:sNe4000">
+				<xs:annotation>
+					<xs:documentation>Разрешенное использование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LandUse" type="dUtz1:dUtilizations" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Разрешенное использование (по классификатору)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tSpecialZones">
+		<xs:annotation>
+			<xs:documentation>Зона с особыми условиями использования территории</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ContentRestrictions" type="Simple4:sNe4000">
+				<xs:annotation>
+					<xs:documentation>Содержание ограничений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProtectedObject" type="Simple1:s4000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование охраняемого  объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tTerritorialZone">
+		<xs:annotation>
+			<xs:documentation>Территориальная зона</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PermittedUses" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Вид разрешенного использования</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="PermitedPrimary" type="Zon2:tPermitedPrimary">
+							<xs:annotation>
+								<xs:documentation>Основной вид разрешенного использования</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PermitedConditionally" type="Zon2:tPermitedPrimary">
+							<xs:annotation>
+								<xs:documentation>Условно разрешенный вид разрешенного использования</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

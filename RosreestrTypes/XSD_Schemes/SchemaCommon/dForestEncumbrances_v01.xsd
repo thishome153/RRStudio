@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dForEnc1="urn://x-artefacts-rosreestr-ru/commons/directories/forest-encumbrances/1.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/directories/forest-encumbrances/1.0.1" elementFormDefault="qualified">
+	<xs:simpleType name="dForestEncumbrances">
+		<xs:annotation>
+			<xs:documentation>Виды разрешенного использования лесов</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="235001000000">
+				<xs:annotation>
+					<xs:documentation>Заготовка древесины</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235002000000">
+				<xs:annotation>
+					<xs:documentation>Заготовка живицы</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235003000000">
+				<xs:annotation>
+					<xs:documentation>Заготовка и сбор недревесных лесных ресурсов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235004000000">
+				<xs:annotation>
+					<xs:documentation>Заготовка пищевых лесных ресурсов и сбор лекарственных растений</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235005000000">
+				<xs:annotation>
+					<xs:documentation>Осуществление видов деятельности в сфере охотничьего хозяйства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235006000000">
+				<xs:annotation>
+					<xs:documentation>Ведение сельского хозяйства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235007000000">
+				<xs:annotation>
+					<xs:documentation>Осуществление научно-исследовательской деятельности, образовательной деятельности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235008000000">
+				<xs:annotation>
+					<xs:documentation>Осуществление рекреационной деятельности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235009000000">
+				<xs:annotation>
+					<xs:documentation>Создание лесных плантаций и их эксплуатация</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235010000000">
+				<xs:annotation>
+					<xs:documentation>Выращивание лесных плодовых, ягодных, декоративных растений, лекарственных растений</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235010001000">
+				<xs:annotation>
+					<xs:documentation>Выращивание посадочного материала лесных растений (саженцев, сеянцев)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235011000000">
+				<xs:annotation>
+					<xs:documentation>Выполнение работ по геологическому изучению недр, разработка месторождений полезных ископаемых</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235012000000">
+				<xs:annotation>
+					<xs:documentation>Строительство и эксплуатация водохранилищ и иных искусственных водных объектов, а также гидротехнических сооружений, морских портов, морских терминалов, речных портов, причалов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235013000000">
+				<xs:annotation>
+					<xs:documentation>Строительство, реконструкция, эксплуатация линейных объектов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235014000000">
+				<xs:annotation>
+					<xs:documentation>Переработка древесины и иных лесных ресурсов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235015000000">
+				<xs:annotation>
+					<xs:documentation>Осуществление религиозной деятельности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="235099000000">
+				<xs:annotation>
+					<xs:documentation>Иные виды, определенные в соответствии с частью 2 статьи 6 Лесного кодекса</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

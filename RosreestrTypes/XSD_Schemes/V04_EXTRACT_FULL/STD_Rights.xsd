@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by potapova (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Справочник "Вид права"-->
+	<xs:include schemaLocation="dRights.xsd"/>
+	<!--Справочник типов субъектов публичного права-->
+	<xs:include schemaLocation="dGovernance.xsd"/>
+	<!--ОКЕИ-->
+	<xs:include schemaLocation="dUnit.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!--Справочник "Целевое назначение (категории) земель"-->
+	<xs:include schemaLocation="dCategories.xsd"/>
+	<!--Справочник обременений-->
+	<xs:include schemaLocation="dEncumbrances.xsd"/>
+	<!--Справочник субъектов РФ-->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!--Подключение подсхемы АДРЕС-->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<xs:include schemaLocation="dCertificates.xsd"/>
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<xs:include schemaLocation="STD_Object.xsd"/>
+	<xs:complexType name="tOpenRegistration">
+		<xs:annotation>
+			<xs:documentation>Запись о праве</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_Record">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор записи о праве (ограничении)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MdfDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата модификации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegNumber">
+				<xs:annotation>
+					<xs:documentation>Номер государствеенной регистрации </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type" type="dRights">
+				<xs:annotation>
+					<xs:documentation>Код  права</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Вид права</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegDate" type="tDate">
+				<xs:annotation>
+					<xs:documentation>Дата государственной регистрации </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата прекращения права </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="Share" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Доля</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="Numerator" use="required">
+							<xs:annotation>
+								<xs:documentation>Числитель доли</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:integer">
+									<xs:totalDigits value="22"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Denominator" use="required">
+							<xs:annotation>
+								<xs:documentation>Знаменатель доли</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:integer">
+									<xs:totalDigits value="22"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ShareText" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Значение Доли текстом</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="DocFound" type="tDocRight" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Документы - основания регистрации права</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tEmcumbrance">
+		<xs:annotation>
+			<xs:documentation>Запись об ограничении</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_Record">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор записи об ограничении</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MdfDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата модификации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegNumber">
+				<xs:annotation>
+					<xs:documentation>Номер государствеенной регистрации </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Type" type="dEncumbrances">
+				<xs:annotation>
+					<xs:documentation>Код  ограничения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Вид ограничения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ShareText" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предмет ограничения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegDate" type="tDate">
+				<xs:annotation>
+					<xs:documentation>Дата государственной регистрации </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Срок действия.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Started" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата начала действия</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="tDate"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Stopped" type="tDate" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата прекращения действия</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Term" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Продолжительность</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="Owner" type="tSubject" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Лица, в пользу которых ограничиваютя права</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AllShareOwner">
+					<xs:annotation>
+						<xs:documentation>участники  долевого строительства по договорам участия в долевом строительстве</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="DocFound" type="tDocRight" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Документы - основания регистрации ограничения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tRightObj">
+		<xs:annotation>
+			<xs:documentation>Сведения о правах по ОН</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Owner" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Правообладатель</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="tSubject"/>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NoOwner">
+					<xs:annotation>
+						<xs:documentation>Правообладатель отсутствует</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="Registration" type="tOpenRegistration">
+					<xs:annotation>
+						<xs:documentation>Зарегистрированное право</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NoRegistration">
+					<xs:annotation>
+						<xs:documentation>Право не зарегистрировано</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:choice minOccurs="0">
+				<xs:element name="Encumbrance" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Ограничение права</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="tEmcumbrance">
+								<xs:attribute name="EncumbNumber"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NoEncumbrance">
+					<xs:annotation>
+						<xs:documentation> не зарегистрировано</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tRightSubj">
+		<xs:annotation>
+			<xs:documentation>Сведения о правах субъекта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Object" type="tObject">
+				<xs:annotation>
+					<xs:documentation>Описание объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Registration" type="tOpenRegistration">
+				<xs:annotation>
+					<xs:documentation>Зарегистрированное право</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Encumbrance" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ограничение права</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tEmcumbrance">
+							<xs:attribute name="EncumbNumber"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by potapova (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхем оисания площади-->
+	<xs:include schemaLocation="dUnit.xsd"/>
+	<!--Классификатор назначений объектов технического учета-->
+	<xs:include schemaLocation="dAssignation.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!--Классификатор категорий земель-->
+	<xs:include schemaLocation="dCategories.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!-- Подключение подсхемы ДОКУМЕНТ  -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<xs:complexType name="tArea">
+		<xs:annotation>
+			<xs:documentation>Площади </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Area" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Значение площади</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:totalDigits value="20"/>
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="AreaText">
+				<xs:annotation>
+					<xs:documentation>Значение площади текстом</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Unit" type="dUnit" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Единица измерений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tObject">
+		<xs:annotation>
+			<xs:documentation>Объект</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_Object">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор объекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MdfDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата модификации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="CadastralNumber">
+					<xs:annotation>
+						<xs:documentation>Кадастровый номер объекта недвижимого имущества. </xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="3000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ConditionalNumber">
+					<xs:annotation>
+						<xs:documentation>Условный номер</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="3000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="ObjectType">
+				<xs:annotation>
+					<xs:documentation>Код типа объекта недвижимости</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dRealty">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ObjectTypeText" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Текстовое описание типа объекта недвижимости</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование  объекта недвижимости. </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Assignation_Code" type="dAssignation" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код назначения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Assignation_Code_Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>текстовое описание назначения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GroundCategory" type="dCategories" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Целевое назначение (категория) земель</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroundCategoryText" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>текстовое описание целевоего назначения(категории) земель</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Area" type="tArea" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Основная площадь и другие площади</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Inv_No" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Инвентарный номер, литер</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Floor" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Этажность (этаж)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FloorPlan_No" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номера на поэтажном плане</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Explication" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>элемент экспликации</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="500"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Address" type="tAddress">
+				<xs:annotation>
+					<xs:documentation>Адрес</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Complex" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Состав сложной вещи</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Explication" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>элемент сложной вещи</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="4000"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReEndDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата ликвидации объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

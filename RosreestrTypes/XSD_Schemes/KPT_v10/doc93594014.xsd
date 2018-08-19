@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FamilyName" type="xs:string" />
+  <xs:element name="FirstName" type="xs:string" />
+  <xs:element name="Patronymic" type="xs:string" />
+</xs:schema>

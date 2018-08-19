@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SpatialElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="SpelementUnit">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Ordinate">
+                <xs:complexType>
+                  <xs:attribute name="X" type="xs:decimal" use="required" />
+                  <xs:attribute name="Y" type="xs:decimal" use="required" />
+                  <xs:attribute name="OrdNmb" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="DeltaGeopoint" type="xs:decimal" use="optional" />
+                  <xs:attribute name="GeopointZacrep" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="TypeUnit" type="xs:string" use="required" />
+            <xs:attribute name="SuNmb" type="xs:unsignedByte" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CoordSystem">
+    <xs:complexType>
+      <xs:attribute name="Name" type="xs:string" use="required" />
+      <xs:attribute name="CsId" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

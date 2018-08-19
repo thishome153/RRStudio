@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Gov3="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" xmlns:dGov1="urn://x-artefacts-rosreestr-ru/commons/directories/governance-code/1.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1"  xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" elementFormDefault="qualified">
+	<!--Общие простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="../SchemaCommonSMEV/smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Подсхема адрес для входящих документов-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" schemaLocation="_AddressInp_v02.xsd"/>
+	<!--Справочник "Тип субъекта правоотношений"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/governance-code/1.0.1" schemaLocation="dGovernanceCode_v01.xsd"/>
+	<!--Подсхема "Орган государственной власти или орган местного самоуправления"-->
+	<xs:complexType name="tGovernance">
+		<xs:annotation>
+			<xs:documentation>Орган государственной власти или орган местного самоуправления</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="Simple4:sNe500">
+				<xs:annotation>
+					<xs:documentation>Наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GovernanceCode" type="dGov1:dGovernanceCode">
+				<xs:annotation>
+					<xs:documentation>Тип</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Location" type="adrInp2:tAddressInpFull" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Почтовый адрес</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email" type="tns:EmailAddressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес электронной почты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Telephone" type="Simple1:s50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Контактный телефон</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

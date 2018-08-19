@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="dUnit">
+		<xs:annotation>
+			<xs:documentation>Единицы измерений</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="012001000000">
+				<xs:annotation>
+					<xs:documentation>Единицы длины</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012001001000">
+				<xs:annotation>
+					<xs:documentation>Метр</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012001002000">
+				<xs:annotation>
+					<xs:documentation>Километр</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012002000000">
+				<xs:annotation>
+					<xs:documentation>Единицы площади</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012002001000">
+				<xs:annotation>
+					<xs:documentation>Квадратный метр</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012002002000">
+				<xs:annotation>
+					<xs:documentation>Гектар</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012002003000">
+				<xs:annotation>
+					<xs:documentation>Квадратный километр</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003000000">
+				<xs:annotation>
+					<xs:documentation>Единицы времени</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003001000">
+				<xs:annotation>
+					<xs:documentation>Сутки</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003002000">
+				<xs:annotation>
+					<xs:documentation>Неделя</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003003000">
+				<xs:annotation>
+					<xs:documentation>Декада</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003004000">
+				<xs:annotation>
+					<xs:documentation>Месяц</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012003005000">
+				<xs:annotation>
+					<xs:documentation>Год</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012004000000">
+				<xs:annotation>
+					<xs:documentation>Экономические единицы</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012004001000">
+				<xs:annotation>
+					<xs:documentation>Рубль</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012004002000">
+				<xs:annotation>
+					<xs:documentation>Тысяча рублей</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012004003000">
+				<xs:annotation>
+					<xs:documentation>Миллион рублей</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012004004000">
+				<xs:annotation>
+					<xs:documentation>Миллиард рублей</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012005000000">
+				<xs:annotation>
+					<xs:documentation>Не включенные в ОКЕИ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012005001000">
+				<xs:annotation>
+					<xs:documentation>Рублей за кв. метр</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012005002000">
+				<xs:annotation>
+					<xs:documentation>Рублей  за гектар</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="012005003000">
+				<xs:annotation>
+					<xs:documentation>Рублей за кв. км</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

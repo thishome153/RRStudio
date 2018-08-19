@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn://x-artefacts-fixosoft-ru/MyCertification-doc/1.0" elementFormDefault="qualified">
+
+  <!--Общие составные типы данных-->
+	
+	<!--Повторно используемая подсхема "Сведения об удостоверении документа"-->
+  <xs:complexType name="tMyCertificationDoc">
+    <xs:annotation>
+      <xs:documentation>Сведения об удостоверении документа</xs:documentation>
+    </xs:annotation>
+    
+    <xs:sequence>
+      
+      <xs:element name="XMLDocumentInfo" type="xs:string">
+        <xs:annotation>
+          <xs:documentation> Сведения об XML (для других приложений)</xs:documentation>
+        </xs:annotation>  
+        <!--
+        <xs:element name="Namespace" type="xs:string">
+          <xs:element name="Version" type="xs:string">
+            <xs:element name="Organization" type="xs:string">-->
+        
+      </xs:element>
+
+      <xs:element name="Date" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Дата</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+      <xs:element name="Number" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+
+      <xs:element name="Appointment" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Должность удостоверяющего</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+            <xs:element name="FIO" type="xs:string"></xs:element>
+          
+        
+      
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

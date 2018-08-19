@@ -1,0 +1,141 @@
+<?xml version= "1.0" encoding= "windows-1251"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ 
+<xs:simpleType name="dOPF">
+<xs:annotation>
+<xs:documentation>Организационно-правовые формы юридических лиц</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:enumeration value="009001000000">
+<xs:annotation>
+<xs:documentation>Юридические лица, являющиеся коммерческими организациями</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001001000">
+<xs:annotation>
+<xs:documentation>Полное товарищество</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001002000">
+<xs:annotation>
+<xs:documentation>Товарищество на вере (коммандитное товарищество)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001003000">
+<xs:annotation>
+<xs:documentation>Общество с ограниченной ответственностью</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001004000">
+<xs:annotation>
+<xs:documentation>Общество с дополнительной ответственностью</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001005000">
+<xs:annotation>
+<xs:documentation>Открытое акционерное общество</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001006000">
+<xs:annotation>
+<xs:documentation>Закрытое акционерное общество</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001007000">
+<xs:annotation>
+<xs:documentation>Производственный кооператив (артель)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001008000">
+<xs:annotation>
+<xs:documentation>Унитарное предприятие, основанное на праве хозяйственного ведения</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001009000">
+<xs:annotation>
+<xs:documentation>Унитарное предприятие, основанное на праве оперативного управления</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009001010000">
+<xs:annotation>
+<xs:documentation>Крестьянское (фермерское) хозяйство</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002000000">
+<xs:annotation>
+<xs:documentation>Юридические лица, являющиеся некоммерческими организациями</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002001000">
+<xs:annotation>
+<xs:documentation>Потребительский кооператив (потребительское общество)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002002000">
+<xs:annotation>
+<xs:documentation>Общественная или религиозная организация (объединение)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002003000">
+<xs:annotation>
+<xs:documentation>Общественное движение (политическая партия)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002004000">
+<xs:annotation>
+<xs:documentation>Фонд</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002005000">
+<xs:annotation>
+<xs:documentation>Учреждение</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002006000">
+<xs:annotation>
+<xs:documentation>Государственная корпорация</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002007000">
+<xs:annotation>
+<xs:documentation>Некоммерческое партнерство</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002008000">
+<xs:annotation>
+<xs:documentation>Автономная некоммерческая организация</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002009000">
+<xs:annotation>
+<xs:documentation>Объединение юридических (физических) лиц (ассоциация и союз)</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002010000">
+<xs:annotation>
+<xs:documentation>Территориальное общественное самоуправление</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002011000">
+<xs:annotation>
+<xs:documentation>Товарищество собственников жилья</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002012000">
+<xs:annotation>
+<xs:documentation>Садоводческое, огородническое или дачное некоммерческое товарищество</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009002013000">
+<xs:annotation>
+<xs:documentation>Иная некоммерческая организация</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="009003000000">
+<xs:annotation>
+<xs:documentation>Иные юридические лица, созданные до вступления в силу ч.1 Гражданского Кодекса РФ</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

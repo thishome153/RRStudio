@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn://x-artefacts-fixosoft-ru/XMLDocumentInfo/1.0" targetNamespace="urn://x-artefacts-fixosoft-ru/XMLDocumentInfo/1.0" elementFormDefault="qualified">
+  
+  <xs:element name="XMLDocumentInfo">
+    <xs:annotation>
+      <xs:documentation> Сведения об XML (для других приложений)</xs:documentation>
+    </xs:annotation>
+    
+    <xs:complexType> <!-- Куча атрибутов потребовала complexType -->
+           <xs:sequence>
+          <xs:element name="Block" type="tBlock" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+      
+        
+      <xs:attribute name="ParcelsCount" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Количество участков в документе
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      
+      <xs:attribute name="BlocksCount" type="xs:string"/>
+        <xs:attribute name="DocRootName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Имя корневого элемента</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="Version" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Версия файла</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="Namespace" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Имя корневого элемента</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute  name="FileName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Имя описываемого файла</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute  name="Date" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Дата</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute  name="Number" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Номер документа</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="Appointment" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Должность удостоверяющего</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+
+      <xs:attribute name="FIO" type="xs:string">      </xs:attribute>
+      
+      <xs:attribute name="Parser" type="xs:string">
+        
+        <xs:annotation>
+          <xs:documentation>Версия Parsera (XMLReaderCS.exe)</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+          <xs:attribute name="ParsedDate" type="xs:string"/>
+    
+      <xs:attribute name="Producer" fixed="Fixosoft"/>
+
+  
+    </xs:complexType>
+  </xs:element>
+
+
+
+  <xs:complexType name="tCadastralBlocks">
+    <xs:sequence>
+       <xs:element name="Block" type="tBlock" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="BlockCount" type="xs:string"/>
+   </xs:complexType>
+  
+  <xs:complexType name="tBlock">
+      <xs:sequence>
+        <xs:element name="Parcels" type="tParcel" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="BlockCadastalNumber" type="xs:string"/>
+      <xs:attribute name="ParcelsCount" type="xs:string"/>
+    </xs:complexType>
+ 
+  <xs:complexType name="tParcel">
+    <xs:attribute name="ParcelCadastalNumber" type="xs:string"/>
+  </xs:complexType>
+  
+</xs:schema>

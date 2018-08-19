@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Urick (Urick) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Справочник организационно-правовых форм-->
+	<xs:include schemaLocation="dOPF.xsd"/>
+	<!--Справочник субъектов федерации-->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!--Справочник тиопв субъектов правоотношений-->
+	<xs:include schemaLocation="dGovernance.xsd"/>
+	<!--Повторноиспользуемая подсхема-->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!--Повторноиспользуемая подсхема-->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!--Повторноиспользуемая подсхема-->
+	<xs:include schemaLocation="dGovernance.xsd"/>
+	<xs:complexType name="tSubject">
+		<xs:annotation>
+			<xs:documentation>Субъект</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_Subject">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор субъекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Person" type="tPerson">
+					<xs:annotation>
+						<xs:documentation>Описание Физ.лица</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Organization" type="tOrganization">
+					<xs:annotation>
+						<xs:documentation>Описание Юр. Лица</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Governance" type="tGovernance">
+					<xs:annotation>
+						<xs:documentation>Субъект публичного права</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tPerson">
+		<xs:annotation>
+			<xs:documentation>Физическое лицо</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code_SP" type="dGovernance">
+				<xs:annotation>
+					<xs:documentation>Субъект правоотношений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное описание субъекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MdfDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата модификации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FIO" type="tFIO">
+				<xs:annotation>
+					<xs:documentation>Фамилия, имя, отчество для Физ. лиц</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateBirth" type="tDate" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата рождения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Place_Birth" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Место рождения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Citizen" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Гражданство</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Sex" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Пол</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Document" type="tDocPerson" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INN" nillable="true" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="12"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Location" type="tAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Зарегистрированный адрес субъекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FactLocation" type="tAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Фактический адрес субъекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SNILS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>СНИЛС</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="14"/>
+						<xs:pattern value="\d{3}-\d{3}-\d{3}( |-)\d{2}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tFIO">
+		<xs:annotation>
+			<xs:documentation>Фамилия, Имя, Отчество</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Surname">
+				<xs:annotation>
+					<xs:documentation>Фамилия</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="First">
+				<xs:annotation>
+					<xs:documentation>Имя</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Patronymic" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Отчество</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tGovernance">
+		<xs:annotation>
+			<xs:documentation>Субъект публичного права</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code_SP" type="dGovernance">
+				<xs:annotation>
+					<xs:documentation>Субъект правоотношений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммароное описание субъекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Название субъекта публичного права</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OKATO_Code" nillable="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код ОКАТО</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="11"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер регистрационной записи</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата государственной регистрации </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Country" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Полное наименование страны регистрации</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Address" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес в стране регистрации</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tOrganization">
+		<xs:annotation>
+			<xs:documentation>Юридическое лицо</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code_SP" type="dGovernance">
+				<xs:annotation>
+					<xs:documentation>Субъект правоотношений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное описание субъекта</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MdfDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата модификации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code_OPF" type="dOPF" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код ОПФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Название организации Юр. лица</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="Country" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Страна регистрации (инкорпорации)</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="INN">
+					<xs:annotation>
+						<xs:documentation>ИНН</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="Code_OGRN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код ОГРН (Регистрационный номер в стране регистрации (инкорпорации))</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RegDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата государственной регистрации (Дата регистрации в стране регистрации (инкорпорации)) </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AgencyRegistration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>орган регистрации (наименование регистрирующего органа)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Code_CPP" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код КПП</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="9"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Location" type="tAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Зарегистрированный адрес субъекта </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FactLocation" type="tAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Фактический адрес субъекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="E-mail" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес электронной почты</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

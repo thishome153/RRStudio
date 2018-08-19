@@ -1,0 +1,101 @@
+﻿
+
+
+1. Поебался с Rosreestr schemes. Spatial.xsd пришлось прокастрировать
+			<xs:element name="SpatialElement" type="Spa2:tSpatialElementZUOut" maxOccurs="unbounded">
+			  <xs:annotation>
+			   <xs:documentation>Элемент контура</xs:documentation>
+				</xs:annotation>
+   			</xs:element>
+			до вида: 
+
+	  <xs:element name="SpatialElement" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Контур (внешний или внутренний)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="Spa2:tSpatialElementZUOut"></xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+	  Иначе улилита неправлиьно классы строит
+
+2. Отличная утилита XSDtoClasses от Гуугля. http://code.google.com/p/xsd-to-classes/wiki/Usage 
+		XsdToClasses installs as a Visual Studio Add-In. 
+		1.Select an XSD File. In the Properties dialog for the file there is an entry named “Custom Tool”. 
+		2.Enter ”XsdToClasses” in this entry. 
+		If you wish the code to be generated in a specific namespace, in order to avoid collision of generated code type 
+		names with other names, you can either place the schema file in a subdirectory (in which case the schema’s namespace will take 
+		on the value of the directory), or specify the namespace using the “Custom Tool Namespace” field in the property grid. 
+3. XmlTreeView - класс/компонент для отображения xml.
+
+4. JSON ответ 
+   1. ( find?cadNum=" + Parcel.CN + "&f=json";)
+    http://maps.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/exts/GKNServiceExtension/online/parcel/find?cadNum=" + Parcel.CN + "&f=json
+   "http://maps.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/exts/GKNServiceExtension/online/parcel/find?cadNum=26:06:130701:19&f=json"
+
+   "{\"features\":
+   [{\"attributes\":
+   {\"CAD_NUM\":\"26:06:130701:44\",
+   \"OBJECT_ID\":\"26:6:130701:44\",
+   \"REGION_KEY\":126,
+   \"PARCEL_CN\":\"26:06:130701:44\",
+   \"PARCEL_STATUS\":\"01\"
+   ,\"DATE_CREATE\":1185148800000,
+   \"DATE_REMOVE\":null,
+   \"CATEGORY_TYPE\":\"003002000000\",
+   \"AREA_VALUE\":11152,\"AREA_TYPE\":\"008\",\"AREA_UNIT\":\"055\",
+   \"RIGHT_REG\":0,\"CAD_COST\":5977025.92,\"CAD_UNIT\":\"383\",
+   \"DATE_COST\":1448755200000,\"ONLINE_ACTUAL_DATE\":1450742400000,
+   \"PARENT_ID\":\"26060130701\",
+   \"OBJECT_ADDRESS\":\"Ставропольский край, р-н Изобильненский, п Солнечнодольск, мкр. Пионерный\",
+   \"DATE_LOAD\":1450742400000,\"CI_SURNAME\":null,
+   \"CI_FIRST\":null,\"CI_PATRONYMIC\":null,\"RC_DATE\":null,
+   \"RC_TYPE\":null,\"CO_NAME\":null,\"CO_INN\":null,
+   \"OBJECT_DISTRICT\":\"Изобильненский\",\"DISTRICT_TYPE\":\"р-н\",\"OBJECT_PLACE\":null,\"PLACE_TYPE\":\"неопр\",\"OBJECT_LOCALITY\":\"Солнечнодольск\",
+   \"LOCALITY_TYPE\":\"п\",\"OBJECT_STREET\":\"Пионерный\",\"STREET_TYPE\":\"мкр\",
+   \"OBJECT_HOUSE\":null,\"OBJECT_BUILDING\":null,\"OBJECT_STRUCTURE\":null,
+   \"OBJECT_APARTMENT\":null,
+   \"UTIL_BY_DOC\":\"Под производственной базой\",\"UTIL_CODE\":\"143001000000\",
+   "OKS_FLAG\":0,\"OKS_TYPE_ONLINE\":null,\"OKS_FLOORS\":null,\"OKS_U_FLOORS\":null,\"OKS_ELEMENTS_CONSTRUCT\":null,
+   \"OKS_YEAR_USED\":null,\"OKS_INVENTORY_COST\":0,\"OKS_INN\":null,\"OKS_EXECUTOR\":null,\"YEAR_BUILT\":null,\"OKS_COST_DATE\":null,
+   \"FORM_RIGHTS\":null,
+   \"OBJECTID\":75065878
+   ,\"PARCEL_ID\":\"26:6:130701:44\",
+   \"TEMP_ID\":0,
+   \"PKK_ID\":\"2606013070100044\",
+   \"STATE_CODE\":\"01\",
+   \"ANNO_TEXT\":\"44\",
+   \"CP_VALUE\":8893.38544,
+   \"CATEGORY_CODE\":\"003002000000\",\"ACTUAL_DATE\":1438300800000,
+   \"ERROR_CODE\":0,
+   \"XC\":4620458.28834103,\"YC\":5671307.97534598,
+   \"XMIN\":4620336.7428,\"XMAX\":4620583.4401,\"YMIN\":5671208.9435,\"YMAX\":5671408.3582,
+   \"DEL_FEATURE\":null,
+   \"G_AREA\":24119.54805748,
+   \"SHAPE_Length\":667.40723630069078,\"SHAPE_Area\":24119.541148129851,\"ERRORCODE\":0}}],
+   
+   \"featuresCount\":1,
+   \"debug\":{\"parseParametersTime\":\"00:00:00\",
+   \"queryCountExecutionTime\":\"00:00:00.0230013\",
+   \"countTableIsNull\":false,
+   \"queryExecutionTime\":\"00:00:00.1140065\",
+   \"queryExecution\":{\"createConnection\":\"00:00:00\",\"fillTable\":\"00:00:00.1140065\"},
+   \"dataTableIsNull\":false,\"queryToGDBExecutionTime\":\"00:00:00.0800046\",
+   \"queryToGDBParcelCount\":\"1\",\"attachGdbDataToOracleDataExecutionTime\":\"00:00:00.0010000\",
+   \"attachGdbDataToOracleDataDebugInfo\":{\"addFields\":\"00:00:00\",\"addRows\":\"00:00:00.0010000\",
+   \"t1\":\"00:00:00.0010000\",\"t2\":\"00:00:00\"},
+   \"server\":\"ARCGIS11\",\"totalExecuteTime\":\"00:00:00.2180124\"}}"
+
+   5. pkk5
+   string pkk5RequestURL = "http://pkk5.rosreestr.ru/#x=&y=&z=&type=1&zoomTo=1&app=search&opened=1&text=" + CN;
+
+
+   6. О cspUtils.dll - fail to start, missed "ucrtbased.dll".
+	So: ucrtbased.dll устнавалвиается как часть the Windows 10 SDK. 
+	In your Visual Studio 2017 installation (or standalone installation of the SDK), which Windows 10 SDK(s) was/were installed?
+	Для запуска на сторонних машинах DLL поставляется  вместе с проектом. 
+	Находится приблизительно здесь  "file://C:\Program Files (x86)\Windows Kits\10\bin\x86\ucrt\ucrtbased.dll".
+	The retail version of this runtime DLL (ucrtbase.dll) is included in the Windows 10 OS and should be present, 
+	so executing the Retail/Release-built version of the application should not encounter the same issue.

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="OKATO" type="xs:unsignedLong" />
+  <xs:element name="KLADR" type="xs:unsignedLong" />
+  <xs:element name="Region" type="xs:unsignedByte" />
+  <xs:element name="District">
+    <xs:complexType>
+      <xs:attribute name="Name" type="xs:string" use="required" />
+      <xs:attribute name="Type" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Locality">
+    <xs:complexType>
+      <xs:attribute name="Name" type="xs:string" use="required" />
+      <xs:attribute name="Type" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Street">
+    <xs:complexType>
+      <xs:attribute name="Name" type="xs:string" use="required" />
+      <xs:attribute name="Type" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Level1">
+    <xs:complexType>
+      <xs:attribute name="Type" type="xs:string" use="required" />
+      <xs:attribute name="Value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Note" type="xs:string" />
+  <xs:element name="Apartment">
+    <xs:complexType>
+      <xs:attribute name="Type" type="xs:string" use="required" />
+      <xs:attribute name="Value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Level2">
+    <xs:complexType>
+      <xs:attribute name="Type" type="xs:string" use="required" />
+      <xs:attribute name="Value" type="xs:unsignedByte" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PostalCode" type="xs:unsignedInt" />
+</xs:schema>

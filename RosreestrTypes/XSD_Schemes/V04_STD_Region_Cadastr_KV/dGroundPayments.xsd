@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by fcc (FGUP FKC Zemlja) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="dGroundPayments">
+		<xs:annotation>
+			<xs:documentation>Экономические характеристики земельных участков</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="016001000000">
+				<xs:annotation>
+					<xs:documentation>Нормативная цена земли</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016002000000">
+				<xs:annotation>
+					<xs:documentation>Рыночная стоимость земельного участка</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016003000000">
+				<xs:annotation>
+					<xs:documentation>Залоговая стоимость земельного участка</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016004000000">
+				<xs:annotation>
+					<xs:documentation>Земельный налог</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016005000000">
+				<xs:annotation>
+					<xs:documentation>Арендная плата за земельный участок</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016006000000">
+				<xs:annotation>
+					<xs:documentation>Номер оценочной зоны</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016007000000">
+				<xs:annotation>
+					<xs:documentation>Год кадастровой оценки земель</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016008000000">
+				<xs:annotation>
+					<xs:documentation>Ставка земельного налога</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016009000000">
+				<xs:annotation>
+					<xs:documentation>Базовая ставка арендной платы</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016010000000">
+				<xs:annotation>
+					<xs:documentation>Кадастровая стоимость земельного участка</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="016011000000">
+				<xs:annotation>
+					<xs:documentation>Удельный показатель стоимости земель</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

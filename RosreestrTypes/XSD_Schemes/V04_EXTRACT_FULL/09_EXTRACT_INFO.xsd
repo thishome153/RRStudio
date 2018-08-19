@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхемы Типы-->
+	<xs:include schemaLocation="dRefusal.xsd"/>
+	<!--Классификатор назначений объектов технического учета-->
+	<xs:include schemaLocation="dAssignation.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Подключение подсхемы Документ   -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!-- Подключение подсхемы Субъект  -->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!-- Подключение подсхемы ОБЪЕКТ  -->
+	<xs:include schemaLocation="STD_Object.xsd"/>
+	<!-- Подключение подсхемы Права -->
+	<xs:include schemaLocation="STD_Rights.xsd"/>
+	<!-- Подключение подсхемы Объекты долевого строительства-->
+	<xs:include schemaLocation="STD_ShereHolding.xsd"/>
+	<!-- Подключение подсхемы Информация о документе -->
+	<xs:include schemaLocation="STD_ServisInf.xsd"/>
+	<!-- Подключение подсхемы Информация о запросе-->
+	<xs:include schemaLocation="STD_ExtrAtribut.xsd"/>
+	<!-- Подключение подсхемы Отказ по объекту-->
+	<xs:include schemaLocation="STD_Refusal.xsd"/>
+	<xs:element name="Extract">
+		<xs:annotation>
+			<xs:documentation>Пакет информации - ответ на запрос сведений ЕГРП</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument" type="tServisInf">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ReestrExtract">
+					<xs:annotation>
+						<xs:documentation>Выписка из ЕГРП на ОНИ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DeclarAttribute" type="tExtrAttribut">
+								<xs:annotation>
+									<xs:documentation>Информация о запросе</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Time_lag">
+								<xs:annotation>
+									<xs:documentation>Период, за который сформирована информация</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Initial_Date" type="tDate">
+											<xs:annotation>
+												<xs:documentation>Дата начала периода</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="End_Date" type="tDate">
+											<xs:annotation>
+												<xs:documentation>Дата окончания периода</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ExtractObjectRight" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Справка о лицах, получивших сведения</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="HeadContent" type="tHeadContent">
+											<xs:annotation>
+												<xs:documentation>Текстовое описание запроса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ExtractObj" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Справка о лицах, получивших сведения</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ObjectDesc" type="tObject">
+														<xs:annotation>
+															<xs:documentation>Описание объекта</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:sequence maxOccurs="unbounded">
+														<xs:choice>
+															<xs:element name="ExttRecepientDetail">
+																<xs:annotation>
+																	<xs:documentation>структурированное описание  лица получившего документ</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:complexContent>
+																		<xs:extension base="tSubject"/>
+																	</xs:complexContent>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="ExttRecepientText">
+																<xs:annotation>
+																	<xs:documentation>текстовое описание  лица получившего документ</xs:documentation>
+																</xs:annotation>
+																<xs:simpleType>
+																	<xs:restriction base="xs:string">
+																		<xs:maxLength value="4000"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+														</xs:choice>
+														<xs:element name="ExttDate" type="tDate">
+															<xs:annotation>
+																<xs:documentation>Дата получения выписки</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="ExtractNumber">
+															<xs:annotation>
+																<xs:documentation>Номер полученной выписки</xs:documentation>
+															</xs:annotation>
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:maxLength value="4000"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+													</xs:sequence>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FootContent" type="tFootContent">
+											<xs:annotation>
+												<xs:documentation>Завершающийтекст (ссылка на закон и т.п.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="NoticelObjInf" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>уведомление об отсутствии получивщих сведения</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="HeadContent" type="tHeadContent">
+											<xs:annotation>
+												<xs:documentation>Текстовое описание запроса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="NoticeObj" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>текст уведомления</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ObjectDesc" type="tObject">
+														<xs:annotation>
+															<xs:documentation>Описание объекта</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="NoticeText">
+														<xs:annotation>
+															<xs:documentation>не выдавались</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="4000"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FootContent" type="tFootContent">
+											<xs:annotation>
+												<xs:documentation>Завершающийтекст (ссылка на закон и т.п.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="RefusalObj" type="tRefusalObj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>отказ в выдаче выписки о получивших сведения</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

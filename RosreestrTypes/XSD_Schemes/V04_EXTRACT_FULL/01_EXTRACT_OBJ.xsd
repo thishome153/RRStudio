@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Подключение подсхемы Типы-->
+	<xs:include schemaLocation="dRefusal.xsd"/>
+	<!--Классификатор назначений объектов технического учета-->
+	<xs:include schemaLocation="dAssignation.xsd"/>
+	<!--Классификатор типов объектов недвижимости-->
+	<xs:include schemaLocation="dRealty.xsd"/>
+	<!-- Справочник субъектов РФ  -->
+	<xs:include schemaLocation="dRegionsRF.xsd"/>
+	<!-- Подключение подсхемы Документ   -->
+	<xs:include schemaLocation="STD_Document.xsd"/>
+	<!-- Подключение подсхемы АДРЕС  -->
+	<xs:include schemaLocation="STD_Address.xsd"/>
+	<!-- Подключение подсхемы ОБЪЕКТ  -->
+	<xs:include schemaLocation="STD_Object.xsd"/>
+	<!-- Подключение подсхемы Права -->
+	<xs:include schemaLocation="STD_Rights.xsd"/>
+	<!-- Подключение подсхемы Субъект -->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<!-- Подключение подсхемы Объекты долевого строительства-->
+	<xs:include schemaLocation="STD_ShereHolding.xsd"/>
+	<!-- Подключение подсхемы Информация о документе -->
+	<xs:include schemaLocation="STD_ServisInf.xsd"/>
+	<!-- Подключение подсхемы Информация о запросе-->
+	<xs:include schemaLocation="STD_ExtrAtribut.xsd"/>
+	<!-- Подключение подсхемы Отказ по объекту-->
+	<xs:include schemaLocation="STD_Refusal.xsd"/>
+	<xs:complexType name="tObjectRight">
+		<xs:annotation>
+			<xs:documentation> раздел ЕГРП</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ObjectDesc" type="tObject">
+				<xs:annotation>
+					<xs:documentation>Описание объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Right" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Права</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tRightObj">
+							<xs:attribute name="RightNumber"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="ShareHolding" type="tShareHolding" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Описание объектов долевого строительства </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NoShareHolding">
+					<xs:annotation>
+						<xs:documentation>не зарегистрировано</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Extract">
+		<xs:annotation>
+			<xs:documentation>Пакет информации - ответ на запрос сведений ЕГРП</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="eDocument" type="tServisInf">
+					<xs:annotation>
+						<xs:documentation>Электронный документ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ReestrExtract">
+					<xs:annotation>
+						<xs:documentation>Выписка из ЕГРП на ОНИ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DeclarAttribute" type="tExtrAttribut">
+								<xs:annotation>
+									<xs:documentation>Информация о запросе</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ExtractObjectRight" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>выписка о правах на ОНИ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="HeadContent" type="tHeadContent">
+											<xs:annotation>
+												<xs:documentation>Объединенное текстовое описание запроса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ExtractObject" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Информация из ЕГРП</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ObjectRight" type="tObjectRight">
+														<xs:annotation>
+															<xs:documentation>Объект недвижимости</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="RightAssert">
+														<xs:annotation>
+															<xs:documentation>правопритязания</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string"/>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="RightClaim">
+														<xs:annotation>
+															<xs:documentation>право требования</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="FootContent" type="tFootContent">
+											<xs:annotation>
+												<xs:documentation>Объединенное  описание завершающего текста (ссылка на закон и т.п.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="NoticelObj" type="tNoticeObj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>уведомление об отсутствии сведений на ОНИ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RefusalObj" type="tRefusalObj" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>отказ в выдаче выписки о правах на бъект</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Sen2="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" xmlns:Gov3="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" xmlns:Person3="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1"  xmlns:Org3="urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/3.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" elementFormDefault="qualified">
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<!--Подключение подсхемы Физическое лицо -->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1" schemaLocation="_Person_v03.xsd"/>
+	<!--Подключение подсхемы Юр. лицо -->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/3.0.1" schemaLocation="_Organization_v03.xsd"/>
+	<!--Подключение подсхемы Орган государственной власти или орган местного самоуправления-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/3.0.1" schemaLocation="_Governance_v03.xsd"/>
+	<!--Подсхема "Отправитель сведений"-->
+	<xs:complexType name="tSender">
+		<xs:annotation>
+			<xs:documentation>Отправитель сведений</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Organization" type="Org3:tOrganization">
+					<xs:annotation>
+						<xs:documentation>Юридическое лицо</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Governance" type="Gov3:tGovernance">
+					<xs:annotation>
+						<xs:documentation>Орган государственной власти или орган местного самоуправления</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="Agent" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Представитель</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="Person3:tPerson">
+							<xs:sequence>
+								<xs:element name="Appointment" type="Simple4:sNe255">
+									<xs:annotation>
+										<xs:documentation>Должность</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

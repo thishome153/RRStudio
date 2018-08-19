@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by FGUP FKC Zemlja (FGUP FKC Zemlja) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Классификатор Виды документов-оснований-->
+	<xs:include schemaLocation="dAllDocuments.xsd"/>
+	<!--Справочник "Виды приложенных файлов" (dApplied_file_kind)-->
+	<xs:include schemaLocation="dAppliedFiles.xsd"/>
+	<xs:complexType name="tDocument">
+		<xs:annotation>
+			<xs:documentation>Документ - описание</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code_Document" type="dAllDocuments">
+				<xs:annotation>
+					<xs:documentation>Код документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Series" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Number">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueOrgan" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Организация, выдавшая документ. Автор документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="NumberReg" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер документа в реестре для регистрации нотариальных действий</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="45"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DateReg" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата внесения сведений о документе в реестр для регистрации нотариальных действий</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Срок действия</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Started" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата начала действия</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Stopped" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата прекращения действия</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Register" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кто удостоверил (ФИО нотариуса)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Desc" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IssueOrgan_Code" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код подразделения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="AppliedFiles" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Приложенные файлы с образами</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppliedFile" type="tAppliedFile" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Приложенные файлы с образами</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tAppliedFile">
+		<xs:annotation>
+			<xs:documentation>Приложенные файлы с образами</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Kind" type="dApplied_file_kind" use="required">
+			<xs:annotation>
+				<xs:documentation>Вид файла по справочнику видов приложенных файлов</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Name" use="required">
+			<xs:annotation>
+				<xs:documentation>Относительный путь к файлу с изображением\Имя файла с изображением</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="500"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="dAssignation">
+		<xs:annotation>
+			<xs:documentation>Классификатор назначений объектов технического учета</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			
+			<xs:enumeration value="005001000000">
+				<xs:annotation>
+					<xs:documentation>Жилое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005001001000">
+				<xs:annotation>
+					<xs:documentation>Постоянного проживания</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005001001001">
+				<xs:annotation>
+					<xs:documentation>Общежитие</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005001002000">
+				<xs:annotation>
+					<xs:documentation>Временного проживания</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002000000">
+				<xs:annotation>
+					<xs:documentation>Нежилое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001000">
+				<xs:annotation>
+					<xs:documentation>Общественное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001001">
+				<xs:annotation>
+					<xs:documentation>Административно-управленческое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001002">
+				<xs:annotation>
+					<xs:documentation>Народного образования</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001003">
+				<xs:annotation>
+					<xs:documentation>Науки и научного обслуживания</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001004">
+				<xs:annotation>
+					<xs:documentation>Здравоохранения, физической культуры и социального обеспечения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001005">
+				<xs:annotation>
+					<xs:documentation>Торговли и общественного питания</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001006">
+				<xs:annotation>
+					<xs:documentation>Коммунально-бытового обслуживания</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001007">
+				<xs:annotation>
+					<xs:documentation>Культуры и искусства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001008">
+				<xs:annotation>
+					<xs:documentation>Отдыха и развлечений</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001009">
+				<xs:annotation>
+					<xs:documentation>Финансирования и страхования</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001010">
+				<xs:annotation>
+					<xs:documentation>Городского благоустройства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001011">
+				<xs:annotation>
+					<xs:documentation>Дачно-садоводческое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001012">
+				<xs:annotation>
+					<xs:documentation>Гаражное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001013">
+				<xs:annotation>
+					<xs:documentation>Культовое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001014">
+				<xs:annotation>
+					<xs:documentation>Ритуальное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002001015">
+				<xs:annotation>
+					<xs:documentation>Не определено</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002000">
+				<xs:annotation>
+					<xs:documentation>Производственное (промышленное)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002001">
+				<xs:annotation>
+					<xs:documentation>Электроэнергетики</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002002">
+				<xs:annotation>
+					<xs:documentation>Топливной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002003">
+				<xs:annotation>
+					<xs:documentation>Черной металлургии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002004">
+				<xs:annotation>
+					<xs:documentation>Цветной металлургии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002005">
+				<xs:annotation>
+					<xs:documentation>Химической и нефтехимической промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002006">
+				<xs:annotation>
+					<xs:documentation>Химико-фармацевтической промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002007">
+				<xs:annotation>
+					<xs:documentation>Тяжелого машиностроения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002008">
+				<xs:annotation>
+					<xs:documentation>Станкостроительной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002009">
+				<xs:annotation>
+					<xs:documentation>Автотракторной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002010">
+				<xs:annotation>
+					<xs:documentation>Легкого машиностроения и бытовых приборов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002011">
+				<xs:annotation>
+					<xs:documentation>Электротехнической, приборостроительной и радиопромышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002012">
+				<xs:annotation>
+					<xs:documentation>Судостроительной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002013">
+				<xs:annotation>
+					<xs:documentation>Авиационной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002014">
+				<xs:annotation>
+					<xs:documentation>Межотраслевых производств машиностроения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002015">
+				<xs:annotation>
+					<xs:documentation>Лесозаготовительной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002016">
+				<xs:annotation>
+					<xs:documentation>Деревообрабатывающей промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002017">
+				<xs:annotation>
+					<xs:documentation>Целлюлозно-бумажной и лесохимической промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002018">
+				<xs:annotation>
+					<xs:documentation>Промышленности строительных материалов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002019">
+				<xs:annotation>
+					<xs:documentation>Стекольной и фарфорофаянсовой промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002020">
+				<xs:annotation>
+					<xs:documentation>Полиграфического производства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002021">
+				<xs:annotation>
+					<xs:documentation>Текстильной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002022">
+				<xs:annotation>
+					<xs:documentation>Швейной, кожевенной, меховой, обувной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002023">
+				<xs:annotation>
+					<xs:documentation>Пищевкусовой промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002024">
+				<xs:annotation>
+					<xs:documentation>Мясной и молочной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002025">
+				<xs:annotation>
+					<xs:documentation>Рыбоперерабатывающей и плодоовощной промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002026">
+				<xs:annotation>
+					<xs:documentation>Микробиологической промышленности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002027">
+				<xs:annotation>
+					<xs:documentation>Строительной индустрии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002002028">
+				<xs:annotation>
+					<xs:documentation>Не определено</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003000">
+				<xs:annotation>
+					<xs:documentation>Транспортное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003001">
+				<xs:annotation>
+					<xs:documentation>Железнодорожного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003002">
+				<xs:annotation>
+					<xs:documentation>Автомобильного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003003">
+				<xs:annotation>
+					<xs:documentation>Водного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003004">
+				<xs:annotation>
+					<xs:documentation>Воздушного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003005">
+				<xs:annotation>
+					<xs:documentation>Городского надземного электротранспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003006">
+				<xs:annotation>
+					<xs:documentation>Городского подземного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002003007">
+				<xs:annotation>
+					<xs:documentation>Магистрального трубопроводного транспорта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002004000">
+				<xs:annotation>
+					<xs:documentation>Сельскохозяйственное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002005000">
+				<xs:annotation>
+					<xs:documentation>Лесного хозяйства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002006000">
+				<xs:annotation>
+					<xs:documentation>Рыбного хозяйства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002007000">
+				<xs:annotation>
+					<xs:documentation>Добычи полезных ископаемых</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002008000">
+				<xs:annotation>
+					<xs:documentation>Строительное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002009000">
+				<xs:annotation>
+					<xs:documentation>Связи</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002010000">
+				<xs:annotation>
+					<xs:documentation>Материально-технического снабжения и сбыта</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002011000">
+				<xs:annotation>
+					<xs:documentation>Гидротехническое</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002012000">
+				<xs:annotation>
+					<xs:documentation>Водохозяйственное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002013000">
+				<xs:annotation>
+					<xs:documentation>Передаточное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002013001">
+				<xs:annotation>
+					<xs:documentation>Электропередачи</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002013002">
+				<xs:annotation>
+					<xs:documentation>Теплопередачи</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002013003">
+				<xs:annotation>
+					<xs:documentation>Водопередачи</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014000">
+				<xs:annotation>
+					<xs:documentation>Городского коммунального хозяйства</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014001">
+				<xs:annotation>
+					<xs:documentation>Электроснабжения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014002">
+				<xs:annotation>
+					<xs:documentation>Теплоснабжения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014003">
+				<xs:annotation>
+					<xs:documentation>Водоснабжения и водоотведения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014004">
+				<xs:annotation>
+					<xs:documentation>Газоснабжения</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002014005">
+				<xs:annotation>
+					<xs:documentation>Перерабатывающее</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002015000">
+				<xs:annotation>
+					<xs:documentation>Рекреационное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002016000">
+				<xs:annotation>
+					<xs:documentation>Специальное</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005002017000">
+				<xs:annotation>
+					<xs:documentation>Не определено</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005003000000">
+				<xs:annotation>
+					<xs:documentation>Помещение общего пользования</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="005004000000">
+				<xs:annotation>
+					<xs:documentation>Техническое помещение</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

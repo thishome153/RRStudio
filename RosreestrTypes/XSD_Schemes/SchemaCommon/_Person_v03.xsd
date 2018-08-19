@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Person1="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1"  xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:dAl2="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/2.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/person/3.0.1" elementFormDefault="qualified">
+	<!--Общие простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="../SchemaCommonSMEV/smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Подсхема "Адрес"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" schemaLocation="_AddressInp_v02.xsd"/>
+	<!--Классификатор "Виды документов"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/2.0.1" schemaLocation="dAllDocuments_v02.xsd"/>
+	<!--Повторноиспользуемая подсхема "Физическое лицо"-->
+	<xs:complexType name="tPerson">
+		<xs:annotation>
+			<xs:documentation>Физическое лицо</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="tns:PhysicalPersonQualifiedName-ModelGroup"/>
+			<xs:element name="Document" type="Person1:tIdentityPersonDocument">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Location" type="adrInp2:tAddressInpFull" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Почтовый адрес</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email" type="tns:EmailAddressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес электронной почты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Telephone" type="Simple1:s50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Контактный телефон</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SNILS" type="tns:SNILSType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Страховой номер индивидуального лицевого счёта </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Вспомогательные типы данных-->
+	<xs:complexType name="tIdentityPersonDocument">
+		<xs:annotation>
+			<xs:documentation>Документ удостоверяющий личность физического лица</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CodeDocument">
+				<xs:annotation>
+					<xs:documentation>Код</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dAl2:dAllDocuments">
+						<xs:pattern value="008001000000">
+							<xs:annotation>
+								<xs:documentation>Документы, удостоверяющие личность физического лица</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001001000">
+							<xs:annotation>
+								<xs:documentation>Паспорт гражданина Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001002000">
+							<xs:annotation>
+								<xs:documentation>Паспорт гражданина СССР</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001003000">
+							<xs:annotation>
+								<xs:documentation>Паспорт гражданина иностранного государства</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001004000">
+							<xs:annotation>
+								<xs:documentation>Общегражданский заграничный паспорт</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001005000">
+							<xs:annotation>
+								<xs:documentation>Заграничный паспорт Министерства морского флота</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001006000">
+							<xs:annotation>
+								<xs:documentation>Дипломатический паспорт</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001007000">
+							<xs:annotation>
+								<xs:documentation>Паспорт моряка (удостоверение личности моряка)</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001008000">
+							<xs:annotation>
+								<xs:documentation>Военный билет военнослужащего</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001009000">
+							<xs:annotation>
+								<xs:documentation>Временное удостоверение, выданное взамен военного билета</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001010000">
+							<xs:annotation>
+								<xs:documentation>Удостоверение личности офицера Министерства обороны Российской Федерации, Министерства внутренних дел Российской Федерации и других воинских формирований с приложением справки о прописке (регистрации) Ф-33</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001011000">
+							<xs:annotation>
+								<xs:documentation>Свидетельство о рождении</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001012000">
+							<xs:annotation>
+								<xs:documentation>Свидетельство о рассмотрении ходатайства о признании беженцем на территории Российской Федерации по существу</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001013000">
+							<xs:annotation>
+								<xs:documentation>Вид на жительство иностранного гражданина или лица без гражданства</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001014000">
+							<xs:annotation>
+								<xs:documentation>Справка об освобождении из мест лишения свободы</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001015000">
+							<xs:annotation>
+								<xs:documentation>Временное удостоверение личности гражданина Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001016000">
+							<xs:annotation>
+								<xs:documentation>Удостоверение вынужденного переселенца</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001017000">
+							<xs:annotation>
+								<xs:documentation>Разрешение на временное проживание в Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001018000">
+							<xs:annotation>
+								<xs:documentation>Удостоверение беженца в Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001019000">
+							<xs:annotation>
+								<xs:documentation>Свидетельство о рассмотрении ходатайства о признании лица вынужденным переселенцем</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001020000">
+							<xs:annotation>
+								<xs:documentation>Свидетельство о предоставлении временного убежища на территории Российской Федерации</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+						<xs:pattern value="008001099000">
+							<xs:annotation>
+								<xs:documentation>Иные документы, предусмотренные законодательством Российской Федерации или признаваемые в соответствии с международным договором Российской Федерации в качестве документов, удостоверяющих личность</xs:documentation>
+							</xs:annotation>
+						</xs:pattern>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Name" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="Simple1:s45" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="Simple4:sNe45">
+				<xs:annotation>
+					<xs:documentation>Номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueOrgan" type="Simple4:sNe255">
+				<xs:annotation>
+					<xs:documentation>Кем выдан</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

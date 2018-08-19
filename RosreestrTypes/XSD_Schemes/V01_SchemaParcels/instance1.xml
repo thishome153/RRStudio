@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SchemaParcels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SchemaParcels.xsd">
+  <eDocument Version="01" GUID="00000000-0000-0000-0000-000000000000"/>
+  <Document>
+    <Name>Name0</Name>
+    <Number>Number0</Number>
+    <Date>2006-05-04</Date>
+    <IssueOrgans>
+      <IssueOrgan>IssueOrgan1</IssueOrgan>
+      <IssueOrgan>IssueOrgan2</IssueOrgan>
+    </IssueOrgans>
+  </Document>
+  <NewParcels>
+    <NewParcel Definition="0:0:00000000:ЗУ0">
+      <CadastralBlock>0:0:00000000</CadastralBlock>
+      <Area>
+        <Area>1073741824</Area>
+        <Unit>055</Unit>
+      </Area>
+      <Contours>
+        <Contour Definition="Definition1">
+          <Entity_Spatial Ent_Sys="ID0">
+            <Spatial_Element>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+            </Spatial_Element>
+            <Spatial_Element>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+            </Spatial_Element>
+          </Entity_Spatial>
+        </Contour>
+        <Contour Definition="Definition2">
+          <Entity_Spatial Ent_Sys="ID0">
+            <Spatial_Element>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+            </Spatial_Element>
+            <Spatial_Element>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+              <Spelement_Unit Type_Unit="Точка">
+                <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+              </Spelement_Unit>
+            </Spatial_Element>
+          </Entity_Spatial>
+        </Contour>
+      </Contours>
+      <Prev_CadastralNumbers>
+        <CadastralNumber>0:0:0:0</CadastralNumber>
+        <CadastralNumber>0:0:0:0</CadastralNumber>
+      </Prev_CadastralNumbers>
+      <Note>Note0</Note>
+      <TerritorialZone>
+        <AccountNumber>AccountNumber0</AccountNumber>
+        <NameZone>NameZone0</NameZone>
+      </TerritorialZone>
+      <Category Category="003001000000"/>
+    </NewParcel>
+    <NewParcel Definition=":ЗУ0">
+      <CadastralBlock>0:0:00000000</CadastralBlock>
+      <Area>
+        <Area>1073741824</Area>
+        <Unit>055</Unit>
+      </Area>
+      <Entity_Spatial Ent_Sys="ID0">
+        <Spatial_Element>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+        </Spatial_Element>
+        <Spatial_Element>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+          <Spelement_Unit Type_Unit="Точка">
+            <NewOrdinate X="1234567890123456789" Y="1234567890123456789" Num_Geopoint="1073741824"/>
+          </Spelement_Unit>
+        </Spatial_Element>
+      </Entity_Spatial>
+      <Prev_CadastralNumbers>
+        <CadastralNumber>0:0:0:0</CadastralNumber>
+        <CadastralNumber>0:0:0:0</CadastralNumber>
+      </Prev_CadastralNumbers>
+      <Note>Note1</Note>
+      <Utilization ByDoc="ByDoc1"/>
+      <Category Category="003001000000"/>
+    </NewParcel>
+  </NewParcels>
+  <Coord_Systems>
+    <Coord_System Name="Name1" Cs_Id="ID0"/>
+  </Coord_Systems>
+  <ParcelSchema_In_Block>
+    <AppliedFile Name="a.PDF"/>
+    <AppliedFile Name="a.PDF"/>
+  </ParcelSchema_In_Block>
+</SchemaParcels>

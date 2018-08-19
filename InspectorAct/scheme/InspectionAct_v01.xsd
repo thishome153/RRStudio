@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn://x-artefacts-rosreestr-ru/incoming/inspection/1.0.1" xmlns:dAl1="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/1.0.1" xmlns:dRe1="urn://x-artefacts-rosreestr-ru/commons/directories/realty/1.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Doc1="urn://x-artefacts-rosreestr-ru/commons/complex-types/document/1.0.1" xmlns:CadEng1="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/1.0.2" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/incoming/inspection/1.0.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="../SchemaCommon/P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v02.xsd"/>
+	<!--Справочник "Виды объектов государственного кадастра недвижимости (ГКН) и Единого государственного реестра прав на недвижимое имущество и сделок с ним (ЕГРП)"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/realty/1.0.1" schemaLocation="../SchemaCommon/dRealty_v01.xsd"/>
+	<!--Общая подсхема "Документы"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document/1.0.1" schemaLocation="../SchemaCommon/_Document_v01.xsd"/>
+	<!--Общая подсхема "Кадастровый инженер"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/1.0.2" schemaLocation="../SchemaCommon/_CadastralEngineer_v01.xsd"/>
+	<!--Общая подсхема "Составные типы"-->
+	<xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="../SchemaCommonSMEV/smev-supplementary-commons-1.0.1.xsd"/>
+	<xs:element name="InspectionAct">
+		<xs:annotation>
+			<xs:documentation>Акт обследования о прекращении существования здания, сооружения, объекта незавершенного строительства, помещения</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Contractor">
+					<xs:annotation>
+						<xs:documentation>Сведения о кадастровом инженере и дате подготовки Акта обследования</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="CadEng1:tEngineer">
+								<xs:attribute name="Date" type="xs:date" use="required">
+									<xs:annotation>
+										<xs:documentation>Дата подготовки окончательной редакции акта (дата завершения кадастровых работ)</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Client" type="tClient">
+					<xs:annotation>
+						<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Object" type="tObject">
+					<xs:annotation>
+						<xs:documentation>Объект недвижимости, в отношении которого проводятся кадастровые работы</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Documents">
+					<xs:annotation>
+						<xs:documentation>Перечень документов, использованных при подготовке Акта обследования</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Document" type="Doc1:tDocument" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Описание документа</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Conclusion" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Заключение кадастрового инженера</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="GUID" type="Simple1:sGUID" use="required">
+				<xs:annotation>
+					<xs:documentation>Глобальный уникальный идентификатор пакета</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attributeGroup ref="Simple2:agSoftware"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tObject">
+		<xs:annotation>
+			<xs:documentation>Объект недвижимости</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralNumber" type="tns:CadastralNumberType">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер объекта недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ObjectType">
+				<xs:annotation>
+					<xs:documentation>Вид объекта недвижимости</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="dRe1:dRealty">
+						<xs:pattern value="002001002000"/>
+						<xs:pattern value="002001003000"/>
+						<xs:pattern value="002001004000"/>
+						<xs:pattern value="002001005000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tClient">
+		<xs:annotation>
+			<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Person">
+				<xs:annotation>
+					<xs:documentation>Физическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="tns:PhysicalPersonQualifiedName-ModelGroup"/>
+						<xs:element name="SNILS" type="tns:SNILSType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Страховой номер индивидуального лицевого счета</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Organization">
+				<xs:annotation>
+					<xs:documentation>Юридическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name" type="Simple1:s500">
+							<xs:annotation>
+								<xs:documentation>Полное наименование</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Governance">
+				<xs:annotation>
+					<xs:documentation>Орган государственной власти, орган местного самоуправления</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name" type="Simple1:s500">
+							<xs:annotation>
+								<xs:documentation>Полное наименование</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ForeignOrganization">
+				<xs:annotation>
+					<xs:documentation>Иностранное юридическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name" type="Simple1:s500">
+							<xs:annotation>
+								<xs:documentation>Полное наименование</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Country" type="Simple1:s255">
+							<xs:annotation>
+								<xs:documentation>Наименование страны регистрации (инкорпорации)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

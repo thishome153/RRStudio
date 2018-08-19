@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:NatOut1="urn://x-artefacts-rosreestr-ru/commons/complex-types/natural-objects-output/1.0.1" xmlns:dNOb1="urn://x-artefacts-rosreestr-ru/commons/directories/natural-objects/1.0.1" xmlns:dForU1="urn://x-artefacts-rosreestr-ru/commons/directories/forest-use/1.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:dForEnc1="urn://x-artefacts-rosreestr-ru/commons/directories/forest-encumbrances/1.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/natural-objects-output/1.0.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<!--Справочник "Природные объекты"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/natural-objects/1.0.1" schemaLocation="dNaturalObjects_v01.xsd"/>
+	<!--Справочник "Целевое назначение лесов"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/forest-use/1.0.1" schemaLocation="dForestUse_v01.xsd"/>
+	<!--Виды разрешенного использования лесов-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/forest-encumbrances/1.0.1" schemaLocation="dForestEncumbrances_v01.xsd"/>
+	<!--СВЕДЕНИЯ О ПРИРОДНЫХ ОБЪЕКТАХ:-->
+	<xs:complexType name="tNaturalObjects">
+		<xs:annotation>
+			<xs:documentation>Сведения о природных объектах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NaturalObject" type="NatOut1:tNaturalObject" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Природный объект</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNaturalObject">
+		<xs:annotation>
+			<xs:documentation>Сведения о природном объекте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Kind" type="dNOb1:dNaturalObjects">
+				<xs:annotation>
+					<xs:documentation>Вид объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Forestry" type="Simple1:s1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование лесничества (лесопарка), участкового лесничества</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForestUse" type="dForU1:dForestUse" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Целевое назначение лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="QuarterNumbers" type="Simple1:s1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номера лесных кварталов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaxationSeparations" type="Simple1:s1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номера лесотаксационных выделов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProtectiveForest" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Категория защитных лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForestEncumbrances" type="NatOut1:tForestEncumbrances" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Виды разрешенного использования лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WaterObject" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид водного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NameOther" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование водного объекта и иного природного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CharOther" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Характеристика иного природного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tForestEncumbrances">
+		<xs:annotation>
+			<xs:documentation>Виды разрешенного использования лесов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ForestEncumbrance" type="dForEnc1:dForestEncumbrances" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Вид разрешенного использования лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tQuarterNumbers">
+		<xs:annotation>
+			<xs:documentation>Номера лесных кварталов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QuarterNumber" type="Simple1:s255" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер лесного квартала</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tTaxationSeparations">
+		<xs:annotation>
+			<xs:documentation>Номера лесотаксационных выделов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TaxationSeparation" type="Simple1:s255" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер лесотаксационного выдела</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

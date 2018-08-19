@@ -1,0 +1,817 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{96DE829D-FEF9-41AF-A9E6-3BE517088B64}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RRTypes</RootNamespace>
+    <AssemblyName>RosreestrTypes</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>\\Nas\Obmen\ПО\Fixosoft\gkndata\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>C:\Program Files\Fixosoft\gkndataCS\Win32-Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="pkk5Viewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RRMapServer_JSON.cs" />
+    <Compile Include="XSD_Schemes\KPOKS\KPOKS_v03.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPOKS_v03.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPOKS\KPOKS_v04.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPOKS_v04.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPT\KPT_v09.Generated.cs">
+      <DependentUpon>KPT_v09.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPT\KPT_v09Utils.cs" />
+    <Compile Include="XSD_Schemes\KPT_b\KPT_v10.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPT_v10.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPT_v10\KPT_10_callBack.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPT_10_callBack.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPT_v10_unoff\KPT_v10.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPT_v10.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPT_v10_unoff\KPT_v10_un_Utils.cs" />
+    <Compile Include="XSD_Schemes\KPZU_v05\KPZU_v05.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPZU_v05.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KPZU_v05\KPZU_v05Utils.cs" />
+    <Compile Include="XSD_Schemes\KPZU_v05\KPZU_v06.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KPZU_v06.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KVOKS_v02\KVOKS_v02.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KVOKS_v02.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KVOKS_v07\KVOKS_v07.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KVOKS_v07.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\KVZU\KVZU_v06.Generated.cs">
+      <DependentUpon>KVZU_v06.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSD_Schemes\KVZU\KVZU_v06Utils.cs" />
+    <Compile Include="XSD_Schemes\KVZU\KVZU_v07.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KVZU_v07.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\MapPlanV01\MapPlan_v01.Generated.cs">
+      <DependentUpon>MapPlan_v01.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSD_Schemes\MP_v05\MP_v05.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MP_v05.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\MP_v05\MP_V05_Utils.cs" />
+    <Compile Include="XSD_Schemes\MP_v06\MP_v06.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MP_v06.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\MP_v06\MP_v06_Utils.cs" />
+    <Compile Include="XSD_Schemes\My_XmlDocInfo_v01.Generated.cs">
+      <DependentUpon>My_XmlDocInfo_v01.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSD_Schemes\SchemaCommon\dRegionsRF_v01.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dRegionsRF_v01.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V01_SchemaParcels\SchemaParcels.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SchemaParcels.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V02_STD_TP\STD_TP.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>STD_TP.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V03_TP\TP_v03.Generated.cs">
+      <DependentUpon>TP_v03.xsd</DependentUpon>
+      <SubType>code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="XSD_Schemes\V03_TP\_GeneralCadastralWorks_v01.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_GeneralCadastralWorks_v01.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V04_EXTRACT_FULL\01_EXTRACT_OBJ.Generated.cs">
+      <DependentUpon>01_EXTRACT_OBJ.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSD_Schemes\V04_STD_MP\STD_MP.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>STD_MP.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V04_STD_MP\STD_MP_Utils.cs" />
+    <Compile Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\STD_Region_Cadastr_KV.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>STD_Region_Cadastr_KV.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\V04_STD_KV_Utils.cs" />
+    <Compile Include="XSD_Schemes\CommonUtils.cs" />
+    <Compile Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ZoneToGKN_v03.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="XSD_Schemes\KPOKS\KPOKS_v03.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPOKS_v03.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.kpoks_v03</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\KPOKS\KPOKS_v04.xsd">
+      <CustomToolNamespace>RRTypes.kpoks_v04</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPOKS_v04.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KPT\KPT_v09.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPT_v09.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.kpt09</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\KPT_b\KPT_v10.xsd">
+      <CustomToolNamespace>RRTypes.kpt10_b</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPT_v10.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KPT_v10\KPT_10_callBack.xsd">
+      <CustomToolNamespace>RRTypes.kpt10</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPT_10_callBack.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KPT_v10\doc93594011.xsd" />
+    <None Include="XSD_Schemes\KPT_v10\doc93594012.xsd" />
+    <None Include="XSD_Schemes\KPT_v10\doc93594013.xsd" />
+    <None Include="XSD_Schemes\KPT_v10\doc93594014.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\KPT_v10.xsd">
+      <CustomToolNamespace>RRTypes.kpt10_un</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPT_v10.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommonSmev\smev-supplementary-commons-1.0.1.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dAllDocumentsOut_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dAllDocumentsOut_v03.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dAllowedUse_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dApartment_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dAssBuilding_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dCategories_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dGeopointOpred_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dLocationLevel1_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dLocationLevel2_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dLocationLevel3_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dParcels_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dPermitUse_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dRealty_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dRealty_v03.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dRegionsRF_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dSovietVillage_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dStates_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dTypeParameter_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dUnit_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dUrbanDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dUtilizations_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\dWall_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\P_CommonSimpleType_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\P_CommonSimpleType_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\P_CommonSimpleType_v04.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_AddressOut_v03.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_AddressOut_v04.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_CadastralCost_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_CertificationDoc_v01.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_DocumentOut_v03.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_DocumentOut_v04.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_ParametersOKS_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_Spatial_v02.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_Spatial_v05.xsd" />
+    <None Include="XSD_Schemes\KPT_v10_unoff\SchemaCommon\_Spatial_v05_my.xsd" />
+    <None Include="XSD_Schemes\KPZU_v05\KPZU_v05.xsd">
+      <CustomToolNamespace>RRTypes.kpzu</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPZU_v05.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KPZU_v05\KPZU_v06.xsd">
+      <CustomToolNamespace>RRTypes.kpzu06</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KPZU_v06.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KVOKS_v02\KVOKSLinear_v02.xsd" />
+    <None Include="XSD_Schemes\KVOKS_v02\KVOKS_v02.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KVOKS_v02.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.kvoks_v02</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\KVOKS_v07\KVOKS_v07.xsd">
+      <CustomToolNamespace>RRTypes.kvoks_v07</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KVOKS_v07.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\KVZU\KVZU_v06.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KVZU_v06.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.kvzu</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\KVZU\KVZU_v07.xsd">
+      <CustomToolNamespace>RRTypes.kvzu07</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>KVZU_v07.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\MapPlanV01\MapPlan_v01.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>MapPlan_v01.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.MapPlanV01</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\MP_v05\dAllDocuments_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dApartment_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dAppliedFiles_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dCategories_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dCity_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dEncumbrances_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dForestUse_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dGeopointOpred_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dInhabitedLocalities_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dLocationLevel1_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dLocationLevel2_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dLocationLevel3_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dMethod_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dNaturalObjects_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dOldNumber_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dRegionsRF_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dSovietVillage_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dStreets_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dUnit_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dUrbanDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\dUtilizations_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\MP_v05.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>MP_v05.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.MP_V05</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\MP_v05\P_CommonSimpleType_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\P_CommonSimpleType_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v05\P_CommonSimpleType_v04.xsd" />
+    <None Include="XSD_Schemes\MP_v05\smev-supplementary-commons-1.0.1.xsd" />
+    <None Include="XSD_Schemes\MP_v05\_AddressInp_v03.xsd" />
+    <None Include="XSD_Schemes\MP_v05\_CadastralEngineer_v03.xsd" />
+    <None Include="XSD_Schemes\MP_v05\_Document_v03.xsd" />
+    <None Include="XSD_Schemes\MP_v05\_GeneralCadastralWorks_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\_NumbersInp_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v05\MP_V05_Spatial_v02_my.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dAllDocuments_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dAllowedUse_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dApartment_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dAppliedFiles_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dCategories_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dCity_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dEncumbrances_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dForestUse_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dGeopointOpred_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dInhabitedLocalities_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dLocationLevel1_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dLocationLevel2_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dLocationLevel3_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dMethod_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dNaturalObjects_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dOldNumber_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dRegionsRF_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dSovietVillage_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dStreets_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dUnit_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dUrbanDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\dUtilizations_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\MP_v06.xsd">
+      <CustomToolNamespace>RRTypes.MP_V06</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>MP_v06.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\MP_v06\P_CommonSimpleType_v01.xsd" />
+    <None Include="XSD_Schemes\MP_v06\P_CommonSimpleType_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\P_CommonSimpleType_v04.xsd" />
+    <None Include="XSD_Schemes\MP_v06\P_CommonSimpleType_v07.xsd" />
+    <None Include="XSD_Schemes\MP_v06\smev-supplementary-commons-1.0.1.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_AddressInp_v05.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_CadastralEngineer_v05.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_Document_v05.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_GeneralCadastralWorks_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_NumbersInp_v02.xsd" />
+    <None Include="XSD_Schemes\MP_v06\_Spatial_v03.xsd" />
+    <None Include="XSD_Schemes\My_XmlDocInfo_v01.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>My_XmlDocInfo_v01.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\SchemaCommon\dAllDocumentsOut_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAllDocumentsOut_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAllDocuments_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAllowedUse_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dApartment_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAppliedFiles_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAssBuilding_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAssFlatType_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dAssFlat_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dCategories_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dCity_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dCultural_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dEncumbrances_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dEncumbrances_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dForestEncumbrances_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dForestUse_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dGeopointOpred_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dGovernanceCode_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dInhabitedLocalities_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dLocationLevel1_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dLocationLevel2_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dLocationLevel3_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dMethod_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dMethod_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dNaturalObjects_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dOldNumber_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dParcels_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dPermitUse_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dRealty_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dRealty_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dRegionsRF_v01.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>dRegionsRF_v01.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\SchemaCommon\dRights_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dRights_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dSovietVillage_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dStates_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dStreets_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dTypeParameter_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dTypeStorey_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dUnit_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dUrbanDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dUtilizations_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dWall_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\dZone_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\My_Spatial_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\MY_Spatial_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\P_CommonSimpleType_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\P_CommonSimpleType_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\P_CommonSimpleType_v04.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_AddressInp_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_AddressOut_v03.xsd" />
+    <Content Include="XSD_Schemes\KVOKS_v07\kv_3d8e61d8-0fbb-4d99-b898-f923523f0f19.xml" />
+    <Content Include="XSD_Schemes\SchemaCommon\_AddressOut_v04.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_AssignationFlat_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Boundary_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_CadastralCost_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_CadastralEngineer_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_CertificationDoc_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_CulturalHeritage_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_DocumentInfo_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_DocumentOut_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_DocumentOut_v04.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Governance_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_NaturalObjectsOut_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_NaturalObjects_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Numbers_v01.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Organization_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_ParametersOKS_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Person_v03.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_SenderInfo_v02.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Spatial_v05_my.xsd" />
+    <None Include="XSD_Schemes\SchemaCommon\_Zone_v02.xsd" />
+    <None Include="XSD_Schemes\V01_SchemaParcels\dCategories.xsd" />
+    <None Include="XSD_Schemes\V01_SchemaParcels\dUnit.xsd" />
+    <None Include="XSD_Schemes\V01_SchemaParcels\SchemaParcels.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>SchemaParcels.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.SKPT01</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\V02_STD_TP\dAllDocuments.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dApartment.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dAss_b.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dAss_f.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dLocationLevel1.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dLocationLevel2.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dLocationLevel3.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dMethod_Formation.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dOld_Number.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dRegionsRF.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dSovietVillage.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dType_Parameter.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dType_Storey.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dUrbanDistrict.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\dWall.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\R03_Document.xsd" />
+    <None Include="XSD_Schemes\V02_STD_TP\STD_TP.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>STD_TP.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.STD_TPV02</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\V02_STD_TP\V037_STD_Address.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dAllDocuments_v02.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dApartment_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dAppliedFiles_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dAssBuilding_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dAssFlatType_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dAssFlat_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dCity_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dGeopointOpred_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dInhabitedLocalities_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dLocationLevel1_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dLocationLevel2_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dLocationLevel3_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dMethodFormation_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dOldNumber_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dRegionsRF_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dSovietVillage_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dStreets_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dTypeParameter_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dTypeStorey_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dUrbanDistrict_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\dWall_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\P_CommonSimpleType_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\P_CommonSimpleType_v02.xsd" />
+    <None Include="XSD_Schemes\V03_TP\P_CommonSimpleType_v04.xsd" />
+    <None Include="XSD_Schemes\V03_TP\smev-supplementary-commons-1.0.1.xsd" />
+    <None Include="XSD_Schemes\V03_TP\TPLinear_v03.xsd" />
+    <None Include="XSD_Schemes\V03_TP\TP_v03.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>TP_v03.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.V03_TP</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\V03_TP\_AddressInp_v03.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_AssignationFlat_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_CadastralEngineer_v03.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_Document_v03.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_GeneralCadastralWorks_v01.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>_GeneralCadastralWorks_v01.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="XSD_Schemes\V03_TP\_NumbersInp_v01.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_ParametersOKS_v02.xsd" />
+    <None Include="XSD_Schemes\V03_TP\_Spatial_v02.xsd" />
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\01_EXTRACT_OBJ.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>01_EXTRACT_OBJ.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.EGRP_04</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\02_EXTRACT_RULEDOC.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\03_EXTRACT_LIST.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\04_EXTRACT_SBJ.XSD">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\05_EXTRACT_UNABLED.XSD">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\09_EXTRACT_INFO.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dAssignation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dCategories.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dCertificates.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dDepartments.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dDocuments.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dEncumbrances.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dGovernance.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dOPF.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dRealty.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dRefusal.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dRegionsRF.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dRights.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dTypeInfo.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\dUnit.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Address.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Document.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_ExtrAtribut.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Object.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Refusal.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Rights.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_ServisInf.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_ShereHolding.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_EXTRACT_FULL\STD_Subject.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V04_STD_MP\dAllDocuments.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dApartment.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dAppliedFiles.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dCategories.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dCity.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dDistrict.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dEncumbrances.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dForest_Use.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dInhabitedLocalities.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dLocationLevel1.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dLocationLevel2.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dLocationLevel3.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dMethod.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dNatural_Objects.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dRegionsRF.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dSovietVillage.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dStreets.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dUnit.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dUrbanDistrict.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\dUtilizations.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\R04_Document.xsd" />
+    <None Include="XSD_Schemes\V04_STD_MP\STD_MP.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>STD_MP.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.STD_MPV04</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\V04_STD_MP\V038_STD_Address.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dAllDocuments.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dApartment.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dArea.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dCategories.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dCurrentChanges.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dEncumbrances.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dFlatKind.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dForest_Use.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dGeopoint_Zacrep.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dGovernance.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dGroundPayments.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dLocationLevel1.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dLocationLevel2.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dLocationLevel3.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dMethod.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dNatural_Objects.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dOPF.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dParcels.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dRealty.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dRegionsRF.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dRights.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dSovietVillage.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dStates.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dUnit.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dUrbanDistrict.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\dUtilizations.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\R03_Document.xsd" />
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\STD_Region_Cadastr_KV.xsd">
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>STD_Region_Cadastr_KV.Generated.cs</LastGenOutput>
+      <CustomToolNamespace>RRTypes.STD_KV04</CustomToolNamespace>
+    </None>
+    <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\V037_STD_Address.xsd" />
+    <None Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.xsd">
+      <CustomToolNamespace>RRTypes.ZoneV03</CustomToolNamespace>
+      <Generator>xsdtoclasses</Generator>
+      <LastGenOutput>ZoneToGKN_v03.Generated.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="XSD_Schemes\KPOKS\KPOKS_v03.Generated.xml">
+      <DependentUpon>KPOKS_v03.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPOKS\KPOKS_v04.Generated.xml">
+      <DependentUpon>KPOKS_v04.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPT\KPT_v09.Generated.xml">
+      <DependentUpon>KPT_v09.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPT_b\common.xsl" />
+    <Content Include="XSD_Schemes\KPT_b\KPT_v10.Generated.xml">
+      <DependentUpon>KPT_v10.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPT_v10\KPT_10_callBack.Generated.xml">
+      <DependentUpon>KPT_10_callBack.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPT_v10_unoff\KPT_v10.Generated.xml">
+      <DependentUpon>KPT_v10.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPZU_v05\KPZU_v05.Generated.xml">
+      <DependentUpon>KPZU_v05.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KPZU_v05\KPZU_v06.Generated.xml">
+      <DependentUpon>KPZU_v06.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KVOKS_v02\KVOKS_v02.Generated.xml">
+      <DependentUpon>KVOKS_v02.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KVOKS_v07\KVOKS_v07.Generated.xml">
+      <DependentUpon>KVOKS_v07.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KVOKS_v07\url.txt" />
+    <Content Include="XSD_Schemes\KVZU\KVZU_v06.Generated.xml">
+      <DependentUpon>KVZU_v06.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\KVZU\KVZU_v07.Generated.xml">
+      <DependentUpon>KVZU_v07.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\MapPlanV01\MapPlan_v01.Generated.xml">
+      <DependentUpon>MapPlan_v01.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\MP_v05\MP_v05.Generated.xml">
+      <DependentUpon>MP_v05.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\MP_v06\MP_v06.Generated.xml">
+      <DependentUpon>MP_v06.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\My_XmlDocInfo_v01.Generated.xml">
+      <DependentUpon>My_XmlDocInfo_v01.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\SchemaCommon\dRegionsRF_v01.Generated.xml">
+      <DependentUpon>dRegionsRF_v01.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V01_SchemaParcels\SchemaParcels.Generated.xml">
+      <DependentUpon>SchemaParcels.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V02_STD_TP\STD_TP.Generated.xml">
+      <DependentUpon>STD_TP.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V03_TP\TP_v03.Generated.xml">
+      <DependentUpon>TP_v03.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V03_TP\_GeneralCadastralWorks_v01.Generated.xml">
+      <DependentUpon>_GeneralCadastralWorks_v01.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V04_EXTRACT_FULL\01_EXTRACT_OBJ.Generated.xml">
+      <DependentUpon>01_EXTRACT_OBJ.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V04_STD_MP\STD_MP.Generated.xml">
+      <DependentUpon>STD_MP.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\STD_Region_Cadastr_KV.Generated.xml">
+      <DependentUpon>STD_Region_Cadastr_KV.xsd</DependentUpon>
+    </Content>
+    <Content Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.Generated.xml">
+      <DependentUpon>ZoneToGKN_v03.xsd</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\netFteo\netFteo\netFteo.csproj">
+      <Project>{84103EB6-3282-4374-B296-33188B1A436E}</Project>
+      <Name>netFteo</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

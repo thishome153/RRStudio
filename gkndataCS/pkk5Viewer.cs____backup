@@ -1,0 +1,188 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.ComponentModel; // BackgroundWorker
+using System.Windows.Forms;
+using RRTypes.MapServer;
+
+namespace GKNData
+{
+  public  class pkk5Viewer : System.Windows.Forms.PictureBox
+    {
+        Label label_MapScale;
+        ProgressBar progressBar1;
+        BackgroundWorker backgroundWorker1;
+        BackgroundWorker backgroundWorkerCounter;
+        public pkk5_Rosreestr_ru Server;
+        public string urlItem;
+        public bool isParcel;
+        public pkk5Viewer()
+        {
+            this.DoubleBuffered = true;
+            this.Server = new pkk5_Rosreestr_ru(this.Width,this.Height);
+            this.backgroundWorker1 = new BackgroundWorker();
+            this.backgroundWorkerCounter = new BackgroundWorker();
+            this.MouseEnter  += pictureBox_MouseEnter;
+            this.MouseWheel  += pictureBox_OnMouseWheel;
+            this.SizeChanged += pictureBox_SizeChanged;
+            this.MouseHover  += pictureBox_MouseHover;
+
+            backgroundWorker1.DoWork += backgroundWorker_DoWork;
+            backgroundWorker1.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorkerCounter.DoWork += backgroundWorkerCounter_DoWork;
+            backgroundWorkerCounter.ProgressChanged += backgroundWorkerCounter_ProgressChanged;
+            backgroundWorkerCounter.WorkerReportsProgress = true;
+            this.progressBar1 = new ProgressBar();
+            this.progressBar1.Location = new System.Drawing.Point(174, 9);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 7);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Blocks;
+            this.progressBar1.TabIndex = 9;
+            this.progressBar1.Value = 79
+                ;
+            label_MapScale = new Label();
+            label_MapScale.Resize += label_MapScale_Resize;
+            this.Controls.Add(label_MapScale);
+            this.Controls.Add(progressBar1);
+        }
+
+        // В тени  -загрузка он-лайна ПКК
+        public void Start(string cn, bool isparcel)
+        {
+            this.urlItem = cn;
+            this.isParcel = isparcel;
+            if (this.urlItem != null)
+             if (!this.backgroundWorker1.IsBusy)
+                backgroundWorker1.RunWorkerAsync();
+        }
+
+
+        ///Make sure that the PicBox have the focus, otherwise it doesn´t receive 
+        /// mousewheel events !.
+        private void pictureBox_MouseEnter(object sender, EventArgs e)
+        {
+            if (this.Focused == false)
+            {
+                this.Focus();
+            }
+        }
+
+        //Обработчика крутилки мыши пришлось вручную писать, и добавлять в wzParcel.Designer.cs
+        // в раздел про обрабочики: 
+        //      this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_OnMouseWheel);
+        private void pictureBox_OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                if (this.Server.mapScale > 0)
+                    this.Server.mapScale -= 250;
+            }
+            else
+                if (this.Server.mapScale < 10000)
+                    this.Server.mapScale += 250;
+
+            label_MapScale.Text = "    M 1:" + this.Server.mapScale.ToString() + "      ---> ";
+            //label_MapScale.Visible = true;
+        }
+
+        private void pictureBox_MouseHover(object sender, EventArgs e)
+        {
+            if (!backgroundWorker1.IsBusy)
+            {
+                label_MapScale.Text = "    M 1:" + this.Server.mapScale.ToString() + "      ---> ";
+                //tabPage3.Text = "Он-лайн.........";
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        private void pictureBox_SizeChanged(object sender, EventArgs e)
+        {
+            if (!backgroundWorker1.IsBusy)
+            {
+                //
+                this.Server.picture_Height = ((System.Windows.Forms.PictureBox)sender).Size.Height;
+                this.Server.picture_Width = ((System.Windows.Forms.PictureBox)sender).Size.Width;
+                label_MapScale.Text = "    M 1:" + this.Server.mapScale.ToString() + "      .... ";
+                //tabPage3.Text = "Он-лайн.........";
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (!backgroundWorkerCounter.IsBusy)
+            {
+                backgroundWorkerCounter.RunWorkerAsync();
+                this.Server.Get_WebOnline_th(this.urlItem, this.isParcel); //GetCadastralBlockWebOnline_th(ITEM);
+            }
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            /*
+            treeView_OnLine.Nodes.Clear();
+            tabPage3.Text = "Он-лайн ок";
+
+            foreach (TreeNode tn in this.Server.Nodes)
+            {
+                treeView_OnLine.Nodes.Add(tn);
+            }
+            */
+            if (this.Server.Image != null)
+            {
+                this.Image = this.Server.Image;
+                label_MapScale.Text = "    M 1:" + this.Server.mapScale.ToString() + "           ";
+            }
+            //  progressBar1.Visible = false;
+        }
+
+        delegate void SetProgressCallback(int progress);
+        private void backgroundWorkerCounter_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.SetProgress(e.ProgressPercentage);
+        }
+        private void SetProgress(int value)
+        {
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (this.progressBar1.InvokeRequired)
+            {
+                SetProgressCallback d = new SetProgressCallback(SetProgress);
+
+                this.Invoke(d, new object[] { value });
+            }
+            else
+            {
+                this.progressBar1.Value = value;
+            }
+        }
+        private void backgroundWorkerCounter_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                if (worker.CancellationPending == true)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    // Perform a time consuming operation and report progress.
+                    System.Threading.Thread.Sleep(100);
+                    worker.ReportProgress(i * 10);
+                }
+            }
+        }
+        private void label_MapScale_Resize(object sender, EventArgs e)
+        {
+            progressBar1.Width = ((Label)sender).Width;
+        }
+
+    }
+}

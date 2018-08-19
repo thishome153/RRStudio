@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/Common.xsl"?>
+
+<KVOKS xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1"
+xmlns:smev="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1"
+xmlns:num="urn://x-artefacts-rosreestr-ru/commons/complex-types/numbers/1.0"
+xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1"
+xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1"
+xmlns:param="urn://x-artefacts-rosreestr-ru/commons/complex-types/parameters-oks/2.0.1"
+xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0"
+xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1"
+xmlns:ch="urn://x-artefacts-rosreestr-ru/commons/complex-types/cultural-heritage/2.0.1">
+<Realty>
+<Construction CadastralNumber="26:06:130701:490" State="01"
+DateCreated="2011-12-16"
+>
+<CadastralBlocks>
+<CadastralBlock>26:06:130701</CadastralBlock>
+</CadastralBlocks>
+<ObjectType>002001004000</ObjectType>
+<ParentCadastralNumbers>
+<CadastralNumber>26:06:130701:20</CadastralNumber>
+</ParentCadastralNumbers>
+<OldNumbers>
+<num:OldNumber Type="01" Number="494" />
+<num:OldNumber Type="03" Number="26061307010001494/511000/I" />
+<num:OldNumber Type="99" Number="1-51-6-127" />
+</OldNumbers>
+<Name>Пруды-испарители</Name>
+<AssignationName>нежилое</AssignationName>
+<ExploitationChar YearBuilt="1975" />
+<Floors Floors="0" UndergroundFloors="1" />
+<KeyParameters>
+<param:KeyParameter Type="05" Value="384478" />
+</KeyParameters>
+<Address>
+<adrs:OKATO>07220555000</adrs:OKATO>
+<adrs:KLADR>26010000016002900</adrs:KLADR>
+<adrs:Region>26</adrs:Region>
+<adrs:District Name="Изобильненский" Type="р-н" />
+<adrs:Locality Name="Солнечнодольск" Type="п" />
+<adrs:Street Name="Техническая" Type="ул" />
+<adrs:Level1 Type="д" Value="14" />
+</Address>
+<CadastralCost Value="838416214.91" Unit="383" />
+<Notes> Сведения о назначении, наименовании, количестве этажей, в том числе подземных этажей, площади имеют статус «Актуальные незасвидетельствованные». Право (ограничение права, обременение объекта недвижимости) зарегистрировано на данный объект недвижимости с назначениием отсутствует, наименованием «Комплекс сооружений очистки Новотроицкого водохранилища», количеством этажей, в том числе подземных этажей отсутствует, площадью 479960.2 кв.м.</Notes>
+</Construction>
+</Realty>
+<CertificationDoc>
+<cer:Organization>ФГИС ЕГРН</cer:Organization>
+<cer:Date>2018-05-30</cer:Date>
+<cer:Number>99/2018/104571730</cer:Number>
+</CertificationDoc>
+<CoordSystems>
+<spa:CoordSystem Name="МСК-26 от СК-95, зона 1" CsId="ID0" />
+</CoordSystems>
+<eDocument CodeType="112" Version="07" Scope="GKN">
+<Sender Kod="00.0.4.195"
+Name="ФГИС ЕГРН"
+Region="99"
+Date_Upload="2018-05-30"
+Appointment="Государственный регистратор"
+/>
+<Recipient Kod="00.0.4.111" Name="Римша Олег Владимирович" />
+</eDocument>
+<ReestrExtract>
+<DeclarAttribute ID_KUVI="0"
+ExtractTypeCode="012000"
+ExtractTypeText="Выписка из Единого государственного реестра недвижимости об объекте недвижимости"
+ExtractNumber="99/2018/104571730"
+ExtractDate="30.05.2018"
+RequeryNumber="80-40266962"
+RequeryDate="30.05.2018"
+ExtractCount="1"
+NoticeCount="0"
+RefuseCount="0"
+Registrator="ФГИС ЕГРН">
+<ReceivName>Римша Олег Владимирович</ReceivName>
+<ReceivAdress>не указан</ReceivAdress>
+</DeclarAttribute>
+<ExtractObjectRight>
+<HeadContent>
+<ID_REC_KUVI>0</ID_REC_KUVI>
+<Title>ФЕДЕРАЛЬНАЯ СЛУЖБА ГОСУДАРСТВЕННОЙ РЕГИСТРАЦИИ, КАДАСТРА И КАРТОГРАФИИ</Title>
+<DeptName>ФГИС ЕГРН</DeptName>
+<ExtractTitle>Выписка из Единого государственного реестра недвижимости об объекте недвижимости</ExtractTitle>
+<Content>На основании запроса от 30.05.2018 г., поступившего на рассмотрение 30.05.2018 г., сообщаем, что согласно записям Единого государственного реестра недвижимости:</Content>
+</HeadContent>
+<ExtractObject>
+<ObjectRight>
+<Right RightNumber="1">
+<Owner >
+<ID_Subject>94232543926</ID_Subject>
+<Organization>
+<Code_SP>007002000000</Code_SP>
+<Content>Публичное акционерное общество &quot;Вторая генерирующая компания оптового рынка электроэнергии&quot;, ИНН: 2607018122</Content>
+<Name>Публичное акционерное общество &quot;Вторая генерирующая компания оптового рынка электроэнергии&quot;</Name>
+<INN>2607018122</INN>
+</Organization>
+</Owner>
+<Registration >
+<ID_Record>918680107126</ID_Record>
+<RegNumber>26-26-06/012/2006-219</RegNumber>
+<Type>001001000000</Type>
+<Name>Собственность, № 26-26-06/012/2006-219 от 30.10.2006</Name>
+<RegDate>30.10.2006</RegDate>
+</Registration>
+<NoEncumbrance>не зарегистрировано</NoEncumbrance>
+</Right>
+<NoShareHolding>не зарегистрировано</NoShareHolding>
+</ObjectRight>
+<RightAssert>данные отсутствуют</RightAssert>
+<RightClaim>данные отсутствуют</RightClaim>
+<RightAgainst>данные отсутствуют</RightAgainst>
+<RightSteal>данные отсутствуют</RightSteal>
+<WithoutThirdParty>данные отсутствуют</WithoutThirdParty>
+<InabilityRegWithoutOwner></InabilityRegWithoutOwner>
+<InabilityRegZU></InabilityRegZU>
+</ExtractObject>
+<InfoENK/>
+<InfoPIK/>
+<FootContent>
+<Recipient>Римша Олег Владимирович</Recipient>
+<ExtractDate>30.05.2018</ExtractDate>
+<Content></Content>
+</FootContent>
+</ExtractObjectRight>
+</ReestrExtract>
+</KVOKS>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by asd (asd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--ПОдключение схемы Субъект-->
+	<xs:include schemaLocation="STD_Subject.xsd"/>
+	<xs:include schemaLocation="dTypeInfo.xsd"/>
+	<xs:include schemaLocation="dDepartments.xsd"/>
+	<xs:complexType name="tPerson_Org">
+		<xs:annotation>
+			<xs:documentation>Должностное лицо</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Appointment">
+				<xs:annotation>
+					<xs:documentation>Должность</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FIO" type="tFIO">
+				<xs:annotation>
+					<xs:documentation>Фамилия, имя, отчество </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tel" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Телефон</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Email" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>адрес электронной почты</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tExtrAttribut">
+		<xs:annotation>
+			<xs:documentation>атрибуты запроса и итогового документа</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ReceivName">
+				<xs:annotation>
+					<xs:documentation>Адресат</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="512"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Representativ" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Субъект, от имени которого действует адресат</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="512"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ReceivAdress">
+				<xs:annotation>
+					<xs:documentation>Адрес</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ID_KUVI" type="xs:decimal" use="required">
+			<xs:annotation>
+				<xs:documentation>Уникальный идентификатор записи  КУВИ</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExtractTypeCode" type="dTypeInfo" use="required">
+			<xs:annotation>
+				<xs:documentation>код запрошенной информации </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExtractTypeText" use="required">
+			<xs:annotation>
+				<xs:documentation>вид запрошенной информации текст</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ExtractNumber" use="required">
+			<xs:annotation>
+				<xs:documentation>номер выписки/справки/сообщения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ExtractDate" type="tDate" use="required">
+			<xs:annotation>
+				<xs:documentation>дата выписки/справки/сообщения</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RequeryNumber">
+			<xs:annotation>
+				<xs:documentation>номер документа запроса</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="RequeryDate" type="tDate">
+			<xs:annotation>
+				<xs:documentation>дата документа запроса</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="OfficeNumber">
+			<xs:annotation>
+				<xs:documentation>исходящий номер учреждения</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="OfficeDate" type="tDate">
+			<xs:annotation>
+				<xs:documentation>исходящая дата учреждения</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExtractCount" type="xs:int" use="required">
+			<xs:annotation>
+				<xs:documentation>количество сформированных выписок</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NoticeCount" type="xs:int" use="required">
+			<xs:annotation>
+				<xs:documentation>количество сформированных уведомлений</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RefuseCount" type="xs:int" use="required">
+			<xs:annotation>
+				<xs:documentation>количество сформированных отказов</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Registrator" use="required">
+			<xs:annotation>
+				<xs:documentation>регистратор, подписавший выписку(справку)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tHeadContent">
+		<xs:annotation>
+			<xs:documentation>пролог выписки</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID_REC_KUVI">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор документа в записи КУВИ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Title">
+				<xs:annotation>
+					<xs:documentation>Наименование службы</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DeptName">
+				<xs:annotation>
+					<xs:documentation>Наименование территориального управления</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExtractTitle">
+				<xs:annotation>
+					<xs:documentation>Наименование документа</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное  описание запроса</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tFootContent">
+		<xs:annotation>
+			<xs:documentation>эпилог выписки</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Recipient">
+				<xs:annotation>
+					<xs:documentation>описание получателя информации ( "выписка выдана ...")</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExtractRegion" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>выписка о правах на ОНИ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="CodRegion" type="dDepartments" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>код органа - источника информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Region" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>наименование органа - источника информации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ExtractDate" type="tDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>дата выписки/справки/сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Content">
+				<xs:annotation>
+					<xs:documentation>Суммарное  описание завершающего текста (ссылка на закон и т.п.)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

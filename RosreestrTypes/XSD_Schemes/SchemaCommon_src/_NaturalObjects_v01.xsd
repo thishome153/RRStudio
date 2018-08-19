@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:NatObj1="urn://x-artefacts-rosreestr-ru/commons/complex-types/natural-objects/1.0.1" xmlns:dNOb1="urn://x-artefacts-rosreestr-ru/commons/directories/natural-objects/1.0.1" xmlns:dForU1="urn://x-artefacts-rosreestr-ru/commons/directories/forest-use/1.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0"  targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/natural-objects/1.0.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<!--Справочник "Природные объекты"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/natural-objects/1.0.1" schemaLocation="dNaturalObjects_v01.xsd"/>
+	<!--Справочник "Целевое назначение лесов"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/forest-use/1.0.1" schemaLocation="dForestUse_v01.xsd"/>
+	<!--СВЕДЕНИЯ О ПРИРОДНЫХ ОБЪЕКТАХ:-->
+	<xs:complexType name="tNaturalObjects">
+		<xs:annotation>
+			<xs:documentation>Сведения о природных объектах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NaturalObject" type="NatObj1:tNaturalObject" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Природный объект</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNaturalObject">
+		<xs:annotation>
+			<xs:documentation>Сведения о природном объекте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Kind" type="dNOb1:dNaturalObjects">
+				<xs:annotation>
+					<xs:documentation>Вид объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForestUse" type="dForU1:dForestUse" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Целевое назначение лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProtectiveForest" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Категория защитных лесов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WaterObject" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид водного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NameOther" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование водного объекта и иного природного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CharOther" type="Simple1:s255" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Характеристика иного природного объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ns4="urn://x-artefacts-rosreestr-ru/commons/complex-types/parameters-oks/2.0.1" xmlns:ns5="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1" xmlns:ns7="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:ns6="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" xmlns:adrOut4="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" xmlns:ns3="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" schemaLocation="doc93594011.xsd"/>
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" schemaLocation="doc93594012.xsd"/>
+  <xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" schemaLocation="doc93594013.xsd"/>
+  <xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="doc93594014.xsd"/>
+  <xs:element name="KPT">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CadastralBlocks">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CadastralBlock">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Area">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Total" type="xs:decimal" />
+                          <xs:element name="Unit" type="xs:unsignedByte" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Parcels">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="Parcel">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Area">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Area" type="xs:unsignedInt" />
+                                      <xs:element name="Unit" type="xs:unsignedByte" />
+                                      <xs:element minOccurs="0" name="Inaccuracy" type="xs:decimal" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Name" type="xs:unsignedByte" />
+                                <xs:element name="Location">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" name="inBounds" type="xs:unsignedByte" />
+                                      <xs:element minOccurs="0" name="Placed" type="xs:string" />
+                                      <xs:element name="Address">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element ref="adrOut4:OKATO" />
+                                            <xs:element ref="adrOut4:KLADR" />
+                                            <xs:element ref="adrOut4:Region" />
+                                            <xs:element ref="adrOut4:District" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Locality" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Street" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Level1" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Apartment" />
+                                            <xs:element ref="adrOut4:Note" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Category" type="xs:unsignedInt" />
+                                <xs:element name="Utilization">
+                                  <xs:complexType>
+                                    <xs:attribute name="Utilization" type="xs:unsignedLong" use="required" />
+                                    <xs:attribute name="ByDoc" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="Contours">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element maxOccurs="unbounded" name="Contour">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="EntitySpatial">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element ref="ns3:SpatialElement" />
+                                                </xs:sequence>
+                                                <xs:attribute name="EntSys" type="xs:string" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="NumberRecord" type="xs:unsignedByte" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="ParentCadastralNumbers">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CadastralNumber" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="CadastralCost">
+                                  <xs:complexType>
+                                    <xs:attribute name="Value" type="xs:decimal" use="required" />
+                                    <xs:attribute name="Unit" type="xs:unsignedShort" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="EntitySpatial">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element ref="ns3:SpatialElement" />
+                                    </xs:sequence>
+                                    <xs:attribute name="EntSys" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CadastralNumber" type="xs:string" use="required" />
+                              <xs:attribute name="State" type="xs:unsignedByte" use="required" />
+                              <xs:attribute name="DateCreated" type="xs:date" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ObjectsRealty">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="ObjectRealty">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Building">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="ObjectType" type="xs:unsignedInt" />
+                                      <xs:element name="AssignationBuilding" type="xs:unsignedLong" />
+                                      <xs:element name="Area" type="xs:decimal" />
+                                      <xs:element name="Address">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element ref="adrOut4:OKATO" />
+                                            <xs:element ref="adrOut4:KLADR" />
+                                            <xs:element minOccurs="0" ref="adrOut4:PostalCode" />
+                                            <xs:element ref="adrOut4:Region" />
+                                            <xs:element ref="adrOut4:District" />
+                                            <xs:element ref="adrOut4:Locality" />
+                                            <xs:element ref="adrOut4:Street" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Level1" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Level2" />
+                                            <xs:element minOccurs="0" ref="adrOut4:Note" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="CadastralCost">
+                                        <xs:complexType>
+                                          <xs:attribute name="Value" type="xs:decimal" use="required" />
+                                          <xs:attribute name="Unit" type="xs:unsignedShort" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element minOccurs="0" name="EntitySpatial">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element ref="ns3:SpatialElement" />
+                                          </xs:sequence>
+                                          <xs:attribute name="EntSys" type="xs:string" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="CadastralNumber" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OMSPoints">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="OMSPoint">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PNmb" type="xs:unsignedInt" />
+                                <xs:element name="PName" type="xs:string" />
+                                <xs:element name="PKlass" type="xs:string" />
+                                <xs:element name="OrdX" type="xs:decimal" />
+                                <xs:element name="OrdY" type="xs:decimal" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpatialData">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="EntitySpatial">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element ref="ns3:SpatialElement" />
+                              </xs:sequence>
+                              <xs:attribute name="EntSys" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CoordSystems">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="ns3:CoordSystem" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="CadastralNumber" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CertificationDoc">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="ns6:Organization" />
+              <xs:element ref="ns6:Date" />
+              <xs:element ref="ns6:Number" />
+              <xs:element ref="ns6:Official" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

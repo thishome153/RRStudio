@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:dZo2="urn://x-artefacts-rosreestr-ru/commons/directories/zone/2.0.1" xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" xmlns:Sen2="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" xmlns:DocI3="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" xmlns:Zon2="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" xmlns="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/3.0.5" targetNamespace="urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/3.0.5" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="../SchemaCommon/P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v04.xsd"/>
+	<!--Подключение подсхемы Документ для информационного взаимодействия-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/3.1.1" schemaLocation="../SchemaCommon/_DocumentInfo_v03.xsd"/>
+	<!--Подсхема "Отправитель сведений"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/2.0.1" schemaLocation="../SchemaCommon/_SenderInfo_v02.xsd"/>
+	<!--Повторно используемая подсхема "Территориальная зона и специальная зона"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/2.1.1" schemaLocation="../SchemaCommon/_Zone_v02.xsd"/>
+	<xs:annotation>
+		<xs:documentation>07.05.2014г. Версия схемы 3 Реализация приказа 71. Доработка под требования СМЭВ</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>06.11.2014г. на учетный номер зоны наложена маска, длина учетного номера ограничена 40 символами, наложена маска на имя файла карта(плана)</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>10.11.2014 Добавлены реквизиты документа воспроизводящего сведения</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>11.11.2014г. Запрещена строка состоящая только из пробелов для всех обязательных полей</xs:documentation>
+	</xs:annotation>
+	<xs:element name="ZoneToGKN">
+		<xs:annotation>
+			<xs:documentation>Территориальные зоны и зоны с особыми условиями использования территорий</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title" type="DocI3:tDocumentTitle">
+					<xs:annotation>
+						<xs:documentation>Реквизиты документа</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Declarant" type="Sen2:tSender">
+					<xs:annotation>
+						<xs:documentation>Заявитель</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Documents">
+					<xs:annotation>
+						<xs:documentation>Документы</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Document" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Документ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="DocI3:tDocumentInfo">
+											<xs:sequence>
+												<xs:element name="SourcePublication" type="Simple1:s255" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Сведения об официальной публикации</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			<!--	<xs:choice> -->
+          <xs:sequence>
+					<xs:element name="NewZones">
+						<xs:annotation>
+							<xs:documentation>Новые зоны</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Zone" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Описание зоны</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="Zon2:tZone">
+												<xs:sequence>
+													<xs:element name="MapPlan" type="DocI3:tDocumentKP">
+														<xs:annotation>
+															<xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ChangedZones">
+						<xs:annotation>
+							<xs:documentation>Изменяемые зоны</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Zone" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Описание зоны</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="Zon2:tZone">
+												<xs:sequence>
+													<xs:element name="MapPlan" type="DocI3:tDocumentKP">
+														<xs:annotation>
+															<xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AccountNumber" type="Simple4:sCadastralNumberZone">
+														<xs:annotation>
+															<xs:documentation>Учётный номер</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ArchiveZones">
+						<xs:annotation>
+							<xs:documentation>Ликвидируемые зоны</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AccountNumber" type="Simple4:sCadastralNumberZone" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Учётный номер</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+			<!--	</xs:choice> -->
+			
+      </xs:sequence>
+			</xs:sequence>
+			<xs:attributeGroup ref="Simple4:agNeTitle"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

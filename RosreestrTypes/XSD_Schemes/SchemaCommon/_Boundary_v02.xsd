@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gBound2="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:adrInp2="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" xmlns:dRF1="urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1"  xmlns:Simple4="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" targetNamespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/2.0.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/4.1.1" schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<!--Справочник субъектов РФ-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1" schemaLocation="dRegionsRF_v01.xsd"/>
+	<!--Подсхема "Адрес (описание местоположения)"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/2.0.1" schemaLocation="_AddressInp_v02.xsd"/>
+	<!--Подсхема "Границы объекта землеустройства"-->
+	<xs:group name="gBoundary">
+		<xs:annotation>
+			<xs:documentation>Описание объекта землеустройства</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" type="Simple4:sNe1000">
+				<xs:annotation>
+					<xs:documentation>Наименование объекта землеустройства</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="SubjectsBoundary">
+					<xs:annotation>
+						<xs:documentation>Местоположение границы между субъектами Российской Федерации</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="NameNeighbours" type="dRF1:dRegionsRF" minOccurs="2" maxOccurs="2">
+								<xs:annotation>
+									<xs:documentation>Наименование смежного субъекта Российской Федерации</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="MunicipalBoundary">
+					<xs:annotation>
+						<xs:documentation>Местоположение границ муниципального образования</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="adrInp2:tAddressInp"/>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InhabitedLocalityBoundary" type="adrInp2:tAddressInp">
+					<xs:annotation>
+						<xs:documentation>Местоположение границ населённого пункта</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>
