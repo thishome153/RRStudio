@@ -39,7 +39,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::XMLReaderCS.Properties.Resources.Refresh;
-            this.pictureBox1.Location = new System.Drawing.Point(445, 61);
+            this.pictureBox1.Location = new System.Drawing.Point(443, 67);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(57, 54);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
