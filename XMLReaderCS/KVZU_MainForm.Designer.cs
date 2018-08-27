@@ -1558,7 +1558,7 @@
         private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem pkk5ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem поискНаПККToolStripMenuItem;
-        private CXmlTreeView cXmlTreeView1;
+       // private CXmlTreeView cXmlTreeView1;
         private RRTypes.pkk5.pkk5Viewer pkk5Viewer1;
         private netFteo.Drawing.FteoImage Aimage;
         private System.Windows.Forms.ToolStripMenuItem RecentFilesMenuItem;

@@ -4669,9 +4669,11 @@ namespace XMLReaderCS
 
         private void linkLabel1_Click(object sender, EventArgs e)
         {
+            /*
             cXmlTreeView1.BeginUpdate();
             cXmlTreeView1.ExpandAll();
             cXmlTreeView1.EndUpdate();
+            */
         }
 
         //Открыть в бровзере человекочитаемый формат xml через xsl

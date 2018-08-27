@@ -1679,6 +1679,7 @@ namespace RRTypes.CommonParsers
                     Bl.Parcels.AddParcel(MainObj);
                     MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.AreaInGKN;
                     MainObj.AreaValue = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.Area.Area;
+                    if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty != null)
                     MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty.InnerCadastralNumbers);
                     Bl.CN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralBlock;
 
