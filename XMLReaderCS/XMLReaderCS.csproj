@@ -472,6 +472,7 @@
     <None Include="Resources\ЧерныеГлаза.bmp" />
     <None Include="Resources\misc28.bmp" />
     <None Include="Resources\chrome.bmp" />
+    <Content Include="GKUZU_A73C076C-4FE7-4D54-926E-4143B9F88CBC.xml" />
     <Content Include="Images\add.png" />
     <None Include="Resources\Rosreestr.gif" />
     <None Include="Resources\XML.bmp" />

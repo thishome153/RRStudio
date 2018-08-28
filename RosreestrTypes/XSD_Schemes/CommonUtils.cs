@@ -1416,8 +1416,61 @@ namespace RRTypes.CommonCast
               return res;
           }
 
-     
+     /// <summary>
+     /// Разбор юнита (например  - Точки) 
+     /// </summary>
+     /// <param name="unit"></param>
+     /// <returns></returns>
+        private static Point GetUnit(MP_V06.tSpelementUnitOldNew unit)
+        {
 
+            netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+
+            if (unit.NewOrdinate != null)
+            {
+                //  " н "
+                //Если указаны только новая - точка создается
+                if (unit.OldOrdinate == null)
+                {
+                    Point.Status = 0;
+                }
+                // уточ / сущ.
+                //Если указаны обе - точка существует либо уточняется
+                if (unit.OldOrdinate != null)
+                {
+                    Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
+                    Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
+                    Point.Status = 4;
+                }
+
+                Point.x = Convert.ToDouble(unit.NewOrdinate.X);
+                Point.y = Convert.ToDouble(unit.NewOrdinate.Y);
+                Point.Mt = Convert.ToDouble(unit.NewOrdinate.DeltaGeopoint);
+                //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
+                Point.Pref = unit.NewOrdinate.PointPref;
+                Point.NumGeopointA = unit.NewOrdinate.NumGeopoint;
+            }
+
+            // " л "     TODO:
+            //Если указаны только старая - точка ликвидируется. И это грабли всего дерева классов
+            // Точка имеет два набора координат - фактически две границы - существующую в ЕГРН и новую
+            if ((unit.OldOrdinate != null) &&    (unit.NewOrdinate == null))
+            {
+                Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
+                Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
+                bool empt = Point.Empty;
+                Point.NumGeopointA = "л " + unit.OldOrdinate.NumGeopoint;
+                Point.Status = 6;
+            }
+            return Point;
+        }
+
+        /// <summary>
+        /// Разбор Пространственных данных МП V 06
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
         public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
           {
               netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
@@ -1425,37 +1478,18 @@ namespace RRTypes.CommonCast
 
               //Первый (внешний) контур
               for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-              {
-                  netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-
-                  if (ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate != null)
-                  {
-                      Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.X);
-                      Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.Y);
-                      Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
-                      //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
-                      Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.PointPref;
-                      Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.NumGeopoint;
-                  }
-                  else
-                  {
-                      Point.NumGeopointA = "л " + ES.SpatialElement[0].SpelementUnit[iord].OldOrdinate.NumGeopoint;
-                      
-                      Point.Status = 6;
-                  }
-                  if (ES.SpatialElement[0].SpelementUnit[iord].OldOrdinate != null)
-                  {
-                      Point.oldX = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].OldOrdinate.X);
-                      Point.oldY= Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].OldOrdinate.Y);
-                  }
-                  EntSpat.AddPoint(Point);
+              {  if ((ES.SpatialElement[0].SpelementUnit[iord]).NewOrdinate != null) // только точки с новыми/уточняемымыи/сущесствующими коорд
+                  EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
               }
+
               //Внутренние контура
               for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
               {
                   netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+
                   for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                   {
+                    /*
 
                       netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
                       if (ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate != null)
@@ -1477,11 +1511,12 @@ namespace RRTypes.CommonCast
                           Point.oldX = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate.X);
                           Point.oldY = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate.Y);
                       }
-
-
-                      InLayer.AddPoint(Point);
+                      */
+                      if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) // только точки с новыми/уточняемымыи/сущесствующими коорд
+                        InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                   }
               }
+
               if (EntSpat.HasChanges == "*") EntSpat.State = 0; else EntSpat.State = 4;
               return EntSpat;
           }

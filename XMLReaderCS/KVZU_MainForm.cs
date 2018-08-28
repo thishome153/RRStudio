@@ -5462,6 +5462,8 @@ namespace XMLReaderCS
         /// </summary>
         private void TopoCheck(TreeNode STrN)
         {
+            netFteo.Spatial.Point test = new netFteo.Spatial.Point();
+
             openFileDialog1.Filter = "Про$транственные данные|*.mif";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
 
