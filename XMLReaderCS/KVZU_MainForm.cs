@@ -1006,7 +1006,7 @@ namespace XMLReaderCS
                 {
 
                     MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
-                                                   kp.Parcel.CompositionEZ[i].Area.Area,
+                                                   kp.Parcel.CompositionEZ[i].Area.Area,6,
                                                     RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
 

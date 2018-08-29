@@ -678,21 +678,7 @@ namespace RRTypes.CommonCast
           /// <returns></returns>
           public static string Parse_Recipient(System.Xml.XmlDocument xmldoc)
           {
-              /*
-              System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
-              nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-              string docRootName = xmldoc.DocumentElement.Name;
-              System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode("/parseNS:" +
-                                              docRootName +
-                                              "/parseNS:ReestrExtract/parseNS:DeclarAttribute/parseNS:ReceivName", nsmgr);
-              if (recnode != null)
-              {
-                  return recnode.FirstChild.Value;
-              }
-              else
-                  return null;
-              */
-              return Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivName");
+             return Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivName");
           }
     
           
@@ -766,20 +752,7 @@ namespace RRTypes.CommonCast
 
       }
     
-    
-    /*
-    public class TAddress2
-    {
-        public static explicit operator TAddress2(kvzu07.tAddressOut v)
-        {
-            TAddress adr = new TAddress();
-            adr.Apartment = v.Apartment.Value;
-            adr.Note = v.Note;
-            return adr;
-            //throw new NotImplementedException();
-        }
-    }
-    */
+        
      /// <summary>
     /// Общий класс утилит для кастинга разных версий схем ZU
     /// </summary>
@@ -863,7 +836,7 @@ namespace RRTypes.CommonCast
 
               return Adr;
           }
-        public static TAddress CastAddress(kvzu07.tAddressOut Address)
+          public static TAddress CastAddress(kvzu07.tAddressOut Address)
           {
             if (Address == null) return null;
             /*здесь большая фича по кастингу произошла, VS2015 сама создала (предложила)
@@ -984,7 +957,6 @@ namespace RRTypes.CommonCast
             ///KVZU/Parcels/Parcel/Location/Address
             return null;
         }
-
           public static TLocation CastLocation(kvzu07.tLocation location)
           {
 
@@ -1007,7 +979,6 @@ namespace RRTypes.CommonCast
 
               return loc;
           }
-          
           public static TLocation CastLocation(kvzu.tLocation location)
           {
 
@@ -1030,8 +1001,6 @@ namespace RRTypes.CommonCast
 
               return loc;
           }
-
-
           public static TLocation CastLocation(kpzu.tLocation location)
           {
               if (location == null) return null;
@@ -1119,14 +1088,17 @@ namespace RRTypes.CommonCast
 
               return loc;
           }
-          /// <summary>
-          /// ES manipulation routines
-          /// </summary>
-          /// <param name="Address"></param>
-          /// <returns></returns>
-          /// 
 
-          public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
+
+        #region Cast MP V05
+        /// <summary>
+        /// ES manipulation routines
+        /// </summary>
+        /// <param name="Address"></param>
+        /// <returns></returns>
+        /// 
+
+        public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
           {
               netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
               EntSpat.Definition = Definition;
@@ -1286,7 +1258,10 @@ namespace RRTypes.CommonCast
                   res.AddPolygon(AddEntSpatMP5(item.Number, item));
               return res;
           }
-          public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
+        #endregion
+
+        #region Cast MP V06
+        public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
           {
               /*
               netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
@@ -1365,8 +1340,6 @@ namespace RRTypes.CommonCast
                   }
               }
               return EntSpat;
-
-              return null;
           }/// 
 
           public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUInp ES)
@@ -1520,8 +1493,7 @@ namespace RRTypes.CommonCast
               if (EntSpat.HasChanges == "*") EntSpat.State = 0; else EntSpat.State = 4;
               return EntSpat;
           }
-
-          public static TMyPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
+        public static TMyPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
           {
 
               netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
@@ -1559,19 +1531,75 @@ namespace RRTypes.CommonCast
 
               return null;
           }
-          public static TPolygonCollection ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
+        public static TPolygonCollection ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
           {
               TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
               foreach (MP_V06.tContoursSubParcelContour item in cs)
                   res.AddPolygon(ES_ZU(item.Number, item));
               return res;
           }
+        #endregion
+
+        #region Cast KPZU V06
+        private static Point GetUnit(kpzu06.tSpelementUnitZUOut  unit)
+        {
+
+            netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
+
+            return Point;
+        }
+        //TODO - перенос в CommonUtils
+        /// <summary>
+        /// Разбор ПД KPZU V06
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static netFteo.Spatial.TMyPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
+        {
+            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
 
 
-          
-      }
-    
-    
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+                EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    /*
+                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    if (ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopointSpecified)
+                        Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;*/
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+            }
+            return EntSpat;
+        }
+        #endregion
+
+    }
+
+
 }
 namespace RRTypes.CommonParsers
 {
@@ -1732,7 +1760,9 @@ namespace RRTypes.CommonParsers
 
                         MainObj.CompozitionEZ.AddEntry(entry.CadastralNumber,
                                                        entry.Area.Area,
-                                                      (RRTypes.CommonCast.CasterZU.ES_ZU(entry.CadastralNumber, entry.EntitySpatial)));
+                                                       6, // для межевого плана входящие только учтеные
+                                                      (RRTypes.CommonCast.CasterZU.ES_ZU(entry.CadastralNumber, 
+                                                      entry.EntitySpatial)));
                     }
                 }
             }
@@ -2561,8 +2591,8 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.EntitySpatial != null)
                 if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    MainObj.EntitySpatial = RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial);
-                     res.MifPolygons.Add(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+                    MainObj.EntitySpatial = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial);
+                     res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
                 }
             //Многоконтурный
             if (kp.Parcel.Contours != null)
@@ -2570,10 +2600,10 @@ namespace RRTypes.CommonParsers
 
                 for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
                 {
-                     res.MifPolygons.Add(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                     res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial));
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -2583,18 +2613,16 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.CompositionEZ.Count > 0)
             {
                 for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
-                // if ( kp.Parcel.CompositionEZ[i].EntitySpatial != null)
                 {
                     MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
-                        kp.Parcel.CompositionEZ[i].Area.Area,
-                        RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                        kp.Parcel.CompositionEZ[i].Area.Area, 
+                        6, //для сведений ЕГРН это всегда "учтеный"
+                        CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
 
 
-                     res.MifPolygons.Add(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                     res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                            kp.Parcel.CompositionEZ[i].EntitySpatial));
-                    //MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaGKN = kp.Parcel.CompositionEZ[i].Area.Area.ToString();
-
                 }
             }
             //Части 
@@ -2610,7 +2638,8 @@ namespace RRTypes.CommonParsers
 
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord, kp.Parcel.SubParcels[i].EntitySpatial);
+                        TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord, 
+                                                                               kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MifPolygons.Add(SlEs);
                     }
