@@ -407,45 +407,8 @@ namespace RRTypes
            }
            return EntSpat;
        }
-       public static netFteo.Spatial.TMyPolygon AddEntSpatKVZU06(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
-       {
 
-           netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
-           EntSpat.Definition = Definition;
-           if (ES == null) { return EntSpat; }
-
-
-           //Первый (внешний) контур
-           for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-           {
-
-               netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-               Point.Status = 1;
-               Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-               Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-               Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-               Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
-               EntSpat.AddPoint(Point);
-           }
-           //Внутренние контура
-           for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-           {
-               netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
-               for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-               {
-
-                   netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                   Point.Status = 1;
-                   Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-                   Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-                   Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                   Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
-                   InLayer.AddPoint(Point);
-               }
-           }
-           return EntSpat;
-       }
-       #endregion
+   #endregion
         
     }
 }

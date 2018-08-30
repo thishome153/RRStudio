@@ -2694,6 +2694,7 @@ namespace XMLReaderCS
                         ListViewItem addedItem = LV.Items.Add(LVipg);
                     }
                     else LV.Controls.Clear();
+
                     if (P.AreaValue != null)
                     {
                         ListViewItem LVipgv = new ListViewItem();
@@ -2701,7 +2702,26 @@ namespace XMLReaderCS
                         LVipgv.SubItems.Add(P.AreaValue);
                         LVipgv.SubItems.Add("кв.м.");
                         LV.Items.Add(LVipgv);
+
                     }
+
+                    //отобразим отклонение в площади выичсленной и указанной
+                    try
+                    {
+                        ListViewItem LVip3d = new ListViewItem();
+                        double area = Convert.ToDouble(P.AreaValue);
+                        LVip3d.Text = "Δ";
+                        LVip3d.SubItems.Add((P.Area_float - area).ToString("0.00"));
+                        LVip3d.SubItems.Add("кв.м");
+                        LV.Items.Add(LVip3d);
+                    }
+                    catch
+                    {
+
+                    }
+
+
+
                     ListViewItem LVip = new ListViewItem();
                     LVip.Text = "Площадь ГКН";
                     LVip.SubItems.Add(P.AreaGKN);

@@ -1540,8 +1540,8 @@ namespace RRTypes.CommonCast
           }
         #endregion
 
-        #region Cast KPZU V06
-        private static Point GetUnit(kpzu06.tSpelementUnitZUOut  unit)
+        #region SpelementUnitZUOut parsers
+        private static Point GetUnit(kpzu06.tSpelementUnitZUOut unit)
         {
 
             netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
@@ -1558,6 +1558,64 @@ namespace RRTypes.CommonCast
 
             return Point;
         }
+
+        private static Point GetUnit(kvzu07.tSpelementUnitZUOut unit)
+        {
+
+            netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
+
+            return Point;
+        }
+
+        public  static Point GetUnit(kpt09.tSpelementUnitZUOut unit)
+        {
+
+            netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
+
+            return Point;
+        }
+
+        public  static Point GetUnit(kpt10_un.tSpelementUnitZUOut unit)
+        {
+
+            netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
+
+            return Point;
+        }
+        #endregion
+
+        #region Cast KPZU V06
+        
         //TODO - перенос в CommonUtils
         /// <summary>
         /// Разбор ПД KPZU V06
@@ -1595,6 +1653,54 @@ namespace RRTypes.CommonCast
             }
             return EntSpat;
         }
+       
+        /// <summary>
+        /// Разбор ПД KVZU V07
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static netFteo.Spatial.TMyPolygon AddEntSpatKVZU07(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
+        {
+
+            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+                /*
+                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                Point.Status = 1;
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
+                */
+                EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    /*
+                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    Point.Status = 1;
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                    */
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+            }
+            return EntSpat;
+        }
+
         #endregion
 
     }
@@ -2720,10 +2826,10 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    MainObj.EntitySpatial = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
+                    MainObj.EntitySpatial = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial);
                     MainObj.EntitySpatial.Parent_Id = MainObj.id;
-                    res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
+                    res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial));
                 }
             //Многоконтурный
@@ -2732,9 +2838,9 @@ namespace RRTypes.CommonParsers
                 // ??? MainObj.Contours.Parent_id = MainObj.id;
                 for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
                 {
-                    res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial));
                     NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
                 }
@@ -2746,12 +2852,12 @@ namespace RRTypes.CommonParsers
                 // if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
                 {
                     MainObj.CompozitionEZ.AddPolygon(
-                                                  RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+                                                  RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
                                                                                          kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
                     MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
                     MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
 
-                    res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+                    res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
                                                            kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
                     MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
                 }
@@ -2767,7 +2873,7 @@ namespace RRTypes.CommonParsers
                         Sl.Encumbrance = RRTypes.KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance);
                     if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
+                        TMyPolygon SlEs = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MifPolygons.Add(SlEs);
                     }
@@ -2793,7 +2899,7 @@ namespace RRTypes.CommonParsers
                 for (int i = 0; i <= kv.Parcels.OffspringParcel.Count() - 1; i++)
                 {
                     TMyParcel OffObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
-                    OffObj.EntitySpatial = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.OffspringParcel[i].CadastralNumber,
+                    OffObj.EntitySpatial = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.OffspringParcel[i].CadastralNumber,
                                                                                   kv.Parcels.OffspringParcel[i].EntitySpatial);
                     OffObj.State = "Item05";
                 }

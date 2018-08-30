@@ -88,7 +88,8 @@ namespace RRTypes
 
             }
         }
-       
+
+   
         public static TMyPolygon AddEntSpatKPT10(string Definition, tEntitySpatialZUOut ES)
         {
             {
@@ -99,15 +100,9 @@ namespace RRTypes
                 //Первый (внешний) контур
                 for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
                 {
-
-                    Point Point = new Point();
-                    Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-                    Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-                    Point.oldX = Point.x; Point.oldY = Point.y;
-                    if (ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopointSpecified)
-                    Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                    Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
-                    EntSpat.AddPoint(Point);
+                   
+                    
+                    EntSpat.AddPoint(CommonCast.CasterZU.GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
                 }
                 //Внутренние контура
                 for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
@@ -117,15 +112,8 @@ namespace RRTypes
                    // InLayer.Layer_id = Ingen.Next();
                     for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                     {
-
-                        Point Point = new Point();
-                        Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-                        Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-                        Point.oldX = Point.x; Point.oldY = Point.y;
-                        if (ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopointSpecified)
-                            Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                        Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
-                        InLayer.AddPoint(Point);
+                       
+                        InLayer.AddPoint(CommonCast.CasterZU.GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                     }
                 }
                 return EntSpat;
