@@ -5499,13 +5499,6 @@ namespace XMLReaderCS
                         //подключим обработчик события
                         P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 
-                        /*
-                        TMyPolygon Poly2 = new TMyPolygon("Second");
-                        Poly2.AddPoint(new Point(559085.55, 1306393.08, "21"));
-                        Poly2.AddPoint(new Point(559085.55, 1305928.03, "22"));
-                        Poly2.AddPoint(new Point(558906.27, 1305928.03, "23"));
-                        Poly2.AddPoint(new Point(558906.27, 1306391.73, "24"));
-                        */
                         netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
                         TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
 
@@ -5514,13 +5507,13 @@ namespace XMLReaderCS
                         toolStripProgressBar1.Value = 0;
 
                         PointList res = new PointList();
-                        //P.CompozitionEZ.CheckES(polyfromMIF);
-                        res.AppendPoints(P.CompozitionEZ.CheckES(polyfromMIF));
+                      
+                        res.AppendPoints(P.CompozitionEZ.CheckESs(polyfromMIF));
 
                         //Если пересечения не найдены - то общие точки:
                         if (res.PointCount == 0)
                         { PointList resCommon = new PointList();
-                            resCommon.AppendPoints(P.CompozitionEZ.CheckCommon(polyfromMIF));
+                           // resCommon.AppendPoints(P.CompozitionEZ.CheckCommon(polyfromMIF));
                             //Если есть общие точки - возможны накрытия через узлы ! 
                         }
 
