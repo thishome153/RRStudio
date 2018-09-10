@@ -1446,6 +1446,8 @@ namespace RRTypes.CommonCast
         /// <returns></returns>
         public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
           {
+            if (ES.SpatialElement.Count == 0) return null;
+
               netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
               EntSpat.Definition = Definition;
 
@@ -1462,29 +1464,7 @@ namespace RRTypes.CommonCast
 
                   for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                   {
-                    /*
 
-                      netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                      if (ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate != null)
-                      {
-                          Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.X);
-                          Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.Y);
-                          Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
-                          Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.NumGeopoint;
-                      }
-                      else // указана только OldOrdinate - точка ликвидируется
-                           //это "л", имя берем из старой ординаты
-                      {
-                          Point.NumGeopointA = "л " + ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate.NumGeopoint;
-                          Point.Status = 6;
-                      }
-
-                      if (ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate != null)
-                      {
-                          Point.oldX = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate.X);
-                          Point.oldY = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].OldOrdinate.Y);
-                      }
-                      */
                       if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) // только точки с новыми/уточняемымыи/сущесствующими коорд
                         InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                   }
@@ -1493,6 +1473,7 @@ namespace RRTypes.CommonCast
               if (EntSpat.HasChanges == "*") EntSpat.State = 0; else EntSpat.State = 4;
               return EntSpat;
           }
+
         public static TMyPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
           {
 
