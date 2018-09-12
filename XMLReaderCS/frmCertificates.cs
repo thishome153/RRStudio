@@ -11,6 +11,7 @@ using System.Security.Permissions;
 using System.Security.Cryptography;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Pkcs;
 
 
    
@@ -35,7 +36,7 @@ namespace XMLReaderCS
 
         private X509Certificate2 UpdateCertificateInfo(string serial)
         {
-            listView1.Items.Clear();
+            listView_Details.Items.Clear();
             datatable.Rows.Clear();
             toolStripButton1.Enabled = false; toolStripButton3.Enabled = false;
             X509Certificate2 x509 = netFteo.IO.CryptographyWrapper.GetCertBySerial(serial);
@@ -47,22 +48,22 @@ namespace XMLReaderCS
                 */
                 ListViewItem sub = new ListViewItem("Субьект");
                 sub.SubItems.Add(x509.GetNameInfo(X509NameType.SimpleName, false));
-                listView1.Items.Add(sub);
+                listView_Details.Items.Add(sub);
                 ListViewItem subIS = new ListViewItem("Издатель");
                 subIS.SubItems.Add(x509.GetNameInfo(X509NameType.SimpleName, true));
-                listView1.Items.Add(subIS);
+                listView_Details.Items.Add(subIS);
                 ListViewItem subExp = new ListViewItem("Срок действия");
                 subExp.SubItems.Add(x509.GetExpirationDateString());
-                listView1.Items.Add(subExp);
+                listView_Details.Items.Add(subExp);
 
 
                 ListViewItem subExp2 = new ListViewItem("Алгоритм");
                 subExp2.SubItems.Add(x509.SignatureAlgorithm.FriendlyName);
-                listView1.Items.Add(subExp2);
+                listView_Details.Items.Add(subExp2);
 
                 ListViewItem subExp22 = new ListViewItem("Сер. номер");
                 subExp22.SubItems.Add(serial);
-                listView1.Items.Add(subExp22);
+                listView_Details.Items.Add(subExp22);
 
                 //szOID_RSA_MD5RSA   "1.2.840.113549.1.1.4"
                 if ((x509.SignatureAlgorithm.Value == "1.2.840.113549.1.1.4")
@@ -73,7 +74,7 @@ namespace XMLReaderCS
 
                     ListViewItem subExp21 = new ListViewItem("CSP");
                     subExp21.SubItems.Add(cinfo.ProviderName);
-                    listView1.Items.Add(subExp21);
+                    listView_Details.Items.Add(subExp21);
 
                 }
 
@@ -154,7 +155,8 @@ namespace XMLReaderCS
             datatable.Rows.Add("-", "-", "-");
             */
             listView_certs.Items.Clear();
-            foreach(X509Certificate2 cert in certs)
+            listView_Details.Items.Clear();
+            foreach (X509Certificate2 cert in certs)
             {
                 ListViewItem certItem = new ListViewItem(cert.GetNameInfo(X509NameType.SimpleName, false));
                 certItem.Tag = cert.GetSerialNumberString();
