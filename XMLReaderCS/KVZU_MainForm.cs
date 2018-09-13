@@ -4435,6 +4435,7 @@ namespace XMLReaderCS
                     {
                         netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
                         TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Pl);
+                        
                     }
                 }
             }
@@ -4449,6 +4450,7 @@ namespace XMLReaderCS
                     {
                         netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
                         TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Lot.CompozitionEZ);
+
                     }
                 }
             }
