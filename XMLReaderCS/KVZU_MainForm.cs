@@ -4444,7 +4444,7 @@ namespace XMLReaderCS
         }
         
         
-        #region SaveAs Text (FixosoftTXT2016, Rights)
+        #region SaveAs Text (FixosoftTXT2018, Rights)
         private void toolStripMenuItem2_Click_1(object sender, EventArgs e)
         {
             saveFileDialog1.FilterIndex = 2;
@@ -4494,7 +4494,7 @@ namespace XMLReaderCS
                 }
             }
 
-
+          //если полилиния
           if (TV_Parcels.SelectedNode.Name.Contains("TPLines."))
           {
               TPolyLines Plist = (TPolyLines)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
