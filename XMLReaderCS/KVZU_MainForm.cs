@@ -181,7 +181,7 @@ namespace XMLReaderCS
         /// </summary>
         private void OpenFile()
         {
-            openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;*.mif";
+            openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;*.mif;*.txt";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
                 Read(openFileDialog1.FileName);
@@ -536,6 +536,29 @@ namespace XMLReaderCS
                 if (polyfromMIF.Count == 1)
                 {
                     MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01"); 
+                    MainObj.EntitySpatial = polyfromMIF[0];
+                }
+                else
+                    MainObj.Contours.AddPolygons(polyfromMIF);
+
+                this.DocInfo.MyBlocks.Blocks.Clear();
+                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            }
+
+            if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
+            {
+                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+                TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(openFileDialog1.FileName);
+
+                // Virtual Parcel with contours:
+                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                Bl.CN = "Полигоны txt";
+
+                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(openFileDialog1.FileName), "Item05"));
+                if (polyfromMIF.Count == 1)
+                {
+                    MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
                     MainObj.EntitySpatial = polyfromMIF[0];
                 }
                 else
@@ -4434,7 +4457,7 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
                         netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                        TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Pl);
+                        TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, Pl, Encoding.Unicode);
                         
                     }
                 }
@@ -4449,7 +4472,8 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
                         netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                        TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Lot.CompozitionEZ);
+                        //TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Lot.CompozitionEZ);
+                        TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, Lot.CompozitionEZ, Encoding.Unicode);
 
                     }
                 }
@@ -4464,7 +4488,8 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
                         netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                        TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Pl);
+                        //TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, Pl);
+                        TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, Pl, Encoding.Unicode);
                     }
                 }
             }

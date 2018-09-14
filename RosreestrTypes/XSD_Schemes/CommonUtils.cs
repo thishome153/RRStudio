@@ -1416,8 +1416,12 @@ namespace RRTypes.CommonCast
                     Point.Status = 4;
                 }
 
-                Point.x = Convert.ToDouble(unit.NewOrdinate.X);
-                Point.y = Convert.ToDouble(unit.NewOrdinate.Y);
+                if (unit.NewOrdinate != null)
+                {
+                    Point.x = Convert.ToDouble(unit.NewOrdinate.X);
+                    Point.y = Convert.ToDouble(unit.NewOrdinate.Y);
+                }
+
                 Point.Mt = Convert.ToDouble(unit.NewOrdinate.DeltaGeopoint);
                 //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
                 Point.Pref = unit.NewOrdinate.PointPref;
@@ -1453,7 +1457,9 @@ namespace RRTypes.CommonCast
 
               //Первый (внешний) контур
               for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-              {  if ((ES.SpatialElement[0].SpelementUnit[iord]).NewOrdinate != null) // только точки с новыми/уточняемымыи/сущесствующими коорд
+              {  //TODO 
+                // if ((ES.SpatialElement[0].SpelementUnit[iord]).NewOrdinate != null) 
+                // только точки с новыми/уточняемымыи/сущесствующими коорд
                   EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
               }
 
@@ -1464,8 +1470,9 @@ namespace RRTypes.CommonCast
 
                   for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                   {
-
-                      if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) // только точки с новыми/уточняемымыи/сущесствующими коорд
+                    //TODO
+                    // только точки с новыми/уточняемымыи/сущесствующими коорд
+                    //if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) 
                         InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                   }
               }

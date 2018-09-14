@@ -224,7 +224,7 @@
             {
                 if (Path.GetExtension(sourceFileName.StringResult).Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    ed.WriteMessage("\nИмпорт Текстового файла (Fixosoft2014, 2015, 2016)");
+                    ed.WriteMessage("\nИмпорт текстового файла (Fixosoft2014, 2015, 2016, 2018)");
                     try
                     {
                         netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();
@@ -432,91 +432,73 @@
             tr.AddNewlyCreatedDBObject(polyline, true);
             return Pline_id;
         }
-        private ObjectId Create2dPolygon(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.PointList Layer)
-        {
-            Polyline2d polyline = new Polyline2d();
-            
-            polyline.SetLayerId(ltPolyid, true);
 
-            for (int i = 0; i <= Layer.Count - 1; i++)
-            {
-                DBPoint point = new DBPoint(new Point3d(Layer[i].y, Layer[i].x, Layer[i].z));
-                point.SetLayerId(ltPId, true);
-
-                DBText PointName = new DBText();
-                string Descriptor = Layer[i].Description;
-                if (Layer[i].Description == "-") Descriptor = "";
-                if (Layer[i].Description == "") Descriptor = "";
-                if (Layer[i].Description == null) Descriptor = "";
-                PointName.TextString = Layer[i].NumGeopointA;
-                PointName.Height = 2;
-                PointName.SetLayerId(ltId, true);
-                PointName.Position = new Point3d(Layer[i].y, Layer[i].x, Layer[i].z);
-
-                 Vertex2d Vert = new Vertex2d();
-                 Vert.Position = point.Position;
-                 polyline.AppendVertex(Vert);
-
-                point.TransformBy(ucsMatrix.Inverse());
-                PointName.TransformBy(ucsMatrix.Inverse());
-
-                // Append the point to the database
-                btr.AppendEntity(point);
-                btr.AppendEntity(PointName);
-
-                // Add the object to the transaction
-                tr.AddNewlyCreatedDBObject(point, true);
-                tr.AddNewlyCreatedDBObject(PointName, true);
-
-            }
-            polyline.TransformBy(ucsMatrix.Inverse());
-            ObjectId Pline_id = btr.AppendEntity(polyline);
-            tr.AddNewlyCreatedDBObject(polyline, true);
-            return Pline_id;
-        }
 
         private ObjectId CreatePolygon(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.PointList Layer)
         {
             Polyline polyline = new Polyline();
-
+            Polyline polylineOld = new Polyline(); //  for old ordinates
+            int oldlinePosition = 0;
+            int newlinePosition = 0;
             polyline.SetLayerId(ltPolyid, true);
+            polylineOld.SetLayerId(ltPolyid, true);
+            double xx;
+            double yy;
 
             for (int i = 0; i <= Layer.Count - 1; i++)
             {
-                DBPoint point = new DBPoint(new Point3d(Layer[i].y, Layer[i].x, Layer[i].z));
-                point.SetLayerId(ltPId, true);
+                if (!Double.IsNaN(Layer[i].oldX))
+                {
+                    polylineOld.AddVertexAt(oldlinePosition++, new Point2d(Layer[i].oldY, Layer[i].oldX), 0, 0, 0);
+                }
 
-                DBText PointName = new DBText();
-                string Descriptor = Layer[i].Description;
-                if (Layer[i].Description == "-") Descriptor = "";
-                if (Layer[i].Description == "") Descriptor = "";
-                if (Layer[i].Description == null) Descriptor = "";
-                //if (Layer[i].NumGeopointA.Substring(0, 1) == ("н"))
-                  // PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor + "Новая!";                else 
-                PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor;
-                PointName.Height = 2;
-                PointName.SetLayerId(ltId, true);
-                PointName.Position = new Point3d(Layer[i].y, Layer[i].x, Layer[i].z);
 
-               // Vertex2d Vert = new Vertex2d();
-                //Vert.Position = point.Position;
-                polyline.AddVertexAt(i, new Point2d(Layer[i].y, Layer[i].x), 0, 0, 0);
+                if (!Double.IsNaN(Layer[i].y))
+                {
+                    yy = Layer[i].y;
+                    xx = Layer[i].x;
+                    polyline.AddVertexAt(newlinePosition++, new Point2d(yy, xx), 0, 0, 0);
+                    DBPoint point = new DBPoint(new Point3d(yy, xx, 0));
+                    point.SetLayerId(ltPId, true);
+                    point.TransformBy(ucsMatrix.Inverse());
+                    btr.AppendEntity(point);
+                    tr.AddNewlyCreatedDBObject(point, true);
+                }
+                else  // accept old ord
+                {
+                    yy = Layer[i].oldY;
+                    xx = Layer[i].oldX;
+                }
 
-                point.TransformBy(ucsMatrix.Inverse());
-                PointName.TransformBy(ucsMatrix.Inverse());
 
-                // Append the point to the database
-                btr.AppendEntity(point);
-                btr.AppendEntity(PointName);
 
-                // Add the object to the transaction
-                tr.AddNewlyCreatedDBObject(point, true);
-                tr.AddNewlyCreatedDBObject(PointName, true);
+                    DBText PointName = new DBText();
+                    string Descriptor = Layer[i].Description;
+                    if (Layer[i].Description == "-") Descriptor = "";
+                    if (Layer[i].Description == "") Descriptor = "";
+                    if (Layer[i].Description == null) Descriptor = "";
+                    //if (Layer[i].NumGeopointA.Substring(0, 1) == ("н"))
+                    // PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor + "Новая!";                else 
+                    PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor;
+                    PointName.Height = 2;
+                    PointName.SetLayerId(ltId, true);
+                    PointName.Position = new Point3d(yy, xx, 0);
+                    PointName.TransformBy(ucsMatrix.Inverse());
+                    // Append the point to the database
+
+                    btr.AppendEntity(PointName);
+
+                    // Add the object to the transaction
+                    tr.AddNewlyCreatedDBObject(PointName, true);
 
             }
+
             polyline.TransformBy(ucsMatrix.Inverse());
+            polylineOld.TransformBy(ucsMatrix.Inverse());
             ObjectId Pline_id = btr.AppendEntity(polyline);
+                                btr.AppendEntity(polylineOld);
             tr.AddNewlyCreatedDBObject(polyline, true);
+            tr.AddNewlyCreatedDBObject(polylineOld, true);
             return Pline_id;
         }
             //Создать отмывку границы
@@ -569,51 +551,99 @@
             }
         }
 
-        private ObjectId Create3dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
+        #region Deprecated routines
+        /*
+                 private ObjectId Create2dPolygon(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.PointList Layer)
         {
+            Polyline2d polyline = new Polyline2d();
+            
+            polyline.SetLayerId(ltPolyid, true);
 
-            DBText PolygonName = new DBText();
-            PolygonName.TextString = Layer.Definition;
-            PolygonName.Height = 2;
-            PolygonName.SetLayerId(ltId, true);
-            PolygonName.Position = new Point3d(Layer.AverageCenter.y,Layer.AverageCenter.x,Layer.AverageCenter.z);
-            PolygonName.TransformBy(ucsMatrix.Inverse());
-            // Append the point to the database
-             btr.AppendEntity(PolygonName);
-            // Add the object to the transaction
-            tr.AddNewlyCreatedDBObject(PolygonName, true);
-
-           ObjectId res = Create3dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer);
-            for (int ic = 0; ic <= Layer.Childs.Count - 1; ic++)
+            for (int i = 0; i <= Layer.Count - 1; i++)
             {
-              Create3dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer.Childs[ic]);
+                DBPoint point = new DBPoint(new Point3d(Layer[i].y, Layer[i].x, Layer[i].z));
+                point.SetLayerId(ltPId, true);
+
+                DBText PointName = new DBText();
+                string Descriptor = Layer[i].Description;
+                if (Layer[i].Description == "-") Descriptor = "";
+                if (Layer[i].Description == "") Descriptor = "";
+                if (Layer[i].Description == null) Descriptor = "";
+                PointName.TextString = Layer[i].NumGeopointA;
+                PointName.Height = 2;
+                PointName.SetLayerId(ltId, true);
+                PointName.Position = new Point3d(Layer[i].y, Layer[i].x, Layer[i].z);
+
+                 Vertex2d Vert = new Vertex2d();
+                 Vert.Position = point.Position;
+                 polyline.AppendVertex(Vert);
+
+                point.TransformBy(ucsMatrix.Inverse());
+                PointName.TransformBy(ucsMatrix.Inverse());
+
+                // Append the point to the database
+                btr.AppendEntity(point);
+                btr.AppendEntity(PointName);
+
+                // Add the object to the transaction
+                tr.AddNewlyCreatedDBObject(point, true);
+                tr.AddNewlyCreatedDBObject(PointName, true);
+
             }
-
-            return res;
+            polyline.TransformBy(ucsMatrix.Inverse());
+            ObjectId Pline_id = btr.AppendEntity(polyline);
+            tr.AddNewlyCreatedDBObject(polyline, true);
+            return Pline_id;
         }
-        private ObjectId Create2dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
-        {
+                private ObjectId Create3dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
+                {
 
-            DBText PolygonName = new DBText();
-            PolygonName.TextString = Layer.Definition;
-            PolygonName.Height = 2;
-            PolygonName.SetLayerId(ltId, true);
-            PolygonName.Position = new Point3d(Math.Abs(Layer.AverageCenter.y), Math.Abs(Layer.AverageCenter.x), Layer.AverageCenter.z);
-            PolygonName.TransformBy(ucsMatrix.Inverse());
-            // Append the point to the database
-            btr.AppendEntity(PolygonName);
-            // Add the object to the transaction
-            tr.AddNewlyCreatedDBObject(PolygonName, true);
+                    DBText PolygonName = new DBText();
+                    PolygonName.TextString = Layer.Definition;
+                    PolygonName.Height = 2;
+                    PolygonName.SetLayerId(ltId, true);
+                    PolygonName.Position = new Point3d(Layer.AverageCenter.y,Layer.AverageCenter.x,Layer.AverageCenter.z);
+                    PolygonName.TransformBy(ucsMatrix.Inverse());
+                    // Append the point to the database
+                     btr.AppendEntity(PolygonName);
+                    // Add the object to the transaction
+                    tr.AddNewlyCreatedDBObject(PolygonName, true);
 
-            ObjectId res = Create2dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer);
-            for (int ic = 0; ic <= Layer.Childs.Count - 1; ic++)
-            {
-                Create2dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer.Childs[ic]);
-            }
+                   ObjectId res = Create3dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer);
+                    for (int ic = 0; ic <= Layer.Childs.Count - 1; ic++)
+                    {
+                      Create3dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer.Childs[ic]);
+                    }
 
-            return res;
-        }
-            //Главная процедура генерации
+                    return res;
+                }
+                private ObjectId Create2dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
+                {
+
+                    DBText PolygonName = new DBText();
+                    PolygonName.TextString = Layer.Definition;
+                    PolygonName.Height = 2;
+                    PolygonName.SetLayerId(ltId, true);
+                    PolygonName.Position = new Point3d(Math.Abs(Layer.AverageCenter.y), Math.Abs(Layer.AverageCenter.x), Layer.AverageCenter.z);
+                    PolygonName.TransformBy(ucsMatrix.Inverse());
+                    // Append the point to the database
+                    btr.AppendEntity(PolygonName);
+                    // Add the object to the transaction
+                    tr.AddNewlyCreatedDBObject(PolygonName, true);
+
+                    ObjectId res = Create2dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer);
+                    for (int ic = 0; ic <= Layer.Childs.Count - 1; ic++)
+                    {
+                        Create2dPolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer.Childs[ic]);
+                    }
+
+                    return res;
+                }
+                 */
+        #endregion
+
+
+        //Главная процедура генерации
         private ObjectId CreatePolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, 
                                                                 Transaction tr, 
                                                            ObjectId ltPolyid, // id слоя с полигоном
@@ -636,7 +666,7 @@
             ObjectId res = CreatePolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer);
                            CreateCircle(ucsMatrix, btr, tr, ltCircleId, Layer);
                            MapsColor(ucsMatrix, btr, tr, ltColorsId, Layer);
-
+            //childs
             for (int ic = 0; ic <= Layer.Childs.Count - 1; ic++)
             {
                 CreatePolygon(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, Layer.Childs[ic]);
@@ -652,7 +682,7 @@
         {
             for (int i = 0; i <= Layer.Count - 1; i++)
             {
-               Point3d center = new Point3d(Layer[i].y, Layer[i].x, Layer[i].z);
+               Point3d center = new Point3d(Layer[i].y, Layer[i].x, 0);
                Vector3d normal = new Vector3d(0.0, 0.0, 1.0);
                 Circle circle = new Circle(center, normal, 0.75);
                 circle.SetLayerId(ltCircId, true);
