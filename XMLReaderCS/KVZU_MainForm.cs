@@ -568,6 +568,8 @@ namespace XMLReaderCS
                 this.DocInfo.MyBlocks.Blocks.Clear();
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
                 this.DocInfo.DocTypeNick = "Текстовый файл";
+                this.DocInfo.CommentsType = "TXT";
+                this.DocInfo.Comments = mifreader.Body;
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             }
 
@@ -4107,8 +4109,7 @@ namespace XMLReaderCS
             richTextBox1.Clear();
             listView1.Controls.Clear();
             listView1.Items.Clear();
-
-            contextMenuStrip_SaveAs.Enabled = false;
+             contextMenuStrip_SaveAs.Enabled = false;
             listView_Contractors.Items.Clear();
             TV_Parcels.Nodes.Clear();
             TV_Parcels.ImageIndex = imList_dStates.Images.Count;
@@ -4119,6 +4120,8 @@ namespace XMLReaderCS
             {
                 this.DocInfo.FileName = null;
                 this.DocInfo.FilePath = null;
+                this.DocInfo.Comments = null;
+                this.DocInfo.Version = null;
             }
             textBox_Appointment.Text = "";
             textBox_DocDate.Text = "";
