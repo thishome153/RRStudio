@@ -543,8 +543,9 @@ namespace XMLReaderCS
 
                 this.DocInfo.MyBlocks.Blocks.Clear();
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.DocTypeNick = "Mapinfo mif";
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-            }
+              }
 
             if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
             {
@@ -566,6 +567,7 @@ namespace XMLReaderCS
 
                 this.DocInfo.MyBlocks.Blocks.Clear();
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.DocTypeNick = "Текстовый файл";
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             }
 
@@ -621,6 +623,7 @@ namespace XMLReaderCS
                         textBox_FIO.Text += "\n ЭЦП= " + sig;
 
             }
+            ListFileInfo(DocInfo);
         }
 
 
@@ -1811,6 +1814,7 @@ namespace XMLReaderCS
         {
             label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
             textBox_DocNum.Text = fileinfo.Number;
+            if (fileinfo.Date != null)
             textBox_DocDate.Text = fileinfo.Date.ToString();
             textBox_OrgName.Text = fileinfo.Cert_Doc_Organization;
             textBox_Appointment.Text = fileinfo.Appointment;
