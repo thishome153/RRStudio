@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfteo3.5|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\netfteo3.5\</OutputPath>
+    <OutputPath>C:\Program Files\Fixosoft\netfteo\NET35\Win32-Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
