@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xsd:element name="TMyPolygon">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Points">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="TmyPointO">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="fid" type="xsd:unsignedByte" />
+                    <xsd:element name="Borderid" type="xsd:unsignedByte" />
+                    <xsd:element name="fStatus" type="xsd:unsignedByte" />
+                    <xsd:element name="NumGeopoint" type="xsd:unsignedByte" />
+                    <xsd:element name="Order" type="xsd:unsignedByte" />
+                    <xsd:element name="NumGeopointA" type="xsd:unsignedShort" />
+                    <xsd:element name="x" type="xsd:decimal" />
+                    <xsd:element name="y" type="xsd:decimal" />
+                    <xsd:element name="z" type="xsd:unsignedByte" />
+                    <xsd:element name="Mt" type="xsd:decimal" />
+                    <xsd:element name="id" type="xsd:unsignedByte" />
+                    <xsd:element name="Status" type="xsd:unsignedByte" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Parent_Id" type="xsd:unsignedByte" />
+        <xsd:element name="Definition" type="xsd:string" />
+        <xsd:element name="Layer_id" type="xsd:unsignedByte" />
+        <xsd:element name="Childs">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="TMyOutLayer">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Points">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element maxOccurs="unbounded" name="TmyPointO">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="fid" type="xsd:unsignedByte" />
+                                <xsd:element name="Borderid" type="xsd:unsignedByte" />
+                                <xsd:element name="fStatus" type="xsd:unsignedByte" />
+                                <xsd:element name="NumGeopoint" type="xsd:unsignedByte" />
+                                <xsd:element name="Order" type="xsd:unsignedByte" />
+                                <xsd:element name="NumGeopointA" type="xsd:unsignedShort" />
+                                <xsd:element name="x" type="xsd:decimal" />
+                                <xsd:element name="y" type="xsd:decimal" />
+                                <xsd:element name="z" type="xsd:unsignedByte" />
+                                <xsd:element name="Mt" type="xsd:decimal" />
+                                <xsd:element name="id" type="xsd:unsignedByte" />
+                                <xsd:element name="Status" type="xsd:unsignedByte" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Parent_Id" type="xsd:unsignedByte" />
+                    <xsd:element name="Layer_id" type="xsd:unsignedByte" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xs:schema>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TMyPoints" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TMyPoints" msdata:IsDataSet="true" msdata:Locale="en-US" msprop:Generator_DataSetName="TMyPoints" msprop:Generator_UserDSName="TMyPoints">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PointList" msprop:Generator_TableClassName="PointListDataTable" msprop:Generator_TableVarName="tablePointList" msprop:Generator_TablePropName="PointList" msprop:Generator_RowDeletingName="PointListRowDeleting" msprop:Generator_UserTableName="PointList" msprop:Generator_RowChangingName="PointListRowChanging" msprop:Generator_RowEvHandlerName="PointListRowChangeEventHandler" msprop:Generator_RowDeletedName="PointListRowDeleted" msprop:Generator_RowEvArgName="PointListRowChangeEvent" msprop:Generator_RowChangedName="PointListRowChanged" msprop:Generator_RowClassName="PointListRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TmyPointO" msprop:Generator_TableClassName="TmyPointODataTable" msprop:Generator_TableVarName="tableTmyPointO" msprop:Generator_TablePropName="TmyPointO" msprop:Generator_RowDeletingName="TmyPointORowDeleting" msprop:Generator_UserTableName="TmyPointO" msprop:Generator_RowChangingName="TmyPointORowChanging" msprop:Generator_RowEvHandlerName="TmyPointORowChangeEventHandler" msprop:Generator_RowDeletedName="TmyPointORowDeleted" msprop:Generator_RowEvArgName="TmyPointORowChangeEvent" msprop:Generator_RowChangedName="TmyPointORowChanged" msprop:Generator_RowClassName="TmyPointORow" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" msprop:Generator_UserColumnName="id" type="xs:string" minOccurs="0" />
+                    <xs:element name="Borderid" msprop:Generator_ColumnVarNameInTable="columnBorderid" msprop:Generator_ColumnPropNameInRow="Borderid" msprop:Generator_ColumnPropNameInTable="BorderidColumn" msprop:Generator_UserColumnName="Borderid" type="xs:string" minOccurs="0" />
+                    <xs:element name="Status" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" msprop:Generator_UserColumnName="Status" type="xs:string" minOccurs="0" />
+                    <xs:element name="NumGeopointA" msprop:Generator_ColumnVarNameInTable="columnNumGeopointA" msprop:Generator_ColumnPropNameInRow="NumGeopointA" msprop:Generator_ColumnPropNameInTable="NumGeopointAColumn" msprop:Generator_UserColumnName="NumGeopointA" type="xs:string" minOccurs="0" />
+                    <xs:element name="Code" msprop:Generator_ColumnVarNameInTable="columnCode" msprop:Generator_ColumnPropNameInRow="Code" msprop:Generator_ColumnPropNameInTable="CodeColumn" msprop:Generator_UserColumnName="Code" type="xs:string" minOccurs="0" />
+                    <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" type="xs:string" minOccurs="0" />
+                    <xs:element name="z" msprop:Generator_ColumnVarNameInTable="columnz" msprop:Generator_ColumnPropNameInRow="z" msprop:Generator_ColumnPropNameInTable="zColumn" msprop:Generator_UserColumnName="z" type="xs:string" minOccurs="0" />
+                    <xs:element name="y" msprop:Generator_ColumnVarNameInTable="columny" msprop:Generator_ColumnPropNameInRow="y" msprop:Generator_ColumnPropNameInTable="yColumn" msprop:Generator_UserColumnName="y" type="xs:string" minOccurs="0" />
+                    <xs:element name="x" msprop:Generator_ColumnVarNameInTable="columnx" msprop:Generator_ColumnPropNameInRow="x" msprop:Generator_ColumnPropNameInTable="xColumn" msprop:Generator_UserColumnName="x" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                  <xs:attribute name="PointList_Id" msprop:Generator_ColumnVarNameInTable="columnPointList_Id" msprop:Generator_ColumnPropNameInRow="PointList_Id" msprop:Generator_ColumnPropNameInTable="PointList_IdColumn" msprop:Generator_UserColumnName="PointList_Id" type="xs:int" use="prohibited" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="list_id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnlist_id" msprop:Generator_ColumnPropNameInRow="list_id" msprop:Generator_ColumnPropNameInTable="list_idColumn" msprop:Generator_UserColumnName="list_id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//PointList" />
+      <xs:field xpath="@list_id" />
+    </xs:unique>
+    <xs:keyref name="PointList_TmyPointO" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="TmyPointO" msprop:rel_Generator_ChildPropName="GetTmyPointORows" msprop:rel_Generator_ParentPropName="PointListRow" msprop:rel_Generator_UserRelationName="PointList_TmyPointO" msprop:rel_Generator_RelationVarName="relationPointList_TmyPointO" msprop:rel_Generator_UserParentTable="PointList">
+      <xs:selector xpath=".//TmyPointO" />
+      <xs:field xpath="@PointList_Id" />
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

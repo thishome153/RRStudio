@@ -1,0 +1,161 @@
+ public interface IPoint : IGeometry, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
+    {
+        double X { get; set; }
+        double Y { get; set; }
+        double Z { get; set; }
+        double M { get; set; }
+        ICoordinateSequence CoordinateSequence { get; }
+
+    }
+
+public interface IGeometry :
+
+
+  public abstract class Geometry : IGeometry
+    {
+ private int _srid;
+   public int SRID
+        
+{
+            get => _srid;
+            
+set
+            {
+
+                _srid = value;
+}
+
+
+
+public interface ICoordinate : ICloneable, IComparable, IComparable<ICoordinate>
+    {
+        //
+        // Summary:
+        //     Gets or sets the GeoAPI.Geometries.Ordinate value of this GeoAPI.Geometries.ICoordinate
+        //
+        // Parameters:
+        //   index:
+        //     The GeoAPI.Geometries.Ordinate index
+        double this[Ordinate index] { get; set; }
+
+        //
+        // Summary:
+        //     The x-ordinate value
+        double X { get; set; }
+        //
+        // Summary:
+        //     The y-ordinate value
+        double Y { get; set; }
+        //
+        // Summary:
+        //     The z-ordinate value
+        double Z { get; set; }
+        //
+        // Summary:
+        //     The measure value
+        double M { get; set; }
+        //
+        // Summary:
+        //     Gets or sets all ordinate values
+        ICoordinate CoordinateValue { get; set; }
+
+        //
+        // Summary:
+        //     Computes the 2-dimensional distance to the other coordiante.
+        //
+        // Parameters:
+        //   other:
+        //     The other coordinate
+        //
+        // Returns:
+        //     The 2-dimensional distance to other
+        double Distance(ICoordinate other);
+        //
+        // Summary:
+        //     Compares equality for x- and y-ordinates
+        //
+        // Parameters:
+        //   other:
+        //     The other coordinate
+        //
+        // Returns:
+        //     true if x- and y-ordinates of this coordinate and other coordiante are equal.
+        bool Equals2D(ICoordinate other);
+        //
+        // Summary:
+        //     Compares equality for x-, y- and z-ordinates
+        //
+        // Parameters:
+        //   other:
+        //     The other coordinate
+        //
+        // Returns:
+        //     true if x-, y- and z-ordinates of this coordinate and other coordiante are equal.
+        bool Equals3D(ICoordinate other);
+
+
+public class Coordinate : ICoordinate, ICloneable, IComparable, IComparable<ICoordinate>, IComparable<Coordinate>
+    {
+        //
+        // Summary:
+        //     The value used to indicate a null or missing ordinate value. In particular, used
+        //     for the value of ordinates for dimensions greater than the defined dimension
+        //     of a coordinate.
+        public const double NullOrdinate = double.NaN;
+        //
+        // Summary:
+        //     X coordinate.
+        public double X;
+        //
+        // Summary:
+        //     Y coordinate.
+        public double Y;
+        //
+        // Summary:
+        //     Z coordinate.
+        public double Z;
+
+ public class Point : Geometry, IPoint
+    {
+
+
+...........
+
+
+ /// <summary>
+        ///
+        /// </summary>
+        
+public override Coordinate Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
+
+
+ /// <summary>
+        ///
+        /// </summary>
+        public double X
+        {
+            get
+            {
+                if (Coordinate == null)
+      
+              throw new ArgumentOutOfRangeException("X called on empty Point");
+                
+return Coordinate.X;
+            }
+            
+set => Coordinate.X = value;
+        }
+
+       public override object Clone()
+        {
+            return Copy();
+        }
+
+  public override IGeometry Copy()
+        {
+            var coordinates = _coordinates.Copy();
+            return new Point(coordinates, Factory);
+        }
+
+
+

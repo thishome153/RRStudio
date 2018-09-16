@@ -800,12 +800,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\netFteo\netFteo\netFteo.csproj">
-      <Project>{84103EB6-3282-4374-B296-33188B1A436E}</Project>
+    <ProjectReference Include="..\netFteo\netFteo.csproj">
+      <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
       <Name>netFteo</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

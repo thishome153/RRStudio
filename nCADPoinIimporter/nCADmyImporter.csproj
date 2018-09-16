@@ -90,7 +90,7 @@
     <None Include="Resources\c#2010.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\netFteo\netFteo3.5\netFteo3.5.csproj">
+    <ProjectReference Include="..\netFteo3.5\netFteo3.5.csproj">
       <Project>{bddde705-8b45-43f2-9cc3-ec84cb2fb976}</Project>
       <Name>netFteo3.5</Name>
     </ProjectReference>
