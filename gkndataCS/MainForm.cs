@@ -10,7 +10,7 @@ using System.IO;
 //using namespace System.Xml;
 using MySql.Data.MySqlClient;
 using netFteo;
-using netFteo.BaseClasess;
+using netFteo.Spatial;
 namespace GKNData
 
 {
@@ -365,7 +365,7 @@ namespace GKNData
         }
 
         //Одуренная поцедура Заполенния TreeView Полями Класса TCadastralBlockList:
-        private void ListBlockListTreeView(netFteo.BaseClasess.TMyBlockCollection List, TreeView WhatTree)
+        private void ListBlockListTreeView(netFteo.Spatial.TMyBlockCollection List, TreeView WhatTree)
         {
             if (List == null) return;
             WhatTree.Nodes.Clear();
@@ -584,6 +584,7 @@ namespace GKNData
         {
             SelectDistrict(CF.Cfg);
             CadBloksList = LoadBlockList(CF.conn, CF.Cfg.District_id);
+
             ListBlockListTreeView(CadBloksList, treeView1);
         }
 

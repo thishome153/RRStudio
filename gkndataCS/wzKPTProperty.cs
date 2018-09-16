@@ -11,8 +11,8 @@ namespace GKNData
 {
     public partial class wzKPTProperty : Form
     {
-        public netFteo.BaseClasess.TFile ITEM;
-        public wzKPTProperty(netFteo.BaseClasess.TFile item)
+        public netFteo.Spatial.TFile ITEM;
+        public wzKPTProperty(netFteo.Spatial.TFile item)
         {
             InitializeComponent();
             this.ITEM = item;

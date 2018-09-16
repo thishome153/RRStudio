@@ -266,7 +266,7 @@
     <None Include="Resources\MySQL_24х24.gif" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\netFteo\netFteo\netFteo.csproj">
+    <ProjectReference Include="..\netFteo\netFteo.csproj">
       <Project>{84103EB6-3282-4374-B296-33188B1A436E}</Project>
       <Name>netFteo</Name>
     </ProjectReference>

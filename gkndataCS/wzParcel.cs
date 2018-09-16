@@ -16,7 +16,7 @@ using System.IO;
 using System.Web;
 
 using RRTypes.pkk5;
-using netFteo.BaseClasess;
+using netFteo.Spatial;
 namespace GKNData
 {
     public partial class wzParcelfrm : Form
@@ -43,7 +43,7 @@ namespace GKNData
             textBox_BlockName.Text = ITEM.Name;
             ListFiles();
             pkk5Viewer1.Start(ITEM.CN, pkk5_Types.Parcel);
-            this.BlockHistory = new netFteo.BaseClasess.TFileHistory(ITEM.id);
+            this.BlockHistory = new netFteo.Spatial.TFileHistory(ITEM.id);
             if (!backgroundWorker_History.IsBusy)
                 backgroundWorker_History.RunWorkerAsync();
         }
@@ -68,7 +68,7 @@ namespace GKNData
         private void ListFiles()
         {
             listView1.Items.Clear();
-            foreach (netFteo.BaseClasess.TFile file in ITEM.XmlBodyList)
+            foreach (netFteo.Spatial.TFile file in ITEM.XmlBodyList)
             {
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
@@ -183,7 +183,7 @@ namespace GKNData
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                netFteo.BaseClasess.TFile xmlFile = ITEM.XmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag);
+                netFteo.Spatial.TFile xmlFile = ITEM.XmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag);
                 saveFileDialog1.FileName = xmlFile.FileName;
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
