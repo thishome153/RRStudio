@@ -34,7 +34,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(583, 12);
+            this.button1.Location = new System.Drawing.Point(199, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(165, 59);
             this.button1.TabIndex = 0;
@@ -50,10 +50,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(760, 300);
+            this.ClientSize = new System.Drawing.Size(369, 300);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "TExpress disasssmebler";
             this.ResumeLayout(false);
 
         }
