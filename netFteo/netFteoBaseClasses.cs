@@ -431,16 +431,7 @@ namespace netFteo.Spatial
         }
 
     };
-    /*
-    public class Point : Point
-    {
-        public Point(double initx, double inity)
-        {
-            this.x = initx;
-            this.y = inity;
-        }
-    }
-    */
+   
 
     #endregion
 
