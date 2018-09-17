@@ -59,23 +59,11 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CPCryptoNet">
-      <HintPath>..\..\..\Rosreestr.etc\Технокад\Lib\CPCryptoNet.dll</HintPath>
-    </Reference>
-    <Reference Include="GeometryLib">
-      <HintPath>..\..\..\Rosreestr.etc\Технокад\Lib\GeometryLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Ghostscript.NET">
-      <HintPath>..\..\..\Rosreestr.etc\Технокад\Lib\Ghostscript.NET.dll</HintPath>
-    </Reference>
     <Reference Include="netFteo">
       <HintPath>C:\Program Files\Fixosoft\gkndataCS\Win32-Debug\netFteo.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Spatial">
-      <HintPath>..\..\..\Rosreestr.etc\Технокад\Lib\System.Spatial.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
