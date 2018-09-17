@@ -141,10 +141,8 @@ namespace netFteo.IO
             // int StrCounter = 0;
             System.IO.TextReader readFile = new StreamReader(Fname);
             System.IO.TextReader readFileBody = new StreamReader(Fname);
-            while (readFileBody.Peek() != -1)
-            {
-                Body += readFileBody.ReadLine()+"\n";
-            }
+            
+            Body = readFileBody.ReadToEnd();
             readFileBody.Close();
 
                 while (readFile.Peek() != -1)
@@ -166,7 +164,7 @@ namespace netFteo.IO
                     if (line.Contains("#Fixosoft NumXYZD data format V2016"))
                         return ImportNXYZDFile2016(Fname);
 
-                    if (line.Equals("#Fixosoft Num oldx oldy XY MtD data format V2018"))
+                    if (line.Equals("#Fixosoft spatial text file V2018"))
                         return ImportNXYZDFile2018(Fname);
 
                 }
@@ -319,6 +317,14 @@ namespace netFteo.IO
             System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
             System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
 
+            System.IO.TextReader readFileBody = new StreamReader(baseFileName + ".mif", Encoding.ASCII); // default for mif            
+            Body = readFileBody.ReadToEnd();
+            readFileBody.Close();
+            /* TODO Encoding for mif:
+            byte[] ansiBytes = Encoding.GetEncoding(1251).GetBytes(Body);
+            Encoding.Convert(Encoding.ASCII, Encoding.Unicode, ansiBytes);
+            Body = Encoding.GetEncoding(1251).GetString(ansiBytes);
+            */
             string line; string midline;
             int PolygonCount = 0;
             int StrCounter = 0;
@@ -327,6 +333,7 @@ namespace netFteo.IO
             // первый проход, читаем заголовок 
             try
             {
+
                 while (readFile.Peek() != -1)
                 {
                     line = readFile.ReadLine(); StrCounter++;
@@ -757,10 +764,15 @@ namespace netFteo.IO
                                         }
                                         else ChildPoint.Status = 0;
 
-                                        ChildPoint.x = Convert.ToDouble(ChildStr[3].ToString());
-                                        ChildPoint.y = Convert.ToDouble(ChildStr[4].ToString());
-
-                                        ChildPoint.Mt = Convert.ToDouble(ChildStr[5].ToString());
+                                        if (!ChildStr[3].Contains("-"))
+                                        {
+                                            ChildPoint.x = Convert.ToDouble(ChildStr[3].ToString());
+                                            ChildPoint.y = Convert.ToDouble(ChildStr[4].ToString());
+                                        }
+                                        if (!ChildStr[5].Contains("-"))
+                                        {
+                                            ChildPoint.Mt = Convert.ToDouble(ChildStr[5].ToString());
+                                        }
                                         ChildPoint.Description = ChildStr[6].ToString();
                                         child.AddPoint(ChildPoint);
                                         line = readFile.ReadLine();
@@ -794,7 +806,7 @@ namespace netFteo.IO
         public const string FixosoftFileSignature2 = "#Fixosoft NumXYZD data format V2015.2";
         public const string FixosoftFileSignature3 = "#Fixosoft NumXYZD data format V2016";
         public const string FixosoftFileSignature4 = "#Fixosoft NumXYZD data format V2017";
-        public const string FixosoftFileSign5      = "#Fixosoft Num oldx oldy XY MtD data format V2018";
+        public const string FixosoftFileSign5 = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
         public void SaveAsFixosoftTXT2015(string FileName, TMyPolygon ES)
         {
             if (ES.PointCount == 0) return;
@@ -922,12 +934,11 @@ namespace netFteo.IO
             if (ES.Count == 0) return;
             System.IO.TextWriter writer = new StreamWriter(FileName);
             writer.WriteLine(FixosoftFileSign5);
-            writer.WriteLine("# " + DateTime.Now.ToString());  //"Версия {0}", 
-            writer.WriteLine("# Producer: netfteo " +
+            writer.WriteLine("# Created " + DateTime.Now.ToString()+". "+
+                             "Library: netfteo " +
                                 String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
-            writer.WriteLine("# Разделители полей tab. Кодировка " + encoding.EncodingName);
-            writer.WriteLine("# Поля файла " + FileName + " :");
-            writer.WriteLine("# Номер;Старый X;Старый Y;Новый X;Новый Y;Погрешность;Описание закрепления");
+            writer.WriteLine("# Разделители полей tab. Кодировка " + encoding.EncodingName + ".  Поля файла: ");
+            writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
             writer.WriteLine("# Полигонов " + ES.Count.ToString() );
             for (int ic = 0; ic <= ES.Count - 1; ic++)
             {

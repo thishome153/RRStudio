@@ -544,6 +544,8 @@ namespace XMLReaderCS
                 this.DocInfo.MyBlocks.Blocks.Clear();
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
                 this.DocInfo.DocTypeNick = "Mapinfo mif";
+                this.DocInfo.CommentsType = "MIF";
+                this.DocInfo.Comments = mifreader.Body;
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
               }
 
@@ -551,22 +553,26 @@ namespace XMLReaderCS
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
                 TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(openFileDialog1.FileName);
-
-                // Virtual Parcel with contours:
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
-                Bl.CN = "Полигоны txt";
-
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(openFileDialog1.FileName), "Item05"));
-                if (polyfromMIF.Count == 1)
+                if (polyfromMIF != null)
                 {
-                    MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
-                    MainObj.EntitySpatial = polyfromMIF[0];
-                }
-                else
-                    MainObj.Contours.AddPolygons(polyfromMIF);
 
-                this.DocInfo.MyBlocks.Blocks.Clear();
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                    // Virtual Parcel with contours:
+                    TMyCadastralBlock Bl = new TMyCadastralBlock();
+                    Bl.CN = "Полигоны txt";
+                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(openFileDialog1.FileName), "Item05"));
+
+                    if (polyfromMIF.Count == 1)
+                    {
+                        MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
+                        MainObj.EntitySpatial = polyfromMIF[0];
+                    }
+                    else
+                        MainObj.Contours.AddPolygons(polyfromMIF);
+
+                    this.DocInfo.MyBlocks.Blocks.Clear();
+                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                }
+
                 this.DocInfo.DocTypeNick = "Текстовый файл";
                 this.DocInfo.CommentsType = "TXT";
                 this.DocInfo.Comments = mifreader.Body;
@@ -1939,7 +1945,7 @@ namespace XMLReaderCS
 
 
             } // block block
-            TopNode_.Expand();
+            if (TopNode_ != null) TopNode_.Expand();
             TV_Parcels.EndUpdate();
             contextMenuStrip_SaveAs.Enabled = true;
         }
@@ -3655,9 +3661,24 @@ namespace XMLReaderCS
         {
 
             List<LwPolylineVertex> PlVertexLst = new List<LwPolylineVertex>();  //Список Vertexов (вершин) полилинии:
+            double xx;
+            double yy;
+
             for (int i = 0; i <= Points.Count - 1; i++)
             {
-                PlVertexLst.Add(new LwPolylineVertex(Points[i].y, Points[i].x));
+                    if (!Double.IsNaN(Points[i].x))
+                    {
+                        yy = Points[i].y;
+                        xx = Points[i].x;
+                    }
+                    else  // accept old ord
+                    {
+                        yy = Points[i].oldY;
+                        xx = Points[i].oldX;
+                    }
+
+                PlVertexLst.Add(new LwPolylineVertex(yy, xx));
+
                 CreatePoint(dxfDoc, LayerPoints, LayerText, Points[i]);
             }
 
@@ -3673,6 +3694,7 @@ namespace XMLReaderCS
             return lwpolyline;
         }
 
+        /*
         private void CreateDxf3dPolygon(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netDxf.Tables.Layer LayerPoly, netFteo.Spatial.PointList Points)
         {
             List<PolylineVertex> PlVertexLst = new List<PolylineVertex>();  //Список Vertexов (вершин) полилинии:
@@ -3699,6 +3721,8 @@ namespace XMLReaderCS
             PLine.Layer = LayerPoly;
             dxfDoc.AddEntity(PLine);        //Вгоняем в dxf:
         }
+       
+        */
         //------------------------------------------------------------------------------------------
         private void SaveAsDxf(int Scale)
         {
@@ -3873,6 +3897,7 @@ namespace XMLReaderCS
                     block.AttributeDefinitions.Add(attdefArea);
                     
                     block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Contours[ic]));
+
                     CreatePolygonHatches(dxfDoc, LayerHatches, Contours[ic], HatchRadius);
                      //внутренние границы   
                     for (int i = 0; i <= Contours[ic].Childs.Count - 1; i++)
