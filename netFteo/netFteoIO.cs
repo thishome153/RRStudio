@@ -24,7 +24,21 @@ namespace netFteo.IO
         public const string TabDelimiter = "\t";  // tab
         public const string CommaDelimiter = ";";  // tab
         public string FileType = "";  // tab
-        public string Body;
+        private String fBody;
+        public string Body
+        {
+            get
+            {
+                return this.fBody;
+            }
+            set
+            {
+                this.fBody = value;
+             //   this.BodyEncoding = System.Text.Encoding.GetEncoding(fBody).EncodingName;
+            }
+        }
+
+        public string BodyEncoding;
         /// <summary>
         /// Чтение файлов  CSV (формата Технокад)
         /// </summary>
@@ -145,7 +159,18 @@ namespace netFteo.IO
             Body = readFileBody.ReadToEnd();
             readFileBody.Close();
 
-                while (readFile.Peek() != -1)
+            using (var reader = new StreamReader(Fname, Encoding.Default, true))
+            {
+                if (reader.Peek() >= 0) // you need this!
+                    reader.Read();
+
+                this.BodyEncoding = reader.CurrentEncoding.EncodingName;
+                        //+ ". CodePage " + Encoding.GetEncoding(reader.CurrentEncoding.EncodingName).CodePage.ToString();
+            }
+
+
+
+            while (readFile.Peek() != -1)
             {
                 line = readFile.ReadLine();
 
@@ -320,6 +345,16 @@ namespace netFteo.IO
             System.IO.TextReader readFileBody = new StreamReader(baseFileName + ".mif", Encoding.ASCII); // default for mif            
             Body = readFileBody.ReadToEnd();
             readFileBody.Close();
+
+            using (var reader = new StreamReader(baseFileName + ".mif", Encoding.Default, true))
+            {
+                if (reader.Peek() >= 0) // you need this!
+                    reader.Read();
+
+                this.BodyEncoding = reader.CurrentEncoding.EncodingName;
+                //+ ". CodePage " + Encoding.GetEncoding(reader.CurrentEncoding.EncodingName).CodePage.ToString();
+            }
+
             /* TODO Encoding for mif:
             byte[] ansiBytes = Encoding.GetEncoding(1251).GetBytes(Body);
             Encoding.Convert(Encoding.ASCII, Encoding.Unicode, ansiBytes);
@@ -932,7 +967,7 @@ namespace netFteo.IO
         public void SaveAsFixosoftTXT2018(string FileName, TPolygonCollection ES, Encoding encoding)
         {
             if (ES.Count == 0) return;
-            System.IO.TextWriter writer = new StreamWriter(FileName);
+            System.IO.TextWriter writer = new StreamWriter(FileName, false, encoding);
             writer.WriteLine(FixosoftFileSign5);
             writer.WriteLine("# Created " + DateTime.Now.ToString()+". "+
                              "Library: netfteo " +
@@ -983,6 +1018,8 @@ namespace netFteo.IO
             }
             writer.Close();
         }
+
+
         public void SaveAsFixosoftTXT2016(string FileName, TPolygonCollection ES)
         {
             if (ES.Count == 0) return;

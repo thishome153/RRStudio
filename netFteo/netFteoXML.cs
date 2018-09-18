@@ -332,6 +332,7 @@ namespace netFteo.XML
     public class FileInfo  
     {
         private string fComments;
+        public string Encoding;
         public string Version;
         public string DocRootName;
         public string FileName;

@@ -523,6 +523,7 @@ namespace netFteo.Spatial
                 bounds.MaxX = this[0].x;
                 bounds.MaxY = this[0].y;
                 bounds.MinY = this[0].y;
+               
                 // найдем макс координаты
                 for (int MapIter = 0; MapIter <= this.Count - 1; MapIter++)
                 {

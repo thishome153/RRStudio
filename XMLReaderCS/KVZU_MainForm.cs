@@ -546,6 +546,8 @@ namespace XMLReaderCS
                 this.DocInfo.DocTypeNick = "Mapinfo mif";
                 this.DocInfo.CommentsType = "MIF";
                 this.DocInfo.Comments = mifreader.Body;
+                this.DocInfo.Encoding = mifreader.BodyEncoding;
+                this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
               }
 
@@ -576,6 +578,8 @@ namespace XMLReaderCS
                 this.DocInfo.DocTypeNick = "Текстовый файл";
                 this.DocInfo.CommentsType = "TXT";
                 this.DocInfo.Comments = mifreader.Body;
+                this.DocInfo.Encoding = mifreader.BodyEncoding;
+                this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             }
 
