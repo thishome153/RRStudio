@@ -198,6 +198,27 @@ namespace netFteo.Spatial
             set { this.fDescription = value; }
         }
 
+        /*
+        public double x_any
+        {
+            get
+            {
+                if (!Double.IsNaN(this.oldOrd.X)) return this.newOrd.X;
+                else return this.oldOrd.X;
+            }
+
+        }
+
+        public double y_any
+        {
+            get
+            {
+                if (!Double.IsNaN(this.newOrd.Y)) return this.newOrd.Y;
+                else return this.oldOrd.Y;
+            }
+
+        }
+        */
         public double x
         {
             /*
@@ -518,24 +539,37 @@ namespace netFteo.Spatial
                         return null;
                     }
 
-                //рассчитаем диапазон карты
-                bounds.MinX = this[0].x;
-                bounds.MaxX = this[0].x;
-                bounds.MaxY = this[0].y;
-                bounds.MinY = this[0].y;
-               
+
+                //Поиск начальной точки
+                foreach (Point pt in this)
+                {
+                    if (!Double.IsNaN(pt.x))
+                    {
+
+                        bounds.MinX = pt.x;
+                        bounds.MaxX = pt.x;
+                        bounds.MaxY = pt.y;
+                        bounds.MinY = pt.y;
+                        goto SCAN; //выходим, найдена первая точка с координатами
+                    }
+                }
+
+SCAN:
                 // найдем макс координаты
                 for (int MapIter = 0; MapIter <= this.Count - 1; MapIter++)
                 {
-                    if (this[MapIter].x < bounds.MinX)
-                    { bounds.MinX = this[MapIter].x; }
+                    if (!Double.IsNaN(this[MapIter].x)) // Если точка существующая/измененная. Для ликвидируемых (newOrd.x = NaN) пропускаем поиск
+                    {
+                        if (this[MapIter].x < bounds.MinX)
+                        { bounds.MinX = this[MapIter].x; }
 
-                    if (this[MapIter].x > bounds.MaxX)
-                        bounds.MaxX = this[MapIter].x;
-                    if (this[MapIter].y > bounds.MaxY)
-                        bounds.MaxY = this[MapIter].y;
-                    if (this[MapIter].y < bounds.MinY)
-                        bounds.MinY = this[MapIter].y;
+                        if (this[MapIter].x > bounds.MaxX)
+                            bounds.MaxX = this[MapIter].x;
+                        if (this[MapIter].y > bounds.MaxY)
+                            bounds.MaxY = this[MapIter].y;
+                        if (this[MapIter].y < bounds.MinY)
+                            bounds.MinY = this[MapIter].y;
+                    }
                 }
                 // чистые предельные координаты
                 //   bounds.MaX= bounds.MaxX;
@@ -939,13 +973,17 @@ namespace netFteo.Spatial
         {
             if (this.PointCount == 0) return -1;
             double Peryd = 0;
+            double Test = 0;
             for (int i = 0; i <= this.Count - 2; i++)
             {
-                double Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
-                if (Test != double.NaN)
+                Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+                if (!Double.IsNaN(Test))
                     Peryd += Test;
             }
-            Peryd += Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
+
+            Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
+            if (!Double.IsNaN(Test))
+                Peryd += Test;
             return Peryd;
         }
 
@@ -968,15 +1006,93 @@ namespace netFteo.Spatial
 
         }
 
-
         /// <summary>
         /// Расчет площади по формуле трапеции
-        /// Значение -1 - ошибка расчета
+        /// с учетом ликвидированных точек
         /// </summary>
         public double Area
         {
             get
             {
+                PointList ring = new PointList();
+  
+                foreach (Point pt in this)
+
+                {
+                    //выбираем только точки с существующими ординатами .newOrd :
+                    if (! Double.IsNaN(pt.x))
+                    {
+                        ring.AddPoint(pt);
+                    }
+                }
+
+                return AreaofRing(ring);
+            }
+        }
+
+        /// <summary>
+        /// Расчет площади кольца (ring) по формуле трапеции
+        /// Значение -1 - ошибка расчета
+        /// </summary>
+        private double AreaofRing(PointList ring)
+        {
+
+            //     if (this.Valide)
+            {
+                double rr = 0;
+                double x1_, y3_, y1_, y2_;
+                int PtsCnt = ring.Count;
+                int CurPts = 0;
+                if (PtsCnt > 2)
+                {
+                    PtsCnt--; // декремент сразу чтобы не возиться в массиве с выражениями типа array_[PtsCnt-1].x;
+                    y3_ = ring[CurPts].y; // Вначало !!!
+                    CurPts++; // Вперёд !!!
+                    y2_ = ring[CurPts].y;
+                    x1_ = ring[PtsCnt].x; // В конец
+                    y1_ = ring[PtsCnt].y; // В конец
+
+                    rr = x1_ * (y2_ - y1_);
+                    y2_ = ring[PtsCnt - 1].y; // Назад !!!
+                    rr = rr + x1_ * (y3_ - y2_);
+                    CurPts = 0;
+
+                    for (int i = 2; i <= PtsCnt; i++)
+                    {
+                        y1_ = ring[CurPts].y;
+                        CurPts++; // Вперёд !!!
+                        x1_ = ring[CurPts].x;
+                        CurPts++; // Вперёд !!!
+                        y2_ = ring[CurPts].y;
+                        rr = rr + x1_ * (y2_ - y1_);
+                        CurPts--;
+                    }
+                    rr = Math.Abs(rr / 2);
+                    // if  not inmeters then rr:=rr/10000;
+                    // SendControlMessage(FHdnle,3,'Рассчитана площадь '+FormatFloat(PrecFrmt,rr),0,0,0);
+                    return rr;
+                    //break;
+                }
+                /* else
+                  begin
+                   ShowMessage('Число точек полигона меньше 3. '+IntToStr(id));
+                 result :=-1;
+                  end;*/
+                return rr;
+
+                //
+                //}
+                //else return -1;
+                //
+            }
+        }
+    
+
+
+    /*
+      private double Area(PointList ring)
+        {
+            
                 if (this.Valide)
                 {
                     double rr = 0;
@@ -991,6 +1107,7 @@ namespace netFteo.Spatial
                         y2_ = this[CurPts].y;
                         x1_ = this[PtsCnt].x; // В конец
                         y1_ = this[PtsCnt].y; // В конец
+
                         rr = x1_ * (y2_ - y1_);
                         y2_ = this[PtsCnt - 1].y; // Назад !!!
                         rr = rr + x1_ * (y3_ - y2_);
@@ -1012,17 +1129,12 @@ namespace netFteo.Spatial
                         return rr;
                         //break;
                     }
-                    /* else
-                      begin
-                       ShowMessage('Число точек полигона меньше 3. '+IntToStr(id));
-                     result :=-1;
-                      end;*/
+                    
                     return rr;
                 }
                 else return -1;
             }
-        }
-
+    */
         /// <summary>
         ///  Центр масс полигона: 
         ///  возвращает точку центра масс
@@ -1103,16 +1215,20 @@ namespace netFteo.Spatial
             get
             {
                 double Xsumm = 0;
-                double Ysumm = 0;
+                double Ysumm = 0; int pointcnt = 0;
                 for (int i = 0; i <= this.PointCount - 1; i++)
                 {
-                    Xsumm = Xsumm + (this[i].x);
-                    Ysumm = Ysumm + (this[i].y);
+                    if (! Double.IsNaN(this[i].x))
+                    {
+                        Xsumm = Xsumm + (this[i].x);
+                        Ysumm = Ysumm + (this[i].y);
+                        pointcnt++;
+                    }
                 }
                 Point Respoint = new Point();
                 Respoint.NumGeopointA = "Center";
-                Respoint.x = Xsumm / PointCount;
-                Respoint.y = Ysumm / PointCount;
+                Respoint.x = Xsumm / pointcnt;
+                Respoint.y = Ysumm / pointcnt;
                 return Respoint;
             }
         }

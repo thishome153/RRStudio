@@ -192,7 +192,7 @@ namespace XMLReaderCS
         private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TMyOutLayer polygon)
         {
             List<UIElement> res = new List<UIElement>();
-            PointCollection pts =   PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon);
+            PointCollection pts =   PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
@@ -217,7 +217,7 @@ namespace XMLReaderCS
         private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TMyOutLayer polygon)
         {
             List<TextBlock> res = new List<TextBlock>();
-            PointCollection pts = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon);
+            PointCollection pts = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
@@ -248,8 +248,13 @@ namespace XMLReaderCS
         private List<UIElement> CreateCanvasPolygons(netFteo.Spatial.TMyPolygon polygon)
         {
             List<UIElement> res = new List<UIElement>();
-            List<PointCollection> polys =   PolygonToWindowsShape(polygon);
+            List<PointCollection> polys =   PolygonToWindowsShape(polygon, true);
+            List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
+
             foreach (PointCollection poly in polys)
+                res.Add(CreateCanvasPolygon(poly));
+
+            foreach (PointCollection poly in polysOld) // старые границы
                 res.Add(CreateCanvasPolygon(poly));
             return res;
         }
@@ -264,16 +269,32 @@ namespace XMLReaderCS
         /// Конвертация и масштабирование точек netfteo в точки windows PointCollection
         /// </summary>
         /// 
-        private PointCollection PointsToWindowsPoints(double originX, double originY, netFteo.Spatial.PointList layer)
+        private PointCollection PointsToWindowsPoints(double originX, double originY, netFteo.Spatial.PointList layer, bool newOnly)
         {
             PointCollection myPointCollection = new PointCollection();
             double canvasX;
             double canvasY;
+
             foreach (netFteo.Spatial.Point point in layer)
             {
-                canvasX = Math.Round(canvas1.Width / 2  - (originY - point.y) / Scale);
-                canvasY = Math.Round(canvas1.Height/ 2  + (originX - point.x) / Scale);
-                myPointCollection.Add(new Point(canvasX, canvasY));
+                if (newOnly)
+                {
+                    if (!Double.IsNaN(point.x))
+                    {
+                        canvasX = Math.Round(canvas1.Width / 2 - (originY - point.y) / Scale);
+                        canvasY = Math.Round(canvas1.Height / 2 + (originX - point.x) / Scale);
+                        myPointCollection.Add(new Point(canvasX, canvasY));
+                    }
+                }
+                else
+                {
+                    if (!Double.IsNaN(point.oldX))
+                    {
+                        canvasX = Math.Round(canvas1.Width / 2 - (originY - point.oldX) / Scale);
+                        canvasY = Math.Round(canvas1.Height / 2 + (originX - point.oldY) / Scale);
+                        myPointCollection.Add(new Point(canvasX, canvasY));
+                    }
+                }
             }
             return myPointCollection;
         }
@@ -291,17 +312,19 @@ namespace XMLReaderCS
 
         /// <summary>
         /// Конвертация полигона netfteo в список точек PointCollection
+        /// TODO - отображение двойного полигона - для old newOrd?
         /// </summary>
-        private List<PointCollection> PolygonToWindowsShape(netFteo.Spatial.TMyPolygon polygon)
+        private List<PointCollection> PolygonToWindowsShape(netFteo.Spatial.TMyPolygon polygon, bool newOnly)
         {
             List<PointCollection> res = new List<PointCollection>();
             PointCollection winPoints = new PointCollection();
-            winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon);
+
+            winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
             res.Add(winPoints);
             foreach (netFteo.Spatial.TMyOutLayer chld in polygon.Childs)
             {
                 PointCollection childwinPoints = new PointCollection();
-                childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld);
+                childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld,newOnly);
                 res.Add(childwinPoints);
             }
             return res;

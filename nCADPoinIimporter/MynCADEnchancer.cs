@@ -656,7 +656,7 @@
             PolygonName.TextString = Layer.Definition;
             PolygonName.Height = 2;
             PolygonName.SetLayerId(ltPolyid, true); // Обозначение полигона в слой "Полигоны"
-            PolygonName.Position = new Point3d(Math.Abs(Layer.AverageCenter.y), Math.Abs(Layer.AverageCenter.x), Layer.AverageCenter.z);
+            PolygonName.Position = new Point3d(Math.Abs(Layer.AverageCenter.y), Math.Abs(Layer.AverageCenter.x), 0);
             PolygonName.TransformBy(ucsMatrix.Inverse());
             // Append the point to the database
             btr.AppendEntity(PolygonName);

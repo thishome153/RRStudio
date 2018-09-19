@@ -4663,8 +4663,8 @@ namespace XMLReaderCS
                 ViewWindow.Definition = "Viewer Created ok";
                 ESwindow.Content = ViewWindow;
                 ESwindow.MinHeight = 300; ESwindow.MinWidth = 500;
-                ESwindow.Height = 650;  // just added to have a smaller control (Window)
-                ESwindow.Width = 675;
+                ESwindow.Height = this.Height;  //576 ? just added to have a smaller control (Window)
+                ESwindow.Width = 610;
                 ESwindow.Top = this.Top; ESwindow.Left = this.Left + 1 + this.Width;
                 ESwindow.Show();// ShowDialog();
                                 // checkonClick = true тогда не нужно это: 
@@ -5377,7 +5377,7 @@ namespace XMLReaderCS
                 if (ESwindow.Visibility == System.Windows.Visibility.Visible)
                 {
                     ESwindow.Top = this.Top; 
-                    ESwindow.Left = this.Left + 1 + this.Width;
+                    ESwindow.Left = this.Left - 13  + this.Width;
                 }
         }
 
