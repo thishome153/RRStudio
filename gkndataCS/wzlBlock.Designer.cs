@@ -70,6 +70,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView_History = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -87,16 +88,15 @@
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.contextMenu_pkk5.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -346,6 +346,19 @@
             this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
             this.tabPage3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabPage3_MouseMove);
             // 
+            // pkk5Viewer1
+            // 
+            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
+            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
+            this.pkk5Viewer1.Name = "pkk5Viewer1";
+            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
+            this.pkk5Viewer1.QueryValue = null;
+            this.pkk5Viewer1.Size = new System.Drawing.Size(704, 323);
+            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pkk5Viewer1.TabIndex = 7;
+            this.pkk5Viewer1.TabStop = false;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.listView_History);
@@ -381,7 +394,7 @@
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
-            this.listView_History.Size = new System.Drawing.Size(704, 326);
+            this.listView_History.Size = new System.Drawing.Size(704, 323);
             this.listView_History.TabIndex = 0;
             this.listView_History.UseCompatibleStateImageBehavior = false;
             this.listView_History.View = System.Windows.Forms.View.Details;
@@ -426,7 +439,7 @@
             this.contextMenu_pkk5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сохранитьToolStripMenuItem});
             this.contextMenu_pkk5.Name = "contextMenu_pkk5";
-            this.contextMenu_pkk5.Size = new System.Drawing.Size(141, 26);
+            this.contextMenu_pkk5.Size = new System.Drawing.Size(133, 26);
             // 
             // сохранитьToolStripMenuItem
             // 
@@ -434,14 +447,14 @@
             this.снимокКартыToolStripMenuItem});
             this.сохранитьToolStripMenuItem.Image = global::GKNData.Properties.Resources.bullet_disk;
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             // 
             // снимокКартыToolStripMenuItem
             // 
             this.снимокКартыToolStripMenuItem.Image = global::GKNData.Properties.Resources.pictures;
             this.снимокКартыToolStripMenuItem.Name = "снимокКартыToolStripMenuItem";
-            this.снимокКартыToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.снимокКартыToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.снимокКартыToolStripMenuItem.Text = "Снимок карты";
             this.снимокКартыToolStripMenuItem.Click += new System.EventHandler(this.снимокКартыToolStripMenuItem_Click);
             // 
@@ -493,19 +506,6 @@
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
             // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pkk5Viewer1.Image = global::GKNData.Properties.Resources.pictures;
-            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
-            this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(704, 323);
-            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pkk5Viewer1.TabIndex = 7;
-            this.pkk5Viewer1.TabStop = false;
-            // 
             // wzlBlockEd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -530,10 +530,10 @@
             this.toolStrip1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.contextMenu_pkk5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.ResumeLayout(false);
 
         }
