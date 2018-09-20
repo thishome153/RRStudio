@@ -70,7 +70,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView_History = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -92,8 +91,6 @@
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.contextMenu_pkk5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -334,7 +331,6 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.pkk5Viewer1);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
@@ -345,19 +341,6 @@
             this.tabPage3.UseVisualStyleBackColor = true;
             this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
             this.tabPage3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabPage3_MouseMove);
-            // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
-            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
-            this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(704, 323);
-            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pkk5Viewer1.TabIndex = 7;
-            this.pkk5Viewer1.TabStop = false;
             // 
             // tabPage2
             // 
@@ -528,9 +511,6 @@
             this.panel2.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.contextMenu_pkk5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -580,7 +560,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.ComponentModel.BackgroundWorker backgroundWorker_History;
-        private RRTypes.pkk5.pkk5Viewer pkk5Viewer1;
 
     }
 }
