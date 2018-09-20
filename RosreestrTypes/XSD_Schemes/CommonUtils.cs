@@ -1927,6 +1927,21 @@ namespace RRTypes.CommonParsers
               res.AppointmentFIO = MP.GeneralCadastralWorks.Contractor.FamilyName + " " +
                                MP.GeneralCadastralWorks.Contractor.FirstName + " " +
                                MP.GeneralCadastralWorks.Contractor.Patronymic;
+
+            foreach (MP_V06.tClientIdentify client in MP.GeneralCadastralWorks.Clients)
+            {
+                if (client.Organization != null)
+                {
+                    res.ReceivName = client.Organization.Name;
+                    res.RequeryNumber = client.Organization.INN + ", " + client.Organization.OGRN;
+                }
+                if (client.Person != null)
+                {
+                    res.ReceivName = client.Person.FamilyName + " " + client.Person.FirstName + " " + client.Person.Patronymic;
+                    res.RequeryNumber = client.Person.SNILS + ",  " + client.Person.Address;
+                }
+
+            }
             return res;
         }
         #endregion

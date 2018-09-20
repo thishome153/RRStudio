@@ -423,5 +423,10 @@ namespace XMLReaderCS
         {
             //FlashLabels(Convert.ToByte(textBox1.Text));
         }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Label_resScale.Content = "User Control size changed ";
+        }
     }
 }

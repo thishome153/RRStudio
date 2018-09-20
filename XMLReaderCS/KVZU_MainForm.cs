@@ -4664,7 +4664,8 @@ namespace XMLReaderCS
                 ESwindow.Content = ViewWindow;
                 ESwindow.MinHeight = 300; ESwindow.MinWidth = 500;
                 ESwindow.Height = this.Height;  //576 ? just added to have a smaller control (Window)
-                ESwindow.Width = 610;
+                ESwindow.Width = 810;
+            
                 ESwindow.Top = this.Top; ESwindow.Left = this.Left + 1 + this.Width;
                 ESwindow.Show();// ShowDialog();
                                 // checkonClick = true тогда не нужно это: 
