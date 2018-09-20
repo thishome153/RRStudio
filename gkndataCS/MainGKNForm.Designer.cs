@@ -3,7 +3,7 @@ using System.Data;
 namespace GKNData
 
 {
-    partial class MainForm
+    partial class MainGKNForm
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -35,7 +35,7 @@ namespace GKNData
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel_SubRf_CN = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel_AllMessages = new System.Windows.Forms.ToolStripStatusLabel();

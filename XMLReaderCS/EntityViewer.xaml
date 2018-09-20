@@ -36,8 +36,8 @@
         </Menu>
         <Label Content="Label_Definition" Height="27" HorizontalAlignment="Left" Margin="5,43,0,0" Name="label2" VerticalAlignment="Top" Width="255" Background="#FF00C8E6" HorizontalContentAlignment="Center" Cursor="Help"></Label>
         <Label Background="#FFE2A400" Content="Scales Res" Height="27" HorizontalAlignment="Left" Margin="443,43,0,0" x:Name="Label_resScale" VerticalAlignment="Top" Width="162" MouseLeave="label_res_Scale_MouseLeave" />
-        <Button Content="+" Height="32" HorizontalAlignment="Left" Margin="506,3,0,0" Name="button_ScaleUp" VerticalAlignment="Top" Width="32" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="button_ScaleUp_Click" />
-        <Button Content="-" FontSize="20" Height="32" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="543,3,0,0" Name="button4" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="32" Click="button4_Click" RenderTransformOrigin="0.555,-1.119" />
+        <Button Content="+" Height="32" HorizontalAlignment="Left" Margin="506,2,0,0" Name="button_ScaleUp" VerticalAlignment="Top" Width="32" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="button_ScaleUp_Click" />
+        <Button Content="-" FontSize="20" Height="32" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="543,2,0,0" Name="button4" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="32" Click="button4_Click" RenderTransformOrigin="0.555,-1.119" />
         <Label Content="DirectX mode" Height="32" HorizontalAlignment="Left" Margin="306,3,0,0" Name="label_DirectXMode" VerticalAlignment="Top" Width="163" Background="#FFFFAAAA"/>
         <Label Background="#FF00B300" Content="Canvas" Height="27" HorizontalAlignment="Left" x:Name="label1_Canvas_Sizes" VerticalAlignment="Bottom" Width="163" FontSize="11" RenderTransformOrigin="0.465,4.704" Margin="269,0,0,42" />
         <Image Grid.Column="1" Height="48" Width="48" HorizontalAlignment="Left" Margin="62,177,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Source="Images/FixosoftTM.gif" Grid.Row="2" />

@@ -14,7 +14,7 @@ using netFteo.Spatial;
 namespace GKNData
 
 {
-    public partial class MainForm : Form
+    public partial class MainGKNForm : Form
     {
 
         private DataTable data;
@@ -23,7 +23,7 @@ namespace GKNData
         ConnectorForm CF = new ConnectorForm();
         public  TMyBlockCollection CadBloksList; // Глобальный перечень кварталов
 
-        public MainForm()
+        public MainGKNForm()
         {
             InitializeComponent();
             treeView1.BeforeExpand += OnItemexpanding; //Подключаем обработчик раскрытия
@@ -77,8 +77,8 @@ namespace GKNData
             {
                 if (CF.conn != null)
                     CF.conn.Close();
-
-                string connStr = String.Format("server={0};user id={1}; password={2}; database={3}; pooling=false",
+                //SSL Mode=Required
+                string connStr = String.Format("server={0};user id={1}; password={2}; database={3}; pooling=false;SSL Mode=None",
                     CF.Cfg.ServerName, CF.Cfg.UserName, CF.Cfg.UserPwrd, CF.Cfg.DatabaseName);
 
                 try
