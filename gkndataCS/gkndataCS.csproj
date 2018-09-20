@@ -57,7 +57,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>gkndata.ico</ApplicationIcon>
+    <ApplicationIcon>gkndataCS_ico.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>0FAB8434B3C458F92476F4D835FB084369547D61</ManifestCertificateThumbprint>
@@ -249,7 +249,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gkndata.ico" />
+    <Content Include="gkndataCS_ico.ico" />
     <Content Include="Readme GKN Data.txt" />
+    <Content Include="Resources\gkndataCS.bmp" />
+    <Content Include="Resources\GKNDATASharp.bmp" />
     <None Include="Resources\pictures.png" />
     <None Include="Resources\magnifier.png" />
     <None Include="Resources\bullet_disk.png" />

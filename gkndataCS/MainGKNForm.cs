@@ -152,14 +152,14 @@ namespace GKNData
             }
 
             if (ENode != null)
-            {
-                if ((ENode.Tag.GetType().ToString() == "netFteo.BaseClasess.TMyCadastralBlock"))
+            { 
+                if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
                 {
                     CF.Cfg.CurrentItem.Item_id = ((TMyCadastralBlock)ENode.Tag).id;
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
                 }
 
-                if ((ENode.Tag.GetType().ToString() == "netFteo.BaseClasess.TMyParcel"))
+                if ((ENode.Tag.GetType().ToString() == "netFteo.SpatialTMyParcel"))
                 {
                     CF.Cfg.CurrentItem.Item_id = ((TMyParcel)ENode.Tag).id;
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
@@ -185,7 +185,7 @@ namespace GKNData
         private bool Edit(TCurrentItem Item)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
-            if (Item.Item_TypeName == "netFteo.BaseClasess.TMyCadastralBlock")
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
             {
                 if (Edit(CadBloksList.GetBlock(Item.Item_id))) // реентерабельно вызываем
                 {
@@ -195,7 +195,7 @@ namespace GKNData
                 }
             }
 
-            if (Item.Item_TypeName == "netFteo.BaseClasess.TMyParcel")
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
             {
                 if (Edit(CadBloksList.GetParcel(Item.Item_id))) // реентерабельно вызываем
                 {
@@ -615,14 +615,9 @@ namespace GKNData
             Edit(CF.Cfg.CurrentItem);
         }
 
-       
-
-       
-
-       
-
-       
-
-        
+        private void treeView1_Click(object sender, EventArgs e)
+        {
+            ChangeObj(sender, e);
+        }
     }
 }

@@ -133,6 +133,16 @@ namespace GKNData.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap gkndataCS {
+            get {
+                object obj = ResourceManager.GetObject("gkndataCS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Image_Parcel {
             get {
                 object obj = ResourceManager.GetObject("Image_Parcel", resourceCulture);
