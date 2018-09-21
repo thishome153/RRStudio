@@ -217,7 +217,7 @@ namespace GKNData
                 frmReader.Tag = 3; // XMl Reader в составе приложения
                 frmReader.Read(ITEM.KPTXmlBodyList.GetBody((int)listView1.SelectedItems[0].Tag));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
-                frmReader.ShowDialog();
+                frmReader.ShowDialog(this);
             }
         }
 

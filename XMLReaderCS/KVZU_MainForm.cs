@@ -200,7 +200,7 @@ namespace XMLReaderCS
             if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
                 DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
             // Вначале отобразим xml, вдруг далее парсеры слажают... :)
-            cXmlTreeView2.RootName = DocInfo.FileName;
+           // cXmlTreeView2.RootName = DocInfo.FileName;
             cXmlTreeView2.loadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать xmlDoc
             toolStripStatusLabel2.Text = "<" + DocInfo.DocRootName + "> " + label_FileSize.Text;
             toolStripStatusLabel3.Text = DocInfo.Namespace;
@@ -588,6 +588,7 @@ namespace XMLReaderCS
             {
                this.DocInfo.FileName = Path.GetFileName(FileName);
                this.DocInfo.FilePath = Path.GetFullPath(FileName);
+               cXmlTreeView2.RootName = DocInfo.FileName;
                TextReader reader = new StreamReader(FileName);
                XmlDocument XMLDocFromFile = new XmlDocument();
                XMLDocFromFile.Load(reader);
@@ -4820,6 +4821,7 @@ namespace XMLReaderCS
             if (File.Exists(pathToHtmlFile)) File.Delete(pathToHtmlFile); // если был сеанс
             XMLReaderCS.Properties.Settings.Default.Recent0 = DocInfo.FilePath;
             XMLReaderCS.Properties.Settings.Default.Save();
+
         }
 
         private void RecentFile0MenuItem_Click(object sender, EventArgs e)

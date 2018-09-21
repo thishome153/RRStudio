@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "31.32.2045"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "26/501/301/589-4586"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml", System.Drawing.SystemColors.MenuHighlight, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)))),
@@ -37,8 +37,7 @@
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "Админи Стра Тор"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "mySQL_user_1")}, -1);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzlBlockEd));
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "31,10,2016",
             "xml++",
             "Добавление",
@@ -46,7 +45,8 @@
             "192.168.0.1975",
             "Админи Стра Тор",
             "mySQL_user_1"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Item2");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Item2");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzlBlockEd));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -88,6 +88,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -105,6 +106,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.ImageList = this.imageList1;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
@@ -116,6 +118,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Controls.Add(this.textBox_Block_Komment);
             this.tabPage1.Controls.Add(this.textBox_BlockName);
@@ -123,14 +126,14 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.ImageIndex = 2;
+            this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(712, 331);
+            this.tabPage1.Size = new System.Drawing.Size(712, 325);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Сведения";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
@@ -142,7 +145,7 @@
             this.panel2.Controls.Add(this.toolStrip1);
             this.panel2.Location = new System.Drawing.Point(3, 99);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(707, 228);
+            this.panel2.Size = new System.Drawing.Size(707, 222);
             this.panel2.TabIndex = 9;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -161,12 +164,12 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem6});
             this.listView1.Location = new System.Drawing.Point(0, 23);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(705, 203);
+            this.listView1.Size = new System.Drawing.Size(705, 197);
             this.listView1.TabIndex = 10;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -335,11 +338,12 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.pkk5Viewer1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.ImageIndex = 1;
+            this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Size = new System.Drawing.Size(712, 331);
+            this.tabPage3.Size = new System.Drawing.Size(712, 325);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Он-лайн (запрос.....)";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -355,18 +359,19 @@
             this.pkk5Viewer1.Name = "pkk5Viewer1";
             this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
             this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(704, 323);
+            this.pkk5Viewer1.Size = new System.Drawing.Size(704, 317);
             this.pkk5Viewer1.TabIndex = 0;
             this.pkk5Viewer1.TabStop = false;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.listView_History);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.ImageIndex = 0;
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(712, 331);
+            this.tabPage2.Size = new System.Drawing.Size(712, 325);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "История";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -389,12 +394,12 @@
             this.listView_History.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView_History.HideSelection = false;
             this.listView_History.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6});
+            listViewItem4,
+            listViewItem5});
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
-            this.listView_History.Size = new System.Drawing.Size(704, 323);
+            this.listView_History.Size = new System.Drawing.Size(704, 317);
             this.listView_History.TabIndex = 0;
             this.listView_History.UseCompatibleStateImageBehavior = false;
             this.listView_History.View = System.Windows.Forms.View.Details;
@@ -506,6 +511,14 @@
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "History2.bmp");
+            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
+            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
+            // 
             // wzlBlockEd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -580,5 +593,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.ComponentModel.BackgroundWorker backgroundWorker_History;
         private RRTypes.pkk5.pkk5Viewer pkk5Viewer1;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
