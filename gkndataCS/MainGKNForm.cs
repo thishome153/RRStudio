@@ -288,6 +288,7 @@ namespace GKNData
                 file.xmlns = row[6].ToString();
                 file.RequestNum = row[7].ToString();
                 file.AccessCode = row[8].ToString();
+                if (row[9] != DBNull.Value)
                 file.xmlSize_SQL = Convert.ToDouble(row[9]);
                 files.Add(file);
             }

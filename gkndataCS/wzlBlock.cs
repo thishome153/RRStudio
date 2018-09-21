@@ -134,7 +134,8 @@ namespace GKNData
         // **** Read BLOB from the Database and save it on the Filesystem
         public MemoryStream GetKPTBody(MySqlConnection conn, int kpt_id)
         {
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+            if (conn == null) return null;
+            if (conn.State != ConnectionState.Open) return null;
 
             data = new DataTable();
             da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
