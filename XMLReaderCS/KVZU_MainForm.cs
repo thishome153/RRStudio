@@ -4310,53 +4310,6 @@ namespace XMLReaderCS
         }
 
 
-        private void TV_Parcels_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void KVZU_Form_Load(object sender, EventArgs e)
-        {
-
-            if ((int)this.Tag == 3)
-            {
-                this.Text = "XMl Reader в составе приложения";
-                this.ShowInTaskbar = false;
-            }
-            else
-            {
-                this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
-                this.ShowInTaskbar = true;
-                args = Environment.GetCommandLineArgs();
-                if (args.Length > 1)
-                {
-                    //string Test = Path.GetDirectoryName(args[0]) + "\\" + args[2];
-                    toolStripStatusLabel3.Text = args[1];
-                    string Test = args[1];
-                    //if (args[2] == "open")
-                    if (File.Exists(Test))
-                        Read(Test);
-                }
-                else toolStripStatusLabel3.Text = "No command line args[]";
-            }
-
-#if (DEBUG)
-            this.Text += "/DEBUG {2018}";
-
-            debugToolStripMenuItem.Visible = true;
-            картапланToolStripMenuItem.Visible = true;
-            сКПТToolStripMenuItem.Visible = true;
-            //TMyPoints test = new TMyPoints();
-            //test.PoininTest();
-#else
-            debugToolStripMenuItem.Visible = false;
-            картапланToolStripMenuItem.Visible = false;
-            сКПТToolStripMenuItem.Visible = false;
-#endif
-            this.TextDefault = this.Text;
-            ClearFiles();
-        }
 
         private void TV_Parcels_MouseClick(object sender, MouseEventArgs e)
         {
@@ -4382,11 +4335,6 @@ namespace XMLReaderCS
         private void TV_Parcels_AfterSelect(object sender, TreeViewEventArgs e)
         {
             ListSelectedNode(TV_Parcels.SelectedNode);
-        }
-
-        private void списокПравToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void картапланToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4930,36 +4878,11 @@ namespace XMLReaderCS
 // Обработчик динамической Гиперметки pkk5:)
         private void OnPKK5LabelActionClick(object sender, EventArgs e) 
         {
-            //GotoPKK5(cn);
-              Int32 id = Convert.ToInt32((int)((LinkLabel)sender).Tag); //Parcel.id
-               object O = this.DocInfo.MyBlocks.GetObject(id);
-               if (O != null)
-               {
-                   if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                   {
-                       pkk5Viewer1.Start(((TMyParcel)O).CN, pkk5_Types.Parcel);
-                       tabControl1.SelectedIndex = 3;
-                   }
 
-                   if (O.ToString() == "netFteo.Spatial.TMyOKS") //далее - добавим ОКС. 
-                   {
-                       pkk5Viewer1.Start(((TMyRealty)O).CN, pkk5_Types.OKS);
-                       tabControl1.SelectedIndex = 3;
-                   }
-
-                   if (O.ToString() == "netFteo.Spatial.TMyPolygon")
-                   {
-                       pkk5Viewer1.Start(((TMyPolygon)O).Definition, pkk5_Types.Parcel);
-                       tabControl1.SelectedIndex = 3;
-                   }
-                   
-
-               }
-                      
         }
 
 
-// Обработчик динамической Кнопки "Сохранить как..."
+        // Обработчик динамической Кнопки "Сохранить как..."
         private void OnPKK5ButtonActionClick(object sender, EventArgs e)
         {
 
@@ -5683,9 +5606,13 @@ namespace XMLReaderCS
 
         }
 
+
         #endregion
 
-
+        private void KVZU_Form_Load(object sender, EventArgs e)
+        {
+            int stps = 0;
+        }
     }
 }
 

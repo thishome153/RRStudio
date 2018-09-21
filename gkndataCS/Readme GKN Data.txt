@@ -2,7 +2,7 @@
 
 20-09-2018 
 
-Continue design (porting) GKN Data App in c#.
+Continue design (porting) GKN Data App in c#, again with WS2017 CE (on both - home and office).
 Project Targetting	4.0 (still work in WinXP).
 
 Install Connector MySQL Connector Net: be sure about targetting of project and Connectors assemblies: 

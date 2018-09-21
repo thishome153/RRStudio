@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "31.32.2045"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "26/501/301/589-4586"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml", System.Drawing.SystemColors.MenuHighlight, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)))),
@@ -37,7 +37,8 @@
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "Админи Стра Тор"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "mySQL_user_1")}, -1);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzlBlockEd));
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "31,10,2016",
             "xml++",
             "Добавление",
@@ -45,8 +46,7 @@
             "192.168.0.1975",
             "Админи Стра Тор",
             "mySQL_user_1"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Item2");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzlBlockEd));
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Item2");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -80,6 +80,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.contextMenu_pkk5 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.снимокКартыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -164,7 +164,7 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(0, 23);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
@@ -189,12 +189,13 @@
             // columnHeader11
             // 
             this.columnHeader11.Text = "Файл";
+            this.columnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader11.Width = 150;
             // 
             // columnHeader9
             // 
             this.columnHeader9.Text = "Размер";
-            this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader9.Width = 120;
             // 
             // columnHeader12
@@ -276,10 +277,9 @@
             this.textBox_Block_Komment.Location = new System.Drawing.Point(185, 69);
             this.textBox_Block_Komment.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Block_Komment.Name = "textBox_Block_Komment";
-            this.textBox_Block_Komment.Size = new System.Drawing.Size(171, 23);
+            this.textBox_Block_Komment.Size = new System.Drawing.Size(340, 23);
             this.textBox_Block_Komment.TabIndex = 5;
             this.textBox_Block_Komment.Text = "*";
-            this.textBox_Block_Komment.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBox_Block_Komment.TextChanged += new System.EventHandler(this.textBox_Block_Komment_TextChanged);
             // 
             // textBox_BlockName
@@ -287,10 +287,9 @@
             this.textBox_BlockName.Location = new System.Drawing.Point(185, 40);
             this.textBox_BlockName.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_BlockName.Name = "textBox_BlockName";
-            this.textBox_BlockName.Size = new System.Drawing.Size(171, 23);
+            this.textBox_BlockName.Size = new System.Drawing.Size(284, 23);
             this.textBox_BlockName.TabIndex = 4;
             this.textBox_BlockName.Text = "*";
-            this.textBox_BlockName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBox_BlockName.TextChanged += new System.EventHandler(this.textBox_BlockName_TextChanged);
             // 
             // textBox_CN
@@ -302,7 +301,7 @@
             this.textBox_CN.Size = new System.Drawing.Size(171, 26);
             this.textBox_CN.TabIndex = 3;
             this.textBox_CN.Text = "*";
-            this.textBox_CN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox_CN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_CN.TextChanged += new System.EventHandler(this.textBox_CN_TextChanged);
             // 
             // label3
@@ -394,8 +393,8 @@
             this.listView_History.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView_History.HideSelection = false;
             this.listView_History.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4,
-            listViewItem5});
+            listViewItem2,
+            listViewItem3});
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
@@ -438,6 +437,14 @@
             // 
             this.columnHeader7.Text = "MySQL пользователь";
             this.columnHeader7.Width = 105;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "History2.bmp");
+            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
+            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
             // 
             // contextMenu_pkk5
             // 
@@ -510,14 +517,6 @@
             this.backgroundWorker_History.WorkerSupportsCancellation = true;
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "History2.bmp");
-            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
-            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
             // 
             // wzlBlockEd
             // 

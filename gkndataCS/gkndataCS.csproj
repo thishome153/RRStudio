@@ -253,6 +253,8 @@
     <Content Include="Readme GKN Data.txt" />
     <Content Include="Resources\gkndataCS.bmp" />
     <Content Include="Resources\GKNDATASharp.bmp" />
+    <None Include="Resources\MySQL_8.png" />
+    <None Include="Resources\visual-studio-2017.png" />
     <None Include="Resources\pictures.png" />
     <None Include="Resources\magnifier.png" />
     <None Include="Resources\bullet_disk.png" />

@@ -173,6 +173,16 @@ namespace GKNData.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MySQL_8 {
+            get {
+                object obj = ResourceManager.GetObject("MySQL_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MySQL_connect {
             get {
                 object obj = ResourceManager.GetObject("MySQL_connect", resourceCulture);
@@ -206,6 +216,16 @@ namespace GKNData.Properties {
         internal static System.Drawing.Bitmap pictures {
             get {
                 object obj = ResourceManager.GetObject("pictures", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap visual_studio_2017 {
+            get {
+                object obj = ResourceManager.GetObject("visual_studio_2017", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

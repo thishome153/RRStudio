@@ -83,12 +83,12 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -125,11 +125,11 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(859, 535);
+            this.tabPage1.Size = new System.Drawing.Size(859, 529);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Сведения";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -335,11 +335,11 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.pkk5Viewer1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 31);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Size = new System.Drawing.Size(859, 535);
+            this.tabPage3.Size = new System.Drawing.Size(859, 529);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Он-лайн (запрос.....)";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -357,7 +357,7 @@
             this.pkk5Viewer1.Name = "pkk5Viewer1";
             this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
             this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(851, 527);
+            this.pkk5Viewer1.Size = new System.Drawing.Size(851, 521);
             this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pkk5Viewer1.TabIndex = 7;
             this.pkk5Viewer1.TabStop = false;
@@ -389,11 +389,12 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.listView_History);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.ImageIndex = 0;
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(859, 535);
+            this.tabPage2.Size = new System.Drawing.Size(859, 529);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "История";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -421,7 +422,7 @@
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
-            this.listView_History.Size = new System.Drawing.Size(851, 527);
+            this.listView_History.Size = new System.Drawing.Size(851, 521);
             this.listView_History.TabIndex = 0;
             this.listView_History.UseCompatibleStateImageBehavior = false;
             this.listView_History.View = System.Windows.Forms.View.Details;
@@ -460,6 +461,14 @@
             // 
             this.columnHeader7.Text = "MySQL пользователь";
             this.columnHeader7.Width = 105;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "history2.png");
+            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
+            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
             // 
             // panel1
             // 
@@ -508,14 +517,6 @@
             this.backgroundWorker_History.WorkerSupportsCancellation = true;
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "History2.bmp");
-            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
-            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
             // 
             // wzParcelfrm
             // 

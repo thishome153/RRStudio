@@ -70,10 +70,11 @@ namespace GKNData
                 }
             }
         }
+
         private bool GoConnect()
         {
             CF.Cfg.CfgRead(); // Загрyзимся из реестра
-            if (CF.ShowDialog() == DialogResult.Yes)
+          //  if (CF.ShowDialog() == DialogResult.Yes)
             {
                 if (CF.conn != null)
                     CF.conn.Close();
@@ -619,6 +620,13 @@ namespace GKNData
         private void treeView1_Click(object sender, EventArgs e)
         {
             ChangeObj(sender, e);
+        }
+
+        //
+        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CF.Cfg.CfgRead();
+            CF.ShowDialog();
         }
     }
 }

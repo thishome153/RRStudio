@@ -32,9 +32,9 @@ namespace GKNData
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode3});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel_SubRf_CN = new System.Windows.Forms.ToolStripStatusLabel();
@@ -60,7 +60,6 @@ namespace GKNData
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_Exit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.Button_Connect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_ChangeSub = new System.Windows.Forms.ToolStripButton();
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
@@ -68,6 +67,7 @@ namespace GKNData
             this.Button_Import = new System.Windows.Forms.ToolStripButton();
             this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.онлайнToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -198,7 +198,8 @@ namespace GKNData
             // сервисToolStripMenuItem
             // 
             this.сервисToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сменитьСубъектToolStripMenuItem});
+            this.сменитьСубъектToolStripMenuItem,
+            this.OptionsToolStripMenuItem});
             this.сервисToolStripMenuItem.Name = "сервисToolStripMenuItem";
             this.сервисToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.сервисToolStripMenuItem.Text = "Сервис";
@@ -207,7 +208,7 @@ namespace GKNData
             // 
             this.сменитьСубъектToolStripMenuItem.Image = global::GKNData.Properties.Resources.ВыборСубъектаРФ;
             this.сменитьСубъектToolStripMenuItem.Name = "сменитьСубъектToolStripMenuItem";
-            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сменитьСубъектToolStripMenuItem.Text = "Сменить субъект";
             this.сменитьСубъектToolStripMenuItem.Click += new System.EventHandler(this.сменитьСубъектToolStripMenuItem_Click);
             // 
@@ -252,12 +253,12 @@ namespace GKNData
             this.treeView1.ImageList = this.Tree_imageList;
             this.treeView1.Location = new System.Drawing.Point(0, 49);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Node1";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Node0";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Node1";
+            treeNode4.Name = "Node0";
+            treeNode4.Text = "Node0";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode4});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowNodeToolTips = true;
             this.treeView1.Size = new System.Drawing.Size(642, 302);
@@ -281,7 +282,6 @@ namespace GKNData
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton_Exit,
             this.toolStripSeparator3,
-            this.Button_Connect,
             this.toolStripSeparator4,
             this.Button_ChangeSub,
             this.Button_Property,
@@ -308,17 +308,6 @@ namespace GKNData
             this.toolStripSeparator3.AutoSize = false;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(12, 25);
-            // 
-            // Button_Connect
-            // 
-            this.Button_Connect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Button_Connect.Image = global::GKNData.Properties.Resources.MySQL_connect;
-            this.Button_Connect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Button_Connect.Name = "Button_Connect";
-            this.Button_Connect.Size = new System.Drawing.Size(23, 22);
-            this.Button_Connect.Text = "toolStripButton1";
-            this.Button_Connect.ToolTipText = "Подключить";
-            this.Button_Connect.Click += new System.EventHandler(this.Button_Connect_Click);
             // 
             // toolStripSeparator4
             // 
@@ -381,6 +370,13 @@ namespace GKNData
             this.онлайнToolStripMenuItem.Text = "Он-лайн";
             this.онлайнToolStripMenuItem.Click += new System.EventHandler(this.онлайнToolStripMenuItem_Click);
             // 
+            // OptionsToolStripMenuItem
+            // 
+            this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
+            this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OptionsToolStripMenuItem.Text = "Настройки";
+            this.OptionsToolStripMenuItem.Click += new System.EventHandler(this.настройкиToolStripMenuItem_Click);
+            // 
             // MainGKNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,7 +416,6 @@ namespace GKNData
         private System.Windows.Forms.ToolStripMenuItem помощьToolStripMenuItem;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton Button_Connect;
         private System.Windows.Forms.ToolStripButton Button_ChangeSub;
         private System.Windows.Forms.ToolStripButton Button_Property;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel_SubRf_CN;
@@ -443,9 +438,7 @@ namespace GKNData
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ContextMenuStrip contextMenu1;
         private System.Windows.Forms.ToolStripMenuItem онлайнToolStripMenuItem;
-
-
-
+        private System.Windows.Forms.ToolStripMenuItem OptionsToolStripMenuItem;
     }
 }
 

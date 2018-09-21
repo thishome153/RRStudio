@@ -53,20 +53,24 @@ namespace GKNData
 
         }
 
-    }
-
-/*
-    public class TAppCfgReader
-    {
-        
-
-        public bool CfgRead(TAppCfgRecord Cfgurator)
+        private void button1_Click_1(object sender, EventArgs e)
         {
-
-            return true;
+            Cfg.CfgWrite();
         }
     }
-    */
+
+    /*
+        public class TAppCfgReader
+        {
+
+
+            public bool CfgRead(TAppCfgRecord Cfgurator)
+            {
+
+                return true;
+            }
+        }
+        */
     public class TCurrentItem
     {
         string TypeName_Block = "netFteo.BaseClasess.TMyCadastralBlock";
@@ -79,6 +83,7 @@ namespace GKNData
            this.Item_TypeName = "EMPTY";
        }
     }
+
     public class TAppCfgRecord
     {
         string Fixosoft_GKNDATA2 = "\\Software\\Fixosoft\\GKNData\\2.x.x.x";
