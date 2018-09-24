@@ -45,7 +45,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(328, 326);
+            this.okButton.Location = new System.Drawing.Point(156, 240);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(102, 36);
             this.okButton.TabIndex = 24;
@@ -53,7 +53,7 @@
             // 
             // textBoxDescription
             // 
-            this.textBoxDescription.Location = new System.Drawing.Point(156, 173);
+            this.textBoxDescription.Location = new System.Drawing.Point(156, 96);
             this.textBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
@@ -112,17 +112,17 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::GKNData.Properties.Resources.MySQL_8;
-            this.pictureBox2.Location = new System.Drawing.Point(12, 49);
+            this.pictureBox2.Location = new System.Drawing.Point(55, 7);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(158, 118);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.Size = new System.Drawing.Size(118, 83);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 31;
             this.pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::GKNData.Properties.Resources.visual_studio_2017;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 173);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 96);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(135, 134);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -145,7 +145,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okButton;
-            this.ClientSize = new System.Drawing.Size(452, 392);
+            this.ClientSize = new System.Drawing.Size(436, 288);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelProductName);
