@@ -9,10 +9,9 @@
 	<xs:include schemaLocation="_GeneralCadastralWorks_v01.xsd"/>
 	<!--Ранее присвоенные номера-->
 	<xs:include schemaLocation="_NumbersInp_v01.xsd"/>
-	<!--Описание местоположения границ -->
+	<!--Описание местоположения границ-->
 	<xs:include schemaLocation="_Spatial_v02.xsd"/>
-  <!-- <xs:include schemaLocation="../MY_Spatial_v02.xsd"/> -->
-  <!--Характеристики объектов капитального строительства-->
+	<!--Характеристики объектов капитального строительства-->
 	<xs:include schemaLocation="_ParametersOKS_v02.xsd"/>
 	<!--Назначение и вид помещения-->
 	<xs:include schemaLocation="_AssignationFlat_v01.xsd"/>
@@ -30,9 +29,8 @@
 			<xs:documentation>Технический план здания, сооружения, объекта незавершенного строительства, помещения</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-      <xs:all>
-        <!-- <xs:choice> -->
-      <xs:element name="Building">
+			<xs:choice>
+				<xs:element name="Building">
 					<xs:annotation>
 						<xs:documentation>Технический план здания</xs:documentation>
 					</xs:annotation>
@@ -42,8 +40,8 @@
 								<xs:annotation>
 									<xs:documentation>Пакет информации</xs:documentation>
 								</xs:annotation>
-                <xs:complexType>
-                  <xs:all>
+								<xs:complexType>
+									<xs:choice>
 										<xs:element name="NewBuildings">
 											<xs:annotation>
 												<xs:documentation>Постановка на государственный кадастровый учет зданий, не являющихся многоквартирными домами</xs:documentation>
@@ -59,37 +57,35 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-                    <xs:element name="NewApartHouse">
-                      <xs:annotation>
-                        <xs:documentation>Постановка на государственный кадастровый учет многоквартирного дома и помещений в нем</xs:documentation>
-                      </xs:annotation>
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="NewBuilding" type="tNewBuilding">
-                            <xs:annotation>
-                              <xs:documentation>Постановка на государственный кадастровый учет здания, являющегося многоквартирным домом</xs:documentation>
-                            </xs:annotation>
-                          </xs:element>
-                          <xs:element name="Flats">
-                            <xs:annotation>
-                              <xs:documentation>Помещения, расположенные в многоквартирном доме</xs:documentation>
-                            </xs:annotation>
-                            <xs:complexType>
-                              
-                              <xs:sequence>
-                                <xs:element name="Flat" type="tFlatApartment"
-                                maxOccurs="unbounded">
-                                  <xs:annotation>
-                                    <xs:documentation>Помещение</xs:documentation>
-                                  </xs:annotation>
-                                </xs:element>
-                              </xs:sequence>
-                              
-                            </xs:complexType>
-                          </xs:element>
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
+										<xs:element name="NewApartHouse">
+											<xs:annotation>
+												<xs:documentation>Постановка на государственный кадастровый учет многоквартирного дома и помещений в нем</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+												<xs:element name="NewBuilding" type="tNewBuilding">
+												<xs:annotation>
+												<xs:documentation>Постановка на государственный кадастровый учет здания, являющегося многоквартирным домом</xs:documentation>
+												</xs:annotation>
+												</xs:element>
+												<xs:element name="Flats">
+												<xs:annotation>
+												<xs:documentation>Помещения, расположенные в многоквартирном доме</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element name="Flat" type="tFlatApartment"
+												maxOccurs="unbounded">
+												<xs:annotation>
+												<xs:documentation>Помещение</xs:documentation>
+												</xs:annotation>
+												</xs:element>
+												</xs:sequence>
+												</xs:complexType>
+												</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
 										<xs:element name="ExistBuilding" type="tExistBuilding">
 											<xs:annotation>
 												<xs:documentation>Государственный кадастровый учет изменений здания</xs:documentation>
@@ -124,10 +120,9 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-                  </xs:all>
-
-                </xs:complexType>
-			</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorks">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
@@ -199,7 +194,6 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-        
 				<xs:element name="Construction">
 					<xs:annotation>
 						<xs:documentation>Технический план сооружения, расположенного на территории не более одного кадастрового округа</xs:documentation>
@@ -211,8 +205,7 @@
 									<xs:documentation>Пакет информации</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
-                  <xs:sequence>
-                    <!-- <xs:choice> -->
+									<xs:choice>
 										<xs:element name="NewConstructions">
 											<xs:annotation>
 												<xs:documentation>Постановка на государственный кадастровый учет сооружений, расположенных в одном кадастровом округе</xs:documentation>
@@ -263,12 +256,9 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-								<!--	</xs:choice> -->
-                    
-                  </xs:sequence>
+									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-              
 							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorks">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
@@ -351,8 +341,7 @@
 									<xs:documentation>Пакет информации</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
-								<!--	<xs:choice> -->
-                  <xs:sequence>
+									<xs:choice>
 										<xs:element name="NewUncompleteds">
 											<xs:annotation>
 												<xs:documentation>Постановка на государственный кадастровый учет объектов незавершенного строительства</xs:documentation>
@@ -402,9 +391,7 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-                  </xs:sequence>
-                  <!--	</xs:choice> -->
-                
+									</xs:choice>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorks">
@@ -489,8 +476,7 @@
 									<xs:documentation>Пакет информации</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
-                  <!--  <xs:choice> -->
-                    <xs:all>
+									<xs:choice>
 										<xs:element name="NewFlats">
 											<xs:annotation>
 												<xs:documentation>Постановка на государственный кадастровый учет помещений</xs:documentation>
@@ -539,10 +525,7 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-                    </xs:all>
-                  <!--  
-									</xs:choice> -->
-                  
+									</xs:choice>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorks">
@@ -593,9 +576,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-          <!--   </xs:choice> -->
-      </xs:all>
-      
+			</xs:choice>
 			<xs:attribute name="GUID" type="sGUID" use="required">
 				<xs:annotation>
 					<xs:documentation>Глобальный уникальный идентификатор пакета</xs:documentation>
@@ -866,7 +847,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-  
 	<xs:complexType name="tExistConstruction">
 		<xs:annotation>
 			<xs:documentation>Сооружение (учет изменений)</xs:documentation>
@@ -950,7 +930,6 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-  
 	<xs:complexType name="tNewUncompleted">
 		<xs:annotation>
 			<xs:documentation>Объект незавершенного строительства (ОНС) (постановка на учет)</xs:documentation>
@@ -1023,7 +1002,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-  
 	<xs:complexType name="tExistUncompleted">
 		<xs:annotation>
 			<xs:documentation>Объект незавершенного строительства (ОНС) (учет изменений)</xs:documentation>
@@ -1176,7 +1154,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-  
 	<xs:complexType name="tExistFlat">
 		<xs:annotation>
 			<xs:documentation>Помещение (учет изменений)</xs:documentation>
@@ -1258,20 +1235,18 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-  
 	<!--Помещения в многоквартирном доме-->
 	<xs:complexType name="tFlatApartment">
-    <xs:sequence>
 		<xs:annotation>
 			<xs:documentation>Помещение, расположенное в многоквартирном доме</xs:documentation>
 		</xs:annotation>
-	 <!--	<xs:choice> -->
+		<xs:choice>
 			<xs:element name="CadastralNumber" type="CadastralNumberType">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер помещения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-    <!--		<xs:sequence> -->
+			<xs:sequence>
 				<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
@@ -1297,9 +1272,8 @@
 						<xs:documentation>Расположение в пределах здания (этажа, части этажа, нескольких этажей)</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-    <!--		</xs:sequence> -->
-    </xs:sequence>
-	<!--	</xs:choice> -->
+			</xs:sequence>
+		</xs:choice>
 	</xs:complexType>
 	<!--Сведения о частях здания, сооружения, объекта незавершенного строительства, помещения-->
 	<xs:complexType name="tSubBuilding">
@@ -1318,7 +1292,6 @@
 						<xs:documentation>Описание местоположения границ</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-        
 				<xs:element name="PositionInObject" type="tPositionInObject" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Расположение в пределах здания (этажа, части этажа, нескольких этажей)</xs:documentation>
@@ -1849,14 +1822,12 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-  
 	<!--Расположение в пределах объекта капитального строительства-->
 	<xs:complexType name="tPositionInObject">
 		<xs:annotation>
 			<xs:documentation>Расположение в пределах объекта недвижимости, имеющего или не имеющего этажи</xs:documentation>
 		</xs:annotation>
-    <!-- <xs:choice> -->
-    <xs:all>
+		<xs:choice>
 			<xs:element name="Position" type="tPosition">
 				<xs:annotation>
 					<xs:documentation>Расположение в пределах объекта недвижимости, не имеющего этажи</xs:documentation>
@@ -1867,10 +1838,8 @@
 					<xs:documentation>Уровни (этажи) (для объекта недвижимости, имеющего этажность)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-    </xs:all>
-    <!-- </xs:choice> -->
+		</xs:choice>
 	</xs:complexType>
-  
 	<xs:complexType name="tPosition">
 		<xs:annotation>
 			<xs:documentation>Расположение на плане</xs:documentation>
@@ -1890,7 +1859,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-		</xs:sequence> 
+		</xs:sequence>
 		<xs:attribute name="NumberOnPlan" type="sNe200" use="required">
 			<xs:annotation>
 				<xs:documentation>Номер на плане</xs:documentation>
