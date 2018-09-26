@@ -2281,25 +2281,12 @@ namespace RRTypes.CommonParsers
             res.DocType = "Кадастровый план территории";
             res.DocTypeNick = "КПТ";
             //TODO - need deserialization
+            System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
+            if (Blocksnodes != null)
 
+                Parse_KTP08Block(Blocksnodes[0]);
             // end TODO
-            /*
-            res.Number = KPT09.CertificationDoc.Number;
-            res.Date = KPT09.CertificationDoc.Date.ToString("dd.MM.yyyy");
-            res.Cert_Doc_Organization = KPT09.CertificationDoc.Organization;
 
-            if (KPT09.CertificationDoc.Official != null)
-            {
-                res.Appointment = KPT09.CertificationDoc.Official.Appointment;
-                res.AppointmentFIO = KPT09.CertificationDoc.Official.FamilyName + " " +
-                                  KPT09.CertificationDoc.Official.FirstName +
-                                    " " +
-                                  KPT09.CertificationDoc.Official.Patronymic;
-            }
-            */
-
-
-            //sCommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
             Parse_KTP08Info(xmldoc, res);
             return res;
 
@@ -2307,11 +2294,13 @@ namespace RRTypes.CommonParsers
 
         }
 
+        //   /Package/Cadastral_Blocks/Cadastral_Block
         private static void Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
         {
 
         }
 
+       //   /Package/Cadastral_Blocks/Cadastral_Block/Parcels/Parcel
         private static void Parse_KTP08Parcel(System.Xml.XmlNode xmlBlock)
         {
 
