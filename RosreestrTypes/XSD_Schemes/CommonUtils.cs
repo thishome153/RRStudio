@@ -701,11 +701,22 @@ namespace RRTypes.CommonCast
           /// <returns></returns>
           public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
           {
-              System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
-              nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-              string docRootName = xmldoc.DocumentElement.Name;
-              string testXpath = "/parseNS:" + docRootName + Xpath.Replace("/", "/parseNS:"); //replace to '/parseNS:ReestrExtract/parseNS:DeclarAttribute'
-              System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            string docRootName = xmldoc.DocumentElement.Name;
+            string testXpath;
+             nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+
+
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+            {
+                testXpath = "/parseNS:" + docRootName + Xpath.Replace("/", "/parseNS:"); //replace to '/parseNS:ReestrExtract/parseNS:DeclarAttribute'
+            }
+            else
+            {
+                testXpath = "/" + docRootName + Xpath; 
+            }
+
+            System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
               if (recnode != null)
               {
                   return recnode.Attributes.GetNamedItem(AttributeName).Value;
@@ -714,13 +725,20 @@ namespace RRTypes.CommonCast
                   return null;
           }
 
+
+
+
           public static string Parse_Node(System.Xml.XmlDocument xmldoc, string Xpath)
           {
               System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
               nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
               string docRootName = xmldoc.DocumentElement.Name;
-              string testXpath = "/parseNS:" + docRootName + Xpath.Replace("/", "/parseNS:"); //replace to '/parseNS:ReestrExtract/parseNS:DeclarAttribute'
-              System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
+            string testXpath;
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+              testXpath = "/parseNS:" + docRootName + Xpath.Replace("/", "/parseNS:"); 
+            else
+                testXpath = "/" + docRootName + Xpath;
+            System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
               if (recnode != null)
               {
                   return recnode.FirstChild.Value;
@@ -750,7 +768,8 @@ namespace RRTypes.CommonCast
               res.ReceivAdress =   Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivAdress");
           }
 
-      }
+   
+    }
     
         
      /// <summary>
@@ -2253,6 +2272,63 @@ namespace RRTypes.CommonParsers
         }
         #endregion
         
+        #region  Разбор КПТ 08
+        public netFteo.XML.FileInfo ParseKPT08(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        {
+            netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+            res.CommentsType = "-";
+            res.Version = "08";
+            res.DocType = "Кадастровый план территории";
+            res.DocTypeNick = "КПТ";
+            //TODO - need deserialization
+
+            // end TODO
+            /*
+            res.Number = KPT09.CertificationDoc.Number;
+            res.Date = KPT09.CertificationDoc.Date.ToString("dd.MM.yyyy");
+            res.Cert_Doc_Organization = KPT09.CertificationDoc.Organization;
+
+            if (KPT09.CertificationDoc.Official != null)
+            {
+                res.Appointment = KPT09.CertificationDoc.Official.Appointment;
+                res.AppointmentFIO = KPT09.CertificationDoc.Official.FamilyName + " " +
+                                  KPT09.CertificationDoc.Official.FirstName +
+                                    " " +
+                                  KPT09.CertificationDoc.Official.Patronymic;
+            }
+            */
+
+
+            //sCommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            Parse_KTP08Info(xmldoc, res);
+            return res;
+
+
+
+        }
+
+        private static void Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
+        {
+
+        }
+
+        private static void Parse_KTP08Parcel(System.Xml.XmlNode xmlBlock)
+        {
+
+        }
+
+        private static void Parse_KTP08Info(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+        {
+
+            res.Version = CommonCast.CasterEGRP.Parse_Attribute(xmldoc, "Version", "");
+            res.Date = CommonCast.CasterEGRP.Parse_Node(xmldoc, "/Package/Certification_Doc/Date");
+            res.Number = CommonCast.CasterEGRP.Parse_Node(xmldoc, "/Package/Certification_Doc/Number");
+            res.Appointment = CommonCast.CasterEGRP.Parse_Node(xmldoc, "/Package/Certification_Doc/Appointment");
+            res.AppointmentFIO = CommonCast.CasterEGRP.Parse_Node(xmldoc, "/Package/Certification_Doc/FIO");
+            res.Cert_Doc_Organization = CommonCast.CasterEGRP.Parse_Node(xmldoc, "/Package/Certification_Doc/Organization");
+        }
+        #endregion
+
         #region  Разбор КПТ 09
 
         public netFteo.XML.FileInfo ParseKPT09(netFteo.XML.FileInfo fi,System.Xml.XmlDocument xmldoc)

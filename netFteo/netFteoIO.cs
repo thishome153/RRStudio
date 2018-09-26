@@ -152,24 +152,8 @@ namespace netFteo.IO
         public TPolygonCollection ImportTxtFile(string Fname)
         {
             string line = null;
-            // int StrCounter = 0;
             System.IO.TextReader readFile = new StreamReader(Fname);
-            System.IO.TextReader readFileBody = new StreamReader(Fname);
-            
-            Body = readFileBody.ReadToEnd();
-            readFileBody.Close();
-
-            using (var reader = new StreamReader(Fname, Encoding.Default, true))
-            {
-                if (reader.Peek() >= 0) // you need this!
-                    reader.Read();
-
-                this.BodyEncoding = reader.CurrentEncoding.EncodingName;
-                        //+ ". CodePage " + Encoding.GetEncoding(reader.CurrentEncoding.EncodingName).CodePage.ToString();
-            }
-
-
-
+            BodyLoad(Fname);
             while (readFile.Peek() != -1)
             {
                 line = readFile.ReadLine();
@@ -330,6 +314,29 @@ namespace netFteo.IO
         }
 
         /// <summary>
+        ///  Detect Encoding name, encoding Body field
+        /// </summary>
+        /// <param name="fname"></param>
+        private void BodyLoad(string fname)
+        {
+            using (var reader = new StreamReader(fname, Encoding.Default, true))
+            {
+                if (reader.Peek() >= 0) // you need this!
+                    reader.Read();
+                this.BodyEncoding = reader.CurrentEncoding.EncodingName;
+            }
+
+            //"Кириллица (Windows)"
+            if (this.BodyEncoding.Equals("Кириллица (Windows)"))
+            {
+                byte[] bodyWithEncode = File.ReadAllBytes(fname);
+                Body = Encoding.Default.GetString(bodyWithEncode);
+            }
+            else
+                Body = File.ReadAllText(fname);
+        }
+
+        /// <summary>
         /// Импорт mif-файлов
         /// </summary>
         /// <param name="Filename"></param>
@@ -341,25 +348,10 @@ namespace netFteo.IO
 
             System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
             System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
+      
 
-            System.IO.TextReader readFileBody = new StreamReader(baseFileName + ".mif", Encoding.ASCII); // default for mif            
-            Body = readFileBody.ReadToEnd();
-            readFileBody.Close();
-
-            using (var reader = new StreamReader(baseFileName + ".mif", Encoding.Default, true))
-            {
-                if (reader.Peek() >= 0) // you need this!
-                    reader.Read();
-
-                this.BodyEncoding = reader.CurrentEncoding.EncodingName;
-                //+ ". CodePage " + Encoding.GetEncoding(reader.CurrentEncoding.EncodingName).CodePage.ToString();
-            }
-
-            /* TODO Encoding for mif:
-            byte[] ansiBytes = Encoding.GetEncoding(1251).GetBytes(Body);
-            Encoding.Convert(Encoding.ASCII, Encoding.Unicode, ansiBytes);
-            Body = Encoding.GetEncoding(1251).GetString(ansiBytes);
-            */
+            // TODO Encoding for mif:
+            BodyLoad(baseFileName + ".mif");
             string line; string midline;
             int PolygonCount = 0;
             int StrCounter = 0;
@@ -1124,7 +1116,7 @@ namespace netFteo.IO
              [1.1];н;6;;;531640,58;1262945,68;;;;0,00;626003000000
              [1.1];н;4;;;530684,92;1262376,38;;;;0,00;626003000000
           */
-        private void WriteEs2csv(System.IO.TextWriter writer, TMyPolygon ES, int EsNumber)
+            private void WriteEs2csv(System.IO.TextWriter writer, TMyPolygon ES, int EsNumber)
         {
 
             writer.WriteLine(";;;;;;;;;;;");

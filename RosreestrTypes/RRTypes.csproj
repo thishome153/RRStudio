@@ -717,6 +717,63 @@
       <CustomToolNamespace>RRTypes.STD_KV04</CustomToolNamespace>
     </None>
     <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\V037_STD_Address.xsd" />
+    <None Include="XSD_Schemes\V08_STD_KPT\dAllDocuments.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dApartment.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dCategories.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dEncumbrances.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dGeopoint_Opred.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dLocationLevel1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dLocationLevel2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dLocationLevel3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dParcels.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dPermitUse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dRegionsRF.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dRights.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dSovietVillage.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dStates.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dUnit.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dUrbanDistrict.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\dUtilizations.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\STD_KPT.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V08_STD_KPT\V037_STD_Address.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.xsd">
       <CustomToolNamespace>RRTypes.ZoneV03</CustomToolNamespace>
       <Generator>xsdtoclasses</Generator>
@@ -798,6 +855,7 @@
     <Content Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\STD_Region_Cadastr_KV.Generated.xml">
       <DependentUpon>STD_Region_Cadastr_KV.xsd</DependentUpon>
     </Content>
+    <Content Include="XSD_Schemes\V08_STD_KPT\КПТ_08_Example.xml" />
     <Content Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.Generated.xml">
       <DependentUpon>ZoneToGKN_v03.xsd</DependentUpon>
     </Content>

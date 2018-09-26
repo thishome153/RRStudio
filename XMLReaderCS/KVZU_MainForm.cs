@@ -103,7 +103,6 @@ namespace XMLReaderCS
         public KVZU_Form()
         {
             InitializeComponent();
-
             this.Tag = 1; // "Как приложение"
             ClearControls();
             this.Folder_AppStart = Application.StartupPath;
@@ -181,7 +180,8 @@ namespace XMLReaderCS
         /// </summary>
         private void OpenFile()
         {
-            openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;*.mif;*.txt";
+            openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;"+
+                "|Про$транственные данные|*.dxf;*.mif;*.txt";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
                 Read(openFileDialog1.FileName);
@@ -193,8 +193,12 @@ namespace XMLReaderCS
         /// <param name="xmldoc">Объект типа XMLDocument</param>
         public void Read(XmlDocument xmldoc)
         {
-            if (xmldoc == null) return;
-             DocInfo.DocRootName = xmldoc.DocumentElement.Name;
+            if (xmldoc == null)
+            {
+                toolStripStatusLabel1.Text = "document null" ;
+                return;
+            }
+            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
             DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
                                                                       // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
             if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
@@ -377,7 +381,18 @@ namespace XMLReaderCS
                     ListFileInfo(DocInfo);
                 }
             }
+            //Не КПТ v08 ли это?            
+
+            if ((DocInfo.DocRootName == "Region_Cadastr"))
+            {
+                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
+                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+                ListFileInfo(DocInfo);
+            }
+            
             //Не КПТ v09 ли это?            
+
             if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
             {
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
@@ -515,7 +530,12 @@ namespace XMLReaderCS
         /// <param name="FileName">Имя файла</param>
         public void Read(string FileName)
         {
-            if (!File.Exists(FileName)) return;
+            if (!File.Exists(FileName))
+            {
+                toolStripStatusLabel1.Text = "not exist:"+ Path.GetFileName(FileName);
+                return;
+            }
+
             ClearControls();
             SaveLastDir(Path.GetDirectoryName(FileName));
             if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
@@ -5605,13 +5625,48 @@ namespace XMLReaderCS
             }
 
         }
-
-
         #endregion
 
         private void KVZU_Form_Load(object sender, EventArgs e)
         {
-            int stps = 0;
+            if ((int)this.Tag == 3)
+            {
+                this.Text = "XMl Reader в составе приложения";
+                this.ShowInTaskbar = true;
+            }
+            else
+            {
+                this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
+                this.ShowInTaskbar = true;
+                args = Environment.GetCommandLineArgs();
+                if (args.Length > 1)
+                {
+                    //string Test = Path.GetDirectoryName(args[0]) + "\\" + args[2];
+                    toolStripStatusLabel3.Text = args[1];
+                    string Test = args[1];
+                    //if (args[2] == "open")
+                    if (File.Exists(Test))
+                        Read(Test);
+                }
+                //No command line args[]
+                else toolStripStatusLabel3.Text = "Нет аргументов";
+            }
+
+#if (DEBUG)
+            this.Text += "/DEBUG {2018}";
+
+            debugToolStripMenuItem.Visible = true;
+            картапланToolStripMenuItem.Visible = true;
+            сКПТToolStripMenuItem.Visible = true;
+            //TMyPoints test = new TMyPoints();
+            //test.PoininTest();
+#else
+            debugToolStripMenuItem.Visible = false;
+            картапланToolStripMenuItem.Visible = false;
+            сКПТToolStripMenuItem.Visible = false;
+#endif
+            this.TextDefault = this.Text;
+            ClearFiles();
         }
     }
 }
