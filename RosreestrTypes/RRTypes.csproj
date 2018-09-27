@@ -855,6 +855,8 @@
     <Content Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\STD_Region_Cadastr_KV.Generated.xml">
       <DependentUpon>STD_Region_Cadastr_KV.xsd</DependentUpon>
     </Content>
+    <Content Include="XSD_Schemes\V08_STD_KPT\КПТ_08_Example II.xml" />
+    <Content Include="XSD_Schemes\V08_STD_KPT\КПТ_08_Example III.xml" />
     <Content Include="XSD_Schemes\V08_STD_KPT\КПТ_08_Example.xml" />
     <Content Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.Generated.xml">
       <DependentUpon>ZoneToGKN_v03.xsd</DependentUpon>

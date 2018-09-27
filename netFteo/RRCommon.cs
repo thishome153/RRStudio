@@ -18,6 +18,7 @@ namespace netFteo.Rosreestr
     {
         public static string ItemToName(string Item)
         {
+            if (!Item.Contains("Item")) Item = "Item" + Item; // допишем Item
             Dictionary<string, string> items = new Dictionary<string, string>()
             {
                 { "Item01","Землепользование"},
@@ -86,6 +87,7 @@ namespace netFteo.Rosreestr
     {
         public static string ItemToName(string Item)
         {
+            if (!Item.Contains("Item")) Item = "Item" + Item; // допишем Item
             switch (Item)
             {
 

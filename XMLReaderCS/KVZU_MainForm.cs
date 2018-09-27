@@ -4533,9 +4533,9 @@ namespace XMLReaderCS
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                    TR.SaveAsFixosoftTXT2016(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
-                    TR.SaveAsFixosoftTXT2016(Path.GetDirectoryName(saveFileDialog1.FileName) + 
-                                             "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName), this.DocInfo.MifOKSPolygons);
+                    TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, this.DocInfo.MifPolygons, Encoding.Unicode);
+                    TR.SaveAsFixosoftTXT2018(Path.GetDirectoryName(saveFileDialog1.FileName) + 
+                                             "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName), this.DocInfo.MifOKSPolygons, Encoding.Unicode);
                 }
 
             if (TV_Parcels.SelectedNode.Name.Contains("Rights"))

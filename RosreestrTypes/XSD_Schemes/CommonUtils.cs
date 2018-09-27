@@ -2284,7 +2284,94 @@ namespace RRTypes.CommonParsers
             System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
             if (Blocksnodes != null)
 
-                Parse_KTP08Block(Blocksnodes[0]);
+
+                for (int i = 0; i <= Blocksnodes.Count - 1; i++)
+                {
+                    TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
+
+                    var parcels=  Blocksnodes[i].SelectSingleNode("Parcels");
+                    for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
+                    {
+                        System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
+                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+
+                        MainObj.AreaGKN = parcel.SelectSingleNode("Area").SelectSingleNode("Area").FirstChild.Value;
+                        MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
+                        MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
+                        MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
+                        MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
+
+                        /*
+                        //MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(parcel.SelectSingleNode("Location"));
+                        MainObj.Utilization.Untilization = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.Utilization.ToString();
+                        */
+
+                        //Землепользование
+
+                        if (parcel.SelectSingleNode("Entity_Spatial")  != null)
+                            {
+                                MainObj.EntitySpatial.ImportPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                                                                      parcel.SelectSingleNode("Entity_Spatial")));
+                                MainObj.EntitySpatial.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Area").SelectSingleNode("Area").FirstChild.Value);
+                                MainObj.EntitySpatial.Parent_Id = MainObj.id;
+                                MainObj.EntitySpatial.Definition = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
+                                res.MifPolygons.Add(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                                                                        parcel.SelectSingleNode("Entity_Spatial")));
+                            }
+                        //Многоконтурный
+                        if (parcel.SelectSingleNode("Contours") != null)
+                        {
+                            //26:04:090203:258
+                            string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
+                            for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+                            {
+                                TMyPolygon NewCont = MainObj.Contours.AddPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                                                                      parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value+")",
+                                                                      parcel.SelectSingleNode("Contours").ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
+
+                                res.MifPolygons.Add(NewCont);
+                            }
+                        }
+
+                    }
+
+
+                    //Пункты в Квартале
+                    var OMSs = Blocksnodes[i].SelectSingleNode("OMSPoints");
+                    if (OMSs.ChildNodes.Count > 0)
+                    {
+                        for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
+                        {
+                            Point OMS = new Point();
+                            System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
+                            OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
+                            OMS.Description = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
+                            OMS.Code = xmloms.SelectSingleNode("PName").FirstChild.Value;
+                            OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
+                            OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
+                            Bl.AddOMSPoint(OMS);
+                        }
+                    }
+
+
+                    //ОИПД Квартала:
+                    //Виртуальный OIPD типа "Квартал":
+
+                    System.Xml.XmlNode es = Blocksnodes[i].SelectSingleNode("SpatialData");
+
+                   Bl.Entity_Spatial.ImportPolygon(KPT08LandEntSpatToFteo(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value,
+                                                                          Blocksnodes[i].SelectSingleNode("SpatialData").SelectSingleNode("Entity_Spatial")));
+                  Bl.Entity_Spatial.Definition = "гр" + Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value;
+                  
+
+
+
+
+
+                    res.RequeryNumber = Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value;
+                    res.MyBlocks.Blocks.Add(Bl);
+                }
+                    
             // end TODO
 
             Parse_KTP08Info(xmldoc, res);
@@ -2294,10 +2381,59 @@ namespace RRTypes.CommonParsers
 
         }
 
+        //Разбор Spelement_Unit
+        private static Point KPT08_ES_ParseSpelement_Unit(System.Xml.XmlNode Spelement_Unit)
+        {
+            Point Point = new Point();
+            Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("Ordinate").Attributes.GetNamedItem("X").Value);
+            Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("Ordinate").Attributes.GetNamedItem("Y").Value);
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.NumGeopointA = Spelement_Unit.Attributes.GetNamedItem("Su_Nmb").Value;
+            return Point;
+        }
+
+
+        //Разбор Entity_Spatial
+        public static TMyPolygon KPT08LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
+        {
+            {
+                if (ES == null) return null;
+                TMyPolygon EntSpat = new TMyPolygon();
+                EntSpat.Definition = Definition;
+                //Первый Spatial_Element - внешний контур ( 0 )
+                System.Xml.XmlNodeList OuterRing = ES.ChildNodes[0].ChildNodes;
+
+                    for (int iSpelement = 0; iSpelement <= OuterRing.Count - 1; iSpelement++)
+                    {
+                       EntSpat.AddPoint(KPT08_ES_ParseSpelement_Unit(OuterRing[iSpelement]));
+                    }
+
+                //Второй и след. Spatial_Element - Внутренние контура
+                if (ES.ChildNodes.Count > 1)
+                {
+                    for (int ring = 1; ring <= ES.ChildNodes.Count - 1; ring++)
+                    {
+                        System.Xml.XmlNodeList childRing = ES.ChildNodes[ring].ChildNodes;
+                        TMyOutLayer InLayer = EntSpat.AddChild();
+
+                        for (int iSpelement = 1; iSpelement <= childRing.Count - 1; iSpelement++)
+                        {
+                            InLayer.AddPoint(KPT08_ES_ParseSpelement_Unit(childRing[iSpelement]));
+                        }
+                    }
+                }
+                return EntSpat;
+
+            }
+        }
+
         //   /Package/Cadastral_Blocks/Cadastral_Block
-        private static void Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
+        private TMyCadastralBlock Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
         {
 
+
+            return null;
         }
 
        //   /Package/Cadastral_Blocks/Cadastral_Block/Parcels/Parcel
