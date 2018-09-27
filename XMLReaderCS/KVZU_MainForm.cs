@@ -4789,7 +4789,7 @@ namespace XMLReaderCS
             if (File.Exists(pathToHtmlFile)) File.Delete(pathToHtmlFile); // если был сеанс
             XMLReaderCS.Properties.Settings.Default.Recent0 = DocInfo.FilePath;
             XMLReaderCS.Properties.Settings.Default.Save();
-
+            ESwindow.Close();
         }
 
         private void RecentFile0MenuItem_Click(object sender, EventArgs e)

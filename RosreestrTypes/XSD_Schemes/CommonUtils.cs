@@ -716,6 +716,7 @@ namespace RRTypes.CommonCast
                 testXpath = "/" + docRootName + Xpath; 
             }
 
+            
             System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
               if (recnode != null)
               {
@@ -746,26 +747,57 @@ namespace RRTypes.CommonCast
               else
                   return null;
           }
-          
-          /// <summary>
-          /// Разбор ветви ReestrExtract в документах Росреестра - дописочки от
-          /// регистраторов, содержащей сведения о документе
-          /// </summary>
-          /// <param name="xmldoc"></param>
-          /// <param name="res"></param>
-          public static void Parse_ReestrExtract(System.Xml.XmlDocument xmldoc,  netFteo.XML.FileInfo res)
+
+
+        public static bool Test_Node(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+            string docRootName = xmldoc.DocumentElement.Name;
+            string testXpath;
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+                testXpath = "/parseNS:" + docRootName + Xpath.Replace("/", "/parseNS:");
+            else
+                testXpath = "/" + docRootName + Xpath;
+            System.Xml.XmlNode recnode = xmldoc.DocumentElement.SelectSingleNode(testXpath, nsmgr);
+            if (recnode != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Разбор ветви ReestrExtract в документах Росреестра - дописочки от
+        /// регистраторов, содержащей сведения о документе
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="res"></param>
+        public static void Parse_ReestrExtract(System.Xml.XmlDocument xmldoc,  netFteo.XML.FileInfo res)
           {
-              //tabPage1.Text = "Земельные участки";
-              res.DocType = Parse_Attribute(xmldoc, "ExtractTypeText", "/ReestrExtract/DeclarAttribute");
-              res.Version = Parse_Attribute(xmldoc, "Version", "/eDocument");
-              res.Number  = Parse_Attribute(xmldoc, "ExtractNumber", "/ReestrExtract/DeclarAttribute");
-              res.Date    = Parse_Attribute(xmldoc, "ExtractDate", "/ReestrExtract/DeclarAttribute");
-              res.RequeryNumber = Parse_Attribute(xmldoc, "RequeryNumber", "/ReestrExtract/DeclarAttribute");
-              res.Cert_Doc_Organization = Parse_Attribute(xmldoc, "Name", "/eDocument/Sender");
-              res.Appointment = Parse_Attribute(xmldoc, "Appointment", "/eDocument/Sender");
-              res.AppointmentFIO = Parse_Attribute(xmldoc, "Registrator", "/ReestrExtract/DeclarAttribute");
-              res.ReceivName =     Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivName");
-              res.ReceivAdress =   Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivAdress");
+            //System.Xml.XmlNode egrpNode = xmldoc.DocumentElement.SelectSingleNode("/ReestrExtract"); //CertificationDoc
+            if (Test_Node(xmldoc, "/ReestrExtract"))
+                //            if (xmldoc.DocumentElement.SelectSingleNode("ReestrExtract") != null)
+            {
+                res.DocType = Parse_Attribute(xmldoc, "ExtractTypeText", "/ReestrExtract/DeclarAttribute");
+                res.Version = Parse_Attribute(xmldoc, "Version", "/eDocument");
+                res.Number = Parse_Attribute(xmldoc, "ExtractNumber", "/ReestrExtract/DeclarAttribute");
+                res.Date = Parse_Attribute(xmldoc, "ExtractDate", "/ReestrExtract/DeclarAttribute");
+                res.RequeryNumber = Parse_Attribute(xmldoc, "RequeryNumber", "/ReestrExtract/DeclarAttribute");
+                res.Cert_Doc_Organization = Parse_Attribute(xmldoc, "Name", "/eDocument/Sender");
+                res.Appointment = Parse_Attribute(xmldoc, "Appointment", "/eDocument/Sender");
+                res.AppointmentFIO = Parse_Attribute(xmldoc, "Registrator", "/ReestrExtract/DeclarAttribute");
+                res.ReceivName = Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivName");
+                res.ReceivAdress = Parse_Node(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivAdress");
+            }
+            else
+            {
+                if (Test_Node(xmldoc, "/CertificationDoc")) //xmldoc.DocumentElement.SelectSingleNode("CertificationDoc") != null)
+                {
+                    res.Number = Parse_Node(xmldoc, "/CertificationDoc/Number");
+                }
+            }
           }
 
    
@@ -2295,7 +2327,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
                         TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
 
-                        MainObj.AreaGKN = parcel.SelectSingleNode("Area").SelectSingleNode("Area").FirstChild.Value;
+                        MainObj.AreaGKN = parcel.SelectSingleNode("Area/Area").FirstChild.Value;
                         MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
                         MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
                         MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
@@ -2322,12 +2354,13 @@ namespace RRTypes.CommonParsers
                         if (parcel.SelectSingleNode("Contours") != null)
                         {
                             //26:04:090203:258
+                            System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
                             string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
                             for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                             {
                                 TMyPolygon NewCont = MainObj.Contours.AddPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                       parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value+")",
-                                                                      parcel.SelectSingleNode("Contours").ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
+                                                                      contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
 
                                 res.MifPolygons.Add(NewCont);
                             }
@@ -2338,7 +2371,7 @@ namespace RRTypes.CommonParsers
 
                     //Пункты в Квартале
                     var OMSs = Blocksnodes[i].SelectSingleNode("OMSPoints");
-                    if (OMSs.ChildNodes.Count > 0)
+                    if (OMSs != null)
                     {
                         for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                         {
@@ -2354,6 +2387,43 @@ namespace RRTypes.CommonParsers
                     }
 
 
+                    //Zones:
+                    var zones = Blocksnodes[i].SelectSingleNode("Zones");
+                    if (zones != null)
+                    {
+                        for (int iP = 0; iP <= zones.ChildNodes.Count - 1; iP++)
+                        {
+                            TZone ZoneItem;
+                            System.Xml.XmlNode zone = zones.ChildNodes[iP];
+                            ZoneItem = new TZone(zone.SelectSingleNode("AccountNumber").FirstChild.Value);
+                            //ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
+                            ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                                zone.SelectSingleNode("Entity_Spatial"));
+                            res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                                                                       zone.SelectSingleNode("Entity_Spatial")));
+
+                            if (zone.SelectSingleNode("Documents") != null)
+                                foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
+                                {
+                               
+
+                                    ZoneItem.AddDocument(doc.SelectSingleNode("Number").FirstChild.Value,
+                                        doc.SelectSingleNode("Name").FirstChild.Value,
+                                        doc.SelectSingleNode("Code_Document").FirstChild.Value,
+                                        ((doc.SelectSingleNode("IssueOrgan") != null) ? doc.SelectSingleNode("IssueOrgan").FirstChild.Value : "-"),
+                                        ((doc.SelectSingleNode("Series") != null) ? doc.SelectSingleNode("Series").FirstChild.Value : "-"),
+                                        doc.SelectSingleNode("Date").FirstChild.Value);
+                                        
+                                }
+                            if (zone.SelectSingleNode("SpecialZone") != null)
+                            {
+                                ZoneItem.AddContentRestrictions(zone.SelectSingleNode("SpecialZone").SelectSingleNode("ContentRestrictions").FirstChild.Value);
+                            }
+
+                            Bl.AddZone(ZoneItem);
+                        }
+                    }
+
                     //ОИПД Квартала:
                     //Виртуальный OIPD типа "Квартал":
 
@@ -2362,11 +2432,12 @@ namespace RRTypes.CommonParsers
                    Bl.Entity_Spatial.ImportPolygon(KPT08LandEntSpatToFteo(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value,
                                                                           Blocksnodes[i].SelectSingleNode("SpatialData").SelectSingleNode("Entity_Spatial")));
                   Bl.Entity_Spatial.Definition = "гр" + Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value;
-                  
 
-
-
-
+                    if (Blocksnodes[i].SelectSingleNode("Coord_System") != null)
+                    {
+                        res.MyBlocks.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
+                            Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Cs_Id").Value));
+                    }
 
                     res.RequeryNumber = Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value;
                     res.MyBlocks.Blocks.Add(Bl);
@@ -2763,7 +2834,7 @@ namespace RRTypes.CommonParsers
                         Bl.AddZone(ZoneItem);
                     }
                 }
-
+                
 
 
 
@@ -2779,6 +2850,7 @@ namespace RRTypes.CommonParsers
                         }
                         Bl.AddBound(BoundItem);
                     }
+
                 //ObjectRealty
                 if (KPT10.CadastralBlocks[i].ObjectsRealty.Count > 0)
                 {
@@ -2845,7 +2917,9 @@ namespace RRTypes.CommonParsers
             if (KPT10.CertificationDoc.Official != null)
             {
                 res.Appointment  = KPT10.CertificationDoc.Official.Appointment;
-                res.AppointmentFIO = KPT10.CertificationDoc.Official.FamilyName + " " + KPT10.CertificationDoc.Official.FirstName + " " + KPT10.CertificationDoc.Official.Patronymic;
+                res.AppointmentFIO = KPT10.CertificationDoc.Official.FamilyName + " " + 
+                                     KPT10.CertificationDoc.Official.FirstName + " "  + 
+                                     KPT10.CertificationDoc.Official.Patronymic;
             }
             return res;
             //ListMyCoolections(this.MyBlocks, this.MifPolygons);

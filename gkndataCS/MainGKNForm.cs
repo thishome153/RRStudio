@@ -160,7 +160,7 @@ namespace GKNData
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
                 }
 
-                if ((ENode.Tag.GetType().ToString() == "netFteo.SpatialTMyParcel"))
+                if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyParcel"))
                 {
                     CF.Cfg.CurrentItem.Item_id = ((TMyParcel)ENode.Tag).id;
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
@@ -425,7 +425,7 @@ namespace GKNData
             //TreeNode popuToNode;
             // что в ноде:
              nodeType = inNode.ToString();
-             if (nodeType == "netFteo.BaseClasess.TMyCadastralBlock")
+             if (nodeType == "netFteo.Spatial.TMyCadastralBlock")
              {
                  // Еще не загружены ли ЗУ
                  if ((((TMyCadastralBlock)inNode).HasParcels) && (((TMyCadastralBlock)inNode).Parcels.Parcels.Count == 0))
@@ -519,6 +519,21 @@ namespace GKNData
             return false;
         }
 
+        private bool Toggle_SearchTextBox(TextBox sender)
+        {
+            if (!sender.Visible)
+            {
+                sender.Visible = true;
+                sender.Clear();
+                sender.Focus();
+                return true;
+            }
+            else
+            {
+                sender.Visible = false;
+                return false;
+            }
+        }
         #endregion
 
         #region Назначенные Обработчики событий
@@ -627,6 +642,11 @@ namespace GKNData
         {
             CF.Cfg.CfgRead();
             CF.ShowDialog();
+        }
+
+        private void поискToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            поискToolStripMenuItem.Checked = Toggle_SearchTextBox(SearchTextBox);
         }
     }
 }

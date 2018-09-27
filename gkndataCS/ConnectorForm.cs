@@ -10,6 +10,8 @@ using MySql.Data.MySqlClient;
 
 namespace GKNData
 {
+
+
     public partial class ConnectorForm : Form
     {
         public TAppCfgRecord Cfg;
@@ -53,10 +55,6 @@ namespace GKNData
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            Cfg.CfgWrite();
-        }
     }
 
     /*
@@ -71,17 +69,19 @@ namespace GKNData
             }
         }
         */
+
+
     public class TCurrentItem
     {
-        string TypeName_Block = "netFteo.BaseClasess.TMyCadastralBlock";
-        string TypeName_Parcel = "netFteo.BaseClasess.TMyParcel";
-       public string Item_TypeName;
-       public int Item_id;
-       public TCurrentItem()
-       {
-           this.Item_id = -1;
-           this.Item_TypeName = "EMPTY";
-       }
+        string TypeName_Block = "netFteo.Spatial.TMyCadastralBlock";
+        string TypeName_Parcel = "netFteo.Spatial.TMyParcel";
+        public string Item_TypeName;
+        public int Item_id;
+        public TCurrentItem()
+        {
+            this.Item_id = -1;
+            this.Item_TypeName = "EMPTY";
+        }
     }
 
     public class TAppCfgRecord
@@ -102,6 +102,7 @@ namespace GKNData
         public string District_KN;
         public string District_Name;
         public DialogResult Result;
+
         public TAppCfgRecord()
         {
             this.CurrentItem = new TCurrentItem();
@@ -147,17 +148,17 @@ namespace GKNData
             {
 
                 nk.SetValue("ServerName", this.ServerName);
-                nk.SetValue("DatabaseName",this.DatabaseName);
-                nk.SetValue("ServerPort",this.ServerPort);
-                nk.SetValue("CharSet",this.CharSet);
-                nk.SetValue("SQLUserName",this.UserName);
-                nk.SetValue("Password",this.UserPwrd);
-                nk.SetValue("subrf_ID",this.Subrf_id);
-                nk.SetValue("SubRF_KN",this.SubRF_KN);
-                nk.SetValue("SubRF_Name",this.SubRF_Name);
-                nk.SetValue("district_ID",this.District_id);
+                nk.SetValue("DatabaseName", this.DatabaseName);
+                nk.SetValue("ServerPort", this.ServerPort);
+                nk.SetValue("CharSet", this.CharSet);
+                nk.SetValue("SQLUserName", this.UserName);
+                nk.SetValue("Password", this.UserPwrd);
+                nk.SetValue("subrf_ID", this.Subrf_id);
+                nk.SetValue("SubRF_KN", this.SubRF_KN);
+                nk.SetValue("SubRF_Name", this.SubRF_Name);
+                nk.SetValue("district_ID", this.District_id);
                 nk.SetValue("District_KN", this.District_KN);
-                nk.SetValue("District_Name",this.District_Name) ;
+                nk.SetValue("District_Name", this.District_Name);
             }
             catch
             {

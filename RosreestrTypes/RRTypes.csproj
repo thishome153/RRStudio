@@ -472,6 +472,7 @@
     <None Include="XSD_Schemes\SchemaCommon\_AddressInp_v02.xsd" />
     <None Include="XSD_Schemes\SchemaCommon\_AddressOut_v03.xsd" />
     <Content Include="XSD_Schemes\KVOKS_v07\kv_3d8e61d8-0fbb-4d99-b898-f923523f0f19.xml" />
+    <Content Include="XSD_Schemes\KVZU\KVZU_7.xml" />
     <Content Include="XSD_Schemes\SchemaCommon\_AddressOut_v04.xsd" />
     <None Include="XSD_Schemes\SchemaCommon\_AssignationFlat_v01.xsd" />
     <None Include="XSD_Schemes\SchemaCommon\_Boundary_v02.xsd" />
@@ -548,9 +549,6 @@
     <None Include="XSD_Schemes\V03_TP\P_CommonSimpleType_v04.xsd" />
     <None Include="XSD_Schemes\V03_TP\smev-supplementary-commons-1.0.1.xsd" />
     <None Include="XSD_Schemes\V03_TP\TPLinear_v03.xsd" />
-    <None Include="XSD_Schemes\V03_TP\TP_%28TExpres%29v03.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="XSD_Schemes\V03_TP\TP_v03.xsd">
       <Generator>xsdtoclasses</Generator>
       <LastGenOutput>TP_v03.Generated.cs</LastGenOutput>

@@ -1,0 +1,2410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/GKN/Vidimus/07/common.xsl"?>
+<KVZU xmlns:ns2="urn://x-artefacts-rosreestr-ru/commons/complex-types/numbers/1.0" xmlns:ns3="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" xmlns:adrOut4="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" xmlns:ns5="urn://x-artefacts-rosreestr-ru/commons/complex-types/natural-objects-output/1.0.1" xmlns:ns6="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:ns7="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1" xmlns:ns8="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1">
+  <Parcels>
+    <Parcel CadastralNumber="26:04:170401:19" State="01" DateCreated="2005-09-08">
+      <CadastralBlock>26:04:170401</CadastralBlock>
+      <Name>01</Name>
+      <PrevCadastralNumbers>
+        <CadastralNumber>26:04:170401:18</CadastralNumber>
+      </PrevCadastralNumbers>
+      <InnerCadastralNumbers>
+        <CadastralNumber>26:04:170401:134</CadastralNumber>
+      </InnerCadastralNumbers>
+      <Area>
+        <Area>20727</Area>
+        <Unit>055</Unit>
+        <Inaccuracy>50</Inaccuracy>
+      </Area>
+      <Location>
+        <Address>
+          <adrOut4:OKATO>07243501000</adrOut4:OKATO>
+          <adrOut4:KLADR>26019001000013000</adrOut4:KLADR>
+          <adrOut4:Region>26</adrOut4:Region>
+          <adrOut4:District Name="Новоалександровский" Type="р-н" />
+          <adrOut4:City Name="Новоалександровск" Type="г" />
+          <adrOut4:Street Name="Васильевская" Type="ул" />
+          <adrOut4:Note>установлено относительно ориентира, расположенного в границах участка. Ориентир г. Новоалександровск относительно ул. Васильевской. Почтовый адрес ориентира: край Ставропольский, р-н Новоалександровский</adrOut4:Note>
+        </Address>
+      </Location>
+      <Category>003002000000</Category>
+      <Utilization Utilization="142001000000" ByDoc="Для строительства и эксплуатации жилого поселка КС &quot;Ставропольская&quot;" />
+      <SubParcels>
+        <SubParcel NumberRecord="1" Full="0" State="06">
+          <Area>
+            <Area>131</Area>
+            <Unit>055</Unit>
+          </Area>
+          <Encumbrance>
+            <Name>На земельные участки, входящие в охранные зоны газораспределительных сетей, в целях предупреждения их повреждения или нарушения условий их нормальной эксплуатации налагаются ограничения (обременения),  указанные в п.14  Постановления Правительства РФ №878 от 20.11.2000 г. "Об утверждении Правил охраны газораспределительных сетей":
+а) строить объекты жилищно-гражданского и производственного назначения;
+б) сносить и реконструировать мосты, коллекторы, автомобильные и железные дороги с расположенными на них газораспределительными сетями без предварительного выноса этих газопроводов по согласованию с эксплуатационными организациями;
+в) разрушать берегоукрепительные сооружения, водопропускные устройства, земляные и иные сооружения, предохраняющие газораспределительные сети от разрушений;
+г) перемещать, повреждать, засыпать и уничтожать опознавательные знаки, контрольно-измерительные пункты и другие устройства газораспределительных сетей;
+д) устраивать свалки и склады, разливать растворы кислот, солей, щелочей и других химически активных веществ;
+е) огораживать и перегораживать охранные зоны, препятствовать доступу персонала эксплуатационных организаций к газораспределительным сетям, проведению обслуживания и устранению повреждений газораспределительных сетей;
+ж) разводить огонь и размещать источники огня;
+з) рыть погреба, копать и обрабатывать почву сельскохозяйственными и мелиоративными орудиями и механизмами на глубину более 0,3 метра;
+и) открывать калитки и двери газорегуляторных пунктов, станций катодной и дренажной защиты, люки подземных колодцев, включать или отключать электроснабжение средств связи, освещения и систем телемеханики;
+к) набрасывать, приставлять и привязывать к опорам и надземным газопроводам, ограждениям и зданиям газораспределительных сетей посторонние предметы, лестницы, влезать на них;
+л) самовольно подключаться к газораспределительным сетям., Границы охранной зоны внутриплощадных сетей газопровода жилого поселка для персонала КС "Ставропольская" микрорайона Северный, г. Новоалександровска, Новоалександровского района, Ставропольского края, зона с особыми условиями использования территорий, № 1</Name>
+            <Type>022004000000</Type>
+            <AccountNumber>26.04.2.113</AccountNumber>
+            <Registration>
+              <RegDate>2016-06-16</RegDate>
+            </Registration>
+            <Document>
+              <ns7:CodeDocument>558403990000</ns7:CodeDocument>
+              <ns7:Name>Свидетельство о государственной регистрации права</ns7:Name>
+              <ns7:Number>26-26-01/056/2010-213</ns7:Number>
+              <ns7:Date>2010-08-23</ns7:Date>
+              <ns7:IssueOrgan>Управление Федеральной службы государственной регистрации, кадастра и
+картографии по Ставропольскому краю</ns7:IssueOrgan>
+            </Document>
+          </Encumbrance>
+          <EntitySpatial EntSys="ID1">
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="50">
+                <ns3:Ordinate X="529466.62" Y="1257580.90" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="51">
+                <ns3:Ordinate X="529440.57" Y="1257580.85" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="52">
+                <ns3:Ordinate X="529440.68" Y="1257584.85" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="53">
+                <ns3:Ordinate X="529466.67" Y="1257584.90" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="50">
+                <ns3:Ordinate X="529466.62" Y="1257580.90" OrdNmb="1" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="54">
+                <ns3:Ordinate X="529398.97" Y="1257580.78" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="55">
+                <ns3:Ordinate X="529398.90" Y="1257584.77" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="56">
+                <ns3:Ordinate X="529405.72" Y="1257584.79" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="57">
+                <ns3:Ordinate X="529405.66" Y="1257580.79" OrdNmb="1" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="54">
+                <ns3:Ordinate X="529398.97" Y="1257580.78" OrdNmb="1" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:Borders>
+              <ns3:Border Spatial="1" Point1="50" Point2="51">
+                <ns3:Edge>
+                  <ns3:Length>26.05</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>7</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="51" Point2="52">
+                <ns3:Edge>
+                  <ns3:Length>4</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>88</ns3:Degree>
+                    <ns3:Minute>25</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="52" Point2="53">
+                <ns3:Edge>
+                  <ns3:Length>25.99</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>7</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="53" Point2="50">
+                <ns3:Edge>
+                  <ns3:Length>4</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>269</ns3:Degree>
+                    <ns3:Minute>17</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="54" Point2="55">
+                <ns3:Edge>
+                  <ns3:Length>3.99</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>91</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="55" Point2="56">
+                <ns3:Edge>
+                  <ns3:Length>6.82</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>10</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="56" Point2="57">
+                <ns3:Edge>
+                  <ns3:Length>4</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>269</ns3:Degree>
+                    <ns3:Minute>8</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="57" Point2="54">
+                <ns3:Edge>
+                  <ns3:Length>6.69</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>5</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+            </ns3:Borders>
+          </EntitySpatial>
+        </SubParcel>
+        <SubParcel NumberRecord="2" Full="0" State="05" DateExpiry="2021-11-18">
+          <Area>
+            <Area>40</Area>
+            <Unit>055</Unit>
+          </Area>
+          <Encumbrance>
+            <Type>022001002000</Type>
+          </Encumbrance>
+          <EntitySpatial EntSys="ID1">
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="58">
+                <ns3:Ordinate X="529511.87" Y="1257565.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="61">
+                <ns3:Ordinate X="529511.88" Y="1257569.34" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="60">
+                <ns3:Ordinate X="529511.68" Y="1257569.34" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="59">
+                <ns3:Ordinate X="529511.67" Y="1257565.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="58">
+                <ns3:Ordinate X="529511.87" Y="1257565.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="62">
+                <ns3:Ordinate X="529511.46" Y="1257590.45" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="65">
+                <ns3:Ordinate X="529511.46" Y="1257590.65" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="64">
+                <ns3:Ordinate X="529511.26" Y="1257590.65" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="63">
+                <ns3:Ordinate X="529511.26" Y="1257590.45" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="62">
+                <ns3:Ordinate X="529511.46" Y="1257590.45" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="66">
+                <ns3:Ordinate X="529511.02" Y="1257614.26" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="69">
+                <ns3:Ordinate X="529511.02" Y="1257614.46" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="68">
+                <ns3:Ordinate X="529506.67" Y="1257614.28" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="67">
+                <ns3:Ordinate X="529506.67" Y="1257614.08" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="66">
+                <ns3:Ordinate X="529511.02" Y="1257614.26" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="70">
+                <ns3:Ordinate X="529509.11" Y="1257638.94" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="73">
+                <ns3:Ordinate X="529504.68" Y="1257638.76" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="72">
+                <ns3:Ordinate X="529504.68" Y="1257638.56" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="71">
+                <ns3:Ordinate X="529509.11" Y="1257638.74" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="70">
+                <ns3:Ordinate X="529509.11" Y="1257638.94" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="74">
+                <ns3:Ordinate X="529488.87" Y="1257638.91" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="77">
+                <ns3:Ordinate X="529488.87" Y="1257639.11" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="76">
+                <ns3:Ordinate X="529488.67" Y="1257639.11" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="75">
+                <ns3:Ordinate X="529488.67" Y="1257638.91" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="74">
+                <ns3:Ordinate X="529488.87" Y="1257638.91" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="78">
+                <ns3:Ordinate X="529467.25" Y="1257639.01" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="81">
+                <ns3:Ordinate X="529467.25" Y="1257639.21" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="80">
+                <ns3:Ordinate X="529467.05" Y="1257639.21" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="79">
+                <ns3:Ordinate X="529467.05" Y="1257639.01" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="78">
+                <ns3:Ordinate X="529467.25" Y="1257639.01" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="82">
+                <ns3:Ordinate X="529462.59" Y="1257597.54" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="84">
+                <ns3:Ordinate X="529462.51" Y="1257600.71" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="83">
+                <ns3:Ordinate X="529458.04" Y="1257600.79" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="82">
+                <ns3:Ordinate X="529462.59" Y="1257597.54" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="85">
+                <ns3:Ordinate X="529462.46" Y="1257579.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="88">
+                <ns3:Ordinate X="529462.46" Y="1257579.64" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="87">
+                <ns3:Ordinate X="529462.26" Y="1257579.64" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="86">
+                <ns3:Ordinate X="529462.26" Y="1257579.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="85">
+                <ns3:Ordinate X="529462.46" Y="1257579.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="89">
+                <ns3:Ordinate X="529462.44" Y="1257556.54" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="92">
+                <ns3:Ordinate X="529462.18" Y="1257560.75" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="91">
+                <ns3:Ordinate X="529461.98" Y="1257560.75" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="90">
+                <ns3:Ordinate X="529462.24" Y="1257556.54" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="89">
+                <ns3:Ordinate X="529462.44" Y="1257556.54" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="93">
+                <ns3:Ordinate X="529441.59" Y="1257638.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="96">
+                <ns3:Ordinate X="529441.59" Y="1257639.18" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="95">
+                <ns3:Ordinate X="529441.39" Y="1257639.18" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="94">
+                <ns3:Ordinate X="529441.39" Y="1257638.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="93">
+                <ns3:Ordinate X="529441.59" Y="1257638.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="97">
+                <ns3:Ordinate X="529424.37" Y="1257639.23" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="100">
+                <ns3:Ordinate X="529419.81" Y="1257639.26" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="99">
+                <ns3:Ordinate X="529419.81" Y="1257639.06" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="98">
+                <ns3:Ordinate X="529424.37" Y="1257639.03" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="97">
+                <ns3:Ordinate X="529424.37" Y="1257639.23" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="101">
+                <ns3:Ordinate X="529400.07" Y="1257628.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="104">
+                <ns3:Ordinate X="529399.88" Y="1257633.66" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="103">
+                <ns3:Ordinate X="529399.68" Y="1257633.66" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="102">
+                <ns3:Ordinate X="529399.87" Y="1257628.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="101">
+                <ns3:Ordinate X="529400.07" Y="1257628.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="105">
+                <ns3:Ordinate X="529400.28" Y="1257614.32" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="108">
+                <ns3:Ordinate X="529400.28" Y="1257614.52" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="107">
+                <ns3:Ordinate X="529400.08" Y="1257614.52" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="106">
+                <ns3:Ordinate X="529400.08" Y="1257614.32" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="105">
+                <ns3:Ordinate X="529400.28" Y="1257614.32" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="109">
+                <ns3:Ordinate X="529404.75" Y="1257601.47" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="112">
+                <ns3:Ordinate X="529404.75" Y="1257601.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="111">
+                <ns3:Ordinate X="529400.10" Y="1257601.46" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="110">
+                <ns3:Ordinate X="529400.10" Y="1257601.26" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="109">
+                <ns3:Ordinate X="529404.75" Y="1257601.47" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="113">
+                <ns3:Ordinate X="529400.38" Y="1257594.15" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="116">
+                <ns3:Ordinate X="529400.38" Y="1257594.35" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="115">
+                <ns3:Ordinate X="529400.18" Y="1257594.35" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="114">
+                <ns3:Ordinate X="529400.18" Y="1257594.15" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="113">
+                <ns3:Ordinate X="529400.38" Y="1257594.15" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="117">
+                <ns3:Ordinate X="529400.45" Y="1257575.69" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="120">
+                <ns3:Ordinate X="529400.45" Y="1257575.89" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="119">
+                <ns3:Ordinate X="529400.25" Y="1257575.89" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="118">
+                <ns3:Ordinate X="529400.25" Y="1257575.69" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="117">
+                <ns3:Ordinate X="529400.45" Y="1257575.69" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="121">
+                <ns3:Ordinate X="529402.54" Y="1257556.73" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="123">
+                <ns3:Ordinate X="529400.38" Y="1257559.05" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="122">
+                <ns3:Ordinate X="529400.28" Y="1257556.37" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="121">
+                <ns3:Ordinate X="529402.54" Y="1257556.73" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="124">
+                <ns3:Ordinate X="529509.88" Y="1257656.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="127">
+                <ns3:Ordinate X="529509.88" Y="1257656.64" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="126">
+                <ns3:Ordinate X="529509.68" Y="1257656.64" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="125">
+                <ns3:Ordinate X="529509.68" Y="1257656.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="124">
+                <ns3:Ordinate X="529509.88" Y="1257656.44" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="128">
+                <ns3:Ordinate X="529510.36" Y="1257671.86" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="130">
+                <ns3:Ordinate X="529510.25" Y="1257676.31" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="129">
+                <ns3:Ordinate X="529508.06" Y="1257671.78" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="128">
+                <ns3:Ordinate X="529510.36" Y="1257671.86" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="131">
+                <ns3:Ordinate X="529509.75" Y="1257694.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="134">
+                <ns3:Ordinate X="529509.75" Y="1257695.18" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="133">
+                <ns3:Ordinate X="529509.55" Y="1257695.18" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="132">
+                <ns3:Ordinate X="529509.55" Y="1257694.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="131">
+                <ns3:Ordinate X="529509.75" Y="1257694.98" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="135">
+                <ns3:Ordinate X="529509.31" Y="1257718.57" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="138">
+                <ns3:Ordinate X="529509.31" Y="1257718.77" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="137">
+                <ns3:Ordinate X="529509.11" Y="1257718.77" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="136">
+                <ns3:Ordinate X="529509.11" Y="1257718.57" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="135">
+                <ns3:Ordinate X="529509.31" Y="1257718.57" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="139">
+                <ns3:Ordinate X="529509" Y="1257737.39" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="142">
+                <ns3:Ordinate X="529509" Y="1257737.59" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="141">
+                <ns3:Ordinate X="529508.80" Y="1257737.59" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="140">
+                <ns3:Ordinate X="529508.80" Y="1257737.39" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="139">
+                <ns3:Ordinate X="529509" Y="1257737.39" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="143">
+                <ns3:Ordinate X="529508.60" Y="1257756.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="146">
+                <ns3:Ordinate X="529508.60" Y="1257756.27" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="145">
+                <ns3:Ordinate X="529508.40" Y="1257756.27" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="144">
+                <ns3:Ordinate X="529508.40" Y="1257756.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="143">
+                <ns3:Ordinate X="529508.60" Y="1257756.07" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="147">
+                <ns3:Ordinate X="529508.48" Y="1257776.83" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="149">
+                <ns3:Ordinate X="529508.32" Y="1257781.04" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="148">
+                <ns3:Ordinate X="529504.37" Y="1257781.21" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="147">
+                <ns3:Ordinate X="529508.48" Y="1257776.83" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="150">
+                <ns3:Ordinate X="529493.63" Y="1257784.84" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="152">
+                <ns3:Ordinate X="529493.64" Y="1257788.99" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="151">
+                <ns3:Ordinate X="529488.93" Y="1257788.93" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="150">
+                <ns3:Ordinate X="529493.63" Y="1257784.84" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="153">
+                <ns3:Ordinate X="529467.07" Y="1257788.84" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="156">
+                <ns3:Ordinate X="529467.07" Y="1257789.04" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="155">
+                <ns3:Ordinate X="529466.87" Y="1257789.04" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="154">
+                <ns3:Ordinate X="529466.87" Y="1257788.84" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="153">
+                <ns3:Ordinate X="529467.07" Y="1257788.84" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="157">
+                <ns3:Ordinate X="529441.97" Y="1257788.71" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="160">
+                <ns3:Ordinate X="529441.97" Y="1257788.91" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="159">
+                <ns3:Ordinate X="529441.77" Y="1257788.91" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="158">
+                <ns3:Ordinate X="529441.77" Y="1257788.71" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="157">
+                <ns3:Ordinate X="529441.97" Y="1257788.71" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:SpatialElement>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="161">
+                <ns3:Ordinate X="529417.59" Y="1257788.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="164">
+                <ns3:Ordinate X="529417.59" Y="1257788.87" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="163">
+                <ns3:Ordinate X="529417.39" Y="1257788.87" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="162">
+                <ns3:Ordinate X="529417.39" Y="1257788.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+              <ns3:SpelementUnit TypeUnit="Точка" SuNmb="161">
+                <ns3:Ordinate X="529417.59" Y="1257788.67" OrdNmb="1" DeltaGeopoint="0.10" GeopointZacrep="Закрепление отсутствует" />
+              </ns3:SpelementUnit>
+            </ns3:SpatialElement>
+            <ns3:Borders>
+              <ns3:Border Spatial="1" Point1="58" Point2="61">
+                <ns3:Edge>
+                  <ns3:Length>4.27</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>89</ns3:Degree>
+                    <ns3:Minute>52</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="61" Point2="60">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="60" Point2="59">
+                <ns3:Edge>
+                  <ns3:Length>4.27</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>269</ns3:Degree>
+                    <ns3:Minute>52</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="1" Point1="59" Point2="58">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="62" Point2="65">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="65" Point2="64">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="64" Point2="63">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="2" Point1="63" Point2="62">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="3" Point1="66" Point2="69">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="3" Point1="69" Point2="68">
+                <ns3:Edge>
+                  <ns3:Length>4.35</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>182</ns3:Degree>
+                    <ns3:Minute>22</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="3" Point1="68" Point2="67">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="3" Point1="67" Point2="66">
+                <ns3:Edge>
+                  <ns3:Length>4.35</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>2</ns3:Degree>
+                    <ns3:Minute>22</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="4" Point1="70" Point2="73">
+                <ns3:Edge>
+                  <ns3:Length>4.43</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>182</ns3:Degree>
+                    <ns3:Minute>20</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="4" Point1="73" Point2="72">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="4" Point1="72" Point2="71">
+                <ns3:Edge>
+                  <ns3:Length>4.43</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>2</ns3:Degree>
+                    <ns3:Minute>20</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="4" Point1="71" Point2="70">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="5" Point1="74" Point2="77">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="5" Point1="77" Point2="76">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="5" Point1="76" Point2="75">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="5" Point1="75" Point2="74">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="6" Point1="78" Point2="81">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="6" Point1="81" Point2="80">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="6" Point1="80" Point2="79">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="6" Point1="79" Point2="78">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="7" Point1="82" Point2="84">
+                <ns3:Edge>
+                  <ns3:Length>3.17</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>91</ns3:Degree>
+                    <ns3:Minute>27</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="7" Point1="84" Point2="83">
+                <ns3:Edge>
+                  <ns3:Length>4.47</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>178</ns3:Degree>
+                    <ns3:Minute>58</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="7" Point1="83" Point2="82">
+                <ns3:Edge>
+                  <ns3:Length>5.59</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>324</ns3:Degree>
+                    <ns3:Minute>28</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="8" Point1="85" Point2="88">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="8" Point1="88" Point2="87">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="8" Point1="87" Point2="86">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="8" Point1="86" Point2="85">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="9" Point1="89" Point2="92">
+                <ns3:Edge>
+                  <ns3:Length>4.22</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>93</ns3:Degree>
+                    <ns3:Minute>32</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="9" Point1="92" Point2="91">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="9" Point1="91" Point2="90">
+                <ns3:Edge>
+                  <ns3:Length>4.22</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>273</ns3:Degree>
+                    <ns3:Minute>32</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="9" Point1="90" Point2="89">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="10" Point1="93" Point2="96">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="10" Point1="96" Point2="95">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="10" Point1="95" Point2="94">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="10" Point1="94" Point2="93">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="11" Point1="97" Point2="100">
+                <ns3:Edge>
+                  <ns3:Length>4.56</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>179</ns3:Degree>
+                    <ns3:Minute>37</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="11" Point1="100" Point2="99">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="11" Point1="99" Point2="98">
+                <ns3:Edge>
+                  <ns3:Length>4.56</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>359</ns3:Degree>
+                    <ns3:Minute>37</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="11" Point1="98" Point2="97">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="12" Point1="101" Point2="104">
+                <ns3:Edge>
+                  <ns3:Length>4.99</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>92</ns3:Degree>
+                    <ns3:Minute>11</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="12" Point1="104" Point2="103">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="12" Point1="103" Point2="102">
+                <ns3:Edge>
+                  <ns3:Length>4.99</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>272</ns3:Degree>
+                    <ns3:Minute>11</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="12" Point1="102" Point2="101">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="13" Point1="105" Point2="108">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="13" Point1="108" Point2="107">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="13" Point1="107" Point2="106">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="13" Point1="106" Point2="105">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="14" Point1="109" Point2="112">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="14" Point1="112" Point2="111">
+                <ns3:Edge>
+                  <ns3:Length>4.65</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>182</ns3:Degree>
+                    <ns3:Minute>35</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="14" Point1="111" Point2="110">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="14" Point1="110" Point2="109">
+                <ns3:Edge>
+                  <ns3:Length>4.65</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>2</ns3:Degree>
+                    <ns3:Minute>35</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="15" Point1="113" Point2="116">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="15" Point1="116" Point2="115">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="15" Point1="115" Point2="114">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="15" Point1="114" Point2="113">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="16" Point1="117" Point2="120">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="16" Point1="120" Point2="119">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="16" Point1="119" Point2="118">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="16" Point1="118" Point2="117">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="17" Point1="121" Point2="123">
+                <ns3:Edge>
+                  <ns3:Length>3.17</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>132</ns3:Degree>
+                    <ns3:Minute>57</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="17" Point1="123" Point2="122">
+                <ns3:Edge>
+                  <ns3:Length>2.68</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>267</ns3:Degree>
+                    <ns3:Minute>52</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="17" Point1="122" Point2="121">
+                <ns3:Edge>
+                  <ns3:Length>2.29</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>9</ns3:Degree>
+                    <ns3:Minute>3</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="18" Point1="124" Point2="127">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="18" Point1="127" Point2="126">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="18" Point1="126" Point2="125">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="18" Point1="125" Point2="124">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="19" Point1="128" Point2="130">
+                <ns3:Edge>
+                  <ns3:Length>4.45</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>91</ns3:Degree>
+                    <ns3:Minute>25</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="19" Point1="130" Point2="129">
+                <ns3:Edge>
+                  <ns3:Length>5.03</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>244</ns3:Degree>
+                    <ns3:Minute>12</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="19" Point1="129" Point2="128">
+                <ns3:Edge>
+                  <ns3:Length>2.30</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>1</ns3:Degree>
+                    <ns3:Minute>60</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="20" Point1="131" Point2="134">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="20" Point1="134" Point2="133">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="20" Point1="133" Point2="132">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="20" Point1="132" Point2="131">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="21" Point1="135" Point2="138">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="21" Point1="138" Point2="137">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="21" Point1="137" Point2="136">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="21" Point1="136" Point2="135">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="22" Point1="139" Point2="142">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="22" Point1="142" Point2="141">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="22" Point1="141" Point2="140">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="22" Point1="140" Point2="139">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="23" Point1="143" Point2="146">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="23" Point1="146" Point2="145">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="23" Point1="145" Point2="144">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="23" Point1="144" Point2="143">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="24" Point1="147" Point2="149">
+                <ns3:Edge>
+                  <ns3:Length>4.21</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>92</ns3:Degree>
+                    <ns3:Minute>11</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="24" Point1="149" Point2="148">
+                <ns3:Edge>
+                  <ns3:Length>3.95</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>177</ns3:Degree>
+                    <ns3:Minute>32</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="24" Point1="148" Point2="147">
+                <ns3:Edge>
+                  <ns3:Length>6.01</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>313</ns3:Degree>
+                    <ns3:Minute>11</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="25" Point1="150" Point2="152">
+                <ns3:Edge>
+                  <ns3:Length>4.15</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>89</ns3:Degree>
+                    <ns3:Minute>52</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="25" Point1="152" Point2="151">
+                <ns3:Edge>
+                  <ns3:Length>4.71</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>44</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="25" Point1="151" Point2="150">
+                <ns3:Edge>
+                  <ns3:Length>6.23</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>318</ns3:Degree>
+                    <ns3:Minute>58</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="26" Point1="153" Point2="156">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="26" Point1="156" Point2="155">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="26" Point1="155" Point2="154">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="26" Point1="154" Point2="153">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="27" Point1="157" Point2="160">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="27" Point1="160" Point2="159">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="27" Point1="159" Point2="158">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="27" Point1="158" Point2="157">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="28" Point1="161" Point2="164">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>90</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="28" Point1="164" Point2="163">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>180</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="28" Point1="163" Point2="162">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>270</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+              <ns3:Border Spatial="28" Point1="162" Point2="161">
+                <ns3:Edge>
+                  <ns3:Length>0.20</ns3:Length>
+                  <ns3:DirectionAngle>
+                    <ns3:Degree>0</ns3:Degree>
+                    <ns3:Minute>0</ns3:Minute>
+                  </ns3:DirectionAngle>
+                </ns3:Edge>
+              </ns3:Border>
+            </ns3:Borders>
+          </EntitySpatial>
+        </SubParcel>
+      </SubParcels>
+      <EntitySpatial EntSys="ID1">
+        <ns3:SpatialElement>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <ns3:Ordinate X="529523.05" Y="1257533.47" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="13">
+            <ns3:Ordinate X="529519.09" Y="1257754.88" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="12">
+            <ns3:Ordinate X="529519.36" Y="1257760.75" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="11">
+            <ns3:Ordinate X="529518.88" Y="1257767.03" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="10">
+            <ns3:Ordinate X="529518.32" Y="1257798.48" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="9">
+            <ns3:Ordinate X="529395.21" Y="1257798.14" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="8">
+            <ns3:Ordinate X="529395.23" Y="1257797.10" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="7">
+            <ns3:Ordinate X="529395.55" Y="1257778.73" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="6">
+            <ns3:Ordinate X="529420.41" Y="1257778.90" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="5">
+            <ns3:Ordinate X="529420.47" Y="1257758.24" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="4">
+            <ns3:Ordinate X="529405.14" Y="1257758.12" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="3">
+            <ns3:Ordinate X="529395.91" Y="1257757.84" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="2">
+            <ns3:Ordinate X="529399.82" Y="1257531.33" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="1">
+            <ns3:Ordinate X="529523.05" Y="1257533.47" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+        </ns3:SpatialElement>
+        <ns3:SpatialElement>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <ns3:Ordinate X="529499.49" Y="1257656.03" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="15">
+            <ns3:Ordinate X="529499.50" Y="1257671.84" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="16">
+            <ns3:Ordinate X="529493.42" Y="1257671.63" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="17">
+            <ns3:Ordinate X="529481.59" Y="1257671.56" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="18">
+            <ns3:Ordinate X="529466.06" Y="1257671.39" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="19">
+            <ns3:Ordinate X="529466.18" Y="1257694.76" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="20">
+            <ns3:Ordinate X="529499.31" Y="1257694.89" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="21">
+            <ns3:Ordinate X="529499.24" Y="1257715.59" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="22">
+            <ns3:Ordinate X="529499.10" Y="1257735.99" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="23">
+            <ns3:Ordinate X="529499.23" Y="1257757.92" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="24">
+            <ns3:Ordinate X="529499.17" Y="1257779.31" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="25">
+            <ns3:Ordinate X="529465.93" Y="1257778.90" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="26">
+            <ns3:Ordinate X="529465.83" Y="1257758.56" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="27">
+            <ns3:Ordinate X="529465.80" Y="1257736.15" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="28">
+            <ns3:Ordinate X="529420.56" Y="1257736.31" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="29">
+            <ns3:Ordinate X="529404.87" Y="1257736.25" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="30">
+            <ns3:Ordinate X="529404.63" Y="1257726.13" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="31">
+            <ns3:Ordinate X="529404.81" Y="1257667.17" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="32">
+            <ns3:Ordinate X="529466.11" Y="1257667.57" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="33">
+            <ns3:Ordinate X="529466.28" Y="1257656.06" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="14">
+            <ns3:Ordinate X="529499.49" Y="1257656.03" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+        </ns3:SpatialElement>
+        <ns3:SpatialElement>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="34">
+            <ns3:Ordinate X="529500.87" Y="1257554.32" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="35">
+            <ns3:Ordinate X="529502.18" Y="1257600.44" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="36">
+            <ns3:Ordinate X="529484.58" Y="1257600.64" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="37">
+            <ns3:Ordinate X="529466.83" Y="1257600.78" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="38">
+            <ns3:Ordinate X="529466.35" Y="1257554.53" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="39">
+            <ns3:Ordinate X="529483.94" Y="1257554.35" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="34">
+            <ns3:Ordinate X="529500.87" Y="1257554.32" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+        </ns3:SpatialElement>
+        <ns3:SpatialElement>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="40">
+            <ns3:Ordinate X="529439.83" Y="1257554.57" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="41">
+            <ns3:Ordinate X="529441.13" Y="1257600.85" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="42">
+            <ns3:Ordinate X="529440.37" Y="1257627.41" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="43">
+            <ns3:Ordinate X="529412.82" Y="1257627.68" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="44">
+            <ns3:Ordinate X="529412.84" Y="1257601.14" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="45">
+            <ns3:Ordinate X="529405.97" Y="1257601.23" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="46">
+            <ns3:Ordinate X="529405.26" Y="1257554.76" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="47">
+            <ns3:Ordinate X="529422.32" Y="1257554.66" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+          <ns3:SpelementUnit TypeUnit="Точка" SuNmb="40">
+            <ns3:Ordinate X="529439.83" Y="1257554.57" OrdNmb="1" DeltaGeopoint="0.10" />
+          </ns3:SpelementUnit>
+        </ns3:SpatialElement>
+        <ns3:Borders>
+          <ns3:Border Spatial="1" Point1="1" Point2="13">
+            <ns3:Edge>
+              <ns3:Length>221.45</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>91</ns3:Degree>
+                <ns3:Minute>1</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="13" Point2="12">
+            <ns3:Edge>
+              <ns3:Length>5.88</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:131</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>87</ns3:Degree>
+                <ns3:Minute>22</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="12" Point2="11">
+            <ns3:Edge>
+              <ns3:Length>6.30</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:131</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>94</ns3:Degree>
+                <ns3:Minute>22</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="11" Point2="10">
+            <ns3:Edge>
+              <ns3:Length>31.45</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>91</ns3:Degree>
+                <ns3:Minute>1</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="10" Point2="9">
+            <ns3:Edge>
+              <ns3:Length>123.11</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>9</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="9" Point2="8">
+            <ns3:Edge>
+              <ns3:Length>1.04</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:11</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>271</ns3:Degree>
+                <ns3:Minute>6</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="8" Point2="7">
+            <ns3:Edge>
+              <ns3:Length>18.37</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:1</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>60</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="7" Point2="6">
+            <ns3:Edge>
+              <ns3:Length>24.86</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:132</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>0</ns3:Degree>
+                <ns3:Minute>24</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="6" Point2="5">
+            <ns3:Edge>
+              <ns3:Length>20.66</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:132</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>10</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="5" Point2="4">
+            <ns3:Edge>
+              <ns3:Length>15.33</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:128</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:132</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>27</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="4" Point2="3">
+            <ns3:Edge>
+              <ns3:Length>9.23</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:128</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:132</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>181</ns3:Degree>
+                <ns3:Minute>44</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="3" Point2="2">
+            <ns3:Edge>
+              <ns3:Length>226.54</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:128</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>59</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="2" Point2="1">
+            <ns3:Edge>
+              <ns3:Length>123.25</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>0</ns3:Degree>
+                <ns3:Minute>60</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="14" Point2="15">
+            <ns3:Edge>
+              <ns3:Length>15.81</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:45</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>89</ns3:Degree>
+                <ns3:Minute>58</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="15" Point2="16">
+            <ns3:Edge>
+              <ns3:Length>6.08</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:126</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:45</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>181</ns3:Degree>
+                <ns3:Minute>59</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="16" Point2="17">
+            <ns3:Edge>
+              <ns3:Length>11.83</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:126</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:45</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>20</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="17" Point2="18">
+            <ns3:Edge>
+              <ns3:Length>15.53</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:126</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:45</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>38</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="18" Point2="19">
+            <ns3:Edge>
+              <ns3:Length>23.37</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:126</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>89</ns3:Degree>
+                <ns3:Minute>42</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="19" Point2="20">
+            <ns3:Edge>
+              <ns3:Length>33.13</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:126</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:47</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>0</ns3:Degree>
+                <ns3:Minute>13</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="20" Point2="21">
+            <ns3:Edge>
+              <ns3:Length>20.70</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:47</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>90</ns3:Degree>
+                <ns3:Minute>12</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="21" Point2="22">
+            <ns3:Edge>
+              <ns3:Length>20.40</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:48</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>90</ns3:Degree>
+                <ns3:Minute>24</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="22" Point2="23">
+            <ns3:Edge>
+              <ns3:Length>21.93</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:129</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>89</ns3:Degree>
+                <ns3:Minute>40</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="23" Point2="24">
+            <ns3:Edge>
+              <ns3:Length>21.39</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:50</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>90</ns3:Degree>
+                <ns3:Minute>10</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="24" Point2="25">
+            <ns3:Edge>
+              <ns3:Length>33.24</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:50</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>42</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="25" Point2="26">
+            <ns3:Edge>
+              <ns3:Length>20.34</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:50</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>269</ns3:Degree>
+                <ns3:Minute>43</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="26" Point2="27">
+            <ns3:Edge>
+              <ns3:Length>22.41</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:129</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>269</ns3:Degree>
+                <ns3:Minute>55</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="27" Point2="28">
+            <ns3:Edge>
+              <ns3:Length>45.24</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>179</ns3:Degree>
+                <ns3:Minute>48</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="28" Point2="29">
+            <ns3:Edge>
+              <ns3:Length>15.69</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:128</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>180</ns3:Degree>
+                <ns3:Minute>13</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="29" Point2="30">
+            <ns3:Edge>
+              <ns3:Length>10.12</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:128</ns3:CadastralNumber>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>268</ns3:Degree>
+                <ns3:Minute>38</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="30" Point2="31">
+            <ns3:Edge>
+              <ns3:Length>58.96</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>10</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="31" Point2="32">
+            <ns3:Edge>
+              <ns3:Length>61.30</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:127</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>0</ns3:Degree>
+                <ns3:Minute>22</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="32" Point2="33">
+            <ns3:Edge>
+              <ns3:Length>11.51</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>51</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="33" Point2="14">
+            <ns3:Edge>
+              <ns3:Length>33.21</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:45</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>359</ns3:Degree>
+                <ns3:Minute>57</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="34" Point2="35">
+            <ns3:Edge>
+              <ns3:Length>46.14</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:41</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>88</ns3:Degree>
+                <ns3:Minute>22</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="35" Point2="36">
+            <ns3:Edge>
+              <ns3:Length>17.60</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:41</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>179</ns3:Degree>
+                <ns3:Minute>21</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="36" Point2="37">
+            <ns3:Edge>
+              <ns3:Length>17.75</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:42</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>179</ns3:Degree>
+                <ns3:Minute>33</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="37" Point2="38">
+            <ns3:Edge>
+              <ns3:Length>46.25</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:42</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>269</ns3:Degree>
+                <ns3:Minute>24</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="38" Point2="39">
+            <ns3:Edge>
+              <ns3:Length>17.59</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:42</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>359</ns3:Degree>
+                <ns3:Minute>25</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="3" Point1="39" Point2="34">
+            <ns3:Edge>
+              <ns3:Length>16.93</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:41</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>359</ns3:Degree>
+                <ns3:Minute>54</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="40" Point2="41">
+            <ns3:Edge>
+              <ns3:Length>46.30</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:43</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>88</ns3:Degree>
+                <ns3:Minute>23</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="41" Point2="42">
+            <ns3:Edge>
+              <ns3:Length>26.57</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:130</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>91</ns3:Degree>
+                <ns3:Minute>38</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="42" Point2="43">
+            <ns3:Edge>
+              <ns3:Length>27.55</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:130</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>179</ns3:Degree>
+                <ns3:Minute>26</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="43" Point2="44">
+            <ns3:Edge>
+              <ns3:Length>26.54</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:130</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>270</ns3:Degree>
+                <ns3:Minute>3</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="44" Point2="45">
+            <ns3:Edge>
+              <ns3:Length>6.87</ns3:Length>
+              <ns3:DirectionAngle>
+                <ns3:Degree>179</ns3:Degree>
+                <ns3:Minute>15</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="45" Point2="46">
+            <ns3:Edge>
+              <ns3:Length>46.48</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:44</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>269</ns3:Degree>
+                <ns3:Minute>7</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="46" Point2="47">
+            <ns3:Edge>
+              <ns3:Length>17.06</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:44</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>359</ns3:Degree>
+                <ns3:Minute>40</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="4" Point1="47" Point2="40">
+            <ns3:Edge>
+              <ns3:Length>17.51</ns3:Length>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:43</ns3:CadastralNumber>
+              </ns3:Neighbours>
+              <ns3:DirectionAngle>
+                <ns3:Degree>359</ns3:Degree>
+                <ns3:Minute>42</ns3:Minute>
+              </ns3:DirectionAngle>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="11" Point2="11">
+            <ns3:Edge>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:11</ns3:CadastralNumber>
+              </ns3:Neighbours>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="1" Point1="7" Point2="7">
+            <ns3:Edge>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:120</ns3:CadastralNumber>
+              </ns3:Neighbours>
+            </ns3:Edge>
+          </ns3:Border>
+          <ns3:Border Spatial="2" Point1="27" Point2="27">
+            <ns3:Edge>
+              <ns3:Neighbours>
+                <ns3:CadastralNumber>26:04:170401:48</ns3:CadastralNumber>
+              </ns3:Neighbours>
+            </ns3:Edge>
+          </ns3:Border>
+        </ns3:Borders>
+      </EntitySpatial>
+      <CadastralCost Value="4952509.38" Unit="383" />
+      <SpecialNote>3аявление №30-3688172Из земельного участка образованы земельные участки, сведения о которых носят временный характер, с кадастровыми номерами:26:04:170401:128, 26:04:170401:126.  Посредством данного земельного участка обеспечен доступ к земельному участку (земельным участкам) с кадастровым номером (кадастровыми номерами) 26:04:170401:128, 26:04:170401:130, 26:04:170401:127, 26:04:170401:132, 26:04:170401:126, 26:04:170401:129.</SpecialNote>
+      <AllOffspringParcel>
+        <CadastralNumber>26:04:170401:45</CadastralNumber>
+        <CadastralNumber>26:04:170401:41</CadastralNumber>
+        <CadastralNumber>26:04:170401:42</CadastralNumber>
+        <CadastralNumber>26:04:170401:130</CadastralNumber>
+        <CadastralNumber>26:04:170401:50</CadastralNumber>
+        <CadastralNumber>26:04:170401:131</CadastralNumber>
+        <CadastralNumber>26:04:170401:127</CadastralNumber>
+        <CadastralNumber>26:04:170401:126</CadastralNumber>
+        <CadastralNumber>26:04:170401:43</CadastralNumber>
+        <CadastralNumber>26:04:170401:47</CadastralNumber>
+        <CadastralNumber>26:04:170401:44</CadastralNumber>
+        <CadastralNumber>26:04:170401:48</CadastralNumber>
+        <CadastralNumber>26:04:170401:132</CadastralNumber>
+        <CadastralNumber>26:04:170401:129</CadastralNumber>
+        <CadastralNumber>26:04:170401:128</CadastralNumber>
+      </AllOffspringParcel>
+    </Parcel>
+  </Parcels>
+  <CertificationDoc>
+    <ns8:Organization>Филиал федерального государственного бюджетного учреждения "Федеральная кадастровая палата Федеральной службы государственной регистрации, кадастра и картографии" по Ставропольскому краю</ns8:Organization>
+    <ns8:Date>2016-11-17</ns8:Date>
+    <ns8:Number>26/501/16-737051</ns8:Number>
+    <ns8:Official>
+      <ns8:Appointment>Инженер 2 категории</ns8:Appointment>
+      <ns6:FamilyName>Брязгун</ns6:FamilyName>
+      <ns6:FirstName>Оксана</ns6:FirstName>
+      <ns6:Patronymic>Алексеевна</ns6:Patronymic>
+    </ns8:Official>
+  </CertificationDoc>
+  <Contractors>
+    <Contractor Date="2016-08-01">
+      <FamilyName>Ромашова</FamilyName>
+      <FirstName>Жанна</FirstName>
+      <Patronymic>Юрьевна</Patronymic>
+      <NCertificate>26-11-338</NCertificate>
+      <Organization>
+        <Name>ООО "ГЕОКОМПЛЕКС"</Name>
+      </Organization>
+    </Contractor>
+    <Contractor Date="2012-05-18">
+      <FamilyName>Логачева</FamilyName>
+      <FirstName>Екатерина</FirstName>
+      <Patronymic>Александровна</Patronymic>
+      <NCertificate>26-11-259</NCertificate>
+      <Organization>
+        <Name>Общество с ограниченной ответственностью "Земельно-кадастровый центр"</Name>
+      </Organization>
+    </Contractor>
+  </Contractors>
+  <CoordSystems>
+    <ns3:CoordSystem Name="МСК-26 от СК-95, зона 1" CsId="ID1" />
+  </CoordSystems>
+</KVZU>
