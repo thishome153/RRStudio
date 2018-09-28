@@ -838,6 +838,7 @@
     <Content Include="XSD_Schemes\V02_STD_TP\STD_TP.Generated.xml">
       <DependentUpon>STD_TP.xsd</DependentUpon>
     </Content>
+    <Content Include="XSD_Schemes\V03_TP\GKUOKS_83f7f160-LAST.xml" />
     <Content Include="XSD_Schemes\V03_TP\TP_v03.Generated.xml">
       <DependentUpon>TP_v03.xsd</DependentUpon>
     </Content>

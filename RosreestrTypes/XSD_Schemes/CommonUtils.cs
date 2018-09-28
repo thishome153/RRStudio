@@ -454,7 +454,7 @@ namespace RRTypes.CommonCast
             if (Address == null) return null;
             TAddress Adr = new TAddress();
             Adr.KLADR = Address.KLADR;
-            Adr.Note = Address.Note;
+            Adr.Other = Address.Other;
             if (Address.City != null)
                 Adr.City = Address.City.Type + " " + Address.City.Name;
             if (Address.District != null)
@@ -2108,17 +2108,20 @@ namespace RRTypes.CommonParsers
                     {
                         for (int i = 0; i <= TP.Building.Package.NewApartHouse.Flats.Count - 1; i++)
                         {
-                            TFlat Flat = new TFlat(TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Position.NumberOnPlan);
-                            TLevel lvl = new TLevel(
-                                TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Type.ToString(),
-                                TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Number,
-                                TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Position.NumberOnPlan);
+                            TFlat Flat = new TFlat((i+1).ToString());
+                            foreach (RRTypes.V03_TP.tLevelsLevel level in TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels)
+                            {
+                                TLevel lvl = new TLevel(level.Type.ToString(),
+                                    level.Number,
+                                    level.Position.NumberOnPlan);
+                            
+                                foreach (RRTypes.V03_TP.tPlanJPG jpegname in level.Position.Plans)// TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Position.Plans)
+                                    lvl.AddPlan(jpegname.Name);
+                                Flat.PositionInObject.Levels.Add(lvl);
+                            }
                             Flat.AssignationCode = TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationCode.ToString();
                             if (TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationTypeSpecified)
                                 Flat.AssignationType = TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationType.ToString();
-                            foreach (RRTypes.V03_TP.tPlanJPG jpegname in TP.Building.Package.NewApartHouse.Flats[i].PositionInObject.Levels[0].Position.Plans)
-                                lvl.AddPlan(jpegname.Name);
-                            Flat.PositionInObject.Levels.Add(lvl);
                             Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.Flats[i].Address);
                             Flat.Area = TP.Building.Package.NewApartHouse.Flats[i].Area;
                             OKS.Building.Flats.Add(Flat);
@@ -2327,7 +2330,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
                         TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
 
-                        MainObj.AreaGKN = parcel.SelectSingleNode("Area/Area").FirstChild.Value;
+                        MainObj.AreaGKN = parcel.SelectSingleNode("Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
                         MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
                         MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
                         MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
@@ -3319,6 +3322,7 @@ namespace RRTypes.CommonParsers
 
                 res.MyBlocks.Blocks.Add(Bl);
             }
+/*
             res.Number = kv.CertificationDoc.Number;
             res.Date = kv.CertificationDoc.Date.ToString("dd.MM.yyyy");
             res.Cert_Doc_Organization = kv.CertificationDoc.Organization;
@@ -3328,6 +3332,8 @@ namespace RRTypes.CommonParsers
                 res.Appointment = RRTypes.CommonCast.CasterEGRP.Parse_SenderAppointment(xmldoc); // мдаааа!!! XPATH !
                 res.AppointmentFIO = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
             }
+*/            
+            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
             return res;
         }
         #endregion

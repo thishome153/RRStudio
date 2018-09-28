@@ -257,6 +257,7 @@ namespace netFteo.Rosreestr
     public class TAddress
     {
         public string Note;
+        public string Other;
         public string OKATO;
         public string KLADR;
         public string OKTMO;

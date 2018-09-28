@@ -250,6 +250,7 @@ namespace GKNData
             // treeView1
             // 
             this.treeView1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.treeView1.ContextMenuStrip = this.contextMenu1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.treeView1.HideSelection = false;
@@ -389,6 +390,8 @@ namespace GKNData
             this.SearchTextBox.TabIndex = 4;
             this.SearchTextBox.Visible = false;
             this.SearchTextBox.WordWrap = false;
+            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
+            this.SearchTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyUp);
             // 
             // MainGKNForm
             // 

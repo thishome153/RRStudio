@@ -2576,30 +2576,54 @@ namespace XMLReaderCS
             LV.Columns[5].Text = "Площадь";
             LV.Columns[6].Text = "Адрес";
             LV.Columns[7].Text = "Адрес нестр.";
-            
+            LV.BeginUpdate();
+            LV.View = System.Windows.Forms.View.Details;
+
             List<string> lst = new List<string>();
             int cnt = 1;
             foreach (TFlat fl in list)
             {
-                string flat_string = cnt++.ToString();
+                string flat_string = "" ;  
                 if (fl.AssignationType == "")
-                    flat_string += "\t" + fl.AssignationCode;
+                    flat_string += fl.AssignationCode;
                 else
-                    flat_string += "\t" + fl.AssignationCode + "/" + fl.AssignationType;
-                foreach (TLevel lv in fl.PositionInObject.Levels)
+                    flat_string += fl.AssignationCode + "/" + fl.AssignationType;
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = cnt++.ToString();
+                LVi.SubItems.Add(flat_string);
+                if (fl.PositionInObject.Levels.Count == 1)
                 {
-                   flat_string +="\t"  + lv.Type; //Тип этажа
-                   flat_string +="\t"  + lv.Number; // Номер этажа
-                   flat_string +="\t" + lv.Position.NumberOnPlan;
-                   flat_string +="\t" + fl.Area.ToString();
-                   flat_string +="\t" + fl.Address.AsString();//Adress
-                   flat_string += "\t" + fl.Address.Note; //lv.Position.Plan00_JPEG; // jpeg[0] only
+                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Type);
+                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Number);
+                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Position.NumberOnPlan);
                 }
-                if (fl.CN != "")
-                    flat_string +="\t\t\t"+ fl.CN;
-                lst.Add(flat_string);
+                else
+                {
+                    LVi.SubItems.Add("");
+                    LVi.SubItems.Add("");
+                    LVi.SubItems.Add("");
+                }
+                LVi.SubItems.Add(fl.Area.ToString());
+                LVi.SubItems.Add(fl.Address.AsString());//Adress
+                LVi.SubItems.Add(fl.Address.Other); //lv.Position.Plan00_JPEG; // jpeg[0] only
+                LV.Items.Add(LVi);
+
+                if (fl.PositionInObject.Levels.Count > 1)
+                    foreach (TLevel lv in fl.PositionInObject.Levels)
+                {
+                    ListViewItem LVip = new ListViewItem();
+                    LVip.Text = ""; //пропустим
+                    LVip.SubItems.Add(flat_string);
+                    LVip.SubItems.Add(lv.Type); //Тип этажа
+                    LVip.SubItems.Add(lv.Number); // Номер этажа
+                    LVip.SubItems.Add(lv.Position.NumberOnPlan);
+                    LV.Items.Add(LVip);
+                }
+                
+
             }
-            ListToListView(LV, lst);
+
+            LV.EndUpdate();
         }
 
 
@@ -5217,7 +5241,7 @@ namespace XMLReaderCS
             foreach(ListViewItem lvit in ((ListView)parent).Items)
             {
               string sub = "";
-                if (lvit.Text != "")
+             //   if (lvit.Text != "")
                 {
                     foreach (ListViewItem.ListViewSubItem lv in lvit.SubItems)
                     {
@@ -5390,6 +5414,7 @@ namespace XMLReaderCS
             }  */
         }
 
+/*
       /// <summary>
       /// Поиск по дереву по тексту Node
       /// </summary>
@@ -5399,14 +5424,14 @@ namespace XMLReaderCS
         private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
         {
             if (searchstring == "") return;
-                /*
+                
             {
-                TV_Parcels.SelectedNode = TV_Parcels.TopNode;
-                TV_Parcels.Focus();
-                return;
-            }
-                */
-
+//                TV_Parcels.SelectedNode = TV_Parcels.TopNode;
+//                TV_Parcels.Focus();
+//                return;
+//            }
+                
+                /*
             Boolean selectedfound = foundFirst;
             foreach(TreeNode tn in srcNodes.Nodes)
             {
@@ -5424,6 +5449,8 @@ namespace XMLReaderCS
             }
         }
 
+
+        */
         private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
@@ -5447,7 +5474,8 @@ namespace XMLReaderCS
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 TV_Parcels.BeginUpdate();
-                FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
+                //treeview FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
+                netFteo.TreeViewFinder.FindNode(TV_Parcels, TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
                 SearchTextBox.Focus();
                 TV_Parcels.EndUpdate();
             }

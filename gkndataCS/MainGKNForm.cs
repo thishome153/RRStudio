@@ -648,5 +648,28 @@ namespace GKNData
         {
             поискToolStripMenuItem.Checked = Toggle_SearchTextBox(SearchTextBox);
         }
+
+        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.Control) && (e.KeyCode == Keys.D))
+            Toggle_SearchTextBox((TextBox)sender);
+        }
+
+
+        // Возникает только если текст не пустой
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextBox searchtbox = (TextBox)sender;
+            if (searchtbox.Visible)
+            {   // начинаем с высшей ноды:
+                treeView1.BeginUpdate();
+                //TreeViewFinder.FindNode(treeView1, treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
+                StatusLabel_AllMessages.Text= TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+                SearchTextBox.Focus();
+                treeView1.EndUpdate();
+                
+            }
+
+        }
     }
 }
