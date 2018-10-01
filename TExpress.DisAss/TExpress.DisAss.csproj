@@ -59,11 +59,11 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netFteo">
-      <HintPath>C:\Program Files\Fixosoft\gkndataCS\Win32-Debug\netFteo.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -108,9 +108,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RosreestrTypes\RRTypes.csproj">
-      <Project>{96DE829D-FEF9-41AF-A9E6-3BE517088B64}</Project>
-      <Name>RRTypes</Name>
+    <ProjectReference Include="..\netFteo\netFteo.csproj">
+      <Project>{84103EB6-3282-4374-B296-33188B1A436E}</Project>
+      <Name>netFteo</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

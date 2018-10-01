@@ -663,13 +663,23 @@ namespace GKNData
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 treeView1.BeginUpdate();
-                //TreeViewFinder.FindNode(treeView1, treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
-                StatusLabel_AllMessages.Text= TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+                int res = TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+                if (res != -1)
+                {
+                    treeView1.CollapseAll();
+                    treeView1.SelectedNode = treeView1.Nodes[res];
+                    treeView1.Nodes[res].Expand();
+                }
+                else
+                {
+                    treeView1.SelectedNode = treeView1.Nodes[0];
+                    treeView1.CollapseAll();
+                }
+
                 SearchTextBox.Focus();
                 treeView1.EndUpdate();
-                
-            }
 
+            }
         }
     }
 }

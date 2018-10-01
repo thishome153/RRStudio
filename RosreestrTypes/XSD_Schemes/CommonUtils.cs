@@ -3377,13 +3377,21 @@ namespace RRTypes.CommonParsers
                     for (int i = 0; i <= kv.Realty.Building.Flats.Count - 1; i++)
                     {
                         TFlat Flat = new TFlat(kv.Realty.Building.Flats[i].CadastralNumber);
-                        TLevel lvl = new TLevel(
-                            kv.Realty.Building.Flats[i].PositionInObject.Levels[0].Type.ToString(),
-                            kv.Realty.Building.Flats[i].PositionInObject.Levels[0].Number,
-                            kv.Realty.Building.Flats[i].PositionInObject.Levels[0].Position.NumberOnPlan);
-                        foreach (RRTypes.kvoks_v07.tPlan jpegname in kv.Realty.Building.Flats[i].PositionInObject.Levels[0].Position.Plans)
-                            lvl.AddPlan(jpegname.Name);
-                        Flat.PositionInObject.Levels.Add(lvl);
+                        if (kv.Realty.Building.Flats[i].PositionInObject.Levels.Count > 1)
+                        {
+                            int levs = kv.Realty.Building.Flats[i].PositionInObject.Levels.Count;
+                        }
+                        foreach (RRTypes.kvoks_v07.tLevelsOutLevel level in kv.Realty.Building.Flats[i].PositionInObject.Levels)
+                        {
+                            TLevel lvl = new TLevel(
+                                level.Type.ToString(),
+                                level.Number,
+                                level.Position.NumberOnPlan);
+
+                            foreach (RRTypes.kvoks_v07.tPlan jpegname in level.Position.Plans)
+                                lvl.AddPlan(jpegname.Name);
+                            Flat.PositionInObject.Levels.Add(lvl);
+                        }
                         Flat.Area = kv.Realty.Building.Flats[i].Area;
                         Bld.Building.Flats.Add(Flat);
                     }

@@ -2572,7 +2572,7 @@ namespace XMLReaderCS
             LV.Columns[1].Text = "Назначение,вид";
             LV.Columns[2].Text = "Этаж";
             LV.Columns[3].Text = "Номер этажа";
-            LV.Columns[4].Text = "Обозначение на плане/КН";
+            LV.Columns[4].Text = "КН / Обозначение на плане";
             LV.Columns[5].Text = "Площадь";
             LV.Columns[6].Text = "Адрес";
             LV.Columns[7].Text = "Адрес нестр.";
@@ -2588,20 +2588,23 @@ namespace XMLReaderCS
                     flat_string += fl.AssignationCode;
                 else
                     flat_string += fl.AssignationCode + "/" + fl.AssignationType;
+
                 ListViewItem LVi = new ListViewItem();
                 LVi.Text = cnt++.ToString();
                 LVi.SubItems.Add(flat_string);
+
                 if (fl.PositionInObject.Levels.Count == 1)
                 {
                     LVi.SubItems.Add(fl.PositionInObject.Levels[0].Type);
                     LVi.SubItems.Add(fl.PositionInObject.Levels[0].Number);
-                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Position.NumberOnPlan);
+                    LVi.SubItems.Add(fl.CN + "/  "+ fl.PositionInObject.Levels[0].Position.NumberOnPlan);
                 }
                 else
                 {
+                    LVi.BackColor = System.Drawing.Color.LightGray;
                     LVi.SubItems.Add("");
                     LVi.SubItems.Add("");
-                    LVi.SubItems.Add("");
+                    LVi.SubItems.Add(fl.CN);
                 }
                 LVi.SubItems.Add(fl.Area.ToString());
                 LVi.SubItems.Add(fl.Address.AsString());//Adress
@@ -5386,7 +5389,61 @@ namespace XMLReaderCS
 
 
 
-        private bool Toggle_SearchTextBox(TextBox sender)
+    
+
+            private void TV_Parcels_KeyUp_1(object sender, KeyEventArgs e)
+        {
+            //search Ctrl+F  : trough menu item shortcut Ctrl+F;
+            /*
+            if ((e.Control) && (e.KeyValue == 70))
+            {
+              if (SearchTextBoxSwith(SearchTextBox))
+                TV_Parcels.Focus();
+                e.SuppressKeyPress = true;
+            }  */
+        }
+
+
+        /// <summary>
+        /// Поиск по дереву по тексту Node
+        /// </summary>
+        /// <param name="srcNodes"></param>
+        /// <param name="searchstring"></param>
+        /// <param name="foundFirst"></param>
+        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
+        {
+            if (searchstring == "") return;
+
+            {
+                //                TV_Parcels.SelectedNode = TV_Parcels.TopNode;
+                //                TV_Parcels.Focus();
+                //                return;
+                //            }
+
+
+                Boolean selectedfound = foundFirst;
+                foreach (TreeNode tn in srcNodes.Nodes)
+                {
+                    if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
+                    {
+                        TV_Parcels.SelectedNode = tn;
+                        TV_Parcels.SelectedNode.EnsureVisible();
+
+                        selectedfound = true;
+                        TV_Parcels.Focus();
+                        TV_Parcels.Select();
+                        return;
+                    }
+                    //in childs:
+                    if (tn.Nodes.Count > 0)
+                    FindNode(tn.Nodes[0], searchstring, selectedfound);
+                }
+
+            }
+        }
+
+
+        private bool SearchTextBox_Toggle(TextBox sender)
         {
             if (!sender.Visible)
             {
@@ -5402,55 +5459,6 @@ namespace XMLReaderCS
             }
         }
 
-            private void TV_Parcels_KeyUp_1(object sender, KeyEventArgs e)
-        {
-            //search Ctrl+F  : trough menu item shortcut Ctrl+F;
-            /*
-            if ((e.Control) && (e.KeyValue == 70))
-            {
-              if (SearchTextBoxSwith(SearchTextBox))
-                TV_Parcels.Focus();
-                e.SuppressKeyPress = true;
-            }  */
-        }
-
-/*
-      /// <summary>
-      /// Поиск по дереву по тексту Node
-      /// </summary>
-      /// <param name="srcNodes"></param>
-      /// <param name="searchstring"></param>
-      /// <param name="foundFirst"></param>
-        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
-        {
-            if (searchstring == "") return;
-                
-            {
-//                TV_Parcels.SelectedNode = TV_Parcels.TopNode;
-//                TV_Parcels.Focus();
-//                return;
-//            }
-                
-                /*
-            Boolean selectedfound = foundFirst;
-            foreach(TreeNode tn in srcNodes.Nodes)
-            {
-                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
-                {
-                    TV_Parcels.SelectedNode = tn;
-                    //TV_Parcels.TopNode = tn;
-                    selectedfound = true;
-                    TV_Parcels.Focus();
-                    TV_Parcels.Select();
-                    return;
-                }
-                //in childs:
-                FindNode(tn , searchstring, selectedfound);
-            }
-        }
-
-
-        */
         private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
@@ -5467,24 +5475,56 @@ namespace XMLReaderCS
                 TV_Parcels.SelectedNode = TV_Parcels.Nodes[0]; // если пусто, возвращаем в начало
         }
 
-      // Возникает только если текст не пустой
+        // Возникает только если текст не пустой
+        /*
+          private void SearchTextBox_TextChanged(object sender, EventArgs e)
+          {
+              TextBox searchtbox = (TextBox)sender;
+              if (searchtbox.Visible)
+              {   // начинаем с высшей ноды:
+                  TV_Parcels.BeginUpdate();
+                  int res = netFteo.TreeViewFinder.SearchNodes(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper());
+
+                  if (res != -1)
+                  {
+                      TV_Parcels.CollapseAll();
+                      TV_Parcels.SelectedNode = TV_Parcels.Nodes[res];
+                      TV_Parcels.SelectedNode.Expand();
+                      TV_Parcels.SelectedNode.EnsureVisible();
+
+                  }
+                  else
+                  {
+                      TV_Parcels.SelectedNode = TV_Parcels.Nodes[0];
+                      TV_Parcels.SelectedNode.EnsureVisible();
+                      TV_Parcels.CollapseAll();
+                  }
+
+                  SearchTextBox.Focus();
+                  TV_Parcels.EndUpdate();
+
+              }
+
+          }
+
+          */
+
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 TV_Parcels.BeginUpdate();
-                //treeview FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
-                netFteo.TreeViewFinder.FindNode(TV_Parcels, TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
+                FindNode(TV_Parcels.Nodes[0], searchtbox.Text, true);
                 SearchTextBox.Focus();
                 TV_Parcels.EndUpdate();
             }
-            
+
         }
 
         private void поискToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            поискToolStripMenuItem.Checked = Toggle_SearchTextBox(SearchTextBox);
+            поискToolStripMenuItem.Checked = SearchTextBox_Toggle(SearchTextBox);
         }
 
         private void validateToolStripMenuItem_Click(object sender, EventArgs e)
