@@ -5404,6 +5404,8 @@ namespace XMLReaderCS
         }
 
 
+ 
+
         /// <summary>
         /// Поиск по дереву по тексту Node
         /// </summary>
@@ -5413,35 +5415,37 @@ namespace XMLReaderCS
         private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
         {
             if (searchstring == "") return;
+        
 
+            Boolean selectedfound = foundFirst;
+            foreach (TreeNode tn in srcNodes.Nodes)
             {
-                //                TV_Parcels.SelectedNode = TV_Parcels.TopNode;
-                //                TV_Parcels.Focus();
-                //                return;
-                //            }
-
-
-                Boolean selectedfound = foundFirst;
-                foreach (TreeNode tn in srcNodes.Nodes)
+                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
                 {
-                    if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
-                    {
-                        TV_Parcels.SelectedNode = tn;
-                        TV_Parcels.SelectedNode.EnsureVisible();
-
-                        selectedfound = true;
-                        TV_Parcels.Focus();
-                        TV_Parcels.Select();
-                        return;
-                    }
-                    //in childs:
-                    if (tn.Nodes.Count > 0)
-                    FindNode(tn.Nodes[0], searchstring, selectedfound);
+                    TV_Parcels.SelectedNode = tn;
+                    TV_Parcels.SelectedNode.EnsureVisible();
+                    selectedfound = true;
+                    TV_Parcels.Focus();
+                    TV_Parcels.Select();
+                    return;
                 }
-
+                //in childs:
+                FindNode(tn, searchstring, selectedfound);
             }
         }
 
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextBox searchtbox = (TextBox)sender;
+            if (searchtbox.Visible)
+            {   // начинаем с высшей ноды:
+                TV_Parcels.BeginUpdate();
+                FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(),false);
+                SearchTextBox.Focus();
+                TV_Parcels.EndUpdate();
+            }
+
+        }
 
         private bool SearchTextBox_Toggle(TextBox sender)
         {
@@ -5509,18 +5513,7 @@ namespace XMLReaderCS
 
           */
 
-        private void SearchTextBox_TextChanged(object sender, EventArgs e)
-        {
-            TextBox searchtbox = (TextBox)sender;
-            if (searchtbox.Visible)
-            {   // начинаем с высшей ноды:
-                TV_Parcels.BeginUpdate();
-                FindNode(TV_Parcels.Nodes[0], searchtbox.Text, true);
-                SearchTextBox.Focus();
-                TV_Parcels.EndUpdate();
-            }
-
-        }
+    
 
         private void поискToolStripMenuItem_Click(object sender, EventArgs e)
         {
