@@ -5403,8 +5403,8 @@ namespace XMLReaderCS
             }  */
         }
 
-
- 
+        
+        // Случай #1 для поиска  ноды
 
         /// <summary>
         /// Поиск по дереву по тексту Node
@@ -5415,8 +5415,6 @@ namespace XMLReaderCS
         private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
         {
             if (searchstring == "") return;
-        
-
             Boolean selectedfound = foundFirst;
             foreach (TreeNode tn in srcNodes.Nodes)
             {
@@ -5434,50 +5432,60 @@ namespace XMLReaderCS
             }
         }
 
+        
+                private void SearchTextBox_TextChanged(object sender, EventArgs e)
+                {
+                    TextBox searchtbox = (TextBox)sender;
+                    if (searchtbox.Visible)
+                    {   // начинаем с высшей ноды:
+                        TV_Parcels.BeginUpdate();
+                        FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(),false);
+                        SearchTextBox.Focus();
+                        TV_Parcels.EndUpdate();
+                    }
+
+                }
+        
+        
+        /*
+          // Случай #2 для поиска сразу ноды
+        private TreeNode FindNode2(TreeNode srcNodes, string searchstring, bool foundFirst)
+        {
+            if (searchstring == "") return null;
+            Boolean selectedfound = foundFirst;
+            foreach (TreeNode tn in srcNodes.Nodes)
+            {
+                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
+                {
+                    selectedfound = true;
+                    return tn;
+                }
+                //in childs:
+              return  FindNode2(tn, searchstring, selectedfound);
+            }
+            return null;
+        }
+        
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 TV_Parcels.BeginUpdate();
-                FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(),false);
+
+                TreeNode res = FindNode2(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
+                if (res != null)
+                {
+
+                    TV_Parcels.SelectedNode = res;
+                    TV_Parcels.SelectedNode.EnsureVisible();
+                }
                 SearchTextBox.Focus();
                 TV_Parcels.EndUpdate();
             }
-
         }
-
-        private bool SearchTextBox_Toggle(TextBox sender)
-        {
-            if (!sender.Visible)
-            {
-                sender.Visible = true;
-                sender.Clear();
-                sender.Focus();
-                return true;
-            }
-            else
-            {
-                sender.Visible = false;
-                return false;
-            }
-        }
-
-        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            TextBox searchtbox = (TextBox)sender;
-            //Прячем контрол:
-            /*
-            if ((e.Control) && (e.KeyValue == 70))
-            {
-               if (Toggle_SearchTextBox(searchtbox)) TV_Parcels.Focus();
-                e.SuppressKeyPress = true;
-            }
+        
             */
-            //Ищем текст:
-            if (searchtbox.Text == "")
-                TV_Parcels.SelectedNode = TV_Parcels.Nodes[0]; // если пусто, возвращаем в начало
-        }
 
         // Возникает только если текст не пустой
         /*
@@ -5512,6 +5520,40 @@ namespace XMLReaderCS
           }
 
           */
+
+        private bool SearchTextBox_Toggle(TextBox sender)
+        {
+            if (!sender.Visible)
+            {
+                sender.Visible = true;
+                sender.Clear();
+                sender.Focus();
+                return true;
+            }
+            else
+            {
+                sender.Visible = false;
+                return false;
+            }
+        }
+
+        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            TextBox searchtbox = (TextBox)sender;
+            //Прячем контрол:
+            /*
+            if ((e.Control) && (e.KeyValue == 70))
+            {
+               if (Toggle_SearchTextBox(searchtbox)) TV_Parcels.Focus();
+                e.SuppressKeyPress = true;
+            }
+            */
+            //Ищем текст:
+            if (searchtbox.Text == "")
+                TV_Parcels.SelectedNode = TV_Parcels.Nodes[0]; // если пусто, возвращаем в начало
+        }
+
+    
 
     
 

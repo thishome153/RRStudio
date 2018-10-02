@@ -115,54 +115,31 @@ namespace netFteo
         /// <param name="srcNodes"></param>
         /// <param name="searchstring"></param>
         /// <param name="foundFirst"></param>
-        public static int SearchNodes(TreeNode StartNode, string SearchText)
-        {
-            if (SearchText == "") return -1;
-            while (StartNode != null)
-            {
-                if (StartNode.Text.ToLower().Contains(SearchText.ToLower()))
-                {
-                    MatchNodeIndex = StartNode.Index;
-
-                    // child ??? - if them, get from parent:
-                    if ((StartNode.Level == 1) && (StartNode.Parent != null))
-                        MatchNodeIndex = StartNode.Parent.Index;
-                    return MatchNodeIndex;  // выходим по первому сопадению
-                }
-                else MatchNodeIndex = -1;
-
-                if (StartNode.Nodes.Count != 0)
-                {
-                    MatchNodeIndex = SearchNodes(StartNode.Nodes[0], SearchText);//Recursive Search 
-                    if (MatchNodeIndex != -1) return MatchNodeIndex;
-                };
-
-                StartNode = StartNode.NextNode;
-            };
-            return MatchNodeIndex;
-        }
+ 
 
 
-        public static TreeNode SearchNodesT(TreeNode StartNode, string SearchText)
+        public static TreeNode SearchNodesT(TreeNode StartNode, string SearchText, bool foundFirst)
         {
             if (SearchText == "") return null;
+            Boolean selectedfound = foundFirst;
+
             while (StartNode != null)
             {
-                if (StartNode.Text.ToLower().Contains(SearchText.ToLower()))
+                if (StartNode.Text.ToUpper().Contains(SearchText))//&& !selectedfound)
                 {
                     /*
                     if ((StartNode.Level == 1) && (StartNode.Parent != null))
                         return  StartNode.Parent;
                     else 
                         */
+                    selectedfound = true;
                     return StartNode;  // выходим по первому сопадению
                     // child ??? - if them, get from parent:
                 }
 
                 if (StartNode.Nodes.Count != 0)
                 {
-                    return SearchNodesT(StartNode.Nodes[0], SearchText);//Recursive Search 
-                    
+                    return SearchNodesT(StartNode.Nodes[0], SearchText, selectedfound);//Recursive Search 
                 }
 
                 StartNode = StartNode.NextNode;

@@ -55,12 +55,16 @@
             treeNode11,
             treeNode12,
             treeNode13});
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Node0");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Node4");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Node1", new System.Windows.Forms.TreeNode[] {
-            treeNode16});
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node2");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Node3");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("2610:030405:222");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("2610", new System.Windows.Forms.TreeNode[] {
+            treeNode15});
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("261");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node0");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Node4");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Node1", new System.Windows.Forms.TreeNode[] {
+            treeNode19});
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Node2");
+            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Node3");
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -117,8 +121,16 @@
             treeNode13.Text = "26:01:020405";
             treeNode14.Name = "Node0";
             treeNode14.Text = "26";
+            treeNode15.Name = "Node2";
+            treeNode15.Text = "2610:030405:222";
+            treeNode16.Name = "Node1";
+            treeNode16.Text = "2610";
+            treeNode17.Name = "Node0";
+            treeNode17.Text = "261";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode14});
+            treeNode14,
+            treeNode16,
+            treeNode17});
             this.treeView1.Size = new System.Drawing.Size(395, 330);
             this.treeView1.TabIndex = 1;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
@@ -129,9 +141,9 @@
             this.SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SearchTextBox.ForeColor = System.Drawing.Color.DarkRed;
-            this.SearchTextBox.Location = new System.Drawing.Point(273, 77);
+            this.SearchTextBox.Location = new System.Drawing.Point(239, 77);
             this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(134, 26);
+            this.SearchTextBox.Size = new System.Drawing.Size(168, 26);
             this.SearchTextBox.TabIndex = 5;
             this.SearchTextBox.WordWrap = false;
             this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
@@ -147,24 +159,24 @@
             // treeViewSearchable1
             // 
             this.treeViewSearchable1.BackColor = System.Drawing.Color.Lime;
-            this.treeViewSearchable1.Location = new System.Drawing.Point(423, 209);
+            this.treeViewSearchable1.Location = new System.Drawing.Point(413, 194);
             this.treeViewSearchable1.Name = "treeViewSearchable1";
-            treeNode15.Name = "Node0";
-            treeNode15.Text = "Node0";
-            treeNode16.Name = "Node4";
-            treeNode16.Text = "Node4";
-            treeNode17.Name = "Node1";
-            treeNode17.Text = "Node1";
-            treeNode18.Name = "Node2";
-            treeNode18.Text = "Node2";
-            treeNode19.Name = "Node3";
-            treeNode19.Text = "Node3";
+            treeNode18.Name = "Node0";
+            treeNode18.Text = "Node0";
+            treeNode19.Name = "Node4";
+            treeNode19.Text = "Node4";
+            treeNode20.Name = "Node1";
+            treeNode20.Text = "Node1";
+            treeNode21.Name = "Node2";
+            treeNode21.Text = "Node2";
+            treeNode22.Name = "Node3";
+            treeNode22.Text = "Node3";
             this.treeViewSearchable1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode15,
-            treeNode17,
             treeNode18,
-            treeNode19});
-            this.treeViewSearchable1.Size = new System.Drawing.Size(316, 157);
+            treeNode20,
+            treeNode21,
+            treeNode22});
+            this.treeViewSearchable1.Size = new System.Drawing.Size(397, 245);
             this.treeViewSearchable1.TabIndex = 7;
             // 
             // Form1

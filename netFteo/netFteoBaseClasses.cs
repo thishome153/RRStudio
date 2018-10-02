@@ -3133,6 +3133,12 @@ SCAN:
         }
     }
 
+
+    public class TCadastralDistrict : TCadasterItem
+    {
+        public string Name;
+    }
+
     #region Кадастровый квартал
 
     public class TMyCadastralBlock

@@ -152,7 +152,7 @@ namespace GKNData
                ENode = ((TreeNodeMouseClickEventArgs)e).Node;
             }
 
-            if (ENode != null)
+            if ((ENode != null)  && (ENode.Tag != null))
             { 
                 if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
                 {
@@ -373,6 +373,8 @@ namespace GKNData
             WhatTree.Nodes.Clear();
             WhatTree.BeginUpdate();
             //WhatTree.Nodes.Add(List.DistrictName);
+            //insertItem(, WhatTree)
+
             foreach (TMyCadastralBlock block in List.Blocks)
             {
                 TreeNode node_ = insertItem(block, WhatTree);
@@ -380,6 +382,19 @@ namespace GKNData
 
             }
             WhatTree.EndUpdate();
+        }
+
+
+        //Добавление района
+        private TreeNode insertItem(TCadastralDistrict  District, TreeView hParent)
+        {
+            TreeNode nn = hParent.Nodes.Add(District.CN);//nodeName);
+            nn.Tag = District;
+            if (District.Name != null) nn.ToolTipText = District.Name;
+
+            nn.NodeFont = new Font("Arial", 12);//, FontStyle.Bold);
+            nn.ImageIndex = 0; nn.SelectedImageIndex = 0;
+            return nn;
         }
 
         //Добавление квартала
@@ -657,6 +672,7 @@ namespace GKNData
 
 
         // Возникает только если текст не пустой
+        /*
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
@@ -681,5 +697,48 @@ namespace GKNData
 
             }
         }
+        */
+
+        /// <summary>
+        /// Поиск по дереву по тексту Node
+        /// </summary>
+        /// <param name="srcNodes"></param>
+        /// <param name="searchstring"></param>
+        /// <param name="foundFirst"></param>
+        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
+        {
+            if (searchstring == "") return;
+            Boolean selectedfound = foundFirst;
+            foreach (TreeNode tn in srcNodes.Nodes)
+            {
+                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
+                {
+                    treeView1.SelectedNode = tn;
+                    treeView1.SelectedNode.EnsureVisible();
+                    selectedfound = true;
+                    treeView1.Focus();
+                    treeView1.Select();
+                    return;
+                }
+                //in childs:
+                FindNode(tn, searchstring, selectedfound);
+            }
+        }
+
+
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextBox searchtbox = (TextBox)sender;
+            if (searchtbox.Visible)
+            {   // начинаем с высшей ноды:
+                treeView1.BeginUpdate();
+                FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
+                SearchTextBox.Focus();
+                treeView1.EndUpdate();
+            }
+
+        }
+
+
     }
 }

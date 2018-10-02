@@ -11,6 +11,7 @@ namespace TExpress.DisAss
 {
     public partial class Form1 : Form
     {
+        public static int MatchNodeIndex;
         public Form1()
         {
             InitializeComponent();
@@ -24,111 +25,83 @@ namespace TExpress.DisAss
 
         }
 
-        
+
+        // Случай #1 (первый алгоритм )для поиска  ноды
+
         /// <summary>
-        /// Класс для поиска по деревьям TreeView
-        /// v 1.2 in debug
+        /// Поиск по дереву по тексту Node
         /// </summary>
-        /*
-        public static class TreeViewFinder
+        /// <param name="srcNodes"></param>
+        /// <param name="searchstring"></param>
+        /// <param name="foundFirst"></param>
+        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
         {
-            //public static string results;
-            public static int MatchNodeIndex;
-            //private List<TreeNode> CurrentNodeMatches;// = new List<TreeNode>();
-            /// <summary>
-            /// Поиск по дереву по тексту Node
-            /// по следам https://stackoverflow.com/questions/11530643/treeview-search
-            /// </summary>
-            /// <param name="srcNodes"></param>
-            /// <param name="searchstring"></param>
-            /// <param name="foundFirst"></param>
-            public static int SearchNodes(TreeNode StartNode, string SearchText)
+            if (searchstring == "") return;
+            Boolean selectedfound = foundFirst;
+            foreach (TreeNode tn in srcNodes.Nodes)
             {
-                if (SearchText == "") return -1;
-                while (StartNode != null)
+                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
                 {
-                    if (StartNode.Text.ToLower().Contains(SearchText.ToLower()))
-                    {
-                            MatchNodeIndex = StartNode.Index;
+                    treeView1.SelectedNode = tn;
+                    treeView1.SelectedNode.EnsureVisible();
+                    selectedfound = true;
+                    treeView1.Focus();
+                    treeView1.Select();
+                    return;
+                }
+                //in childs:
+                FindNode(tn, searchstring, selectedfound);
+            }
+        }
 
-                        // child ??? - if them, get from parent:
-                        if ((StartNode.Level == 1) && (StartNode.Parent != null))
-                            MatchNodeIndex = StartNode.Parent.Index;
-                        return MatchNodeIndex;  // выходим по первому сопадению
-                    }
-                    else MatchNodeIndex = -1;
+        public TreeNode SearchNodes(TreeNode StartNode, string SearchText)
+        {
+            if (SearchText == "") return null;
 
-                    if (StartNode.Nodes.Count != 0)
-                    {
-                       MatchNodeIndex= SearchNodes(StartNode.Nodes[0], SearchText);//Recursive Search 
-                        if (MatchNodeIndex != -1) return MatchNodeIndex;
-                    };
+            while (StartNode != null)
+            {
+                if (StartNode.Text.ToUpper().Contains(SearchText))
+                {
+                    return StartNode;  // выходим по первому сопадению
+                }
 
-                    StartNode = StartNode.NextNode;
+                // recursive to childs:
+                if (StartNode.Nodes.Count != 0)
+                {
+                    SearchNodes(StartNode.Nodes[0], SearchText);//Recursive Search 
                 };
-                return MatchNodeIndex;
-            }
+
+                StartNode = StartNode.NextNode;  // далее в том же уровне, следующая нода
+            };
+
+            return null;
         }
-        */
-        /*
-        private void SearchTextBox_TextChanged(object sender, EventArgs e)
-        {
-            TextBox searchtbox = (TextBox)sender;
-            if (searchtbox.Visible)
-            {   // начинаем с высшей ноды:
-                treeView1.BeginUpdate();
-                   int res = netFteo.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
-                if (res != -1)
-                {
-                    treeView1.CollapseAll();
-                    treeView1.SelectedNode = treeView1.Nodes[res];
-                    treeView1.SelectedNode.Expand();
-                    treeView1.SelectedNode.EnsureVisible();
-                    textBox1.Text = "  MatchNodeIndex = " + res.ToString();
-
-                }
-                else
-                {
-                    treeView1.SelectedNode = treeView1.Nodes[0];
-                    treeView1.SelectedNode.EnsureVisible();
-                    treeView1.CollapseAll();
-                }
-
-                SearchTextBox.Focus();
-                treeView1.EndUpdate();
-
-            }
-        }
-        */
 
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
+
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 treeView1.BeginUpdate();
-                TreeNode res = netFteo.TreeViewFinder.SearchNodesT(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+
+                if (searchtbox.Text == "")
+                    treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node
+                //FindNode не ходит далее одного root элемента:
+                //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
+
+                TreeNode res = SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
                 if (res != null)
                 {
-                    treeView1.CollapseAll();
                     treeView1.SelectedNode = res;
-                    treeView1.SelectedNode.Expand();
                     treeView1.SelectedNode.EnsureVisible();
-                    textBox1.Text = "  MatchNodeIndex = " + res.ToString();
-
                 }
-                else
-                {
-                    treeView1.SelectedNode = treeView1.Nodes[0];
-                    treeView1.SelectedNode.EnsureVisible();
-                    treeView1.CollapseAll();
-                }
-
                 SearchTextBox.Focus();
                 treeView1.EndUpdate();
-
             }
+
         }
+
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
