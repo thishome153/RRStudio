@@ -55,7 +55,7 @@
             treeNode11,
             treeNode12,
             treeNode13});
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("2610:030405:222");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("2610:090905:222");
             System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("2610", new System.Windows.Forms.TreeNode[] {
             treeNode15});
             System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("261");
@@ -68,16 +68,19 @@
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.treeViewSearchable1 = new netFteo.TreeViewSearchable();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(239, 12);
+            this.button1.Location = new System.Drawing.Point(720, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 59);
+            this.button1.Size = new System.Drawing.Size(90, 37);
             this.button1.TabIndex = 0;
             this.button1.Text = "Start pkcs11";
             this.button1.UseVisualStyleBackColor = true;
@@ -122,7 +125,7 @@
             treeNode14.Name = "Node0";
             treeNode14.Text = "26";
             treeNode15.Name = "Node2";
-            treeNode15.Text = "2610:030405:222";
+            treeNode15.Text = "2610:090905:222";
             treeNode16.Name = "Node1";
             treeNode16.Text = "2610";
             treeNode17.Name = "Node0";
@@ -134,19 +137,6 @@
             this.treeView1.Size = new System.Drawing.Size(395, 330);
             this.treeView1.TabIndex = 1;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
-            // 
-            // SearchTextBox
-            // 
-            this.SearchTextBox.BackColor = System.Drawing.SystemColors.Info;
-            this.SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SearchTextBox.ForeColor = System.Drawing.Color.DarkRed;
-            this.SearchTextBox.Location = new System.Drawing.Point(239, 77);
-            this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(168, 26);
-            this.SearchTextBox.TabIndex = 5;
-            this.SearchTextBox.WordWrap = false;
-            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
             // textBox1
             // 
@@ -179,19 +169,51 @@
             this.treeViewSearchable1.Size = new System.Drawing.Size(397, 245);
             this.treeViewSearchable1.TabIndex = 7;
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.SearchTextBox);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Location = new System.Drawing.Point(186, 65);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(221, 38);
+            this.panel1.TabIndex = 9;
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.Image = global::TExpress.DisAss.Properties.Resources.arrow_right;
+            this.button2.Location = new System.Drawing.Point(180, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(39, 36);
+            this.button2.TabIndex = 10;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // SearchTextBox
+            // 
+            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SearchTextBox.Location = new System.Drawing.Point(3, 9);
+            this.SearchTextBox.Name = "SearchTextBox";
+            this.SearchTextBox.Size = new System.Drawing.Size(171, 23);
+            this.SearchTextBox.TabIndex = 11;
+            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 451);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeViewSearchable1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.SearchTextBox);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "TExpress disasssmebler";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,10 +223,12 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.TextBox SearchTextBox;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TreeView treeView1;
         private netFteo.TreeViewSearchable treeViewSearchable1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox SearchTextBox;
     }
 }
 
