@@ -328,10 +328,6 @@ namespace GKNData
         }
        
 
-    
-
-
-
         //Одуренная поцедура Заполенния Полями Таблиц
         private TMyBlockCollection LoadBlockList(MySqlConnection conn, int distr_id)
         {
@@ -459,40 +455,43 @@ namespace GKNData
             return true;
         }
 
-        //Обработчик события по раскрытию ноды
-        private void OnItemexpanding(object sender, TreeViewCancelEventArgs e)
-        { 
+        //Проверка загрузки участков и замена "пустышки" при необходимости
+        private void PrepareNode(TreeNode hItem, object BlockInTree)
+        {
+            if ((BlockInTree != null) && (BlockInTree.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
             {
-                //TreeView Source = (TreeView) sender;  //кто источник?
-                // Текущая нода -      e.Node.Text  ....
-                TreeNode hItem = e.Node;
-                TreeNode hChildItem;
-                 TMyCadastralBlock BlockInTree = (TMyCadastralBlock)e.Node.Tag;
-
-                hChildItem = hItem.FirstNode;
+                TreeNode hChildItem = hItem.FirstNode;
                 if ((hChildItem) != null)
                 {
-                  if (hItem.FirstNode.Tag == null) // Если загружена "пустышка"
+                    if (hItem.FirstNode.Tag == null) // Если загружена "пустышка"
                     {
-                       hItem.Nodes.Remove(hChildItem);
-                        if (BlockInTree != null) 
-                         if (BlockInTree.HasParcels)
-                        {
-                            populateNode(BlockInTree, hItem);
-                        }
+                        hItem.Nodes.Remove(hChildItem); // удаляем пустышку
+                        if (BlockInTree != null)        //
+                            if (((TMyCadastralBlock)BlockInTree).HasParcels) // и заполняем участками, если они есть
+                            {
+                                populateNode(BlockInTree, hItem);
+                            }
                     }
                 }
+                /*
                 else
                 {
-                    hItem.Nodes.Remove(hItem.FirstNode);
-                    //if (BlockInTree.Parcels.Parcels.Count >0 )
+                    hItem.Nodes.Remove(hChildItem);
                     if (BlockInTree.HasParcels)
                     {
-                      populateNode(BlockInTree, hItem);
+                        populateNode(BlockInTree, hItem);
                     }
 
                 }
+                */
             }
+        }
+
+        //Обработчик события по раскрытию ноды - проверка загрузки участков 
+        // и замена "пустышки" при необходимости
+        private void OnItemexpanding(object sender, TreeViewCancelEventArgs e)
+        {
+            PrepareNode(e.Node, (TMyCadastralBlock)e.Node.Tag);
         }
 
         private void OpenXML(string FileName)
@@ -619,7 +618,6 @@ namespace GKNData
         {
             SelectDistrict(CF.Cfg);
             CadBloksList = LoadBlockList(CF.conn, CF.Cfg.District_id);
-
             ListBlockListTreeView(CadBloksList, treeView1);
         }
 
@@ -698,6 +696,9 @@ namespace GKNData
                 if (res != null)
                 {
                     treeView1.SelectedNode = res;
+                    //TODO:  
+                    //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
+                    PrepareNode(treeView1.SelectedNode, res.Tag);
                     treeView1.SelectedNode.EnsureVisible();
                 }
                 SearchTextBox.Focus();

@@ -2608,7 +2608,10 @@ namespace XMLReaderCS
                 }
                 LVi.SubItems.Add(fl.Area.ToString());
                 LVi.SubItems.Add(fl.Address.AsString());//Adress
-                LVi.SubItems.Add(fl.Address.Other); //lv.Position.Plan00_JPEG; // jpeg[0] only
+                if ( fl.Address.Other != null)
+                LVi.SubItems.Add(fl.Address.Other);
+                if ( fl.Address.Note != null )
+                    LVi.SubItems.Add(fl.Address.Note); 
                 LV.Items.Add(LVi);
 
                 if (fl.PositionInObject.Levels.Count > 1)
@@ -2959,15 +2962,33 @@ namespace XMLReaderCS
                             LV.Items.Add(LViAr);
                         }
                     }
+                    
+                    //{netFteo.Spatial.TFlat}
                     if (P.Flat != null)
-                        if (P.Flat.PositionInObject != null)
                     {
+                        TFlats flats = new TFlats();
+                        flats.AddFlat(P.Flat);
+                        FlatsToListView(listView1, flats);
+                        /*
+                        if (P.Flat.PositionInObject != null)
+                        {
 
-                        ListViewItem LViAssgn = new ListViewItem();
-                        LViAssgn.Text = "Расположение в пределах объекта недвижимости";
-                        LViAssgn.SubItems.Add(P.Flat.PositionInObject.Levels[0].Position.NumberOnPlan);
-                        LV.Items.Add(LViAssgn);
+                            ListViewItem LViAssgn = new ListViewItem();
+                            LViAssgn.Text = "Расположение в пределах объекта недвижимости";
+                            string numOnString = "";
+                            foreach (TLevel level in P.Flat.PositionInObject.Levels)
+                            {
+                                numOnString += level.Position.NumberOnPlan;
+                            }
+                            LViAssgn.SubItems.Add(numOnString);
+
+                            LV.Items.Add(LViAssgn);
+                        }
+                        */
+                       // AdressToListView(LV, P.Address);
                     }
+
+
 
                     if (P.Construction != null)
                     {
@@ -3001,19 +3022,8 @@ namespace XMLReaderCS
 
                     KeyParametersToListView(LV, P.KeyParameters);
                 }
-                //{netFteo.Spatial.TFlat}
-                if (Obj.ToString() == "netFteo.Spatial.TFlat")
-                {
-                    TFlat P = (TFlat)Obj;
-                    LV.Items.Clear();
-                    AdressToListView(LV, P.Address);
-                    /*
-                    ListViewItem LViCN = new ListViewItem();
-                    LViCN.Text = "";
-                    LViCN.SubItems.Add(P.Address.Note);
-                    LV.Items.Add(LViCN);
-                    */
-                }
+
+   
                 //  Если это часть: 
                 if (Obj.ToString() == "netFteo.Spatial.TmySlot")
                 {

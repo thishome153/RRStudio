@@ -432,6 +432,7 @@ namespace RRTypes.CommonCast
             TAddress Adr = new TAddress();
             Adr.KLADR = Address.KLADR;
             Adr.Note = Address.Note;
+            Adr.Other = Address.Other;
             if (Address.District != null)
                 Adr.District = Address.District.Type + " " + Address.District.Name;
             if (Address.Locality != null)
@@ -3280,23 +3281,35 @@ namespace RRTypes.CommonParsers
             if (kv.Realty.Flat != null)
             {
                 TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Flat.CadastralBlock);
-                TMyRealty flat = new TMyRealty(kv.Realty.Flat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
-                flat.DateCreated = kv.Realty.Flat.DateCreated.ToString("dd.MM.yyyy");
-                flat.Flat.AssignationCode = netFteo.Rosreestr.dAssFlatv01.ItemToName(kv.Realty.Flat.Assignation.AssignationCode.ToString());
+                TMyRealty flatObject = new TMyRealty(kv.Realty.Flat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
+                flatObject.DateCreated = kv.Realty.Flat.DateCreated.ToString("dd.MM.yyyy");
+                flatObject.Flat.AssignationCode = netFteo.Rosreestr.dAssFlatv01.ItemToName(kv.Realty.Flat.Assignation.AssignationCode.ToString());
                 //Bld.Name = kv.Realty.Flat.Name;
-                flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
-                flat.Area = kv.Realty.Flat.Area;
+                flatObject.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
+                flatObject.Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
+                flatObject.Area = kv.Realty.Flat.Area;
+                flatObject.Flat.Area = kv.Realty.Flat.Area;
+
                 // ES для Flat нету совсеем в КПОКС 4.0.1 !!!!
                 //Bld.ES = RRTypes.kvoks_v02.Utils.AddEntSpatKPOKS04(kv.Realty.Flat.CadastralNumber, kv.Realty.Flat.EntitySpatial);
+
                 if (kv.Realty.Flat.PositionInObject.Position != null)
-                    flat.Flat.PositionInObject.Levels.Add(new TLevel("", "", kv.Realty.Flat.PositionInObject.Position.NumberOnPlan));
+                    flatObject.Flat.PositionInObject.Levels.Add(new TLevel("", "", kv.Realty.Flat.PositionInObject.Position.NumberOnPlan));
+
                 if (kv.Realty.Flat.PositionInObject.Levels != null)
-                    flat.Flat.PositionInObject.Levels.Add(new TLevel(kv.Realty.Flat.PositionInObject.Levels[0].Type.ToString(), kv.Realty.Flat.PositionInObject.Levels[0].Number, kv.Realty.Flat.PositionInObject.Levels[0].Position.NumberOnPlan));
-                flat.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Flat.ObjectType);
-                flat.Rights = RRTypes.CommonCast.CasterEGRP.ParseKPSOKSRights(xmldoc);
-                flat.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
-                Bl.AddOKS(flat);
-                flat.Notes = kv.Realty.Flat.Notes;
+                    foreach (RRTypes.kpoks_v04.tLevelsOutLevel level in kv.Realty.Flat.PositionInObject.Levels)
+                    {
+                        flatObject.Flat.PositionInObject.Levels.Add(new TLevel(level.Type.ToString(), 
+                            level.Number, 
+                            level.Position.NumberOnPlan));
+
+                    }
+
+                flatObject.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Flat.ObjectType);
+                flatObject.Rights = RRTypes.CommonCast.CasterEGRP.ParseKPSOKSRights(xmldoc);
+                flatObject.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
+                Bl.AddOKS(flatObject);
+                flatObject.Notes = kv.Realty.Flat.Notes;
                 res.CommentsType = "Особые отметки";
                 //res.Comments = flat.Notes;
                 res.MyBlocks.Blocks.Add(Bl);
