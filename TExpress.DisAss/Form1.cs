@@ -53,70 +53,11 @@ namespace TExpress.DisAss
                 FindNode(tn, searchstring, selectedfound);
             }
         }
-
-        // Full scanning of Node, next Nodes and childs:
-        public TreeNode SearchNodes(TreeNode StartNode, string SearchText)
-        {
-            if (SearchText == "") return null;
-
-            while (StartNode != null)
-            {
-                if (StartNode.Text.ToUpper().Contains(SearchText))
-                {
-
-                    return StartNode;  // выходим по первому сопадению
-                }
-
-                // recursive to childs:
-                if (StartNode.Nodes.Count != 0)
-                {
-                  return  SearchNodes(StartNode.Nodes[0], SearchText);//Recursive Search 
-                };
-
-                
-                if (StartNode.NextNode != null)
-                    StartNode = StartNode.NextNode;  // далее в том же уровне, следующая нода
-                else
-                    if (StartNode.Level != 0)
-                    StartNode = StartNode.Parent.NextNode;
-
-            };
-
-            return null;
-        }
-
-        public TreeNode SeekNode(TreeNode StartNode, string SearchText)
-        {
-            if (SearchText == "") return null;
-
-            while (StartNode != null)
-            {
-                if (StartNode.Text.ToUpper().Equals(SearchText)) // strong equality needed
-                {
-
-                   return StartNode;  // выходим по первому сопадению
-                   // SearchTextBox.Items.Add(StartNode.Text);
-                }
-
-                // recursive to childs:
-                if (StartNode.Nodes.Count != 0)
-                {
-                  return  SeekNode(StartNode.Nodes[0], SearchText);//Recursive Search 
-                };
-
-                if (StartNode.NextNode != null)
-                    StartNode = StartNode.NextNode;  // далее в том же уровне, следующая нода
-                else
-                    if (StartNode.Level != 0)
-                    StartNode = StartNode.Parent.NextNode;
-            };
-
-            return null;
-        }
-
+        
+    
+     
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
-//            ComboBox  searchtbox = (ComboBox)sender;
             TextBox searchtbox = (TextBox)sender;
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
@@ -124,13 +65,13 @@ namespace TExpress.DisAss
 
                 if (searchtbox.Text == "")
                 {
-                    treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node
+                    treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node, seek to begin
                     treeView1.CollapseAll();
                 }
                 //FindNode не ходит далее одного root элемента:
                 //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
                 
-                TreeNode res = SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+                TreeNode res = netFteo.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
                   
                 if (res != null)
                 {
@@ -138,8 +79,6 @@ namespace TExpress.DisAss
                     treeView1.SelectedNode.EnsureVisible();
                 }
                 SearchTextBox.Focus();
-                 
-
                 treeView1.EndUpdate();
             }
 
@@ -152,13 +91,17 @@ namespace TExpress.DisAss
             int stopme = e.Node.Level;
         }
 
+
         private void button2_Click(object sender, EventArgs e)
         {
-            TreeNode res = SeekNode (treeView1.Nodes[0], SearchTextBox.Text.ToUpper());
-            if (res != null)
+            if ((treeView1.SelectedNode != null) && (treeView1.SelectedNode.NextNode != null))
             {
-                treeView1.SelectedNode = res;
-                treeView1.SelectedNode.EnsureVisible();
+                TreeNode res = netFteo.TreeViewFinder.SeekNode(netFteo.TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
+                if (res != null)
+                {
+                    treeView1.SelectedNode = res;
+                    treeView1.SelectedNode.EnsureVisible();
+                }
             }
         }
     }

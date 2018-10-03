@@ -538,13 +538,16 @@ namespace GKNData
         {
             if (!sender.Visible)
             {
+                panel1.Visible = true;
                 sender.Visible = true;
                 sender.Clear();
                 sender.Focus();
                 return true;
             }
             else
+
             {
+                panel1.Visible = false;
                 sender.Visible = false;
                 return false;
             }
@@ -668,77 +671,52 @@ namespace GKNData
         {
             if ((e.Control) && (e.KeyCode == Keys.D))
             Toggle_SearchTextBox((TextBox)sender);
+
         }
 
 
-        // Возникает только если текст не пустой
-        /*
+  
+ 
+
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
                 treeView1.BeginUpdate();
-                int res = TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
-                if (res != -1)
+
+                if (searchtbox.Text == "")
                 {
-                    treeView1.CollapseAll();
-                    treeView1.SelectedNode = treeView1.Nodes[res];
-                    treeView1.Nodes[res].Expand();
-                }
-                else
-                {
-                    treeView1.SelectedNode = treeView1.Nodes[0];
+                    treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node, seek to begin
                     treeView1.CollapseAll();
                 }
+                //FindNode не ходит далее одного root элемента:
+                //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
 
-                SearchTextBox.Focus();
-                treeView1.EndUpdate();
+                TreeNode res = netFteo.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
 
-            }
-        }
-        */
-
-        /// <summary>
-        /// Поиск по дереву по тексту Node
-        /// </summary>
-        /// <param name="srcNodes"></param>
-        /// <param name="searchstring"></param>
-        /// <param name="foundFirst"></param>
-        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
-        {
-            if (searchstring == "") return;
-            Boolean selectedfound = foundFirst;
-            foreach (TreeNode tn in srcNodes.Nodes)
-            {
-                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
+                if (res != null)
                 {
-                    treeView1.SelectedNode = tn;
+                    treeView1.SelectedNode = res;
                     treeView1.SelectedNode.EnsureVisible();
-                    selectedfound = true;
-                    treeView1.Focus();
-                    treeView1.Select();
-                    return;
                 }
-                //in childs:
-                FindNode(tn, searchstring, selectedfound);
-            }
-        }
-
-
-        private void SearchTextBox_TextChanged(object sender, EventArgs e)
-        {
-            TextBox searchtbox = (TextBox)sender;
-            if (searchtbox.Visible)
-            {   // начинаем с высшей ноды:
-                treeView1.BeginUpdate();
-                FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
                 SearchTextBox.Focus();
                 treeView1.EndUpdate();
             }
 
         }
 
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if ((treeView1.SelectedNode != null) && (treeView1.SelectedNode.NextNode != null))
+            {
+                TreeNode res = netFteo.TreeViewFinder.SeekNode(netFteo.TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
+                if (res != null)
+                {
+                    treeView1.SelectedNode = res;
+                    treeView1.SelectedNode.EnsureVisible();
+                }
+            }
+        }
     }
 }

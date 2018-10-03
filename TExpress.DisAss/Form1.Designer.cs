@@ -55,24 +55,36 @@
             treeNode11,
             treeNode12,
             treeNode13});
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("2610:090905:222");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("2610", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("26312:090905:222");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("26312:090905", new System.Windows.Forms.TreeNode[] {
             treeNode15});
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("261");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node0");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Node4");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Node1", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("26312", new System.Windows.Forms.TreeNode[] {
+            treeNode16});
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("263");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("comm");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("28:000400:222", new System.Windows.Forms.TreeNode[] {
             treeNode19});
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Node2");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Node3");
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("28:000400", new System.Windows.Forms.TreeNode[] {
+            treeNode20});
+            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("28", new System.Windows.Forms.TreeNode[] {
+            treeNode21});
+            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("261");
+            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("2631");
+            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("271");
+            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Node0");
+            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Node4");
+            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Node1", new System.Windows.Forms.TreeNode[] {
+            treeNode27});
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Node2");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Node3");
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.treeViewSearchable1 = new netFteo.TreeViewSearchable();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,7 +106,7 @@
             // 
             this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.treeView1.HideSelection = false;
-            this.treeView1.Location = new System.Drawing.Point(12, 109);
+            this.treeView1.Location = new System.Drawing.Point(12, 194);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "Node2";
             treeNode1.Text = "26:01:02";
@@ -125,16 +137,36 @@
             treeNode14.Name = "Node0";
             treeNode14.Text = "26";
             treeNode15.Name = "Node2";
-            treeNode15.Text = "2610:090905:222";
-            treeNode16.Name = "Node1";
-            treeNode16.Text = "2610";
-            treeNode17.Name = "Node0";
-            treeNode17.Text = "261";
+            treeNode15.Text = "26312:090905:222";
+            treeNode16.Name = "Node5";
+            treeNode16.Text = "26312:090905";
+            treeNode17.Name = "Node1";
+            treeNode17.Text = "26312";
+            treeNode18.Name = "Node0";
+            treeNode18.Text = "263";
+            treeNode19.Name = "Node3";
+            treeNode19.Text = "comm";
+            treeNode20.Name = "Node1";
+            treeNode20.Text = "28:000400:222";
+            treeNode21.Name = "Node4";
+            treeNode21.Text = "28:000400";
+            treeNode22.Name = "Node0";
+            treeNode22.Text = "28";
+            treeNode23.Name = "Node2";
+            treeNode23.Text = "261";
+            treeNode24.Name = "Node0";
+            treeNode24.Text = "2631";
+            treeNode25.Name = "Node2";
+            treeNode25.Text = "271";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode14,
-            treeNode16,
-            treeNode17});
-            this.treeView1.Size = new System.Drawing.Size(395, 330);
+            treeNode17,
+            treeNode18,
+            treeNode22,
+            treeNode23,
+            treeNode24,
+            treeNode25});
+            this.treeView1.Size = new System.Drawing.Size(395, 245);
             this.treeView1.TabIndex = 1;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
@@ -151,21 +183,21 @@
             this.treeViewSearchable1.BackColor = System.Drawing.Color.Lime;
             this.treeViewSearchable1.Location = new System.Drawing.Point(413, 194);
             this.treeViewSearchable1.Name = "treeViewSearchable1";
-            treeNode18.Name = "Node0";
-            treeNode18.Text = "Node0";
-            treeNode19.Name = "Node4";
-            treeNode19.Text = "Node4";
-            treeNode20.Name = "Node1";
-            treeNode20.Text = "Node1";
-            treeNode21.Name = "Node2";
-            treeNode21.Text = "Node2";
-            treeNode22.Name = "Node3";
-            treeNode22.Text = "Node3";
+            treeNode26.Name = "Node0";
+            treeNode26.Text = "Node0";
+            treeNode27.Name = "Node4";
+            treeNode27.Text = "Node4";
+            treeNode28.Name = "Node1";
+            treeNode28.Text = "Node1";
+            treeNode29.Name = "Node2";
+            treeNode29.Text = "Node2";
+            treeNode30.Name = "Node3";
+            treeNode30.Text = "Node3";
             this.treeViewSearchable1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode18,
-            treeNode20,
-            treeNode21,
-            treeNode22});
+            treeNode26,
+            treeNode28,
+            treeNode29,
+            treeNode30});
             this.treeViewSearchable1.Size = new System.Drawing.Size(397, 245);
             this.treeViewSearchable1.TabIndex = 7;
             // 
@@ -174,10 +206,19 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.SearchTextBox);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(186, 65);
+            this.panel1.Location = new System.Drawing.Point(186, 150);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(221, 38);
             this.panel1.TabIndex = 9;
+            // 
+            // SearchTextBox
+            // 
+            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SearchTextBox.Location = new System.Drawing.Point(3, 9);
+            this.SearchTextBox.Name = "SearchTextBox";
+            this.SearchTextBox.Size = new System.Drawing.Size(171, 23);
+            this.SearchTextBox.TabIndex = 11;
+            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
             // button2
             // 
@@ -189,15 +230,6 @@
             this.button2.TabIndex = 10;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // SearchTextBox
-            // 
-            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SearchTextBox.Location = new System.Drawing.Point(3, 9);
-            this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(171, 23);
-            this.SearchTextBox.TabIndex = 11;
-            this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
             // Form1
             // 

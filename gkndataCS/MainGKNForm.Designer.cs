@@ -57,6 +57,9 @@ namespace GKNData
             this.помощьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.онлайнToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tree_imageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_Exit = new System.Windows.Forms.ToolStripButton();
@@ -66,14 +69,14 @@ namespace GKNData
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.Button_Import = new System.Windows.Forms.ToolStripButton();
-            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.онлайнToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -272,6 +275,29 @@ namespace GKNData
             this.treeView1.Click += new System.EventHandler(this.treeView1_Click);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
+            // contextMenu1
+            // 
+            this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.онлайнToolStripMenuItem,
+            this.поискToolStripMenuItem});
+            this.contextMenu1.Name = "contextMenu1";
+            this.contextMenu1.Size = new System.Drawing.Size(150, 48);
+            // 
+            // онлайнToolStripMenuItem
+            // 
+            this.онлайнToolStripMenuItem.Name = "онлайнToolStripMenuItem";
+            this.онлайнToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.онлайнToolStripMenuItem.Text = "Он-лайн";
+            this.онлайнToolStripMenuItem.Click += new System.EventHandler(this.онлайнToolStripMenuItem_Click);
+            // 
+            // поискToolStripMenuItem
+            // 
+            this.поискToolStripMenuItem.Name = "поискToolStripMenuItem";
+            this.поискToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.поискToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.поискToolStripMenuItem.Text = "Поиск";
+            this.поискToolStripMenuItem.Click += new System.EventHandler(this.поискToolStripMenuItem_Click);
+            // 
             // Tree_imageList
             // 
             this.Tree_imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Tree_imageList.ImageStream")));
@@ -355,50 +381,43 @@ namespace GKNData
             this.Button_Import.Text = "toolStripButton1";
             this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
             // 
-            // contextMenu1
+            // panel1
             // 
-            this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.онлайнToolStripMenuItem,
-            this.поискToolStripMenuItem});
-            this.contextMenu1.Name = "contextMenu1";
-            this.contextMenu1.Size = new System.Drawing.Size(150, 48);
-            // 
-            // онлайнToolStripMenuItem
-            // 
-            this.онлайнToolStripMenuItem.Name = "онлайнToolStripMenuItem";
-            this.онлайнToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.онлайнToolStripMenuItem.Text = "Он-лайн";
-            this.онлайнToolStripMenuItem.Click += new System.EventHandler(this.онлайнToolStripMenuItem_Click);
-            // 
-            // поискToolStripMenuItem
-            // 
-            this.поискToolStripMenuItem.Name = "поискToolStripMenuItem";
-            this.поискToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.поискToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.поискToolStripMenuItem.Text = "Поиск";
-            this.поискToolStripMenuItem.Click += new System.EventHandler(this.поискToolStripMenuItem_Click);
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.SearchTextBox);
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Location = new System.Drawing.Point(249, 172);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(221, 38);
+            this.panel1.TabIndex = 10;
+            this.panel1.Visible = false;
             // 
             // SearchTextBox
             // 
-            this.SearchTextBox.BackColor = System.Drawing.SystemColors.Info;
-            this.SearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SearchTextBox.ForeColor = System.Drawing.Color.DarkRed;
-            this.SearchTextBox.Location = new System.Drawing.Point(50, 146);
+            this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SearchTextBox.Location = new System.Drawing.Point(3, 9);
             this.SearchTextBox.Name = "SearchTextBox";
-            this.SearchTextBox.Size = new System.Drawing.Size(134, 26);
-            this.SearchTextBox.TabIndex = 4;
-            this.SearchTextBox.Visible = false;
-            this.SearchTextBox.WordWrap = false;
+            this.SearchTextBox.Size = new System.Drawing.Size(171, 23);
+            this.SearchTextBox.TabIndex = 11;
             this.SearchTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
-            this.SearchTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyUp);
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.Image = global::GKNData.Properties.Resources.pictures;
+            this.button2.Location = new System.Drawing.Point(180, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(39, 36);
+            this.button2.TabIndex = 10;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainGKNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 405);
-            this.Controls.Add(this.SearchTextBox);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -414,9 +433,11 @@ namespace GKNData
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenu1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.contextMenu1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,8 +477,10 @@ namespace GKNData
         private System.Windows.Forms.ContextMenuStrip contextMenu1;
         private System.Windows.Forms.ToolStripMenuItem онлайнToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OptionsToolStripMenuItem;
-        private System.Windows.Forms.TextBox SearchTextBox;
         private System.Windows.Forms.ToolStripMenuItem поискToolStripMenuItem;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox SearchTextBox;
+        private System.Windows.Forms.Button button2;
     }
 }
 

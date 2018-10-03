@@ -101,51 +101,79 @@ namespace netFteo
 
     /// <summary>
     /// Класс для поиска по деревьям TreeView
-    /// v 1.4
+    /// v 1.5
     /// </summary>
     public static class TreeViewFinder
     {
-        //public static string results;
-        public static int MatchNodeIndex;
-        //private List<TreeNode> CurrentNodeMatches;// = new List<TreeNode>();
-        /// <summary>
-        /// Поиск по дереву по тексту Node
-        /// по следам https://stackoverflow.com/questions/11530643/treeview-search
-        /// </summary>
-        /// <param name="srcNodes"></param>
-        /// <param name="searchstring"></param>
-        /// <param name="foundFirst"></param>
- 
+        //Search next node. Jump to parent if last node
+        public static TreeNode SearchNextNode(TreeNode StartNode)
+        {
+            if (StartNode.NextNode != null)
+                StartNode = StartNode.NextNode;  // далее в том же уровне, следующая нода
+            else
+            {
+                //check if root level , last node
+                if (StartNode.Level == 0) return null;
+                //otherwise, go up to parent:
+                if (StartNode.Parent != null)
+                    return SearchNextNode(StartNode.Parent); //recursive ascent 
+            }
+            return StartNode;
+        }
 
 
-        public static TreeNode SearchNodesT(TreeNode StartNode, string SearchText, bool foundFirst)
+        // Full scanning of Node, next Nodes and childs:
+        public static TreeNode SearchNodes(TreeNode StartNode, string SearchText)
         {
             if (SearchText == "") return null;
-            Boolean selectedfound = foundFirst;
 
             while (StartNode != null)
             {
-                if (StartNode.Text.ToUpper().Contains(SearchText))//&& !selectedfound)
+                if (StartNode.Text.ToUpper().Contains(SearchText))
                 {
-                    /*
-                    if ((StartNode.Level == 1) && (StartNode.Parent != null))
-                        return  StartNode.Parent;
-                    else 
-                        */
-                    selectedfound = true;
                     return StartNode;  // выходим по первому сопадению
-                    // child ??? - if them, get from parent:
                 }
 
+                // recursive to childs:
                 if (StartNode.Nodes.Count != 0)
                 {
-                    return SearchNodesT(StartNode.Nodes[0], SearchText, selectedfound);//Recursive Search 
-                }
+                    return SearchNodes(StartNode.Nodes[0], SearchText);//Recursive Search 
+                };
 
-                StartNode = StartNode.NextNode;
-            }
+                StartNode = SearchNextNode(StartNode);
+            };
             return null;
         }
+
+
+        //Strong seek to desired node
+        public static TreeNode SeekNode(TreeNode StartNode, string SearchText)
+        {
+            if (SearchText == "") return null;
+
+            while (StartNode != null)
+            {
+                if (StartNode.Text.ToUpper().Equals(SearchText)) // strong equality needed
+                {
+                    return StartNode;  // выходим по первому сопадению
+                }
+
+                // recursive to childs:
+                if (StartNode.Nodes.Count != 0)
+                {
+                    return SeekNode(StartNode.Nodes[0], SearchText);//Recursive Search 
+                };
+
+                StartNode = SearchNextNode(StartNode);
+            };
+
+            return null;
+        }
+
+
+
+
+
     }
 
 }
