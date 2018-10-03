@@ -3282,9 +3282,12 @@ namespace RRTypes.CommonParsers
             {
                 TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Flat.CadastralBlock);
                 TMyRealty flatObject = new TMyRealty(kv.Realty.Flat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
+                if (kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberOKS != null)
+                    flatObject.ParentCadastralNumbers.Add(kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberOKS);
+                if (kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberFlat != null)
+                flatObject.ParentCadastralNumbers.Add(kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberFlat);
                 flatObject.DateCreated = kv.Realty.Flat.DateCreated.ToString("dd.MM.yyyy");
                 flatObject.Flat.AssignationCode = netFteo.Rosreestr.dAssFlatv01.ItemToName(kv.Realty.Flat.Assignation.AssignationCode.ToString());
-                //Bld.Name = kv.Realty.Flat.Name;
                 flatObject.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
                 flatObject.Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
                 flatObject.Area = kv.Realty.Flat.Area;
@@ -3308,8 +3311,9 @@ namespace RRTypes.CommonParsers
                 flatObject.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Flat.ObjectType);
                 flatObject.Rights = RRTypes.CommonCast.CasterEGRP.ParseKPSOKSRights(xmldoc);
                 flatObject.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
-                Bl.AddOKS(flatObject);
                 flatObject.Notes = kv.Realty.Flat.Notes;
+                Bl.AddOKS(flatObject);
+
                 res.CommentsType = "Особые отметки";
                 //res.Comments = flat.Notes;
                 res.MyBlocks.Blocks.Add(Bl);
