@@ -397,8 +397,11 @@ namespace GKNData
         private TreeNode insertItem(TMyCadastralBlock item,  TreeView hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);//nodeName);
+            if (item.Name != null)
+                nn.Text = item.CN + " " + item.Name;
+
             nn.Tag = item;
-            if (item.Name != null) nn.ToolTipText = item.Name;
+            if (item.Name != null) nn.ToolTipText = item.Comments;
             if (item.HasParcels) // ДОбавим ноду-пустышку, по этому признаку будут подгружаться зу при expande ноды
             {
                 TreeNode hChildItem = nn.Nodes.Add("");
@@ -718,6 +721,17 @@ namespace GKNData
                     treeView1.SelectedNode.EnsureVisible();
                 }
             }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void treeView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (CF.Cfg.CurrentItem.Item_TypeName == CF.Cfg.CurrentItem.TypeName_Parcel)
+                Edit(CF.Cfg.CurrentItem);
         }
     }
 }

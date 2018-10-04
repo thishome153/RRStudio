@@ -31,7 +31,7 @@ namespace netFteo.XML
             this.SchemaName = RootSchema;
             this.SchemaDir = rootdir;
             this.schemaSet = new XmlSchemaSet();
-             AddSchema(RootSchema);
+            AddSchema(RootSchema);
         }
 
         public XmlSchema AddSchema(string filename)
@@ -67,11 +67,11 @@ namespace netFteo.XML
         }
         public IEnumerable<string> SchemaSetNamespaces()
         {
-            XmlUrlResolver xmlres = new  XmlUrlResolver();
+            XmlUrlResolver xmlres = new XmlUrlResolver();
             this.schemaSet.XmlResolver = xmlres;
             System.Uri uri = null;
             xmlres.ResolveUri(uri, "urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1");
-                return null;
+            return null;
 
         }
         private void ValidationCallBack(object sender, ValidationEventArgs e)
@@ -145,12 +145,12 @@ namespace netFteo.XML
         /// Конструктор
         /// </summary>
         /// <param name="xsdfilename">Имя xsd файла схемы</param>
-        public XSDFile(string xsdfilename) 
+        public XSDFile(string xsdfilename)
         {
             this.XSDFileName = xsdfilename;
             if (System.IO.File.Exists(this.XSDFileName))
             {
-              this.Schema = XmlSchema.Read(XmlReader.Create(this.XSDFileName), new ValidationEventHandler(ValidationCallBack));
+                this.Schema = XmlSchema.Read(XmlReader.Create(this.XSDFileName), new ValidationEventHandler(ValidationCallBack));
 
             }
 
@@ -210,8 +210,8 @@ namespace netFteo.XML
             {
                 if (Facets == null) return false;
                 if (Facets.Count() > 0) return true;
-                    else return false;
-                
+                else return false;
+
             }
         }
 
@@ -221,7 +221,7 @@ namespace netFteo.XML
         /// <param name="value">Значение перечисления</param>
         /// <param name="simpletypeName">Имя типа перечисления, например: 'dRegionsRF' </param>
         /// <returns>Результат - Список аннотаций</returns>
-        public List<string> Item2Annotation (string value, string simpletypeName)
+        public List<string> Item2Annotation(string value, string simpletypeName)
         {
 
 
@@ -233,16 +233,16 @@ namespace netFteo.XML
                                           .Where(dd => dd.Value.ToString().Contains(value)))
                                           .Select<XmlSchemaEnumerationFacet, XmlSchemaAnnotation>
                                              (selector_ => selector_.Annotation).Where(an => (an.Items.Count == 1) && (an.Items[0] != null))
-                //.Select<XmlSchemaAnnotation, string>
-                //  (selector_ => ((XmlSchemaDocumentation)selector_.Items[0]).Markup[0].Value)
+                                           //.Select<XmlSchemaAnnotation, string>
+                                           //  (selector_ => ((XmlSchemaDocumentation)selector_.Items[0]).Markup[0].Value)
                                            .Select<XmlSchemaAnnotation, XmlSchemaDocumentation>
                                              (selector => (XmlSchemaDocumentation)selector.Items[0])
                                              .Select<XmlSchemaDocumentation, XmlNode[]>
-                                               (selector => (XmlNode[])selector.Markup).Where( d => d.Count() ==1)
-                                               .Select<XmlNode[], string> (markup => markup[0].Value)   
-                                          
+                                               (selector => (XmlNode[])selector.Markup).Where(d => d.Count() == 1)
+                                               .Select<XmlNode[], string>(markup => markup[0].Value)
+
                                           ;
-                                                             
+
 
             List<string> resvalues = new List<string>();
             resvalues.AddRange(Items2);
@@ -254,7 +254,7 @@ namespace netFteo.XML
         /// <param name="value"></param>
         /// <param name="simpletypeName"></param>
         /// <returns></returns>
-         public List<string> Item2Item (string value, string simpletypeName)
+        public List<string> Item2Item(string value, string simpletypeName)
         {
             /*
             // Одним предложением
@@ -270,7 +270,7 @@ namespace netFteo.XML
             */
 
 
-             // Двумя предложениями
+            // Двумя предложениями
             if (fSimpleTypeNames.Count() == 1)
                 this.Facets = fschema.Items.OfType<XmlSchemaSimpleType>()
                                             .Where(s => (s.Content is XmlSchemaSimpleTypeRestriction) && s.Name == fSimpleTypeNames.First())
@@ -288,25 +288,25 @@ namespace netFteo.XML
         }
 
         /// <summary>
-         /// Выбирает единственное значение Аннотации/Документации соответствующее value
+        /// Выбирает единственное значение Аннотации/Документации соответствующее value
         /// </summary>
-         /// <param name="value">Значение для поиска Аннотации/Документации</param>
+        /// <param name="value">Значение для поиска Аннотации/Документации</param>
         /// <returns></returns>
-         public string Item2Annotation(string value)
-         {
-             if (value == null) return "NULL";
-             if (this.fComplete)
-             {
-                 if (value.Contains("Item"))
-                     value = value.Substring(4);
-                 System.Collections.Generic.List<string> res = this.Item2Annotation(value, SimpleTypeNamesSafeFirst);
-                 if (res.Count == 1)
-                     return res[0];
-                 else return "-";
-             }
-             else return "файл " + System.IO.Path.GetFileName(this.XSDFileName) +" не найден";
-         }
-         
+        public string Item2Annotation(string value)
+        {
+            if (value == null) return "NULL";
+            if (this.fComplete)
+            {
+                if (value.Contains("Item"))
+                    value = value.Substring(4);
+                System.Collections.Generic.List<string> res = this.Item2Annotation(value, SimpleTypeNamesSafeFirst);
+                if (res.Count == 1)
+                    return res[0];
+                else return "-";
+            }
+            else return "файл " + System.IO.Path.GetFileName(this.XSDFileName) + " не найден";
+        }
+
 
 
         /// <summary>
@@ -326,10 +326,10 @@ namespace netFteo.XML
             return (IEnumerable<string>)xNodeList;
         }
 
-        
+
 
     }
-    public class FileInfo  
+    public class FileInfo
     {
         private string fComments;
         public string Encoding;
@@ -337,7 +337,7 @@ namespace netFteo.XML
         public string DocRootName;
         public string FileName;
         public string FilePath;
-        public string Namespace;  
+        public string Namespace;
         public string DocType;
         public string DocTypeNick;
         public string Number;
@@ -348,16 +348,17 @@ namespace netFteo.XML
         public string Appointment;
         public string AppointmentFIO;
         public string Cert_Doc_Organization;
+        public List<Rosreestr.TEngineerOut> Contractors;// исполнители работ
         public string Comments // Conclusion, Notes
-        {   
-            get 
         {
-            if (this.CommentsType != "-")
-                return this.fComments;
-            else return "-";
-        }
-        
-           set
+            get
+            {
+                if (this.CommentsType != "-")
+                    return this.fComments;
+                else return "-";
+            }
+
+            set
             {
                 this.fComments = value;//
                 if (value == null) this.CommentsType = "-";
@@ -374,6 +375,7 @@ namespace netFteo.XML
             this.MifPolygons = new netFteo.Spatial.TPolygonCollection();
             this.MifOKSPolygons = new netFteo.Spatial.TPolygonCollection();
             this.MyBlocks = new netFteo.Spatial.TMyBlockCollection();
+            this.Contractors = new List<Rosreestr.TEngineerOut>();
             this.DocType = "-";
             this.Version = "";
         }
@@ -393,7 +395,7 @@ namespace netFteo.XML
         public string XSL_KPT09_pub = "https://portal.rosreestr.ru/xsl/GKN/KPT/09/common.xsl";
         public string XSL_KPT09_lan = ApiServer + "/GKN/KPT/09/common.xsl";
 
-        
+
 
         public string XSL_KPT10_b_pub = "https://portal.rosreestr.ru/xsl/GKN/KPT_b/10/common.xsl";
         public string XSL_KPT10_b_lan = ApiServer + "/GKN/KPT_b/10/common.xsl";
@@ -474,5 +476,78 @@ namespace netFteo.XML
             }
             else return "";
         }
+    }
+
+
+    /// <summary>
+    /// Обертка для работы с XML
+    /// </summary>
+    public static class XMLWrapper
+    {
+
+        public static string NS_Xpath(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+
+            string testXpath;
+            //nsmgr.HasNamespace
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+                testXpath = "/parseNS:" + xmldoc.DocumentElement.Name + Xpath.Replace("/", "/parseNS:");
+            else
+                testXpath = "/" + xmldoc.DocumentElement.Name + Xpath;
+            return testXpath;
+        }
+        public static System.Xml.XmlNode Parse_Node(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+
+            return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
+
+        }
+
+        /// <summary>
+        /// Parse any Attibute in document
+        /// </summary>
+        /// <param name="xmldoc">Документ</param>
+        /// <param name="AttributeName">Имя атрибута</param>
+        /// <param name="Xpath">xpath without root element (detect here)</param>
+        /// <returns></returns>
+        public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
+        {
+
+            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if (recnode != null)
+            {
+                return recnode.Attributes.GetNamedItem(AttributeName).Value;
+            }
+            else
+                return null;
+        }
+
+        public static string Parse_NodeValue(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
+
+            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if (recnode != null)
+            {
+                return recnode.FirstChild.Value;
+            }
+            else
+                return null;
+        }
+
+        public static bool Test_Node(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
+            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if (recnode != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
     }
 }

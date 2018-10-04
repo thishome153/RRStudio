@@ -367,6 +367,35 @@ namespace netFteo.Rosreestr
     }
 
 
+    /// <summary>
+    /// Человекосущность, 1 штука
+    /// </summary>
+    public class HumanItem
+    {
+        public string FamilyName;
+        public string FirstName;
+        public string Patronymic;
+        public string SNILS;
+        public string INN;
+        public string BirthDate;
+        public string Sex;
+
+    }
+
+    /// <summary>
+    /// Кадастровый инженер
+    /// </summary>
+    public class TEngineerOut : HumanItem
+    {
+        public string Date;
+        public string NCertificate;
+        public string Email;
+        public string Organization_Name;
+        public string AddressOrganization;
+    }
+
+
+
     public class TMyOwner
    {
        public string OwnerName;

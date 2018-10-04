@@ -73,8 +73,8 @@ namespace GKNData
 
     public class TCurrentItem
     {
-        string TypeName_Block = "netFteo.Spatial.TMyCadastralBlock";
-        string TypeName_Parcel = "netFteo.Spatial.TMyParcel";
+        public string TypeName_Block = "netFteo.Spatial.TMyCadastralBlock";
+        public string TypeName_Parcel = "netFteo.Spatial.TMyParcel";
         public string Item_TypeName;
         public int Item_id;
         public TCurrentItem()

@@ -346,13 +346,13 @@ namespace XMLReaderCS
                     KVoks02 = (RRTypes.kvoks_v02.KVOKS)serializer.Deserialize(stream);
                     ParseKVOKS(KVoks02);
                 }
+             
                 //Под этим urn urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1 как бы выписка версии KVOKS_V07
                 if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
                 {
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKVOKS07(this.DocInfo, xmldoc);
                     ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                    ListFileInfo(DocInfo);
                 }
             }
 
@@ -378,7 +378,6 @@ namespace XMLReaderCS
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKPOKS(this.DocInfo, xmldoc);
                     ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                    ListFileInfo(DocInfo);
                 }
             }
             //Не КПТ v08 ли это?            
@@ -388,7 +387,7 @@ namespace XMLReaderCS
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
                 ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+
             }
             
             //Не КПТ v09 ли это?            
@@ -399,7 +398,7 @@ namespace XMLReaderCS
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseKPT09(this.DocInfo, xmldoc);
                 ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+
             }
             //Не КПТ v10 ли это?
             if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
@@ -410,7 +409,7 @@ namespace XMLReaderCS
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo =  parser.ParseKPT10(this.DocInfo, xmldoc);
                 ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+
             }
 
 
@@ -491,7 +490,6 @@ namespace XMLReaderCS
                 this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
 
                 ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
 
             }
 
@@ -512,14 +510,7 @@ namespace XMLReaderCS
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
-
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
-
-
-                //XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.V03_TP.TP));
-                //RRTypes.V03_TP.TP TP = (RRTypes.V03_TP.TP)serializerTP.Deserialize(stream);
-                
+               ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
             }
 
         }
@@ -1858,6 +1849,22 @@ namespace XMLReaderCS
             linkLabel_Request.Text = fileinfo.RequeryNumber;
             if (fileinfo.Comments != null)
             richTextBox1.AppendText(fileinfo.Comments.Replace("<br>", "\n"));
+
+            
+            foreach(netFteo.Rosreestr.TEngineerOut eng in fileinfo.Contractors)
+            {
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = eng.Date;
+                LVi.SubItems.Add(eng.FamilyName + " " + eng.FirstName + " " + eng.Patronymic);
+                LVi.SubItems.Add(eng.NCertificate);
+
+                if (eng.Organization_Name != null)
+                    LVi.SubItems.Add(eng.Organization_Name);
+                else LVi.SubItems.Add("-");
+
+                listView_Contractors.Items.Add(LVi);
+            }
+            
         }
 
         /// </summary>

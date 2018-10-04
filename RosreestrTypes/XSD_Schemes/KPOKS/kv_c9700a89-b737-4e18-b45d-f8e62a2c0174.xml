@@ -1,0 +1,3052 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/Common.xsl"?>
+
+<KVOKS xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1"
+xmlns:smev="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1"
+xmlns:num="urn://x-artefacts-rosreestr-ru/commons/complex-types/numbers/1.0"
+xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1"
+xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1"
+xmlns:param="urn://x-artefacts-rosreestr-ru/commons/complex-types/parameters-oks/2.0.1"
+xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0"
+xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1"
+xmlns:ch="urn://x-artefacts-rosreestr-ru/commons/complex-types/cultural-heritage/2.0.1">
+  <Realty>
+    <Building CadastralNumber="26:12:010516:534" State="06"
+    DateCreated="2018-09-21"
+>
+      <CadastralBlocks>
+        <CadastralBlock>26:12:010516</CadastralBlock>
+      </CadastralBlocks>
+      <ObjectType>002001002000</ObjectType>
+      <ParentCadastralNumbers>
+        <CadastralNumber>26:12:010516:96</CadastralNumber>
+      </ParentCadastralNumbers>
+      <Name>Многоквартирный жилой дом со встроено-пристроенными помещениями, подземной автостоянкой, автомоечным комплексом и кафе, офисным зданием, гаражами-стоянками в г. Ставрополе по ул. Ленина, 417-а в квартале 477. Корректировка. 2 этап строительства</Name>
+      <AssignationBuilding>204003000000</AssignationBuilding>
+      <ElementsConstruct>
+        <param:Material Wall="061001003000" />
+      </ElementsConstruct>
+      <ExploitationChar YearBuilt="2017" YearUsed="2018" />
+      <Floors Floors="17" UndergroundFloors="1" />
+      <Area>15890.7</Area>
+      <Address>
+        <adrs:OKATO>07401000000</adrs:OKATO>
+        <adrs:KLADR>26000001000023900</adrs:KLADR>
+        <adrs:PostalCode>355029</adrs:PostalCode>
+        <adrs:Region>26</adrs:Region>
+        <adrs:City Name="Ставрополь" Type="г" />
+        <adrs:Street Name="Ленина" Type="ул" />
+        <adrs:Level1 Type="д" Value="417а" />
+        <adrs:Level2 Type="корп" Value="2" />
+        <adrs:Note>Российская Федерация, Ставропольский край, г. Ставрополь, кв-л 475, ул. Ленина, д.417а, к.2</adrs:Note>
+      </Address>
+      <CadastralCost Value="413688790.47" Unit="383" />
+      <EntitySpatial EntSys="ID0" >
+        <spa:SpatialElement >
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="1" >
+            <spa:Ordinate X="476786.54" Y="1313306.01" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="2" >
+            <spa:Ordinate X="476789.74" Y="1313315.24" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="3" >
+            <spa:Ordinate X="476790.35" Y="1313315.03" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="4" >
+            <spa:Ordinate X="476792.06" Y="1313318.92" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="5" >
+            <spa:Ordinate X="476791.08" Y="1313319.23" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="6" >
+            <spa:Ordinate X="476790.65" Y="1313319.45" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="7" >
+            <spa:Ordinate X="476784.75" Y="1313322.76" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="8" >
+            <spa:Ordinate X="476785.01" Y="1313323.65" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="9" >
+            <spa:Ordinate X="476785.88" Y="1313326.3" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="10" >
+            <spa:Ordinate X="476778.95" Y="1313328.66" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="11" >
+            <spa:Ordinate X="476778.04" Y="1313326" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="12" >
+            <spa:Ordinate X="476777.71" Y="1313325.12" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="13" >
+            <spa:Ordinate X="476771.1" Y="1313326" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="14" >
+            <spa:Ordinate X="476770.68" Y="1313326.15" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="15" >
+            <spa:Ordinate X="476768.59" Y="1313320.04" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="16" >
+            <spa:Ordinate X="476762.54" Y="1313323.44" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="17" >
+            <spa:Ordinate X="476763.61" Y="1313327.01" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="18" >
+            <spa:Ordinate X="476760.7" Y="1313327.99" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="19" >
+            <spa:Ordinate X="476760" Y="1313326.1" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="20" >
+            <spa:Ordinate X="476762.9" Y="1313325.11" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="21" >
+            <spa:Ordinate X="476762.44" Y="1313323.75" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="22" >
+            <spa:Ordinate X="476762.06" Y="1313323.88" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="23" >
+            <spa:Ordinate X="476756.97" Y="1313325.62" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="24" >
+            <spa:Ordinate X="476756.66" Y="1313324.71" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="25" >
+            <spa:Ordinate X="476756.23" Y="1313324.85" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="26" >
+            <spa:Ordinate X="476757.64" Y="1313329.03" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="27" >
+            <spa:Ordinate X="476756.55" Y="1313329.4" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="28" >
+            <spa:Ordinate X="476755.61" Y="1313326.73" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="29" >
+            <spa:Ordinate X="476755.32" Y="1313325.9" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="30" >
+            <spa:Ordinate X="476748.7" Y="1313326.78" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="31" >
+            <spa:Ordinate X="476748.28" Y="1313326.93" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="32" >
+            <spa:Ordinate X="476746.15" Y="1313320.83" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="33" >
+            <spa:Ordinate X="476739.95" Y="1313324.5" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="34" >
+            <spa:Ordinate X="476740.21" Y="1313325.33" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="35" >
+            <spa:Ordinate X="476740.97" Y="1313328.06" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="36" >
+            <spa:Ordinate X="476733.98" Y="1313330.26" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="37" >
+            <spa:Ordinate X="476733.08" Y="1313327.42" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="38" >
+            <spa:Ordinate X="476732.87" Y="1313326.73" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="39" >
+            <spa:Ordinate X="476724.75" Y="1313327.8" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="40" >
+            <spa:Ordinate X="476723.76" Y="1313322.94" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="41" >
+            <spa:Ordinate X="476724.26" Y="1313322.78" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="42" >
+            <spa:Ordinate X="476723.98" Y="1313322.06" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="43" >
+            <spa:Ordinate X="476723.47" Y="1313320.59" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="44" >
+            <spa:Ordinate X="476721.33" Y="1313314.28" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="45" >
+            <spa:Ordinate X="476730.92" Y="1313309.34" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="46" >
+            <spa:Ordinate X="476731.37" Y="1313309.26" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="47" >
+            <spa:Ordinate X="476731.25" Y="1313308.59" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="48" >
+            <spa:Ordinate X="476733.65" Y="1313307.77" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="49" >
+            <spa:Ordinate X="476733.98" Y="1313308.83" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="50" >
+            <spa:Ordinate X="476741.69" Y="1313307.46" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="51" >
+            <spa:Ordinate X="476743.62" Y="1313313.23" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="52" >
+            <spa:Ordinate X="476744.09" Y="1313313.07" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="53" >
+            <spa:Ordinate X="476744.26" Y="1313313.56" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="54" >
+            <spa:Ordinate X="476747.11" Y="1313312" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="55" >
+            <spa:Ordinate X="476748.09" Y="1313311.47" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="56" >
+            <spa:Ordinate X="476747.83" Y="1313310.62" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="57" >
+            <spa:Ordinate X="476747.72" Y="1313310.25" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="58" >
+            <spa:Ordinate X="476749.21" Y="1313309.74" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="59" >
+            <spa:Ordinate X="476749.35" Y="1313310.09" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="60" >
+            <spa:Ordinate X="476749.54" Y="1313310.64" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="61" >
+            <spa:Ordinate X="476750.4" Y="1313310.19" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="62" >
+            <spa:Ordinate X="476753.37" Y="1313308.56" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="63" >
+            <spa:Ordinate X="476756.9" Y="1313308.04" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="64" >
+            <spa:Ordinate X="476757.67" Y="1313307.89" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="65" >
+            <spa:Ordinate X="476757.53" Y="1313307.33" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="66" >
+            <spa:Ordinate X="476757.41" Y="1313306.91" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="67" >
+            <spa:Ordinate X="476759.5" Y="1313306.24" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="68" >
+            <spa:Ordinate X="476759.61" Y="1313306.61" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="69" >
+            <spa:Ordinate X="476759.88" Y="1313307.64" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="70" >
+            <spa:Ordinate X="476760.63" Y="1313307.5" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="71" >
+            <spa:Ordinate X="476763.75" Y="1313307.04" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="72" >
+            <spa:Ordinate X="476764.17" Y="1313306.89" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="73" >
+            <spa:Ordinate X="476766.29" Y="1313312.82" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="74" >
+            <spa:Ordinate X="476769.35" Y="1313311.14" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="75" >
+            <spa:Ordinate X="476768.89" Y="1313309.77" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="76" >
+            <spa:Ordinate X="476772.39" Y="1313308.58" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="77" >
+            <spa:Ordinate X="476772.7" Y="1313309.32" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="78" >
+            <spa:Ordinate X="476775.89" Y="1313307.54" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="79" >
+            <spa:Ordinate X="476779.15" Y="1313307.07" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="80" >
+            <spa:Ordinate X="476778.94" Y="1313306.44" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="81" >
+            <spa:Ordinate X="476782.44" Y="1313305.25" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="82" >
+            <spa:Ordinate X="476782.9" Y="1313306.54" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+          <spa:SpelementUnit TypeUnit="Точка" SuNmb="1" >
+            <spa:Ordinate X="476786.54" Y="1313306.01" OrdNmb="1"
+            DeltaGeopoint="0.1"
+/>
+          </spa:SpelementUnit>
+        </spa:SpatialElement>
+      </EntitySpatial>
+      <Notes>Разрешение на ввод №26-309000-566-2016 от 17.07.2018 г.</Notes>
+      <Flats>
+        <Flat CadastralNumber="26:12:010516:535" >
+          <Area>73</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:644" >
+          <Area>40</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.110">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:643" >
+          <Area>66.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.109">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:642" >
+          <Area>66.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.108">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:641" >
+          <Area>40</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.107">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:640" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.106">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:639" >
+          <Area>65.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.105">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:638" >
+          <Area>66.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.104">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:684" >
+          <Area>87.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.150">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:536" >
+          <Area>40.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="2">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:537" >
+          <Area>40.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.3">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:538" >
+          <Area>67.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="4">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:539" >
+          <Area>71.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="5">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:540" >
+          <Area>40.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="6">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:551" >
+          <Area>70.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.17">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:550" >
+          <Area>67</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.16">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:549" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.15">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:683" >
+          <Area>91.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.149">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:682" >
+          <Area>42.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.148">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:681" >
+          <Area>88.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.147">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:680" >
+          <Area>91.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.146">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:679" >
+          <Area>42.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.145">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:678" >
+          <Area>87.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.144">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:677" >
+          <Area>92</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.143">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:676" >
+          <Area>42.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.142">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:548" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.14">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:547" >
+          <Area>70.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.13">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:546" >
+          <Area>67.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.12">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:545" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.11">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:544" >
+          <Area>40.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.10">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:543" >
+          <Area>71.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.9">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:542" >
+          <Area>67.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="8">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:541" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="7">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:675" >
+          <Area>87.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.141">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:674" >
+          <Area>91</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.140">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:673" >
+          <Area>42.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.139">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:672" >
+          <Area>87.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.138">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:671" >
+          <Area>91.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.137">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:670" >
+          <Area>42.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.136">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:669" >
+          <Area>87.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.135">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:668" >
+          <Area>90.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.134">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:568" >
+          <Area>40.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.34">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:567" >
+          <Area>71</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.33">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:566" >
+          <Area>67.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.32">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:565" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.31">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:564" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.30">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:563" >
+          <Area>70.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.29">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:562" >
+          <Area>66.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.28">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:561" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.27">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:667" >
+          <Area>42.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.133">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:666" >
+          <Area>86.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.132">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:665" >
+          <Area>87.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.131">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:664" >
+          <Area>42.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.130">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:663" >
+          <Area>86.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.129">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:699" >
+          <Area>87.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.165">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:698" >
+          <Area>91.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.164">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:697" >
+          <Area>42.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.163">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:560" >
+          <Area>40.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.26">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:559" >
+          <Area>70.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.25">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:558" >
+          <Area>67.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.24">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:557" >
+          <Area>40</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.23">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:556" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.22">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:555" >
+          <Area>70.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.21">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:554" >
+          <Area>66.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.20">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:553" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.19">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:696" >
+          <Area>87.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.162">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:695" >
+          <Area>91.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.161">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:694" >
+          <Area>42.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.160">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:693" >
+          <Area>87.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.159">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:692" >
+          <Area>91.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.158">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:691" >
+          <Area>42.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.157">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:690" >
+          <Area>87.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.156">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:689" >
+          <Area>91.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.155">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:552" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.18">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:587" >
+          <Area>71.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.53">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:586" >
+          <Area>68.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.52">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:585" >
+          <Area>41.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.51">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:584" >
+          <Area>40.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.50">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:583" >
+          <Area>70.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.49">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:582" >
+          <Area>67</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.48">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:581" >
+          <Area>41.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.47">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:688" >
+          <Area>42.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.154">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:687" >
+          <Area>87.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.153">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:686" >
+          <Area>91.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.152">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:685" >
+          <Area>42.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.151">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:710" >
+          <Area>92.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.176">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:709" >
+          <Area>42.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.175">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:708" >
+          <Area>88.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.174">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:707" >
+          <Area>93</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.173">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:580" >
+          <Area>40.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.46">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:579" >
+          <Area>70.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.45">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:578" >
+          <Area>67</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.44">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:577" >
+          <Area>41.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.43">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:576" >
+          <Area>40.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.42">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:575" >
+          <Area>70.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="кв.41">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:574" >
+          <Area>67</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.40">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:573" >
+          <Area>40.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.39">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:706" >
+          <Area>42.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.172">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:705" >
+          <Area>88.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.171">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:704" >
+          <Area>93</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.170">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:703" >
+          <Area>41.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.169">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:702" >
+          <Area>88.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.168">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:701" >
+          <Area>91.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.167">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:700" >
+          <Area>42</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.166">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:711" >
+          <Area>16.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="601">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:572" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.38">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:571" >
+          <Area>69.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.37">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:570" >
+          <Area>67.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.36">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:569" >
+          <Area>40.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.35">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:614" >
+          <Area>66.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.80">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:613" >
+          <Area>39.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.79">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:612" >
+          <Area>39.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.78">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:611" >
+          <Area>65.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="кв.77">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:743" >
+          <Area>4.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="813">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:742" >
+          <Area>4.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="812">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:741" >
+          <Area>4.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="811">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:740" >
+          <Area>16.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="810/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:739" >
+          <Area>16.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="810">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:738" >
+          <Area>17.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="809/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:737" >
+          <Area>17.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="809">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:736" >
+          <Area>14.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="808">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:610" >
+          <Area>66.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.76">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:609" >
+          <Area>39.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.75">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:608" >
+          <Area>39.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.74">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:607" >
+          <Area>66.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="кв.73">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:606" >
+          <Area>66.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.72">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:605" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.71">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:604" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.70">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:603" >
+          <Area>66.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="кв.69">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:735" >
+          <Area>3.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="807">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:734" >
+          <Area>16.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="806">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:733" >
+          <Area>8.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="805">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:732" >
+          <Area>10.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="804/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:731" >
+          <Area>4.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="804">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:730" >
+          <Area>14.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="803">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:729" >
+          <Area>16.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="801">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:728" >
+          <Area>17</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="710/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:602" >
+          <Area>66.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.68">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:601" >
+          <Area>39.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.67">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:600" >
+          <Area>39.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.66">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:599" >
+          <Area>66.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="кв.65">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:598" >
+          <Area>67.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.64">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:597" >
+          <Area>40.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.63">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:596" >
+          <Area>40.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.62">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:595" >
+          <Area>71.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.61">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:727" >
+          <Area>16.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="710">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:726" >
+          <Area>22.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="707, 708">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:725" >
+          <Area>15</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="706">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:724" >
+          <Area>23.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="703, 704">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:723" >
+          <Area>3.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="702/2">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:722" >
+          <Area>6.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="702/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:721" >
+          <Area>16.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="701">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:720" >
+          <Area>1.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="512">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:594" >
+          <Area>68</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.60">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:593" >
+          <Area>40.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.59">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:592" >
+          <Area>40.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.58">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:591" >
+          <Area>72</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.57">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:590" >
+          <Area>69</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.56">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:589" >
+          <Area>41.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.55">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:588" >
+          <Area>41.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.54">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:637" >
+          <Area>40</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.103">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:719" >
+          <Area>3.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="611/3">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:718" >
+          <Area>16.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="611/2">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:717" >
+          <Area>16.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="611/1">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:716" >
+          <Area>17.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="610">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:715" >
+          <Area>23.7</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="607, 608">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:714" >
+          <Area>16</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="606">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:713" >
+          <Area>16.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="605">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:712" >
+          <Area>23.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="603,604">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:636" >
+          <Area>40.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.102">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:635" >
+          <Area>65.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="кв.101">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:634" >
+          <Area>66.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.100">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:633" >
+          <Area>39.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.99">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:632" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.98">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:631" >
+          <Area>66</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="кв.97">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:630" >
+          <Area>66.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.96">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:629" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.95">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:746" >
+          <Area>850.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="01">
+                <Position NumberOnPlan="600, 602, 609">
+                </Position>
+              </Level>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="511, 513-515">
+                </Position>
+              </Level>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="521-524">
+                </Position>
+              </Level>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="531-534">
+                </Position>
+              </Level>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="541-544">
+                </Position>
+              </Level>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="551-554">
+                </Position>
+              </Level>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="561-564">
+                </Position>
+              </Level>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="571-574">
+                </Position>
+              </Level>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="581-584">
+                </Position>
+              </Level>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="591-594">
+                </Position>
+              </Level>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="5101-5104">
+                </Position>
+              </Level>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="5111-5114">
+                </Position>
+              </Level>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="5121-5124">
+                </Position>
+              </Level>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="5131-5134">
+                </Position>
+              </Level>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="5141-5144">
+                </Position>
+              </Level>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="5151-5154">
+                </Position>
+              </Level>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="5161-5164">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:628" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.94">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:627" >
+          <Area>66</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="кв.93">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:626" >
+          <Area>65.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.92">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:625" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.91">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:624" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.90">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:623" >
+          <Area>65.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="кв.89">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:622" >
+          <Area>66</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.88">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:621" >
+          <Area>39.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.87">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:745" >
+          <Area>871</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="01">
+                <Position NumberOnPlan="700, 700/1, 702, 705, 709">
+                </Position>
+              </Level>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="611-614">
+                </Position>
+              </Level>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="621-624">
+                </Position>
+              </Level>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="631-634">
+                </Position>
+              </Level>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="641-644">
+                </Position>
+              </Level>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="651-654">
+                </Position>
+              </Level>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="661-664">
+                </Position>
+              </Level>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="671-674">
+                </Position>
+              </Level>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="681-684">
+                </Position>
+              </Level>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="691-694">
+                </Position>
+              </Level>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="6101-6104">
+                </Position>
+              </Level>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="6111-6114">
+                </Position>
+              </Level>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="6121-6124">
+                </Position>
+              </Level>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="6131-6134">
+                </Position>
+              </Level>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="6141-6144">
+                </Position>
+              </Level>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="6151-6154">
+                </Position>
+              </Level>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="6161-6164">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:620" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.86">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:619" >
+          <Area>65.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="кв.85">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:618" >
+          <Area>66.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.84">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:617" >
+          <Area>39.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.83">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:616" >
+          <Area>39.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.82">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:615" >
+          <Area>66</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="кв.81">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:662" >
+          <Area>67.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.128">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:661" >
+          <Area>40</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.127">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:744" >
+          <Area>836.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="Подвал" Type="04">
+                <Position NumberOnPlan="800, 802">
+                </Position>
+              </Level>
+              <Level Number="1" Type="01">
+                <Position NumberOnPlan="711-714">
+                </Position>
+              </Level>
+              <Level Number="2" Type="01">
+                <Position NumberOnPlan="721-724">
+                </Position>
+              </Level>
+              <Level Number="3" Type="01">
+                <Position NumberOnPlan="731-734">
+                </Position>
+              </Level>
+              <Level Number="4" Type="01">
+                <Position NumberOnPlan="741-744">
+                </Position>
+              </Level>
+              <Level Number="5" Type="01">
+                <Position NumberOnPlan="751-754">
+                </Position>
+              </Level>
+              <Level Number="6" Type="01">
+                <Position NumberOnPlan="761-764">
+                </Position>
+              </Level>
+              <Level Number="7" Type="01">
+                <Position NumberOnPlan="771-774">
+                </Position>
+              </Level>
+              <Level Number="8" Type="01">
+                <Position NumberOnPlan="781-784">
+                </Position>
+              </Level>
+              <Level Number="9" Type="01">
+                <Position NumberOnPlan="791-794">
+                </Position>
+              </Level>
+              <Level Number="10" Type="01">
+                <Position NumberOnPlan="7101-7104">
+                </Position>
+              </Level>
+              <Level Number="11" Type="01">
+                <Position NumberOnPlan="7111-7114">
+                </Position>
+              </Level>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="7121-7124">
+                </Position>
+              </Level>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="7131-7134">
+                </Position>
+              </Level>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="7141-7144">
+                </Position>
+              </Level>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="7151-7154">
+                </Position>
+              </Level>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="7161-7164">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:660" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.126">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:659" >
+          <Area>66.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="16" Type="01">
+                <Position NumberOnPlan="кв.125">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:658" >
+          <Area>67.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.124">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:657" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.123">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:656" >
+          <Area>40.4</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.122">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:655" >
+          <Area>66.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="15" Type="01">
+                <Position NumberOnPlan="кв.121">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:654" >
+          <Area>67.5</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.120">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:653" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.119">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:652" >
+          <Area>40.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.118">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:651" >
+          <Area>66.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="14" Type="01">
+                <Position NumberOnPlan="кв.117">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:650" >
+          <Area>67.6</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.116">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:649" >
+          <Area>39.9</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.115">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:648" >
+          <Area>40.1</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.114">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:647" >
+          <Area>66.3</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="13" Type="01">
+                <Position NumberOnPlan="кв.113">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:646" >
+          <Area>66.2</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.112">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+        <Flat CadastralNumber="26:12:010516:645" >
+          <Area>39.8</Area>
+          <PositionInObject>
+            <Levels>
+              <Level Number="12" Type="01">
+                <Position NumberOnPlan="кв.111">
+                </Position>
+              </Level>
+            </Levels>
+          </PositionInObject>
+        </Flat>
+      </Flats>
+    </Building>
+  </Realty>
+  <CertificationDoc>
+    <cer:Organization>ФГИС ЕГРН</cer:Organization>
+    <cer:Date>2018-09-28</cer:Date>
+    <cer:Number>99/2018/190163877</cer:Number>
+  </CertificationDoc>
+  <Contractors>
+    <Contractor >
+      <FamilyName>Римша</FamilyName>
+      <FirstName>Олег</FirstName>
+      <Patronymic>Владимирович</Patronymic>
+      <NCertificate>26-11-115</NCertificate>
+      <Organization>
+        <Name>ООО &quot;ГЕОКОМПЛЕКС&quot;</Name>
+      </Organization>
+    </Contractor>
+  </Contractors>
+  <CoordSystems>
+    <spa:CoordSystem Name="МСК-26 от СК-95, зона 1" CsId="ID0" />
+  </CoordSystems>
+  <eDocument CodeType="112" Version="07" Scope="GKN">
+    <Sender Kod="00.0.4.195"
+    Name="ФГИС ЕГРН"
+    Region="99"
+    Date_Upload="2018-09-28"
+    Appointment="Государственный регистратор"
+/>
+    <Recipient Kod="00.0.4.111" Name="Римша Олег Владимирович" />
+  </eDocument>
+  <ReestrExtract>
+    <DeclarAttribute ID_KUVI="0"
+    ExtractTypeCode="012000"
+    ExtractTypeText="Выписка из Единого государственного реестра недвижимости об объекте недвижимости"
+    ExtractNumber="99/2018/190163877"
+    ExtractDate="28.09.2018"
+    RequeryNumber="80-56235036"
+    RequeryDate="28.09.2018"
+    ExtractCount="0"
+    NoticeCount="0"
+    RefuseCount="0"
+    Registrator="ФГИС ЕГРН">
+      <ReceivName>Римша Олег Владимирович</ReceivName>
+      <ReceivAdress>не указан</ReceivAdress>
+    </DeclarAttribute>
+    <ExtractObjectRight>
+      <HeadContent>
+        <ID_REC_KUVI>0</ID_REC_KUVI>
+        <Title>ФЕДЕРАЛЬНАЯ СЛУЖБА ГОСУДАРСТВЕННОЙ РЕГИСТРАЦИИ, КАДАСТРА И КАРТОГРАФИИ</Title>
+        <DeptName>ФГИС ЕГРН</DeptName>
+        <ExtractTitle>Выписка из Единого государственного реестра недвижимости об объекте недвижимости</ExtractTitle>
+        <Content>На основании запроса от 28.09.2018 г., поступившего на рассмотрение 28.09.2018 г., сообщаем, что согласно записям Единого государственного реестра недвижимости:</Content>
+      </HeadContent>
+      <InfoENK/>
+      <InfoPIK/>
+      <FootContent>
+        <Recipient>Римша Олег Владимирович</Recipient>
+        <ExtractDate>28.09.2018</ExtractDate>
+        <Content></Content>
+      </FootContent>
+    </ExtractObjectRight>
+  </ReestrExtract>
+</KVOKS>
