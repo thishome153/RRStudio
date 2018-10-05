@@ -1,16 +1,16 @@
 ﻿namespace GKNData
 {
-    partial class wzParcelfrm
+    partial class wzPoints
     {
         /// <summary>
-        /// Требуется переменная конструктора.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Освободить все используемые ресурсы.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,25 +20,24 @@
             base.Dispose(disposing);
         }
 
-        #region Код, автоматически созданный конструктором форм Windows
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// Обязательный метод для поддержки конструктора - не изменяйте
-        /// содержимое данного метода при помощи редактора кода.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "31.32.2045"),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "26/501/301/589-4586"),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml", System.Drawing.SystemColors.MenuHighlight, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)))),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "1975.03"),
-            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml"),
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
+            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "16384"),
+            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "85458"),
+            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "545856,231", System.Drawing.SystemColors.MenuHighlight, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)))),
+            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "1375894,456"),
+            new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "Quick brown fox jump over......"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "Админи Стра Тор"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "mySQL_user_1")}, -1);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzParcelfrm));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzPoints));
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
             "31,10,2016",
             "xml++",
             "Добавление",
@@ -46,7 +45,10 @@
             "192.168.0.1975",
             "Админи Стра Тор",
             "mySQL_user_1"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Item2");
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Item2");
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -69,11 +71,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
-            this.contextMenu_pkk5 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.снимокКартыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.listView_History = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -83,38 +80,62 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
+            this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
-            this.contextMenu_pkk5.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 401);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(800, 49);
+            this.panel1.TabIndex = 2;
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(416, 8);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(110, 37);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Отмена";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(298, 8);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(110, 37);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Ок";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.ImageList = this.imageList1;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(867, 564);
-            this.tabControl1.TabIndex = 0;
-            this.tabControl1.Enter += new System.EventHandler(this.tabControl1_Enter);
+            this.tabControl1.Size = new System.Drawing.Size(800, 401);
+            this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -125,11 +146,11 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(859, 529);
+            this.tabPage1.Size = new System.Drawing.Size(792, 375);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Сведения";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -144,7 +165,7 @@
             this.panel2.Controls.Add(this.toolStrip1);
             this.panel2.Location = new System.Drawing.Point(3, 99);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(854, 432);
+            this.panel2.Size = new System.Drawing.Size(787, 278);
             this.panel2.TabIndex = 9;
             // 
             // listView1
@@ -157,48 +178,51 @@
             this.columnHeader9,
             this.columnHeader12});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.HideSelection = false;
+            listViewItem7.StateImageIndex = 0;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem7});
             this.listView1.Location = new System.Drawing.Point(0, 23);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(852, 407);
+            this.listView1.Size = new System.Drawing.Size(785, 253);
             this.listView1.TabIndex = 10;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             // 
             // columnHeader10
             // 
-            this.columnHeader10.Text = "Дата";
+            this.columnHeader10.Text = "#";
             this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader10.Width = 100;
+            this.columnHeader10.Width = 75;
             // 
             // columnHeader8
             // 
             this.columnHeader8.Text = "Номер";
-            this.columnHeader8.Width = 150;
+            this.columnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader8.Width = 75;
             // 
             // columnHeader11
             // 
-            this.columnHeader11.Text = "Файл";
-            this.columnHeader11.Width = 150;
+            this.columnHeader11.Text = "x, м.";
+            this.columnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader11.Width = 120;
             // 
             // columnHeader9
             // 
-            this.columnHeader9.Text = "Размер";
-            this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader9.Text = "y, м.";
+            this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader9.Width = 120;
             // 
             // columnHeader12
             // 
-            this.columnHeader12.Text = "Номер запроса/комментарий";
-            this.columnHeader12.Width = 180;
+            this.columnHeader12.Text = "Описание";
+            this.columnHeader12.Width = 350;
             // 
             // toolStrip1
             // 
@@ -212,7 +236,7 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(852, 23);
+            this.toolStrip1.Size = new System.Drawing.Size(785, 23);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -238,7 +262,6 @@
             this.toolButton_SaveXML.Size = new System.Drawing.Size(23, 20);
             this.toolButton_SaveXML.Text = "toolStripButton1";
             this.toolButton_SaveXML.ToolTipText = "Сохранить файл";
-            this.toolButton_SaveXML.Click += new System.EventHandler(this.toolButton_SaveXML_Click);
             // 
             // toolButton_ReadXML
             // 
@@ -249,7 +272,6 @@
             this.toolButton_ReadXML.Size = new System.Drawing.Size(23, 20);
             this.toolButton_ReadXML.Text = "toolStripButton2";
             this.toolButton_ReadXML.ToolTipText = "Просмотр";
-            this.toolButton_ReadXML.Click += new System.EventHandler(this.toolButton_ReadXML_Click);
             // 
             // toolStripSeparator2
             // 
@@ -266,29 +288,26 @@
             this.toolButton_PropertyXML.Size = new System.Drawing.Size(23, 20);
             this.toolButton_PropertyXML.Text = "toolStripButton3";
             this.toolButton_PropertyXML.ToolTipText = "Свойства";
-            this.toolButton_PropertyXML.Click += new System.EventHandler(this.toolButton_PropertyXML_Click);
             // 
             // textBox_Block_Komment
             // 
             this.textBox_Block_Komment.Location = new System.Drawing.Point(185, 69);
             this.textBox_Block_Komment.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Block_Komment.Name = "textBox_Block_Komment";
-            this.textBox_Block_Komment.Size = new System.Drawing.Size(371, 23);
+            this.textBox_Block_Komment.Size = new System.Drawing.Size(371, 20);
             this.textBox_Block_Komment.TabIndex = 5;
             this.textBox_Block_Komment.Text = "*";
             this.textBox_Block_Komment.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox_Block_Komment.TextChanged += new System.EventHandler(this.textBox_Block_Komment_TextChanged);
             // 
             // textBox_BlockName
             // 
             this.textBox_BlockName.Location = new System.Drawing.Point(185, 40);
             this.textBox_BlockName.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_BlockName.Name = "textBox_BlockName";
-            this.textBox_BlockName.Size = new System.Drawing.Size(284, 23);
+            this.textBox_BlockName.Size = new System.Drawing.Size(284, 20);
             this.textBox_BlockName.TabIndex = 4;
             this.textBox_BlockName.Text = "*";
             this.textBox_BlockName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox_BlockName.TextChanged += new System.EventHandler(this.textBox_BlockName_TextChanged);
             // 
             // textBox_CN
             // 
@@ -300,7 +319,6 @@
             this.textBox_CN.TabIndex = 3;
             this.textBox_CN.Text = "*";
             this.textBox_CN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox_CN.TextChanged += new System.EventHandler(this.textBox_CN_TextChanged);
             // 
             // label3
             // 
@@ -308,7 +326,7 @@
             this.label3.Location = new System.Drawing.Point(8, 66);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 17);
+            this.label3.Size = new System.Drawing.Size(77, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Комментарий";
             // 
@@ -318,7 +336,7 @@
             this.label2.Location = new System.Drawing.Point(8, 37);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 17);
+            this.label2.Size = new System.Drawing.Size(83, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Наименование";
             // 
@@ -328,77 +346,22 @@
             this.label1.Location = new System.Drawing.Point(8, 8);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 17);
+            this.label1.Size = new System.Drawing.Size(110, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Кадастровый номер";
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.pkk5Viewer1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 31);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Size = new System.Drawing.Size(859, 529);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Он-лайн (запрос.....)";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
-            this.tabPage3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabPage3_MouseMove);
-            // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pkk5Viewer1.ContextMenuStrip = this.contextMenu_pkk5;
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
-            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
-            this.pkk5Viewer1.Margin = new System.Windows.Forms.Padding(4);
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
-            this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(851, 521);
-            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pkk5Viewer1.TabIndex = 7;
-            this.pkk5Viewer1.TabStop = false;
-            // 
-            // contextMenu_pkk5
-            // 
-            this.contextMenu_pkk5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сохранитьToolStripMenuItem});
-            this.contextMenu_pkk5.Name = "contextMenu_pkk5";
-            this.contextMenu_pkk5.Size = new System.Drawing.Size(133, 26);
-            // 
-            // сохранитьToolStripMenuItem
-            // 
-            this.сохранитьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.снимокКартыToolStripMenuItem});
-            this.сохранитьToolStripMenuItem.Image = global::GKNData.Properties.Resources.bullet_disk;
-            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            // 
-            // снимокКартыToolStripMenuItem
-            // 
-            this.снимокКартыToolStripMenuItem.Image = global::GKNData.Properties.Resources.pictures;
-            this.снимокКартыToolStripMenuItem.Name = "снимокКартыToolStripMenuItem";
-            this.снимокКартыToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.снимокКартыToolStripMenuItem.Text = "Снимок карты";
-            this.снимокКартыToolStripMenuItem.Click += new System.EventHandler(this.снимокКартыToolStripMenuItem_Click);
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.listView_History);
             this.tabPage2.ImageIndex = 0;
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(859, 529);
+            this.tabPage2.Size = new System.Drawing.Size(792, 375);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "История";
             this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Enter += new System.EventHandler(this.tabPage2_Enter);
             // 
             // listView_History
             // 
@@ -417,12 +380,12 @@
             this.listView_History.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView_History.HideSelection = false;
             this.listView_History.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2,
-            listViewItem3});
+            listViewItem8,
+            listViewItem9});
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
-            this.listView_History.Size = new System.Drawing.Size(851, 521);
+            this.listView_History.Size = new System.Drawing.Size(784, 367);
             this.listView_History.TabIndex = 0;
             this.listView_History.UseCompatibleStateImageBehavior = false;
             this.listView_History.View = System.Windows.Forms.View.Details;
@@ -462,77 +425,17 @@
             this.columnHeader7.Text = "MySQL пользователь";
             this.columnHeader7.Width = 105;
             // 
-            // imageList1
+            // wzPoints
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "history2.png");
-            this.imageList1.Images.SetKeyName(1, "User-Search02-WF.bmp");
-            this.imageList1.Images.SetKeyName(2, "Menu Interface-02-WF.png");
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 564);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(867, 49);
-            this.panel1.TabIndex = 1;
-            // 
-            // button2
-            // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(363, 6);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(110, 37);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(245, 6);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(110, 37);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Ок";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.DefaultExt = "*.xml";
-            this.saveFileDialog1.Filter = "xml|*.xml|Снимок карты|*.jpeg";
-            // 
-            // backgroundWorker_History
-            // 
-            this.backgroundWorker_History.WorkerSupportsCancellation = true;
-            this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
-            this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
-            // 
-            // wzParcelfrm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(867, 613);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(719, 436);
-            this.Name = "wzParcelfrm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Редактор. Земельный участок";
-            this.Shown += new System.EventHandler(this.wzParcelfrm_Shown);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "wzPoints";
+            this.Text = "Тoчки";
+            this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -540,28 +443,39 @@
             this.panel2.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
-            this.contextMenu_pkk5.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        //private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolButton_SaveXML;
+        private System.Windows.Forms.ToolStripButton toolButton_ReadXML;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolButton_PropertyXML;
+        private System.Windows.Forms.TextBox textBox_Block_Komment;
+        private System.Windows.Forms.TextBox textBox_BlockName;
+        private System.Windows.Forms.TextBox textBox_CN;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listView_History;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
@@ -570,30 +484,5 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.TextBox textBox_CN;
-        private System.Windows.Forms.TextBox textBox_Block_Komment;
-        private System.Windows.Forms.TextBox textBox_BlockName;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolButton_SaveXML;
-        private System.Windows.Forms.ToolStripButton toolButton_ReadXML;
-        private System.Windows.Forms.ToolStripButton toolButton_PropertyXML;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.ContextMenuStrip contextMenu_pkk5;
-        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem снимокКартыToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
-
-        private System.ComponentModel.BackgroundWorker backgroundWorker_History;
-        private RRTypes.pkk5.pkk5Viewer pkk5Viewer1;
-        private System.Windows.Forms.ImageList imageList1;
     }
 }

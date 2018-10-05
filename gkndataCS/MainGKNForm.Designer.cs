@@ -378,6 +378,7 @@ namespace GKNData
             this.Button_Import.Name = "Button_Import";
             this.Button_Import.Size = new System.Drawing.Size(23, 22);
             this.Button_Import.Text = "toolStripButton1";
+            this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
             this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
             // 
             // panel1

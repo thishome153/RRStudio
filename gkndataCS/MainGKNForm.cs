@@ -497,6 +497,8 @@ namespace GKNData
             PrepareNode(e.Node, (TMyCadastralBlock)e.Node.Tag);
         }
 
+
+
         private void OpenXML(string FileName)
         {
             System.IO.TextReader reader = new System.IO.StreamReader(FileName);
@@ -506,8 +508,9 @@ namespace GKNData
             XMLReaderCS.KVZU_Form MyReader = new XMLReaderCS.KVZU_Form();
             MyReader.Read(xml);
             MyReader.ShowDialog();
-
         }
+
+
 
         public  bool SelectDistrict(TAppCfgRecord CfgRec)
         {
@@ -732,6 +735,11 @@ namespace GKNData
         {
             if (CF.Cfg.CurrentItem.Item_TypeName == CF.Cfg.CurrentItem.TypeName_Parcel)
                 Edit(CF.Cfg.CurrentItem);
+        }
+
+        private void Button_Import_CheckStateChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

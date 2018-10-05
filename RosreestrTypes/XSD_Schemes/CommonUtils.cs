@@ -2918,7 +2918,22 @@ namespace RRTypes.CommonParsers
                                      KPT10.CertificationDoc.Official.Patronymic;
             }
             return res;
-            //ListMyCoolections(this.MyBlocks, this.MifPolygons);
+        }
+
+        #endregion
+
+        #region  Разбор КПТ 11
+        public netFteo.XML.FileInfo ParseKPT11(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+        {
+            netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+            res.CommentsType = "-";
+            res.DocType = "Кадастровый план территории";
+            res.DocTypeNick = "КПТ";
+            res.Version = "11";
+            //TODO : нужен КПТ 
+
+
+            return res;
         }
         #endregion
 
