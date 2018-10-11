@@ -704,6 +704,7 @@
             this.TV_Parcels.TabIndex = 2;
             this.TV_Parcels.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TV_Parcels_AfterSelect);
             this.TV_Parcels.Click += new System.EventHandler(this.TV_Parcels_Click_1);
+            this.TV_Parcels.DoubleClick += new System.EventHandler(this.TV_Parcels_DoubleClick);
             this.TV_Parcels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TV_Parcels_KeyDown);
             this.TV_Parcels.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TV_Parcels_KeyUp_1);
             // 

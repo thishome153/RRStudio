@@ -687,6 +687,7 @@ SCAN:
             for (int i = 0; i <= Points.Count - 1; i++)
                 this.AddPoint(Points[i]);
         }
+
         public void AppendPoints(PointList src)
         {
             if (src != null)
@@ -1567,6 +1568,13 @@ SCAN:
         public TMyOutLayer AddChild()
         {
             this.Childs.Add(new TMyOutLayer());
+            this.Childs[this.Childs.Count - 1].Layer_id = Gen_id.newId;
+            return this.Childs[this.Childs.Count - 1];
+        }
+
+        public TMyOutLayer AddChild(TMyOutLayer child)
+        {
+            this.Childs.Add(child);
             this.Childs[this.Childs.Count - 1].Layer_id = Gen_id.newId;
             return this.Childs[this.Childs.Count - 1];
         }
@@ -2556,8 +2564,7 @@ SCAN:
 
     public class TFlats : List<TFlat>
     {
-        public int Count
-        { get { return this.Count(); } }
+
         public decimal TotalArea
         {
             get
@@ -2734,7 +2741,7 @@ SCAN:
             set { this.fObjectType = value; }
             get { return this.fObjectType; }
         }
-        public Rosreestr.TAddress Address;
+       // public Rosreestr.TAddress Address;
         public TMyRealty()
         {
             this.id = Gen_id.newId;

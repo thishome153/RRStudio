@@ -533,7 +533,7 @@ namespace XMLReaderCS
             linkLabel_FileName.Text = Path.GetFileName(FileName);
             toolStripStatusLabel1.Text = Path.GetFileName(FileName);
             label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
-
+            // got mif file:
             if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
@@ -559,10 +559,40 @@ namespace XMLReaderCS
                 this.DocInfo.Comments = mifreader.Body;
                 this.DocInfo.Encoding = mifreader.BodyEncoding;
                 this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
-                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
               }
 
-            if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
+            // got AutoCad Drawing Exchange Format -  dxf file:
+            if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
+            {
+
+                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+                TPolygonCollection polyfromMIF = mifreader.ImportDXF(openFileDialog1.FileName);
+
+                // Virtual Parcel with contours:
+                if (polyfromMIF != null)
+                {
+                    TMyCadastralBlock Bl = new TMyCadastralBlock();
+                    Bl.CN = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel("Полигоны DXF", "Item05"));
+                    if (polyfromMIF.Count == 1)
+                    {
+                        MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
+                        MainObj.EntitySpatial = polyfromMIF[0];
+                    }
+                    else
+                        MainObj.Contours.AddPolygons(polyfromMIF);
+
+                    this.DocInfo.MyBlocks.Blocks.Clear();
+                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                    this.DocInfo.DocTypeNick = "dxf";
+                    this.DocInfo.CommentsType = "DXF";
+                    this.DocInfo.Comments = mifreader.Body;
+                    this.DocInfo.Encoding = mifreader.BodyEncoding;
+                    this.DocInfo.Number = "dxf,  " + mifreader.BodyEncoding;
+                }
+            }
+
+                if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
                 TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(openFileDialog1.FileName);
@@ -591,7 +621,6 @@ namespace XMLReaderCS
                 this.DocInfo.Comments = mifreader.Body;
                 this.DocInfo.Encoding = mifreader.BodyEncoding;
                 this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
-                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             }
 
 
@@ -647,6 +676,7 @@ namespace XMLReaderCS
                         textBox_FIO.Text += "\n ЭЦП= " + sig;
 
             }
+            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             ListFileInfo(DocInfo);
         }
 
@@ -5787,6 +5817,16 @@ namespace XMLReaderCS
 #endif
             this.TextDefault = this.Text;
             ClearFiles();
+        }
+
+
+
+        private void TV_Parcels_DoubleClick(object sender, EventArgs e)
+        {
+            if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
+            {
+                Toggle_Visualizer();
+            }
         }
     }
 }

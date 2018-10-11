@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>\\10.66.77.4\Obmen\ПО\Fixosoft\nCAD\release\</OutputPath>
+    <OutputPath>\\10.66.77.4\Obmen\SOFT\Fixosoft\nCAD\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -82,6 +82,12 @@
       <Link>RRCommon.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\netDxf\netDxf35\netDxf35.csproj">
+      <Project>{2cec863f-9201-45bd-ba04-6f3df9cf3ef5}</Project>
+      <Name>netDxf35</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
