@@ -3047,6 +3047,7 @@ namespace RRTypes.CommonParsers
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "ЕГРН";
             CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            Parse_Contractors(xmldoc, res);
             return res;
         }
         #endregion

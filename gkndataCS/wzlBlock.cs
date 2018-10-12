@@ -218,6 +218,8 @@ namespace GKNData
                 frmReader.Read(ITEM.KPTXmlBodyList.GetBody((int)listView1.SelectedItems[0].Tag));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
+
+
             }
         }
 
