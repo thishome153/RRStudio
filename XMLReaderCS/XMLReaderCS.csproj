@@ -132,19 +132,8 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.CAdESCOM">
-      <HintPath>..\..\cades\NET\Interop.CAdESCOM.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Interop.CAPICOM">
-      <HintPath>..\..\cades\NET\Interop.CAPICOM.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\DotNetZipLib\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
-    </Reference>
-    <Reference Include="netDxf">
-      <HintPath>..\..\netDxf\netDxf\bin\Release\netDxf.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -543,16 +532,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\netFteo\netFteo.csproj">
-      <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
-      <Name>netFteo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RosreestrTypes\RRTypes.csproj">
-      <Project>{96DE829D-FEF9-41AF-A9E6-3BE517088B64}</Project>
-      <Name>RRTypes</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\InspectionAct\" />
   </ItemGroup>
   <ItemGroup>
@@ -563,6 +542,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\netFteo\netFteo.csproj">
+      <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
+      <Name>netFteo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RosreestrTypes\RRTypes.csproj">
+      <Project>{96de829d-fef9-41af-a9e6-3be517088b64}</Project>
+      <Name>RRTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

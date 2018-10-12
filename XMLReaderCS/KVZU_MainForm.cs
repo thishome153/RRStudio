@@ -290,8 +290,8 @@ namespace XMLReaderCS
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseKVZU07(this.DocInfo, xmldoc);
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+              //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+             //   ListFileInfo(DocInfo);
             }
 
             if (DocInfo.DocRootName == "KPZU")
@@ -310,8 +310,8 @@ namespace XMLReaderCS
                 {
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKPZU(this.DocInfo, xmldoc);
-                    ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                    ListFileInfo(DocInfo);
+                  //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+                 //   ListFileInfo(DocInfo);
                 }
             }
             
@@ -320,8 +320,8 @@ namespace XMLReaderCS
             {
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseEGRP(this.DocInfo, xmldoc);
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+              //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+               // ListFileInfo(DocInfo);
             }
 
 
@@ -352,7 +352,7 @@ namespace XMLReaderCS
                 {
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKVOKS07(this.DocInfo, xmldoc);
-                    ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+                  //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
                 }
             }
 
@@ -377,7 +377,7 @@ namespace XMLReaderCS
                     */
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKPOKS(this.DocInfo, xmldoc);
-                    ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+                 //   ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
                 }
             }
             //Не КПТ v08 ли это?            
@@ -386,7 +386,7 @@ namespace XMLReaderCS
             {
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+             //   ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
 
             }
             
@@ -397,7 +397,7 @@ namespace XMLReaderCS
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseKPT09(this.DocInfo, xmldoc);
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+             //   ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
 
             }
             //Не КПТ v10 ли это?
@@ -408,7 +408,7 @@ namespace XMLReaderCS
                 // calling from RRtypes (parser from XMLDOCUMENT without WinForms referencies)
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo =  parser.ParseKPT10(this.DocInfo, xmldoc);
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+              //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
 
             }
 
@@ -489,7 +489,7 @@ namespace XMLReaderCS
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
 
-                ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+               // ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
 
             }
 
@@ -510,7 +510,7 @@ namespace XMLReaderCS
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
-               ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+              // ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
             }
 
         }
@@ -565,7 +565,7 @@ namespace XMLReaderCS
             if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
             {
 
-                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+                netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader();
                 TPolygonCollection polyfromMIF = mifreader.ImportDXF(openFileDialog1.FileName);
 
                 // Virtual Parcel with contours:

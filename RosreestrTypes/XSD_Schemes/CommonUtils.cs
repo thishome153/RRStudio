@@ -3073,23 +3073,7 @@ namespace RRTypes.CommonParsers
                 res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
-            /*
-            for (int i = 0; i <= kv.Contractors.Count - 1; i++)
-            {
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
-                LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
-                LVi.SubItems.Add(kv.Contractors[i].NCertificate);
-
-                if (kv.Contractors[i].Organization != null)
-                    LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
-                else LVi.SubItems.Add("-");
-
-
-                listView_Contractors.Items.Add(LVi);
-
-            }
-            */
+      
             TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
 
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
@@ -3198,6 +3182,25 @@ namespace RRTypes.CommonParsers
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
             CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            Parse_Contractors(xmldoc, res);
+            /*
+      for (int i = 0; i <= kv.Contractors.Count - 1; i++)
+      {
+          ListViewItem LVi = new ListViewItem();
+          LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
+          LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
+          LVi.SubItems.Add(kv.Contractors[i].NCertificate);
+
+          if (kv.Contractors[i].Organization != null)
+              LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
+          else LVi.SubItems.Add("-");
+
+
+          listView_Contractors.Items.Add(LVi);
+
+      }
+      */
+
             return res;
         }
         #endregion

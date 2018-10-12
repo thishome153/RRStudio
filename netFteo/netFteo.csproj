@@ -100,18 +100,10 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CPCryptoNet">
-      <HintPath>..\..\..\Rosreestr.etc\Технокад\Lib\CPCryptoNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.CAdESCOM">
-      <HintPath>..\..\cades\NET\Interop.CAdESCOM.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Interop.CAPICOM">
-      <HintPath>..\..\cades\NET\Interop.CAPICOM.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -128,9 +120,163 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DXF\AciColor.cs" />
+    <Compile Include="DXF\BinaryCodeValueReader.cs" />
+    <Compile Include="DXF\BinaryCodeValueWriter.cs" />
+    <Compile Include="DXF\Blocks\Block.cs" />
+    <Compile Include="DXF\Blocks\BlockEnd.cs" />
+    <Compile Include="DXF\Blocks\BlockRecord.cs" />
+    <Compile Include="DXF\Blocks\BlockTypeFlags.cs" />
+    <Compile Include="DXF\BoundingRectangle.cs" />
+    <Compile Include="DXF\Collections\ApplicationRegistries.cs" />
+    <Compile Include="DXF\Collections\AttributeDefinitionDictionary.cs" />
+    <Compile Include="DXF\Collections\AttributeDictionary.cs" />
+    <Compile Include="DXF\Collections\BlockRecords.cs" />
+    <Compile Include="DXF\Collections\DimensionStyles.cs" />
+    <Compile Include="DXF\Collections\EntityCollection.cs" />
+    <Compile Include="DXF\Collections\EntityCollectionEventArgs.cs" />
+    <Compile Include="DXF\Collections\Groups.cs" />
+    <Compile Include="DXF\Collections\ImageDefinitions.cs" />
+    <Compile Include="DXF\Collections\Layers.cs" />
+    <Compile Include="DXF\Collections\Layouts.cs" />
+    <Compile Include="DXF\Collections\LineTypes.cs" />
+    <Compile Include="DXF\Collections\MLineStyles.cs" />
+    <Compile Include="DXF\Collections\ObservableCollectionBase.cs" />
+    <Compile Include="DXF\Collections\ObservableDictionaryBase.cs" />
+    <Compile Include="DXF\Collections\TableObjects.cs" />
+    <Compile Include="DXF\Collections\TextStyles.cs" />
+    <Compile Include="DXF\Collections\UCSs.cs" />
+    <Compile Include="DXF\Collections\Views.cs" />
+    <Compile Include="DXF\Collections\Vports.cs" />
+    <Compile Include="DXF\DrawingTime.cs" />
+    <Compile Include="DXF\DrawingUnits.cs" />
+    <Compile Include="DXF\DxfDocument.cs" />
+    <Compile Include="DXF\DxfException.cs" />
+    <Compile Include="DXF\DxfObject.cs" />
+    <Compile Include="DXF\DxfObjectCode.cs" />
+    <Compile Include="DXF\DxfReader.cs" />
+    <Compile Include="DXF\DxfWriter.cs" />
+    <Compile Include="DXF\EncodingType.cs" />
+    <Compile Include="DXF\Entities\AlignedDimension.cs" />
+    <Compile Include="DXF\Entities\Angular2LineDimension.cs" />
+    <Compile Include="DXF\Entities\Angular3PointDimension.cs" />
+    <Compile Include="DXF\Entities\Arc.cs" />
+    <Compile Include="DXF\Entities\Attribute.cs" />
+    <Compile Include="DXF\Entities\AttributeDefinition.cs" />
+    <Compile Include="DXF\Entities\AttributeFlags.cs" />
+    <Compile Include="DXF\Entities\Circle.cs" />
+    <Compile Include="DXF\Entities\DiametricDimension.cs" />
+    <Compile Include="DXF\Entities\Dimension.cs" />
+    <Compile Include="DXF\Entities\DimensionType.cs" />
+    <Compile Include="DXF\Entities\Ellipse.cs" />
+    <Compile Include="DXF\Entities\EndSequence.cs" />
+    <Compile Include="DXF\Entities\EntityObject.cs" />
+    <Compile Include="DXF\Entities\EntityType.cs" />
+    <Compile Include="DXF\Entities\Face3d.cs" />
+    <Compile Include="DXF\Entities\Face3dEdgeFlags.cs" />
+    <Compile Include="DXF\Entities\Hatch.cs" />
+    <Compile Include="DXF\Entities\HatchBoundaryPath.cs" />
+    <Compile Include="DXF\Entities\HatchBoundaryPathTypeFlag.cs" />
+    <Compile Include="DXF\Entities\HatchFillType.cs" />
+    <Compile Include="DXF\Entities\HatchGradientPattern.cs" />
+    <Compile Include="DXF\Entities\HatchGradientPatternType.cs" />
+    <Compile Include="DXF\Entities\HatchPattern.cs" />
+    <Compile Include="DXF\Entities\HatchPatternLineDefinition.cs" />
+    <Compile Include="DXF\Entities\HatchStyle.cs" />
+    <Compile Include="DXF\Entities\HatchType.cs" />
+    <Compile Include="DXF\Entities\Image.cs" />
+    <Compile Include="DXF\Entities\ImageClippingBoundary.cs" />
+    <Compile Include="DXF\Entities\ImageDisplayFlags.cs" />
+    <Compile Include="DXF\Entities\Insert.cs" />
+    <Compile Include="DXF\Entities\Line.cs" />
+    <Compile Include="DXF\Entities\LinearDimension.cs" />
+    <Compile Include="DXF\Entities\LwPolyline.cs" />
+    <Compile Include="DXF\Entities\LwPolylineVertex.cs" />
+    <Compile Include="DXF\Entities\Mesh.cs" />
+    <Compile Include="DXF\Entities\MeshEdge.cs" />
+    <Compile Include="DXF\Entities\MLine.cs" />
+    <Compile Include="DXF\Entities\MLineFlags.cs" />
+    <Compile Include="DXF\Entities\MLineJustification.cs" />
+    <Compile Include="DXF\Entities\MLineVertex.cs" />
+    <Compile Include="DXF\Entities\MText.cs" />
+    <Compile Include="DXF\Entities\MTextAttachmentPoint.cs" />
+    <Compile Include="DXF\Entities\MTextFormattingOptions.cs" />
+    <Compile Include="DXF\Entities\MTextLineSpacingStyle.cs" />
+    <Compile Include="DXF\Entities\OrdinateDimension.cs" />
+    <Compile Include="DXF\Entities\OrdinateDimensionAxis.cs" />
+    <Compile Include="DXF\Entities\Point.cs" />
+    <Compile Include="DXF\Entities\PolyfaceMesh.cs" />
+    <Compile Include="DXF\Entities\PolyfaceMeshFace.cs" />
+    <Compile Include="DXF\Entities\PolyfaceMeshVertex.cs" />
+    <Compile Include="DXF\Entities\Polyline.cs" />
+    <Compile Include="DXF\Entities\PolylineSmoothType.cs" />
+    <Compile Include="DXF\Entities\PolylineTypeFlags.cs" />
+    <Compile Include="DXF\Entities\PolylineVertex.cs" />
+    <Compile Include="DXF\Entities\RadialDimension.cs" />
+    <Compile Include="DXF\Entities\Ray.cs" />
+    <Compile Include="DXF\Entities\Solid.cs" />
+    <Compile Include="DXF\Entities\Spline.cs" />
+    <Compile Include="DXF\Entities\SplineTypeFlags.cs" />
+    <Compile Include="DXF\Entities\SplineVertex.cs" />
+    <Compile Include="DXF\Entities\Text.cs" />
+    <Compile Include="DXF\Entities\TextAligment.cs" />
+    <Compile Include="DXF\Entities\Vertex.cs" />
+    <Compile Include="DXF\Entities\VertexTypeFlags.cs" />
+    <Compile Include="DXF\Entities\Viewport.cs" />
+    <Compile Include="DXF\Entities\ViewportStatusFlags.cs" />
+    <Compile Include="DXF\Entities\XLine.cs" />
+    <Compile Include="DXF\Header\AttMode.cs" />
+    <Compile Include="DXF\Header\DxfVersion.cs" />
+    <Compile Include="DXF\Header\HeaderVariable.cs" />
+    <Compile Include="DXF\Header\HeaderVariableCode.cs" />
+    <Compile Include="DXF\Header\HeaderVariables.cs" />
+    <Compile Include="DXF\Header\PointShape.cs" />
+    <Compile Include="DXF\ICodeValueReader.cs" />
+    <Compile Include="DXF\ICodeValueWriter.cs" />
+    <Compile Include="DXF\Lineweight.cs" />
+    <Compile Include="DXF\MathHelper.cs" />
+    <Compile Include="DXF\Matrix3.cs" />
+    <Compile Include="DXF\Objects\DictionaryClonningFlag.cs" />
+    <Compile Include="DXF\Objects\DictionaryObject.cs" />
+    <Compile Include="DXF\Objects\Group.cs" />
+    <Compile Include="DXF\Objects\ImageDef.cs" />
+    <Compile Include="DXF\Objects\ImageDefReactor.cs" />
+    <Compile Include="DXF\Objects\ImageDisplayQuality.cs" />
+    <Compile Include="DXF\Objects\Layout.cs" />
+    <Compile Include="DXF\Objects\MLineStyle.cs" />
+    <Compile Include="DXF\Objects\MLineStyleElement.cs" />
+    <Compile Include="DXF\Objects\MLineStyleFlags.cs" />
+    <Compile Include="DXF\Objects\PlotFlags.cs" />
+    <Compile Include="DXF\Objects\PlotPaperUnits.cs" />
+    <Compile Include="DXF\Objects\PlotRotation.cs" />
+    <Compile Include="DXF\Objects\PlotSettings.cs" />
+    <Compile Include="DXF\Objects\RasterVariables.cs" />
+    <Compile Include="DXF\Objects\SupportedImageFormats.cs" />
+    <Compile Include="DXF\StringCode.cs" />
+    <Compile Include="DXF\StringEnum.cs" />
+    <Compile Include="DXF\SubclassMarker.cs" />
+    <Compile Include="DXF\Symbols.cs" />
+    <Compile Include="DXF\Tables\ApplicationRegistry.cs" />
+    <Compile Include="DXF\Tables\DimensionStyle.cs" />
+    <Compile Include="DXF\Tables\Layer.cs" />
+    <Compile Include="DXF\Tables\LayerFlags.cs" />
+    <Compile Include="DXF\Tables\LineType.cs" />
+    <Compile Include="DXF\Tables\TableObject.cs" />
+    <Compile Include="DXF\Tables\TextStyle.cs" />
+    <Compile Include="DXF\Tables\UCS.cs" />
+    <Compile Include="DXF\Tables\View.cs" />
+    <Compile Include="DXF\Tables\VPort.cs" />
+    <Compile Include="DXF\TextCodeValueReader.cs" />
+    <Compile Include="DXF\TextCodeValueWriter.cs" />
+    <Compile Include="DXF\Transparency.cs" />
+    <Compile Include="DXF\Vector2.cs" />
+    <Compile Include="DXF\Vector3.cs" />
+    <Compile Include="DXF\XData.cs" />
+    <Compile Include="DXF\XDataCode.cs" />
+    <Compile Include="DXF\XDataRecord.cs" />
     <Compile Include="netFteoCadwork.cs" />
     <Compile Include="netFteoIO.cs" />
-    <Compile Include="netFteoMifReader.cs" />
+    <Compile Include="netFteoDXF.cs" />
     <Compile Include="netFteoBaseClasses.cs" />
     <Compile Include="netFteoGeodethics.cs" />
     <Compile Include="NetFteoNikonRaw.cs" />
@@ -171,12 +317,7 @@
       <DependentUpon>Points.xsd</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\netDxf\netDxf\netDxf.csproj">
-      <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
-      <Name>netDxf</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

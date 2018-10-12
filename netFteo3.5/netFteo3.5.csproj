@@ -57,23 +57,11 @@
     <Compile Include="..\netFteo\netFteoBaseClasses.cs">
       <Link>netFteoBaseClasses.cs</Link>
     </Compile>
-    <Compile Include="..\netFteo\netFteoCadwork.cs">
-      <Link>netFteoCadwork.cs</Link>
-    </Compile>
     <Compile Include="..\netFteo\netFteoGeodethics.cs">
       <Link>netFteoGeodethics.cs</Link>
     </Compile>
     <Compile Include="..\netFteo\netFteoIO.cs">
       <Link>netFteoIO.cs</Link>
-    </Compile>
-    <Compile Include="..\netFteo\netFteoMifReader.cs">
-      <Link>netFteoMifReader.cs</Link>
-    </Compile>
-    <Compile Include="..\netFteo\NetFteoNikonRaw.cs">
-      <Link>NetFteoNikonRaw.cs</Link>
-    </Compile>
-    <Compile Include="..\netFteo\netFteoTraverse.cs">
-      <Link>netFteoTraverse.cs</Link>
     </Compile>
     <Compile Include="..\netFteo\netFteoUtils.cs">
       <Link>netFteoUtils.cs</Link>
@@ -82,12 +70,6 @@
       <Link>RRCommon.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\netDxf\netDxf35\netDxf35.csproj">
-      <Project>{2cec863f-9201-45bd-ba04-6f3df9cf3ef5}</Project>
-      <Name>netDxf35</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
