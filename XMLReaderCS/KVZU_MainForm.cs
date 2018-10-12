@@ -284,10 +284,8 @@ namespace XMLReaderCS
             {
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 tabPage1.Text = "Кадастровая выписка 6";
-                XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvzu.KVZU));
-                KV06 = (RRTypes.kvzu.KVZU)serializer.Deserialize(stream);
-                //reader.Close();
-                ParseKVZU(KV06);
+                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                this.DocInfo = parser.ParseKVZU06(this.DocInfo, xmldoc);
             }
 
 
@@ -1141,145 +1139,7 @@ namespace XMLReaderCS
 
         #endregion
 
-        #region разбор КВ KVZU_06
-        /*-----------------------------------------------------------------------------------------------------------*/
-        private void ParseKVZU(RRTypes.kvzu.KVZU kv)
-        {
 
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
-            label_DocType.Text = "Кадастровая выписка";
-            tabPage1.Text = "Земельные участки";
-            textBox_DocNum.Text = kv.CertificationDoc.Number;
-            textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
-            if (kv.CertificationDoc.Official != null)
-            {
-                textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
-                textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
-            }
-
-            textBox_OrgName.Text = kv.CertificationDoc.Organization;
-
-
-            for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
-            {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
-
-            }
-
-            for (int i = 0; i <= kv.Contractors.Count - 1; i++)
-            {
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
-                LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
-                LVi.SubItems.Add(kv.Contractors[i].NCertificate);
-
-                if (kv.Contractors[i].Organization != null)
-                    LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
-                else LVi.SubItems.Add("-");
-
-
-                listView_Contractors.Items.Add(LVi);
-
-            }
-
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
-            MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
-            //MainObj.SpecialNote = kv.Parcels.Parcel.SpecialNote;
-            MainObj.Utilization.UtilbyDoc = kv.Parcels.Parcel.Utilization.ByDoc;
-            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
-            MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kv.Parcels.Parcel.Location);
-            MainObj.Rights = KVZU_v06Utils.KVZURightstoFteorights(kv.Parcels.Parcel.Rights);
-            MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
-            MainObj.AreaGKN = kv.Parcels.Parcel.Area.Area;
-            MainObj.State = kv.Parcels.Parcel.State.ToString();
-            MainObj.DateCreated = kv.Parcels.Parcel.DateCreated.ToString("dd.MM.yyyy");
-
-            Bl.CN = kv.Parcels.Parcel.CadastralBlock;
-
-                //Землепользование
-            if (kv.Parcels.Parcel.EntitySpatial != null)
-                if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
-                {
-                    MainObj.EntitySpatial = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
-                                                           kv.Parcels.Parcel.EntitySpatial);
-                    MainObj.EntitySpatial.Parent_Id = MainObj.id;
-                    this.DocInfo.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
-                                                           kv.Parcels.Parcel.EntitySpatial));
-                }
-            //Многоконтурный
-            if (kv.Parcels.Parcel.Contours != null)
-            {
-             //   if (MainObj.Contours == null) MainObj.Contours = new TPolygonCollection(MainObj.id);
-                for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
-                {
-                    this.DocInfo.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
-                                                                                 kv.Parcels.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
-                                                                                                            kv.Parcels.Parcel.Contours[ic].EntitySpatial));
-                    NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
-                }
-            }
-            //ЕЗП:
-            if (kv.Parcels.Parcel.CompositionEZ.Count > 0)
-            {
-                for (int i = 0; i <= kv.Parcels.Parcel.CompositionEZ.Count - 1; i++)
-                // if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
-                {
-                   MainObj.CompozitionEZ.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
-                                                                                    kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
-                    MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
-                    MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
-
-                    this.DocInfo.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
-                                                           kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
-
-                }
-            }
-            //Части 
-            if (kv.Parcels.Parcel.SubParcels.Count > 0)
-            {
-                for (int i = 0; i <= kv.Parcels.Parcel.SubParcels.Count - 1; i++)
-                {
-                    TmySlot Sl = MainObj.AddSubParcel(kv.Parcels.Parcel.SubParcels[i].NumberRecord);
-                    Sl.AreaGKN = kv.Parcels.Parcel.SubParcels[i].Area.Area.ToString();
-                    if (kv.Parcels.Parcel.SubParcels[i].Encumbrance != null)
-                        Sl.Encumbrance = RRTypes.KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance);
-                    if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
-                    {
-                        TMyPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
-                        Sl.EntSpat.ImportPolygon(SlEs);
-                        this.DocInfo.MifPolygons.Add(SlEs);
-                    }
-
-                }
-            }
-            // Кадастровые номера всех земельных участков, образованных из данного земельного участка
-            if (kv.Parcels.Parcel.AllOffspringParcel != null)
-                foreach (string s in kv.Parcels.Parcel.AllOffspringParcel)
-                   MainObj.AllOffspringParcel.Add(s);
-            if (kv.Parcels.Parcel.InnerCadastralNumbers != null)
-              foreach (string s in kv.Parcels.Parcel.InnerCadastralNumbers)
-                   MainObj.InnerCadastralNumbers.Add(s);
-            if (kv.Parcels.Parcel.PrevCadastralNumbers != null)
-              foreach (string s in kv.Parcels.Parcel.PrevCadastralNumbers)
-                MainObj.PrevCadastralNumbers.Add(s);
-
-            // Сведения об образованных из данного земельного участка
-            if (kv.Parcels.OffspringParcel != null)
-                for (int i = 0; i <= kv.Parcels.OffspringParcel.Count() - 1; i++)
-                {
-                    TMyParcel OffObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
-                    OffObj.State = "Item05";
-                    OffObj.EntitySpatial = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.OffspringParcel[i].CadastralNumber,
-                                                                                  kv.Parcels.OffspringParcel[i].EntitySpatial);
-                }
-
-
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-        }
-
-        #endregion
 
  
 
