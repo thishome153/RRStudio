@@ -172,7 +172,7 @@ namespace XMLReaderCS
                 RRTypes.SKPT01.SchemaParcels SKPT = (RRTypes.SKPT01.SchemaParcels)serializerTP.Deserialize(stream);
                 ParseSC(SKPT);
             }
-            cXmlTreeView1.loadXML(XMLDoc); 
+            cXmlTreeView1.LoadXML(XMLDoc); 
             //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
         }
         

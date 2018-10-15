@@ -211,7 +211,7 @@ namespace XMLReaderCS
                 DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
             // Вначале отобразим xml, вдруг далее парсеры слажают... :)
            // cXmlTreeView2.RootName = DocInfo.FileName;
-            cXmlTreeView2.loadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать xmlDoc
+            cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать xmlDoc
             toolStripStatusLabel2.Text = "<" + DocInfo.DocRootName + "> " + label_FileSize.Text;
             toolStripStatusLabel3.Text = DocInfo.Namespace;
             linkLabel_tns.Text = DocInfo.Namespace;

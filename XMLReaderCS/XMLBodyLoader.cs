@@ -7,25 +7,41 @@ using System.Windows.Forms;
 
 namespace XMLReaderCS
 {
-    // Класс, наследник Treeview. C# как-то сам добавил в Toolbox.
+
+    /// <summary>
+    /// Класс, наследник Treeview. 
+    /// Представляет дерево, способное отображать ветви xml
+    /// </summary>
+    /// <remarks>
+    /// C# как-то сам добавил в Toolbox. 
+    /// </remarks>
     public class CXmlTreeView : TreeView
     {
         ContextMenuStrip contextMenu_XMLBoby;
+        TextBox SearchTextBox;
+        ToolStripMenuItem ItemSearch;
         public string Namespace;
         public string RootName;
         public CXmlTreeView()
         {
             BeforeExpand += OnItemexpanding;
-
             contextMenu_XMLBoby = new ContextMenuStrip();
+            SearchTextBox = new TextBox();
             this.ContextMenuStrip = contextMenu_XMLBoby;
-            ToolStripItem XMLnodeItem = contextMenu_XMLBoby.Items.Add("Копировать");
-            XMLnodeItem.Click += BodyMenu_Click;
-
+            ToolStripItem ItemCopy = contextMenu_XMLBoby.Items.Add("Копировать");
+            ItemSearch = (ToolStripMenuItem)contextMenu_XMLBoby.Items.Add("Поиск");
+            ItemCopy.Click += ItemCopy_Click;
+            ItemSearch.Click += ItemSearch_Click;
+            SearchTextBox.Visible = true;
+            SearchTextBox.Left = 200;
+            SearchTextBox.Top = 200;
+            SearchTextBox.Width = 150;
+            SearchTextBox.TextChanged += SearchTextBox_TextChanged;
+            this.Controls.Add(SearchTextBox);
         }
 
 
-        private void BodyMenu_Click(object sender, EventArgs e)
+        private void ItemCopy_Click(object sender, EventArgs e)
         {
             if (this.SelectedNode != null)
             {
@@ -33,7 +49,70 @@ namespace XMLReaderCS
             }
         }
 
-        public bool loadXML(XmlDocument dom)
+        private void ItemSearch_Click(object sender, EventArgs e)
+        {
+            //TODO 
+            //Find:.....
+            ItemSearch.Checked = Toggle_SearchTextBox(SearchTextBox);
+        }
+
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (this.TopNode == null) return;
+            TextBox searchtbox = (TextBox)sender;
+            if (searchtbox.Visible)
+            {   // начинаем с высшей ноды:
+                this.BeginUpdate();
+
+                if (searchtbox.Text == "")
+                {
+                    this.SelectedNode = this.Nodes[0]; // hi root node, seek to begin
+                    this.CollapseAll();
+                }
+
+                TreeNode res = netFteo.TreeViewFinder.SearchNodes(this.Nodes[0], searchtbox.Text.ToUpper());
+
+                if (res != null)
+                {
+                    this.SelectedNode = res;
+                    //TODO:  
+                    //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
+                    //PrepareNode(treeView1.SelectedNode, res.Tag);
+                    this.SelectedNode.EnsureVisible();
+                }
+                SearchTextBox.Focus();
+                this.EndUpdate();
+            }
+
+        }
+
+        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.Control) && (e.KeyCode == Keys.D))
+                Toggle_SearchTextBox((TextBox)sender);
+
+        }
+
+        private bool Toggle_SearchTextBox(TextBox sender)
+        {
+            if (!sender.Visible)
+            {
+                SearchTextBox.Visible = true;
+                sender.Visible = true;
+                sender.Clear();
+                sender.Focus();
+                return true;
+            }
+            else
+
+            {
+                SearchTextBox.Visible = false;
+                sender.Visible = false;
+                return false;
+            }
+        }
+
+        public bool LoadXML(XmlDocument dom)
         {
             this.Nodes.Clear();
             string href = "";
@@ -66,22 +145,29 @@ namespace XMLReaderCS
                 hrefNode.Tag = styleNode;
             }
 
-            TreeNode rNode = this.insertItem(Root, Root.Name, TreeRoot);
+            TreeNode rNode = this.InsertItem(Root, Root.Name, TreeRoot);
             populateAttributes(Root, rNode);
             rNode.Expand();
+
+            //TotalItemsPopulating(rNode);
             return false;
         }
 
-        TreeNode insertItem(XmlNode node, string nodeName, TreeNode hParent)
+        TreeNode InsertItem(XmlNode xmlnode, string nodeName, TreeNode hParent)
         {
             TreeNode nn = hParent.Nodes.Add(nodeName);
-            nn.Tag = node;
-            if (node.HasChildNodes)
+            nn.Tag = xmlnode;
+            // populateAttributes(xmlnode, nn);
+            // add emptys with Tag = null for nodes only
+
+            if ((xmlnode.HasChildNodes)
+                &&
+                (xmlnode.NodeType.ToString() != "Attribute"))
             {
                 TreeNode hChildItem = nn.Nodes.Add("");
-                hChildItem.Tag = null;
-
+                hChildItem.Tag = null;  // fake node for further using - "OnItemExpanding" will be replaced with actually child
             }
+
             return nn;
         }
 
@@ -89,37 +175,49 @@ namespace XMLReaderCS
         private bool populateNode(XmlNode inXmlNode, TreeNode inTreeNode)
         {
             string nodeType;
-            string nodeName;
-            TreeNode popuToNode;
+            //string nodeName;
+            //TreeNode popuToNode;
+            if (inXmlNode == null) return false;
             // что в xml ноде:
             nodeType = inXmlNode.NodeType.ToString();
             if (nodeType == "Element")
             {
-                TreeNode hItem = insertItem((XmlElement)inXmlNode, inXmlNode.Name, inTreeNode);
+                TreeNode hItem = InsertItem((XmlElement)inXmlNode, inXmlNode.Name, inTreeNode);
                 populateAttributes(inXmlNode, hItem);
             }
+            /*
+            else
+            if (nodeType == "Attribute")
+            {
+                TreeNode hItem = InsertItem((XmlAttribute)inXmlNode, inXmlNode.Name, inTreeNode);
+                populateAttributes(inXmlNode, hItem);
+            }
+            */
             else
                 if (nodeType == "Text")
             {
-                insertItem((XmlText)inXmlNode, inXmlNode.Value, inTreeNode);
+                InsertItem((XmlText)inXmlNode, inXmlNode.Value, inTreeNode);
             }
             else // Иначе все другие типы:
                 if (nodeType == "Comment")
             {
-                TreeNode hItem = insertItem((XmlComment)inXmlNode,"<!-- " + inXmlNode.Value+ " -->", inTreeNode);
+                TreeNode hItem = InsertItem((XmlComment)inXmlNode, "<!-- " + inXmlNode.Value + " -->", inTreeNode);
                 populateAttributes(inXmlNode, hItem);
             }
             else // Иначе все другие типы:
             {
-                insertItem((XmlElement)inXmlNode, inXmlNode.Name, inTreeNode);
+                // insertItem((XmlElement)inXmlNode, inXmlNode.Name, inTreeNode);
             }
+
 
             XmlNode nextSibling = null;
             nextSibling = inXmlNode.NextSibling;
             if (nextSibling != null)
                 populateNode((XmlNode)nextSibling, inTreeNode);
+
             return true;
         }
+
         // Заполнение всех атрибутов
         private void populateAttributes(XmlNode inXmlNode, TreeNode inTreeNode)
         {
@@ -130,7 +228,7 @@ namespace XMLReaderCS
                 int listLength = namedNodeMap.Count;
                 for (int i = 0; i < listLength; i++)
                 {
-                    insertItem((XmlNode)namedNodeMap.Item(i), namedNodeMap.Item(i).Name + "=" + namedNodeMap.Item(i).Value, inTreeNode);
+                    InsertItem((XmlNode)namedNodeMap.Item(i), namedNodeMap.Item(i).Name + "=" + namedNodeMap.Item(i).Value, inTreeNode);
                 }
             }
 
@@ -141,6 +239,7 @@ namespace XMLReaderCS
         {
             // CXmlTreeView Source = (CXmlTreeView)sender;
             // Текущая нода -      e.Node.Text  ....
+
             TreeNode hItem = e.Node;
             TreeNode hChildItem;
             XmlNode XMLSrc = (XmlNode)e.Node.Tag;
@@ -172,6 +271,9 @@ namespace XMLReaderCS
 
             }
         }
+
+
+
     }
 
     /// <summary>
@@ -180,7 +282,7 @@ namespace XMLReaderCS
     public class CRichTextBox : RichTextBox
     {
         ContextMenuStrip contextMenu_XMLBoby;
-        public CRichTextBox(string text) 
+        public CRichTextBox(string text)
         {
             contextMenu_XMLBoby = new ContextMenuStrip();
             this.ContextMenuStrip = contextMenu_XMLBoby;
