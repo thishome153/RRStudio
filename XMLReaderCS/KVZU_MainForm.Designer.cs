@@ -139,7 +139,6 @@
             this.fteoImage1 = new netFteo.Drawing.FteoImage();
             this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.cXmlTreeView2 = new XMLReaderCS.CXmlTreeView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.linkLabel_tns = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
@@ -166,6 +165,7 @@
             this.toolStripButton_VisualizerToggle = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.cXmlTreeView2 = new XMLReaderCS.CXmlTreeView();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1132,14 +1132,6 @@
             this.tabPage5.Text = "XML";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // cXmlTreeView2
-            // 
-            this.cXmlTreeView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cXmlTreeView2.Location = new System.Drawing.Point(0, 0);
-            this.cXmlTreeView2.Name = "cXmlTreeView2";
-            this.cXmlTreeView2.Size = new System.Drawing.Size(856, 436);
-            this.cXmlTreeView2.TabIndex = 0;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.linkLabel_tns);
@@ -1405,8 +1397,17 @@
             this.toolStripButton3.Text = "О про";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // cXmlTreeView2
+            // 
+            this.cXmlTreeView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cXmlTreeView2.Location = new System.Drawing.Point(0, 0);
+            this.cXmlTreeView2.Name = "cXmlTreeView2";
+            this.cXmlTreeView2.Size = new System.Drawing.Size(856, 436);
+            this.cXmlTreeView2.TabIndex = 0;
+            // 
             // KVZU_Form
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(864, 537);
@@ -1414,6 +1415,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.MainMenu);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MainMenuStrip = this.MainMenu;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -1425,6 +1427,8 @@
             this.InputLanguageChanging += new System.Windows.Forms.InputLanguageChangingEventHandler(this.KVZU_Form_InputLanguageChanging);
             this.Shown += new System.EventHandler(this.KVZU_Form_Shown);
             this.LocationChanged += new System.EventHandler(this.KVZU_Form_LocationChanged);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.KVZU_Form_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.KVZU_Form_DragEnter);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KVZU_Form_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KVZU_Form_KeyUp);
             this.Resize += new System.EventHandler(this.KVZU_Form_Resize);

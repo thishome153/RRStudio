@@ -498,21 +498,43 @@ namespace GKNData
         }
 
 
-
-        private void OpenXML(string FileName)
+        private void OpenFile(string FileName)
         {
-            System.IO.TextReader reader = new System.IO.StreamReader(FileName);
-            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
-            xml.Load(reader);
-            StatusLabel_AllMessages.Text = xml.DocumentElement.Name.ToString();
-            XMLReaderCS.KVZU_Form MyReader = new XMLReaderCS.KVZU_Form();
-            MyReader.Read(xml);
-            MyReader.ShowDialog();
+
+            if (!File.Exists(FileName)) return;
+            string extention = Path.GetExtension(FileName).ToUpper();
+
+            // got spatial file of several kind:
+            if ((extention.Equals(".MIF")) ||
+                (extention.Equals(".DXF")) ||
+                (extention.Equals(".TXT"))  )
+            {
+                XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
+                frmReader.StartPosition = FormStartPosition.Manual;
+                frmReader.Tag = 3; // XMl Reader в составе приложения
+                frmReader.Read(FileName, false);
+                frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
+                frmReader.ShowDialog(this);
+            }
+
+            if (extention.Equals(".XML"))
+            {
+                System.IO.TextReader reader = new System.IO.StreamReader(FileName);
+                System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+                xml.Load(reader);
+                StatusLabel_AllMessages.Text = xml.DocumentElement.Name.ToString();
+                XMLReaderCS.KVZU_Form MyReader = new XMLReaderCS.KVZU_Form();
+                MyReader.Read(xml);
+                MyReader.ShowDialog();
+            }
+
+
         }
 
 
 
-        public  bool SelectDistrict(TAppCfgRecord CfgRec)
+
+        bool SelectDistrict(TAppCfgRecord CfgRec)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
             SubRFForm SubSelectfrm = new SubRFForm(CF.conn);
@@ -584,7 +606,7 @@ namespace GKNData
             od.FileName = "";
             if (od.ShowDialog() == DialogResult.OK)
             {
-                OpenXML(od.FileName);
+                OpenFile (od.FileName);
             }
         }
         private void импортToolStripMenuItem_Click(object sender, EventArgs e)
@@ -740,6 +762,21 @@ namespace GKNData
         private void Button_Import_CheckStateChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainGKNForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void MainGKNForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Count() == 1)
+            {
+              OpenFile(files[0]);
+            }
         }
     }
 }

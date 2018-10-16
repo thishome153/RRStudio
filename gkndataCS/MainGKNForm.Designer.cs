@@ -414,6 +414,7 @@ namespace GKNData
             // 
             // MainGKNForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 405);
@@ -429,6 +430,8 @@ namespace GKNData
             this.Name = "MainGKNForm";
             this.Text = "ГКН Дата";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainGKNForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainGKNForm_DragEnter);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

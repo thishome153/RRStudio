@@ -210,4 +210,29 @@ namespace netFteo
         }
     }
 
+    public static class GUID
+    {
+        /// <summary>
+        /// Create (compile) the value of two GUIDs. 
+        /// </summary>
+        /// <param name="ToUpperCase">UpperCase for literals</param>
+        /// <returns>GUID as string value</returns>
+        public static string CompileGUID(bool ToUpperCase)
+        {
+            Guid g;
+            // Create and display the value of two GUIDs.
+            g = Guid.NewGuid();
+            if (ToUpperCase)
+                return g.ToString().ToUpper(); 
+            else
+                return g.ToString();
+        }
+
+        public static bool Valide(string guid)
+        {
+            return false;
+        }
+
+    }
+    
 }

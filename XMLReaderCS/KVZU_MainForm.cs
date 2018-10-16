@@ -190,7 +190,7 @@ namespace XMLReaderCS
                 "|Про$транственные данные|*.dxf;*.mif;*.txt";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-                Read(openFileDialog1.FileName);
+                Read(openFileDialog1.FileName, true);
 
         }
         /// <summary>
@@ -522,7 +522,8 @@ namespace XMLReaderCS
         /// Читать документ из файла
         /// </summary>
         /// <param name="FileName">Имя файла</param>
-        public void Read(string FileName)
+        /// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
+        public void Read(string FileName, bool NeedListing)
         {
             if (!File.Exists(FileName))
             {
@@ -540,13 +541,13 @@ namespace XMLReaderCS
             if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-                TPolygonCollection polyfromMIF = mifreader.ImportMIF(openFileDialog1.FileName);
+                TPolygonCollection polyfromMIF = mifreader.ImportMIF(FileName);
 
                 // Virtual Parcel with contours:
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "Полигоны MIF";
                 
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(openFileDialog1.FileName), "Item05"));
+                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
                 if (polyfromMIF.Count == 1)
                 {
                     MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01"); 
@@ -570,7 +571,7 @@ namespace XMLReaderCS
 
                 try
                 {
-                    netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader(openFileDialog1.FileName);
+                    netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader(FileName);
                     toolStripProgressBar1.Maximum = mifreader.PolygonsCount();  //TODO: number of items ???
                     toolStripProgressBar1.Minimum = 0;
                     toolStripProgressBar1.Value = 0;
@@ -581,6 +582,7 @@ namespace XMLReaderCS
 
                 catch (ArgumentException err)
                 {
+                    ClearControls();
                     this.DocInfo.DocTypeNick = "dxf";
                     this.DocInfo.CommentsType = "DXF error...";
                     this.DocInfo.Comments = err.Message;
@@ -592,14 +594,14 @@ namespace XMLReaderCS
                 if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-                TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(openFileDialog1.FileName);
+                TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(FileName);
                 if (polyfromMIF != null)
                 {
 
                     // Virtual Parcel with contours:
                     TMyCadastralBlock Bl = new TMyCadastralBlock();
                     Bl.CN = "Полигоны txt";
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(openFileDialog1.FileName), "Item05"));
+                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
 
                     if (polyfromMIF.Count == 1)
                     {
@@ -673,8 +675,11 @@ namespace XMLReaderCS
                         textBox_FIO.Text += "\n ЭЦП= " + sig;
 
             }
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-            ListFileInfo(DocInfo);
+            if (NeedListing)
+            {
+                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+                ListFileInfo(DocInfo);
+            }
         }
 
 
@@ -796,7 +801,7 @@ namespace XMLReaderCS
             {
                 DirectoryInfo di = new DirectoryInfo(ArchiveFolder);
                 string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
-                Read(ArchiveFolder + "\\" + firstFileName); // теперь загружаем xml
+                Read(ArchiveFolder + "\\" + firstFileName,true); // теперь загружаем xml
             }
         }
 
@@ -3770,6 +3775,7 @@ namespace XMLReaderCS
             richTextBox1.Clear();
             listView1.Controls.Clear();
             listView1.Items.Clear();
+            listView_Properties.Items.Clear();
              contextMenuStrip_SaveAs.Enabled = false;
             listView_Contractors.Items.Clear();
             TV_Parcels.Nodes.Clear();
@@ -3800,8 +3806,8 @@ namespace XMLReaderCS
             pathToHtmlFile = null;
             this.Text = TextDefault;
             toolStripProgressBar1.Value = 0;
+            this.DocInfo.MyBlocks.Blocks.Clear();
             Gen_id.Reset();
-
            
 #if (DEBUG) 
             debugToolStripMenuItem.Enabled = true;
@@ -4405,7 +4411,7 @@ namespace XMLReaderCS
 
         private void RecentFile0MenuItem_Click(object sender, EventArgs e)
         {
-            this.Read(XMLReaderCS.Properties.Settings.Default.Recent0);
+            this.Read(XMLReaderCS.Properties.Settings.Default.Recent0, true);
         }
 
         private void label_DocType_Click(object sender, EventArgs e)
@@ -5335,7 +5341,7 @@ namespace XMLReaderCS
                     string Test = args[1];
                     //if (args[2] == "open")
                     if (File.Exists(Test))
-                        Read(Test);
+                        Read(Test, true);
                 }
                 //No command line args[]
                 else toolStripStatusLabel3.Text = "Нет аргументов";
@@ -5365,6 +5371,21 @@ namespace XMLReaderCS
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
             {
                 Toggle_Visualizer();
+            }
+        }
+
+        private void KVZU_Form_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void KVZU_Form_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Count() == 1)
+            {
+                Read(files[0], true);
             }
         }
     }

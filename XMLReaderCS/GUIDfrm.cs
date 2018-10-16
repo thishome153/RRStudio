@@ -22,14 +22,14 @@ namespace XMLReaderCS
           GUID_gen();
         }
 
+
+    
+
         private void GUID_gen()
         {
-            Guid g;
-            // Create and display the value of two GUIDs.
-            g = Guid.NewGuid();
-            linkLabel_GUID.Text = g.ToString(); //"GKUZU_" + 
-            linkLabel_GKUOKS.Text = "GKUOKS_" + linkLabel_GUID.Text;
-            linkLabel_GKUZU.Text = "GKUZU_" + linkLabel_GUID.Text;
+            linkLabel_GUID.Text =   netFteo.GUID.CompileGUID(checkBox1.Checked);
+            linkLabel_GKUOKS.Text = "GKUOKS_" + linkLabel_GUID.Text + ".xml";
+            linkLabel_GKUZU.Text  = "GKUZU_"  + linkLabel_GUID.Text + ".xml";
         }        
 
         private void linkLabel_GKUOKS_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -53,6 +53,11 @@ namespace XMLReaderCS
         }
 
         private void GUIDfrm_Shown(object sender, EventArgs e)
+        {
+            GUID_gen();
+        }
+
+        private void checkBox1_Click(object sender, EventArgs e)
         {
             GUID_gen();
         }
