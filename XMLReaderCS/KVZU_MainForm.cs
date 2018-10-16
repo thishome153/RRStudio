@@ -324,8 +324,7 @@ namespace XMLReaderCS
             {
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 this.DocInfo = parser.ParseEGRP(this.DocInfo, xmldoc);
-              //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-               // ListFileInfo(DocInfo);
+
             }
 
 
@@ -569,37 +568,25 @@ namespace XMLReaderCS
             if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
             {
 
-                netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader(openFileDialog1.FileName);
-                mifreader.OnParsing += DXFStateUpdater;
-
-                toolStripProgressBar1.Maximum = mifreader.AddedObjects;  //TODO: number of items ???
-                toolStripProgressBar1.Minimum = 0;
-                toolStripProgressBar1.Value = 0;
-
-                TPolygonCollection polyfromMIF = mifreader.ParseDXF();
-
-                // Virtual Parcel with contours:
-                if (polyfromMIF != null)
+                try
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    Bl.CN = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel("Полигоны DXF", "Item05"));
-                    if (polyfromMIF.Count == 1)
-                    {
-                        MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
-                        MainObj.EntitySpatial = polyfromMIF[0];
-                    }
-                    else
-                        MainObj.Contours.AddPolygons(polyfromMIF);
-
-                    this.DocInfo.MyBlocks.Blocks.Clear();
-                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
-                    this.DocInfo.DocTypeNick = "dxf";
-                    this.DocInfo.CommentsType = "DXF";
-                    this.DocInfo.Comments = mifreader.Body;
-                    this.DocInfo.Encoding = mifreader.BodyEncoding;
-                    this.DocInfo.Number = "dxf,  " + mifreader.BodyEncoding;
+                    netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader(openFileDialog1.FileName);
+                    toolStripProgressBar1.Maximum = mifreader.PolygonsCount();  //TODO: number of items ???
+                    toolStripProgressBar1.Minimum = 0;
+                    toolStripProgressBar1.Value = 0;
+                    mifreader.OnParsing += DXFStateUpdater;
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                    this.DocInfo = parser.ParseDXF(this.DocInfo, mifreader);
                 }
+
+                catch (ArgumentException err)
+                {
+                    this.DocInfo.DocTypeNick = "dxf";
+                    this.DocInfo.CommentsType = "DXF error...";
+                    this.DocInfo.Comments = err.Message;
+                }
+
+
             }
 
                 if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))

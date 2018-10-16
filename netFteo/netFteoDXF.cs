@@ -36,13 +36,40 @@ namespace netFteo.IO
     {
 
         private netDxf.DxfDocument dxfFile;
-
+        public string FileName
+        {
+            get
+            {
+                return dxfFile.Name;
+            }
+        }
         public  DXFReader(string FileName)
         {
             dxfFile = netDxf.DxfDocument.Load(FileName);
-            this.AddedObjects = dxfFile.Blocks.Count;
+            this.BlocksCount = dxfFile.Blocks.Count;
+            this.AddedObjects = dxfFile.AddedObjects.Count;
             BodyLoad(FileName);
         }
+
+        /// <summary>
+        /// Количество геометрий 
+        /// </summary>
+        ///<param name="codename"> Тип геометрии. По умолчанию "LWPOLYLINE"</param>
+
+        public int PolygonsCount(string codename = "LWPOLYLINE")
+        {
+                int res = 0;
+                foreach (netDxf.Blocks.Block block in dxfFile.Blocks)
+                {
+                    foreach (netDxf.Entities.EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
+                    {
+                        if (entity.CodeName.Equals(codename))
+                            res++;
+                    }
+                }
+                return res;
+        }
+
         /// <summary>
         /// Импорт dxf-файлов
         /// </summary>
@@ -56,45 +83,53 @@ namespace netFteo.IO
             {
                 foreach (netDxf.Blocks.Block block in dxfFile.Blocks)
                 {
-
                     foreach (netDxf.Entities.EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
                     {
                         if (entity.CodeName.Equals("LWPOLYLINE"))
                         {
+                            DxfParsingProc("dxf", ++FileParsePosition, null);
                             TMyPolygon Polygon = DXF_ParseRegion(block.Entities);
                             if (Polygon != null)
-                            {
-                                if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["Кад_номер"].Value != null))
-                                    Polygon.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
-                                else
-                                    Polygon.Definition = block.CodeName + "." + block.Handle; ;
-                                res.AddPolygon(Polygon);
-                                
-                                DxfParsingProc(Polygon.Definition, ++FileParsePosition, null);
-                                goto NEXTBlock; // all entites here is ring + inner rings
-                            }
+                                try
+                                {
+                                    if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["Кад_номер"].Value != null))
+                                        Polygon.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
+                                    else
+                                        Polygon.Definition = block.CodeName + "." + block.Handle; ;
+                                    res.AddPolygon(Polygon);
+                                    goto NEXTBlock; // all entites here is ring + inner rings
+                                }
+                                catch (ArgumentException error)
+                                {
+                                    goto NEXTBlock;
+                                    //return null; // wrong block entities
+                                }
+
+
                         }
                     }
                 NEXTBlock: int fakeVariable = 0;
                 }
-            }
 
 
-            if (dxfFile.LwPolylines.Count > 0)
-                foreach (netDxf.Entities.LwPolyline polygon in dxfFile.LwPolylines)
-                {
-                    if (polygon.IsClosed)
+                if (dxfFile.LwPolylines.Count > 0)
+                    foreach (netDxf.Entities.LwPolyline polygon in dxfFile.LwPolylines)
                     {
-                        TMyPolygon poly = new TMyPolygon();
-                        poly.Definition = polygon.CodeName + "."+ polygon.Handle; ;
-                        poly.AppendPoints(DXF_ParseRing(polygon));
-                        res.AddPolygon(poly);
+                        if (polygon.IsClosed)
+                        {
+                            TMyPolygon poly = new TMyPolygon();
+                            poly.Definition = polygon.CodeName + "." + polygon.Handle; ;
+                            poly.AppendPoints(DXF_ParseRing(polygon));
+                            res.AddPolygon(poly);
+                        }
                     }
-                }
-
+            }
             return res;
         }
-        public int AddedObjects;
+
+
+        public int  AddedObjects;
+        public int  BlocksCount;
         private int FileParsePosition; // Текущая позиция parser`a
 
         /// <summary>
@@ -110,7 +145,7 @@ namespace netFteo.IO
             ESCheckingEventArgs e = new ESCheckingEventArgs();
             e.Definition = sender;
             e.Data = Data;
-            e.Process = FileParsePosition;
+            e.Process = process;
             OnParsing(this, e);
         }
 

@@ -1703,10 +1703,13 @@ namespace RRTypes.CommonParsers
             netFteo.XML.FileInfo res = new netFteo.XML.FileInfo();
             res.FileName = fi.FileName;
             res.FilePath = fi.FilePath;
-            res.DocRootName = xmldoc.DocumentElement.Name;
-            res.Namespace = xmldoc.DocumentElement.NamespaceURI;
-            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                res.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+            if (xmldoc != null)
+            {
+                res.DocRootName = xmldoc.DocumentElement.Name;
+                res.Namespace = xmldoc.DocumentElement.NamespaceURI;
+                if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+                    res.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+            }
             return res;
         }
 
@@ -3670,6 +3673,48 @@ namespace RRTypes.CommonParsers
             return res;
         }
         #endregion
+
+        #region  Разбор DXF
+        /// <summary>
+        /// Разбор dxf
+        /// </summary>
+        /// 
+        /// <returns></returns>
+        public netFteo.XML.FileInfo ParseDXF(netFteo.XML.FileInfo fi, netFteo.IO.DXFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+        {
+            netFteo.XML.FileInfo res = InitFileInfo(fi, null);
+            TPolygonCollection polyfromMIF = mifreader.ParseDXF();
+
+            // Virtual Parcel with contours:
+            if (polyfromMIF != null)
+            {
+                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                Bl.CN = System.IO.Path.GetFileNameWithoutExtension(mifreader.FileName);
+                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel("Полигоны DXF", "Item05"));
+                if (polyfromMIF.Count == 1)
+                {
+                    MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
+                    MainObj.EntitySpatial = polyfromMIF[0];
+                }
+                else
+                    MainObj.Contours.AddPolygons(polyfromMIF);
+                res.MyBlocks.Blocks.Clear();
+                res.MyBlocks.Blocks.Add(Bl);
+            }
+
+            res.DocTypeNick = "dxf";
+            res.CommentsType = "DXF";
+            res.Comments = mifreader.GetType().ToString()+  " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString()+ " \rFileBody:\r"+mifreader.Body;
+            res.Encoding = mifreader.BodyEncoding;
+            res.Number = "dxf,  " + mifreader.BodyEncoding;
+
+
+            return res;
+        }
+        #endregion
+
+
+
     }
 
 }
