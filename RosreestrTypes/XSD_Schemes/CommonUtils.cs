@@ -2514,11 +2514,6 @@ namespace RRTypes.CommonParsers
 
         private static void Parse_Contractors(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
         {
-            /*
-            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
-            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-            */
-            //TODO - need deserialization ?, or may be able to parse direct xml nodes ?
             System.Xml.XmlNode Contractors = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "/Contractors");
             if (Contractors != null) 
                 foreach (System.Xml.XmlNode contr in Contractors.ChildNodes) // in "Contractors/Contractor[]"
@@ -2531,8 +2526,6 @@ namespace RRTypes.CommonParsers
                     System.Xml.XmlNode NameNode = netFteo.XML.XMLWrapper.SelectNodeChild(netFteo.XML.XMLWrapper.SelectNodeChild(contr, "Organization"), "Name");
                     if (NameNode != null)
                         eng.Organization_Name = NameNode.FirstChild.Value;
-
-                    
                     res.Contractors.Add(eng);
 
                 }
