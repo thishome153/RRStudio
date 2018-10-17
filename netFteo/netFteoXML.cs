@@ -498,14 +498,17 @@ namespace netFteo.XML
                 testXpath = "/" + xmldoc.DocumentElement.Name + Xpath;
             return testXpath;
         }
-        public static System.Xml.XmlNode Parse_Node(System.Xml.XmlDocument xmldoc, string Xpath)
+
+        public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
         {
-            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
             nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
 
             return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
 
         }
+
+  
 
         /// <summary>
         /// Parse any Attibute in document
@@ -538,9 +541,45 @@ namespace netFteo.XML
                 return null;
         }
 
-        public static bool Test_Node(System.Xml.XmlDocument xmldoc, string Xpath)
+        /// <summary>
+        /// Select node child by ChildName.
+        /// Also checked namespacing
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="ChildName"></param>
+        /// <returns></returns>
+        /// 
+        public static XmlNode SelectNodeChild(XmlNode node, string ChildName)
+
         {
-            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if (node == null) return null;
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(new NameTable());
+
+            foreach (System.Xml.XmlNode child in node)
+            {
+                if (child.Prefix != "")
+                {
+                    nsmgr.AddNamespace(child.Prefix, child.NamespaceURI);
+
+                    if (child.Name.Equals(child.Prefix + ":" + ChildName))
+                        return node.SelectSingleNode(child.Prefix + ":" + ChildName, nsmgr);
+                }
+                else
+                {
+                    nsmgr.AddNamespace("pref", node.NamespaceURI);
+                    return node.SelectSingleNode("pref:" + ChildName, nsmgr);
+                }
+            }
+            return null;
+        }
+
+
+        public static string SelectNodeChildValue(XmlNode node, string ChildName) => SelectNodeChild(node, ChildName).FirstChild.Value;
+   
+        public static bool NodeExist(XmlDocument xmldoc, string Xpath)
+        {
+
+            XmlNode recnode = Parse_Node(xmldoc, Xpath);
             if (recnode != null)
             {
                 return true;

@@ -710,7 +710,7 @@ namespace RRTypes.CommonCast
         public static void Parse_ReestrExtract(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
         {
 
-            if (netFteo.XML.XMLWrapper.Test_Node(xmldoc, "/ReestrExtract"))
+            if (netFteo.XML.XMLWrapper.NodeExist(xmldoc, "/ReestrExtract"))
             //            if (xmldoc.DocumentElement.SelectSingleNode("ReestrExtract") != null)
             {
                 res.DocType = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractTypeText", "/ReestrExtract/DeclarAttribute");
@@ -726,10 +726,24 @@ namespace RRTypes.CommonCast
             }
             else
             {
-                if (netFteo.XML.XMLWrapper.Test_Node(xmldoc, "/CertificationDoc")) //xmldoc.DocumentElement.SelectSingleNode("CertificationDoc") != null)
+                // if ReestrExtract no present, try to read '/CertificationDoc'
+                //if present node with namespace
+                // TODO - malfunction of reading :
+                System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+                nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+
+                System.Xml.XmlNode CertificationDoc = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "/CertificationDoc");
+
+                if (CertificationDoc != null)
                 {
-                    res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/CertificationDoc/Number");
+
+                    res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Number");
+                    res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Date");
+                    res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Organization");
                 }
+
+
+                    
             }
         }
 
@@ -2500,21 +2514,25 @@ namespace RRTypes.CommonParsers
 
         private static void Parse_Contractors(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
         {
+            /*
             System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
             nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-
+            */
             //TODO - need deserialization ?, or may be able to parse direct xml nodes ?
             System.Xml.XmlNode Contractors = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "/Contractors");
-            if (Contractors != null)
-                foreach (System.Xml.XmlNode contr in Contractors.ChildNodes)
+            if (Contractors != null) 
+                foreach (System.Xml.XmlNode contr in Contractors.ChildNodes) // in "Contractors/Contractor[]"
                 {
                     TEngineerOut eng = new TEngineerOut();
-                    eng.FamilyName = contr.SelectSingleNode("parseNS:FamilyName", nsmgr).FirstChild.Value;
-                    eng.FirstName = contr.SelectSingleNode("parseNS:FirstName", nsmgr).FirstChild.Value;
-                    eng.Patronymic = contr.SelectSingleNode("parseNS:Patronymic", nsmgr).FirstChild.Value;
-                    eng.NCertificate = contr.SelectSingleNode("parseNS:NCertificate", nsmgr).FirstChild.Value;
-                    if (contr.SelectSingleNode("parseNS:Organization", nsmgr) != null)
-                        eng.Organization_Name = contr.SelectSingleNode("parseNS:Organization/parseNS:Name", nsmgr).FirstChild.Value;
+                    eng.FamilyName = netFteo.XML.XMLWrapper.SelectNodeChildValue(contr, "FamilyName");
+                    eng.FirstName = netFteo.XML.XMLWrapper.SelectNodeChildValue(contr, "FirstName");
+                    eng.Patronymic = netFteo.XML.XMLWrapper.SelectNodeChildValue(contr, "Patronymic");
+                    eng.NCertificate = netFteo.XML.XMLWrapper.SelectNodeChildValue(contr, "NCertificate"); 
+                    System.Xml.XmlNode NameNode = netFteo.XML.XMLWrapper.SelectNodeChild(netFteo.XML.XMLWrapper.SelectNodeChild(contr, "Organization"), "Name");
+                    if (NameNode != null)
+                        eng.Organization_Name = NameNode.FirstChild.Value;
+
+                    
                     res.Contractors.Add(eng);
 
                 }
@@ -3068,19 +3086,7 @@ namespace RRTypes.CommonParsers
             RRTypes.kvzu.KVZU kv = (RRTypes.kvzu.KVZU)Desearialize<RRTypes.kvzu.KVZU>(xmldoc);
 
             TMyCadastralBlock Bl = new TMyCadastralBlock();
-            /*
-            label_DocType.Text = "Кадастровая выписка";
-            tabPage1.Text = "Земельные участки";
-            textBox_DocNum.Text = kv.CertificationDoc.Number;
-            textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
-            if (kv.CertificationDoc.Official != null)
-            {
-                textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
-                textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
-            }
-
-            textBox_OrgName.Text = kv.CertificationDoc.Organization;
-            */
+   
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
@@ -3190,6 +3196,24 @@ namespace RRTypes.CommonParsers
             res.DocTypeNick = "КВЗУ";
             CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
             Parse_Contractors(xmldoc, res);
+
+
+            /*
+   label_DocType.Text = "Кадастровая выписка";
+   tabPage1.Text = "Земельные участки";
+   textBox_DocNum.Text = kv.CertificationDoc.Number;
+   textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
+   if (kv.CertificationDoc.Official != null)
+   {
+       textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
+       textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
+   }
+
+   textBox_OrgName.Text = kv.CertificationDoc.Organization;
+   */
+
+
+
             return res;
         }
 

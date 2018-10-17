@@ -32,7 +32,7 @@ namespace XMLReaderCS
             ItemSearch = (ToolStripMenuItem)contextMenu_XMLBoby.Items.Add("Поиск");
             ItemCopy.Click += ItemCopy_Click;
             ItemSearch.Click += ItemSearch_Click;
-            SearchTextBox.Visible = true;
+            SearchTextBox.Visible = false;// true;
             SearchTextBox.Left = 200;
             SearchTextBox.Top = 200;
             SearchTextBox.Width = 150;
