@@ -1952,7 +1952,7 @@ SCAN:
             List<string> aslist = new List<string>();
             for (int i = 0; i <= this.Count - 1; i++)
                 aslist.Add(this[i].Definition + "\t" + this[i].AreaSpatialFmt("0.00") + "\t" +
-                                                       this[i].AreaValue.ToString() + "\t" +
+                                                       (this[i].AreaValue > 0 ? this[i].AreaValue.ToString():"-")  + "\t" +
                                                        ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00")
                     );
             return aslist;

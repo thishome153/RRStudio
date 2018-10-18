@@ -175,7 +175,30 @@ namespace netFteo
 
 
     }
+    
+    /// <summary>
+    /// Map class- viewPort for netfteo application
+    /// </summary>
+    public class Map :  UserControl
+    {
+        string _FileName;
 
+        /// <summary>
+        /// Gets or sets filename of viewed file
+        /// </summary>
+        public string FileName
+        {
+            get
+            {
+              return  this._FileName;
+            }
+
+            set
+            {
+                this._FileName = value;
+            }
+        }
+    }
 }
 
 

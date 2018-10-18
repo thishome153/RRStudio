@@ -39,7 +39,7 @@ namespace XMLReaderCS
             listView_Details.Items.Clear();
             datatable.Rows.Clear();
             toolStripButton1.Enabled = false; toolStripButton3.Enabled = false;
-            X509Certificate2 x509 = netFteo.IO.CryptographyWrapper.GetCertBySerial(serial);
+            X509Certificate2 x509 = netFteo.Cryptography.CryptographyWrapper.GetCertBySerial(serial);
             if (x509 != null)
             {
                 /*
@@ -139,7 +139,7 @@ namespace XMLReaderCS
         private void frmCertificates_Load(object sender, EventArgs e)
         {
             //CADESCOM interop NET:  
-            List<X509Certificate2> certs = netFteo.IO.CryptographyWrapper.DisplayCerts("my");
+            List<X509Certificate2> certs = netFteo.Cryptography.CryptographyWrapper.DisplayCerts("my");
 
             //cpp api wrapper:
             //ucrtbased.dll missing
@@ -232,7 +232,7 @@ namespace XMLReaderCS
                             byte[] sigAsArray = new byte[sigdatastream.Length];
                             int sz = (int)sigdatastream.Length;
                             sigdatastream.Read(sigAsArray, 0, sz);
-                            List<string> certs = netFteo.IO.CryptographyWrapper.DisplayCerts(sigAsArray);
+                            List<string> certs = netFteo.Cryptography.CryptographyWrapper.DisplayCerts(sigAsArray);
                             if (certs != null)
                             {
                                 foreach (string SubjectName in certs)
@@ -265,7 +265,7 @@ namespace XMLReaderCS
         {
             if (listView_certs.FocusedItem != null)
             {
-                X509Certificate2 x509 = netFteo.IO.CryptographyWrapper.GetCertBySerial(listView_certs.FocusedItem.Tag.ToString());
+                X509Certificate2 x509 = netFteo.Cryptography.CryptographyWrapper.GetCertBySerial(listView_certs.FocusedItem.Tag.ToString());
                 if (x509 != null)
                 {
                     X509Certificate2UI.DisplayCertificate(x509);

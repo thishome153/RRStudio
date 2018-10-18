@@ -541,14 +541,14 @@ namespace netFteo.XML
                 return null;
         }
 
+
         /// <summary>
-        /// Select node child by ChildName.
-        /// Also checked namespacing
+        /// Select node child by ChildName. Instead of simple form node[ChildName], that is not safe.
+        /// Also checked namespacing (Prefix of LocalName e.t.c)
         /// </summary>
         /// <param name="node"></param>
         /// <param name="ChildName"></param>
-        /// <returns></returns>
-        /// 
+        /// <returns></returns
         public static XmlNode SelectNodeChild(XmlNode node, string ChildName)
 
         {
@@ -574,11 +574,25 @@ namespace netFteo.XML
         }
 
 
-        public static string SelectNodeChildValue(XmlNode node, string ChildName) => SelectNodeChild(node, ChildName).FirstChild.Value;
-   
+        /// <summary>
+        /// Select node child .FirstChild.Value by ChildName. 
+        /// Also checked namespacing
+        /// </summary>
+        /// <remarks>Instead of simple form node[ChildName], that is not safe.</remarks>
+        /// <param name="node"></param>
+        /// <param name="ChildName"></param>
+        /// <returns>if fail, return "", not null</returns>
+        public static string SelectNodeChildValue(XmlNode node, string ChildName)
+        {
+            return SelectNodeChild(node, ChildName) != null ? SelectNodeChild(node, ChildName).FirstChild.Value : "";
+        }
+
         public static bool NodeExist(XmlDocument xmldoc, string Xpath)
         {
 
+            return Parse_Node(xmldoc, Xpath) != null ? true : false;
+            //previous form: 
+            /*
             XmlNode recnode = Parse_Node(xmldoc, Xpath);
             if (recnode != null)
             {
@@ -586,6 +600,8 @@ namespace netFteo.XML
             }
             else
                 return false;
+                */
+
         }
 
     }

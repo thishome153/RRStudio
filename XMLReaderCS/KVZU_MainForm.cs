@@ -2641,11 +2641,8 @@ namespace XMLReaderCS
                     LV.Items.Clear();
                     LV.Controls.Clear();
 
-                    //Отрисуем и отлистаем ПД:
-
+                    //Отрисуем и отлистаем ПД (not for contours):
                     EsToListView(listView1, P.EntitySpatial, P.id);
-                    if (P.Contours != null)
-                        EsToListView(listView1, P.Contours, P.id);
 
                     ListViewItem LViCN = new ListViewItem();
                     if (P.CN != null)
@@ -3182,7 +3179,13 @@ namespace XMLReaderCS
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 PropertiesToListView(listView_Properties, O);
-
+                
+                if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
+                    {
+                    TMyParcel parcel = (TMyParcel)O;
+                    if (parcel.Contours!= null)
+                    EZPEntryListToListView(listView1, parcel.Contours.AsList());
+                }
             }
 
             if (STrN.Name.Contains("ZNode"))

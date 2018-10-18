@@ -1375,17 +1375,19 @@ namespace RRTypes.CommonCast
                 }
             }
             return EntSpat;
-
-            return null;
         }
 
         public static TPolygonCollection ES_ZU(MP_V06.tNewContourCollection ESs)
         {
             TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
             foreach (MP_V06.tNewContour item in ESs)
-                res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
+            {
+             TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
+                collItem.AreaValue = item.Area.Area;
+            }
             return res;
         }
+
 
         /// <summary>
         /// Разбор юнита (например  - Точки) 
@@ -1759,6 +1761,7 @@ namespace RRTypes.CommonParsers
                         MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
                     if (MP.Package.FormParcels.NewParcel[i].LandUse != null)
                         MainObj.Landuse.Land_Use = MP.Package.FormParcels.NewParcel[i].LandUse.LandUse.ToString();
+
                     if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
                         MainObj.Contours = RRTypes.CommonCast.CasterZU.ES_ZU(MP.Package.FormParcels.NewParcel[i].Contours);
                     if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
@@ -1815,11 +1818,14 @@ namespace RRTypes.CommonParsers
                         {
                             TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
                                                                             MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
+                            NewCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Area.Area;
                         }
+
                         for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
                         {
                             TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
                                                                             MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
+                            NewCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].Area.Area;
                         }
                     }
 
@@ -1905,41 +1911,42 @@ namespace RRTypes.CommonParsers
                 res.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
                 res.Comments += ("\n");
                 res.Comments += (MP.Conclusion);
+                /*
                 res.Comments += "<br>" +
                                        MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy") + "<br>" +
                                        MP.GeneralCadastralWorks.Contractor.FamilyName + " " +
                                        MP.GeneralCadastralWorks.Contractor.FirstName + " " +
                                        MP.GeneralCadastralWorks.Contractor.Patronymic + "<br>";
+                */
             }
             res.CommentsType = "Заключение КИ";
             res.DocType = "Межевой план";
             res.DocTypeNick = "MP";
             res.Number = MP.GUID;
-            res.Date = MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy");
+            res.Date = MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy").Replace("0:00:00", "date");
             if (MP.GeneralCadastralWorks.Contractor.Organization != null)
             {
                 res.Cert_Doc_Organization = MP.GeneralCadastralWorks.Contractor.Organization.Name +
                                   "  " + MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization;
             }
 
-            res.Appointment = MP.GeneralCadastralWorks.Contractor.Email + " " +
-                       MP.GeneralCadastralWorks.Contractor.NCertificate + " " +
-                       MP.GeneralCadastralWorks.Contractor.Telephone;
+            res.Appointment = MP.GeneralCadastralWorks.Contractor.NCertificate + " " +
+                              MP.GeneralCadastralWorks.Contractor.Telephone;
             res.AppointmentFIO = MP.GeneralCadastralWorks.Contractor.FamilyName + " " +
                              MP.GeneralCadastralWorks.Contractor.FirstName + " " +
-                             MP.GeneralCadastralWorks.Contractor.Patronymic;
+                             MP.GeneralCadastralWorks.Contractor.Patronymic + "\r"+
+                             MP.GeneralCadastralWorks.Contractor.Email;
 
 
             res.Contractors.Add(
                        new TEngineerOut()
                        {
-                           Date = MP.GeneralCadastralWorks.DateCadastral.ToString(),
+                           Date = MP.GeneralCadastralWorks.DateCadastral.ToString().Replace("0:00:00", ""),
                            FamilyName = MP.GeneralCadastralWorks.Contractor.FamilyName,
                            FirstName = MP.GeneralCadastralWorks.Contractor.FirstName,
                            Patronymic = MP.GeneralCadastralWorks.Contractor.Patronymic,
                            NCertificate = MP.GeneralCadastralWorks.Contractor.NCertificate,
                            Email = MP.GeneralCadastralWorks.Contractor.Email,
-
                            Organization_Name = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.Name : "",
                            AddressOrganization = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization : ""
 
@@ -1992,9 +1999,10 @@ namespace RRTypes.CommonParsers
                     Patronymic = GW.Contractor.Patronymic,
                     NCertificate = GW.Contractor.NCertificate,
                     Email = GW.Contractor.Email,
+                    Date = GW.DateCadastral.ToString().Replace("0:00:00",""),
                     Organization_Name = GW.Contractor.Organization != null ? GW.Contractor.Organization.Name : "",
                     AddressOrganization = GW.Contractor.Organization != null ? GW.Contractor.Organization.AddressOrganization : ""
-
+                    
                 });
 
 
@@ -2038,12 +2046,13 @@ namespace RRTypes.CommonParsers
                 fi.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
                 fi.Comments += ("\n");
                 fi.Comments += (Conclusion);
+                /*
                 fi.Comments += "<br>" +
                                        GW.DateCadastral.ToString("dd.MM.yyyy") + "<br>" +
                                        GW.Contractor.FamilyName + " " +
                                        GW.Contractor.FirstName + " " +
                                        GW.Contractor.Patronymic + "<br>";
-
+                                       */
             }
 
         }
@@ -2352,7 +2361,6 @@ namespace RRTypes.CommonParsers
                                 TMyPolygon NewCont = MainObj.Contours.AddPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                       parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
                                                                       contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
-
                                 res.MifPolygons.Add(NewCont);
                             }
                         }
@@ -2528,7 +2536,7 @@ namespace RRTypes.CommonParsers
                     eng.NCertificate = netFteo.XML.XMLWrapper.SelectNodeChildValue(contr, "NCertificate"); 
                     System.Xml.XmlNode NameNode = netFteo.XML.XMLWrapper.SelectNodeChild(netFteo.XML.XMLWrapper.SelectNodeChild(contr, "Organization"), "Name");
                     if (NameNode != null)
-                        eng.Organization_Name = NameNode.FirstChild.Value;
+                        eng.Organization_Name = netFteo.XML.XMLWrapper.SelectNodeChildValue(NameNode, "Name"); //NameNode.FirstChild.Value;
                     res.Contractors.Add(eng);
 
                 }
