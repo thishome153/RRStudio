@@ -587,6 +587,12 @@ namespace netFteo.XML
             return SelectNodeChild(node, ChildName) != null ? SelectNodeChild(node, ChildName).FirstChild.Value : "";
         }
 
+        /// <summary>
+        /// Check if node exist
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="Xpath">xpath in xpath form</param>
+        /// <returns></returns>
         public static bool NodeExist(XmlDocument xmldoc, string Xpath)
         {
 
