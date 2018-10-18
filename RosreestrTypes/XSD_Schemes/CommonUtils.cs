@@ -1939,9 +1939,11 @@ namespace RRTypes.CommonParsers
                            Patronymic = MP.GeneralCadastralWorks.Contractor.Patronymic,
                            NCertificate = MP.GeneralCadastralWorks.Contractor.NCertificate,
                            Email = MP.GeneralCadastralWorks.Contractor.Email,
-                           Organization_Name = MP.GeneralCadastralWorks.Contractor.Organization.Name,
-                           AddressOrganization = MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization
-                       } );
+
+                           Organization_Name = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.Name : "",
+                           AddressOrganization = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization : ""
+
+                       });
     
 
 
@@ -1990,8 +1992,9 @@ namespace RRTypes.CommonParsers
                     Patronymic = GW.Contractor.Patronymic,
                     NCertificate = GW.Contractor.NCertificate,
                     Email = GW.Contractor.Email,
-                    Organization_Name = GW.Contractor.Organization.Name,
-                    AddressOrganization = GW.Contractor.Organization.AddressOrganization
+                    Organization_Name = GW.Contractor.Organization != null ? GW.Contractor.Organization.Name : "",
+                    AddressOrganization = GW.Contractor.Organization != null ? GW.Contractor.Organization.AddressOrganization : ""
+
                 });
 
 
