@@ -5,6 +5,6 @@ of cadingeneer work (and him customers, of coarse).
 This is my workspace about my skils "Cadastral ingeneer".
 
 Main purpose - parse several datafiles of rosreestr.ru (xml of several types, namespaces, versions).
-Background purpose - help work for self, and keep up my skils in these directions and for .NET of corse.
+Background purpose - help work for self, and keep up my skils in these directions and for .NET of coarse.
 
 
