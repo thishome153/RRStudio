@@ -339,9 +339,26 @@ namespace GKNData
             data = new DataTable();
             da = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
                                       " order by blocks.block_kn asc", conn);
-           // cb = new MySqlCommandBuilder(da);
 
-            da.Fill(data);
+
+            //da.Fill(data);
+
+            var dataReader = da.SelectCommand.ExecuteReader();
+            int fld = 0;
+            toolStripProgressBar1.Maximum = 200; // TODO ??? 
+
+            while (data.Columns.Count != dataReader.FieldCount)
+            {
+
+                data.Columns.Add(fld++.ToString());
+                    }
+            while (dataReader.Read())
+            {
+                data.Rows.Add(dataReader);
+                // Update progress view..
+                toolStripProgressBar1.Value++;
+            }
+
 
             StatusLabel_AllMessages.Text = "Кварталов: "+ data.Rows.Count;
             // z.b.: Доступ к полям:
