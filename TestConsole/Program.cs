@@ -24,7 +24,7 @@ namespace TestConsole
             System.Net.IPAddress addr = new System.Net.IPAddress(new byte[] { 127, 0, 0, 1 });
             System.Net.Sockets.TcpListener srv = new System.Net.Sockets.TcpListener(addr, 3306);
             srv.Start();
-            Console.WriteLine("server started:\n" + srv.Server.Connected.ToString() + "\n\n");
+            Console.WriteLine("TCP internal server started:\n" + srv.Server.Connected.ToString() + "\n\n");
 
 
             var choice = Convert.ToInt32(Console.ReadLine());
