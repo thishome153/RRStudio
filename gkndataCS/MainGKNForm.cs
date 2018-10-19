@@ -344,7 +344,14 @@ namespace GKNData
             //da.Fill(data);
 
             var dataReader = da.SelectCommand.ExecuteReader();
-            data.Columns.Add(dataReader.FieldCount);
+            int fld = 0;
+            toolStripProgressBar1.Maximum = 200; // TODO ??? 
+
+            while (data.Columns.Count != dataReader.FieldCount)
+            {
+
+                data.Columns.Add(fld++.ToString());
+                    }
             while (dataReader.Read())
             {
                 data.Rows.Add(dataReader);
