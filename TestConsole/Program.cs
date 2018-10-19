@@ -11,7 +11,7 @@ namespace TestConsole
         {
 
           ///TODO kill  System.Web.Script.Serialization.JavaScriptSerializer sr;
-          // and so goon:
+
             var instances = Utilities.GetNetworkInterfaces();
             Console.WriteLine("All available network interfaces:\n");
 
