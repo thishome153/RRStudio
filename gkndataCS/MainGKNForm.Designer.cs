@@ -32,15 +32,16 @@ namespace GKNData
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel_SubRf_CN = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel_AllMessages = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel_CurrentItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusLabel_DBName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Connect = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +72,6 @@ namespace GKNData
             this.panel1 = new System.Windows.Forms.Panel();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -133,6 +133,13 @@ namespace GKNData
             this.StatusLabel_DBName.Name = "StatusLabel_DBName";
             this.StatusLabel_DBName.Size = new System.Drawing.Size(180, 17);
             this.StatusLabel_DBName.Text = "::";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(50, 16);
+            this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.toolStripProgressBar1.Value = 50;
             // 
             // menuStrip1
             // 
@@ -267,12 +274,12 @@ namespace GKNData
             this.treeView1.ImageList = this.Tree_imageList;
             this.treeView1.Location = new System.Drawing.Point(0, 49);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "Node1";
-            treeNode4.Name = "Node0";
-            treeNode4.Text = "Node0";
+            treeNode1.Name = "Node1";
+            treeNode1.Text = "Node1";
+            treeNode2.Name = "Node0";
+            treeNode2.Text = "Node0";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4});
+            treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowNodeToolTips = true;
             this.treeView1.Size = new System.Drawing.Size(710, 334);
@@ -414,13 +421,6 @@ namespace GKNData
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(50, 16);
-            this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.toolStripProgressBar1.Value = 50;
-            // 
             // MainGKNForm
             // 
             this.AllowDrop = true;
@@ -437,6 +437,7 @@ namespace GKNData
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(650, 400);
             this.Name = "MainGKNForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ГКН Дата";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainGKNForm_DragDrop);

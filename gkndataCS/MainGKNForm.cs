@@ -344,14 +344,24 @@ namespace GKNData
             //da.Fill(data);
 
             var dataReader = da.SelectCommand.ExecuteReader();
-            int fld = 0;
-            toolStripProgressBar1.Maximum = 200; // TODO ??? 
 
-            while (data.Columns.Count != dataReader.FieldCount)
+            var columns = new List<string>();
+
+            for (int i = 0; i < dataReader.FieldCount; i++)
             {
+                DataColumn dc = new DataColumn(dataReader.GetName(i));
+                dc.DataType = dataReader.GetFieldType(i);
+                data.Columns.Add(dc);
+            }
 
-                data.Columns.Add(fld++.ToString());
-                    }
+            foreach (DataColumn field in data.Columns)
+            {
+                string FName = field.ColumnName;
+            }
+
+
+            toolStripProgressBar1.Maximum = 250;// data.Rows.Count; // TODO ??? 
+   
             while (dataReader.Read())
             {
                 data.Rows.Add(dataReader);
@@ -359,6 +369,7 @@ namespace GKNData
                 toolStripProgressBar1.Value++;
             }
 
+            
 
             StatusLabel_AllMessages.Text = "Кварталов: "+ data.Rows.Count;
             // z.b.: Доступ к полям:
