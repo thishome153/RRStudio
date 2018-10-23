@@ -341,7 +341,7 @@ namespace GKNData
                                       " order by blocks.block_kn asc", conn);
 
 
-            //da.Fill(data);
+            // da.Fill(data);
 
             var dataReader = da.SelectCommand.ExecuteReader();
 
@@ -349,9 +349,7 @@ namespace GKNData
 
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
-                DataColumn dc = new DataColumn(dataReader.GetName(i));
-                dc.DataType = dataReader.GetFieldType(i);
-                data.Columns.Add(dc);
+              data.Columns.Add(new DataColumn(dataReader.GetName(i), dataReader.GetFieldType(i)));
             }
 
             foreach (DataColumn field in data.Columns)
@@ -364,7 +362,7 @@ namespace GKNData
    
             while (dataReader.Read())
             {
-                data.Rows.Add(dataReader);
+                data.Rows.Add(dataReader[0]);
                 // Update progress view..
                 toolStripProgressBar1.Value++;
             }

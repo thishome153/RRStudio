@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Pkcs;
 
-// CADES extentions from Microsoft CSP:
+// Crypto extentions Microsoft CSP: Capi COM
 using CAPICOM;
 
 
