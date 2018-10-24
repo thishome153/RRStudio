@@ -2154,20 +2154,21 @@ namespace RRTypes.CommonParsers
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "ТП v3";
                 TMyRealty OKS = null;
-                //Здание, постановка на ГКУ
+                //Сооружение, постановка на ГКУ
                 if (TP.Construction.Package.NewConstructions != null)
                 {
-                    if (TP.Construction.Package.NewConstructions.Count == 1)
+                    foreach (V03_TP.tNewConstruction constr in TP.Construction.Package.NewConstructions)
                     {
                         OKS = new TMyRealty("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
-                        OKS.Name = TP.Construction.Package.NewConstructions[0].Name;
-                        OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Construction.Package.NewConstructions[0].Address);
-                        OKS.CadastralBlock = TP.Construction.Package.NewConstructions[0].CadastralBlocks[0];
-                        OKS.ParentCadastralNumbers.AddRange(TP.Construction.Package.NewConstructions[0].ParentCadastralNumbers);
-                        foreach (RRTypes.V03_TP.tKeyParameter param in TP.Construction.Package.NewConstructions[0].KeyParameters)
+                        OKS.Name = constr.Name;
+                        OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(constr.Address);
+                        OKS.CadastralBlock = constr.CadastralBlocks[0];
+                        if (constr.ParentCadastralNumbers != null)
+                        OKS.ParentCadastralNumbers.AddRange(constr.ParentCadastralNumbers);
+                        foreach (RRTypes.V03_TP.tKeyParameter param in constr.KeyParameters)
                             OKS.Construction.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
-                        OKS.Construction.AssignationName = TP.Construction.Package.NewConstructions[0].AssignationName; ;
-                        OKS.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Construction.Package.NewConstructions[0].EntitySpatial);
+                        OKS.Construction.AssignationName = constr.AssignationName; ;
+                        OKS.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", constr.EntitySpatial);
                     }
                 }
 

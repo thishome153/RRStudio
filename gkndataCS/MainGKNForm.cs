@@ -337,32 +337,23 @@ namespace GKNData
             CadBloksList.DistrictName = distr_id.ToString();
 
             data = new DataTable();
-            da = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
+            MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
                                       " order by blocks.block_kn asc", conn);
-
 
             // da.Fill(data);
 
-            var dataReader = da.SelectCommand.ExecuteReader();
-
-            var columns = new List<string>();
-
+            var dataReader = adapter.SelectCommand.ExecuteReader();
+    
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
               data.Columns.Add(new DataColumn(dataReader.GetName(i), dataReader.GetFieldType(i)));
             }
 
-            foreach (DataColumn field in data.Columns)
-            {
-                string FName = field.ColumnName;
-            }
-
-
             toolStripProgressBar1.Maximum = 250;// data.Rows.Count; // TODO ??? 
-   
+            int rowsCount = 0;
             while (dataReader.Read())
             {
-                data.Rows.Add(dataReader[0]);
+                data.Rows.Add();
                 // Update progress view..
                 toolStripProgressBar1.Value++;
             }
@@ -387,6 +378,8 @@ namespace GKNData
             }
             return CadBloksList;
         }
+
+
 
         //Одуренная поцедура Заполенния TreeView Полями Класса TCadastralBlockList:
         private void ListBlockListTreeView(netFteo.Spatial.TMyBlockCollection List, TreeView WhatTree)
