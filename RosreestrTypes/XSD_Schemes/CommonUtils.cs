@@ -1602,6 +1602,49 @@ namespace RRTypes.CommonCast
         }
         #endregion
 
+
+
+        #region-----------------Конвертация из ОИПД КПЗУ в ОИПД Fteo.Spatial
+        public static netFteo.Spatial.TMyPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
+        {
+            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }
+
+
+        #endregion
+
+
         #region Cast KPZU V06
 
         //TODO - перенос в CommonUtils
@@ -1973,8 +2016,6 @@ namespace RRTypes.CommonParsers
             return res;
         }
         #endregion
-
-
 
         #region  Разбор TP 03
 
@@ -2963,14 +3004,125 @@ namespace RRTypes.CommonParsers
         }
         #endregion
 
+        #region  Разбор KPZU 5.0.8
+        public netFteo.XML.FileInfo ParseKPZU508(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+        {
+            netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+            RRTypes.kpzu.KPZU kp = (RRTypes.kpzu.KPZU)Desearialize<RRTypes.kpzu.KPZU>(xmldoc);
+            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            //----------
+            for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
+            {
+
+                res.MyBlocks.CSs.Add(new TCoordSystem(kp.CoordSystems[i].Name, kp.CoordSystems[i].CsId));
+
+            }
+
+            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
+            MainObj.CadastralBlock = kp.Parcel.CadastralBlock;
+            Bl.CN = kp.Parcel.CadastralBlock;
+            MainObj.SpecialNote = kp.Parcel.SpecialNote;
+            res.CommentsType = "Особые отметки";
+            //res.Comments    = kp.Parcel.SpecialNote;
+            MainObj.AreaGKN = kp.Parcel.Area.Area;
+            MainObj.Utilization.UtilbyDoc = kp.Parcel.Utilization.ByDoc;
+            if (kp.Parcel.Utilization.UtilizationSpecified)
+                MainObj.Utilization.Untilization = kp.Parcel.Utilization.Utilization.ToString();
+            MainObj.DateCreated = kp.Parcel.DateCreated.ToString("dd.MM.yyyy");
+            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
+            MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kp.Parcel.Location);
+            MainObj.Rights = EGRP_v60Utils.ParseEGRRights(xmldoc);
+            MainObj.Encumbrances = KPZU_v05Utils.KPZUEncumstoFteoEncums(kp.Parcel.Encumbrances);
+            if (kp.Parcel.PrevCadastralNumbers != null)
+                MainObj.PrevCadastralNumbers.AddRange(kp.Parcel.PrevCadastralNumbers);
+            if (kp.Parcel.AllOffspringParcel != null) //Кадастровые номера всех земельных участков, образованных из данного земельного участка (строка 17.4)
+                MainObj.AllOffspringParcel.AddRange(kp.Parcel.AllOffspringParcel);
+            if (kp.Parcel.InnerCadastralNumbers != null)
+                foreach (string s in kp.Parcel.InnerCadastralNumbers)
+                    MainObj.InnerCadastralNumbers.Add(s);
+
+            //OIPD:
+            //Землепользование
+
+            if (kp.Parcel.EntitySpatial != null)
+                if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
+                {
+                    MainObj.EntitySpatial = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial);
+                    res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+                }
+            //Многоконтурный
+            if (kp.Parcel.Contours != null)
+            {
+
+                for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
+                {
+                    res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                                                         kp.Parcel.Contours[ic].NumberRecord + ")",
+                                                         kp.Parcel.Contours[ic].EntitySpatial));
+                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                                                          kp.Parcel.Contours[ic].NumberRecord + ")",
+                                                          kp.Parcel.Contours[ic].EntitySpatial));
+                    NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
+                }
+            }
+            //ЕЗП:
+            if (kp.Parcel.CompositionEZ.Count > 0)
+            {
+                for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
+                {
+                    MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                        kp.Parcel.CompositionEZ[i].Area.Area,
+                        6, //для сведений ЕГРН это всегда "учтеный"
+                        CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                                                                     kp.Parcel.CompositionEZ[i].EntitySpatial));
+
+
+                    res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                                                          kp.Parcel.CompositionEZ[i].EntitySpatial));
+                }
+            }
+            //Части 
+            if (kp.Parcel.SubParcels.Count > 0)
+            {
+                for (int i = 0; i <= kp.Parcel.SubParcels.Count - 1; i++)
+                {
+                    TmySlot Sl = MainObj.AddSubParcel(kp.Parcel.SubParcels[i].NumberRecord);
+                    Sl.AreaGKN = kp.Parcel.SubParcels[i].Area.Area.ToString();
+
+                    if (kp.Parcel.SubParcels[i].Encumbrance != null)
+                        Sl.Encumbrance = RRTypes.KPZU_v05Utils.KVZUEncumtoFteoEncum(kp.Parcel.SubParcels[i].Encumbrance);
+
+                    if (kp.Parcel.SubParcels[i].EntitySpatial != null)
+                    {
+                        TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
+                                                                               kp.Parcel.SubParcels[i].EntitySpatial);
+                        Sl.EntSpat.ImportPolygon(SlEs);
+                        res.MifPolygons.Add(SlEs);
+                    }
+
+                }
+            }
+
+            //Прикрутим сюды парсинг через XPATH ЕГРН
+            MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
+            res.MyBlocks.Blocks.Add(Bl);
+            res.DocTypeNick = "КПЗУ";
+            res.DocType = "Кадастровый паспорт земельного участка";
+            res.Version = "5.0.8";
+            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            Parse_Contractors(xmldoc, res);
+            return res;
+        }
+            #endregion
+
         #region  Разбор KPZU 6.0.1 (как бы ЕГРН)
-        /// <summary>
-        /// Разбор выписка ЕГРН
-        /// </summary>
-        /// <param name="fi"></param>
-        /// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1</param>
-        /// <returns></returns>
-        public netFteo.XML.FileInfo ParseKPZU(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+            /// <summary>
+            /// Разбор выписка ЕГРН
+            /// </summary>
+            /// <param name="fi"></param>
+            /// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1</param>
+            /// <returns></returns>
+            public netFteo.XML.FileInfo ParseKPZU(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
         {
             netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
             RRTypes.kpzu06.KPZU kp = (RRTypes.kpzu06.KPZU)Desearialize<RRTypes.kpzu06.KPZU>(xmldoc);
@@ -3077,8 +3229,6 @@ namespace RRTypes.CommonParsers
             return res;
         }
         #endregion
-
-
 
         #region разбор КВ KVZU_06
         /*-----------------------------------------------------------------------------------------------------------*/
@@ -3223,7 +3373,6 @@ namespace RRTypes.CommonParsers
         }
 
         #endregion
-
 
         #region  Разбор KVZU 7.
         /// <summary>
@@ -3692,6 +3841,7 @@ namespace RRTypes.CommonParsers
                     Bl.CN = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/@egrp:Scope", nsmgr).Value.ToString();
                     MainObj.Location.Address = new netFteo.Rosreestr.TAddress();
                     MainObj.Location.Address.Note = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:Address/egrp:Content", nsmgr).FirstChild.Value.ToString();
+                    if (ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:GroundCategoryText", nsmgr) != null)
                     MainObj.Utilization.UtilbyDoc = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:GroundCategoryText", nsmgr).FirstChild.Value.ToString();
                     MainObj.AreaGKN = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:Area/egrp:AreaText", nsmgr).FirstChild.Value.ToString();
                     //Прикрутим сюды парсинг через XPATH ЕГРН

@@ -303,10 +303,15 @@ namespace XMLReaderCS
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
                 {
+                    /*
                  tabPage1.Text = "КП 6";
                 XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpzu.KPZU));
                 KpZUV05 = (RRTypes.kpzu.KPZU)serializer.Deserialize(stream);
                 ParseKPZU(KpZUV05);
+                    */
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                    this.DocInfo = parser.ParseKPZU508(this.DocInfo, xmldoc);
+
                 }
 
                 // KPZU_V6 01  - ЕГРН
@@ -1012,6 +1017,7 @@ namespace XMLReaderCS
         #endregion
 
         #region разбор Кадастрового паспорта  KPZU V05
+        /*
         private void ParseKPZU(RRTypes.kpzu.KPZU kp)
         {
             TMyCadastralBlock Bl = new TMyCadastralBlock();
@@ -1047,8 +1053,10 @@ namespace XMLReaderCS
                 else LVi.SubItems.Add("-");
                 listView_Contractors.Items.Add(LVi);
             }
+
             TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
             MainObj.CadastralBlock = kp.Parcel.CadastralBlock;
+            Bl.CN = kp.Parcel.CadastralBlock;
             MainObj.SpecialNote = kp.Parcel.SpecialNote;
             MainObj.Utilization.UtilbyDoc = kp.Parcel.Utilization.ByDoc;
             MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
@@ -1122,11 +1130,11 @@ namespace XMLReaderCS
 
 
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+          //ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
         }
 
 
-  
+  */
       
 
         #endregion
@@ -3715,6 +3723,22 @@ namespace XMLReaderCS
                 }
             }
 
+            //"OKSsNode"
+            if (TV_Parcels.SelectedNode.Name.Contains("OKSsNode"))
+            {
+                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetRealtyEs();
+                if (Plc != null)
+                {
+                    saveFileDialog1.FileName = "OKSsNode";
+                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                    {
+
+                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Plc, ScaleRaduis);
+                    }
+                }
+            }
+
+
             if (TV_Parcels.SelectedNode.Name.Contains("OMSPoints"))
             {
                 if (this.DocInfo.MyBlocks.OMSPoints.PointCount > 0)
@@ -4157,6 +4181,19 @@ namespace XMLReaderCS
                     TR.SaveAsFixosoftTXT2018(Path.GetDirectoryName(saveFileDialog1.FileName) + 
                                              "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName), this.DocInfo.MifOKSPolygons, Encoding.Unicode);
                 }
+
+            //"OKSsNode"
+            if (TV_Parcels.SelectedNode.Name.Contains("OKSsNode"))
+            {
+                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetRealtyEs();
+                if (Plc != null)
+                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                    {
+
+                        netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+                        TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, Plc, Encoding.Unicode);
+                    }
+            }
 
             if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
             {

@@ -72,6 +72,7 @@ namespace GKNData
             this.panel1 = new System.Windows.Forms.Panel();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.loadingCircle1 = new MRG.Controls.UI.LoadingCircle();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -137,7 +138,7 @@ namespace GKNData
             // toolStripProgressBar1
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(50, 16);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.toolStripProgressBar1.Value = 50;
             // 
@@ -421,12 +422,29 @@ namespace GKNData
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // loadingCircle1
+            // 
+            this.loadingCircle1.Active = false;
+            this.loadingCircle1.Color = System.Drawing.Color.DarkGray;
+            this.loadingCircle1.InnerCircleRadius = 5;
+            this.loadingCircle1.Location = new System.Drawing.Point(333, 216);
+            this.loadingCircle1.Name = "loadingCircle1";
+            this.loadingCircle1.NumberSpoke = 12;
+            this.loadingCircle1.OuterCircleRadius = 11;
+            this.loadingCircle1.RotationSpeed = 100;
+            this.loadingCircle1.Size = new System.Drawing.Size(75, 23);
+            this.loadingCircle1.SpokeThickness = 2;
+            this.loadingCircle1.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.loadingCircle1.TabIndex = 11;
+            this.loadingCircle1.Text = "loadingCircle1";
+            // 
             // MainGKNForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 405);
+            this.Controls.Add(this.loadingCircle1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.toolStrip1);
@@ -439,6 +457,7 @@ namespace GKNData
             this.Name = "MainGKNForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ГКН Дата";
+            this.Load += new System.EventHandler(this.MainGKNForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainGKNForm_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainGKNForm_DragEnter);
@@ -494,6 +513,7 @@ namespace GKNData
         private System.Windows.Forms.TextBox SearchTextBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private MRG.Controls.UI.LoadingCircle loadingCircle1;
     }
 }
 

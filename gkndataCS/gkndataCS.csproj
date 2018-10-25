@@ -164,6 +164,12 @@
       <DependentUpon>DistrictForm.cs</DependentUpon>
     </Compile>
     <Compile Include="gkndataThreads.cs" />
+    <Compile Include="LoadingCircle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LoadingCircle.designer.cs">
+      <DependentUpon>LoadingCircle.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainGKNForm.cs">
       <SubType>Form</SubType>
     </Compile>

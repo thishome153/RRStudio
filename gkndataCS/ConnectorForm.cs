@@ -16,6 +16,7 @@ namespace GKNData
     {
         public TAppCfgRecord Cfg;
         public MySqlConnection conn;
+        public MySqlConnection conn2;
         public ConnectorForm()
         {
             InitializeComponent();
@@ -101,6 +102,10 @@ namespace GKNData
         public int District_id;
         public string District_KN;
         public string District_Name;
+        /// <summary>
+        /// Количество кварталов в районе
+        /// </summary>
+        public int BlockCount;
         public DialogResult Result;
 
         public TAppCfgRecord()

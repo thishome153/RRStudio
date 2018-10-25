@@ -64,7 +64,9 @@ namespace GKNData
                     while (reader.Read())
                     {
                         
-                        myDataGridView1.Rows.Add(reader["district_id"].ToString(),reader["district_kn"].ToString(), reader["district_Name"].ToString());
+                        myDataGridView1.Rows.Add(reader["district_id"].ToString(),
+                            reader["district_kn"].ToString(),
+                            reader["district_Name"].ToString());
                     }
                     reader.Close();
                 }

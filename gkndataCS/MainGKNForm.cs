@@ -61,6 +61,8 @@ namespace GKNData
                     StatusLabel_DBName.Image = GKNData.Properties.Resources.accept;
                     StatusLabel_SubRf_CN.Text = CF.Cfg.SubRF_KN + ":" + CF.Cfg.District_KN;
                     StatusLabel_SubRf_CN.ToolTipText = CF.Cfg.SubRF_Name + ":" + CF.Cfg.District_Name;
+                    toolStripProgressBar1.ToolTipText = "Всего " + CF.Cfg.BlockCount.ToString() + " записей";
+                    StatusLabel_CurrentItem.ToolTipText = "Всего " + CF.Cfg.BlockCount.ToString() + " записей";
                 }
                 else
                 {
@@ -71,7 +73,25 @@ namespace GKNData
             }
         }
 
-        private bool GoConnect()
+        /// <summary>
+        /// Операции при загрузке/перезагрузке районов/кварталов
+        /// </summary>
+        /// <param name="tv"></param>
+        private void ConnectOps(TreeView tv)
+        {
+
+            tv.BackColor = Color.Aquamarine;
+            tv.Nodes.Clear();
+            CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
+            Application.DoEvents();
+            CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
+            ListBlockListTreeView(CadBloksList, tv);
+            tv.BackColor = Color.White;
+            loadingCircle1.Visible = false;
+            loadingCircle1.Active = false;
+        }
+
+        private bool ConnectGo()
         {
             CF.Cfg.CfgRead(); // Загрyзимся из реестра
           //  if (CF.ShowDialog() == DialogResult.Yes)
@@ -84,26 +104,29 @@ namespace GKNData
 
                 try
                 {
+                    loadingCircle1.Visible = true;
+                    loadingCircle1.BackColor = Color.Aquamarine;
+                    loadingCircle1.Active = true;
+
                     CF.conn = new MySqlConnection(connStr);
                     CF.conn.Open();
+                    CF.conn2 = new MySqlConnection(connStr);
+                    CF.conn2.Open();
 
                     if (CF.conn.State == ConnectionState.Open)
                     {
-                        //CF.conn.ChangeDatabase(CF.Cfg.DatabaseName);
-                       // // if (SelectDistrict(CF.Cfg)) //Загрузим прошлый регион/район
-                        {
-                            CadBloksList = LoadBlockList(CF.conn, CF.Cfg.District_id);
-                            ListBlockListTreeView(CadBloksList, treeView1);
-                            this.treeView1.BackColor = Color.White;
-                        }
-                        // else
-                        // {
-                        //     StatusLabel_DBName.Text = "";
-                        // }
+                        ConnectOps(treeView1);
                         return true;
                     }
                     else
+                    {
+                        loadingCircle1.Active = false;
+                        loadingCircle1.BackColor = Color.AliceBlue;
+                        Application.DoEvents();
+                        loadingCircle1.Active = true;
+                        this.Update();
                         this.treeView1.BackColor = Color.DarkRed;
+                    }
                 }
                 catch (MySqlException ex)
                 {
@@ -173,6 +196,7 @@ namespace GKNData
         private bool CheckParcels(MySqlConnection conn, int block_id)
         {
             if (conn == null) return false;
+            /*
             TMyParcelCollection ParcelsList = new TMyParcelCollection();
             data = new DataTable();
             da = new MySqlDataAdapter("SELECT COUNT(*) FROM lottable where lottable.block_id = " + block_id.ToString(),
@@ -180,6 +204,11 @@ namespace GKNData
             da.Fill(data);
             DataRow res = data.Rows[0];
             return (Convert.ToInt32(res[0]) > 0);
+            */
+            MySqlCommand count = new MySqlCommand("SELECT COUNT(*) FROM lottable where lottable.block_id = " + block_id.ToString(), conn);
+            var cntO = count.ExecuteScalar();
+            int cnt = int.Parse(cntO.ToString());
+            return (cnt > 0);
         }
 
 //-------------------------------- Редактируем -------------------------------
@@ -329,43 +358,63 @@ namespace GKNData
        
 
         //Одуренная поцедура Заполенния Полями Таблиц
-        private TMyBlockCollection LoadBlockList(MySqlConnection conn, int distr_id)
+        private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, int distr_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_AllMessages.Text = "Загрузка кварталов.... ";
+            toolStripProgressBar1.Maximum = 0;
+            toolStripProgressBar1.Value = 0;
+
             TMyBlockCollection CadBloksList = new TMyBlockCollection();
             CadBloksList.DistrictName = distr_id.ToString();
 
             data = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
                                       " order by blocks.block_kn asc", conn);
+            MySqlCommand count = new MySqlCommand("SELECT COUNT(*) FROM blocks where blocks.district_id =" + distr_id.ToString() , conn);
+            int cnt = int.Parse(count.ExecuteScalar().ToString());
+            toolStripProgressBar1.Maximum = cnt;
+            StatusLabel_AllMessages.Text = "Кварталов: " + cnt.ToString();
 
-            // da.Fill(data);
 
-            var dataReader = adapter.SelectCommand.ExecuteReader();
-    
+            MySqlDataReader dataReader = adapter.SelectCommand.ExecuteReader();
+            
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
               data.Columns.Add(new DataColumn(dataReader.GetName(i), dataReader.GetFieldType(i)));
             }
 
-            toolStripProgressBar1.Maximum = 250;// data.Rows.Count; // TODO ??? 
-            int rowsCount = 0;
-            while (dataReader.Read())
-            {
-                data.Rows.Add();
-                // Update progress view..
-                toolStripProgressBar1.Value++;
-            }
-
             
 
-            StatusLabel_AllMessages.Text = "Кварталов: "+ data.Rows.Count;
+            while (dataReader.Read())
+            {
+                //toolStripProgressBar1.Value = cnt++;
+                toolStripProgressBar1.PerformStep();
+                StatusLabel_AllMessages.Text = toolStripProgressBar1.Value.ToString() + "/" + cnt.ToString();
+                Application.DoEvents();
+                TMyCadastralBlock Block = new TMyCadastralBlock(dataReader["block_kn"].ToString()); // CN
+                Block.id = int.Parse(dataReader["block_id"].ToString());
+                Block.Name = dataReader["block_name"].ToString();
+                 //Загрузка участков - только при expande ??? Но тогда в начае неизвестно
+                Block.HasParcels = CheckParcels(conn2, Block.id);// Запишем только признак наличия ЗУ
+                CadBloksList.Blocks.Add(Block);
+
+                // data.Rows.Add(dataReader);
+                // Update progress view..
+                //cnt++;
+            }
+
+
+
+
             // z.b.: Доступ к полям:
             //foreach (DataColumn column in data.Columns) //values of each column
             //DataColumn Field_CN = data.Columns[1]; //values of column 1
             //DataColumn Field_id = data.Columns[0]; //values of column 1
 
+            //load datatable at once "fill":
+            /* data.Fill(data);
+               StatusLabel_AllMessages.Text = "Кварталов: "+ data.Rows.Count;
             foreach (DataRow row in data.Rows)
             {
                 TMyCadastralBlock Block   = new TMyCadastralBlock(row[1].ToString()); // CN
@@ -376,6 +425,8 @@ namespace GKNData
                 Block.HasParcels = CheckParcels(conn, Block.id);// Запишем только признак наличия ЗУ
                 CadBloksList.Blocks.Add(Block);
             }
+            */
+            dataReader.Close();
             return CadBloksList;
         }
 
@@ -385,7 +436,6 @@ namespace GKNData
         private void ListBlockListTreeView(netFteo.Spatial.TMyBlockCollection List, TreeView WhatTree)
         {
             if (List == null) return;
-            WhatTree.Nodes.Clear();
             WhatTree.BeginUpdate();
             //WhatTree.Nodes.Add(List.DistrictName);
             //insertItem(, WhatTree)
@@ -556,7 +606,7 @@ namespace GKNData
         bool SelectDistrict(TAppCfgRecord CfgRec)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
-            SubRFForm SubSelectfrm = new SubRFForm(CF.conn);
+            SubRFForm SubSelectfrm = new SubRFForm(CF.conn2);
             //SubSelectfrm.StartPosition = FormStartPosition.Manual;
             //SubSelectfrm.Location = new Point(this.Top+10, this.Left+10);
 
@@ -566,18 +616,27 @@ namespace GKNData
                 CfgRec.SubRF_KN = SubSelectfrm.subrf_kn;
                 CfgRec.SubRF_Name = SubSelectfrm.subrf_Name;
 
-                DistrictForm DistrSelectfrm = new DistrictForm(CF.conn, CfgRec.Subrf_id);
+                DistrictForm DistrSelectfrm = new DistrictForm(CF.conn2, CfgRec.Subrf_id);
                 if (DistrSelectfrm.ShowDialog() == DialogResult.Yes)
                 {
+
                     CfgRec.District_id = DistrSelectfrm.district_id;
                     CfgRec.District_KN = DistrSelectfrm.district_kn;
                     CfgRec.District_Name = DistrSelectfrm.district_Name;
                     StatusLabel_SubRf_CN.Text = CfgRec.SubRF_Name + " " + CfgRec.District_Name;
                     CfgRec.CfgWrite();
+                    /*
+                    CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
+                    Application.DoEvents();
+                    CfgRec.BlockCount = CadBloksList.Blocks.Count();
+                    ListBlockListTreeView(CadBloksList, treeView1);
+                    */
+                    ConnectOps(treeView1);
                     return true;
                 }
             }
             return false;
+
         }
 
         private bool Toggle_SearchTextBox(TextBox sender)
@@ -603,19 +662,15 @@ namespace GKNData
         #region Назначенные Обработчики событий
         private void MenuItem_Connect_Click(object sender, EventArgs e)
         {
-            GoConnect();
+            ConnectGo();
         }
         private void Button_Connect_Click(object sender, EventArgs e)
         {
-            GoConnect();
+            ConnectGo();
         }
         private void Button_ChangeSub_Click(object sender, EventArgs e)
         {
-            if (SelectDistrict(CF.Cfg))
-            {
-                CadBloksList = LoadBlockList(CF.conn, CF.Cfg.District_id);
-                ListBlockListTreeView(CadBloksList, treeView1);
-            }
+            SelectDistrict(CF.Cfg);
         }
 
         private void Button_Import_Click(object sender, EventArgs e)
@@ -664,8 +719,7 @@ namespace GKNData
         private void сменитьСубъектToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SelectDistrict(CF.Cfg);
-            CadBloksList = LoadBlockList(CF.conn, CF.Cfg.District_id);
-            ListBlockListTreeView(CadBloksList, treeView1);
+ 
         }
 
         private void Button_Property_Click(object sender, EventArgs e)
@@ -675,7 +729,7 @@ namespace GKNData
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            GoConnect();
+            ConnectGo();
         }
         #endregion
 
@@ -796,6 +850,11 @@ namespace GKNData
             {
               OpenFile(files[0]);
             }
+        }
+
+        private void MainGKNForm_Load(object sender, EventArgs e)
+        {
+           
         }
     }
 }

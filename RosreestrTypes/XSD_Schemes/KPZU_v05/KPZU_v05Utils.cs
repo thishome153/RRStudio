@@ -141,45 +141,6 @@ namespace RRTypes
         }
 
 
-        #region-----------------Конвертация из ОИПД КВЗУ в ОИПД Fteo.Spatial
-        public static netFteo.Spatial.TMyPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
-        {
-            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
-            EntSpat.Definition = Definition;
-            if (ES == null) { return EntSpat; }
-
-
-            //Первый (внешний) контур
-            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-            {
-
-                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
-                EntSpat.AddPoint(Point);
-            }
-            //Внутренние контура
-            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-            {
-                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
-                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-                {
-
-                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
-                    InLayer.AddPoint(Point);
-                }
-            }
-            return EntSpat;
-        }
-
-
-    #endregion
 
     }
 
@@ -229,14 +190,47 @@ namespace RRTypes
                     own.OwnerName = ownrOrg.LastChild.Value;
                 }
 
+                if (cd.SelectSingleNode("egrp:NoOwner", nsmgr) != null)
+                {
+                    own.OwnerName = cd.SelectSingleNode("egrp:NoOwner", nsmgr).LastChild.Value;
+                }
 
-                rt.RegNumber = cd.SelectSingleNode("egrp:Registration/egrp:RegNumber", nsmgr).FirstChild.Value;
-                rt.Name = cd.SelectSingleNode("egrp:Registration/egrp:Name", nsmgr).FirstChild.Value;
-                rt.RegDate = cd.SelectSingleNode("egrp:Registration/egrp:RegDate", nsmgr).FirstChild.Value;
-                rt.Type = cd.SelectSingleNode("egrp:Registration/egrp:Type", nsmgr).FirstChild.Value;
+                
+                if (cd.SelectSingleNode("egrp:Registration", nsmgr) != null)
+                {
+                    rt.RegNumber = cd.SelectSingleNode("egrp:Registration/egrp:RegNumber", nsmgr).FirstChild.Value;
+                    rt.Name = cd.SelectSingleNode("egrp:Registration/egrp:Name", nsmgr).FirstChild.Value;
+                    rt.RegDate = cd.SelectSingleNode("egrp:Registration/egrp:RegDate", nsmgr).FirstChild.Value;
+                    rt.Type = cd.SelectSingleNode("egrp:Registration/egrp:Type", nsmgr).FirstChild.Value;
 
-                if (cd.SelectSingleNode("egrp:Registration/egrp:ShareText", nsmgr) != null)
-                    rt.Desc = cd.SelectSingleNode("egrp:Registration/egrp:ShareText", nsmgr).FirstChild.Value;
+                    if (cd.SelectSingleNode("egrp:Registration/egrp:ShareText", nsmgr) != null)
+                        rt.Desc = cd.SelectSingleNode("egrp:Registration/egrp:ShareText", nsmgr).FirstChild.Value;
+                }
+
+                //Encumbrance
+                if (cd.SelectSingleNode("egrp:Encumbrance", nsmgr) != null)
+                {
+                    netFteo.Rosreestr.TMyEncumbrance enc = new netFteo.Rosreestr.TMyEncumbrance();
+                    enc.RegNumber = cd.SelectSingleNode("egrp:Encumbrance/egrp:RegNumber", nsmgr).FirstChild.Value;
+                    enc.Name = cd.SelectSingleNode("egrp:Encumbrance/egrp:Name", nsmgr).FirstChild.Value;
+                    enc.RegDate = cd.SelectSingleNode("egrp:Encumbrance/egrp:RegDate", nsmgr).FirstChild.Value;
+                    enc.Type = cd.SelectSingleNode("egrp:Encumbrance/egrp:Type", nsmgr).FirstChild.Value;
+                    enc.DurationStarted = cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Started", nsmgr).FirstChild.Value;
+                    enc.DurationStopped = cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Stopped", nsmgr).FirstChild.Value;
+
+                    if (cd.SelectSingleNode("egrp:Encumbrance/egrp:Owner", nsmgr) != null)
+                    {
+                        netFteo.Rosreestr.TMyOwner ownEnc = new netFteo.Rosreestr.TMyOwner("");
+                        if (cd.SelectSingleNode("egrp:Encumbrance/egrp:Owner/egrp:Person", nsmgr) != null)
+                        {
+                           ownEnc.OwnerName = cd.SelectSingleNode("egrp:Encumbrance/egrp:Owner/egrp:Person/egrp:Content", nsmgr).FirstChild.Value;
+                        }
+                        enc.Owners.Add(ownEnc);
+                    }
+
+                           
+                    rt.Encumbrances.Add(enc);
+                }
                 rt.Owners.Add(own);
                 rs.Add(rt);
             }

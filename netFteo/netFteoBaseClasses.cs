@@ -455,6 +455,24 @@ namespace netFteo.Spatial
    
 
     #endregion
+    
+    /// <summary>
+    /// Circle. Just circle
+    /// </summary>
+    public class TCircle : Geometry
+    {
+        /// <summary>
+        /// Radius
+        /// </summary>
+        public double R;
+        public Coordinate Center;
+        public TCircle(double x, double y, double radius)
+        {
+            this.Center.X = x;
+            this.Center.Y = y;
+            this.R = radius;
+        }
+    }
 
     #region  Список точек. Его будем сериализовать в XML для обменов
 
@@ -1717,15 +1735,16 @@ SCAN:
         }
         public string Defintion;
 
-        public TMyPolygon AddPolygon(TMyPolygon poly_)
+        public TMyPolygon AddPolygon(object poly_)
         {
             if (poly_ == null) return null;
-            if (poly_.PointCount == 0) return null;
-
-            //  if ( poly_.Layer_id < 1)
-            //poly_.Layer_id = Gen_id.newId;  // Always New id  - на хера (warum) новый ???
-            this.Add((TMyPolygon)poly_);
-            return poly_;
+            if (poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon"))
+            {
+                this.Add((TMyPolygon)poly_);
+                return (TMyPolygon)poly_;
+            }
+            //"netFteo.Spatial.TPolyLine" ????
+            return null;
         }
 
         public TPolygonCollection AddPolygons(TPolygonCollection polys_)
@@ -3357,12 +3376,43 @@ SCAN:
                         )
                     {
                         if (this.Blocks[i].GKNZones[iz].EntitySpatial != null)
+
                             Res.AddPolygon(this.Blocks[i].GKNZones[iz].EntitySpatial);
                     }
 
                 }
             return Res;
         }
+
+        public TPolygonCollection GetRealtyEs()
+        {
+            TPolygonCollection Res = new TPolygonCollection();
+            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+                for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
+                {
+                  if ((this.Blocks[i].ObjectRealtys[iz].Construction != null) &&
+                        (this.Blocks[i].ObjectRealtys[iz].Construction.ES != null) 
+                        )
+                            Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Construction.ES);
+
+                    if (
+                        (this.Blocks[i].ObjectRealtys[iz].Building != null) &&
+                        (this.Blocks[i].ObjectRealtys[iz].Building.ES != null)
+                        )
+                        Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Building.ES);
+
+                    if (
+                        (this.Blocks[i].ObjectRealtys[iz].Uncompleted    != null) &&
+                        (this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES != null)
+                        )
+                        Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES);
+
+                }
+            return Res;
+        }
+
+
+
         public TMyCadastralBlock GetBlock(int id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
