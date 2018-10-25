@@ -29,6 +29,11 @@ namespace GKNData
             treeView1.BeforeExpand += OnItemexpanding; //Подключаем обработчик раскрытия
             Application.Idle += On_Iddle;
             treeView1.Nodes.Clear();
+            /*
+            MRG.Controls.UI.LoadingCircleToolStripMenuItem trobbler = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            trobbler.Visible = true;
+            toolStrip1.Items.Add(trobbler);
+            */
         #if DEBUG
             this.Text = "ГКН Дата. debug version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Button_Import.Enabled = true;
@@ -80,15 +85,17 @@ namespace GKNData
         private void ConnectOps(TreeView tv)
         {
 
-            tv.BackColor = Color.Aquamarine;
+            tv.BackColor = SystemColors.Control;
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
+            loadingCircleToolStripMenuItem1.Visible = true;
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = true;
             tv.Nodes.Clear();
             CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
             Application.DoEvents();
             CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
             ListBlockListTreeView(CadBloksList, tv);
-            tv.BackColor = Color.White;
-            loadingCircle1.Visible = false;
-            loadingCircle1.Active = false;
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Active  = false;
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
         }
 
         private bool ConnectGo()
@@ -104,9 +111,6 @@ namespace GKNData
 
                 try
                 {
-                    loadingCircle1.Visible = true;
-                    loadingCircle1.BackColor = Color.Aquamarine;
-                    loadingCircle1.Active = true;
 
                     CF.conn = new MySqlConnection(connStr);
                     CF.conn.Open();
@@ -120,12 +124,9 @@ namespace GKNData
                     }
                     else
                     {
-                        loadingCircle1.Active = false;
-                        loadingCircle1.BackColor = Color.AliceBlue;
-                        Application.DoEvents();
-                        loadingCircle1.Active = true;
-                        this.Update();
-                        this.treeView1.BackColor = Color.DarkRed;
+                        loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+                        loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = Color.Red;
+                        this.treeView1.BackColor = Color.Red;
                     }
                 }
                 catch (MySqlException ex)
@@ -135,6 +136,10 @@ namespace GKNData
                     StatusLabel_DBName.Image = GKNData.Properties.Resources.cross;
                     StatusLabel_AllMessages.Text = ex.Message;
                     this.treeView1.BackColor = Color.DarkRed;
+                    loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+                    loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = true;
+                    loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = Color.Red;
+                    toolStripProgressBar1.Value = 0;
                     return false;
                 }
             }
@@ -152,6 +157,9 @@ namespace GKNData
                 treeView1.Nodes.Clear();
                 treeView1.EndUpdate();
                 this.treeView1.BackColor = Color.DarkGray;
+                loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+                loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
+                toolStripProgressBar1.Value = 0;
             }
             StatusLabel_AllMessages.Text = "";
 

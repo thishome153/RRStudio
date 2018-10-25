@@ -170,6 +170,9 @@
     <Compile Include="LoadingCircle.designer.cs">
       <DependentUpon>LoadingCircle.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoadingCircleToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainGKNForm.cs">
       <SubType>Form</SubType>
     </Compile>

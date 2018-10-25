@@ -215,7 +215,9 @@ namespace RRTypes
                     enc.Name = cd.SelectSingleNode("egrp:Encumbrance/egrp:Name", nsmgr).FirstChild.Value;
                     enc.RegDate = cd.SelectSingleNode("egrp:Encumbrance/egrp:RegDate", nsmgr).FirstChild.Value;
                     enc.Type = cd.SelectSingleNode("egrp:Encumbrance/egrp:Type", nsmgr).FirstChild.Value;
+                    if (cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Started", nsmgr) != null)
                     enc.DurationStarted = cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Started", nsmgr).FirstChild.Value;
+                    if (cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Stopped", nsmgr) != null)
                     enc.DurationStopped = cd.SelectSingleNode("egrp:Encumbrance/egrp:Duration/egrp:Stopped", nsmgr).FirstChild.Value;
 
                     if (cd.SelectSingleNode("egrp:Encumbrance/egrp:Owner", nsmgr) != null)

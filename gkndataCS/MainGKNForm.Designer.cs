@@ -32,9 +32,9 @@ namespace GKNData
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode3});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel_SubRf_CN = new System.Windows.Forms.ToolStripStatusLabel();
@@ -69,10 +69,10 @@ namespace GKNData
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
             this.Button_Import = new System.Windows.Forms.ToolStripButton();
+            this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.loadingCircle1 = new MRG.Controls.UI.LoadingCircle();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -137,6 +137,8 @@ namespace GKNData
             // 
             // toolStripProgressBar1
             // 
+            this.toolStripProgressBar1.BackColor = System.Drawing.Color.Maroon;
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.Maroon;
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -266,7 +268,7 @@ namespace GKNData
             // 
             // treeView1
             // 
-            this.treeView1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.treeView1.BackColor = System.Drawing.SystemColors.Control;
             this.treeView1.ContextMenuStrip = this.contextMenu1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -275,12 +277,12 @@ namespace GKNData
             this.treeView1.ImageList = this.Tree_imageList;
             this.treeView1.Location = new System.Drawing.Point(0, 49);
             this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Node1";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Node0";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Node1";
+            treeNode4.Name = "Node0";
+            treeNode4.Text = "Node0";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode4});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowNodeToolTips = true;
             this.treeView1.Size = new System.Drawing.Size(710, 334);
@@ -331,7 +333,8 @@ namespace GKNData
             this.Button_ChangeSub,
             this.toolStripSeparator4,
             this.Button_Property,
-            this.Button_Import});
+            this.Button_Import,
+            this.loadingCircleToolStripMenuItem1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(710, 25);
@@ -391,6 +394,31 @@ namespace GKNData
             this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
             this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
             // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.AccessibleName = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 3;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(141, 1);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 11;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 8;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(20, 22);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(20, 22);
+            this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -422,29 +450,12 @@ namespace GKNData
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // loadingCircle1
-            // 
-            this.loadingCircle1.Active = false;
-            this.loadingCircle1.Color = System.Drawing.Color.DarkGray;
-            this.loadingCircle1.InnerCircleRadius = 5;
-            this.loadingCircle1.Location = new System.Drawing.Point(333, 216);
-            this.loadingCircle1.Name = "loadingCircle1";
-            this.loadingCircle1.NumberSpoke = 12;
-            this.loadingCircle1.OuterCircleRadius = 11;
-            this.loadingCircle1.RotationSpeed = 100;
-            this.loadingCircle1.Size = new System.Drawing.Size(75, 23);
-            this.loadingCircle1.SpokeThickness = 2;
-            this.loadingCircle1.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
-            this.loadingCircle1.TabIndex = 11;
-            this.loadingCircle1.Text = "loadingCircle1";
-            // 
             // MainGKNForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(710, 405);
-            this.Controls.Add(this.loadingCircle1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.toolStrip1);
@@ -513,7 +524,7 @@ namespace GKNData
         private System.Windows.Forms.TextBox SearchTextBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private MRG.Controls.UI.LoadingCircle loadingCircle1;
+        private MRG.Controls.UI.LoadingCircleToolStripMenuItem loadingCircleToolStripMenuItem1;
     }
 }
 
