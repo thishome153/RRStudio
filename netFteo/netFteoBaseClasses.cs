@@ -2039,14 +2039,14 @@ SCAN:
         public string NumberRecord;
 
         public string AreaGKN;
-        public netFteo.Rosreestr.TMyEncumbrance Encumbrance;
+        public netFteo.Rosreestr.TMyEncumbrances Encumbrances;
         public TMyPolygon EntSpat;
         public TPolygonCollection Contours;
         public TmySlot()
         {
             this.EntSpat = new TMyPolygon();
             this.Contours = new TPolygonCollection();
-            this.Encumbrance = new Rosreestr.TMyEncumbrance();
+            this.Encumbrances = new Rosreestr.TMyEncumbrances();
             this.Fid = Gen_id.newId;
         }
         public int id { get { return this.Fid; } }

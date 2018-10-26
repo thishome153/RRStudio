@@ -24,6 +24,8 @@ namespace RRTypes
                 netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
                 Point.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].X);
                 Point.y = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].Y);
+                Point.oldX = Point.x;
+                Point.oldY = Point.y;
                 Point.Mt = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].Delta_Geopoint);
                 Point.NumGeopointA = ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].Num_Geopoint;
                 EntSpat.AddPoint(Point);
@@ -33,6 +35,8 @@ namespace RRTypes
             netFteo.Spatial.Point Point_ = new netFteo.Spatial.Point();
             Point_.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].X);
             Point_.y = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].Y);
+            Point_.oldX = Point_.x;
+            Point_.oldY = Point_.y;
             Point_.Mt = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].Delta_Geopoint);
             Point_.NumGeopointA = ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].Num_Geopoint;
             EntSpat.AddPoint(Point_);
@@ -47,6 +51,7 @@ namespace RRTypes
                     netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
                     Point.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].Ordinate[0].X);
                     Point.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].Ordinate[0].Y);
+                    Point.oldX = Point.x; Point.oldY = Point.y;
                     Point.Mt = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].Ordinate[0].Delta_Geopoint);
                     Point.NumGeopointA = ES.Spatial_Element[iES].Spelement_Unit[iord].Su_Nmb;
                     InLayer.AddPoint (Point);
@@ -55,6 +60,7 @@ namespace RRTypes
                 netFteo.Spatial.Point LastPoint = new netFteo.Spatial.Point();
                 LastPoint.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[0].Ordinate[0].X);
                 LastPoint.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[0].Ordinate[0].Y);
+                LastPoint.oldX = LastPoint.x; LastPoint.oldY = LastPoint.y;
                 LastPoint.Mt = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[0].Ordinate[0].Delta_Geopoint);
                 LastPoint.NumGeopointA = ES.Spatial_Element[iES].Spelement_Unit[0].Su_Nmb;
                 InLayer.AddPoint (LastPoint);

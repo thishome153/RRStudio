@@ -502,9 +502,13 @@ namespace netFteo.XML
         public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
         {
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
-            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-
-            return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+            {
+                nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+               return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
+            }
+            else
+                return xmldoc.DocumentElement.SelectSingleNode(Xpath);
 
         }
 
@@ -523,7 +527,9 @@ namespace netFteo.XML
             System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
             if (recnode != null)
             {
-                return recnode.Attributes.GetNamedItem(AttributeName).Value;
+                if (recnode.Attributes.GetNamedItem(AttributeName) != null)
+                    return recnode.Attributes.GetNamedItem(AttributeName).Value;
+                else return null;
             }
             else
                 return null;

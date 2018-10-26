@@ -179,6 +179,12 @@ namespace XMLReaderCS
             this.Update();
         }
 
+        private void XMLStartUpdater(object Sender, ESCheckingEventArgs e)
+        {
+                toolStripProgressBar1.Maximum = e.Process;
+            this.Update();
+        }
+
 
         #region Открываем Файл (слава http://code.google.com/p/xsd-to-classes/wiki/Usage ):
         /// <summary>
@@ -266,12 +272,16 @@ namespace XMLReaderCS
                 if ( xmldoc.DocumentElement.GetElementsByTagName("eDocument").Count == 1) // Проверим
                 {
                     toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+
                     toolStripStatusLabel3.Text = "04";
+                    /*
                     XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV));
 
                     KV04 = (RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV)serializer.Deserialize(stream);//;(reader);
-                    //reader.Close();
                     ParseKVZU04(KV04);
+                    */
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                    this.DocInfo = parser.ParseKVZU04(this.DocInfo, xmldoc);
                 }
                 else
                 {
@@ -388,11 +398,15 @@ namespace XMLReaderCS
                  //   ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
                 }
             }
-            //Не КПТ v08 ли это?            
 
+            //Не КПТ v08 ли это?            
             if ((DocInfo.DocRootName == "Region_Cadastr"))
             {
                 RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                toolStripProgressBar1.Minimum = 0;
+                toolStripProgressBar1.Value = 0;
+                parser.OnParsing += DXFStateUpdater;
+                parser.OnStartParsing += XMLStartUpdater;
                 this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
              //   ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
 
@@ -537,6 +551,9 @@ namespace XMLReaderCS
             }
 
             ClearControls();
+            PreloaderMenuItem.LoadingCircleControl.Active = true;
+            PreloaderMenuItem.Visible = true;
+            Application.DoEvents();
             SaveLastDir(Path.GetDirectoryName(FileName));
             if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
             linkLabel_FileName.Text = Path.GetFileName(FileName);
@@ -680,11 +697,14 @@ namespace XMLReaderCS
                         textBox_FIO.Text += "\n ЭЦП= " + sig;
 
             }
+
             if (NeedListing)
             {
                 ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
                 ListFileInfo(DocInfo);
             }
+            PreloaderMenuItem.LoadingCircleControl.Active = false;
+            PreloaderMenuItem.Visible = false;
         }
 
 
@@ -904,118 +924,7 @@ namespace XMLReaderCS
             ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
         }
 
-        #region разбор КВ KVZU_04
-        /*-----------------------------------------------------------------------------------------------------------*/
-        private void ParseKVZU04(RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV kv)
-        {
-
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
-            label_DocType.Text = "Кадастровая выписка " + kv.eDocument.Version;
-            tabPage1.Text = "Земельные участки";
-            textBox_DocNum.Text = kv.Package.Certification_Doc.Number;
-            textBox_DocDate.Text = kv.Package.Certification_Doc.Date.ToString();
-            textBox_Appointment.Text = kv.Package.Certification_Doc.Appointment;
-            textBox_OrgName.Text = kv.Package.Certification_Doc.Organization;
-            textBox_Appointment.Text = kv.Package.Certification_Doc.FIO;
-            for (int i = 0; i <= kv.Coord_Systems.Count - 1; i++)
-            {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.Coord_Systems[i].Name, kv.Coord_Systems[i].Cs_Id));
-
-            }
-
-            if (kv.Reestr_Contractors != null)
-                for (int i = 0; i <= kv.Reestr_Contractors.Count - 1; i++)
-                {
-                    ListViewItem LVi = new ListViewItem();
-
-                    if (kv.Reestr_Contractors[i].Cadastral_Engineer != null)
-                        LVi.SubItems.Add(kv.Reestr_Contractors[i].Cadastral_Engineer.FIO.Surname + " " + kv.Reestr_Contractors[i].Cadastral_Engineer.FIO.First + " " + kv.Reestr_Contractors[i].Cadastral_Engineer.FIO.Patronymic);
-
-
-                    if (kv.Reestr_Contractors[i].Cadastral_Organization != null)
-                        LVi.SubItems.Add(kv.Reestr_Contractors[i].Cadastral_Organization.Name);
-                    else LVi.SubItems.Add("-");
-                    listView_Contractors.Items.Add(LVi);
-
-                }
-
-            for (int i = 0; i <= kv.Package.Federal.Cadastral_Regions.Count - 1; i++)
-                for (int ic = 0; ic <= kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts.Count - 1; ic++)
-                    for (int icc = 0; icc <= kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts[ic].Cadastral_Blocks.Count - 1; icc++)
-                        for (int ip = 0; ip <= kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts[ic].Cadastral_Blocks[icc].Parcels.Parcel.Count - 1; ip++)
-                        {
-                            RRTypes.STD_KV04.ParcelsParcel kvParcel = kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts[ic].Cadastral_Blocks[icc].Parcels.Parcel[ip];
-                            richTextBox1.AppendText(kvParcel.CadastralNumber);
-
-                            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kvParcel.CadastralNumber, kvParcel.Name.ToString()));
-                            MainObj.CadastralBlock = kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts[ic].Cadastral_Blocks[icc].CadastralNumber;
-                            //MainObj.SpecialNote = kv.Package.Federal.Cadastral_Regions[i].Cadastral_Districts[ic].Cadastral_Blocks[icc].
-                            MainObj.Utilization.UtilbyDoc = kvParcel.Utilization.ByDoc.ToString();
-                            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kvParcel.Category.ToString());
-                            // MainObj.Address.Note = kv.Parcels.Parcel.Location.Address.Note;
-                            MainObj.Rights = KV04_Utils.KVZURightstoFteorights(kvParcel.Rights);
-                            // MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
-                            MainObj.AreaGKN = kvParcel.Areas[0].Area.ToString();
-                            //Землепользование
-                            if (kvParcel.Entity_Spatial != null)
-                                if (kvParcel.Entity_Spatial.Spatial_Element.Count > 0)
-                                {
-
-                                    MainObj.EntitySpatial = RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.CadastralNumber,
-                                                                           kvParcel.Entity_Spatial);
-                                    this.DocInfo.MifPolygons.Add(RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.CadastralNumber,
-                                                                           kvParcel.Entity_Spatial));
-                                }
-                            //Многоконтурный
-                            if (kvParcel.Contours != null)
-                            {
-                                for (int icn = 0; icn <= kvParcel.Contours.Count - 1; icn++)
-                                {
-                                    this.DocInfo.MifPolygons.Add(RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.CadastralNumber + "(" +
-                                                                          kvParcel.Contours[icn].Number_PP + ")",
-                                                                          kvParcel.Contours[icn].Entity_Spatial));
-                                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.CadastralNumber + "(" +
-                                                                          kvParcel.Contours[icn].Number_PP + ")",
-                                                                          kvParcel.Contours[icn].Entity_Spatial));
-                                    // NewCont.GKNArea = kvParcel.Contours[icn].Area.Area.ToString();
-                                }
-                            }
-
-                            //Части 
-                            if (kvParcel.SubParcels.Count > 0)
-                            {
-                                for (int isl = 0; isl <= kvParcel.SubParcels.Count - 1; isl++)
-                                {
-                                    TmySlot Sl = new TmySlot();
-                                    if (kvParcel.SubParcels[isl].Object_Entry != null)
-                                    {
-                                        MainObj.CompozitionEZ.Add( RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.SubParcels[isl].Object_Entry.CadastralNumber, kvParcel.SubParcels[isl].Entity_Spatial));
-                                        this.DocInfo.MifPolygons.Add(RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.SubParcels[isl].Object_Entry.CadastralNumber, kvParcel.SubParcels[isl].Entity_Spatial));
-                                    }
-
-
-                                    else
-                                    {
-                                        Sl = MainObj.AddSubParcel(kvParcel.SubParcels[isl].Number_PP);
-                                        Sl.Encumbrance.Name = "Часть земельного участка";
-                                        if (kvParcel.SubParcels[isl].Entity_Spatial != null)
-                                        {
-                                            TMyPolygon SlEs = RRTypes.KV04_Utils.AddEntSpatKVZU04(kvParcel.SubParcels[isl].Number_PP, kvParcel.SubParcels[isl].Entity_Spatial);
-                                            Sl.EntSpat.ImportPolygon(SlEs);
-                                            this.DocInfo.MifPolygons.Add(SlEs);
-                                        }
-                                    }
-
-                                }
-                            }
-
-
-                        }
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-        }
-        #endregion
-
+   
         #region разбор Кадастрового паспорта  KPZU V05
         /*
         private void ParseKPZU(RRTypes.kpzu.KPZU kp)
@@ -1492,8 +1401,7 @@ namespace XMLReaderCS
                                 {
                                     TmySlot Sl = new TmySlot();
                                     Sl.NumberRecord = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Definition;
-                                    Sl.Encumbrance.Name = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Encumbrance.Name;
-
+                                    Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Encumbrance.Name });
                                     MainObj.SubParcels.Add(Sl);
                                 }
                     }
@@ -1541,7 +1449,7 @@ namespace XMLReaderCS
                         {
                             TmySlot Sl = new TmySlot();
                             Sl.NumberRecord = MP.Package.NewSubParcel[ii].Definition;
-                            Sl.Encumbrance.Name = MP.Package.NewSubParcel[ii].Encumbrance.Name;
+                            Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.NewSubParcel[ii].Encumbrance.Name });
                             Sl.AreaGKN = MP.Package.NewSubParcel[ii].Area.Area;
                             if (MP.Package.NewSubParcel[ii].Entity_Spatial != null) //Если одноконтурная чзу
                                Sl.EntSpat = RRTypes.STD_MP_Utils.AddSubParcelESTDMP4(MP.Package.NewSubParcel[ii].Definition,MP.Package.NewSubParcel[ii].Entity_Spatial);
@@ -1702,7 +1610,7 @@ namespace XMLReaderCS
                     {
                         TmySlot Sl = new TmySlot();
                         Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
-                        Sl.Encumbrance.Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name;
+                        Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
                         Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
                          if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
                                Sl.EntSpat.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
@@ -1995,11 +1903,9 @@ namespace XMLReaderCS
                 for (int i = 0; i <= Parcel.SubParcels.Count - 1; i++)
                 {
                     TreeNode SlotNode = Slotsnode.Nodes.Add("SlotNode" + Parcel.SubParcels[i].id, "Часть "+Parcel.SubParcels[i].NumberRecord);
-                    if (Parcel.SubParcels[i].Encumbrance != null) //if (Parcel.SubParcels[i].Encumbrance.Name != null)
+                        if (Parcel.SubParcels[i].Encumbrances != null)
                         {
-                            //SlotNode.Nodes.Add("SlotType", Parcel.SubParcels[i].Encumbrance.Type);
-                            //SlotNode.Nodes.Add("Encumbrance", Parcel.SubParcels[i].Encumbrance.Name);
-                            ListEncum(SlotNode, Parcel.SubParcels[i].Encumbrance);
+                            ListEncums(SlotNode, Parcel.SubParcels[i].Encumbrances);
                         }
                     if (Parcel.SubParcels[i].EntSpat != null)
                         if (Parcel.SubParcels[i].EntSpat.PointCount > 0)
@@ -2952,23 +2858,25 @@ namespace XMLReaderCS
                     LVip.SubItems.Add("кв.м.");
                     LV.Items.Add(LVip);
 
-                    ListViewItem LViCat = new ListViewItem();
-                    LViCat.Text = "Характеристика";
-                    LViCat.SubItems.Add(P.Encumbrance.Name);
-                    LV.Items.Add(LViCat);
+                    if (P.Encumbrances.Count == 1)
+                    {
+                        ListViewItem LViCat = new ListViewItem();
+                        LViCat.Text = "Характеристика";
+                        LViCat.SubItems.Add(P.Encumbrances[0].Name);
+                        LV.Items.Add(LViCat);
 
-                    ListViewItem LViCatE = new ListViewItem();
-                    LViCatE.Text = "Тип";
-                    LViCatE.SubItems.Add(P.Encumbrance.Type);
-                    LV.Items.Add(LViCatE);
-                    
-                    ListViewItem LViDoc = new ListViewItem();
-                    LViDoc.Text = "Документ";
-                    LViDoc.SubItems.Add(P.Encumbrance.Document.DocName);
-                    LViDoc.SubItems.Add(P.Encumbrance.Document.Number);
-                    LViDoc.SubItems.Add(P.Encumbrance.Document.Date);
-                    LV.Items.Add(LViDoc);
+                        ListViewItem LViCatE = new ListViewItem();
+                        LViCatE.Text = "Тип";
+                        LViCatE.SubItems.Add(P.Encumbrances[0].Type);
+                        LV.Items.Add(LViCatE);
 
+                        ListViewItem LViDoc = new ListViewItem();
+                        LViDoc.Text = "Документ";
+                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.DocName);
+                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.Number);
+                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.Date);
+                        LV.Items.Add(LViDoc);
+                    }
                 }
 
                 if (Obj.ToString() == "netFteo.Spatial.TMyPolygon")
@@ -3145,9 +3053,13 @@ namespace XMLReaderCS
             if (STrN.Name.Contains("SPElem."))
             {
                 int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
+                /*
                 object parent = this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(STrN.Name.Substring(7)));
                 if (parent != null)
-                { object Mparent = this.DocInfo.MyBlocks.GetObject(((TMyPolygon)parent).Parent_Id); }
+                {
+                    object Mparent = this.DocInfo.MyBlocks.GetObject(((TMyPolygon)parent).Parent_Id);
+                }
+                */
                 TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
                 
                 if (Pl != null)
@@ -3399,132 +3311,7 @@ namespace XMLReaderCS
                 RDurTerm.Nodes.Add(Ens.DurationTerm);
             }
         }
-
-
-      
-       /*
-        /// <summary>
-        /// Он-лайн запрос сведений по кварталу
-        /// </summary>
-        /// <param name="treeView_Web">"Дерево для отображения он-лайн сведений"</param>
-        /// <param name="Block">"Кадастровый квартал"</param>
-        public System.Drawing.Image GetCadastralBlockWebOnline(TreeView treeView_Web, TMyCadastralBlock Block)
-        {
-            treeView_Web.Visible = true;
-            treeView_Web.Nodes.Clear();
-
-            try
-            {
-                TreeNode PWebNode = treeView_Web.Nodes.Add(Block.CN);
-                WebRequest wrGETURL;
-                //Запрос кварталов по кадастровому номеру, возвращает массив (сокращенные атрибуты):
-                wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2?text=" + Block.CN);
-                wrGETURL.Proxy = WebProxy.GetDefaultProxy();
-                wrGETURL.Timeout = 1000;
-                Stream objStream;
-                WebResponse wr = wrGETURL.GetResponse();
-                objStream = wr.GetResponseStream();
-                if (objStream != null)
-                {
-                    StreamReader objReader = new StreamReader(objStream);
-                    string jsonResult = objReader.ReadToEnd();
-                    objReader.Close();
-                    //Понадобилась ссылка на System.Web.Extensions
-                    System.Web.Script.Serialization.JavaScriptSerializer sr = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    pkk5_json_response jsonResponse = sr.Deserialize<pkk5_json_response>(jsonResult);
-                    if (jsonResponse != null)
-                        if (jsonResponse.features != null)
-                            if (jsonResponse.features.Count > 0)
-                        {
-                            PWebNode.Nodes.Add(jsonResponse.features[0].attrs.address).Expand();
-                            //Запрос по конкретному id:
-                            wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2/" + jsonResponse.features[0].attrs.id);
-                            wrGETURL.Timeout = 10000;
-                            WebResponse wrF = wrGETURL.GetResponse();
-                            objStream = wrF.GetResponseStream();
-                            if (objStream != null)
-                            {
-                                StreamReader objFReader = new StreamReader(objStream);
-                                string jsonFResult = objFReader.ReadToEnd();
-                                objFReader.Close();
-                                pkk5_json_Fullresponse jsonFResponse = sr.Deserialize<pkk5_json_Fullresponse>(jsonFResult);
-                                if (jsonFResponse != null)
-                                    if (jsonFResponse.feature != null)
-                                    {
-                                       // PWebNode.Nodes.Add(jsonFResponse.feature.attrs.util_by_doc);
-                                        //PWebNode.Nodes.Add(jsonFResponse.feature.attrs.AreaType2Str(jsonFResponse.feature.attrs.area_type)).Nodes.Add(jsonFResponse.feature.attrs.area_value +
-                                       //     " " + jsonFResponse.feature.attrs.Unit2Str(jsonFResponse.feature.attrs.area_unit));
-                                      //  PWebNode.ExpandAll();
-
-                                      //  if (jsonFResponse.feature.attrs.cad_eng_data != null)
-                                        {
-                                          //  TreeNode PWebNodec = PWebNode.Nodes.Add("Документы для ГКУ подготовлены");
-                                         //   PWebNodec.Nodes.Add(jsonFResponse.feature.attrs.cad_eng_data.ci_surname + " " +
-                                         //       jsonFResponse.feature.attrs.cad_eng_data.ci_first + " " +
-                                         //       jsonFResponse.feature.attrs.cad_eng_data.ci_patronymic + " " +
-                                         //       jsonFResponse.feature.attrs.cad_eng_data.ci_n_certificate);
-                                        //    PWebNodec.Nodes.Add("Дата обновления атрибутов : " + jsonFResponse.feature.attrs.cad_eng_data.actual_date);
-                                        //    PWebNodec.Nodes.Add("lastmodified:" + jsonFResponse.feature.attrs.cad_eng_data.lastmodified);
-                                        }
-                                    }
-                            }
-
-                            // если есть ОИПД:
-                            if (jsonResponse.features[0].extent != null)
-                            {
-                                TreeNode PWebNodeExt = PWebNode.Nodes.Add("Экстент (ПД)");
-                                TreeNode PWebNodebbox = PWebNodeExt.Nodes.Add("bbox");
-                                PWebNodebbox.ToolTipText = "Extent (bounding box) of the exported image";
-                                TreeNode PWebNodebboxV = PWebNodebbox.Nodes.Add(jsonResponse.features[0].extent.xmin.ToString() + "," +
-                                                                               jsonResponse.features[0].extent.ymin.ToString() + "," +
-                                                                               jsonResponse.features[0].extent.xmax.ToString() + "," +
-                                                                               jsonResponse.features[0].extent.ymax.ToString());
-                                PWebNodebboxV.Tag = 256; // признак bbox value node;
-                                PWebNodebboxV.ToolTipText = "Строка xmin,ymin,xmax,ymax. Для вызова pkk5/MapServer";
-
-                                TreeNode PWebNodeCenter = PWebNodeExt.Nodes.Add("center");
-                                PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.x.ToString()).ToolTipText = "x";
-                                PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.y.ToString()).ToolTipText = "y";
-                                TreeNode PWebNodeCenterV = PWebNodeCenter.Nodes.Add("#x=" + jsonResponse.features[0].center.x.ToString() +
-                                                         "&y=" + jsonResponse.features[0].center.y.ToString() + "&z=20&app=search&opened=1");
-                                PWebNodeCenterV.ToolTipText = "Для вызова pkk5 direct";
-                                PWebNodeCenterV.Tag = 255;
-                               
-
-                                // Запрос изображения в jpeg по bbox:
-                                string sURLpkk5_jpeg = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/Cadastre/MapServer/export?bbox=" +
-                                                          jsonResponse.features[0].extent.xmin + "%2C" +
-                                                          jsonResponse.features[0].extent.ymin + "%2C" +
-                                                          jsonResponse.features[0].extent.xmax + "%2C" +
-                                                          jsonResponse.features[0].extent.ymax + "%2C" +
-                                                                    "&bboxSR=&layers=&layerDefs=&size=" +
-                                                          pictureBox1.Size.Width.ToString() + "%2C" +
-                                                          pictureBox1.Size.Height.ToString() +
-                                                          "&imageSR=&format=jpg&transparent=true&dpi=&time=&layerTimeOptions=&dynamicLayers=&gdbVersion=" +
-                                                          "&f=image";
-                                                           //"&mapScale=1000&f=image";
-                                wrGETURL = WebRequest.Create(sURLpkk5_jpeg);
-                                wrGETURL.Timeout = 10000;
-                                WebResponse wrJpeg = wrGETURL.GetResponse();
-                                objStream = wrJpeg.GetResponseStream();
-                                if (objStream != null)
-                                    //pictureBox1.Image = Bitmap.FromStream(objStream);
-                                 return Bitmap.FromStream(objStream);
-                            }
-                        }
-                }
-            }
-
-            catch (IOException ex)
-            {
-                //  MessageBox.Show(ex.ToString());
-                toolStripStatusLabel1.Text = ex.ToString();
-                return null;
-            }
-            return null;
-        }
-        */
-       private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
+        private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
         {
             if (Ens == null) return;
             TreeNode PEnsNode = new TreeNode();
@@ -3533,10 +3320,135 @@ namespace XMLReaderCS
                 PEnsNode = PNode.Nodes.Add("EncNode", "Обременения");
                 for (int i = 0; i <= Ens.Count - 1; i++)
                 {
-                  ListEncum(PEnsNode, Ens[i]);
+                    ListEncum(PEnsNode, Ens[i]);
                 }
             }
         }
+
+
+        /*
+         /// <summary>
+         /// Он-лайн запрос сведений по кварталу
+         /// </summary>
+         /// <param name="treeView_Web">"Дерево для отображения он-лайн сведений"</param>
+         /// <param name="Block">"Кадастровый квартал"</param>
+         public System.Drawing.Image GetCadastralBlockWebOnline(TreeView treeView_Web, TMyCadastralBlock Block)
+         {
+             treeView_Web.Visible = true;
+             treeView_Web.Nodes.Clear();
+
+             try
+             {
+                 TreeNode PWebNode = treeView_Web.Nodes.Add(Block.CN);
+                 WebRequest wrGETURL;
+                 //Запрос кварталов по кадастровому номеру, возвращает массив (сокращенные атрибуты):
+                 wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2?text=" + Block.CN);
+                 wrGETURL.Proxy = WebProxy.GetDefaultProxy();
+                 wrGETURL.Timeout = 1000;
+                 Stream objStream;
+                 WebResponse wr = wrGETURL.GetResponse();
+                 objStream = wr.GetResponseStream();
+                 if (objStream != null)
+                 {
+                     StreamReader objReader = new StreamReader(objStream);
+                     string jsonResult = objReader.ReadToEnd();
+                     objReader.Close();
+                     //Понадобилась ссылка на System.Web.Extensions
+                     System.Web.Script.Serialization.JavaScriptSerializer sr = new System.Web.Script.Serialization.JavaScriptSerializer();
+                     pkk5_json_response jsonResponse = sr.Deserialize<pkk5_json_response>(jsonResult);
+                     if (jsonResponse != null)
+                         if (jsonResponse.features != null)
+                             if (jsonResponse.features.Count > 0)
+                         {
+                             PWebNode.Nodes.Add(jsonResponse.features[0].attrs.address).Expand();
+                             //Запрос по конкретному id:
+                             wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2/" + jsonResponse.features[0].attrs.id);
+                             wrGETURL.Timeout = 10000;
+                             WebResponse wrF = wrGETURL.GetResponse();
+                             objStream = wrF.GetResponseStream();
+                             if (objStream != null)
+                             {
+                                 StreamReader objFReader = new StreamReader(objStream);
+                                 string jsonFResult = objFReader.ReadToEnd();
+                                 objFReader.Close();
+                                 pkk5_json_Fullresponse jsonFResponse = sr.Deserialize<pkk5_json_Fullresponse>(jsonFResult);
+                                 if (jsonFResponse != null)
+                                     if (jsonFResponse.feature != null)
+                                     {
+                                        // PWebNode.Nodes.Add(jsonFResponse.feature.attrs.util_by_doc);
+                                         //PWebNode.Nodes.Add(jsonFResponse.feature.attrs.AreaType2Str(jsonFResponse.feature.attrs.area_type)).Nodes.Add(jsonFResponse.feature.attrs.area_value +
+                                        //     " " + jsonFResponse.feature.attrs.Unit2Str(jsonFResponse.feature.attrs.area_unit));
+                                       //  PWebNode.ExpandAll();
+
+                                       //  if (jsonFResponse.feature.attrs.cad_eng_data != null)
+                                         {
+                                           //  TreeNode PWebNodec = PWebNode.Nodes.Add("Документы для ГКУ подготовлены");
+                                          //   PWebNodec.Nodes.Add(jsonFResponse.feature.attrs.cad_eng_data.ci_surname + " " +
+                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_first + " " +
+                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_patronymic + " " +
+                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_n_certificate);
+                                         //    PWebNodec.Nodes.Add("Дата обновления атрибутов : " + jsonFResponse.feature.attrs.cad_eng_data.actual_date);
+                                         //    PWebNodec.Nodes.Add("lastmodified:" + jsonFResponse.feature.attrs.cad_eng_data.lastmodified);
+                                         }
+                                     }
+                             }
+
+                             // если есть ОИПД:
+                             if (jsonResponse.features[0].extent != null)
+                             {
+                                 TreeNode PWebNodeExt = PWebNode.Nodes.Add("Экстент (ПД)");
+                                 TreeNode PWebNodebbox = PWebNodeExt.Nodes.Add("bbox");
+                                 PWebNodebbox.ToolTipText = "Extent (bounding box) of the exported image";
+                                 TreeNode PWebNodebboxV = PWebNodebbox.Nodes.Add(jsonResponse.features[0].extent.xmin.ToString() + "," +
+                                                                                jsonResponse.features[0].extent.ymin.ToString() + "," +
+                                                                                jsonResponse.features[0].extent.xmax.ToString() + "," +
+                                                                                jsonResponse.features[0].extent.ymax.ToString());
+                                 PWebNodebboxV.Tag = 256; // признак bbox value node;
+                                 PWebNodebboxV.ToolTipText = "Строка xmin,ymin,xmax,ymax. Для вызова pkk5/MapServer";
+
+                                 TreeNode PWebNodeCenter = PWebNodeExt.Nodes.Add("center");
+                                 PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.x.ToString()).ToolTipText = "x";
+                                 PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.y.ToString()).ToolTipText = "y";
+                                 TreeNode PWebNodeCenterV = PWebNodeCenter.Nodes.Add("#x=" + jsonResponse.features[0].center.x.ToString() +
+                                                          "&y=" + jsonResponse.features[0].center.y.ToString() + "&z=20&app=search&opened=1");
+                                 PWebNodeCenterV.ToolTipText = "Для вызова pkk5 direct";
+                                 PWebNodeCenterV.Tag = 255;
+
+
+                                 // Запрос изображения в jpeg по bbox:
+                                 string sURLpkk5_jpeg = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/Cadastre/MapServer/export?bbox=" +
+                                                           jsonResponse.features[0].extent.xmin + "%2C" +
+                                                           jsonResponse.features[0].extent.ymin + "%2C" +
+                                                           jsonResponse.features[0].extent.xmax + "%2C" +
+                                                           jsonResponse.features[0].extent.ymax + "%2C" +
+                                                                     "&bboxSR=&layers=&layerDefs=&size=" +
+                                                           pictureBox1.Size.Width.ToString() + "%2C" +
+                                                           pictureBox1.Size.Height.ToString() +
+                                                           "&imageSR=&format=jpg&transparent=true&dpi=&time=&layerTimeOptions=&dynamicLayers=&gdbVersion=" +
+                                                           "&f=image";
+                                                            //"&mapScale=1000&f=image";
+                                 wrGETURL = WebRequest.Create(sURLpkk5_jpeg);
+                                 wrGETURL.Timeout = 10000;
+                                 WebResponse wrJpeg = wrGETURL.GetResponse();
+                                 objStream = wrJpeg.GetResponseStream();
+                                 if (objStream != null)
+                                     //pictureBox1.Image = Bitmap.FromStream(objStream);
+                                  return Bitmap.FromStream(objStream);
+                             }
+                         }
+                 }
+             }
+
+             catch (IOException ex)
+             {
+                 //  MessageBox.Show(ex.ToString());
+                 toolStripStatusLabel1.Text = ex.ToString();
+                 return null;
+             }
+             return null;
+         }
+         */
+
         #endregion
 
         private void WriteRights(string FileName, netFteo.Rosreestr.TMyRights Rights)
@@ -3829,6 +3741,8 @@ namespace XMLReaderCS
             label_FileSize.Text = "";
             label2.Text = "Получатель";
             toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
+            PreloaderMenuItem.LoadingCircleControl.Active = false;
+            PreloaderMenuItem.Visible = false;
             документToolStripMenuItem.Enabled = false;
             pathToHtmlFile = null;
             this.Text = TextDefault;
