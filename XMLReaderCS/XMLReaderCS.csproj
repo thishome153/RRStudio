@@ -550,6 +550,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cryptFteo\cryptFteo.csproj">
+      <Project>{bff2c2f7-e131-4f04-9351-bc30b964b7aa}</Project>
+      <Name>cryptFteo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\netFteo\netFteo.csproj">
       <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
       <Name>netFteo</Name>

@@ -1,7 +1,7 @@
 ﻿
 
 
-1. Поебался с Rosreestr schemes. Spatial.xsd пришлось прокастрировать
+1. По@бался с Rosreestr schemes. Spatial.xsd пришлось прокастрировать
 			<xs:element name="SpatialElement" type="Spa2:tSpatialElementZUOut" maxOccurs="unbounded">
 			  <xs:annotation>
 			   <xs:documentation>Элемент контура</xs:documentation>
@@ -104,3 +104,10 @@
 	Решение 
 			fixed it by turning off the 'Enable ClickOnce security settings'.
 			Menu: Project | 'Project name' Properties... | Security tab | 'Enable ClickOnce security settings' check box.
+
+	8. Cryptography.
+	Crypto pro ecosystem: CADES/ CADESCOM
+	Данные дистрибутивы следует использовать для установки cades.dll или cadescom.dll 
+	на компьютере пользователя, если приложение не имеет собственного дистрибутива.
+	Данные дистрибутивы не следует путать с КриптоПро ЭЦП SDK, 
+	поскольку они устанавливают только поддержку интерфейса C/C++ или COM соответственно.

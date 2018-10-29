@@ -275,7 +275,6 @@
     <Compile Include="DXF\XDataCode.cs" />
     <Compile Include="DXF\XDataRecord.cs" />
     <Compile Include="netFteoCadwork.cs" />
-    <Compile Include="netFteoCrypt.cs" />
     <Compile Include="netFteoIO.cs" />
     <Compile Include="netFteoDXF.cs" />
     <Compile Include="netFteoBaseClasses.cs" />
@@ -317,17 +316,6 @@
     <None Include="Schemes\Points.xss">
       <DependentUpon>Points.xsd</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="CAPICOM">
-      <Guid>{BD26B198-EE42-4725-9B23-AFA912434229}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

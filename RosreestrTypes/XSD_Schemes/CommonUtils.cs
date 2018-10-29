@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using netFteo;
 using netFteo.Spatial;
 using netFteo.Rosreestr;
 
@@ -707,7 +708,7 @@ namespace RRTypes.CommonCast
         /// </summary>
         /// <param name="xmldoc"></param>
         /// <param name="res"></param>
-        public static void Parse_ReestrExtract(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+        public static void Parse_DocumentProperties(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
         {
 
             if (netFteo.XML.XMLWrapper.NodeExist(xmldoc, "/ReestrExtract"))
@@ -729,21 +730,38 @@ namespace RRTypes.CommonCast
                 // if ReestrExtract no present, try to read '/CertificationDoc'
                 //if present node with namespace
                 // TODO - malfunction of reading :
+                /*in case with namespaces save for further:
                 System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
                 nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-
+                */
+                //case v 6.09
                 System.Xml.XmlNode CertificationDoc = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "/CertificationDoc");
-
                 if (CertificationDoc != null)
                 {
-
                     res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Number");
                     res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Date");
                     res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Organization");
+                    res.Appointment = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/CertificationDoc/Official/Appointment");
+                    res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/CertificationDoc/Official/FamilyName");
                 }
 
 
-                    
+                // vidimus 04/05 not use Namespaces:
+                System.Xml.XmlNode CertificationDoc4 = netFteo.XML.XMLWrapper.Parse_Node(xmldoc,"/Package/Certification_Doc");// xmldoc.SelectSingleNode(netFteo.XML.XMLWrapper.NS_Xpath(xmldoc, "/Package/Certification_Doc"));
+                if (CertificationDoc4 != null)
+                {
+                    res.DocType = "Кадастровая выписка о земельном участке";
+                    res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Number");
+                    res.Appointment = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Appointment");
+                    res.AppointmentFIO = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "FIO");
+                    res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Date");
+                    res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Organization");
+                }
+
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))
+                    res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
+      
             }
         }
 
@@ -2607,7 +2625,7 @@ namespace RRTypes.CommonParsers
         private static void Parse_KTP08Info(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
         {
 
-            res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "");
+            res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "/");
             res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/Package/Certification_Doc/Date");
             res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/Package/Certification_Doc/Number");
             res.Appointment = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/Package/Certification_Doc/Appointment");
@@ -3188,7 +3206,7 @@ namespace RRTypes.CommonParsers
             res.DocTypeNick = "КПЗУ";
             res.DocType = "Кадастровый паспорт земельного участка";
             res.Version = "5.0.8";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             return res;
         }
@@ -3303,7 +3321,7 @@ namespace RRTypes.CommonParsers
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "ЕГРН";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             return res;
         }
@@ -3421,6 +3439,7 @@ namespace RRTypes.CommonParsers
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
         }
         */
+
         public netFteo.XML.FileInfo ParseKVZU04(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
         {
 
@@ -3537,14 +3556,25 @@ namespace RRTypes.CommonParsers
 
             res.DocTypeNick = "КВЗУ";
             res.Version = "04";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_ContractorsV04(xmldoc, res);
 
      return res;
         }
 
         #endregion
-
+        #region разбор КВ KVZU_05
+        public netFteo.XML.FileInfo ParseKVZU05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        {
+            netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+            //TODO
+            res.DocTypeNick = "КВЗУ";
+            res.Version = "05";
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
+            Parse_ContractorsV04(xmldoc, res);
+            return res;
+        }
+        #endregion
 
         #region разбор КВ KVZU_06
         /*-----------------------------------------------------------------------------------------------------------*/
@@ -3662,7 +3692,8 @@ namespace RRTypes.CommonParsers
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            res.Version = "06";
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
 
 
@@ -3817,7 +3848,7 @@ namespace RRTypes.CommonParsers
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             /*
       for (int i = 0; i <= kv.Contractors.Count - 1; i++)
@@ -3998,7 +4029,7 @@ namespace RRTypes.CommonParsers
             */
 
 
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             return res;
         }
@@ -4096,7 +4127,7 @@ namespace RRTypes.CommonParsers
 
 
             res.DocTypeNick = "КВОКС";
-            CommonCast.CasterEGRP.Parse_ReestrExtract(xmldoc, res);
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             return res;
         }

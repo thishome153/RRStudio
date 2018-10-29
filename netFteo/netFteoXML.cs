@@ -484,7 +484,12 @@ namespace netFteo.XML
     /// </summary>
     public static class XMLWrapper
     {
-
+        /// <summary>
+        /// Translate xpath to namespaced xpath otherwise append xpath to root
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="Xpath">xpath without root of document</param>
+        /// <returns></returns>
         public static string NS_Xpath(System.Xml.XmlDocument xmldoc, string Xpath)
         {
             System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
@@ -524,15 +529,23 @@ namespace netFteo.XML
         public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
         {
 
-            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
-            if (recnode != null)
+            if (Xpath.Equals("/"))
             {
-                if (recnode.Attributes.GetNamedItem(AttributeName) != null)
-                    return recnode.Attributes.GetNamedItem(AttributeName).Value;
-                else return null;
+               return xmldoc.DocumentElement.Attributes.GetNamedItem(AttributeName).Value;
             }
             else
-                return null;
+            {
+                System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+
+                if (recnode != null)
+                {
+                    if (recnode.Attributes.GetNamedItem(AttributeName) != null)
+                        return recnode.Attributes.GetNamedItem(AttributeName).Value;
+                    else return null;
+                }
+                else
+                    return null;
+            }
         }
 
         public static string Parse_NodeValue(System.Xml.XmlDocument xmldoc, string Xpath)

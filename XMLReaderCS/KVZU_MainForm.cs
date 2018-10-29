@@ -264,29 +264,25 @@ namespace XMLReaderCS
                 }
             }
 
-            //Если это КВЗУ V04
+            //Если это КВЗУ V04/V05
             if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
             {
+                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "Кадастровая выписка 4";
-                if ( xmldoc.DocumentElement.GetElementsByTagName("eDocument").Count == 1) // Проверим
+                string ver_Vidimus="";
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                        (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))       
+                    ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
+
+                if ( ver_Vidimus.Equals("04")) // Проверим
                 {
-                    toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-
-                    toolStripStatusLabel3.Text = "04";
-                    /*
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV));
-
-                    KV04 = (RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV)serializer.Deserialize(stream);//;(reader);
-                    ParseKVZU04(KV04);
-                    */
-                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseKVZU04(this.DocInfo, xmldoc);
                 }
-                else
+                // Проверим
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
                 {
-                    toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.application_error;
-                    toolStripStatusLabel3.Text = "05";
+                    this.DocInfo = parser.ParseKVZU05(this.DocInfo, xmldoc);
                 }
             }
 
