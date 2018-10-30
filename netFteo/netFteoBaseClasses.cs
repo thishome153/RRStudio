@@ -2924,8 +2924,8 @@ SCAN:
         public string IssueOrgan;
         public string Serial;
         public string Doc_Date;
-
     }
+
     /// <summary>
     /// класс Файл. Представляет xml-файл всех видов
     /// </summary>

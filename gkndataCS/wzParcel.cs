@@ -195,27 +195,35 @@ namespace GKNData
             }
         }
 
-        private void ReadXMLfromSelectedNode()
+        private void ReadXMLfromSelectedNode(int item_id)
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
-                    ITEM.XmlBodyList.UploadFileBody((int)listView1.SelectedItems[0].Tag, GetVidimusBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
+                if (ITEM.XmlBodyList.BodyEmpty(item_id))
+                    ITEM.XmlBodyList.UploadFileBody(item_id, GetVidimusBody(CF.conn, item_id));
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader в составе приложения
-                frmReader.Read(ITEM.XmlBodyList.GetBody((int)listView1.SelectedItems[0].Tag));
+                frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFile(item_id).FileName;
+                frmReader.Read(ITEM.XmlBodyList.GetBody(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog();
             }
         }
         private void toolButton_ReadXML_Click(object sender, EventArgs e)
         {
-            ReadXMLfromSelectedNode(); 
+            if (listView1.SelectedItems.Count == 1)
+            {
+                ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+            }
         }
+
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
-            ReadXMLfromSelectedNode(); 
+            if (listView1.SelectedItems.Count == 1)
+            {
+                ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+            }
         }
 
         private void toolButton_PropertyXML_Click(object sender, EventArgs e)

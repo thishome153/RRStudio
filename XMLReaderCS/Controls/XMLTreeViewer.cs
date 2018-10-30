@@ -9,11 +9,11 @@ namespace XMLReaderCS
 {
 
     /// <summary>
-    /// Класс, наследник Treeview. 
+    /// Компонент XML TreeView, наследник Treeview. 
     /// Представляет дерево, способное отображать ветви xml
     /// </summary>
     /// <remarks>
-    /// C# как-то сам добавил в Toolbox. 
+    /// C# как-то сам добавил в Toolbox. ....
     /// </remarks>
     public class CXmlTreeView : TreeView
     {
@@ -29,8 +29,10 @@ namespace XMLReaderCS
             SearchTextBox = new TextBox();
             this.ContextMenuStrip = contextMenu_XMLBoby;
             ToolStripItem ItemCopy = contextMenu_XMLBoby.Items.Add("Копировать");
+            ToolStripItem ItemCopyXPath = contextMenu_XMLBoby.Items.Add("Копировать XPath");
             ItemSearch = (ToolStripMenuItem)contextMenu_XMLBoby.Items.Add("Поиск");
             ItemCopy.Click += ItemCopy_Click;
+            ItemCopyXPath.Click += ItemCopyXpath_Click;
             ItemSearch.Click += ItemSearch_Click;
             SearchTextBox.Visible = false;// true;
             SearchTextBox.Left = 200;
@@ -41,9 +43,41 @@ namespace XMLReaderCS
         }
 
 
+        private void ItemCopyXpath_Click(object sender, EventArgs e)
+        {
+            Control parent = ((ContextMenuStrip)(((ToolStripMenuItem)sender).Owner)).SourceControl;
+            TreeView tv = (TreeView)parent;
+            if (tv.SelectedNode != null)
+            {
+                if (tv.SelectedNode.Tag != null)
+                    if
+                     (tv.SelectedNode.Tag.GetType().ToString() == "System.Xml.XmlAttribute")
+                    {
+                        XmlElement item = (XmlElement)tv.SelectedNode.Parent.Tag;
+                        Clipboard.SetText(netFteo.XML.XMLWrapper.GetXPath_UsingPreviousSiblings(item)+"/@"+
+                                     ((System.Xml.XmlAttribute)tv.SelectedNode.Tag).Name);
+                    }
+
+                if (tv.SelectedNode.Tag.GetType().ToString() == "System.Xml.XmlText")
+                {
+                    XmlElement item = (XmlElement)tv.SelectedNode.Parent.Tag;
+                    Clipboard.SetText(netFteo.XML.XMLWrapper.GetXPath_UsingPreviousSiblings(item) + "/" +
+                                 ((System.Xml.XmlText)tv.SelectedNode.Tag).Name);
+                }
+
+                    if  (tv.SelectedNode.Tag.GetType().ToString() == "System.Xml.XmlElement")
+                {
+                        XmlElement item = (XmlElement)this.SelectedNode.Tag;
+                        Clipboard.SetText(netFteo.XML.XMLWrapper.GetXPath_UsingPreviousSiblings(item));
+                    }
+            }
+        }
+
         private void ItemCopy_Click(object sender, EventArgs e)
         {
-            if (this.SelectedNode != null)
+            Control parent = ((ContextMenuStrip)(((ToolStripMenuItem)sender).Owner)).SourceControl;
+
+            if (((TreeView)parent).SelectedNode != null)
             {
                 Clipboard.SetText(this.SelectedNode.Text);
             }

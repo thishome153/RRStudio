@@ -504,16 +504,62 @@ namespace netFteo.XML
             return testXpath;
         }
 
+        /// <summary>
+        /// Create XPath of element
+        /// TODO: namespaced element ????
+        /// </summary>
+        /// <param name="element">XmlElement element  </param>
+        /// <returns></returns>
+        public static string GetXPath_UsingPreviousSiblings(this XmlElement element)
+        {
+            string path = "/" + element.Name;
+            if (element.NamespaceURI != "") return "NamespaceURI is not served";
+            XmlElement parentElement = element.ParentNode as XmlElement;
+            if (parentElement != null)
+            {
+                // Gets the position within the parent element, based on previous siblings of the same name.
+                // However, this position is irrelevant if the element is unique under its parent:
+              System.Xml.XPath.XPathNavigator navigator = parentElement.CreateNavigator();
+                int count = Convert.ToInt32(navigator.Evaluate("count(" + element.Name + ")"));
+                if (count > 1) // There's more than 1 element with the same name
+                {
+                    int position = 1;
+                    XmlElement previousSibling = element.PreviousSibling as XmlElement;
+                    while (previousSibling != null)
+                    {
+                        if (previousSibling.Name == element.Name)
+                            position++;
+
+                        previousSibling = previousSibling.PreviousSibling as XmlElement;
+                    }
+
+                    path = path + "[" + position + "]";
+                }
+
+                // Climbing up to the parent elements:
+                path = parentElement.GetXPath_UsingPreviousSiblings() + path;
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// Select node by Xpath
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="Xpath"></param>
+        /// <returns></returns>
         public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
         {
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
+            Xpath = "/" + Xpath;
             if (xmldoc.DocumentElement.NamespaceURI != "")
             {
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
                 nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
                return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
             }
             else
-                return xmldoc.DocumentElement.SelectSingleNode(Xpath);
+                return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath));
 
         }
 
@@ -529,7 +575,7 @@ namespace netFteo.XML
         public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
         {
 
-            if (Xpath.Equals("/"))
+            if (Xpath.Equals(""))
             {
                return xmldoc.DocumentElement.Attributes.GetNamedItem(AttributeName).Value;
             }

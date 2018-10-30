@@ -404,19 +404,19 @@ namespace GKNData
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 3;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 4;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(141, 1);
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 11;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 8;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 10;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 9;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(20, 22);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(22, 22);
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
             this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(20, 22);
+            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(22, 22);
             this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
             // 
             // panel1

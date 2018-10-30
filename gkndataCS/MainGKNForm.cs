@@ -862,7 +862,7 @@ namespace GKNData
 
         private void MainGKNForm_Load(object sender, EventArgs e)
         {
-           
+            loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
         }
     }
 }
