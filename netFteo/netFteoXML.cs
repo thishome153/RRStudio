@@ -487,7 +487,9 @@ namespace netFteo.XML
         /// <summary>
         /// Translate xpath to namespaced xpath otherwise append xpath to root
         /// </summary>
-        /// <param name="xmldoc"></param>
+        /// <remarks> xpath without root of document, examle "eDocument" 
+        /// </remarks>
+        /// <param name="xmldoc">XmlDocument for path translating</param>
         /// <param name="Xpath">xpath without root of document</param>
         /// <returns></returns>
         public static string NS_Xpath(System.Xml.XmlDocument xmldoc, string Xpath)
@@ -552,6 +554,7 @@ namespace netFteo.XML
         public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
         {
             Xpath = "/" + Xpath;
+            XmlNode desiredNode = null;
             if (xmldoc.DocumentElement.NamespaceURI != "")
             {
                 XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
@@ -559,14 +562,13 @@ namespace netFteo.XML
                return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
             }
             else
-                return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath));
-
+                 desiredNode = xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath));
+            return desiredNode;
         }
-
-  
+ 
 
         /// <summary>
-        /// Parse any Attibute in document
+        /// Parse any Attribute in document
         /// </summary>
         /// <param name="xmldoc">Документ</param>
         /// <param name="AttributeName">Имя атрибута</param>

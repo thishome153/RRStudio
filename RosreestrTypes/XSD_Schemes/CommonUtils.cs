@@ -3580,6 +3580,7 @@ namespace RRTypes.CommonParsers
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
+            res.DocType = "Кадастровая выписка о земельном участке";
             res.Version = "06";
             CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
@@ -4034,7 +4035,8 @@ namespace RRTypes.CommonParsers
             res.CommentsType = "-";
             res.DocType = "ЕГРП";
             res.DocTypeNick = "ЕГРП";
-            res.Version = "v04";
+            // /Extract/eDocument/@Version
+            res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "eDocument");
 
 
             TMyCadastralBlock Bl = new TMyCadastralBlock();
