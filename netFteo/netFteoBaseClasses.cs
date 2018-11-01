@@ -1263,6 +1263,12 @@ SCAN:
             }
         }
 
+        public void Set_Mt(double mt)
+        {
+            foreach (Point pt in this)
+                pt.Mt = mt;
+        }
+
     }
     #endregion
 
@@ -1351,6 +1357,14 @@ SCAN:
                 this.Childs[i].Exchange_XY();
 
         }
+
+        public void SetMT(double mt)
+        {
+            this.Set_Mt(mt);
+            foreach (TMyOutLayer child in this.Childs)
+                child.Set_Mt(mt);
+        }
+
         public int State;
         /// <summary>
         /// Площадь - значение (указанное). Типа Семантическая в ЕГРН

@@ -577,34 +577,35 @@ namespace GKNData
 
         private void OpenFile(string FileName)
         {
-
             if (!File.Exists(FileName)) return;
             string extention = Path.GetExtension(FileName).ToUpper();
 
             // got spatial file of several kind:
             if ((extention.Equals(".MIF")) ||
                 (extention.Equals(".DXF")) ||
-                (extention.Equals(".TXT"))  )
+                (extention.Equals(".TXT")) ||
+                (extention.Equals(".XML")))
             {
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
+                frmReader.DocInfo.FileName = FileName;
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader в составе приложения
                 frmReader.Read(FileName, false);
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
             }
+            /*
+            if 
 
-            if (extention.Equals(".XML"))
             {
                 System.IO.TextReader reader = new System.IO.StreamReader(FileName);
                 System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
                 xml.Load(reader);
                 StatusLabel_AllMessages.Text = xml.DocumentElement.Name.ToString();
-                XMLReaderCS.KVZU_Form MyReader = new XMLReaderCS.KVZU_Form();
-                MyReader.Read(xml);
-                MyReader.ShowDialog();
+                frmReader.Read(xml);
+                frmReader.ShowDialog();
             }
-
+            */
 
         }
 
@@ -863,6 +864,11 @@ namespace GKNData
         private void MainGKNForm_Load(object sender, EventArgs e)
         {
             loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
+        }
+
+        private void свойстваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Edit(CF.Cfg.CurrentItem);
         }
     }
 }

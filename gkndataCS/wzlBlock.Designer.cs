@@ -247,7 +247,7 @@
             // toolButton_ReadXML
             // 
             this.toolButton_ReadXML.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolButton_ReadXML.Image = ((System.Drawing.Image)(resources.GetObject("toolButton_ReadXML.Image")));
+            this.toolButton_ReadXML.Image = global::GKNData.Properties.Resources.Свойства;
             this.toolButton_ReadXML.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolButton_ReadXML.Name = "toolButton_ReadXML";
             this.toolButton_ReadXML.Size = new System.Drawing.Size(23, 20);
@@ -264,7 +264,7 @@
             // toolButton_PropertyXML
             // 
             this.toolButton_PropertyXML.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolButton_PropertyXML.Image = ((System.Drawing.Image)(resources.GetObject("toolButton_PropertyXML.Image")));
+            this.toolButton_PropertyXML.Image = global::GKNData.Properties.Resources.application_form;
             this.toolButton_PropertyXML.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolButton_PropertyXML.Name = "toolButton_PropertyXML";
             this.toolButton_PropertyXML.Size = new System.Drawing.Size(23, 20);

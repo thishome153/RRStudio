@@ -32,9 +32,9 @@ namespace GKNData
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel_SubRf_CN = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,6 +59,7 @@ namespace GKNData
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.свойстваToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.онлайнToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tree_imageList = new System.Windows.Forms.ImageList(this.components);
@@ -205,6 +206,7 @@ namespace GKNData
             // 
             // выходToolStripMenuItem
             // 
+            this.выходToolStripMenuItem.Image = global::GKNData.Properties.Resources.cross1;
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
             this.выходToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.выходToolStripMenuItem.Text = "Выход";
@@ -223,7 +225,7 @@ namespace GKNData
             // 
             this.сменитьСубъектToolStripMenuItem.Image = global::GKNData.Properties.Resources.ВыборСубъектаРФ;
             this.сменитьСубъектToolStripMenuItem.Name = "сменитьСубъектToolStripMenuItem";
-            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сменитьСубъектToolStripMenuItem.Text = "Сменить субъект";
             this.сменитьСубъектToolStripMenuItem.Click += new System.EventHandler(this.сменитьСубъектToolStripMenuItem_Click);
             // 
@@ -231,7 +233,7 @@ namespace GKNData
             // 
             this.OptionsToolStripMenuItem.Image = global::GKNData.Properties.Resources.page_white_code;
             this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
-            this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OptionsToolStripMenuItem.Text = "Настройки";
             this.OptionsToolStripMenuItem.Click += new System.EventHandler(this.настройкиToolStripMenuItem_Click);
             // 
@@ -247,7 +249,7 @@ namespace GKNData
             // 
             this.открытьToolStripMenuItem.Image = global::GKNData.Properties.Resources.Свойства;
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.открытьToolStripMenuItem.Text = "Свойства";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
@@ -262,7 +264,7 @@ namespace GKNData
             // оПрограммеToolStripMenuItem
             // 
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
-            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе";
             this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
             // 
@@ -277,12 +279,12 @@ namespace GKNData
             this.treeView1.ImageList = this.Tree_imageList;
             this.treeView1.Location = new System.Drawing.Point(0, 49);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "Node1";
-            treeNode4.Name = "Node0";
-            treeNode4.Text = "Node0";
+            treeNode1.Name = "Node1";
+            treeNode1.Text = "Node1";
+            treeNode2.Name = "Node0";
+            treeNode2.Text = "Node0";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4});
+            treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowNodeToolTips = true;
             this.treeView1.Size = new System.Drawing.Size(710, 334);
@@ -295,10 +297,19 @@ namespace GKNData
             // contextMenu1
             // 
             this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.свойстваToolStripMenuItem,
             this.онлайнToolStripMenuItem,
             this.поискToolStripMenuItem});
             this.contextMenu1.Name = "contextMenu1";
-            this.contextMenu1.Size = new System.Drawing.Size(150, 48);
+            this.contextMenu1.Size = new System.Drawing.Size(150, 70);
+            // 
+            // свойстваToolStripMenuItem
+            // 
+            this.свойстваToolStripMenuItem.Image = global::GKNData.Properties.Resources.Свойства;
+            this.свойстваToolStripMenuItem.Name = "свойстваToolStripMenuItem";
+            this.свойстваToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.свойстваToolStripMenuItem.Text = "Свойства";
+            this.свойстваToolStripMenuItem.Click += new System.EventHandler(this.свойстваToolStripMenuItem_Click);
             // 
             // онлайнToolStripMenuItem
             // 
@@ -404,19 +415,19 @@ namespace GKNData
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 4;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(141, 1);
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 10;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 9;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(22, 22);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
             this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(22, 22);
+            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(26, 22);
             this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
             // 
             // panel1
@@ -525,6 +536,7 @@ namespace GKNData
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private MRG.Controls.UI.LoadingCircleToolStripMenuItem loadingCircleToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem свойстваToolStripMenuItem;
     }
 }
 

@@ -83,6 +83,16 @@ namespace GKNData.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap application_form {
+            get {
+                object obj = ResourceManager.GetObject("application_form", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullet_disk {
             get {
                 object obj = ResourceManager.GetObject("bullet_disk", resourceCulture);

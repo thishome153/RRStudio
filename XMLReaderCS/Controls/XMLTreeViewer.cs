@@ -186,6 +186,14 @@ namespace XMLReaderCS
             //TotalItemsPopulating(rNode);
             return false;
         }
+        
+        /// <summary>
+        /// Clear treeview (delete nodes)
+        /// </summary>
+        public void Clear()
+        {
+            this.Nodes.Clear();
+        }
 
         TreeNode InsertItem(XmlNode xmlnode, string nodeName, TreeNode hParent)
         {

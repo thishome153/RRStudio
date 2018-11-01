@@ -29,24 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("26:06:000000:13546");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Node2");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("TopNode", new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6,
-            treeNode7});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("26:06:000000:13546");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node2");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("TopNode", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KVZU_Form));
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Итем 1",
-            "Субитем 1-1"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("");
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Итем 1",
             "Субитем 1-1"}, -1);
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Итем 1",
+            "Субитем 1-1"}, -1);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьКакToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,6 +168,7 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.SetMT_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -686,20 +687,20 @@
             this.TV_Parcels.ImageList = this.imList_dStates;
             this.TV_Parcels.Location = new System.Drawing.Point(0, 0);
             this.TV_Parcels.Name = "TV_Parcels";
-            treeNode5.ImageIndex = 0;
-            treeNode5.Name = "Child";
-            treeNode5.Text = "26:06:000000:13546";
-            treeNode6.Name = "Node1Name";
-            treeNode6.Text = "Node1";
-            treeNode7.Name = "Node2";
-            treeNode7.Text = "Node2";
-            treeNode8.Checked = true;
-            treeNode8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            treeNode8.ImageIndex = 1;
-            treeNode8.Name = "Root";
-            treeNode8.Text = "TopNode";
+            treeNode1.ImageIndex = 0;
+            treeNode1.Name = "Child";
+            treeNode1.Text = "26:06:000000:13546";
+            treeNode2.Name = "Node1Name";
+            treeNode2.Text = "Node1";
+            treeNode3.Name = "Node2";
+            treeNode3.Text = "Node2";
+            treeNode4.Checked = true;
+            treeNode4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            treeNode4.ImageIndex = 1;
+            treeNode4.Name = "Root";
+            treeNode4.Text = "TopNode";
             this.TV_Parcels.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode8});
+            treeNode4});
             this.TV_Parcels.SelectedImageIndex = 0;
             this.TV_Parcels.ShowNodeToolTips = true;
             this.TV_Parcels.Size = new System.Drawing.Size(239, 428);
@@ -957,13 +958,13 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.StateImageIndex = 0;
-            listViewItem9.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem7,
-            listViewItem8,
-            listViewItem9});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3});
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(605, 210);
@@ -1005,23 +1006,24 @@
             // 
             this.contextMenuStrip_OIPD.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ChangeXYToolStripMenuItem,
-            this.копироватьToolStripMenuItem2});
+            this.копироватьToolStripMenuItem2,
+            this.SetMT_MenuItem});
             this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(161, 48);
+            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 92);
             this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
             // 
             // ChangeXYToolStripMenuItem
             // 
             this.ChangeXYToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.arrow_switch;
             this.ChangeXYToolStripMenuItem.Name = "ChangeXYToolStripMenuItem";
-            this.ChangeXYToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.ChangeXYToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.ChangeXYToolStripMenuItem.Text = "Поменять xy";
             this.ChangeXYToolStripMenuItem.Click += new System.EventHandler(this.ChangeXYToolStripMenuItem_Click);
             // 
             // копироватьToolStripMenuItem2
             // 
             this.копироватьToolStripMenuItem2.Name = "копироватьToolStripMenuItem2";
-            this.копироватьToolStripMenuItem2.Size = new System.Drawing.Size(160, 22);
+            this.копироватьToolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
             this.копироватьToolStripMenuItem2.Text = "Копировать все";
             this.копироватьToolStripMenuItem2.Click += new System.EventHandler(this.копироватьToolStripMenuItem2_Click);
             // 
@@ -1051,13 +1053,13 @@
             this.listView_Properties.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView_Properties.HideSelection = false;
             this.listView_Properties.ImeMode = System.Windows.Forms.ImeMode.Off;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.StateImageIndex = 0;
             this.listView_Properties.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
+            listViewItem4,
+            listViewItem5,
+            listViewItem6});
             this.listView_Properties.Location = new System.Drawing.Point(0, 220);
             this.listView_Properties.MultiSelect = false;
             this.listView_Properties.Name = "listView_Properties";
@@ -1423,11 +1425,11 @@
             this.PreloaderMenuItem.LoadingCircleControl.AccessibleName = "PreloaderMenuItem";
             this.PreloaderMenuItem.LoadingCircleControl.Active = false;
             this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 4;
+            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
             this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(176, 1);
             this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
             this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
-            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 9;
+            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
             this.PreloaderMenuItem.LoadingCircleControl.RotationSpeed = 100;
             this.PreloaderMenuItem.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
             this.PreloaderMenuItem.LoadingCircleControl.SpokeThickness = 2;
@@ -1437,6 +1439,13 @@
             this.PreloaderMenuItem.Name = "PreloaderMenuItem";
             this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
             this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
+            // 
+            // SetMT_MenuItem
+            // 
+            this.SetMT_MenuItem.Name = "SetMT_MenuItem";
+            this.SetMT_MenuItem.Size = new System.Drawing.Size(213, 22);
+            this.SetMT_MenuItem.Text = "Установить погрешность";
+            this.SetMT_MenuItem.Click += new System.EventHandler(this.SetMT_MenuItem_Click);
             // 
             // KVZU_Form
             // 
@@ -1611,7 +1620,6 @@
         private System.Windows.Forms.ToolStripMenuItem сертификатыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem m133333ToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton_VisualizerToggle;
-        private CXmlTreeView cXmlTreeView3;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ToolStripMenuItem генераторGUIDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem просмотрToolStripMenuItem;
@@ -1624,6 +1632,7 @@
         private CXmlTreeView cXmlTreeView2;
         private MRG.Controls.UI.LoadingCircleToolStripMenuItem PreloaderMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem SetMT_MenuItem;
     }
 }
 

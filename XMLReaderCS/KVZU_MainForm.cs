@@ -3693,7 +3693,11 @@ namespace XMLReaderCS
                 this.DocInfo.FilePath = null;
                 this.DocInfo.Comments = null;
                 this.DocInfo.Version = null;
+                this.DocInfo.Number = null;
+                this.DocInfo.Date = null;
             }
+            cXmlTreeView2.Clear();
+
             textBox_Appointment.Text = "";
             textBox_DocDate.Text = "";
             textBox_DocNum.Text = ""; linkLabel_Recipient.Text = ""; linkLabel_Request.Text = ""; 
@@ -3703,6 +3707,7 @@ namespace XMLReaderCS
             toolStripStatusLabel1.Text = "";
             tabPage3.Show();
             tabPage3.Text = "-";
+            tabPage5.Text = "XML";
             label_FileSize.Text = "";
             label2.Text = "Получатель";
             toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
@@ -4621,8 +4626,8 @@ namespace XMLReaderCS
             ToolStripItem rc0 =   RecentFilesMenuItem.DropDownItems.Add(XMLReaderCS.Properties.Settings.Default.Recent0);
             rc0.Click += RecentFile0MenuItem_Click; // handler for sub menu
             openFileDialog1.InitialDirectory = XMLReaderCS.Properties.Settings.Default.LastDir;
-            ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-            ListFileInfo(DocInfo);
+          //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+          //  ListFileInfo(DocInfo);
         }
 
         private void fteoImage1_Click(object sender, EventArgs e)
@@ -5242,15 +5247,16 @@ namespace XMLReaderCS
         }
         #endregion
 
+
         private void KVZU_Form_Load(object sender, EventArgs e)
         {
-            if ((int)this.Tag == 3)
+            if ((int)this.Tag == 3) // load from NET application
             {
                 this.Text = "XMl Reader в составе приложения";
                 this.ShowInTaskbar = true;
             }
             else
-            {
+            {  // load as standalone application with args in cli:
                 this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
                 this.ShowInTaskbar = true;
                 args = Environment.GetCommandLineArgs();
@@ -5258,15 +5264,16 @@ namespace XMLReaderCS
                 {
                     //string Test = Path.GetDirectoryName(args[0]) + "\\" + args[2];
                     toolStripStatusLabel3.Text = args[1];
-                    string Test = args[1];
+                    string TestFileName = args[1];
                     //if (args[2] == "open")
-                    if (File.Exists(Test))
-                        Read(Test, true);
+                    if (File.Exists(TestFileName))
+                        Read(TestFileName, false);
                 }
                 //No command line args[]
                 else toolStripStatusLabel3.Text = "Нет аргументов";
             }
-
+            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListFileInfo(DocInfo);
 #if (DEBUG)
             this.Text += "/DEBUG {2018}";
 
@@ -5320,6 +5327,21 @@ namespace XMLReaderCS
                     return;
                 }
               }
+        }
+
+        private void ававааToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SetMT_MenuItem_Click(object sender, EventArgs e)
+        {
+            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));// Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+            if (Pl != null)
+            {
+                Pl.SetMT(0.1); 
+                PointListToListView(listView1, Pl);
+            }
         }
     }
 }
