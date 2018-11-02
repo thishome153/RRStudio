@@ -5272,6 +5272,7 @@ namespace XMLReaderCS
                 //No command line args[]
                 else toolStripStatusLabel3.Text = "Нет аргументов";
             }
+            //anyway - MyBlocks must be exist at this point:
             ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             ListFileInfo(DocInfo);
 #if (DEBUG)
