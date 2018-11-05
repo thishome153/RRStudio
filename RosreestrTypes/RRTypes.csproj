@@ -472,6 +472,7 @@
     <None Include="XSD_Schemes\SchemaCommon\_AddressInp_v02.xsd" />
     <None Include="XSD_Schemes\SchemaCommon\_AddressOut_v03.xsd" />
     <Content Include="XSD_Schemes\KPOKS\kv_c9700a89-b737-4e18-b45d-f8e62a2c0174.xml" />
+    <Content Include="XSD_Schemes\KPT_08\kpt_08_MK.xml" />
     <Content Include="XSD_Schemes\KVOKS_v07\kv_3d8e61d8-0fbb-4d99-b898-f923523f0f19.xml" />
     <Content Include="XSD_Schemes\KVZU\KVZU_7.xml" />
     <Content Include="XSD_Schemes\SchemaCommon\_AddressOut_v04.xsd" />

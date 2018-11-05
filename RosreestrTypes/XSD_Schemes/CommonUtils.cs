@@ -3,6 +3,7 @@ using System.Linq;
 using netFteo;
 using netFteo.Spatial;
 using netFteo.Rosreestr;
+using System.Xml;
 
 namespace RRTypes.CommonCast
 {
@@ -2664,25 +2665,66 @@ namespace RRTypes.CommonParsers
         {
             if (xmllocation == null) return null;
             TLocation loc = new TLocation();
-            //loc.Address = CastAddress(location.Address);
-            /*
-            if (location.Elaboration != null)
+            XmlNode Address = netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Address");
+
+            if (Address != null)
             {
-                if (location.Elaboration.Direction != null)
-                    loc.Elaboration.Direction = location.Elaboration.Direction;
+                TAddress Adr = new TAddress();
 
-                if (location.Elaboration.Distance != null)
-                    loc.Elaboration.Distance = location.Elaboration.Distance;
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "District") != null)
+                    Adr.District = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "District").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "District").Attributes.GetNamedItem("Name").Value;
 
-                if (location.Elaboration.ReferenceMark != null)
-                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "City") != null)
+                    Adr.City = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "City").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "City").Attributes.GetNamedItem("Name").Value;
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Locality") != null)
+                    Adr.Locality = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Locality").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Locality").Attributes.GetNamedItem("Name").Value;
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Street") != null)
+                    Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Street").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Street").Attributes.GetNamedItem("Name").Value;
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1") != null)
+                    Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1").Attributes.GetNamedItem("Name").Value;
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2") != null)
+                    Adr.Level2 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2").Attributes.GetNamedItem("Name").Value;
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3") != null)
+                    Adr.Level3 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Type").Value + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Name").Value;
+
+                Adr.Region = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "Region");
+                    Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "Note");
+
+                    loc.Address = Adr;
+            }
+
+
+
+            if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Elaboration")  != null)
+            {
+                XmlNode elaboration = netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Elaboration");
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(elaboration, "ReferenceMark") != null)
+                        loc.Elaboration.ReferenceMark = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "ReferenceMark");
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(elaboration, "Direction") != null)
+                    loc.Elaboration.Direction = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "Direction");
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(elaboration, "Distance") != null)
+                    loc.Elaboration.Distance = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "Distance");
             }
             else
             { int test = 0; }
-            if (location.inBounds != null)
-                loc.Inbounds = location.inBounds.ToString();
-                */
-            return loc;
+            if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "inBounds") != null)
+                loc.Inbounds = netFteo.XML.XMLWrapper.SelectNodeChildValue(xmllocation, "inBounds");
+  
+                    return loc;
         }
 
         //   /Package/Cadastral_Blocks/Cadastral_Block

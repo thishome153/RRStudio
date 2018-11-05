@@ -322,12 +322,18 @@ namespace netFteo.Rosreestr
             InBoundsDic.Add(0, "установлено относительно ориентира, расположенного за пределами участка");
             InBoundsDic.Add(1, "Расположение ориентира в границах участка");
             InBoundsDic.Add(2, "Неопределено");
-            if (this.Distance !=null)
-            return
-                InBoundsDic[InBounds] + "." +
-                "Ориентир " + this.ReferenceMark + "." +
-                " Участок находится примерно в " + this.Distance + " от ориентира по направлению на " + this.Direction + ".";
-            return null;
+            if (this.Distance != null)
+            {
+                return
+                    InBoundsDic[this.InBounds] + "." +
+                    "Ориентир " + this.ReferenceMark + "." +
+                    " Участок находится примерно в " + this.Distance + " от ориентира по направлению на " + this.Direction + ".";
+            }
+            else
+            {
+                return  InBoundsDic[this.InBounds] + ". Ориентир " + this.ReferenceMark;
+            }
+
         }
     }
 
@@ -349,8 +355,9 @@ namespace netFteo.Rosreestr
         {
             set
             {
-                this.Elaboration.InBounds = System.Convert.ToInt32(value.Substring(4, 1));
-            } // because expected value will be like "Item0"
+                value.Replace("Item", ""); // because expected value may  be like "Item0"
+                this.Elaboration.InBounds = System.Convert.ToInt32(value);
+            } 
             get { return this.Elaboration.AsString(); }
         }
 
@@ -358,10 +365,12 @@ namespace netFteo.Rosreestr
         {
             this.Elaboration = new TElaboration();
         }
+
         public string AsString()
         {
             if (this.Elaboration.AsString() != null)
-            return this.Elaboration.AsString() + " Почтовый адрес ориентира " + this.Address.Note;
+            return this.Elaboration.AsString() + 
+                            (this.Address != null ? " Почтовый адрес ориентира " + this.Address.Note : "");
             return null;
         }
     }
