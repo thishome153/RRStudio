@@ -355,8 +355,8 @@ namespace netFteo.Rosreestr
         {
             set
             {
-                value.Replace("Item", ""); // because expected value may  be like "Item0"
-                this.Elaboration.InBounds = System.Convert.ToInt32(value);
+                 // because expected value may  be like "Item0"
+                this.Elaboration.InBounds = System.Convert.ToInt32(value.Replace("Item", ""));
             } 
             get { return this.Elaboration.AsString(); }
         }

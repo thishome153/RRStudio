@@ -129,6 +129,8 @@
             this.contextMenuStrip_OIPD = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ChangeXYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SetMT_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.округлитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listView_Properties = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -168,7 +170,7 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-            this.SetMT_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1007,9 +1009,11 @@
             this.contextMenuStrip_OIPD.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ChangeXYToolStripMenuItem,
             this.копироватьToolStripMenuItem2,
-            this.SetMT_MenuItem});
+            this.SetMT_MenuItem,
+            this.округлитьToolStripMenuItem,
+            this.перенумероватьToolStripMenuItem});
             this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 92);
+            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 136);
             this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
             // 
             // ChangeXYToolStripMenuItem
@@ -1026,6 +1030,20 @@
             this.копироватьToolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
             this.копироватьToolStripMenuItem2.Text = "Копировать все";
             this.копироватьToolStripMenuItem2.Click += new System.EventHandler(this.копироватьToolStripMenuItem2_Click);
+            // 
+            // SetMT_MenuItem
+            // 
+            this.SetMT_MenuItem.Name = "SetMT_MenuItem";
+            this.SetMT_MenuItem.Size = new System.Drawing.Size(213, 22);
+            this.SetMT_MenuItem.Text = "Установить погрешность";
+            this.SetMT_MenuItem.Click += new System.EventHandler(this.SetMT_MenuItem_Click);
+            // 
+            // округлитьToolStripMenuItem
+            // 
+            this.округлитьToolStripMenuItem.Name = "округлитьToolStripMenuItem";
+            this.округлитьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.округлитьToolStripMenuItem.Text = "Округлить";
+            this.округлитьToolStripMenuItem.Click += new System.EventHandler(this.округлитьToolStripMenuItem_Click);
             // 
             // splitter1
             // 
@@ -1440,12 +1458,12 @@
             this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
             this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
             // 
-            // SetMT_MenuItem
+            // перенумероватьToolStripMenuItem
             // 
-            this.SetMT_MenuItem.Name = "SetMT_MenuItem";
-            this.SetMT_MenuItem.Size = new System.Drawing.Size(213, 22);
-            this.SetMT_MenuItem.Text = "Установить погрешность";
-            this.SetMT_MenuItem.Click += new System.EventHandler(this.SetMT_MenuItem_Click);
+            this.перенумероватьToolStripMenuItem.Name = "перенумероватьToolStripMenuItem";
+            this.перенумероватьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.перенумероватьToolStripMenuItem.Text = "Перенумеровать";
+            this.перенумероватьToolStripMenuItem.Click += new System.EventHandler(this.перенумероватьToolStripMenuItem_Click);
             // 
             // KVZU_Form
             // 
@@ -1633,6 +1651,8 @@
         private MRG.Controls.UI.LoadingCircleToolStripMenuItem PreloaderMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem SetMT_MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem округлитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem перенумероватьToolStripMenuItem;
     }
 }
 

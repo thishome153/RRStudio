@@ -1269,6 +1269,33 @@ SCAN:
                 pt.Mt = mt;
         }
 
+        public void Set_Fraq(string format)
+        {
+            foreach (Point pt in this)
+            {
+                if (Double.TryParse(pt.x.ToString(format), out double fraqtedX))
+                {
+                    pt.x = fraqtedX;
+                    pt.oldX = fraqtedX;
+                }
+
+                if (Double.TryParse(pt.y.ToString(format), out double fraqtedY))
+                {
+                    pt.y = fraqtedY;
+                    pt.oldY = fraqtedY;
+                }
+            }
+        }
+
+        public int Reorder_Points(int StartIndex)
+        {
+            foreach (Point pt in this)
+            {
+                pt.NumGeopointA = StartIndex++.ToString();
+            }
+            return StartIndex;
+        }
+
     }
     #endregion
 
@@ -1364,6 +1391,23 @@ SCAN:
             foreach (TMyOutLayer child in this.Childs)
                 child.Set_Mt(mt);
         }
+
+
+        public void Fraq(string format)
+        {
+            this.Set_Fraq(format);
+            foreach (TMyOutLayer child in this.Childs)
+                child.Set_Fraq(format);
+        }
+
+
+        public void ReorderPoints(int StartIndex)
+        {
+            StartIndex += this.Reorder_Points(StartIndex);
+            foreach (TMyOutLayer child in this.Childs)
+                StartIndex += child.Reorder_Points(StartIndex);
+        }
+
 
         public int State;
         /// <summary>

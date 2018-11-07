@@ -5337,10 +5337,30 @@ namespace XMLReaderCS
 
         private void SetMT_MenuItem_Click(object sender, EventArgs e)
         {
-            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));// Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
             if (Pl != null)
             {
                 Pl.SetMT(0.1); 
+                PointListToListView(listView1, Pl);
+            }
+        }
+
+        private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Pl != null)
+            {
+                Pl.Fraq("0.00");
+                PointListToListView(listView1, Pl);
+            }
+        }
+
+        private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Pl != null)
+            {
+                Pl.ReorderPoints(1);
                 PointListToListView(listView1, Pl);
             }
         }
