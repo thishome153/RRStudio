@@ -2687,15 +2687,18 @@ namespace RRTypes.CommonParsers
                     Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Street").Attributes.GetNamedItem("Type").Value + " " +
                         netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Street").Attributes.GetNamedItem("Name").Value;
 
-                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1") != null)
+                if ((netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1") != null) &&
+                        (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1").Attributes.GetNamedItem("Name") != null))
                     Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1").Attributes.GetNamedItem("Type").Value + " " +
                         netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level1").Attributes.GetNamedItem("Name").Value;
 
-                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2") != null)
+                if ((netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2") != null) &&
+                        (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2").Attributes.GetNamedItem("Name") != null))
                     Adr.Level2 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2").Attributes.GetNamedItem("Type").Value + " " +
                         netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level2").Attributes.GetNamedItem("Name").Value;
 
-                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3") != null)
+                if ((netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3") != null) &&
+                        (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Name") != null))
                     Adr.Level3 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Type").Value + " " +
                         netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Name").Value;
 
