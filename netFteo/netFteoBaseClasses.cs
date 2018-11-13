@@ -526,6 +526,36 @@ namespace netFteo.Spatial
             }
         }
 
+        public int Index (int item_id)
+        {
+            int res=-1; 
+            foreach(Point pt in this)
+            {
+                res++;
+                if (pt.id == item_id)
+                {
+                    return res;
+                }
+            }
+            return -1; //point to nothing
+        }
+
+        /// <summary>
+        /// Move point in point list up or down
+        /// </summary>
+        /// <param name="newPosition"></param>
+        public void Move (int index, int newPosition)
+
+        {
+            Point Swap = this[newPosition]; // save object
+            this.RemoveAt(newPosition);
+            this.Insert(newPosition, this[index]);
+            this.RemoveAt(index);
+            this.Insert(index, Swap);
+            
+            //  this.[0].
+        }
+
         public string HasChanges
         {
             get

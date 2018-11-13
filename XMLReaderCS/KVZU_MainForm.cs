@@ -5364,6 +5364,23 @@ namespace XMLReaderCS
                 PointListToListView(listView1, Pl);
             }
         }
+
+        private void listView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            var test = (ListView)sender;
+            if (test.SelectedItems.Count == 1)
+            {
+                
+                if (test.SelectedItems[0].Tag != null)
+                toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
+            }
+
+        }
     }
 }
 

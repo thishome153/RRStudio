@@ -131,6 +131,8 @@
             this.копироватьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.SetMT_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.округлитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listView_Properties = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -170,7 +172,6 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-            this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -973,6 +974,8 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Tile;
+            this.listView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyUp);
+            this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
             // 
             // columnHeader_Name
             // 
@@ -1011,7 +1014,8 @@
             this.копироватьToolStripMenuItem2,
             this.SetMT_MenuItem,
             this.округлитьToolStripMenuItem,
-            this.перенумероватьToolStripMenuItem});
+            this.перенумероватьToolStripMenuItem,
+            this.MoveUpMenuItem});
             this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
             this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 136);
             this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
@@ -1044,6 +1048,19 @@
             this.округлитьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.округлитьToolStripMenuItem.Text = "Округлить";
             this.округлитьToolStripMenuItem.Click += new System.EventHandler(this.округлитьToolStripMenuItem_Click);
+            // 
+            // перенумероватьToolStripMenuItem
+            // 
+            this.перенумероватьToolStripMenuItem.Name = "перенумероватьToolStripMenuItem";
+            this.перенумероватьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.перенумероватьToolStripMenuItem.Text = "Перенумеровать";
+            this.перенумероватьToolStripMenuItem.Click += new System.EventHandler(this.перенумероватьToolStripMenuItem_Click);
+            // 
+            // MoveUpMenuItem
+            // 
+            this.MoveUpMenuItem.Name = "MoveUpMenuItem";
+            this.MoveUpMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.MoveUpMenuItem.Text = "Вверх";
             // 
             // splitter1
             // 
@@ -1458,13 +1475,6 @@
             this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
             this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
             // 
-            // перенумероватьToolStripMenuItem
-            // 
-            this.перенумероватьToolStripMenuItem.Name = "перенумероватьToolStripMenuItem";
-            this.перенумероватьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.перенумероватьToolStripMenuItem.Text = "Перенумеровать";
-            this.перенумероватьToolStripMenuItem.Click += new System.EventHandler(this.перенумероватьToolStripMenuItem_Click);
-            // 
             // KVZU_Form
             // 
             this.AllowDrop = true;
@@ -1653,6 +1663,7 @@
         private System.Windows.Forms.ToolStripMenuItem SetMT_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem округлитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem перенумероватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MoveUpMenuItem;
     }
 }
 
