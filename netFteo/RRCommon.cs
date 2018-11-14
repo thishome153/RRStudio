@@ -292,6 +292,7 @@ namespace netFteo.Rosreestr
         }
         */
     }
+
     /// <summary>
     /// Уточнение местоположения
     /// </summary>
@@ -315,8 +316,20 @@ namespace netFteo.Rosreestr
          * Ориентир здание администрации с. Красногвардейское. 
          * Участок находится примерно в 25 км от ориентира по направлению на восток. 
          * */
+
+         public bool Empty
+        {
+            get
+            {
+                return ((this.Distance == null) &&
+                (this.Direction == null) &&
+                (this.ReferenceMark == null));
+            }
+        }
+
         public string AsString()
         {
+            if (this.Empty)  return null;
             Dictionary<int, string> InBoundsDic; //"В границах"
             InBoundsDic = new Dictionary<int, string>();
             InBoundsDic.Add(0, "установлено относительно ориентира, расположенного за пределами участка");
@@ -331,18 +344,12 @@ namespace netFteo.Rosreestr
             }
             else
             {
-                return  InBoundsDic[this.InBounds] + ". Ориентир " + this.ReferenceMark;
+                return  InBoundsDic[this.InBounds] + ". Ориентир" + this.ReferenceMark;
             }
 
         }
     }
 
-    public enum InBounds
-    {
-        за_пределами_участка = 0,
-        в_границах_участка = 1,
-        Неопределено = 2
-    }
 
     /// <summary>
     /// Уточнение местоположения и адрес (описание местоположения) земельного участка

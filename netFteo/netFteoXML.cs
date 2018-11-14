@@ -600,9 +600,11 @@ namespace netFteo.XML
         {
 
             System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
-            if (recnode != null)
+            if ((recnode != null) &&
+                (recnode.ChildNodes != null) 
+                )
             {
-                return recnode.FirstChild.Value;
+                return recnode.ChildNodes.Count>0? recnode.FirstChild.Value: "";
             }
             else
                 return null;
