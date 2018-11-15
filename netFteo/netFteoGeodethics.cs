@@ -12,7 +12,14 @@ namespace netFteo.Spatial
     /// </summary>
     public static class Geodethic
     {
-        
+        /// <summary>
+        /// Радиус Земли в километрах
+        /// </summary>
+        public const double A_E = 6371.0;				
+
+
+
+
         /// <summary>
         /// Перевод угла из формата  356.5623(RAW NiKon) в радианы 
         /// </summary>
@@ -34,25 +41,38 @@ namespace netFteo.Spatial
             return GradToRadians(DecimalGrad);
         }
 
+
         /// <summary>
-        /// Перевод углов из радиан в градусы вещественного формата  356.5623 как в RAW NiKon-------Дописать бы
+        /// Перевод углов из радиан в градусы вещественного формата  356.5623 как в RAW NiKon
         /// </summary>
+        /// <remarks> радианы -> градусы, 
+        ///          #define Degrees(x) (x * 57.29577951308232)	// 
+        ///          по следам http://gis-lab.info/qa/sphere-geodesic-direct-problem.html
+        /// </remarks>
         /// <param name="Angle_In_Radians"></param>
         /// <returns></returns>
-        public static double RadiantoFloat(double Angle_In_Radians)
+        public static double Degrees(double Angle_In_Radians)
         {
-           /* double g ,Grad;
+            double g ,Grad;
             Grad = Angle_In_Radians * 180 / Math.PI;
 
             g = Math.Truncate(Grad);
-            * */
-            return -1; 
+           
+            return g; 
         }
 
+        /// <summary>
+        /// #define Radians(x) (x / 57.29577951308232)	// градусы -> радианы
+        /// </summary>
+        /// <remarks>по следам http://gis-lab.info/qa/sphere-geodesic-direct-problem.html
+        /// </remarks>
+        /// <param name="rd1">угол в градусы (формата  356.5623 как в RAW NiKon)</param>
+        /// <returns></returns>
         public static double GradToRadians(double rd1) //Перевод в радианы
         {
             return (rd1 / 180) * Math.PI;
         }
+
         /// <summary>
         /// Дробная часть числа
         /// </summary>
