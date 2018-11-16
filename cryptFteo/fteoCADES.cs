@@ -186,17 +186,17 @@ namespace netFteo.Crypto.CADES
             if (cert == null) return null;
             CAdESCOM.CadesSignedData GOSTCSPdata = new CAdESCOM.CadesSignedData();
 
-            GOSTCSPdata.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
-            GOSTCSPdata.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
+            GOSTCSPdata.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_STRING_TO_UCS2LE;//CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
+            //GOSTCSPdata.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
                                                                                 //Хэш-значение данных
-
+            GOSTCSPdata.Content = filebody.ToString();
 
             CAdESCOM.CPSigner CSPSigner = new CAdESCOM.CPSigner();
             CSPSigner.Certificate = cert;
-            //TSA адрес в какой-то момент требовался - никак не хотело работать, а потом перестало требоваться....блеатдь (я такой внимательный)
+            //TSA не нужен только для CADESCOM_CADES_BES
             //CSPSigner.TSAAddress = "http://www.cryptopro.ru/tsp/tsp.srf"; //  адрес службы штампов времени.
             //"http://testca.cryptopro.ru/tsp/";
-            CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
+            // CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
 
             try
             {  /*
@@ -232,6 +232,27 @@ namespace netFteo.Crypto.CADES
                     " source " + ex.Source);
             }
         } //Sign_GOST
+
+        public static void ReadSign(string filename)
+        {
+            byte[] filebody = System.IO.File.ReadAllBytes(filename);
+            using (var reader = new System.IO.StreamReader(filename, Encoding.Default, true))
+            {
+                if (reader.Peek() >= 0) // you need this!
+                    reader.Read();
+                string BodyEncoding = reader.CurrentEncoding.EncodingName;
+                
+            }
+
+            string convString =  Convert.ToString(filebody);
+
+            RSACryptoServiceProvider prov = new RSACryptoServiceProvider();
+            //prov.CspKeyContainerInfo
+            CAdESCOM.CadesSignedData sig = new CAdESCOM.CadesSignedData();
+            sig.Content = Convert.ToString(filebody);
+            sig.Verify(convString, true);
+
+        }
     }
 }
 
