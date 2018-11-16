@@ -116,11 +116,18 @@ namespace XMLReaderCS
 
         private void SignFile(string SubjectCNName)
         {
-            /*
+           
             OpenFileDialog fd = new OpenFileDialog();
             if (fd.ShowDialog(this) == DialogResult.OK)
-                netFteo.IO.CadesWrapper.SignFile(fd.FileName, SubjectCNName);
-            */
+            {
+                byte[] sig =  netFteo.Crypto.CADES.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
+                if (sig != null)
+                {
+                    netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
+                    wr.ByteArrayToFile(fd.FileName + ".sig", sig);
+                }
+            }
+            
         }
 
         private void SignFile_cspUtils(string SubjectCNName)
