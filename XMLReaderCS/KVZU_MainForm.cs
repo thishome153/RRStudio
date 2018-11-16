@@ -5381,6 +5381,12 @@ namespace XMLReaderCS
             }
 
         }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            frmCertificates frmcertificates = new frmCertificates();
+            frmcertificates.ShowDialog();
+        }
     }
 }
 

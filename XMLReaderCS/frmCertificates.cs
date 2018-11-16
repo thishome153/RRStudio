@@ -38,7 +38,7 @@ namespace XMLReaderCS
         {
             listView_Details.Items.Clear();
             datatable.Rows.Clear();
-            toolStripButton1.Enabled = false; toolStripButton3.Enabled = false;
+            toolStripButton1.Enabled = false; 
             X509Certificate2 x509 = netFteo.Crypto.Wrapper.GetCertBySerial(serial);
             if (x509 != null)
             {
@@ -106,7 +106,7 @@ namespace XMLReaderCS
                         listView1.Items.Add(subExp23);
                     }
                 */
-                toolStripButton1.Enabled = true; toolStripButton3.Enabled = true;
+                toolStripButton1.Enabled = true;
                 return x509;
             }
             else return null;   
@@ -114,7 +114,7 @@ namespace XMLReaderCS
 
 
 
-        private void SignFile(string SubjectCNName)
+        private void SignFileGOST(string SubjectCNName)
         {
            
             OpenFileDialog fd = new OpenFileDialog();
@@ -130,16 +130,7 @@ namespace XMLReaderCS
             
         }
 
-        private void SignFile_cspUtils(string SubjectCNName)
-        {
-            OpenFileDialog fd = new OpenFileDialog();
-            if (fd.ShowDialog(this) == DialogResult.OK)
-            { /*
-                cspUtils.CadesWrapper cswr = new cspUtils.CadesWrapper();
-                cswr.SignFile(fd.FileName, SubjectCNName);
-                */
-            }
-        }
+     
 
 
 
@@ -203,12 +194,11 @@ namespace XMLReaderCS
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            SignFile(listView_certs.SelectedItems[0].Text);
+            SignFileGOST(listView_certs.SelectedItems[0].Text);
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            SignFile_cspUtils(listView_certs.SelectedItems[0].Text);
         }
 
 

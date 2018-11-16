@@ -2,7 +2,7 @@
 // All rights reserved.
 //
 //****************************  CADES -  GOST CSP territorry   ****************************
-//Crypto extension for GOST`s: CAdES. 
+//Crypto extension for GOST`s: CAdES - CMS Advanced Electronic Signature. 
 // Also, CAdESCOM - com interfaces to cades runtime library
 
 
@@ -174,7 +174,8 @@ namespace netFteo.Crypto.CADES
         */
 
         /// <summary>
-        /// Sign file with GOST 34.11-94 (CADESCOM - COM of CryptoPro), OID = 1.2.643.2.2.3
+        /// Sign file with GOST CSP 34.11-94 (CADESCOM - COM of CryptoPro), OID = 1.2.643.2.2.3
+        /// return detached message
         /// </summary>
         /// <remarks>Used CAPICOM, CADESCOM COM interfaces</remarks>
         /// <param name="filebody">Message to sign (file body) </param>
@@ -184,40 +185,45 @@ namespace netFteo.Crypto.CADES
             byte[] filebody = System.IO.File.ReadAllBytes(filename);
             CAdESCOM.CPCertificate cert = Find(subject);
             if (cert == null) return null;
-            CAdESCOM.CadesSignedData GOSTCSPdata = new CAdESCOM.CadesSignedData();
+            CAdESCOM.CadesSignedData cadesSignedData = new CAdESCOM.CadesSignedData();
 
-            GOSTCSPdata.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_STRING_TO_UCS2LE;//CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
-            //GOSTCSPdata.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
+            cadesSignedData.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
+            cadesSignedData.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
                                                                                 //Хэш-значение данных
-            GOSTCSPdata.Content = filebody.ToString();
+
 
             CAdESCOM.CPSigner CSPSigner = new CAdESCOM.CPSigner();
             CSPSigner.Certificate = cert;
             //TSA не нужен только для CADESCOM_CADES_BES
-            //CSPSigner.TSAAddress = "http://www.cryptopro.ru/tsp/tsp.srf"; //  адрес службы штампов времени.
+            CSPSigner.TSAAddress = "http://www.cryptopro.ru/tsp/tsp.srf"; //  адрес службы штампов времени.
             //"http://testca.cryptopro.ru/tsp/";
-            // CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
+            CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
 
             try
-            {  /*
+            {  
             CAdESCOM.CPHashedData Hash = new CAdESCOM.CPHashedData();
-            Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
-            Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY;
-            //Hash.Hash(GOSTCSPdata.Content); // Создать хэш строки. Есть расширение - SetHashValue() - инициализация готовым хэш-значением
-
-                string resHashCades = GOSTCSPdata.SignHash((CAPICOM.HashedData)Hash,
+                Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;//.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
+            Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // нет в примерах cdn.crypto
+            Hash.Hash(cadesSignedData.Content); // Создать хэш строки. Есть расширение - SetHashValue() - инициализация готовым хэш-значением
+            /* CADESCOM_CADES_X_LONG_TYPE_1 : got errror 
+             * OID = 1.2.643.2.2.3 SCP Error:  Лицензия на КриптоПро TSP Client истекла или не была введена
+             * ErrorCode - 1039138496
+             * source CAdESCOM.CadesSignedData.1
+                                           */
+                string resHashCades = cadesSignedData.SignHash((CAPICOM.HashedData)Hash,
                                                        CSPSigner,
-                                                       CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_DEFAULT,
+                                                       CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_BES,//  for  HASH_ALGORITHM_CP_GOST_3411 must be CADESCOM_CADES_BES,//CADESCOM_CADES_DEFAULT,
                                                        CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
-                return Encoding.Default.GetBytes(resHashCades);
-                */
-                /*  // Это тоже дает верную подпись, без употребелния CAdESCOM.CPHashedData :
-                 *  */
-                string resSignCades = GOSTCSPdata.SignCades(CSPSigner, 
-                                                       CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_BES, 
-                                                       true);       
-                   return Encoding.Default.GetBytes(resSignCades);
-                   
+                //Здесь требуется лицензия на КриптоПро TSP Client:
+                //' Создание параллельной подписи CAdES X Long Type 1
+                //resHashCades = cadesSignedData.CoSignCades(CSPSigner, CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_DEFAULT, CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
+                //дополнение подписи CAdES BES до подписи CAdES X Long Type 1:
+                //   resHashCades = cadesSignedData.EnhanceCades(CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_DEFAULT, CSPSigner.TSAAddress, CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
+
+                // this'll return BASE64 coded message:
+                // Encoding.Default.GetBytes(resHashCades);
+                // return decoded from base64 message
+                return Convert.FromBase64String( resHashCades);   
             }
 
 
