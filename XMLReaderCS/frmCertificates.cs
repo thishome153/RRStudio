@@ -208,10 +208,12 @@ namespace XMLReaderCS
             fd.Filter = "signatures|*.sig";
             fd.FilterIndex = 1;
             if (fd.ShowDialog(this) == DialogResult.OK)
-            {  /*
+            {  
+
+
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(fd.FileName, this.Handle);
-                */
+
                 netFteo.Crypto.CADES.CadesWrapper.ReadSign(fd.FileName);
             }
             

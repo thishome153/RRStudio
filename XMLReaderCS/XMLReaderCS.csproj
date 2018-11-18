@@ -132,6 +132,10 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="cspUtils, Version=1.0.6655.29647, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Fixosoft\gkndataCS\Win32-Debug\cspUtils.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\DotNetZipLib\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
     </Reference>
