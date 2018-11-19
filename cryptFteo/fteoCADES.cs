@@ -17,7 +17,7 @@ using System.Security.Cryptography.X509Certificates;
 using CAPICOM;
 
 
-namespace netFteo.Crypto.CADES
+namespace netFteo.Crypt.CADESCOM
 {
     /// <summary>
     /// GOST CSP Provider wrapper class. Требует установленнoго CADESCOM (cadescom.dll)

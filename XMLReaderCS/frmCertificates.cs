@@ -39,7 +39,7 @@ namespace XMLReaderCS
             listView_Details.Items.Clear();
             datatable.Rows.Clear();
             toolStripButton1.Enabled = false; 
-            X509Certificate2 x509 = netFteo.Crypto.Wrapper.GetCertBySerial(serial);
+            X509Certificate2 x509 = netFteo.Crypt.Wrapper.GetCertBySerial(serial);
             if (x509 != null)
             {
                 /*
@@ -120,7 +120,7 @@ namespace XMLReaderCS
             OpenFileDialog fd = new OpenFileDialog();
             if (fd.ShowDialog(this) == DialogResult.OK)
             {
-                byte[] sig =  netFteo.Crypto.CADES.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
+                byte[] sig =  netFteo.Crypt.CADESCOM.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
                 if (sig != null)
                 {
                     netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
@@ -137,7 +137,7 @@ namespace XMLReaderCS
         private void frmCertificates_Load(object sender, EventArgs e)
         {
             //CADESCOM interop NET:  
-            List<X509Certificate2> certs = netFteo.Crypto.Wrapper.DisplayCerts("my");
+            List<X509Certificate2> certs = netFteo.Crypt.Wrapper.DisplayCerts("my");
 
             //cpp api wrapper:
             //ucrtbased.dll missing
@@ -214,7 +214,7 @@ namespace XMLReaderCS
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(fd.FileName, this.Handle);
 
-                netFteo.Crypto.CADES.CadesWrapper.ReadSign(fd.FileName);
+                netFteo.Crypt.CADESCOM.CadesWrapper.ReadSign(fd.FileName);
             }
             
         }
@@ -234,7 +234,7 @@ namespace XMLReaderCS
                             byte[] sigAsArray = new byte[sigdatastream.Length];
                             int sz = (int)sigdatastream.Length;
                             sigdatastream.Read(sigAsArray, 0, sz);
-                            List<string> certs = netFteo.Crypto.Wrapper.DisplayCerts(sigAsArray);
+                            List<string> certs = netFteo.Crypt.Wrapper.DisplayCerts(sigAsArray);
                             if (certs != null)
                             {
                                 foreach (string SubjectName in certs)
@@ -267,7 +267,7 @@ namespace XMLReaderCS
         {
             if (listView_certs.FocusedItem != null)
             {
-                X509Certificate2 x509 = netFteo.Crypto.Wrapper.GetCertBySerial(listView_certs.FocusedItem.Tag.ToString());
+                X509Certificate2 x509 = netFteo.Crypt.Wrapper.GetCertBySerial(listView_certs.FocusedItem.Tag.ToString());
                 if (x509 != null)
                 {
                     X509Certificate2UI.DisplayCertificate(x509);

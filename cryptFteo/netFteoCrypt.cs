@@ -11,8 +11,9 @@ using System.Security.Cryptography.Pkcs;
 using CAPICOM;
 
 
-namespace netFteo.Crypto
+namespace netFteo.Crypt
 {
+    /*
     class netFteoCapiComExtender
     {
         //windows certificate
@@ -22,7 +23,7 @@ namespace netFteo.Crypto
 
     }
 
-
+    */
 
     /// <summary>
     /// Класс-обертка для Cryptography
