@@ -116,18 +116,40 @@ namespace XMLReaderCS
 
         private void SignFileGOST(string SubjectCNName)
         {
-           
-            OpenFileDialog fd = new OpenFileDialog();
-            if (fd.ShowDialog(this) == DialogResult.OK)
+            if (netFteo.Crypt.Wrapper.TestCAPICOM())
             {
-                byte[] sig =  netFteo.Crypt.CADESCOM.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
-                if (sig != null)
+
+
+                
+                if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM())
                 {
-                    netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
-                    wr.ByteArrayToFile(fd.FileName + ".sig", sig);
+                    OpenFileDialog fd = new OpenFileDialog();
+                    if (fd.ShowDialog(this) == DialogResult.OK)
+                    {
+                        byte[] sig = netFteo.Crypt.CADESCOM.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
+                        if (sig != null)
+                        {
+                            netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
+                            wr.ByteArrayToFile(fd.FileName + ".sig", sig);
+                        }
+                    }
                 }
+                else 
+                {
+                  listView_Details.Items.Clear();
+                ListViewItem it = new ListViewItem("CADESCOM");
+                it.SubItems.Add("не найден");
+                listView_Details.Items.Add(it);
+                }
+                
             }
-            
+            else
+            {
+                listView_Details.Items.Clear();
+                ListViewItem it = new ListViewItem("CAPICOM");
+                it.SubItems.Add("не найден");
+                listView_Details.Items.Add(it);
+            }
         }
 
      
@@ -214,7 +236,7 @@ namespace XMLReaderCS
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(fd.FileName, this.Handle);
 
-                netFteo.Crypt.CADESCOM.CadesWrapper.ReadSign(fd.FileName);
+            //    netFteo.Crypt.CADESCOM.CadesWrapper.ReadSign(fd.FileName);
             }
             
         }

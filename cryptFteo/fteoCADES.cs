@@ -22,8 +22,24 @@ namespace netFteo.Crypt.CADESCOM
     /// <summary>
     /// GOST CSP Provider wrapper class. Требует установленнoго CADESCOM (cadescom.dll)
     /// </summary>
+
     public static class CadesWrapper
     {
+        public static bool TestCADESCOM()
+        {
+            try
+            {
+                CAdESCOM.CadesSignedData cadesSignedData = new CAdESCOM.CadesSignedData();
+                return true;
+            }
+            catch (System.Runtime.InteropServices.COMException fuckingCOMNotFoundException)
+            {
+                string testMessage = fuckingCOMNotFoundException.Message;
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// Поиск сертификата по CN-имени. Из поля SubjectName выбирается cn=subjectCN 
         /// </summary>
@@ -36,7 +52,7 @@ namespace netFteo.Crypt.CADESCOM
             store.Open(OpenFlags.ReadOnly);
             X509Certificate2Collection listCerts = store.Certificates.Find(X509FindType.FindBySubjectName, subjectCN, false);
             string serial = listCerts[0].SerialNumber; // Сохраняем серийник
-            // Теперь выбираем в WinCryptEx (CADES) по серийнику:
+                                                       // Теперь выбираем в WinCryptEx (CADES) по серийнику:
             CAdESCOM.CPStore Cstore = new CAdESCOM.CPStore();
             Cstore.Open(CAPICOM_STORE_LOCATION.CAPICOM_CURRENT_USER_STORE,
                         "My",
@@ -50,7 +66,7 @@ namespace netFteo.Crypt.CADESCOM
             return null;
         }
 
-        /*
+
         public static CAdESCOM.CPCertificate FindBySerial(string serial)
         {
             // Сразу ищем в Wyncrypt:
@@ -73,12 +89,12 @@ namespace netFteo.Crypt.CADESCOM
         }
 
 
-
-    /// <summary>
-    /// Подписать файл отсоедниенной подписью
-    /// </summary>
-    /// <param name="filename">Имя файла</param>
-    /// <param name="subjectname">Владелец сертифката (Субьект)</param>
+    /*
+        /// <summary>
+        /// Подписать файл отсоедниенной подписью
+        /// </summary>
+        /// <param name="filename">Имя файла</param>
+        /// <param name="subjectname">Владелец сертифката (Субьект)</param>
         public static void SignFile(string filename, string subjectname)
         {
             byte[] filebody = System.IO.File.ReadAllBytes(filename);
@@ -87,18 +103,18 @@ namespace netFteo.Crypt.CADESCOM
             X509Certificate2 cert = CryptographyWrapper.GetCertBySubjectCN(subjectname);
             //Select CryptoProviderType by szOID:
             if (cert.SignatureAlgorithm.Value == "1.2.643.2.2.3") // szOID for CSP Crypto Pro (GOST 3411)
-               file_sig =  Sign_GOST(filebody, Find(subjectname));
+                file_sig = Sign_GOST(filebody, Find(subjectname));
 
             if (cert.SignatureAlgorithm.Value == "1.2.840.113549.1.1.4") // szOID_RSA_MD5RSA   "1.2.840.113549.1.1.4"
-                file_sig = Sign_CAPICOM(filebody, (CAPICOM.Certificate) cert);
+                file_sig = Sign_CAPICOM(filebody, (CAPICOM.Certificate)cert);
 
             System.IO.File.WriteAllBytes(filename + ".sig", file_sig);
         }
 
-
+        */
         private static byte[] Sign_X509(byte[] filebody, string subjectname)
         {
-                        // Access Personal (MY) certificate store of current user
+            // Access Personal (MY) certificate store of current user
 
             X509Store my = new X509Store(StoreName.My, StoreLocation.CurrentUser);
 
@@ -140,7 +156,7 @@ namespace netFteo.Crypt.CADESCOM
             UnicodeEncoding encoding = new UnicodeEncoding();
             byte[] hash = sha1.ComputeHash(filebody);
             // Sign the hash
-            byte[] sig= csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA1"));
+            byte[] sig = csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA1"));
             return sig;
         }
 
@@ -152,17 +168,17 @@ namespace netFteo.Crypt.CADESCOM
         /// <param name="cert"></param>
         private static byte[] Sign_CAPICOM(byte[] filebody, CAPICOM.Certificate cert)
         {
-             CAPICOM.SignedData CSPdata = new CAPICOM.SignedData();
-             CSPdata.Content = Convert.ToBase64String(filebody); 
+            CAPICOM.SignedData CSPdata = new CAPICOM.SignedData();
+            CSPdata.Content = Convert.ToBase64String(filebody);
             if (cert.HasPrivateKey())
-             {
+            {
 
                 // RSACryptoServiceProvider csp = 
-                 // Hash the data
+                // Hash the data
                 // SHA1Managed sha1 = new SHA1Managed();
                 // byte[] hash = sha1.ComputeHash(filebody);
                 // byte[] sig = csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA1"));
-             }
+            }
 
             CAPICOM.Signer Signer = new CAPICOM.Signer();
             Signer.Certificate = cert;
@@ -171,7 +187,7 @@ namespace netFteo.Crypt.CADESCOM
             byte[] sigMsg = Encoding.Default.GetBytes(signature);
             return sigMsg;
         }
-        */
+        // * /
 
         /// <summary>
         /// Sign file with GOST CSP 34.11-94 (CADESCOM - COM of CryptoPro), OID = 1.2.643.2.2.3
@@ -180,7 +196,7 @@ namespace netFteo.Crypt.CADESCOM
         /// <remarks>Used CAPICOM, CADESCOM COM interfaces</remarks>
         /// <param name="filebody">Message to sign (file body) </param>
         /// <param name="cert">Subject certificate</param>
-        public static byte[] Sign_GOST(string filename, string  subject)
+        public static byte[] Sign_GOST(string filename, string subject)
         {
             byte[] filebody = System.IO.File.ReadAllBytes(filename);
             CAdESCOM.CPCertificate cert = Find(subject);
@@ -189,27 +205,27 @@ namespace netFteo.Crypt.CADESCOM
 
             cadesSignedData.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
             cadesSignedData.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
-                                                                                //Хэш-значение данных
+                                                                                    //Хэш-значение данных
 
 
             CAdESCOM.CPSigner CSPSigner = new CAdESCOM.CPSigner();
             CSPSigner.Certificate = cert;
             //TSA не нужен только для CADESCOM_CADES_BES
             CSPSigner.TSAAddress = "http://www.cryptopro.ru/tsp/tsp.srf"; //  адрес службы штампов времени.
-            //"http://testca.cryptopro.ru/tsp/";
+                                                                          //"http://testca.cryptopro.ru/tsp/";
             CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
 
             try
-            {  
-            CAdESCOM.CPHashedData Hash = new CAdESCOM.CPHashedData();
+            {
+                CAdESCOM.CPHashedData Hash = new CAdESCOM.CPHashedData();
                 Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;//.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
-            Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // нет в примерах cdn.crypto
-            Hash.Hash(cadesSignedData.Content); // Создать хэш строки. Есть расширение - SetHashValue() - инициализация готовым хэш-значением
-            /* CADESCOM_CADES_X_LONG_TYPE_1 : got errror 
-             * OID = 1.2.643.2.2.3 SCP Error:  Лицензия на КриптоПро TSP Client истекла или не была введена
-             * ErrorCode - 1039138496
-             * source CAdESCOM.CadesSignedData.1
-                                           */
+                Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // нет в примерах cdn.crypto
+                Hash.Hash(cadesSignedData.Content); // Создать хэш строки. Есть расширение - SetHashValue() - инициализация готовым хэш-значением
+                                                    /* CADESCOM_CADES_X_LONG_TYPE_1 : got errror 
+                                                     * OID = 1.2.643.2.2.3 SCP Error:  Лицензия на КриптоПро TSP Client истекла или не была введена
+                                                     * ErrorCode - 1039138496
+                                                     * source CAdESCOM.CadesSignedData.1
+                                                                                   */
                 string resHashCades = cadesSignedData.SignHash((CAPICOM.HashedData)Hash,
                                                        CSPSigner,
                                                        CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_BES,//  for  HASH_ALGORITHM_CP_GOST_3411 must be CADESCOM_CADES_BES,//CADESCOM_CADES_DEFAULT,
@@ -223,7 +239,7 @@ namespace netFteo.Crypt.CADESCOM
                 // this'll return BASE64 coded message:
                 // Encoding.Default.GetBytes(resHashCades);
                 // return decoded from base64 message
-                return Convert.FromBase64String( resHashCades);   
+                return Convert.FromBase64String(resHashCades);
             }
 
 
@@ -247,10 +263,10 @@ namespace netFteo.Crypt.CADESCOM
                 if (reader.Peek() >= 0) // you need this!
                     reader.Read();
                 string BodyEncoding = reader.CurrentEncoding.EncodingName;
-                
+
             }
 
-            string convString =  Convert.ToString(filebody);
+            string convString = Convert.ToString(filebody);
 
             RSACryptoServiceProvider prov = new RSACryptoServiceProvider();
             //prov.CspKeyContainerInfo
@@ -259,8 +275,12 @@ namespace netFteo.Crypt.CADESCOM
             sig.Verify(convString, true);
 
         }
-    }
-}
+
+    } 
+ }
+
+ 
+    
 
 
 

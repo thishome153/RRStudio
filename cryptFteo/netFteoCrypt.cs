@@ -401,6 +401,20 @@ namespace netFteo.Crypt
                 return null;
             }
         }
+
+        public static bool TestCAPICOM()
+        {
+            try
+            {
+               CAPICOM.Signer sig = new CAPICOM.Signer();
+                return true;
+            }
+            catch (System.Runtime.InteropServices.COMException fuckingCOMNotFoundException)
+            {
+                string testMessage = fuckingCOMNotFoundException.Message;
+                return false;
+            }
+        }
     }
 
 
