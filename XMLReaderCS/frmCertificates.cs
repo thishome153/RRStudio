@@ -81,31 +81,33 @@ namespace XMLReaderCS
 
 
                 //Если это ГОСТ (Крипто про):
-                /*
                 if (x509.SignatureAlgorithm.Value == "1.2.643.2.2.3")
                     try
                     {
-                        CAdESCOM.CPCertificate GOST_Cert = netFteo.IO.CadesWrapper.FindBySerial(serial);
-                        if (GOST_Cert != null)
-                            if (GOST_Cert.HasPrivateKey())
-                            {
-                                ListViewItem subExp21 = new ListViewItem("CSP");
-                                subExp21.SubItems.Add(GOST_Cert.PrivateKey.ProviderName);
-                                listView1.Items.Add(subExp21);
+                        if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM()) //check COM
+                        {
+                            netFteo.Crypt.CADESCOM.CAdESCOMCert GOST_Cert = new netFteo.Crypt.CADESCOM.CAdESCOMCert();
+                            GOST_Cert = netFteo.Crypt.CADESCOM.CadesWrapper.FindBySerialwr(serial);
+                            if (GOST_Cert != null)
+                                if (GOST_Cert.HasPrivateKey())
+                                {
+                                    ListViewItem subExp21 = new ListViewItem("CSP");
+                                    subExp21.SubItems.Add(GOST_Cert.PrivateKeyProviderName);
+                                    listView_Details.Items.Add(subExp21);
 
-                                ListViewItem subExp23 = new ListViewItem("Контейнер");
-                                subExp23.SubItems.Add(GOST_Cert.PrivateKey.ContainerName);
-                                listView1.Items.Add(subExp23);
-
-                            }
+                                    ListViewItem subExp23 = new ListViewItem("Контейнер");
+                                    subExp23.SubItems.Add(GOST_Cert.PrivateKeyContainerName);
+                                    listView_Details.Items.Add(subExp23);
+                                }
+                        }
                     }
                     catch (System.Runtime.InteropServices.COMException  ex)
                     {
                         ListViewItem subExp23 = new ListViewItem("Ошибка CSP "+ ex.Source);
                         subExp23.SubItems.Add(ex.Message);
-                        listView1.Items.Add(subExp23);
+                        listView_Details.Items.Add(subExp23);
                     }
-                */
+                
                 toolStripButton1.Enabled = true;
                 return x509;
             }

@@ -19,12 +19,54 @@ using CAPICOM;
 
 namespace netFteo.Crypt.CADESCOM
 {
+
+    /// <summary>
+    /// Cadescom type wrapper
+    /// for "CAdESCOM.CPCertificate"
+    /// </summary>
+    public class CAdESCOMCert
+    {
+       public CAdESCOM.CPCertificate api;
+
+        public CAdESCOMCert()
+        {
+           if (! CadesWrapper.TestCADESCOM())
+            {
+          ////TODO  
+                throw new System.Runtime.InteropServices.COMException("CADESCOM not present");
+            }
+        }
+
+        public bool HasPrivateKey()
+        {
+            return this.api.HasPrivateKey();
+            
+        }
+        public string PrivateKeyProviderName
+        {
+            get
+            {
+                return this.api.PrivateKey.ProviderName;
+            }
+        }
+        public string PrivateKeyContainerName
+        {
+            get
+            {
+                return this.api.PrivateKey.ContainerName;
+            }
+        }
+
+        
+    }
+
     /// <summary>
     /// GOST CSP Provider wrapper class. Требует установленнoго CADESCOM (cadescom.dll)
     /// </summary>
 
     public static class CadesWrapper
     {
+
         public static bool TestCADESCOM()
         {
             try
@@ -66,6 +108,12 @@ namespace netFteo.Crypt.CADESCOM
             return null;
         }
 
+        public static CAdESCOMCert FindBySerialwr(string serial)
+        {
+            CAdESCOMCert res = new CAdESCOMCert();
+            res.api = FindBySerial(serial);
+            return res;
+        }
 
         public static CAdESCOM.CPCertificate FindBySerial(string serial)
         {
