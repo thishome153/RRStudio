@@ -1685,6 +1685,9 @@ SCAN:
             return this.Childs[this.Childs.Count - 1];
         }
 
+        /// <summary>
+        /// Return '*' as mark of changed item
+        /// </summary>
         public string Has_Changes
         {
             get
@@ -2058,10 +2061,13 @@ SCAN:
         {
             List<string> aslist = new List<string>();
             for (int i = 0; i <= this.Count - 1; i++)
-                aslist.Add(this[i].Definition + "\t" + this[i].AreaSpatialFmt("0.00") + "\t" +
+                aslist.Add(this[i].Definition +    "\t" + 
+                    this[i].AreaSpatialFmt("0.00") + "\t" +
                                                        (this[i].AreaValue > 0 ? this[i].AreaValue.ToString():"-")  + "\t" +
-                                                       ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00")
+                                                       ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00") +"\t"+
+                                                       this[i].Has_Changes 
                     );
+            
             return aslist;
 
         }

@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cspUtils">
-      <HintPath>C:\TEMP\CSP\Debug\cspUtils.dll</HintPath>
+    <Reference Include="cadesSharp">
+      <HintPath>C:\TEMP\CSP\Debug\cadesSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

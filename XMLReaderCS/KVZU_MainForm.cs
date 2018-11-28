@@ -2166,6 +2166,9 @@ namespace XMLReaderCS
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
             LV.Columns[3].Text = "Mt, м.";
+            LV.Columns[4].Text = "-";
+            LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
             LV.View = System.Windows.Forms.View.Details;
             if (ES.ToString() == "netFteo.Spatial.TPolygonCollection")
             {
@@ -2265,8 +2268,10 @@ namespace XMLReaderCS
             LV.Columns[1].Text = "Площадь граф.";
             LV.Columns[2].Text = "Площадь сем.";
             LV.Columns[3].Text = "Δ"; LV.Columns[3].TextAlign = HorizontalAlignment.Center;
-            LV.Columns[4].Text = "-";
+            LV.Columns[4].Text = "изм.";
             LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
+            LV.Columns[7].Text = "-";
             ListToListView(LV, list);
 
         }
