@@ -403,6 +403,7 @@ namespace netFteo.XML
         public string XSL_KVOKS02_pub = "https://portal.rosreestr.ru/xsl/GKN/KVOKS/02/common.xsl";
         public string XSL_KVOKS02_lan = ApiServer + "/GKN/KVOKS/02/common.xsl";
         public string XSL_V03_TP = ApiServer + "/fixosoft/V03_TP/STD_TP03.xslt";
+        public string XSL_V04_MP = ApiServer + "/fixosoft/STD_MP/STD_MP_04.xslt"; //TODO - need XSL for v 04
         public string XSL_V06_MP = ApiServer + "/fixosoft/V06_MP/MP_V06.xslt";
         //urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1
         public string XSL_KPOKS0401_pub = "https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/ROOM/07/Common.xsl";
@@ -450,7 +451,10 @@ namespace netFteo.XML
             if (doc.DocumentElement.Name == "TP") // если получен ТехническийПлан, применим наш стиль
                 hrefToXSLTServer = XSL_V03_TP;
 
-            if (doc.DocumentElement.Name == "MP") // если получен ТехническийПлан, применим наш стиль
+            if (doc.DocumentElement.Name == "STD_MP") // если получен МежевойПлан, применим наш стиль V04 ????
+                hrefToXSLTServer = XSL_V04_MP;
+
+            if (doc.DocumentElement.Name == "MP") // если получен МежевойПлан, применим наш стиль
                 hrefToXSLTServer = XSL_V06_MP;
 
             string OutName = inputXml + "~.html";
