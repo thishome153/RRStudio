@@ -1399,6 +1399,8 @@ namespace RRTypes.CommonCast
             {
              TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
                 collItem.AreaValue = item.Area.Area;
+                if (item.Area.InaccuracySpecified)
+                    collItem.AreaInaccuracy = item.Area.Inaccuracy.ToString();
             }
             return res;
         }

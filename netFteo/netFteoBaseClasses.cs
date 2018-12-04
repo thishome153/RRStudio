@@ -2065,6 +2065,7 @@ SCAN:
                     this[i].AreaSpatialFmt("0.00") + "\t" +
                                                        (this[i].AreaValue > 0 ? this[i].AreaValue.ToString():"-")  + "\t" +
                                                        ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00") +"\t"+
+                                                       (this[i].AreaInaccuracy != "" ? this[i].AreaInaccuracy : "-") + "\t" +
                                                        this[i].Has_Changes 
                     );
             

@@ -651,8 +651,6 @@ namespace XMLReaderCS
                     w1.DoWork += this.UnZipit;
                     w1.RunWorkerCompleted += this.UnZipComplete;
                     w1.RunWorkerAsync(FileName);
-                    //until unzipping, start checking MP for bugs :
-                    if (FileName.Contains("GKUZU")) BugReport_MP06(FileName);                     
                 }
 
             //Если есть парная ЭЦП:
@@ -794,8 +792,21 @@ namespace XMLReaderCS
             {
                 DirectoryInfo di = new DirectoryInfo(ArchiveFolder);
                 string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
-                Read(ArchiveFolder + "\\" + firstFileName,true); // теперь загружаем xml
+
+
+                //until unzipping, start checking MP for bugs :
+                if (firstFileName.Contains("GKUZU"))
+                {
+                   BugReport_MP06_II(ArchiveFolder);
+                }
+                else
+
+                    Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
+
             }
+
+
+
         }
 
         private void Zipit(object sender, DoWorkEventArgs e)
@@ -2125,8 +2136,8 @@ namespace XMLReaderCS
             LV.Columns[1].Text = "Площадь граф.";
             LV.Columns[2].Text = "Площадь сем.";
             LV.Columns[3].Text = "Δ"; LV.Columns[3].TextAlign = HorizontalAlignment.Center;
-            LV.Columns[4].Text = "изм.";
-            LV.Columns[5].Text = "-";
+            LV.Columns[4].Text = "ΔP";
+            LV.Columns[5].Text = "изм.";
             LV.Columns[6].Text = "-";
             LV.Columns[7].Text = "-";
             ListToListView(LV, list);
@@ -4509,7 +4520,8 @@ namespace XMLReaderCS
               openFileDialog1.FilterIndex = 1; openFileDialog1.FileName = "";
               if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
               {
-                  return BugReport_MP06(openFileDialog1.FileName);
+                  BugReport_MP06(openFileDialog1.FileName);
+                return null;
               }
               else return null;
         }
@@ -4519,28 +4531,27 @@ namespace XMLReaderCS
         // - данные проверки - данные КПТ/КВ/КП/КВЕГРН (или как там-ее)
         //  в общем то, что у нас загружено в this.DocInfo.MyBlocks.
 
-        private RRTypes.MP_V06.MP BugReport_MP06 (string filename)
+        private void BugReport_MP06 (string ArciveFileName)
         {
             try
                 {
                     // using (ZipArchive archive = System.IO.Compression.ZipFile.Open(zipPath, ZipArchiveMode.Update))
                     var options = new ReadOptions { StatusMessageWriter = System.Console.Out };
-                     ZipFile zip = ZipFile.Read(filename, options);
+                     ZipFile zip = ZipFile.Read(ArciveFileName, options);
                 /*
                     if (zip.EntryFileNames.Contains("GKUZU"))
                         zip.ExtractAll(Application.StartupPath);
 
                 */
                     ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
-                    ESChecker_MP06frm.MP06ZiptoCkeck = zip;
+                    ESChecker_MP06frm.MP06ZiptoCheck = zip;
                     ESChecker_MP06frm.ShowDialog();
-                    return ESChecker_MP06frm.MP_v06;
                 }
 
                 catch (System.Exception ex1)
                 {
                     //   System.Console.Error.WriteLine("exception: " + ex1);
-                    return null; // error occured
+
                 }
                 //Read(openFileDialog1.FileName);            
             
@@ -4588,7 +4599,32 @@ namespace XMLReaderCS
                 }
             }
             */
+
+
         }
+        private void BugReport_MP06_II(string archiveFolder)
+        {
+            try
+            {
+              
+                ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
+                ESChecker_MP06frm.MP06UnZiptoCheck = archiveFolder;
+                Read(ESChecker_MP06frm.MP_v06);
+                ESChecker_MP06frm.ShowDialog();
+                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+                ListFileInfo(DocInfo);
+            }
+
+            catch (System.Exception ex1)
+            {
+                //   System.Console.Error.WriteLine("exception: " + ex1);
+               // return null; // error occured
+            }
+ 
+
+
+        }
+
 
         private void списокТочекФайлNikonToolStripMenuItem_Click(object sender, EventArgs e)
         {
