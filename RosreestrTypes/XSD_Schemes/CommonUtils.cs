@@ -2099,7 +2099,7 @@ namespace RRTypes.CommonParsers
                 res.DocType = "Межевой план";
                 res.DocTypeNick = "MP";
                 RRTypes.MP_V06.MP MP = (RRTypes.MP_V06.MP)Desearialize<RRTypes.MP_V06.MP>(xmldoc);
-
+                res.Number = MP.GUID;
                 for (int i = 0; i <= MP.CoordSystems.Count - 1; i++)
                 {
                     res.MyBlocks.CSs.Add(new TCoordSystem(MP.CoordSystems[i].Name, MP.CoordSystems[i].CsId));
@@ -2289,7 +2289,6 @@ namespace RRTypes.CommonParsers
                     */
                 }
                 res.CommentsType = "Заключение КИ";
-                res.Number = MP.GUID;
                 res.Date = MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy").Replace("0:00:00", "date");
                 if (MP.GeneralCadastralWorks.Contractor.Organization != null)
                 {
