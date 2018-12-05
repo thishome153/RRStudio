@@ -224,7 +224,7 @@
             {
                 if (Path.GetExtension(sourceFileName.StringResult).Equals(".txt", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    ed.WriteMessage("\nИмпорт текстового файла (Fixosoft2014, 2015, 2016, 2018)");
+                    ed.WriteMessage("\nИмпорт текстового файла (Fixosoft2014, 2015,  2018)");
                     try
                     {
                         netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();

@@ -793,15 +793,18 @@ namespace XMLReaderCS
                 DirectoryInfo di = new DirectoryInfo(ArchiveFolder);
                 string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
 
-
-                //until unzipping, start checking MP for bugs :
-                if (firstFileName.Contains("GKUZU"))
+                if (File.Exists(ArchiveFolder + "\\" + firstFileName))
                 {
-                   BugReport_MP06_II(ArchiveFolder);
-                }
-                else
+                    DocInfo.FileName = firstFileName;
+                    //until unzipping, start checking MP for bugs :
+                    if (firstFileName.Contains("GKUZU"))
+                    {
+                        BugReport_MP06_II(ArchiveFolder);
+                    }
+                    else
 
-                    Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
+                        Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
+                }
 
             }
 
@@ -1725,7 +1728,7 @@ namespace XMLReaderCS
                         netFteo.ObjectLister.ListEntSpat(ContNode,
                                                          Parcel.Contours[i],
                                                         "SPElem.", 
-                                                        Parcel.Contours[i].Definition,6);
+                                                        Parcel.Contours[i].Definition, Parcel.Contours[i].State);
                     }
                 }
             if (Parcel.SubParcels != null)
@@ -4617,8 +4620,9 @@ namespace XMLReaderCS
 
             catch (System.Exception ex1)
             {
-                //   System.Console.Error.WriteLine("exception: " + ex1);
-               // return null; // error occured
+               DocInfo.CommentsType = "Exception";
+               DocInfo.Comments = ex1.Message;
+               ListFileInfo(DocInfo);
             }
  
 

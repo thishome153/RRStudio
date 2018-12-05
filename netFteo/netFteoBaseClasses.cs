@@ -281,6 +281,10 @@ namespace netFteo.Spatial
         {
             get
             {
+                if ((Double.IsNaN(this.oldX)) ||
+                    (Double.IsNaN(this.oldY))
+                    ) return ""; 
+
                 if ((this.x == this.oldX) && (this.y == this.oldY))
                     return "";
                 else return "*"; //признак изменений в точек
@@ -1293,6 +1297,16 @@ SCAN:
             }
         }
 
+        public void Reset_Ordinates()
+        {
+            foreach (Point pt in this)
+            {
+                pt.oldX = Coordinate.NullOrdinate;
+                pt.oldY = Coordinate.NullOrdinate;
+            }
+        }
+
+
         public void Set_Mt(double mt)
         {
             foreach (Point pt in this)
@@ -1412,6 +1426,17 @@ SCAN:
             this.Exchange_XY();
             for (int i = 0; i <= this.Childs.Count - 1; i++)
                 this.Childs[i].Exchange_XY();
+
+        }
+
+        /// <summary>
+        /// Reset old values of ordinates - like tnewContour
+        /// </summary>
+        public void ResetOrdinates()
+        {
+            this.Reset_Ordinates();
+            foreach (TMyOutLayer child in this.Childs)
+                child.Reset_Ordinates();
 
         }
 
@@ -2090,10 +2115,11 @@ SCAN:
             this.TransformationEntryParcel = new TCadastralNumbers();
         }
 
-        public void AddEntry(string entrynumber, decimal areaEntry, int state, TMyPolygon ES)
+        public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ES)
         {
             if (ES == null) return;
             ES.AreaValue = areaEntry;
+            ES.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
             ES.Definition = entrynumber;
             ES.State = state;
             this.Add(ES);

@@ -25,7 +25,7 @@ namespace XMLReaderCS
 
         private Ionic.Zip.ZipFile fMP06ZiptoCkeck;
         private string fMP06UnzippedFolder;
-        public  Ionic.Zip.ZipFile MP06ZiptoCheck
+        public Ionic.Zip.ZipFile MP06ZiptoCheck
         {
             get
 
@@ -33,7 +33,7 @@ namespace XMLReaderCS
                 return this.fMP06ZiptoCkeck;
             }
 
-            set 
+            set
             {
                 this.fMP06ZiptoCkeck = value;
                 CheckArchieve();
@@ -60,7 +60,7 @@ namespace XMLReaderCS
             {
                 this.fMP06UnzippedFolder = value;
                 CheckIt(value);
-                
+
             }
         }
 
@@ -82,15 +82,15 @@ namespace XMLReaderCS
         {
             ListViewItem res = lv.Items.Add(ParamName);
             if (Value != null)
-            res.SubItems.Add(Value);
+                res.SubItems.Add(Value);
             if (resValue != null)
-            res.SubItems.Add(resValue);
+                res.SubItems.Add(resValue);
             return res;
         }
 
         private bool SignaturePresent(string filename)
         {
-            return false;
+            return File.Exists(filename + ".sig");
         }
 
         private void CheckArchieve()
@@ -145,17 +145,17 @@ namespace XMLReaderCS
                     }
                 }
             }// foreach entry
-                treeView1.ExpandAll();
-                AddCheckPosition(listView1, "Исходные данные", "..",  "-");
-                AddCheckPosition(listView1, "Пространственные данные", "..", "-");
+            treeView1.ExpandAll();
+            AddCheckPosition(listView1, "Исходные данные", "..", "-");
+            AddCheckPosition(listView1, "Пространственные данные", "..", "-");
             if (this.fMP_v06.Appendix != null)
-                AddCheckPosition(listView1, "Приложения", this.fMP_v06.Appendix.Count().ToString(),"..");
+                AddCheckPosition(listView1, "Приложения", this.fMP_v06.Appendix.Count().ToString(), "..");
             {
                 foreach (RRTypes.MP_V06.tAppendixAppliedFiles appxs in this.fMP_v06.Appendix)
-                    AddCheckPosition(listView1, appxs.NameAppendix , appxs.AppliedFile.Name, "-");
+                    AddCheckPosition(listView1, appxs.NameAppendix, appxs.AppliedFile.Name, "-");
             }
 
-            
+
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace XMLReaderCS
             if (Directory.Exists(workDir))
             {
                 DirectoryInfo di = new DirectoryInfo(workDir);
-                string ze = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+                string ze = workDir + "\\" + di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
                 // теперь загружаем xml
 
                 if (ze.Contains(".xml") && !ze.Contains(".sig"))
@@ -178,7 +178,7 @@ namespace XMLReaderCS
                     // zipEntryStream = ze.InputStream;
                     TextReader reader = new StreamReader(ze);
                     this.fMP_v06_xml = new XmlDocument();
-                   fMP_v06_xml.Load(reader);
+                    fMP_v06_xml.Load(reader);
                     reader.Close();
                     //Read(XMLDocFromFile);
                     string rootname = fMP_v06_xml.DocumentElement.Name;
@@ -196,33 +196,40 @@ namespace XMLReaderCS
 
                         XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V06.MP));
                         this.fMP_v06 = (RRTypes.MP_V06.MP)serializerMP.Deserialize(stream);
-                        AddCheckPosition(listView1, "MP_v06 xml", fMP_v06.GUID, "OK");
+                        AddCheckPosition(listView1, "MP_v06", fMP_v06.GUID, "OK");
                         label_doc_GUID.Text = fMP_v06.GUID + "  " + fMP_v06.GeneralCadastralWorks.DateCadastral.ToString();
-
                     }
-
                 }
 
-                if (ze.Contains(".sig"))
-                    {
+                if (SignaturePresent(ze))
+                {
 
-                        StreamReader sigreader = File.OpenText(ze);
-                        List<string> sig = certfrm.ParseSignature(ze);
-                        foreach (string subject in sig)
-                            AddCheckPosition(listView1, "Signature", ze, subject);
-                    }
-
-                    
+                    StreamReader sigreader = File.OpenText(ze + ".sig");
+                    List<string> sig = certfrm.ParseSignature(ze + ".sig");
+                    string sigs = "";
+                    foreach (string subject in sig)
+                        sigs += subject;
+                    AddCheckPosition(listView1, "Signature", Path.GetFileName(ze), sigs);
                 }
+
+
+            }
 
             treeView1.ExpandAll();
-            AddCheckPosition(listView1, "Исходные данные", "..", "-");
-            AddCheckPosition(listView1, "Пространственные данные", "..", "-");
+            AddCheckPosition(listView1, "Исходные данные"        , "----------", "-");
+            AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
+            AddCheckPosition(listView1, "СГП", this.fMP_v06.SchemeGeodesicPlotting != null ? Path.GetFileName(this.fMP_v06.SchemeGeodesicPlotting.Name) : "-", "?");
+            AddCheckPosition(listView1, "СРП", this.fMP_v06.SchemeDisposition != null ? Path.GetFileName(this.fMP_v06.SchemeDisposition.Name) : "-", "?");
+            AddCheckPosition(listView1, "Чертеж", Path.GetFileName(this.fMP_v06.DiagramParcelsSubParcels.Name), "?");
+
+            if (SignaturePresent(workDir + "\\" + this.fMP_v06.DiagramParcelsSubParcels.Name))
+                AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
+            AddCheckPosition(listView1, "Акт согласования", this.fMP_v06.AgreementDocument != null ? Path.GetFileName(this.fMP_v06.AgreementDocument.Name) : "-", "?");
             if (this.fMP_v06.Appendix != null)
-                AddCheckPosition(listView1, "Приложения", this.fMP_v06.Appendix.Count().ToString(), "..");
+                AddCheckPosition(listView1, "Приложения", "----------", "..");
             {
                 foreach (RRTypes.MP_V06.tAppendixAppliedFiles appxs in this.fMP_v06.Appendix)
-                    AddCheckPosition(listView1, appxs.NameAppendix, appxs.AppliedFile.Name, "-");
+                    AddCheckPosition(listView1, appxs.NameAppendix, Path.GetFileName( appxs.AppliedFile.Name), "-");
             }
         }
 
@@ -235,7 +242,7 @@ namespace XMLReaderCS
         {
             treeView1.Width = this.Width - 14;
             listView1.Width = this.Width - 14;
-            listView1.Height = this.Height -354;
+            listView1.Height = this.Height - 354;
         }
 
     }

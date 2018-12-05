@@ -1365,7 +1365,7 @@ namespace RRTypes.CommonCast
             {
 
                 netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-
+                Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref =="н" ?   0 : 4;
                 Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
                 Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
                 Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1382,6 +1382,7 @@ namespace RRTypes.CommonCast
                 {
 
                     netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref =="н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
                     Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                     Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                     Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1398,6 +1399,8 @@ namespace RRTypes.CommonCast
             foreach (MP_V06.tNewContour item in ESs)
             {
              TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
+                //collItem.ResetOrdinates(); // because is only new tNewContour
+                collItem.State = 0; // tNewContour
                 collItem.AreaValue = item.Area.Area;
                 if (item.Area.InaccuracySpecified)
                     collItem.AreaInaccuracy = item.Area.Inaccuracy.ToString();
@@ -2224,9 +2227,9 @@ namespace RRTypes.CommonParsers
 
                         foreach (RRTypes.MP_V06.tExistEZEntryParcel entry in MP.Package.SpecifyParcel.ExistEZ.ExistEZEntryParcels)
                         {
-
                             MainObj.CompozitionEZ.AddEntry(entry.CadastralNumber,
                                                            entry.Area.Area,
+                                                           entry.Area.Inaccuracy,
                                                            6, // для межевого плана входящие только учтеные
                                                           (RRTypes.CommonCast.CasterZU.ES_ZU(entry.CadastralNumber,
                                                           entry.EntitySpatial)));
@@ -3466,7 +3469,8 @@ namespace RRTypes.CommonParsers
                 for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
                 {
                     MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
-                        kp.Parcel.CompositionEZ[i].Area.Area,
+                        kp.Parcel.CompositionEZ[i].Area.Area, 
+                        0,
                         6, //для сведений ЕГРН это всегда "учтеный"
                         CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
@@ -3583,6 +3587,7 @@ namespace RRTypes.CommonParsers
                 {
                     MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
                         kp.Parcel.CompositionEZ[i].Area.Area,
+                        0,
                         6, //для сведений ЕГРН это всегда "учтеный"
                         CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
@@ -3696,7 +3701,7 @@ namespace RRTypes.CommonParsers
 
                                         if (parcel.SubParcels[i].Object_Entry != null)
                                         {
-                                            MainObj.CompozitionEZ.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, 6, SlEs);
+                                            MainObj.CompozitionEZ.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, -1, 6, SlEs);
                                             res.MifPolygons.Add(SlEs);
                                         }
                                     }

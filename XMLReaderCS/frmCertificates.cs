@@ -243,34 +243,35 @@ namespace XMLReaderCS
             
         }
 
+        /// <summary>
+        /// Parse detached signature
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public List<string> ParseSignature(string filename)
         {
             List<string> res = new List<string>();
-           // if (Path.GetExtension(filename).Equals(".xml"))
             {
-                using (Stream datastream = File.OpenRead(filename))
-                {
-                    if (File.Exists(filename))// + ".sig"))
-                        using (Stream sigdatastream = File.OpenRead(filename))// + ".sig"))
+                if (File.Exists(filename))// + ".sig"))
+                    using (Stream sigdatastream = File.OpenRead(filename))// + ".sig"))
+                    {
+                        // verifySig:
+                        var test = sigdatastream;
+                        byte[] sigAsArray = new byte[sigdatastream.Length];
+                        int sz = (int)sigdatastream.Length;
+                        sigdatastream.Read(sigAsArray, 0, sz);
+                        List<string> certs = netFteo.Crypt.Wrapper.DisplayCerts(sigAsArray);
+                        if (certs != null)
                         {
-                            // verifySig:
-                            var test = sigdatastream;
-                            byte[] sigAsArray = new byte[sigdatastream.Length];
-                            int sz = (int)sigdatastream.Length;
-                            sigdatastream.Read(sigAsArray, 0, sz);
-                            List<string> certs = netFteo.Crypt.Wrapper.DisplayCerts(sigAsArray);
-                            if (certs != null)
+                            foreach (string SubjectName in certs)
                             {
-                                foreach (string SubjectName in certs)
-                                {
-                                   // listView_Contractors.Items.Add("Подпись").SubItems.Add(SubjectName);
-
-                                    res.Add(SubjectName);
-                                }
+                                // listView_Contractors.Items.Add("Подпись").SubItems.Add(SubjectName);
+                                res.Add(SubjectName);
                             }
                         }
-                }
-            }
+                        sigdatastream.Close();
+                    }
+           }
             return res;
         }
 

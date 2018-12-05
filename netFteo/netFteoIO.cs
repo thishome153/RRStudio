@@ -904,12 +904,15 @@ namespace netFteo.IO
             }
             writer.Close();
         }
+/*
         public void SaveAsFixosoftTXT2016(string FileName, TMyPolygon ES)
         {
             TPolygonCollection pl = new TPolygonCollection(ES.Parent_Id);
             pl.AddPolygon(ES);
             SaveAsFixosoftTXT2016(FileName, pl);
         }
+
+*/
         public void SaveAsFixosoftTXT2017(string FileName, TPolyLines ES)
         {
             if (ES.Count == 0) return;
@@ -971,11 +974,8 @@ namespace netFteo.IO
                 writer.WriteLine("Polygon"+ "\t" + (ES[ic].Definition));
                 for (int i = 0; i <= ES[ic].PointCount - 1; i++)
                 {
-                    string ptname;
-                    if (ES[ic][i].Status == 0) ptname = "н" + ES[ic][i].NumGeopointA;
-                    else ptname = ES[ic][i].NumGeopointA;
 
-                    writer.WriteLine(ptname + "\t" +
+                    writer.WriteLine(((ES[ic][i].Status == 0) ? "н" + ES[ic][i].NumGeopointA : ES[ic][i].NumGeopointA) + "\t" +
                                      ES[ic][i].oldX_s+ "\t" +
                                      ES[ic][i].oldY_s+ "\t" +
                                      ES[ic][i].x_s + "\t" +
@@ -990,11 +990,8 @@ namespace netFteo.IO
                     writer.WriteLine("Child" + (ich + 1).ToString());
                     for (int ici = 0; ici <= ES[ic].Childs[ich].PointCount - 1; ici++)
                     {
-                        string ptname;
-                        if (ES[ic].Childs[ich][ici].Status == 0) ptname = "н" + ES[ic].Childs[ich][ici].NumGeopointA;
-                        else ptname = ES[ic].Childs[ich][ici].NumGeopointA;
-
-                        writer.WriteLine(ptname + "\t" +
+                        writer.WriteLine(
+                            ((ES[ic].Childs[ich][ici].Status == 0)? "н" + ES[ic].Childs[ich][ici].NumGeopointA: ES[ic].Childs[ich][ici].NumGeopointA)  + "\t" +
                                      ES[ic].Childs[ich][ici].oldX_s + "\t" +
                                      ES[ic].Childs[ich][ici].oldY_s + "\t" +
                                      ES[ic].Childs[ich][ici].x_s + "\t" +
@@ -1010,7 +1007,7 @@ namespace netFteo.IO
             writer.Close();
         }
 
-
+        /*
         public void SaveAsFixosoftTXT2016(string FileName, TPolygonCollection ES)
         {
             if (ES.Count == 0) return;
@@ -1062,7 +1059,7 @@ namespace netFteo.IO
             }
             writer.Close();
         }
-
+*/
       
         public void SaveAsOMSTXT(string CN, string FileName, PointList ES)
         {
