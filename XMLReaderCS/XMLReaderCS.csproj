@@ -132,8 +132,9 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cspUtils">
-      <HintPath>C:\TEMP\CSP\Debug\cspUtils.dll</HintPath>
+    <Reference Include="cadesSharp, Version=1.0.6914.17873, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TEMP\CSP\Debug\cadesSharp.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\DotNetZipLib\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
