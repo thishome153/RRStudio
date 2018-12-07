@@ -462,12 +462,19 @@ namespace netFteo.XML
             {
                 try
                 {
-
+                    /*
                     System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
                     System.Xml.Xsl.XsltSettings xsopt = new System.Xml.Xsl.XsltSettings();
                     transform.Load(hrefToXSLTServer);
-                    xmlr.Close();
                     transform.Transform(inputXml, OutName);
+                    */
+                    System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
+
+                    cmpTRans.Load(hrefToXSLTServer);
+                    cmpTRans.Transform(inputXml, OutName);
+                    cmpTRans.TemporaryFiles.Delete();
+                    xmlr.Close();
+
                     return OutName;
                 }
                 catch (Exception e)
