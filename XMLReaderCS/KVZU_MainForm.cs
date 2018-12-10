@@ -3587,6 +3587,7 @@ namespace XMLReaderCS
             label_FileSize.Text = "";
             label2.Text = "Получатель";
             toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
+            textBox_DocNum.Image = XMLReaderCS.Properties.Resources.calendar_view_day;
             PreloaderMenuItem.LoadingCircleControl.Active = false;
             PreloaderMenuItem.Visible = false;
             PreloaderMenuItem.BackColor = Color.Transparent;
@@ -3779,6 +3780,12 @@ namespace XMLReaderCS
         private void textBox_DocNum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Clipboard.SetText(textBox_DocNum.Text);
+            Guid  testGUID;
+            bool validGuid =  Guid.TryParse(textBox_DocNum.Text, out testGUID);
+            if (validGuid)
+                textBox_DocNum.Image = XMLReaderCS.Properties.Resources.tick;
+            else
+                textBox_DocNum.Image = XMLReaderCS.Properties.Resources.cross;
         }
 
         private void contextMenuStrip_SaveAs_Opening(object sender, CancelEventArgs e)

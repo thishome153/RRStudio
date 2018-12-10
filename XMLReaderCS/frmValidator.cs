@@ -49,7 +49,7 @@ namespace XMLReaderCS
         }
 
 
-        private void valide(string xsdfilename)
+        public void valide(string xsdfilename)
         {
         try
         {

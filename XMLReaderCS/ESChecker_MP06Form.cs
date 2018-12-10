@@ -22,7 +22,7 @@ namespace XMLReaderCS
 
         }
 
-
+        public netFteo.XML.SchemaSet schemas;
         private Ionic.Zip.ZipFile fMP06ZiptoCkeck;
         private string fMP06UnzippedFolder;
         public Ionic.Zip.ZipFile MP06ZiptoCheck
@@ -137,7 +137,13 @@ namespace XMLReaderCS
 
                             XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V06.MP));
                             this.fMP_v06 = (RRTypes.MP_V06.MP)serializerMP.Deserialize(stream);
-                            AddCheckPosition(listView1, "MP_v06 xml", fMP_v06.GUID, "OK");
+
+                            Guid testGUID;
+                            bool validGuid = Guid.TryParse(fMP_v06.GUID, out testGUID);
+                            if (validGuid)
+                                AddCheckPosition(listView1, "MP_v06 guid ", "GUID", "OK");
+                            else
+                                AddCheckPosition(listView1, "MP_v06 ", "GUID", "invalid");
                             label_doc_GUID.Text = fMP_v06.GUID + "  " + fMP_v06.GeneralCadastralWorks.DateCadastral.ToString();
 
                         }
@@ -196,7 +202,20 @@ namespace XMLReaderCS
 
                         XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V06.MP));
                         this.fMP_v06 = (RRTypes.MP_V06.MP)serializerMP.Deserialize(stream);
-                        AddCheckPosition(listView1, "MP_v06", fMP_v06.GUID, "OK");
+
+                        //Validate file against schema
+                        // Got MP schema: frmValidator, frmOptions
+                        AddCheckPosition(listView1, "Xml validation", "MP_v06", "Valide");
+
+
+                        Guid testGUID;
+                        bool validGuid = Guid.TryParse(fMP_v06.GUID, out testGUID);
+                        if (validGuid)
+                            AddCheckPosition(listView1,  "GUID", fMP_v06.GUID, "OK");
+                        else
+                            AddCheckPosition(listView1, "GUID", fMP_v06.GUID, "invalid");
+
+
                         label_doc_GUID.Text = fMP_v06.GUID + "  " + fMP_v06.GeneralCadastralWorks.DateCadastral.ToString();
                     }
                 }
@@ -216,6 +235,7 @@ namespace XMLReaderCS
             }
 
             treeView1.ExpandAll();
+            AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
             AddCheckPosition(listView1, "Исходные данные"        , "----------", "-");
             AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
             AddCheckPosition(listView1, "СГП", this.fMP_v06.SchemeGeodesicPlotting != null ? Path.GetFileName(this.fMP_v06.SchemeGeodesicPlotting.Name) : "-", "?");

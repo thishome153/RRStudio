@@ -1337,6 +1337,9 @@ SCAN:
             {
                 pt.NumGeopointA = StartIndex++.ToString();
             }
+            if ((this.First().x ==  this.Last().x) &&
+                    (this.First().y == this.Last().y))
+                this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
             return StartIndex;
         }
 
