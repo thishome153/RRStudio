@@ -801,8 +801,7 @@ namespace XMLReaderCS
                     {
                         BugReport_MP06_II(ArchiveFolder);
                     }
-                    else
-
+                    //else
                         Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
                 }
 
@@ -4619,10 +4618,10 @@ namespace XMLReaderCS
               
                 ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
                 ESChecker_MP06frm.MP06UnZiptoCheck = archiveFolder;
-                Read(ESChecker_MP06frm.MP_v06);
+                //Read(ESChecker_MP06frm.MP_v06);
                 ESChecker_MP06frm.ShowDialog();
-                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-                ListFileInfo(DocInfo);
+                //ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+                //ListFileInfo(DocInfo);
             }
 
             catch (System.Exception ex1)

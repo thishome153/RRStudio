@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Xml.Schema;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,6 +26,7 @@ namespace XMLReaderCS
         public netFteo.XML.SchemaSet schemas;
         private Ionic.Zip.ZipFile fMP06ZiptoCkeck;
         private string fMP06UnzippedFolder;
+
         public Ionic.Zip.ZipFile MP06ZiptoCheck
         {
             get
@@ -36,8 +38,7 @@ namespace XMLReaderCS
             set
             {
                 this.fMP06ZiptoCkeck = value;
-                CheckArchieve();
-                //this.fMP06ZiptoCkeck.
+                //CheckArchieve();
             }
         }
 
@@ -63,9 +64,8 @@ namespace XMLReaderCS
 
             }
         }
-
-        private RRTypes.MP_V06.MP fMP_v06;
         /*
+        private RRTypes.MP_V06.MP fMP_v06;
         public RRTypes.MP_V06.MP MP_v06
         {
             get
@@ -78,6 +78,7 @@ namespace XMLReaderCS
             }
         }
         */
+
         private ListViewItem AddCheckPosition(ListView lv, string ParamName, string Value, string resValue)
         {
             ListViewItem res = lv.Items.Add(ParamName);
@@ -93,9 +94,30 @@ namespace XMLReaderCS
             return File.Exists(filename + ".sig");
         }
 
+
+        public void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            switch (e.Severity)
+            {
+                case XmlSeverityType.Error:
+                   // richTextBox1.Text += "Error: " + e.Message;
+                    break;
+                case XmlSeverityType.Warning:
+                   // richTextBox1.Text += "Warning: " + e.Message;
+                    break;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Chtcking unflatted archieve files for packet MP V06
+        /// </summary>
+        /*
         private void CheckArchieve()
         {
             frmCertificates certfrm = new frmCertificates();
+            ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
 
             TreeNode zipNode = this.treeView1.Nodes.Add("Пакет").Nodes.Add(MP06ZiptoCheck.Name);
             foreach (Ionic.Zip.ZipEntry ze in MP06ZiptoCheck)
@@ -163,9 +185,9 @@ namespace XMLReaderCS
 
 
         }
-
+        */
         /// <summary>
-        /// Check previosly unpacked archive
+        /// Check packet files in previosly unpacked archive
         /// </summary>
         /// <param name="workDir"></param>
         private void CheckIt(string workDir)
@@ -180,78 +202,95 @@ namespace XMLReaderCS
 
                 if (ze.Contains(".xml") && !ze.Contains(".sig"))
                 {
-                    // Stream zipEntryStream = new MemoryStream();
-                    // zipEntryStream = ze.InputStream;
-                    TextReader reader = new StreamReader(ze);
                     this.fMP_v06_xml = new XmlDocument();
+                    /*
+                    TextReader reader = new StreamReader(ze);
                     fMP_v06_xml.Load(reader);
                     reader.Close();
-                    //Read(XMLDocFromFile);
-                    string rootname = fMP_v06_xml.DocumentElement.Name;
+                    */
+
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    // settings.Schemas.Add("http://www.w3.org/2001/XMLSchema", xsdfilename);
+                    //TODO: settings.Schemas.Add(null, xsdfilename);
+                    settings.ValidationType = ValidationType.Schema;
+                    settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.ProcessIdentityConstraints
+                        | XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation;
+                    XmlReader reader = XmlReader.Create(ze, settings);
+                    this.fMP_v06_xml.Load(reader);
+                    XmlNode MP_Root = fMP_v06_xml.DocumentElement;
                     string version = "-";
-                    if (fMP_v06_xml.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                        version = fMP_v06_xml.DocumentElement.Attributes.GetNamedItem("Version").Value;
+                    if (MP_Root.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+                        version = MP_Root.Attributes.GetNamedItem("Version").Value;
 
-                    // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
-                    if ((rootname == "MP") && (version == "06"))
+                    // Типы MP Версия 06 - без XSD to clasess. 
+                    if ((MP_Root.Name == "MP") && (version == "06"))
                     {
-                        Stream stream = new MemoryStream();
-                        fMP_v06_xml.Save(stream);
-                        stream.Seek(0, 0);
-
-
-                        XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V06.MP));
-                        this.fMP_v06 = (RRTypes.MP_V06.MP)serializerMP.Deserialize(stream);
-
                         //Validate file against schema
                         // Got MP schema: frmValidator, frmOptions
                         AddCheckPosition(listView1, "Xml validation", "MP_v06", "Valide");
 
+                        // / MP / @GUID
+                        string guid = MP_Root.Attributes.GetNamedItem("GUID").Value;
+
+                        // / MP / GeneralCadastralWorks / @DateCadastral
 
                         Guid testGUID;
-                        bool validGuid = Guid.TryParse(fMP_v06.GUID, out testGUID);
+                        //bool validGuid = Guid.TryParse(fMP_v06.GUID, out testGUID);
+                        bool validGuid = Guid.TryParse(guid, out testGUID); ;
+
                         if (validGuid)
-                            AddCheckPosition(listView1,  "GUID", fMP_v06.GUID, "OK");
+                            AddCheckPosition(listView1, "GUID", guid, "OK");
                         else
-                            AddCheckPosition(listView1, "GUID", fMP_v06.GUID, "invalid");
-
-
-                        label_doc_GUID.Text = fMP_v06.GUID + "  " + fMP_v06.GeneralCadastralWorks.DateCadastral.ToString();
+                            AddCheckPosition(listView1, "GUID", guid, "invalid");
+                        label_doc_GUID.Text = guid;
                     }
+
+
+                    if (SignaturePresent(ze))
+                    {
+
+                        StreamReader sigreader = File.OpenText(ze + ".sig");
+                        List<string> sig = certfrm.ParseSignature(ze + ".sig");
+                        string sigs = "";
+                        foreach (string subject in sig)
+                            sigs += subject + ", ";
+                        AddCheckPosition(listView1, "Signature", Path.GetFileName(ze), sigs);
+                    }
+
+
+
+
+                    treeView1.ExpandAll();
+
+                    AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
+                    AddCheckPosition(listView1, "Исходные данные", "----------", "-");
+                    AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
+
+
+                    //xpath: /MP/SchemeGeodesicPlotting/@Name
+                    AddCheckPosition(listView1, "СГП", MP_Root.SelectSingleNode("SchemeGeodesicPlotting") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeGeodesicPlotting/@Name").Value) : "-", "?");
+                    AddCheckPosition(listView1, "СРП", MP_Root.SelectSingleNode("SchemeDisposition") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeDisposition/@Name").Value) : " - ", "?");
+                    AddCheckPosition(listView1, "Чертеж", MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null ?  Path.GetFileName(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value):"-", " ? ");
+                    if (SignaturePresent(workDir + "\\" + MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value))
+                        AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
+                    AddCheckPosition(listView1, "Акт согласования", MP_Root.SelectSingleNode("AgreementDocument") != null ? Path.GetFileName(MP_Root.SelectSingleNode("AgreementDocument/@Name").Value) : " - ", "?");
+
+                    if (MP_Root.SelectSingleNode("Appendix") != null)
+                        AddCheckPosition(listView1, "Приложения", "----------", "..");
+                    { 
+                        foreach(XmlNode app in MP_Root.SelectSingleNode("Appendix").ChildNodes)
+                        {
+                            // / MP/Appendix/AppliedFiles[1]/AppliedFile/@Name
+                            AddCheckPosition(listView1, app.SelectSingleNode("NameAppendix").FirstChild.Value, Path.GetFileName(app.SelectSingleNode("AppliedFile/@Name").Value), "-");
+
+                        }
+                    }
+                    
                 }
-
-                if (SignaturePresent(ze))
-                {
-
-                    StreamReader sigreader = File.OpenText(ze + ".sig");
-                    List<string> sig = certfrm.ParseSignature(ze + ".sig");
-                    string sigs = "";
-                    foreach (string subject in sig)
-                        sigs += subject;
-                    AddCheckPosition(listView1, "Signature", Path.GetFileName(ze), sigs);
-                }
-
-
-            }
-
-            treeView1.ExpandAll();
-            AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
-            AddCheckPosition(listView1, "Исходные данные"        , "----------", "-");
-            AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
-            AddCheckPosition(listView1, "СГП", this.fMP_v06.SchemeGeodesicPlotting != null ? Path.GetFileName(this.fMP_v06.SchemeGeodesicPlotting.Name) : "-", "?");
-            AddCheckPosition(listView1, "СРП", this.fMP_v06.SchemeDisposition != null ? Path.GetFileName(this.fMP_v06.SchemeDisposition.Name) : "-", "?");
-            AddCheckPosition(listView1, "Чертеж", Path.GetFileName(this.fMP_v06.DiagramParcelsSubParcels.Name), "?");
-
-            if (SignaturePresent(workDir + "\\" + this.fMP_v06.DiagramParcelsSubParcels.Name))
-                AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
-            AddCheckPosition(listView1, "Акт согласования", this.fMP_v06.AgreementDocument != null ? Path.GetFileName(this.fMP_v06.AgreementDocument.Name) : "-", "?");
-            if (this.fMP_v06.Appendix != null)
-                AddCheckPosition(listView1, "Приложения", "----------", "..");
-            {
-                foreach (RRTypes.MP_V06.tAppendixAppliedFiles appxs in this.fMP_v06.Appendix)
-                    AddCheckPosition(listView1, appxs.NameAppendix, Path.GetFileName( appxs.AppliedFile.Name), "-");
             }
         }
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {

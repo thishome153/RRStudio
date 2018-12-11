@@ -26,6 +26,7 @@ namespace netFteo.XML
         {
             this.schemaSet = new XmlSchemaSet();
         }
+
         public SchemaSet(string rootdir, string RootSchema)
         {
             this.SchemaName = RootSchema;
@@ -45,10 +46,12 @@ namespace netFteo.XML
             }
             else return null;
         }
+
         public void CompileSet()
         {
             this.schemaSet.Compile();
         }
+
         public int FilesCount // Количество файлов в схеме, после компиляции естессно
         {
             get { return this.schemaSet.Count; }
@@ -65,6 +68,7 @@ namespace netFteo.XML
             }
             return null;
         }
+
         public IEnumerable<string> SchemaSetNamespaces()
         {
             XmlUrlResolver xmlres = new XmlUrlResolver();
@@ -72,8 +76,8 @@ namespace netFteo.XML
             System.Uri uri = null;
             xmlres.ResolveUri(uri, "urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1");
             return null;
-
         }
+
         private void ValidationCallBack(object sender, ValidationEventArgs e)
         {
             // If Document Validation Fails

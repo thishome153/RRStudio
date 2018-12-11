@@ -28,7 +28,7 @@ namespace XMLReaderCS
             if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 richTextBox1.Text = " Open schema " + System.IO.Path.GetFileName(fd.FileName);
-                valide(fd.FileName);
+                ValideXML(fd.FileName);
 
             }
         }
@@ -49,7 +49,7 @@ namespace XMLReaderCS
         }
 
 
-        public void valide(string xsdfilename)
+        public void ValideXML(string xsdfilename)
         {
         try
         {
@@ -62,7 +62,7 @@ namespace XMLReaderCS
             XmlReader reader = XmlReader.Create(xmlToValide, settings);
             XmlDocument document = new XmlDocument();
             document.Load(reader);
-
+                reader.Close();
             ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
 
             // the following call to Validate succeeds.
