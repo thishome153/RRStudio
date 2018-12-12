@@ -41,13 +41,16 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader3,
             this.columnHeader2});
-            this.listView1.Location = new System.Drawing.Point(0, 276);
+            this.listView1.Location = new System.Drawing.Point(0, 340);
+            this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(726, 240);
+            this.listView1.Size = new System.Drawing.Size(967, 294);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -73,17 +76,19 @@
             // 
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 522);
+            this.panel1.Location = new System.Drawing.Point(0, 643);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(732, 45);
+            this.panel1.Size = new System.Drawing.Size(976, 55);
             this.panel1.TabIndex = 1;
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(304, 9);
+            this.button1.Location = new System.Drawing.Point(401, 10);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(123, 33);
+            this.button1.Size = new System.Drawing.Size(164, 41);
             this.button1.TabIndex = 0;
             this.button1.Text = "ОК";
             this.button1.UseVisualStyleBackColor = true;
@@ -91,9 +96,10 @@
             // 
             // treeView1
             // 
-            this.treeView1.Location = new System.Drawing.Point(0, 46);
+            this.treeView1.Location = new System.Drawing.Point(0, 57);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(4);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(726, 224);
+            this.treeView1.Size = new System.Drawing.Size(967, 275);
             this.treeView1.TabIndex = 2;
             // 
             // label_doc_GUID
@@ -101,10 +107,11 @@
             this.label_doc_GUID.BackColor = System.Drawing.SystemColors.Control;
             this.label_doc_GUID.Image = global::XMLReaderCS.Properties.Resources.tick;
             this.label_doc_GUID.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label_doc_GUID.Location = new System.Drawing.Point(12, 9);
+            this.label_doc_GUID.Location = new System.Drawing.Point(16, 11);
+            this.label_doc_GUID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_doc_GUID.Name = "label_doc_GUID";
-            this.label_doc_GUID.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.label_doc_GUID.Size = new System.Drawing.Size(714, 25);
+            this.label_doc_GUID.Padding = new System.Windows.Forms.Padding(33, 0, 0, 0);
+            this.label_doc_GUID.Size = new System.Drawing.Size(952, 31);
             this.label_doc_GUID.TabIndex = 18;
             this.label_doc_GUID.TabStop = true;
             this.label_doc_GUID.Text = "Номер документа";
@@ -112,17 +119,21 @@
             // 
             // ESChecker_MP06Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(732, 567);
+            this.ClientSize = new System.Drawing.Size(976, 698);
             this.Controls.Add(this.label_doc_GUID);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.panel1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "ESChecker_MP06Form";
             this.Text = "Проверка межевого плана 06";
+            this.Load += new System.EventHandler(this.ESChecker_MP06Form_Load);
             this.SizeChanged += new System.EventHandler(this.ESChecker_MP06Form_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

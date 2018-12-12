@@ -61,7 +61,7 @@ namespace XMLReaderCS
             {
                 this.fMP06UnzippedFolder = value;
                 CheckIt(value);
-
+                treeView1.ExpandAll();
             }
         }
         /*
@@ -196,6 +196,7 @@ namespace XMLReaderCS
 
             if (Directory.Exists(workDir))
             {
+                AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
                 DirectoryInfo di = new DirectoryInfo(workDir);
                 string ze = workDir + "\\" + di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
                 // теперь загружаем xml
@@ -249,40 +250,64 @@ namespace XMLReaderCS
                     if (SignaturePresent(ze))
                     {
 
-                        StreamReader sigreader = File.OpenText(ze + ".sig");
+                        TreeNode MPNodes = treeView1.Nodes.Add("Файл " + label_doc_GUID.Text);
+                        TreeNode sigNode = MPNodes.Nodes.Add("Подпись");
                         List<string> sig = certfrm.ParseSignature(ze + ".sig");
-                        string sigs = "";
                         foreach (string subject in sig)
-                            sigs += subject + ", ";
-                        AddCheckPosition(listView1, "Signature", Path.GetFileName(ze), sigs);
+                            sigNode.Nodes.Add(subject);
                     }
 
-
-
-
-                    treeView1.ExpandAll();
-
-                    AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
-                    AddCheckPosition(listView1, "Исходные данные", "----------", "-");
-                    AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
-
+                    // /MP / InputData / Documents / Document[1] / Name
+                    if (MP_Root.SelectSingleNode("InputData") != null)
+                    {
+                        TreeNode inpDataNodes = treeView1.Nodes.Add("Исходные данные ");
+                        if ((MP_Root.SelectSingleNode("InputData/Documents") != null) &&
+                              (MP_Root.SelectSingleNode("InputData/Documents").ChildNodes.Count > 0))
+                        {
+                            TreeNode docsNode = inpDataNodes.Nodes.Add("Документы");
+                            foreach (XmlNode doc in MP_Root.SelectSingleNode("InputData/Documents").ChildNodes)
+                            {
+                                TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
+                                docNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value + " "+
+                                doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
+                                
+                            }
+                        }
+                    }
+                    // AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
 
                     //xpath: /MP/SchemeGeodesicPlotting/@Name
                     AddCheckPosition(listView1, "СГП", MP_Root.SelectSingleNode("SchemeGeodesicPlotting") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeGeodesicPlotting/@Name").Value) : "-", "?");
                     AddCheckPosition(listView1, "СРП", MP_Root.SelectSingleNode("SchemeDisposition") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeDisposition/@Name").Value) : " - ", "?");
-                    AddCheckPosition(listView1, "Чертеж", MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null ?  Path.GetFileName(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value):"-", " ? ");
-                    if (SignaturePresent(workDir + "\\" + MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value))
-                        AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
+                    if (MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null)
+                    {
+                        TreeNode DiagramParcels = treeView1.Nodes.Add("Чертеж");
+                        DiagramParcels.Nodes.Add(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value);
+                     //   AddCheckPosition(listView1, "Чертеж", MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null ? Path.GetFileName(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value) : "-", " ? ");
+
+                        if (SignaturePresent(workDir + "\\" + MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value))
+                            AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
+                    }
                     AddCheckPosition(listView1, "Акт согласования", MP_Root.SelectSingleNode("AgreementDocument") != null ? Path.GetFileName(MP_Root.SelectSingleNode("AgreementDocument/@Name").Value) : " - ", "?");
 
                     if (MP_Root.SelectSingleNode("Appendix") != null)
-                        AddCheckPosition(listView1, "Приложения", "----------", "..");
-                    { 
-                        foreach(XmlNode app in MP_Root.SelectSingleNode("Appendix").ChildNodes)
-                        {
-                            // / MP/Appendix/AppliedFiles[1]/AppliedFile/@Name
-                            AddCheckPosition(listView1, app.SelectSingleNode("NameAppendix").FirstChild.Value, Path.GetFileName(app.SelectSingleNode("AppliedFile/@Name").Value), "-");
-
+                    {
+                        TreeNode appndxNodes = treeView1.Nodes.Add("Приложения (AppliedFiles)");
+                                 {
+                            foreach (XmlNode app in MP_Root.SelectSingleNode("Appendix").ChildNodes)
+                            {
+                                // / MP/Appendix/AppliedFiles[1]/AppliedFile/@Name
+                               TreeNode fileNode =  appndxNodes.Nodes.Add(app.SelectSingleNode("NameAppendix").FirstChild.Value);
+                                fileNode.Nodes.Add((app.SelectSingleNode("AppliedFile/@Name").Value));
+                                string TestGignatureFileName=  workDir +"\\" + app.SelectSingleNode("AppliedFile/@Name").Value+".sig";
+                                if (File.Exists(TestGignatureFileName))
+                                {
+                                    TreeNode sigNode = fileNode.Nodes.Add("Подпись");
+                                    List<string> sig = certfrm.ParseSignature(TestGignatureFileName);
+                                    foreach (string subject in sig)
+                                        sigNode.Nodes.Add(subject);
+                                }
+                            }
                         }
                     }
                     
@@ -301,8 +326,12 @@ namespace XMLReaderCS
         {
             treeView1.Width = this.Width - 14;
             listView1.Width = this.Width - 14;
-            listView1.Height = this.Height - 354;
+            //listView1.Height = this.Height - 244;
         }
 
+        private void ESChecker_MP06Form_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
