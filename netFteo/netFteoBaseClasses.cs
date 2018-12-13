@@ -162,6 +162,7 @@ namespace netFteo.Spatial
             this.y = inity;
         }
 
+
         public Point(double initx, double inity, double initz)
             : this(initx, inity)
         {

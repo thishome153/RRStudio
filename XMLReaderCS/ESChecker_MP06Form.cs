@@ -61,7 +61,7 @@ namespace XMLReaderCS
             {
                 this.fMP06UnzippedFolder = value;
                 CheckIt(value);
-                treeView1.ExpandAll();
+                //treeView1.ExpandAll();
             }
         }
         /*
@@ -109,106 +109,68 @@ namespace XMLReaderCS
 
         }
 
-
         /// <summary>
-        /// Chtcking unflatted archieve files for packet MP V06
+        /// Populate trewview for xml nodes - links to files (pdf)
         /// </summary>
-        /*
-        private void CheckArchieve()
+        /// <param name="workDir"></param>     
+        private void PopulateChapterNodes(TreeNodeCollection nodes, XmlNode xmlBaseNode, string ChapterXpath, string ChapterName, string workDir)
+        {
+            if (xmlBaseNode.SelectSingleNode(ChapterXpath) != null)
+            {
+                TreeNode DiagramParcels = nodes.Add(ChapterName);
+                TreeNode ItemNode = DiagramParcels.Nodes.Add(xmlBaseNode.SelectSingleNode(ChapterXpath+"/@Name").Value);
+                if (xmlBaseNode.SelectSingleNode(ChapterXpath + "/@Name").Value.ToUpper().Contains(".PDF"))
+                {
+                    ItemNode.SelectedImageIndex = 13; ItemNode.ImageIndex = 13; // pdf image for node
+                }
+
+                ItemNode.Tag = "filelink-pdf";
+                if (SignaturePresent(workDir + "\\" + xmlBaseNode.SelectSingleNode(ChapterXpath + "/@Name").Value))
+                {
+                    PopulateSignatureNodes(DiagramParcels, workDir + "\\" + xmlBaseNode.SelectSingleNode(ChapterXpath+"/@Name").Value + ".sig");
+                }
+            }
+        }
+
+        private void PopulateSignatureNodes(TreeNode node, string SignatureFileName)
+        {
+            node.ImageIndex = 10; node.SelectedImageIndex = 10;
+            TreeNode sigNode = node.Nodes.Add("Подпись");
+            sigNode.ImageIndex = 14;
+            sigNode.SelectedImageIndex = 14;
+            foreach (string subject in SignatureSubjects(SignatureFileName))
+            {
+                TreeNode subnode = sigNode.Nodes.Add(subject);
+                subnode.ImageIndex = 9;
+                subnode.SelectedImageIndex = 9;
+            }
+        }
+
+        private List<string> SignatureSubjects(string SignatureFileName)
         {
             frmCertificates certfrm = new frmCertificates();
-            ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
-
-            TreeNode zipNode = this.treeView1.Nodes.Add("Пакет").Nodes.Add(MP06ZiptoCheck.Name);
-            foreach (Ionic.Zip.ZipEntry ze in MP06ZiptoCheck)
-            {
-                ze.Extract(Ionic.Zip.ExtractExistingFileAction.OverwriteSilently);
-                if (ze.Attributes != FileAttributes.Directory)
-                {
-                    zipNode.Nodes.Add(ze.FileName);//.Nodes.Add(ze.Info);
-                    if (ze.FileName.Contains(".sig"))
-                    {
-
-                        StreamReader sigreader = File.OpenText(ze.FileName);
-                        List<string> sig = certfrm.ParseSignature(ze.FileName);
-                        foreach (string subject in sig)
-                            AddCheckPosition(listView1, "Signature", ze.FileName, subject);
-                    }
-
-                    if (ze.FileName.Contains(".xml") && !ze.FileName.Contains(".sig"))
-                    {
-                        // Stream zipEntryStream = new MemoryStream();
-                        // zipEntryStream = ze.InputStream;
-                        TextReader reader = new StreamReader(ze.FileName);
-                        XmlDocument XMLDocFromFile = new XmlDocument();
-                        XMLDocFromFile.Load(reader);
-                        reader.Close();
-                        //Read(XMLDocFromFile);
-                        string rootname = XMLDocFromFile.DocumentElement.Name;
-                        string version = "-";
-                        if (XMLDocFromFile.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                            version = XMLDocFromFile.DocumentElement.Attributes.GetNamedItem("Version").Value;
-
-                        // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
-                        if ((rootname == "MP") && (version == "06"))
-                        {
-                            Stream stream = new MemoryStream();
-                            XMLDocFromFile.Save(stream);
-                            stream.Seek(0, 0);
-
-
-                            XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V06.MP));
-                            this.fMP_v06 = (RRTypes.MP_V06.MP)serializerMP.Deserialize(stream);
-
-                            Guid testGUID;
-                            bool validGuid = Guid.TryParse(fMP_v06.GUID, out testGUID);
-                            if (validGuid)
-                                AddCheckPosition(listView1, "MP_v06 guid ", "GUID", "OK");
-                            else
-                                AddCheckPosition(listView1, "MP_v06 ", "GUID", "invalid");
-                            label_doc_GUID.Text = fMP_v06.GUID + "  " + fMP_v06.GeneralCadastralWorks.DateCadastral.ToString();
-
-                        }
-
-                    }
-                }
-            }// foreach entry
-            treeView1.ExpandAll();
-            AddCheckPosition(listView1, "Исходные данные", "..", "-");
-            AddCheckPosition(listView1, "Пространственные данные", "..", "-");
-            if (this.fMP_v06.Appendix != null)
-                AddCheckPosition(listView1, "Приложения", this.fMP_v06.Appendix.Count().ToString(), "..");
-            {
-                foreach (RRTypes.MP_V06.tAppendixAppliedFiles appxs in this.fMP_v06.Appendix)
-                    AddCheckPosition(listView1, appxs.NameAppendix, appxs.AppliedFile.Name, "-");
-            }
-
-
+            return certfrm.ParseSignature(SignatureFileName);
         }
-        */
+
         /// <summary>
         /// Check packet files in previosly unpacked archive
         /// </summary>
         /// <param name="workDir"></param>
         private void CheckIt(string workDir)
         {
-            frmCertificates certfrm = new frmCertificates();
+
 
             if (Directory.Exists(workDir))
             {
                 AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
                 DirectoryInfo di = new DirectoryInfo(workDir);
-                string ze = workDir + "\\" + di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+                string ze_local = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+                string ze = workDir + "\\" + ze_local;
                 // теперь загружаем xml
 
                 if (ze.Contains(".xml") && !ze.Contains(".sig"))
                 {
                     this.fMP_v06_xml = new XmlDocument();
-                    /*
-                    TextReader reader = new StreamReader(ze);
-                    fMP_v06_xml.Load(reader);
-                    reader.Close();
-                    */
 
                     XmlReaderSettings settings = new XmlReaderSettings();
                     // settings.Schemas.Add("http://www.w3.org/2001/XMLSchema", xsdfilename);
@@ -218,7 +180,11 @@ namespace XMLReaderCS
                         | XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation;
                     XmlReader reader = XmlReader.Create(ze, settings);
                     this.fMP_v06_xml.Load(reader);
+
                     XmlNode MP_Root = fMP_v06_xml.DocumentElement;
+                    // Вначале отобразим xml, вдруг далее парсеры слажают... :)
+                    cXmlTreeView2.RootName = ze_local;
+                    cXmlTreeView2.LoadXML(fMP_v06_xml); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
                     string version = "-";
                     if (MP_Root.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
                         version = MP_Root.Attributes.GetNamedItem("Version").Value;
@@ -243,72 +209,96 @@ namespace XMLReaderCS
                             AddCheckPosition(listView1, "GUID", guid, "OK");
                         else
                             AddCheckPosition(listView1, "GUID", guid, "invalid");
-                        label_doc_GUID.Text = guid;
-                    }
+                        label_doc_GUID.Text = ze_local;
+                        TreeNode MPNode = treeView1.Nodes.Add(MP_Root.Name);
 
-
-                    if (SignaturePresent(ze))
-                    {
-
-                        TreeNode MPNodes = treeView1.Nodes.Add("Файл " + label_doc_GUID.Text);
-                        TreeNode sigNode = MPNodes.Nodes.Add("Подпись");
-                        List<string> sig = certfrm.ParseSignature(ze + ".sig");
-                        foreach (string subject in sig)
-                            sigNode.Nodes.Add(subject);
-                    }
-
-                    // /MP / InputData / Documents / Document[1] / Name
-                    if (MP_Root.SelectSingleNode("InputData") != null)
-                    {
-                        TreeNode inpDataNodes = treeView1.Nodes.Add("Исходные данные ");
-                        if ((MP_Root.SelectSingleNode("InputData/Documents") != null) &&
-                              (MP_Root.SelectSingleNode("InputData/Documents").ChildNodes.Count > 0))
+                        if (SignaturePresent(ze))
                         {
-                            TreeNode docsNode = inpDataNodes.Nodes.Add("Документы");
-                            foreach (XmlNode doc in MP_Root.SelectSingleNode("InputData/Documents").ChildNodes)
+                            Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.sign;
+                            Label_sig_Properties.Text = "";
+                            foreach (string sub in SignatureSubjects(ze + ".sig"))
                             {
-                                TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
-                                docNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value + " "+
-                                doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
-                                
+                                Label_sig_Properties.Text += sub;
                             }
                         }
-                    }
-                    // AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
+                        else
+                        {
+                            Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.cross;
+                            Label_sig_Properties.Text = "Документ не подписан";
+                        }
 
-                    //xpath: /MP/SchemeGeodesicPlotting/@Name
-                    AddCheckPosition(listView1, "СГП", MP_Root.SelectSingleNode("SchemeGeodesicPlotting") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeGeodesicPlotting/@Name").Value) : "-", "?");
-                    AddCheckPosition(listView1, "СРП", MP_Root.SelectSingleNode("SchemeDisposition") != null ? Path.GetFileName(MP_Root.SelectSingleNode("SchemeDisposition/@Name").Value) : " - ", "?");
-                    if (MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null)
-                    {
-                        TreeNode DiagramParcels = treeView1.Nodes.Add("Чертеж");
-                        DiagramParcels.Nodes.Add(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value);
-                     //   AddCheckPosition(listView1, "Чертеж", MP_Root.SelectSingleNode("DiagramParcelsSubParcels") != null ? Path.GetFileName(MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value) : "-", " ? ");
+                        TreeNode TitleNodes = MPNode.Nodes.Add("Общие сведения");
+                        // / MP / GeneralCadastralWorks / Reason
+                        TitleNodes.Nodes.Add("Межевой план подготовлен в результате выполнения кадастровых работ в связи с:").Nodes.Add(MP_Root.SelectSingleNode("GeneralCadastralWorks/Reason").FirstChild.Value);
 
-                        if (SignaturePresent(workDir + "\\" + MP_Root.SelectSingleNode("DiagramParcelsSubParcels/@Name").Value))
-                            AddCheckPosition(listView1, "Чертеж", "ЭЦП", "OK");
-                    }
-                    AddCheckPosition(listView1, "Акт согласования", MP_Root.SelectSingleNode("AgreementDocument") != null ? Path.GetFileName(MP_Root.SelectSingleNode("AgreementDocument/@Name").Value) : " - ", "?");
+                        // /MP / InputData / Documents / Document[1] / Name
+                        if (MP_Root.SelectSingleNode("InputData") != null)
+                        {
+                            TreeNode inpDataNodes =MPNode.Nodes.Add("Исходные данные ");
+                            inpDataNodes.ImageIndex = 11;
+                            inpDataNodes.SelectedImageIndex = 11;
 
-                    if (MP_Root.SelectSingleNode("Appendix") != null)
-                    {
-                        TreeNode appndxNodes = treeView1.Nodes.Add("Приложения (AppliedFiles)");
-                                 {
-                            foreach (XmlNode app in MP_Root.SelectSingleNode("Appendix").ChildNodes)
+                            if ((MP_Root.SelectSingleNode("InputData/Documents") != null) &&
+                                  (MP_Root.SelectSingleNode("InputData/Documents").ChildNodes.Count > 0))
                             {
-                                // / MP/Appendix/AppliedFiles[1]/AppliedFile/@Name
-                               TreeNode fileNode =  appndxNodes.Nodes.Add(app.SelectSingleNode("NameAppendix").FirstChild.Value);
-                                fileNode.Nodes.Add((app.SelectSingleNode("AppliedFile/@Name").Value));
-                                string TestGignatureFileName=  workDir +"\\" + app.SelectSingleNode("AppliedFile/@Name").Value+".sig";
-                                if (File.Exists(TestGignatureFileName))
+                                TreeNode docsNode = inpDataNodes.Nodes.Add("Документы");
+                                foreach (XmlNode doc in MP_Root.SelectSingleNode("InputData/Documents").ChildNodes)
                                 {
-                                    TreeNode sigNode = fileNode.Nodes.Add("Подпись");
-                                    List<string> sig = certfrm.ParseSignature(TestGignatureFileName);
-                                    foreach (string subject in sig)
-                                        sigNode.Nodes.Add(subject);
+                                    TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
+                                    docNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value + " " +
+                                    doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
+
                                 }
                             }
+
+                            // / MP / InputData / GeodesicBases / GeodesicBase[1] / PName
+                            if ((MP_Root.SelectSingleNode("InputData/GeodesicBases") != null) &&
+                                 (MP_Root.SelectSingleNode("InputData/GeodesicBases").ChildNodes.Count > 0))
+                            {
+                                TreeNode docsNode = inpDataNodes.Nodes.Add("Сведения о геодезической основе");
+                                docsNode.ImageIndex = 5;
+                                docsNode.SelectedImageIndex = 5;
+
+                                foreach (XmlNode doc in MP_Root.SelectSingleNode("InputData/GeodesicBases").ChildNodes)
+                                {
+                                    TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("PName").FirstChild.Value);
+                                    /// MP / InputData / GeodesicBases / GeodesicBase[1] / PKind
+                                    /// 
+                                    docNode.Nodes.Add(doc.SelectSingleNode("PKind").FirstChild.Value);
+                                    // / MP / InputData / GeodesicBases / GeodesicBase[1] / PKlass
+                                    docNode.Nodes.Add(doc.SelectSingleNode("PKlass").FirstChild.Value);
+                                    docNode.Nodes.Add(doc.SelectSingleNode("OrdX").FirstChild.Value);
+                                    docNode.Nodes.Add(doc.SelectSingleNode("OrdY").FirstChild.Value);
+                                    docNode.ImageIndex = 5;
+                                    docNode.SelectedImageIndex = 5;
+                                }
+                            }
+                            inpDataNodes.Expand();
                         }
+                        if (MP_Root.SelectSingleNode("Conclusion") != null)
+                        {
+                            var conclusion = MP_Root.SelectSingleNode("Conclusion").FirstChild.Value;
+                        }
+                        // AddCheckPosition(listView1, "Пространственные данные", "----------", "-");
+
+                        PopulateChapterNodes(MPNode.Nodes, MP_Root, "SchemeGeodesicPlotting", "СГП", workDir);
+                        PopulateChapterNodes(MPNode.Nodes, MP_Root, "SchemeDisposition", "СРП", workDir);
+                        PopulateChapterNodes(MPNode.Nodes, MP_Root, "DiagramParcelsSubParcels", "Чертеж", workDir);
+                        PopulateChapterNodes(MPNode.Nodes, MP_Root, "AgreementDocument", "Акт согласования", workDir);
+
+                        if (MP_Root.SelectSingleNode("Appendix") != null)
+                        {
+                            TreeNode appndxNodes = MPNode.Nodes.Add("Приложения (AppliedFiles)");
+                            {
+                                foreach (XmlNode app in MP_Root.SelectSingleNode("Appendix").ChildNodes)
+                                {
+                                    // / MP/Appendix/AppliedFiles[1]/AppliedFile/@Name
+                                    PopulateChapterNodes(appndxNodes.Nodes, app, "AppliedFile", app.SelectSingleNode("NameAppendix").FirstChild.Value, workDir);
+                                }
+                            }
+                            appndxNodes.Expand();
+                        }
+                        MPNode.Expand();
                     }
                     
                 }
@@ -331,6 +321,18 @@ namespace XMLReaderCS
 
         private void ESChecker_MP06Form_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void treeView1_DoubleClick(object sender, EventArgs e)
+        {
+            TreeNode selnode = ((TreeView)sender).SelectedNode;
+            if ((selnode.Tag != null)
+                &&
+                (selnode.Tag.ToString() == "filelink-pdf"))
+            {
+                string test = ((TreeView)sender).SelectedNode.Tag.ToString();
+            }
 
         }
     }

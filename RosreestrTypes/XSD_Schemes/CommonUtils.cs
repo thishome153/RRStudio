@@ -2341,6 +2341,16 @@ namespace RRTypes.CommonParsers
                     }
 
                 }
+                if ( MP.InputData.GeodesicBases != null)
+                    foreach(MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
+                    {
+                        Point pt = new Point((double)oms.OrdX, (double) oms.OrdY);
+                        pt.NumGeopointA = oms.PName;
+                        pt.Description = oms.PKlass;
+                        pt.Code = oms.PName;
+                        Bl.AddOMSPoint(pt);
+                    }
+
             }
             catch (Exception ex)
                 {
