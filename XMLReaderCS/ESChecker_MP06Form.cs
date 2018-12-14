@@ -23,7 +23,8 @@ namespace XMLReaderCS
 
         }
 
-        public netFteo.XML.SchemaSet schemas;
+        public netFteo.XML.SchemaSet XMLSchemas;
+        private string ValidateXMLMessage;
         private Ionic.Zip.ZipFile fMP06ZiptoCkeck;
         private string fMP06UnzippedFolder;
 
@@ -95,18 +96,44 @@ namespace XMLReaderCS
         }
 
 
-        public void ValidationEventHandler(object sender, ValidationEventArgs e)
+        public void ValidateXMLEventHandler(object sender, ValidationEventArgs e)
         {
             switch (e.Severity)
             {
                 case XmlSeverityType.Error:
-                   // richTextBox1.Text += "Error: " + e.Message;
+                    ValidateXMLMessage  += "Error: " + e.Message;
                     break;
                 case XmlSeverityType.Warning:
-                   // richTextBox1.Text += "Warning: " + e.Message;
+                   ValidateXMLMessage += "Warning: " + e.Message;
                     break;
             }
 
+        }
+
+        /// <summary>
+        /// Validate file against schema
+        /// </summary>
+        /// <param name="Schema"></param>
+        /// <param name="XMLFile"></param>
+        private void ValidateXML(XmlSchema Schema, XmlDocument XMLFile)
+        {
+            ValidationEventHandler eventHandler = new ValidationEventHandler(ValidateXMLEventHandler);
+            if ((this.XMLSchemas != null) &&
+                (XMLFile != null))
+            {
+                string testc = this.XMLSchemas.SchemaName;
+                // the following call to Validate succeeds.
+                XMLFile.Validate(eventHandler);
+            }
+            else
+            {
+                //throw event
+                //ValidationEventArgs args = new EventArgs();
+                //args.Message = "Schema missied";
+                //EventArgs args = new EventArgs();
+                //eventHandler(this, args);
+                ValidateXMLMessage = "Schema not found";
+            }
         }
 
         /// <summary>
@@ -192,9 +219,9 @@ namespace XMLReaderCS
                     // Типы MP Версия 06 - без XSD to clasess. 
                     if ((MP_Root.Name == "MP") && (version == "06"))
                     {
-                        //Validate file against schema
+                        //StartValidate file against schema
                         // Got MP schema: frmValidator, frmOptions
-                        AddCheckPosition(listView1, "Xml validation", "MP_v06", "Valide");
+                        ValidateXML(null, fMP_v06_xml);
 
                         // / MP / @GUID
                         string guid = MP_Root.Attributes.GetNamedItem("GUID").Value;
@@ -209,6 +236,7 @@ namespace XMLReaderCS
                             AddCheckPosition(listView1, "GUID", guid, "OK");
                         else
                             AddCheckPosition(listView1, "GUID", guid, "invalid");
+
                         label_doc_GUID.Text = ze_local;
                         TreeNode MPNode = treeView1.Nodes.Add(MP_Root.Name);
 
@@ -299,6 +327,7 @@ namespace XMLReaderCS
                             appndxNodes.Expand();
                         }
                         MPNode.Expand();
+                        AddCheckPosition(listView1, "Xml validation", "MP_v06", ValidateXMLMessage); //Show validation results
                     }
                     
                 }

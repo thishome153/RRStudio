@@ -47,11 +47,9 @@ namespace RRTypes
 
         }
 
-       // какой-то потерянный (одинокий делегат):
-       // public delegate void QueryEndedEventHandler (object sender, EventArgs e);  
-
+ 
         /// <summary>
-        /// Viewer картинок , присылаемых pkk5
+        /// Viewer картинок , присылаемых pkk5.rosreestr.ru
         /// </summary>
         public class pkk5Viewer : System.Windows.Forms.PictureBox
         {
@@ -387,6 +385,7 @@ namespace RRTypes
                     this.progressBar1.Value = value;
                 }
             }
+
             private void backgroundWorkerCounter_DoWork(object sender, DoWorkEventArgs e)
             {
                 BackgroundWorker worker = sender as BackgroundWorker;
