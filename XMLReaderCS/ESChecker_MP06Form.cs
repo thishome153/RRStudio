@@ -132,7 +132,7 @@ namespace XMLReaderCS
                 //args.Message = "Schema missied";
                 //EventArgs args = new EventArgs();
                 //eventHandler(this, args);
-                ValidateXMLMessage = "Schema not found";
+                ValidateXMLMessage = "Schema not served";
             }
         }
 

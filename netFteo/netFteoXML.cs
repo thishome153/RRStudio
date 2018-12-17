@@ -466,15 +466,17 @@ namespace netFteo.XML
             {
                 try
                 {
-                    /*
-                    System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
                     System.Xml.Xsl.XsltSettings xsopt = new System.Xml.Xsl.XsltSettings();
+                    /* deprecated class:
+                    System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
                     transform.Load(hrefToXSLTServer);
                     transform.Transform(inputXml, OutName);
                     */
-                    System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
 
-                    cmpTRans.Load(hrefToXSLTServer);
+                    System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
+                    //{ "Выполнение функции \"document()\" запрещено. Чтобы разрешить его, используйте свойство XsltSettings.EnableDocumentFunction. 
+                    xsopt.EnableDocumentFunction = true;
+                    cmpTRans.Load(hrefToXSLTServer,xsopt, new XmlUrlResolver());
                     cmpTRans.Transform(inputXml, OutName);
                     cmpTRans.TemporaryFiles.Delete();
                     xmlr.Close();
