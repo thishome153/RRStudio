@@ -2124,7 +2124,7 @@ namespace RRTypes.CommonParsers
                         MainObj.Definition = MP.Package.FormParcels.NewParcel[i].Definition;
                         MainObj.PrevCadastralNumbers.AddRange(MP.Package.FormParcels.NewParcel[i].PrevCadastralNumbers);
                         MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
-                        MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
+                        MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
                         MainObj.Location.Address = RRTypes.CommonCast.CasterZU.CastAddress(MP.Package.FormParcels.NewParcel[i].Address);
                         if (MP.Package.FormParcels.NewParcel[i].Utilization != null)
                             MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
@@ -2729,7 +2729,7 @@ namespace RRTypes.CommonParsers
                     MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
                     MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
                     MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
-                    MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
+                    MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
                     MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
                     /*
                     //
@@ -3020,7 +3020,7 @@ namespace RRTypes.CommonParsers
                         MainObj.Utilization.Untilization = KPT09.CadastralBlocks[i].Parcels[iP].Utilization.Utilization.ToString();
                     MainObj.AreaGKN = KPT09.CadastralBlocks[i].Parcels[iP].Area.Area;
                     MainObj.State = KPT09.CadastralBlocks[i].Parcels[iP].State.ToString();
-                    MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT09.CadastralBlocks[i].Parcels[iP].Category.ToString());
+                    MainObj.Category = KPT09.CadastralBlocks[i].Parcels[iP].Category.ToString(); //netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT09.CadastralBlocks[i].Parcels[iP].Category.ToString());
                     MainObj.DateCreated = KPT09.CadastralBlocks[i].Parcels[iP].DateCreated.ToString("dd.MM.yyyy");
                     //Землепользование
                     if (KPT09.CadastralBlocks[i].Parcels[iP].ParentCadastralNumbers != null)
@@ -3216,7 +3216,7 @@ namespace RRTypes.CommonParsers
                     MainObj.Utilization.Untilization = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.Utilization.ToString();
                     MainObj.AreaGKN = KPT10.CadastralBlocks[i].Parcels[iP].Area.Area;
                     MainObj.State = KPT10.CadastralBlocks[i].Parcels[iP].State.ToString();
-                    MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString());
+                    MainObj.Category = KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString();//netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString());
                     MainObj.DateCreated = KPT10.CadastralBlocks[i].Parcels[iP].DateCreated.ToString("dd.MM.yyyy");
 
                     //Землепользование
@@ -3437,7 +3437,7 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.Utilization.UtilizationSpecified)
                 MainObj.Utilization.Untilization = kp.Parcel.Utilization.Utilization.ToString();
             MainObj.DateCreated = kp.Parcel.DateCreated.ToString("dd.MM.yyyy");
-            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
+            MainObj.Category = kp.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
             MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kp.Parcel.Location);
             MainObj.Rights = EGRP_v60Utils.ParseEGRRights(xmldoc);
             MainObj.Encumbrances = KPZU_v05Utils.KPZUEncumstoFteoEncums(kp.Parcel.Encumbrances);
@@ -3554,7 +3554,7 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.Utilization.UtilizationSpecified)
                 MainObj.Utilization.Untilization = kp.Parcel.Utilization.Utilization.ToString();
             MainObj.DateCreated = kp.Parcel.DateCreated.ToString("dd.MM.yyyy");
-            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
+            MainObj.Category = kp.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
             MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kp.Parcel.Location);
             MainObj.Rights = KVZU_v06Utils.KVZURightstoFteorights(kp.Parcel.Rights);
             MainObj.Encumbrances = KPZU_v05Utils.KPZUEncumstoFteoEncums(kp.Parcel.Encumbrances);
@@ -3665,7 +3665,7 @@ namespace RRTypes.CommonParsers
                             MainObj.CadastralBlock = block.CadastralNumber;
                             //MainObj.SpecialNote = parcel.SpecialNote;
                             MainObj.Utilization.UtilbyDoc = parcel.Utilization.ByDoc;
-                            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.Category.ToString());
+                            MainObj.Category = parcel.Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.Category.ToString());
                             //MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(parcel.Location);
                             MainObj.Rights = KV04_Utils.KVZURightstoFteorights(parcel.Rights);
                             //MainObj.Encumbrances = KV04_Utils.KVZUEncumstoFteoEncums(parcel. ???.)
@@ -3799,7 +3799,7 @@ namespace RRTypes.CommonParsers
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
             //MainObj.SpecialNote = kv.Parcels.Parcel.SpecialNote;
             MainObj.Utilization.UtilbyDoc = kv.Parcels.Parcel.Utilization.ByDoc;
-            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
+            MainObj.Category = kv.Parcels.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
             MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kv.Parcels.Parcel.Location);
             MainObj.Rights = KVZU_v06Utils.KVZURightstoFteorights(kv.Parcels.Parcel.Rights);
             MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
@@ -3955,7 +3955,7 @@ namespace RRTypes.CommonParsers
             MainObj.Utilization.UtilbyDoc = kv.Parcels.Parcel.Utilization.ByDoc;
             if (kv.Parcels.Parcel.Utilization.UtilizationSpecified)
                 MainObj.Utilization.Untilization = kv.Parcels.Parcel.Utilization.Utilization.ToString();
-            MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
+            MainObj.Category = kv.Parcels.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
 
             MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kv.Parcels.Parcel.Location);
 

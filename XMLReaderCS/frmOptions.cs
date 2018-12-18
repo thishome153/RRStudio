@@ -16,6 +16,7 @@ namespace XMLReaderCS
      public netFteo.XML.XSDFile dutilizations_v01;
      public netFteo.XML.XSDFile dRegionsRF_v01;
      public netFteo.XML.XSDFile dStates_v01;
+     public netFteo.XML.XSDFile dCategories_v01;
      public netFteo.XML.XSDFile dLocationLevel1_v01;
      public string dLocationLevel2_v01;
      public string MP_06_schema;
@@ -43,6 +44,7 @@ namespace XMLReaderCS
             schemas.AddSchema(dRegionsRF_v01.XSDFileName);
             schemas.AddSchema(dStates_v01.XSDFileName);
             schemas.AddSchema(dLocationLevel1_v01.XSDFileName); // already declared ???  !!!
+            schemas.AddSchema(dCategories_v01.XSDFileName); // already declared ???  !!!
             schemas.AddSchema(dLocationLevel2_v01);
             schemas.AddSchema(MP_06_schema);
             schemas.CompileSet();

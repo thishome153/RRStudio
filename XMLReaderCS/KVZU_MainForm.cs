@@ -70,6 +70,7 @@ namespace XMLReaderCS
         string Folder_XSD;
         netFteo.XML.XSDFile dutilizations_v01;
         netFteo.XML.XSDFile dRegionsRF_v01;
+        netFteo.XML.XSDFile dCategories_v01;
         netFteo.XML.XSDFile dStates_v01;
         netFteo.XML.XSDFile dLocationLevel1_v01;//.xsd;
         string dLocationLevel2_v01;
@@ -678,6 +679,7 @@ namespace XMLReaderCS
         {
             dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
             dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
+            dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
             dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
             dLocationLevel1_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dLocationLevel1_v01.xsd");
             dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
@@ -1374,7 +1376,7 @@ namespace XMLReaderCS
                         ParcelName = "Item01";
                     TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
                       MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
-                      MainObj.Category = netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
+                    MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
                       MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
                       MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
                       if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
@@ -2472,7 +2474,7 @@ namespace XMLReaderCS
 
                     ListViewItem LViCat = new ListViewItem();
                     LViCat.Text = "Категория";
-                    LViCat.SubItems.Add(P.Category);
+                    LViCat.SubItems.Add(this.dCategories_v01.Item2Annotation(P.Category));
                     LV.Items.Add(LViCat);
 
                     ListViewItem LViPurpDoc = new ListViewItem();
@@ -4740,6 +4742,7 @@ namespace XMLReaderCS
             frmOptions frmoptions = new frmOptions();
             frmoptions.dutilizations_v01 = this.dutilizations_v01;
             frmoptions.dRegionsRF_v01 = this.dRegionsRF_v01;
+            frmoptions.dCategories_v01 = this.dCategories_v01;
             frmoptions.dStates_v01 = this.dStates_v01;
             frmoptions.dLocationLevel1_v01 = this.dLocationLevel1_v01;
             frmoptions.dLocationLevel2_v01 = this.dLocationLevel2_v01;

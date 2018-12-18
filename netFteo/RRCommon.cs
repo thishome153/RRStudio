@@ -83,6 +83,9 @@ namespace netFteo.Rosreestr
         Значение_отсутствует = 06
     }
 
+    /*
+     * deprecated, replaced .xsd reader of xsd enums file
+     *
     public static class dCategoriesv01
     {
         public static string ItemToName(string Item)
@@ -103,7 +106,7 @@ namespace netFteo.Rosreestr
             }
         }
     }
-   
+   */
 
     /// <summary>
     /// Виды объектов государственного кадастра недвижимости (ГКН) и 
@@ -212,7 +215,6 @@ namespace netFteo.Rosreestr
                 case "Item001004000000": return "Хозяйственное ведение";
                 case "Item001005000000": return "Оперативное управление"; // Дополнительные
                 case "Item001006000000": return "Пожизненное наследуемое владение"; // Дополнительные
-
                 case "Item001007000000": return "Постоянное (бессрочное) пользование";
                 case "Item001008000000": return "Сервитут (право)"; // Дополнительные
                 case "Item001009900000": return "Иные права"; // Дополнительны

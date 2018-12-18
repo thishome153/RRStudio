@@ -87,7 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataChecker.cs" />
     <Compile Include="pkk5Viewer.cs">
       <SubType>Component</SubType>
     </Compile>
