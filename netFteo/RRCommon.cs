@@ -83,30 +83,7 @@ namespace netFteo.Rosreestr
         Значение_отсутствует = 06
     }
 
-    /*
-     * deprecated, replaced .xsd reader of xsd enums file
-     *
-    public static class dCategoriesv01
-    {
-        public static string ItemToName(string Item)
-        {
-            if (!Item.Contains("Item")) Item = "Item" + Item; // допишем Item
-            switch (Item)
-            {
-
-                case "Item003001000000": return "Земли сельскохозяйственного назначения";
-                case "Item003002000000": return "Земли населённых пунктов";
-                case "Item003003000000": return "Земли промышленности, энергетики, транспорта, связи, радиовещания, телевидения, информатики, земли для обеспечения космической деятельности, земли обороны, безопасности и земли иного специального назначения";
-                case "Item003004000000": return "Земли особо охраняемых территорий и объектов";
-                case "Item003005000000": return "Земли лесного фонда";
-                case "Item003006000000": return "Земли водного фонда";
-                case "Item003007000000": return "Земли запаса";
-                case "Item003008000000": return "Категория не установлена";
-                default: return "Значение отсутствует";
-            }
-        }
-    }
-   */
+ 
 
     /// <summary>
     /// Виды объектов государственного кадастра недвижимости (ГКН) и 

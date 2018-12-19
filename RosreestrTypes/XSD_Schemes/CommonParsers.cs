@@ -1884,7 +1884,7 @@ namespace RRTypes.CommonParsers
         #region  Разбор MP 04
 
         //**************************************************************** 
-        // Разбор Межевого Плана V04
+        // Разбор Межевого Плана V04/V03
         //private void ParseSTDMPV04(RRTypes.STD_MPV04.STD_MP MP)
         public netFteo.XML.FileInfo ParseMPV04(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
         {
@@ -1893,41 +1893,14 @@ namespace RRTypes.CommonParsers
             {
                 res.DocType = "Межевой план";
                 res.DocTypeNick = "STD_MP";
-                res.Version = "04";
+                res.Version = xmldoc.DocumentElement.SelectSingleNode("eDocument/@Version").Value; // /STD_MP/eDocument/@Version
+                res.Number = xmldoc.DocumentElement.SelectSingleNode("eDocument/@GUID").Value;
                 RRTypes.STD_MPV04.STD_MP MP = (RRTypes.STD_MPV04.STD_MP)Desearialize<RRTypes.STD_MPV04.STD_MP>(xmldoc);
 
-                
-                
-                    res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
+ 
 
-                
 
-                /*
-
-                ListViewItem LVi = new ListViewItem();
-                if (MP.Title != null)
-                {
-                    richTextBox1.AppendText(MP.Title.Reason);
-                    LVi.Text = MP.Title.Contractor.Date.ToString();
-                    LVi.SubItems.Add(MP.Title.Contractor.FIO.Surname + " " + MP.Title.Contractor.FIO.First +
-                                         " " + MP.Title.Contractor.FIO.Patronymic);
-                    LVi.SubItems.Add(MP.Title.Contractor.N_Certificate);
-                    if (MP.Title.Contractor.Organization != null)
-                        LVi.SubItems.Add(MP.Title.Contractor.Organization);
-                    else LVi.SubItems.Add("-");
-
-                    listView_Contractors.Items.Add(LVi);
-
-                    textBox_Appointment.Text = MP.Title.Contractor.FIO.Surname + " " + MP.Title.Contractor.FIO.First +
-                                         " " + MP.Title.Contractor.FIO.Patronymic + ";  " + MP.Title.Contractor.E_mail; ;
-                    textBox_DocDate.Text = MP.Title.Contractor.Date.ToString();
-                    textBox_OrgName.Text = MP.Title.Contractor.Organization;
-                    textBox_Appointment.Text = MP.Title.Contractor.N_Certificate;
-                }
-                */
-
-                res.Number = MP.eDocument.GUID;
-                res.Date = MP.Title.Contractor.Date.ToString();
+                res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
 
 
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
@@ -2041,7 +2014,7 @@ namespace RRTypes.CommonParsers
                 res.Comments += ("<br>_______________________________________ТИТУЛЬНЫЙ ЛИСТ ___________________________________");
                 res.Comments += ("<br> Межевой план подготовлен в результате выполнения кадастровых работ в связи с:");
                 res.Comments += ("\n");
-                res.Comments += (MP.Title.Reason);
+
 
                 if (MP.Conclusion != null)
                 {
@@ -2052,36 +2025,43 @@ namespace RRTypes.CommonParsers
      
                     res.CommentsType = "Заключение КИ";
                 }
-
-                if (MP.Title.Contractor.Organization != null)
+                if (MP.Title != null)
                 {
-                    res.Cert_Doc_Organization = MP.Title.Contractor.Organization +
-                                      "  " + MP.Title.Contractor.Address;
+                    res.Comments += (MP.Title.Reason);
+                    res.Date = MP.Title.Contractor.Date.ToString();
+                    if (MP.Title.Contractor.Organization != null)
+                    {
+                        res.Cert_Doc_Organization = MP.Title.Contractor.Organization +
+                                          "  " + MP.Title.Contractor.Address;
+                    }
+
+                    res.Appointment = MP.Title.Contractor.N_Certificate + " " +
+                                      MP.Title.Contractor.Telephone;
+
+                 //   / STD_MP / Contractor / Cadastral_Engineer / FIO / Surname
+
+                    res.AppointmentFIO = MP.Title.Contractor.FIO.Surname + " " +
+                                     MP.Title.Contractor.FIO.First + " " +
+                                     MP.Title.Contractor.FIO.Patronymic + "\r" +
+                                     MP.Title.Contractor.E_mail;
+
+
+                    res.Contractors.Add(
+                               new TEngineerOut()
+                               {
+                                   Date = MP.Title.Contractor.Date.ToString().Replace("0:00:00", ""),
+                                   FamilyName = MP.Title.Contractor.FIO.Surname,
+                                   FirstName = MP.Title.Contractor.FIO.First,
+                                   Patronymic = MP.Title.Contractor.FIO.Patronymic,
+                                   NCertificate = MP.Title.Contractor.N_Certificate,
+                                   Email = MP.Title.Contractor.E_mail,
+                                   Organization_Name = MP.Title.Contractor.Organization != null ? MP.Title.Contractor.Organization : "",
+                                   AddressOrganization = MP.Title.Contractor.Address != null ? MP.Title.Contractor.Address : ""
+
+                               });
                 }
 
-                res.Appointment = MP.Title.Contractor.N_Certificate + " " +
-                                  MP.Title.Contractor.Telephone;
-                res.AppointmentFIO = MP.Title.Contractor.FIO.Surname + " " +
-                                 MP.Title.Contractor.FIO.First + " " +
-                                 MP.Title.Contractor.FIO.Patronymic + "\r" +
-                                 MP.Title.Contractor.E_mail;
-
-
-                res.Contractors.Add(
-                           new TEngineerOut()
-                           {
-                               Date = MP.Title.Contractor.Date.ToString().Replace("0:00:00", ""),
-                               FamilyName = MP.Title.Contractor.FIO.Surname,
-                               FirstName = MP.Title.Contractor.FIO.First,
-                               Patronymic = MP.Title.Contractor.FIO.Patronymic,
-                               NCertificate = MP.Title.Contractor.N_Certificate,
-                               Email = MP.Title.Contractor.E_mail,
-                               Organization_Name = MP.Title.Contractor.Organization != null ? MP.Title.Contractor.Organization : "",
-                               AddressOrganization = MP.Title.Contractor.Address != null ? MP.Title.Contractor.Address : ""
-
-                           });
-
-
+                CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             }
             catch (Exception ex)
             {
@@ -3632,11 +3612,14 @@ namespace RRTypes.CommonParsers
             //Прикрутим сюды парсинг через XPATH ЕГРН
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
+            res.DocType = "Кадастровый паспорт земельного участка";
             res.DocTypeNick = "ЕГРН";
+            res.Version = "6.0.1";
             CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             return res;
         }
+
         #endregion
 
         #region разбор КВЗУ04 - Region_Cadastr_Vidimus_KV V04

@@ -222,7 +222,7 @@
       <DependentUpon>STD_Region_Cadastr_KV.xsd</DependentUpon>
     </Compile>
     <Compile Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\V04_STD_KV_Utils.cs" />
-    <Compile Include="XSD_Schemes\CommonUtils.cs" />
+    <Compile Include="XSD_Schemes\CommonParsers.cs" />
     <Compile Include="XSD_Schemes\ZoneToGKN_v03\ZoneToGKN_v03.Generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -1760,12 +1760,14 @@ SCAN:
     {
         public string Delimiter;
         public string DefaultProjection = "NonEarth Units \"m\"";
+        public string DelimiterDefault = "$";
         public string CoordSys; //z.b.: CoordSys NonEarth Units "m" Bounds (1301144.92628516,549175.488422918)  (1319077.30433243,568919.661887878)
         public List<MIFColumn> Columns;
         public MifOptions()
         {
             this.Columns = new List<MIFColumn>();
             CoordSys = DefaultProjection;
+            Delimiter = DelimiterDefault;
         }
 
         public void AddColumn(string name, string declaration)

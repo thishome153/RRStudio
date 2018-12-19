@@ -272,10 +272,11 @@ namespace XMLReaderCS
                                 TreeNode docsNode = inpDataNodes.Nodes.Add("Документы");
                                 foreach (XmlNode doc in MP_Root.SelectSingleNode("InputData/Documents").ChildNodes)
                                 {
-                                    TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
-                                    docNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value + " " +
-                                    doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
-
+                                    TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value); //minoccurs= 1
+                                    if (doc.SelectSingleNode("Name") != null)
+                                         docNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
+                                        if (doc.SelectSingleNode("Date") != null)
+                                        docNode.Nodes.Add(doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
                                 }
                             }
 

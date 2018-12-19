@@ -764,7 +764,7 @@ namespace netFteo.IO
                                 {
                                     FilePoint.Mt = Convert.ToDouble(SplittedStr[5].ToString());
                                 }
-
+                                if (SplittedStr.Count() >6)
                                 FilePoint.Description = SplittedStr[6].ToString();
                                 resPoly.AddPoint(FilePoint);
                                 //Внутренние границы
