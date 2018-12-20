@@ -238,7 +238,7 @@ namespace XMLReaderCS
                             AddCheckPosition(listView1, "GUID", guid, "invalid");
 
                         label_doc_GUID.Text = ze_local;
-                        TreeNode MPNode = treeView1.Nodes.Add(MP_Root.Name);
+                        TreeNode MPNode = treeView1.Nodes.Add(MP_Root.Name + "( "+ MP_Root.SelectSingleNode("GeneralCadastralWorks/@DateCadastral").Value+ ")");
 
                         if (SignaturePresent(ze))
                         {
@@ -274,7 +274,10 @@ namespace XMLReaderCS
                                 {
                                     TreeNode docNode = docsNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value); //minoccurs= 1
                                     if (doc.SelectSingleNode("Name") != null)
-                                         docNode.Nodes.Add(doc.SelectSingleNode("Name").FirstChild.Value);
+                                    {
+                                        docNode.Text = doc.SelectSingleNode("Name").FirstChild.Value;
+                                        docNode.Nodes.Add(doc.SelectSingleNode("Number").FirstChild.Value);
+                                    }
                                         if (doc.SelectSingleNode("Date") != null)
                                         docNode.Nodes.Add(doc.SelectSingleNode("Date").FirstChild.Value);  // /MP/InputData/Documents/Document[1]/Number
                                 }
@@ -357,7 +360,8 @@ namespace XMLReaderCS
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
             TreeNode selnode = ((TreeView)sender).SelectedNode;
-            if ((selnode.Tag != null)
+
+            if ((selnode != null) && (selnode.Tag != null)
                 &&
                 (selnode.Tag.ToString() == "filelink-pdf"))
             {
