@@ -32,7 +32,9 @@ namespace netFteo.Rosreestr
                 { "Item03","Обособленный участок"},
                 { "Item04","Условный участок"},
                 { "Item05","Многоконтурный участок"},
-                { "nefteo::TMyPolygon","Полигон"},
+                { "ItemDXF","Полигоны dxf"},
+                { "ItemMIF","Полигоны mif"},
+                { "Itemnefteo::TMyPolygon","Полигон"},
                 { "Item06","Значение отсутствует"},
             };
             if (Item != null)

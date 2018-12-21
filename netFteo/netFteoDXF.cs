@@ -43,10 +43,20 @@ namespace netFteo.IO
                 return dxfFile.Name;
             }
         }
+        public string Version
+        {
+            get
+            {
+               return dxfFile.DrawingVariables.AcadVer.ToString();
+            }
+        }
+
         public  DXFReader(string FileName)
         {
             dxfFile = netDxf.DxfDocument.Load(FileName);
+
             this.BlocksCount = dxfFile.Blocks.Count;
+
             this.AddedObjects = dxfFile.AddedObjects.Count;
             BodyLoad(FileName);
         }
@@ -95,7 +105,9 @@ namespace netFteo.IO
                                     if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["Кад_номер"].Value != null))
                                         Polygon.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
                                     else
-                                        Polygon.Definition = block.CodeName + "." + block.Handle; ;
+                                        Polygon.Definition = block.CodeName + "." + block.Handle;
+                                    if (Polygon.Definition =="")
+                                        Polygon.Definition = block.CodeName + "." + block.Handle;
                                     res.AddPolygon(Polygon);
                                     goto NEXTBlock; // all entites here is ring + inner rings
                                 }

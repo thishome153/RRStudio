@@ -422,7 +422,11 @@ namespace netFteo.XML
 
             // there problem reading xlt. Need custom reader with settings
             XmlReaderSettings xmlopt = new XmlReaderSettings();
-            xmlopt.DtdProcessing = DtdProcessing.Prohibit; // DTD disabled on rosreestr, select Prohibit
+            xmlopt.DtdProcessing = DtdProcessing.Parse; // DTD disabled on rosreestr, select Prohibit
+                                                           //{ "По соображениям безопасности использование DTD в данном XML-документе запрещено. 
+                                                           //Чтобы включить обработку DTD, установите свойство DtdProcessing в разделе XmlReaderSettings в значение Parse и 
+                                                           //передайте методу XmlReader.Create."}
+
 
             XmlReader xmlr = XmlReader.Create(new System.IO.StreamReader(inputXml), xmlopt);
             doc.Load(xmlr);
@@ -476,6 +480,8 @@ namespace netFteo.XML
                     System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
                     //{ "Выполнение функции \"document()\" запрещено. Чтобы разрешить его, используйте свойство XsltSettings.EnableDocumentFunction. 
                     xsopt.EnableDocumentFunction = true;
+      
+
                     cmpTRans.Load(hrefToXSLTServer,xsopt, new XmlUrlResolver());
                     cmpTRans.Transform(inputXml, OutName);
                     cmpTRans.TemporaryFiles.Delete();

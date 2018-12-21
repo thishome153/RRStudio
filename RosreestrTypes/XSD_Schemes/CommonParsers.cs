@@ -4377,15 +4377,9 @@ namespace RRTypes.CommonParsers
             if (polyfromMIF != null)
             {
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
-                Bl.CN = System.IO.Path.GetFileNameWithoutExtension(mifreader.FileName);
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel("Полигоны DXF", "Item05"));
-                if (polyfromMIF.Count == 1)
-                {
-                    MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
-                    MainObj.EntitySpatial = polyfromMIF[0];
-                }
-                else
-                    MainObj.Contours.AddPolygons(polyfromMIF);
+                Bl.CN = mifreader.Version;  //System.IO.Path.GetFileNameWithoutExtension(mifreader.FileName);
+                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(mifreader.FileName, "DXF"));
+                MainObj.Contours.AddPolygons(polyfromMIF);
                 res.MyBlocks.Blocks.Clear();
                 res.MyBlocks.Blocks.Add(Bl);
             }
@@ -4394,8 +4388,9 @@ namespace RRTypes.CommonParsers
             res.CommentsType = "DXF";
             res.Comments = mifreader.GetType().ToString()+  " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString()+ " \rFileBody:\r"+mifreader.Body;
             res.Encoding = mifreader.BodyEncoding;
-            res.Number = "dxf,  " + mifreader.BodyEncoding;
-
+            res.Number = "Encoding  " + mifreader.BodyEncoding;
+            res.DocType = "dxf";
+            res.Version = mifreader.Version;
 
             return res;
         }

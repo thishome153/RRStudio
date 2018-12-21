@@ -1400,27 +1400,31 @@ SCAN:
     {
 
         public List<TMyOutLayer> Childs;
+
         public TMyPolygon()
         {
             this.Childs = new List<TMyOutLayer>();
             this.Layer_id = Gen_id.newId; //RND.Next(1, 10000);
+            this.AreaValue = -1; // default, 'not specified'
         }
 
-        public TMyPolygon(int id)
+        public TMyPolygon(int id):this()
         {
-            this.Childs = new List<TMyOutLayer>();
+          //  this.Childs = new List<TMyOutLayer>();
             this.Layer_id = id;
         }
-        public TMyPolygon(string Def)
+
+        public TMyPolygon(string Def):this()
         {
-            this.Childs = new List<TMyOutLayer>();
-            this.Layer_id = Gen_id.newId;
+            //this.Childs = new List<TMyOutLayer>();
+            //this.Layer_id = Gen_id.newId;
             this.Definition = Def;
         }
-        public TMyPolygon(int id, string Def)
+
+        public TMyPolygon(int id, string Def):this(id)
         {
-            this.Childs = new List<TMyOutLayer>();
-            this.Layer_id = id;
+          //  this.Childs = new List<TMyOutLayer>();
+          //  this.Layer_id = id;
             this.Definition = Def;
         }
 
@@ -2300,6 +2304,7 @@ SCAN:
     }
 
     public delegate Object ESDelegate();
+
     public class TMyParcel
     {
         private string FParentCN;
@@ -2399,6 +2404,7 @@ SCAN:
             this.Rights = new Rosreestr.TMyRights();
             //this.SpecialNote = "";
             this.Fid = Gen_id.newId;
+            this.AreaGKN = "-1";
         }
         public TMyParcel(string cn) : this() // Вызов Конструктора по умолчанию
         {
@@ -2418,6 +2424,8 @@ SCAN:
                 case "Обособленный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Многоконтурный участок": { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                case "Полигоны dxf":  { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                case "Полигоны mif": { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Единое землепользование":
                     {
                         //this.Contours = new TPolygonCollection(); // на свякий случай, как в Осетии: ЕЗП с контурами 

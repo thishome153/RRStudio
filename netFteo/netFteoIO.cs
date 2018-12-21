@@ -232,7 +232,7 @@ namespace netFteo.IO
         private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
         {
             string line;
-            TMyPolygon res = new TMyPolygon("mif polygon");
+            TMyPolygon res = new TMyPolygon("REGION "+ringCount.ToString());
             try
             {
                 while (readFile.Peek() != -1)
@@ -394,7 +394,7 @@ namespace netFteo.IO
 
                             if (line.ToUpper().Substring(0, 5).Equals("POINT")) //line present mapinfo point
                             {
-                                MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "mif-pt"));
+                                MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "POINT"));
                             }
                             if (line.ToUpper().Substring(0, 5).Equals("PLINE")) //line present mapinfo polyline
                             {

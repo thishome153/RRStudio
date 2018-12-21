@@ -539,18 +539,21 @@ namespace XMLReaderCS
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "Полигоны MIF";
                 
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
+                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "MIF"));
+                /*
                 if (polyfromMIF.Count == 1)
                 {
                     MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01"); 
                     MainObj.EntitySpatial = polyfromMIF[0];
                 }
                 else
+                    */
                     MainObj.Contours.AddPolygons(polyfromMIF);
 
                 this.DocInfo.MyBlocks.Blocks.Clear();
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
                 this.DocInfo.DocTypeNick = "Mapinfo mif";
+                this.DocInfo.DocType = "Mapinfo mif";
                 this.DocInfo.CommentsType = "MIF";
                 this.DocInfo.Comments = mifreader.Body;
                 this.DocInfo.Encoding = mifreader.BodyEncoding;
@@ -563,13 +566,13 @@ namespace XMLReaderCS
 
                 try
                 {
-                    netFteo.IO.DXFReader mifreader = new netFteo.IO.DXFReader(FileName);
-                    toolStripProgressBar1.Maximum = mifreader.PolygonsCount();  //TODO: number of items ???
+                    netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
+                    toolStripProgressBar1.Maximum = dxfreader.PolygonsCount();  //TODO: number of items ???
                     toolStripProgressBar1.Minimum = 0;
                     toolStripProgressBar1.Value = 0;
-                    mifreader.OnParsing += DXFStateUpdater;
+                    dxfreader.OnParsing += DXFStateUpdater;
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
-                    this.DocInfo = parser.ParseDXF(this.DocInfo, mifreader);
+                    this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
                 }
 
                 catch (ArgumentException err)
@@ -2465,22 +2468,30 @@ namespace XMLReaderCS
                     }
 
 
+                    if (!P.AreaGKN.Contains("-1"))
+                    {
+                        ListViewItem LVip = new ListViewItem();
+                        LVip.Text = "Площадь ГКН";
+                        LVip.SubItems.Add(P.AreaGKN);
+                        LVip.SubItems.Add("кв.м.");
+                        LV.Items.Add(LVip);
+                    }
 
-                    ListViewItem LVip = new ListViewItem();
-                    LVip.Text = "Площадь ГКН";
-                    LVip.SubItems.Add(P.AreaGKN);
-                    LVip.SubItems.Add("кв.м.");
-                    LV.Items.Add(LVip);
+                    if (P.Category != null)
+                    {
+                        ListViewItem LViCat = new ListViewItem();
+                        LViCat.Text = "Категория";
+                        LViCat.SubItems.Add(this.dCategories_v01.Item2Annotation(P.Category));
+                        LV.Items.Add(LViCat);
+                    }
 
-                    ListViewItem LViCat = new ListViewItem();
-                    LViCat.Text = "Категория";
-                    LViCat.SubItems.Add(this.dCategories_v01.Item2Annotation(P.Category));
-                    LV.Items.Add(LViCat);
-
-                    ListViewItem LViPurpDoc = new ListViewItem();
-                    LViPurpDoc.Text = "Разр. использование (док)";
-                    LViPurpDoc.SubItems.Add(P.Utilization.UtilbyDoc);
-                    LV.Items.Add(LViPurpDoc);
+                    if (P.Utilization.UtilbyDoc != null)
+                    {
+                        ListViewItem LViPurpDoc = new ListViewItem();
+                        LViPurpDoc.Text = "Разр. использование (док)";
+                        LViPurpDoc.SubItems.Add(P.Utilization.UtilbyDoc);
+                        LV.Items.Add(LViPurpDoc);
+                    }
 
                     if (P.Utilization.UtilizationSpecified)
                     {
@@ -2726,17 +2737,19 @@ namespace XMLReaderCS
                     TMyPolygon Poly = (TMyPolygon)Obj;
                     LV.Items.Clear();
                     ListViewItem LVip = new ListViewItem();
-                    LVip.Text = "Площадь [1.." + Poly.PointCount.ToString() + "]";
+                    LVip.Text = "Площадь граф. [1.." + Poly.PointCount.ToString() + "]";
                     LVip.SubItems.Add(Poly.AreaSpatialFmt("#,0.00"));
                     LVip.SubItems.Add("кв.м.");
                     LV.Items.Add(LVip);
 
-                    ListViewItem LVipG = new ListViewItem();
-                    LVipG.Text = "Площадь ГКН";
-                    LVipG.SubItems.Add(Poly.AreaValue.ToString());
-                    LVipG.SubItems.Add("кв.м.");
-                    LV.Items.Add(LVipG);
-
+                    if (Poly.AreaValue != -1)
+                    {
+                        ListViewItem LVipG = new ListViewItem();
+                        LVipG.Text = "Площадь";
+                        LVipG.SubItems.Add(Poly.AreaValue.ToString());
+                        LVipG.SubItems.Add("кв.м.");
+                        LV.Items.Add(LVipG);
+                    }
                     ListViewItem LVipP = new ListViewItem();
                     LVipP.Text = "Периметр";
                     LVipP.SubItems.Add(Poly.PerymethrFmt("#,0.00"));
