@@ -1332,17 +1332,44 @@ SCAN:
             }
         }
 
+   
+
+        /// <summary>
+        /// Closed figure - point First and Last are ident (in ordinates, not by name/Number)
+        /// </summary>
+        public bool Closed
+        {
+            get
+            {
+                return ((this.First().x == this.Last().x) &&
+                 (this.First().y == this.Last().y));
+            }
+        }
+
+        /// <summary>
+        /// Close figure - append last point, if not present
+        /// </summary>
+        public void Close()
+        {
+            if (! Closed)
+            {
+                this.Add(this.First());
+            }
+        }
+
         public int Reorder_Points(int StartIndex)
         {
             foreach (Point pt in this)
             {
                 pt.NumGeopointA = StartIndex++.ToString();
             }
-            if ((this.First().x ==  this.Last().x) &&
-                    (this.First().y == this.Last().y))
+
+            if (this.Closed)
                 this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
             return StartIndex;
         }
+
+
 
     }
     #endregion

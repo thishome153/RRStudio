@@ -142,7 +142,6 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.fteoImage1 = new netFteo.Drawing.FteoImage();
             this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.cXmlTreeView2 = new XMLReaderCS.CXmlTreeView();
@@ -174,6 +173,8 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.fteoImage1 = new netFteo.Drawing.FteoImage();
+            this.замкнутьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -188,13 +189,13 @@
             this.contextMenuStrip_SaveAs.SuspendLayout();
             this.contextMenuStrip_OIPD.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenu_pkk5Tree.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage1)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -1019,9 +1020,10 @@
             this.перенумероватьToolStripMenuItem,
             this.MoveUpMenuItem,
             this.фиксироватьToolStripMenuItem,
-            this.изменитьToolStripMenuItem});
+            this.изменитьToolStripMenuItem,
+            this.замкнутьToolStripMenuItem});
             this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 180);
+            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 224);
             this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
             // 
             // ChangeXYToolStripMenuItem
@@ -1153,16 +1155,6 @@
             this.tabPage4.Text = "ПКК-Онлайн";
             this.tabPage4.UseVisualStyleBackColor = true;
             this.tabPage4.Enter += new System.EventHandler(this.tabPage4_Enter);
-            // 
-            // fteoImage1
-            // 
-            this.fteoImage1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.fteoImage1.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage1.Image")));
-            this.fteoImage1.Location = new System.Drawing.Point(814, 6);
-            this.fteoImage1.Name = "fteoImage1";
-            this.fteoImage1.Size = new System.Drawing.Size(135, 134);
-            this.fteoImage1.TabIndex = 5;
-            this.fteoImage1.TabStop = false;
             // 
             // pkk5Viewer1
             // 
@@ -1491,6 +1483,23 @@
             this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
             this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
             // 
+            // fteoImage1
+            // 
+            this.fteoImage1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.fteoImage1.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage1.Image")));
+            this.fteoImage1.Location = new System.Drawing.Point(814, 6);
+            this.fteoImage1.Name = "fteoImage1";
+            this.fteoImage1.Size = new System.Drawing.Size(135, 134);
+            this.fteoImage1.TabIndex = 5;
+            this.fteoImage1.TabStop = false;
+            // 
+            // замкнутьToolStripMenuItem
+            // 
+            this.замкнутьToolStripMenuItem.Name = "замкнутьToolStripMenuItem";
+            this.замкнутьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.замкнутьToolStripMenuItem.Text = "Замкнуть";
+            this.замкнутьToolStripMenuItem.Click += new System.EventHandler(this.замкнутьToolStripMenuItem_Click);
+            // 
             // KVZU_Form
             // 
             this.AllowDrop = true;
@@ -1535,7 +1544,6 @@
             this.contextMenuStrip_SaveAs.ResumeLayout(false);
             this.contextMenuStrip_OIPD.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -1545,6 +1553,7 @@
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1682,6 +1691,7 @@
         private System.Windows.Forms.ToolStripMenuItem MoveUpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem фиксироватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem замкнутьToolStripMenuItem;
     }
 }
 

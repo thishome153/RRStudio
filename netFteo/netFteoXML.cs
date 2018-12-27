@@ -395,6 +395,9 @@ namespace netFteo.XML
 
         public string XSL_Vidimus06_pub = "https://portal.rosreestr.ru/xsl/GKN/Vidimus/06/common.xsl";
         public string XSL_Vidimus06_lan = ApiServer + "/GKN/Vidimus/06/common.xsl";
+        
+        public string XSL_KVZU07_pub = "https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Gkn/ZU/07/Common.xsl";
+        public string XSL_KVZU07_lan = ApiServer + "/EGRP/Reestr_Extract_Gkn/ZU/07/Common.xsl";
 
         public string XSL_KPT09_pub = "https://portal.rosreestr.ru/xsl/GKN/KPT/09/common.xsl";
         public string XSL_KPT09_lan = ApiServer + "/GKN/KPT/09/common.xsl";
@@ -413,33 +416,47 @@ namespace netFteo.XML
         public string XSL_KPOKS0401_pub = "https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/ROOM/07/Common.xsl";
         public string XSL_KPOKS0401_lan = ApiServer + "/EGRP/Reestr_Extract_Big/ROOM/07/Common.xsl";
 
-        public string FakeXSLUri(string sourceUri, string sourceElementName)
+        public string FakeXSLUri(XmlDocument xmldoc)
         {
-            string Fakeres = sourceUri;
+            string Fakeres = "";
+            XmlNode styleNode = xmldoc.SelectSingleNode("//processing-instruction(\"xml-stylesheet\")");
+            if (styleNode is XmlProcessingInstruction)
+            {
+                XmlProcessingInstruction instruction = (XmlProcessingInstruction)styleNode;
+                string tst = instruction.Value;
+                int i = tst.IndexOf("href=\"") + 6;
+                string sourceUri = tst.Substring(i, tst.IndexOf('\"', i) - i);
 
-            // На время перестройки будет 
-            if (sourceUri == XSL_Vidimus06_pub)
-                Fakeres = XSL_Vidimus06_lan;//заменить на строку
+                // TODO: Dictionary or xml config
+                if (sourceUri == XSL_Vidimus06_pub)
+                    Fakeres = XSL_Vidimus06_lan;//заменить на строку
 
-            if (sourceUri == XSL_KPT09_pub)
-                Fakeres = XSL_KPT09_lan;//заменить на строку
+                if (sourceUri == XSL_KVZU07_pub)
+                    Fakeres = XSL_KVZU07_lan;
 
-            if (sourceUri == XSL_KPT10_b_pub)
-                Fakeres = XSL_KPT10_b_lan;//заменить на строку
+                if (sourceUri == XSL_Vidimus06_pub)
+                    Fakeres = XSL_Vidimus06_lan;//заменить на строку
 
-            if (sourceUri == XSL_KVOKS02_pub)
-                Fakeres = XSL_KVOKS02_lan;//заменить на строку
+                if (sourceUri == XSL_KPT09_pub)
+                    Fakeres = XSL_KPT09_lan;//заменить на строку
 
-            if (sourceUri == XSL_KPOKS0401_pub)
-                Fakeres = XSL_KPOKS0401_lan;//заменить на строку
+                if (sourceUri == XSL_KPT10_b_pub)
+                    Fakeres = XSL_KPT10_b_lan;//заменить на строку
 
-            if (sourceElementName == "TP") // если получен ТехническийПлан, применим наш стиль
+                if (sourceUri == XSL_KVOKS02_pub)
+                    Fakeres = XSL_KVOKS02_lan;//заменить на строку
+
+                if (sourceUri == XSL_KPOKS0401_pub)
+                    Fakeres = XSL_KPOKS0401_lan;//заменить на строку
+            }
+            // without xslt uri, specified in document:
+            if (xmldoc.DocumentElement.Name == "TP") // если получен ТехническийПлан, применим наш стиль
                 Fakeres = XSL_V03_TP;
 
-            if (sourceElementName == "STD_MP") // если получен МежевойПлан, применим наш стиль V04 ????
+            if (xmldoc.DocumentElement.Name == "STD_MP") // если получен МежевойПлан, применим наш стиль V04 ????
                 Fakeres = XSL_V04_MP;
 
-            if (sourceElementName == "MP") // если получен МежевойПлан, применим наш стиль
+            if (xmldoc.DocumentElement.Name == "MP") // если получен МежевойПлан, применим наш стиль
                 Fakeres = XSL_V06_MP;
             return Fakeres;
         }
@@ -463,12 +480,17 @@ namespace netFteo.XML
             doc.Load(xmlr);
 
             XmlNode styleNode = doc.SelectSingleNode("//processing-instruction(\"xml-stylesheet\")");
+            /*
             if (styleNode is XmlProcessingInstruction)
             {
                 XmlProcessingInstruction instruction = (XmlProcessingInstruction)styleNode;
                 string tst = instruction.Value;
                 int i = tst.IndexOf("href=\"") + 6;
                 hrefToXSLTServer = FakeXSLUri(tst.Substring(i, tst.IndexOf('\"', i) - i), doc.DocumentElement.Name);
+
+            */
+
+                hrefToXSLTServer = FakeXSLUri(doc);
                 string OutName = inputXml + "~.html";
                 XmlWriter results = XmlWriter.Create(OutName);
 
@@ -482,6 +504,7 @@ namespace netFteo.XML
                         // используйте свойство XsltSettings.EnableDocumentFunction. 
                         xsopt.EnableDocumentFunction = true;
                         xsopt.EnableScript = true;
+
                         /* deprecated class:
                         System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
                         transform.Load(hrefToXSLTServer);
@@ -498,6 +521,7 @@ namespace netFteo.XML
 
                         return OutName;
                     }
+
                     catch (Exception e)
                     {
                         string s = e.Message;
@@ -507,8 +531,6 @@ namespace netFteo.XML
 
                 }
                 else return "";
-            }
-            else return "";
         }
     }
 

@@ -5311,6 +5311,16 @@ namespace XMLReaderCS
             frmCertificates frmcertificates = new frmCertificates();
             frmcertificates.ShowDialog();
         }
+
+        private void замкнутьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Pl != null)
+            {
+                Pl.Close();
+                PointListToListView(listView1, Pl);
+            }
+        }
     }
 }
 
