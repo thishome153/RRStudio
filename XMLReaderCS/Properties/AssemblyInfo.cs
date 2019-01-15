@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fixosoft , home153@mail.ru")]
 [assembly: AssemblyProduct("XMLReader .NET")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-18")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-19")]
 [assembly: AssemblyTrademark("Fixosoft")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.1.195")]
-[assembly: AssemblyFileVersion("3.0.1.195")]
+[assembly: AssemblyVersion("3.0.1.196")]
+[assembly: AssemblyFileVersion("3.0.1.196")]

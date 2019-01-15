@@ -390,14 +390,18 @@ namespace netFteo.XML
         //public static string ApiServer = "http://api.geo-complex.com/xsl";
         //public static string ApiServer = "http://10.66.77.47/xsl";
         public static string ApiServer = "http://www.geo-complex.com/xsl";
+        public static string RRServerURL = "https://portal.rosreestr.ru/xsl";
         //TODO: 
         // need replace  any https://portal.rosreestr.ru/xsl to ApiServer
 
         public string XSL_Vidimus06_pub = "https://portal.rosreestr.ru/xsl/GKN/Vidimus/06/common.xsl";
         public string XSL_Vidimus06_lan = ApiServer + "/GKN/Vidimus/06/common.xsl";
-        
+
         public string XSL_KVZU07_pub = "https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Gkn/ZU/07/Common.xsl";
         public string XSL_KVZU07_lan = ApiServer + "/EGRP/Reestr_Extract_Gkn/ZU/07/Common.xsl";
+
+        public string XSL_BigZU07_pub = "https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/ZU/07/Common.xsl";
+        public string XSL_BigZU07_lan = ApiServer + "/EGRP/Reestr_Extract_Big/ZU/07/Common.xsl";
 
         public string XSL_KPT09_pub = "https://portal.rosreestr.ru/xsl/GKN/KPT/09/common.xsl";
         public string XSL_KPT09_lan = ApiServer + "/GKN/KPT/09/common.xsl";
@@ -427,6 +431,9 @@ namespace netFteo.XML
                 int i = tst.IndexOf("href=\"") + 6;
                 string sourceUri = tst.Substring(i, tst.IndexOf('\"', i) - i);
 
+                Fakeres = sourceUri.Replace(RRServerURL, ApiServer);
+
+                /*
                 // TODO: Dictionary or xml config
                 if (sourceUri == XSL_Vidimus06_pub)
                     Fakeres = XSL_Vidimus06_lan;//заменить на строку
@@ -448,16 +455,21 @@ namespace netFteo.XML
 
                 if (sourceUri == XSL_KPOKS0401_pub)
                     Fakeres = XSL_KPOKS0401_lan;//заменить на строку
+                */
+
             }
-            // without xslt uri, specified in document:
-            if (xmldoc.DocumentElement.Name == "TP") // если получен ТехническийПлан, применим наш стиль
-                Fakeres = XSL_V03_TP;
+            else
+            {
+                // without xslt uri, specified in document:
+                if (xmldoc.DocumentElement.Name == "TP") // если получен ТехническийПлан, применим наш стиль
+                    Fakeres = XSL_V03_TP;
 
-            if (xmldoc.DocumentElement.Name == "STD_MP") // если получен МежевойПлан, применим наш стиль V04 ????
-                Fakeres = XSL_V04_MP;
+                if (xmldoc.DocumentElement.Name == "STD_MP") // если получен МежевойПлан, применим наш стиль V04 ????
+                    Fakeres = XSL_V04_MP;
 
-            if (xmldoc.DocumentElement.Name == "MP") // если получен МежевойПлан, применим наш стиль
-                Fakeres = XSL_V06_MP;
+                if (xmldoc.DocumentElement.Name == "MP") // если получен МежевойПлан, применим наш стиль
+                    Fakeres = XSL_V06_MP;
+            }
             return Fakeres;
         }
 
@@ -471,269 +483,269 @@ namespace netFteo.XML
             // there problem reading xlt. Need custom reader with settings
             XmlReaderSettings xmlopt = new XmlReaderSettings();
             xmlopt.DtdProcessing = DtdProcessing.Parse; // DTD disabled on rosreestr, select Prohibit
-                                                         //{ "По соображениям безопасности использование DTD в данном XML-документе запрещено. 
-                                                         //Чтобы включить обработку DTD, установите свойство DtdProcessing в разделе XmlReaderSettings в значение Parse и 
-                                                         //передайте методу XmlReader.Create."}
-
+                                                        //{ "По соображениям безопасности использование DTD в данном XML-документе запрещено. 
+                                                        //Чтобы включить обработку DTD, установите свойство DtdProcessing в разделе XmlReaderSettings в значение Parse и 
+                                                        //передайте методу XmlReader.Create."}
 
             XmlReader xmlr = XmlReader.Create(new System.IO.StreamReader(inputXml), xmlopt);
             doc.Load(xmlr);
 
-            XmlNode styleNode = doc.SelectSingleNode("//processing-instruction(\"xml-stylesheet\")");
-            /*
-            if (styleNode is XmlProcessingInstruction)
+            //  XmlNode styleNode = doc.SelectSingleNode("//processing-instruction(\"xml-stylesheet\")");
+
+            hrefToXSLTServer = FakeXSLUri(doc);
+            string OutName = inputXml + "~.html";
+
+
+            if (hrefToXSLTServer != null)
             {
-                XmlProcessingInstruction instruction = (XmlProcessingInstruction)styleNode;
-                string tst = instruction.Value;
-                int i = tst.IndexOf("href=\"") + 6;
-                hrefToXSLTServer = FakeXSLUri(tst.Substring(i, tst.IndexOf('\"', i) - i), doc.DocumentElement.Name);
-
-            */
-
-                hrefToXSLTServer = FakeXSLUri(doc);
-                string OutName = inputXml + "~.html";
-                XmlWriter results = XmlWriter.Create(OutName);
-
-
-                if (hrefToXSLTServer != null)
+                try
                 {
-                    try
-                    {
-                        System.Xml.Xsl.XsltSettings xsopt = new System.Xml.Xsl.XsltSettings();
-                        // "Выполнение функции \"document()\" запрещено. Чтобы разрешить его, 
-                        // используйте свойство XsltSettings.EnableDocumentFunction. 
-                        xsopt.EnableDocumentFunction = true;
-                        xsopt.EnableScript = true;
+                    System.Xml.Xsl.XsltSettings xsopt = new System.Xml.Xsl.XsltSettings();
+                    // "Выполнение функции \"document()\" запрещено. Чтобы разрешить его, 
+                    // используйте свойство XsltSettings.EnableDocumentFunction. 
+                    xsopt.EnableDocumentFunction = true;
+                    xsopt.EnableScript = true;
 
-                        /* deprecated class:
-                        System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
-                        transform.Load(hrefToXSLTServer);
-                        transform.Transform(inputXml, OutName);
-                        */
+                    /* deprecated class:
+                    System.Xml.Xsl.XslTransform transform = new System.Xml.Xsl.XslTransform();
+                    transform.Load(hrefToXSLTServer);
+                    transform.Transform(inputXml, OutName);
+                    */
 
-                        System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
+                    XmlReaderSettings rdOpts = new XmlReaderSettings();
+                    rdOpts.DtdProcessing = DtdProcessing.Parse;
+                    rdOpts.IgnoreComments = true;
+                    rdOpts.IgnoreWhitespace = true;
+                    rdOpts.IgnoreProcessingInstructions = true;
 
-                        cmpTRans.Load(hrefToXSLTServer, xsopt, new XmlUrlResolver());
+                    XmlReader StyleSheetReader = XmlReader.Create(new System.IO.StreamReader(hrefToXSLTServer), rdOpts);
+                    System.Xml.Xsl.XslCompiledTransform cmpTRans = new System.Xml.Xsl.XslCompiledTransform();
+                    
 
-                        cmpTRans.Transform(xmlr, results);
-                        cmpTRans.TemporaryFiles.Delete();
-                        xmlr.Close();
+                    cmpTRans.Load(XmlReader.Create(new System.IO.StreamReader(hrefToXSLTServer))); // (hrefToXSLTServer, xsopt, new XmlUrlResolver());
+                    //TODO - empty out file
+                    //XmlWriter results = XmlWriter.Create(OutName);
+                    //cmpTRans.Transform(xmlr, results);
 
-                        return OutName;
-                    }
+                    cmpTRans.Transform(inputXml, OutName);
+                    cmpTRans.TemporaryFiles.Delete();
+                    xmlr.Close();
 
-                    catch (Exception e)
-                    {
-                        string s = e.Message;
-                        return "";
-                    }
-
-
+                    return OutName;
                 }
-                else return "";
+
+                catch (Exception e)
+                {
+                    string s = e.Message;
+                    return "";
+                }
+
+
+            }
+            else return "";
         }
     }
 
 
+    /// <summary>
+    /// Обертка для работы с XML
+    /// </summary>
+    public static class XMLWrapper
+    {
         /// <summary>
-        /// Обертка для работы с XML
+        /// Translate xpath to namespaced xpath otherwise append xpath to root
         /// </summary>
-        public static class XMLWrapper
+        /// <remarks> xpath without root of document, examle "eDocument" 
+        /// </remarks>
+        /// <param name="xmldoc">XmlDocument for path translating</param>
+        /// <param name="Xpath">xpath without root of document</param>
+        /// <returns></returns>
+        public static string NS_Xpath(System.Xml.XmlDocument xmldoc, string Xpath)
         {
-            /// <summary>
-            /// Translate xpath to namespaced xpath otherwise append xpath to root
-            /// </summary>
-            /// <remarks> xpath without root of document, examle "eDocument" 
-            /// </remarks>
-            /// <param name="xmldoc">XmlDocument for path translating</param>
-            /// <param name="Xpath">xpath without root of document</param>
-            /// <returns></returns>
-            public static string NS_Xpath(System.Xml.XmlDocument xmldoc, string Xpath)
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
+
+            string testXpath;
+            //nsmgr.HasNamespace
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+                testXpath = "/parseNS:" + xmldoc.DocumentElement.Name + Xpath.Replace("/", "/parseNS:");
+            else
+                testXpath = "/" + xmldoc.DocumentElement.Name + Xpath;
+            return testXpath;
+        }
+
+        /// <summary>
+        /// Create XPath of element
+        /// TODO: namespaced element ????
+        /// </summary>
+        /// <param name="element">XmlElement element  </param>
+        /// <returns></returns>
+        public static string GetXPath_UsingPreviousSiblings(this XmlElement element)
+        {
+            string path = "/" + element.Name;
+            if (element.NamespaceURI != "") return "NamespaceURI is not served";
+            XmlElement parentElement = element.ParentNode as XmlElement;
+            if (parentElement != null)
             {
-                System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+                // Gets the position within the parent element, based on previous siblings of the same name.
+                // However, this position is irrelevant if the element is unique under its parent:
+                System.Xml.XPath.XPathNavigator navigator = parentElement.CreateNavigator();
+                int count = Convert.ToInt32(navigator.Evaluate("count(" + element.Name + ")"));
+                if (count > 1) // There's more than 1 element with the same name
+                {
+                    int position = 1;
+                    XmlElement previousSibling = element.PreviousSibling as XmlElement;
+                    while (previousSibling != null)
+                    {
+                        if (previousSibling.Name == element.Name)
+                            position++;
+
+                        previousSibling = previousSibling.PreviousSibling as XmlElement;
+                    }
+
+                    path = path + "[" + position + "]";
+                }
+
+                // Climbing up to the parent elements:
+                path = parentElement.GetXPath_UsingPreviousSiblings() + path;
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// Select node by Xpath
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="Xpath"></param>
+        /// <returns></returns>
+        public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
+        {
+            Xpath = "/" + Xpath;
+            XmlNode desiredNode = null;
+            if (xmldoc.DocumentElement.NamespaceURI != "")
+            {
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
                 nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-
-                string testXpath;
-                //nsmgr.HasNamespace
-                if (xmldoc.DocumentElement.NamespaceURI != "")
-                    testXpath = "/parseNS:" + xmldoc.DocumentElement.Name + Xpath.Replace("/", "/parseNS:");
-                else
-                    testXpath = "/" + xmldoc.DocumentElement.Name + Xpath;
-                return testXpath;
+                return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
             }
+            else
+                desiredNode = xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath));
+            return desiredNode;
+        }
 
-            /// <summary>
-            /// Create XPath of element
-            /// TODO: namespaced element ????
-            /// </summary>
-            /// <param name="element">XmlElement element  </param>
-            /// <returns></returns>
-            public static string GetXPath_UsingPreviousSiblings(this XmlElement element)
+
+        /// <summary>
+        /// Parse any Attribute in document
+        /// </summary>
+        /// <param name="xmldoc">Документ</param>
+        /// <param name="AttributeName">Имя атрибута</param>
+        /// <param name="Xpath">xpath without root element (detect here)</param>
+        /// <returns></returns>
+        public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
+        {
+
+            if (Xpath.Equals(""))
             {
-                string path = "/" + element.Name;
-                if (element.NamespaceURI != "") return "NamespaceURI is not served";
-                XmlElement parentElement = element.ParentNode as XmlElement;
-                if (parentElement != null)
-                {
-                    // Gets the position within the parent element, based on previous siblings of the same name.
-                    // However, this position is irrelevant if the element is unique under its parent:
-                    System.Xml.XPath.XPathNavigator navigator = parentElement.CreateNavigator();
-                    int count = Convert.ToInt32(navigator.Evaluate("count(" + element.Name + ")"));
-                    if (count > 1) // There's more than 1 element with the same name
-                    {
-                        int position = 1;
-                        XmlElement previousSibling = element.PreviousSibling as XmlElement;
-                        while (previousSibling != null)
-                        {
-                            if (previousSibling.Name == element.Name)
-                                position++;
-
-                            previousSibling = previousSibling.PreviousSibling as XmlElement;
-                        }
-
-                        path = path + "[" + position + "]";
-                    }
-
-                    // Climbing up to the parent elements:
-                    path = parentElement.GetXPath_UsingPreviousSiblings() + path;
-                }
-
-                return path;
+                return xmldoc.DocumentElement.Attributes.GetNamedItem(AttributeName).Value;
             }
-
-            /// <summary>
-            /// Select node by Xpath
-            /// </summary>
-            /// <param name="xmldoc"></param>
-            /// <param name="Xpath"></param>
-            /// <returns></returns>
-            public static XmlNode Parse_Node(XmlDocument xmldoc, string Xpath)
+            else
             {
-                Xpath = "/" + Xpath;
-                XmlNode desiredNode = null;
-                if (xmldoc.DocumentElement.NamespaceURI != "")
-                {
-                    XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmldoc.NameTable);
-                    nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
-                    return xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath), nsmgr);
-                }
-                else
-                    desiredNode = xmldoc.DocumentElement.SelectSingleNode(NS_Xpath(xmldoc, Xpath));
-                return desiredNode;
-            }
-
-
-            /// <summary>
-            /// Parse any Attribute in document
-            /// </summary>
-            /// <param name="xmldoc">Документ</param>
-            /// <param name="AttributeName">Имя атрибута</param>
-            /// <param name="Xpath">xpath without root element (detect here)</param>
-            /// <returns></returns>
-            public static string Parse_Attribute(System.Xml.XmlDocument xmldoc, string AttributeName, string Xpath)
-            {
-
-                if (Xpath.Equals(""))
-                {
-                    return xmldoc.DocumentElement.Attributes.GetNamedItem(AttributeName).Value;
-                }
-                else
-                {
-                    System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
-
-                    if (recnode != null)
-                    {
-                        if (recnode.Attributes.GetNamedItem(AttributeName) != null)
-                            return recnode.Attributes.GetNamedItem(AttributeName).Value;
-                        else return null;
-                    }
-                    else
-                        return null;
-                }
-            }
-
-            public static string Parse_NodeValue(System.Xml.XmlDocument xmldoc, string Xpath)
-            {
-
                 System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
-                if ((recnode != null) &&
-                    (recnode.ChildNodes != null)
-                    )
+
+                if (recnode != null)
                 {
-                    return recnode.ChildNodes.Count > 0 ? recnode.FirstChild.Value : "";
+                    if (recnode.Attributes.GetNamedItem(AttributeName) != null)
+                        return recnode.Attributes.GetNamedItem(AttributeName).Value;
+                    else return null;
                 }
                 else
                     return null;
             }
+        }
 
+        public static string Parse_NodeValue(System.Xml.XmlDocument xmldoc, string Xpath)
+        {
 
-            /// <summary>
-            /// Select node child by ChildName. Instead of simple form node[ChildName], that is not safe.
-            /// Also checked namespacing (Prefix of LocalName e.t.c)
-            /// </summary>
-            /// <param name="node"></param>
-            /// <param name="ChildName"></param>
-            /// <returns></returns
-            public static XmlNode SelectNodeChild(XmlNode node, string ChildName)
-
+            System.Xml.XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if ((recnode != null) &&
+                (recnode.ChildNodes != null)
+                )
             {
-                if (node == null) return null;
-                System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(new NameTable());
-
-                foreach (System.Xml.XmlNode child in node)
-                {
-                    if (child.Prefix != "")
-                    {
-                        nsmgr.AddNamespace(child.Prefix, child.NamespaceURI);
-
-                        if (child.Name.Equals(child.Prefix + ":" + ChildName))
-                            return node.SelectSingleNode(child.Prefix + ":" + ChildName, nsmgr);
-                    }
-                    else
-                    {
-                        nsmgr.AddNamespace("pref", node.NamespaceURI);
-                        return node.SelectSingleNode("pref:" + ChildName, nsmgr);
-                    }
-                }
+                return recnode.ChildNodes.Count > 0 ? recnode.FirstChild.Value : "";
+            }
+            else
                 return null;
-            }
+        }
 
 
-            /// <summary>
-            /// Select node child .FirstChild.Value by ChildName. 
-            /// Also checked namespacing
-            /// </summary>
-            /// <remarks>Instead of simple form node[ChildName], that is not safe.</remarks>
-            /// <param name="node"></param>
-            /// <param name="ChildName"></param>
-            /// <returns>if fail, return "", not null</returns>
-            public static string SelectNodeChildValue(XmlNode node, string ChildName)
+        /// <summary>
+        /// Select node child by ChildName. Instead of simple form node[ChildName], that is not safe.
+        /// Also checked namespacing (Prefix of LocalName e.t.c)
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="ChildName"></param>
+        /// <returns></returns
+        public static XmlNode SelectNodeChild(XmlNode node, string ChildName)
+
+        {
+            if (node == null) return null;
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(new NameTable());
+
+            foreach (System.Xml.XmlNode child in node)
             {
-                return SelectNodeChild(node, ChildName) != null ? SelectNodeChild(node, ChildName).FirstChild.Value : "";
-            }
-
-            /// <summary>
-            /// Check if node exist
-            /// </summary>
-            /// <param name="xmldoc"></param>
-            /// <param name="Xpath">xpath in xpath form</param>
-            /// <returns></returns>
-            public static bool NodeExist(XmlDocument xmldoc, string Xpath)
-            {
-
-                return Parse_Node(xmldoc, Xpath) != null ? true : false;
-                //previous form: 
-                /*
-                XmlNode recnode = Parse_Node(xmldoc, Xpath);
-                if (recnode != null)
+                if (child.Prefix != "")
                 {
-                    return true;
+                    nsmgr.AddNamespace(child.Prefix, child.NamespaceURI);
+
+                    if (child.Name.Equals(child.Prefix + ":" + ChildName))
+                        return node.SelectSingleNode(child.Prefix + ":" + ChildName, nsmgr);
                 }
                 else
-                    return false;
-                    */
-
+                {
+                    nsmgr.AddNamespace("pref", node.NamespaceURI);
+                    return node.SelectSingleNode("pref:" + ChildName, nsmgr);
+                }
             }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Select node child .FirstChild.Value by ChildName. 
+        /// Also checked namespacing
+        /// </summary>
+        /// <remarks>Instead of simple form node[ChildName], that is not safe.</remarks>
+        /// <param name="node"></param>
+        /// <param name="ChildName"></param>
+        /// <returns>if fail, return "", not null</returns>
+        public static string SelectNodeChildValue(XmlNode node, string ChildName)
+        {
+            return SelectNodeChild(node, ChildName) != null ? SelectNodeChild(node, ChildName).FirstChild.Value : "";
+        }
+
+        /// <summary>
+        /// Check if node exist
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="Xpath">xpath in xpath form</param>
+        /// <returns></returns>
+        public static bool NodeExist(XmlDocument xmldoc, string Xpath)
+        {
+
+            return Parse_Node(xmldoc, Xpath) != null ? true : false;
+            //previous form: 
+            /*
+            XmlNode recnode = Parse_Node(xmldoc, Xpath);
+            if (recnode != null)
+            {
+                return true;
+            }
+            else
+                return false;
+                */
 
         }
+
     }
+}

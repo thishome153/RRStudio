@@ -5200,7 +5200,7 @@ namespace XMLReaderCS
             ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             ListFileInfo(DocInfo);
 #if (DEBUG)
-            this.Text += "/DEBUG {2018}";
+            this.Text += "/DEBUG {2019}";
 
             debugToolStripMenuItem.Visible = true;
             картапланToolStripMenuItem.Visible = true;
