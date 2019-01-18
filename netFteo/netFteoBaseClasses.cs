@@ -2651,6 +2651,7 @@ SCAN:
         public string Type; //Тип характеристики  -dTypeParameter_v01.xsd
         public string Value; //Значение (величина в метрах (кв. метрах для площади, куб. метрах для объема))
     }
+
     /// <summary>
     /// ХАРАКТЕРИСТИКИ ОБЪЕКТОВ КАПИТАЛЬНОГО СТРОИТЕЛЬСТВА
     /// </summary>
@@ -2671,10 +2672,10 @@ SCAN:
 
 
 
-    //ДЛя оксов отдельный кадастровый юнит, №2
+    //Для оксов отдельный кадастровый юнит, №2
     public class TCadasterItem2 : TCadasterItem
     {
-        public List<String> OldNumbers; //Кадастровые номера земельных участков, из которых образован
+        public TKeyParameters OldNumbers; //Кадастровые номера земельных участков, из которых образован
                                         //    public TKeyParameters KeyParameters; // для всех оКСОв, и для зданий  -в них этажность будем вносить И разную хуйню
         public decimal Area;
         public string Notes; // Особые отметки
@@ -2682,8 +2683,7 @@ SCAN:
 
         public TCadasterItem2()
         {
-            //        this.KeyParameters = new TKeyParameters();
-            this.OldNumbers = new List<string>();
+            this.OldNumbers = new TKeyParameters();
         }
     }
 
@@ -2713,6 +2713,7 @@ SCAN:
                 this.fAssignationCode = value;
             }
         }
+
         /// <summary>
         ///  Вид помещения
         /// </summary>
@@ -3357,11 +3358,21 @@ SCAN:
         {
             this.CN = cn;
         }
-        public Point AddOMSPoint(Point OMS)
+
+        public OMSPoints AddOmsPoint(PointList oms)
+        {
+            OMSPoints res = new OMSPoints();
+            foreach (Point pt in oms)
+               res.AddPoint( AddOmsPoint(pt));
+            return res;
+        }
+
+        public Point AddOmsPoint(Point OMS)
         {
             this.OMSPoints.AddPoint(OMS);
             return this.OMSPoints[this.OMSPoints.PointCount - 1];
         }
+
         public TMyRealty AddOKS(TMyRealty newOKS)
         {
             this.ObjectRealtys.Add(newOKS);

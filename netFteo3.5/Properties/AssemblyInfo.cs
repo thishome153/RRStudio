@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("home153@mail.ru")]
 [assembly: AssemblyProduct("netFteo")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-18")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-19")]
 [assembly: AssemblyTrademark("Fteo Projects")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.5.95")]
-[assembly: AssemblyFileVersion("1.3.5.95")]
+[assembly: AssemblyVersion("1.3.5.96")]
+[assembly: AssemblyFileVersion("1.3.5.99")]

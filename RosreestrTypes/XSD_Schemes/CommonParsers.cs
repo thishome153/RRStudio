@@ -748,7 +748,7 @@ namespace RRTypes.CommonCast
 
 
                 // vidimus 04/05 not use Namespaces:
-                System.Xml.XmlNode CertificationDoc4 = netFteo.XML.XMLWrapper.Parse_Node(xmldoc,"Package/Certification_Doc");// xmldoc.SelectSingleNode(netFteo.XML.XMLWrapper.NS_Xpath(xmldoc, "/Package/Certification_Doc"));
+                System.Xml.XmlNode CertificationDoc4 = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "Package/Certification_Doc");// xmldoc.SelectSingleNode(netFteo.XML.XMLWrapper.NS_Xpath(xmldoc, "/Package/Certification_Doc"));
                 if (CertificationDoc4 != null)
                 {
                     res.DocType = "Кадастровая выписка о земельном участке";
@@ -762,7 +762,7 @@ namespace RRTypes.CommonCast
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument") != null) &&
                     (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version") != null))
                     res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version").Value;
-      
+
             }
         }
 
@@ -1365,7 +1365,7 @@ namespace RRTypes.CommonCast
             {
 
                 netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref =="н" ?   0 : 4;
+                Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4;
                 Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
                 Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
                 Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1382,7 +1382,7 @@ namespace RRTypes.CommonCast
                 {
 
                     netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                    Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref =="н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
+                    Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
                     Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                     Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                     Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1398,7 +1398,7 @@ namespace RRTypes.CommonCast
             TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
             foreach (MP_V06.tNewContour item in ESs)
             {
-             TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
+                TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
                 //collItem.ResetOrdinates(); // because is only new tNewContour
                 collItem.State = 0; // tNewContour
                 collItem.AreaValue = item.Area.Area;
@@ -1897,7 +1897,7 @@ namespace RRTypes.CommonParsers
                 res.Number = xmldoc.DocumentElement.SelectSingleNode("eDocument/@GUID").Value;
                 RRTypes.STD_MPV04.STD_MP MP = (RRTypes.STD_MPV04.STD_MP)Desearialize<RRTypes.STD_MPV04.STD_MP>(xmldoc);
 
- 
+
 
 
                 res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
@@ -1906,7 +1906,7 @@ namespace RRTypes.CommonParsers
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item014)
                 {
-                  //  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
+                    //  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
                     if (MP.Package.FormParcels != null)
                         for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
                         {
@@ -1960,7 +1960,7 @@ namespace RRTypes.CommonParsers
                 if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item015)
                 //Учет изменений
                 {
-                   // richTextBox1.AppendText("\n015 - пакет информации с заявлением о внесении изменений: \n");
+                    // richTextBox1.AppendText("\n015 - пакет информации с заявлением о внесении изменений: \n");
 
                     if (MP.Package.SpecifyParcel != null)
                         if (MP.Package.SpecifyParcel.ExistParcel != null)
@@ -2022,7 +2022,7 @@ namespace RRTypes.CommonParsers
                     res.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
                     res.Comments += ("\n");
                     res.Comments += (MP.Conclusion);
-     
+
                     res.CommentsType = "Заключение КИ";
                 }
                 if (MP.Title != null)
@@ -2038,7 +2038,7 @@ namespace RRTypes.CommonParsers
                     res.Appointment = MP.Title.Contractor.N_Certificate + " " +
                                       MP.Title.Contractor.Telephone;
 
-                 //   / STD_MP / Contractor / Cadastral_Engineer / FIO / Surname
+                    //   / STD_MP / Contractor / Cadastral_Engineer / FIO / Surname
 
                     res.AppointmentFIO = MP.Title.Contractor.FIO.Surname + " " +
                                      MP.Title.Contractor.FIO.First + " " +
@@ -2259,6 +2259,7 @@ namespace RRTypes.CommonParsers
                 res.Comments += ("\n");
                 res.Comments += (MP.GeneralCadastralWorks.Reason);
 
+
                 if (MP.Conclusion != null)
                 {
                     res.Comments += ("<br>");
@@ -2321,20 +2322,20 @@ namespace RRTypes.CommonParsers
                     }
 
                 }
-                if ( MP.InputData.GeodesicBases != null)
-                    foreach(MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
+                if (MP.InputData.GeodesicBases != null)
+                    foreach (MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
-                        Point pt = new Point((double)oms.OrdX, (double) oms.OrdY);
+                        Point pt = new Point((double)oms.OrdX, (double)oms.OrdY);
                         pt.NumGeopointA = oms.PName;
                         pt.Description = oms.PKlass;
                         pt.Code = oms.PName;
-                        Bl.AddOMSPoint(pt);
+                        Bl.AddOmsPoint(pt);
                     }
 
             }
             catch (Exception ex)
-                {
-                res.CommentsType = "Exception" ;
+            {
+                res.CommentsType = "Exception";
                 res.Comments = ex.Message;
                 return res;
             }
@@ -2365,10 +2366,10 @@ namespace RRTypes.CommonParsers
                     Patronymic = GW.Contractor.Patronymic,
                     NCertificate = GW.Contractor.NCertificate,
                     Email = GW.Contractor.Email,
-                    Date = GW.DateCadastral.ToString().Replace("0:00:00",""),
+                    Date = GW.DateCadastral.ToString().Replace("0:00:00", ""),
                     Organization_Name = GW.Contractor.Organization != null ? GW.Contractor.Organization.Name : "",
                     AddressOrganization = GW.Contractor.Organization != null ? GW.Contractor.Organization.AddressOrganization : ""
-                    
+
                 });
 
 
@@ -2423,6 +2424,20 @@ namespace RRTypes.CommonParsers
 
         }
 
+        private OMSPoints ParseInputData(V03_TP.tInputData inpData)
+        {
+            OMSPoints res = new OMSPoints();
+            if (inpData.GeodesicBases != null)
+                foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
+                {
+                    Point pt = new Point((double)oms.OrdX, (double)oms.OrdY);
+                    pt.NumGeopointA = oms.PName;
+                    pt.Description = oms.PKlass;
+                    pt.Code = oms.PName;
+                    res.AddPoint(pt);
+                }
+            return res;
+        }
 
         public netFteo.XML.FileInfo ParseTP_V03(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
         {
@@ -2436,11 +2451,12 @@ namespace RRTypes.CommonParsers
 
             if (TP.Building != null)
             {
-                ParseGeneralCadastralWorks(res, TP.Building.GeneralCadastralWorks, TP.Building.Conclusion);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "ТП v3";
                 TMyRealty OKS = null;
+                Bl.OMSPoints = ParseInputData(TP.Building.InputData);
+                ParseGeneralCadastralWorks(res, TP.Building.GeneralCadastralWorks, TP.Building.Conclusion);
+                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
                 //Здание, постановка на ГКУ
                 if (TP.Building.Package.NewBuildings != null)
                 {
@@ -2492,12 +2508,11 @@ namespace RRTypes.CommonParsers
                     }
                 }
 
-
-
                 //Здание, изменение ОКС
                 if (TP.Building.Package.ExistBuilding != null)
                 {
                     OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
+                    OKS.CN = TP.Building.Package.ExistBuilding.CadastralNumber;
                     OKS.Name = TP.Building.Package.ExistBuilding.Name;
                     OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.ExistBuilding.Address);
                     OKS.CadastralBlock = TP.Building.Package.ExistBuilding.CadastralBlocks[0];
@@ -2507,19 +2522,20 @@ namespace RRTypes.CommonParsers
                         OKS.Building.AssignationBuilding = TP.Building.Package.ExistBuilding.AssignationBuilding.ToString();
                     OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Building.Package.ExistBuilding.EntitySpatial);
                 }
-
                 Bl.CN = OKS.CadastralBlock;
                 Bl.AddOKS(OKS);
                 res.MyBlocks.Blocks.Add(Bl);
             }
+
             //construction:
             if (TP.Construction != null)
             {
-                ParseGeneralCadastralWorks(res, TP.Construction.GeneralCadastralWorks, TP.Construction.Conclusion);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.CoordSystems[0].Name, TP.Construction.CoordSystems[0].CsId));
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "ТП v3";
                 TMyRealty OKS = null;
+                ParseGeneralCadastralWorks(res, TP.Construction.GeneralCadastralWorks, TP.Construction.Conclusion);
+                Bl.OMSPoints = ParseInputData(TP.Construction.InputData);
+                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.CoordSystems[0].Name, TP.Construction.CoordSystems[0].CsId));
                 //Сооружение, постановка на ГКУ
                 if (TP.Construction.Package.NewConstructions != null)
                 {
@@ -2530,7 +2546,7 @@ namespace RRTypes.CommonParsers
                         OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(constr.Address);
                         OKS.CadastralBlock = constr.CadastralBlocks[0];
                         if (constr.ParentCadastralNumbers != null)
-                        OKS.ParentCadastralNumbers.AddRange(constr.ParentCadastralNumbers);
+                            OKS.ParentCadastralNumbers.AddRange(constr.ParentCadastralNumbers);
                         foreach (RRTypes.V03_TP.tKeyParameter param in constr.KeyParameters)
                             OKS.Construction.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
                         OKS.Construction.AssignationName = constr.AssignationName; ;
@@ -2538,13 +2554,11 @@ namespace RRTypes.CommonParsers
                     }
                 }
 
-
-
-
                 //изменение
                 if (TP.Construction.Package.ExistConstruction != null)
                 {
                     OKS = new TMyRealty("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
+                    OKS.CN = TP.Construction.Package.ExistConstruction.CadastralNumber;
                     OKS.Name = TP.Construction.Package.ExistConstruction.Name;
                     OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Construction.Package.ExistConstruction.Address);
                     OKS.CadastralBlock = TP.Construction.Package.ExistConstruction.CadastralBlocks[0];
@@ -2566,14 +2580,13 @@ namespace RRTypes.CommonParsers
 
             if (TP.Flat != null)
             {
+                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                Bl.CN = "ТП v3";
+                TMyRealty OKS = null;
                 ParseGeneralCadastralWorks(res, TP.Flat.GeneralCadastralWorks, TP.Flat.Conclusion);
-                if (
-                TP.Flat.Package.ExistFlat != null)
+                //Помещение, учет изменений ГКУ
+                if (TP.Flat.Package.ExistFlat != null)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    Bl.CN = "ТП v3";
-                    TMyRealty OKS = null;
-                    //Помещение, учет изменений ГКУ
                     OKS = new TMyRealty(TP.Flat.Package.ExistFlat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
                     //OKS.Name = TP.Flat.Package.ExistFlat......;
                     OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Flat.Package.ExistFlat.Address);
@@ -2597,9 +2610,6 @@ namespace RRTypes.CommonParsers
 
                 if (TP.Flat.Package.NewFlats != null)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    Bl.CN = "ТП v3";
-                    TMyRealty OKS = null;
                     foreach (RRTypes.V03_TP.tNewFlat fl in TP.Flat.Package.NewFlats)
                     {
                         OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
@@ -2626,11 +2636,12 @@ namespace RRTypes.CommonParsers
 
             if (TP.Uncompleted != null)
             {
-                ParseGeneralCadastralWorks(res, TP.Uncompleted.GeneralCadastralWorks, TP.Uncompleted.Conclusion);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Uncompleted.CoordSystems[0].Name, TP.Uncompleted.CoordSystems[0].CsId));
                 TMyCadastralBlock Bl = new TMyCadastralBlock();
                 Bl.CN = "ТП v3";
                 TMyRealty OKS = null;
+                Bl.OMSPoints = ParseInputData(TP.Uncompleted.InputData);
+                ParseGeneralCadastralWorks(res, TP.Uncompleted.GeneralCadastralWorks, TP.Uncompleted.Conclusion);
+                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Uncompleted.CoordSystems[0].Name, TP.Uncompleted.CoordSystems[0].CsId));
                 //Здание, постановка на ГКУ
                 if (TP.Uncompleted != null)
                 {
@@ -2662,6 +2673,12 @@ namespace RRTypes.CommonParsers
                     OKS.Uncompleted.DegreeReadiness = TP.Uncompleted.Package.ExistUncompleted.DegreeReadiness.ToString();
                     OKS.Uncompleted.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Uncompleted.Package.ExistUncompleted.EntitySpatial);
                 }
+
+
+
+
+
+
 
                 Bl.CN = OKS.CadastralBlock;
                 Bl.AddOKS(OKS);
@@ -2759,7 +2776,7 @@ namespace RRTypes.CommonParsers
                         OMS.Code = xmloms.SelectSingleNode("PName").FirstChild.Value;
                         OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
                         OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
-                        Bl.AddOMSPoint(OMS);
+                        Bl.AddOmsPoint(OMS);
                     }
                 }
 
@@ -2921,18 +2938,18 @@ namespace RRTypes.CommonParsers
                         netFteo.XML.XMLWrapper.SelectNodeChild(Address, "Level3").Attributes.GetNamedItem("Name").Value;
 
                 Adr.Region = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "Region");
-                    Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "Note");
+                Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "Note");
 
-                    loc.Address = Adr;
+                loc.Address = Adr;
             }
 
 
 
-            if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Elaboration")  != null)
+            if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Elaboration") != null)
             {
                 XmlNode elaboration = netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "Elaboration");
                 if (netFteo.XML.XMLWrapper.SelectNodeChild(elaboration, "ReferenceMark") != null)
-                        loc.Elaboration.ReferenceMark = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "ReferenceMark");
+                    loc.Elaboration.ReferenceMark = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "ReferenceMark");
 
                 if (netFteo.XML.XMLWrapper.SelectNodeChild(elaboration, "Direction") != null)
                     loc.Elaboration.Direction = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "Direction");
@@ -2944,8 +2961,8 @@ namespace RRTypes.CommonParsers
             { int test = 0; }
             if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "inBounds") != null)
                 loc.Inbounds = netFteo.XML.XMLWrapper.SelectNodeChildValue(xmllocation, "inBounds");
-  
-                    return loc;
+
+            return loc;
         }
 
         //   /Package/Cadastral_Blocks/Cadastral_Block
@@ -3050,7 +3067,7 @@ namespace RRTypes.CommonParsers
                         OMS.Code = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
                         OMS.x = (double)KPT09.CadastralBlocks[i].OMSPoints[iP].OrdX;
                         OMS.y = (double)KPT09.CadastralBlocks[i].OMSPoints[iP].OrdY;
-                        Bl.AddOMSPoint(OMS);
+                        Bl.AddOmsPoint(OMS);
                     }
                 }
                 for (int ics = 0; ics <= KPT09.CadastralBlocks[i].CoordSystems.Count - 1; ics++)
@@ -3249,7 +3266,7 @@ namespace RRTypes.CommonParsers
                         OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;
                         OMS.x = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdX;
                         OMS.y = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdY;
-                        Bl.AddOMSPoint(OMS);
+                        Bl.AddOmsPoint(OMS);
                     }
                 }
                 for (int ics = 0; ics <= KPT10.CadastralBlocks[i].CoordSystems.Count - 1; ics++)
@@ -3459,7 +3476,7 @@ namespace RRTypes.CommonParsers
                 for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
                 {
                     MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
-                        kp.Parcel.CompositionEZ[i].Area.Area, 
+                        kp.Parcel.CompositionEZ[i].Area.Area,
                         0,
                         6, //для сведений ЕГРН это всегда "учтеный"
                         CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
@@ -3479,7 +3496,7 @@ namespace RRTypes.CommonParsers
                     Sl.AreaGKN = kp.Parcel.SubParcels[i].Area.Area.ToString();
 
                     if (kp.Parcel.SubParcels[i].Encumbrance != null)
-                    Sl.Encumbrances.Add(KPZU_v05Utils.KVZUEncumtoFteoEncum(kp.Parcel.SubParcels[i].Encumbrance));
+                        Sl.Encumbrances.Add(KPZU_v05Utils.KVZUEncumtoFteoEncum(kp.Parcel.SubParcels[i].Encumbrance));
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
                         TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
@@ -3501,16 +3518,16 @@ namespace RRTypes.CommonParsers
             Parse_Contractors(xmldoc, res);
             return res;
         }
-            #endregion
+        #endregion
 
         #region  Разбор KPZU 6.0.1 (как бы ЕГРН)
-            /// <summary>
-            /// Разбор выписка ЕГРН
-            /// </summary>
-            /// <param name="fi"></param>
-            /// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1</param>
-            /// <returns></returns>
-            public netFteo.XML.FileInfo ParseKPZU(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+        /// <summary>
+        /// Разбор выписка ЕГРН
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1</param>
+        /// <returns></returns>
+        public netFteo.XML.FileInfo ParseKPZU(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
         {
             netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
             RRTypes.kpzu06.KPZU kp = (RRTypes.kpzu06.KPZU)Desearialize<RRTypes.kpzu06.KPZU>(xmldoc);
@@ -3701,7 +3718,7 @@ namespace RRTypes.CommonParsers
                                 }
 
                             }
-                            
+
 
 
                             //Части
@@ -3714,11 +3731,11 @@ namespace RRTypes.CommonParsers
                                         TmySlot Sl = MainObj.AddSubParcel(parcel.SubParcels[i].Number_PP);
 
                                         Sl.AreaGKN = parcel.SubParcels[i].Areas[0].Area.ToString();
-                                        
+
                                         if ((parcel.SubParcels[i].Encumbrances != null) &&
                                             (parcel.SubParcels[i].Encumbrances.Count == 1))
                                             Sl.Encumbrances.Add(KV04_Utils.KVZUEncumtoFteoEncum(parcel.SubParcels[i].Encumbrances[0]));
-                                            
+
                                         if (parcel.SubParcels[i].Entity_Spatial != null)
                                         {
                                             TMyPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
@@ -3742,11 +3759,11 @@ namespace RRTypes.CommonParsers
             CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_ContractorsV04(xmldoc, res);
 
-     return res;
+            return res;
         }
 
         #endregion
-        
+
         #region разбор КВ KVZU_05
         public netFteo.XML.FileInfo ParseKVZU05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
         {
@@ -3771,12 +3788,12 @@ namespace RRTypes.CommonParsers
             RRTypes.kvzu.KVZU kv = (RRTypes.kvzu.KVZU)Desearialize<RRTypes.kvzu.KVZU>(xmldoc);
 
             TMyCadastralBlock Bl = new TMyCadastralBlock();
-   
+
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
                 res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
-                
+
             }
             TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
@@ -3925,7 +3942,7 @@ namespace RRTypes.CommonParsers
                 res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
-      
+
             TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
 
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
@@ -4235,6 +4252,10 @@ namespace RRTypes.CommonParsers
                 Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bld.Building.Area = kv.Realty.Building.Area;
                 Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
+
+                foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Building.OldNumbers)
+                    Bld.Building.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
+
                 res.CommentsType = "Особые отметки";
                 res.Comments = Bld.Notes;
                 if (kv.Realty.Building.Flats.Count > 0)
@@ -4281,7 +4302,7 @@ namespace RRTypes.CommonParsers
                 foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
                     Constructions.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
                 foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Construction.OldNumbers)
-                    Constructions.Construction.OldNumbers.Add(n.Number);
+                    Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number});
                 Bl.AddOKS(Constructions);
                 Constructions.Notes = kv.Realty.Construction.Notes;
                 res.CommentsType = "Особые отметки";
@@ -4323,19 +4344,19 @@ namespace RRTypes.CommonParsers
             res.DocType = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:ReestrExtract/egrp:DeclarAttribute/@egrp:ExtractTypeText", nsmgr).Value.ToString();
             res.Number = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractNumber", "ReestrExtract/DeclarAttribute"); //xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:ReestrExtract/egrp:DeclarAttribute/@egrp:ExtractNumber", nsmgr).Value.ToString();
             res.Date = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:ReestrExtract/egrp:DeclarAttribute/@egrp:ExtractDate", nsmgr).Value.ToString();
-            res.RequeryNumber= netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "RequeryNumber","ReestrExtract/DeclarAttribute");
+            res.RequeryNumber = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "RequeryNumber", "ReestrExtract/DeclarAttribute");
             res.ReceivName = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivName");
             res.ReceivAdress = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivAdress");
 
 
 
             if (xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:Name", nsmgr) != null)
-                {
-                    res.Cert_Doc_Organization = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:Name", nsmgr).Value.ToString();
-                    res.Appointment = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:Appointment", nsmgr).Value.ToString();
+            {
+                res.Cert_Doc_Organization = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:Name", nsmgr).Value.ToString();
+                res.Appointment = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:Appointment", nsmgr).Value.ToString();
 
-                    res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "FIO", "eDocument/Sender");// xmldoc.DocumentElement.SelectSingleNode(" / egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:FIO", nsmgr).Value.ToString();
-                }
+                res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "FIO", "eDocument/Sender");// xmldoc.DocumentElement.SelectSingleNode(" / egrp:Extract/egrp:eDocument/egrp:Sender/@egrp:FIO", nsmgr).Value.ToString();
+            }
 
 
 
@@ -4351,7 +4372,7 @@ namespace RRTypes.CommonParsers
                     MainObj.Location.Address = new netFteo.Rosreestr.TAddress();
                     MainObj.Location.Address.Note = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:Address/egrp:Content", nsmgr).FirstChild.Value.ToString();
                     if (ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:GroundCategoryText", nsmgr) != null)
-                    MainObj.Utilization.UtilbyDoc = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:GroundCategoryText", nsmgr).FirstChild.Value.ToString();
+                        MainObj.Utilization.UtilbyDoc = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:GroundCategoryText", nsmgr).FirstChild.Value.ToString();
                     MainObj.AreaGKN = ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:Area/egrp:AreaText", nsmgr).FirstChild.Value.ToString();
                     //Прикрутим сюды парсинг через XPATH ЕГРН
                     MainObj.EGRN = EGRP_v60Utils.ParseEGRRights(xmldoc); // мдаааа!!!
@@ -4386,7 +4407,7 @@ namespace RRTypes.CommonParsers
 
             res.DocTypeNick = "dxf";
             res.CommentsType = "DXF";
-            res.Comments = mifreader.GetType().ToString()+  " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString()+ " \rFileBody:\r"+mifreader.Body;
+            res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
             res.Encoding = mifreader.BodyEncoding;
             res.Number = "Encoding  " + mifreader.BodyEncoding;
             res.DocType = "dxf";

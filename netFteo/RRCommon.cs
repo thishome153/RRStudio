@@ -125,6 +125,23 @@ namespace netFteo.Rosreestr
             }
         }
     }
+
+    public static class dOldNumber_v01
+    {
+        public static string ItemToName(string Item)
+        {
+
+            switch (Item)
+            {
+                case "Item01": return "Инвентарный номер";
+                case "Item02": return "Условный номер";
+                case "Item03": return "Кадастровый номер";
+                case "Item99": return "Иной номер";
+                default: return Item;
+            }
+        }
+    }
+
     public static class dTypeStorey_v01
     {
         public static string ItemToName(string Item)

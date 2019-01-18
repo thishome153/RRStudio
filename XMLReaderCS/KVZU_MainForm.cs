@@ -1102,7 +1102,7 @@ namespace XMLReaderCS
                 Constructions.Name = kv.Realty.Construction.Name;
                 Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
                foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
-                      Constructions.Construction.OldNumbers.Add(n.Number);
+                      Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number } );
                 Bl.AddOKS(Constructions);
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
@@ -1840,13 +1840,26 @@ namespace XMLReaderCS
 
                 if (Address.Note != null)
                 {
-                    TreeNode an = Adrs.Nodes.Add("Adr", Address.Note.Replace("Российская федерация", "РФ.."));
+                    TreeNode an = Adrs.Nodes.Add("AdrNote", "Неформализованное описание");
                     an.ToolTipText = "Неформализованное описание";
+                    an.Nodes.Add(Address.Note.Replace("Российская федерация", "РФ.."));
                 }
 
             }
         }
-        
+
+        private void ListOldNumbers(TreeNode node, TKeyParameters oldnumbers)
+        {
+            if ((oldnumbers != null) &&
+                       (oldnumbers.Count > 0))
+            {
+                TreeNode oldNumsNode = node.Nodes.Add("OldNumsNodes", "Ранее присвоенные номера");
+                foreach (TKeyParameter s in oldnumbers)
+                    oldNumsNode.Nodes.Add("Number", s.Type).Nodes.Add(s.Value);
+                oldNumsNode.ExpandAll();
+            }
+        }
+
     private void ListMyOKS(TreeNode Node, TMyRealty oks)
         {
             TreeNode PNode = Node.Nodes.Add("PNode" + oks.id.ToString(), oks.CN);
@@ -1863,11 +1876,7 @@ namespace XMLReaderCS
                        flatsnodes.Nodes.Add("FlatItem" + s.id.ToString(), s.CN);
                 }
 
-                if (oks.Building.OldNumbers.Count > 0)
-                {
-                    foreach (string s in oks.Building.OldNumbers)
-                        PNode.Nodes.Add("OldNumsNode", "Ранее присвоенные номера").Nodes.Add("Number", s);
-                }
+                ListOldNumbers(PNode, oks.Building.OldNumbers);
 
                 if (oks.Building.ES != null)
                 {
@@ -1887,7 +1896,7 @@ namespace XMLReaderCS
 
             if (oks.Construction != null) //.Type == "Сооружение")
             {
-
+                ListOldNumbers(PNode,oks.Construction.OldNumbers);
                 if (oks.Construction.ES != null)
                 {
 
@@ -1918,7 +1927,7 @@ namespace XMLReaderCS
             }
                 //oks.KeyParameters
             if (oks.Notes != null)
-                PNode.Nodes.Add("OksNotes", "Особые отметки").Nodes.Add("Note", oks.Notes);
+                PNode.Nodes.Add("SpecNotes", "Особые отметки").Nodes.Add("Note", oks.Notes);
             if (oks.ParentCadastralNumbers.Count > 0)
             {
                 TreeNode flatsnodes = PNode.Nodes.Add("ParentCadastralNumbers" + oks.id.ToString(), "Земельные участки");
@@ -2189,9 +2198,10 @@ namespace XMLReaderCS
 
        
 
-        private void ZoneRestrictsToListView(ListView LV, string Text)
+
+        private void LongTextToListView(ListView LV, string Text, string TextTitle)
         {
-            LV.Columns[0].Text = "Ограничения";
+            LV.Columns[0].Text = TextTitle;
             LV.Controls.Clear();
             CRichTextBox rt = new CRichTextBox(Text);
             rt.Dock = DockStyle.Fill;
@@ -2967,10 +2977,20 @@ namespace XMLReaderCS
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                ZoneRestrictsToListView(listView1, ((TZone)O).ContentRestrictions);
+                LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
                 PropertiesToListView(listView_Properties, O);
             }
 
+            
+
+
+            if ((STrN.Name.Contains("SpecNotes")) ||
+                (STrN.Name.Contains("AdrNote"))
+                )
+
+            {
+                LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
+            }
 
             if (STrN.Name.Contains("SlotNode"))
             {
@@ -4716,6 +4736,7 @@ namespace XMLReaderCS
 
         private void textBox_DocDate_Click(object sender, EventArgs e)
         {
+            if (textBox_DocDate.Text != "")
             Clipboard.SetText(textBox_DocDate.Text);
         }
 
