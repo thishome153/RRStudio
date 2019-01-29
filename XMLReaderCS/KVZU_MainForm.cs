@@ -2604,7 +2604,6 @@ namespace XMLReaderCS
                     LViType.SubItems.Add(P.ObjectType);
                     LV.Items.Add(LViType);
 
-
                     if (P.Building != null)
                     {
                         ListViewItem LViAssgn = new ListViewItem();
@@ -2636,10 +2635,12 @@ namespace XMLReaderCS
                             LViAr.SubItems.Add(" кв.м.");
                             LV.Items.Add(LViAr);
                         }
-                    }
-                    
-                    //{netFteo.Spatial.TFlat}
-                    if (P.Flat != null)
+
+						
+					}
+
+					//{netFteo.Spatial.TFlat}
+					if (P.Flat != null)
                     {
                         TFlats flats = new TFlats();
                         flats.AddFlat(P.Flat);
@@ -2695,7 +2696,13 @@ namespace XMLReaderCS
                         LV.Items.Add(LViAr);
                     }
 
-                    KeyParametersToListView(LV, P.KeyParameters);
+					ListViewItem LViFloors = new ListViewItem();
+					LViFloors.Text = "Количество этажей";
+					LViFloors.SubItems.Add(P.Floors);
+					if (P.UndergroundFloors != "")
+						LViFloors.SubItems.Add(" подземных " + P.UndergroundFloors);
+					LV.Items.Add(LViFloors);
+					KeyParametersToListView(LV, P.KeyParameters);
                 }
 
    

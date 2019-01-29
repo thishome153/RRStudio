@@ -2680,8 +2680,7 @@ SCAN:
         public decimal Area;
         public string Notes; // Особые отметки
         public Rosreestr.TAddress Address;
-
-        public TCadasterItem2()
+		public TCadasterItem2()
         {
             this.OldNumbers = new TKeyParameters();
         }
@@ -2815,7 +2814,7 @@ SCAN:
         public string AssignationName;  // Назначение сооружения; 
         //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
         public TKeyParameters KeyParameters; // 
-        public Object ES
+		public Object ES
         {
             get { return this.fEntitySpatial; }
             set
@@ -2871,12 +2870,12 @@ SCAN:
         private Object fEntitySpatial; //Может быть многоконтурным???
         //public List<TFlat> Flats;//Кадастровые номера помещений, расположенных в объекте недвижимости
         public TKeyParameters KeyParameters; // 
-        public TFlats Flats; // Помещения, расположенных в объекте недвижимости
-        /// <summary>
-        /// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
-        /// </summary>
-        //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
-        public Object ES
+		public TFlats Flats; // Помещения, расположенных в объекте недвижимости
+		/// <summary>
+		/// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
+		/// </summary>
+		//public TMyPolygon EntitySpatial; //Может быть многоконтурным???
+		public Object ES
         {
             get { return this.fEntitySpatial; }
             set
@@ -2892,6 +2891,7 @@ SCAN:
 
             }
         }
+
         public TBuilding()
         {
             this.fEntitySpatial = new TMyPolygon();
@@ -2916,13 +2916,17 @@ SCAN:
         public string Name;//Наименование
         //public decimal Area;
         public string Type;
-        public netFteo.Rosreestr.TMyRights Rights; // как бы ГКН-Права
+		public string Floors;
+		public string UndergroundFloors;
+		public netFteo.Rosreestr.TMyRights Rights; // как бы ГКН-Права
         public netFteo.Rosreestr.TMyRights EGRN;
+
         public string ObjectType
         {
             set { this.fObjectType = value; }
             get { return this.fObjectType; }
         }
+
        // public Rosreestr.TAddress Address;
         public TMyRealty()
         {

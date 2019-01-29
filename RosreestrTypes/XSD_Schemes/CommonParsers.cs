@@ -2439,6 +2439,7 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
+
         public netFteo.XML.FileInfo ParseTP_V03(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
         {
             netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
@@ -2457,21 +2458,26 @@ namespace RRTypes.CommonParsers
                 Bl.OMSPoints = ParseInputData(TP.Building.InputData);
                 ParseGeneralCadastralWorks(res, TP.Building.GeneralCadastralWorks, TP.Building.Conclusion);
                 res.MyBlocks.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
+
                 //Здание, постановка на ГКУ
                 if (TP.Building.Package.NewBuildings != null)
                 {
-                    if (TP.Building.Package.NewBuildings.Count == 1)
+                    //if (TP.Building.Package.NewBuildings.Count == 1) <--- POZOR, fucking sin
+					foreach(V03_TP.tNewBuilding bld in TP.Building.Package.NewBuildings)
                     {
                         OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
-                        OKS.Name = TP.Building.Package.NewBuildings[0].Name;
-                        OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewBuildings[0].Address);
-                        OKS.CadastralBlock = TP.Building.Package.NewBuildings[0].CadastralBlocks[0];
-                        OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.NewBuildings[0].ParentCadastralNumbers);
-                        OKS.Building.Area = TP.Building.Package.NewBuildings[0].Area;
-                        OKS.Building.AssignationBuilding = TP.Building.Package.NewBuildings[0].AssignationBuilding.ToString(); ;
-                        OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Building.Package.NewBuildings[0].EntitySpatial);
+                        OKS.Name = bld.Name;
+						OKS.Floors = bld.Floors.Floors;
+						OKS.UndergroundFloors = bld.Floors.UndergroundFloors;
+					    OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(bld.Address);
+                        OKS.CadastralBlock = bld.CadastralBlocks[0];
+                        OKS.ParentCadastralNumbers.AddRange(bld.ParentCadastralNumbers);
+                        OKS.Building.Area = bld.Area;
+                        OKS.Building.AssignationBuilding = bld.AssignationBuilding.ToString(); ;
+                        OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", bld.EntitySpatial);
                     }
                 }
+
                 //Многоэтажный жилой дом
                 if (TP.Building.Package.NewApartHouse != null)
                 {
@@ -4252,7 +4258,8 @@ namespace RRTypes.CommonParsers
                 Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bld.Building.Area = kv.Realty.Building.Area;
                 Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
-
+				Bld.Floors = kv.Realty.Building.Floors.Floors;
+				Bld.UndergroundFloors = kv.Realty.Building.Floors.UndergroundFloors;
                 foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Building.OldNumbers)
                     Bld.Building.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
@@ -4299,7 +4306,9 @@ namespace RRTypes.CommonParsers
                 Constructions.ParentCadastralNumbers.AddRange(kv.Realty.Construction.ParentCadastralNumbers);
                 Constructions.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
                 Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-                foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
+				Constructions.Floors = kv.Realty.Construction.Floors.Floors;
+				Constructions.UndergroundFloors = kv.Realty.Construction.Floors.UndergroundFloors;
+				foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
                     Constructions.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
                 foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Construction.OldNumbers)
                     Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number});

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Horns & Hooves")]
 [assembly: AssemblyProduct("TExpress.DisAss")]
-[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2017")]
+[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2017-19")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
