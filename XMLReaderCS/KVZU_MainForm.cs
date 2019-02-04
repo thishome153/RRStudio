@@ -3147,50 +3147,53 @@ namespace XMLReaderCS
                 }
             }
         }
-        private void ListEncum(TreeNode Rnode, netFteo.Rosreestr.TMyEncumbrance Ens)
+
+        private void ListEncum(TreeNode Rnode, netFteo.Rosreestr.TMyEncumbrance Encums)
         {
-            if (Ens == null) return;
-            string EncType = Ens.Type;
-            if (Ens.Type == null) EncType = "Обременение";
-            TreeNode RNameNode = Rnode.Nodes.Add("RencNode", Ens.Type);
-            if (Ens.Name != null)
-                RNameNode.Nodes.Add(Ens.Name);
-            if (Ens.Document.DocName != null)
+            if (Encums == null) return;
+            string EncType = Encums.Type;
+            //if (Encums.Type == null) EncType = "Обременение";
+			 
+            TreeNode RNameNode = Rnode.Nodes.Add("RencNode", (Encums.Type != null ? Encums.Type : "Обременение"));
+
+            if (Encums.Name != null)
+                RNameNode.Nodes.Add(Encums.Name);
+            if (Encums.Document.DocName != null)
             {
-                TreeNode RDocNode = RNameNode.Nodes.Add("Документ: " + Ens.Document.DocName);
-                     RDocNode.Nodes.Add(Ens.Document.Date);
-                     RDocNode.Nodes.Add(Ens.Document.Number);
+                TreeNode RDocNode = RNameNode.Nodes.Add("Документ: " + Encums.Document.DocName);
+                     RDocNode.Nodes.Add(Encums.Document.Date);
+                     RDocNode.Nodes.Add(Encums.Document.Number);
             }
 
-            if (Ens.AccountNumber != null)
-            RNameNode.Nodes.Add("Учетный номер " + Ens.AccountNumber);
-            if (Ens.RegNumber != null)
+            if (Encums.AccountNumber != null)
+            RNameNode.Nodes.Add("Учетный номер " + Encums.AccountNumber);
+            if (Encums.RegNumber != null)
             {
                 TreeNode RNameRegNode = RNameNode.Nodes.Add("Государственная регистрация");
-                RNameRegNode.Nodes.Add(Ens.RegNumber);
-                RNameRegNode.Nodes.Add(Ens.RegDate);
+                RNameRegNode.Nodes.Add(Encums.RegNumber);
+                RNameRegNode.Nodes.Add(Encums.RegDate);
             }
 
-            if (Ens.Owners.Count > 0)
+            if (Encums.Owners.Count > 0)
             {
                 TreeNode RNameOwnNode = RNameNode.Nodes.Add("В пользу");
-                for (int io = 0; io <= Ens.Owners.Count - 1; io++)
-                    RNameOwnNode.Nodes.Add(Ens.Owners[io].OwnerName);
+                for (int io = 0; io <= Encums.Owners.Count - 1; io++)
+                    RNameOwnNode.Nodes.Add(Encums.Owners[io].OwnerName);
             }
-            if (Ens.DurationStarted != null)
+            if (Encums.DurationStarted != null)
             {
                 TreeNode RDurStrN = RNameNode.Nodes.Add("Дата возникновения");
-                RDurStrN.Nodes.Add(Ens.DurationStarted);
+                RDurStrN.Nodes.Add(Encums.DurationStarted);
             }
-            if (Ens.DurationStopped != null)
+            if (Encums.DurationStopped != null)
             {
                 TreeNode RDurStopN = RNameNode.Nodes.Add("Дата прекращения");
-                RDurStopN.Nodes.Add(Ens.DurationStopped);
+                RDurStopN.Nodes.Add(Encums.DurationStopped);
             }
-            if (Ens.DurationTerm != null)
+            if (Encums.DurationTerm != null)
             {
                 TreeNode RDurTerm = RNameNode.Nodes.Add("Продолжительность");
-                RDurTerm.Nodes.Add(Ens.DurationTerm);
+                RDurTerm.Nodes.Add(Encums.DurationTerm);
             }
         }
         private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
