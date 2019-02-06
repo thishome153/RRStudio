@@ -81,8 +81,10 @@ namespace XMLReaderCS
 
 
                 //Если это ГОСТ (Крипто про):
-                if (x509.SignatureAlgorithm.Value == "1.2.643.2.2.3")
-                    try
+                if ((x509.SignatureAlgorithm.Value == "1.2.643.2.2.3") ||
+					(x509.SignatureAlgorithm.Value == "1.2.643.7.1.1.3.2")) // GOST_2012
+
+					try
                     {
                         if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM()) //check COM
                         {
@@ -101,6 +103,7 @@ namespace XMLReaderCS
                                 }
                         }
                     }
+
                     catch (System.Runtime.InteropServices.COMException  ex)
                     {
                         ListViewItem subExp23 = new ListViewItem("Ошибка CSP "+ ex.Source);
