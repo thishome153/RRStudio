@@ -5277,9 +5277,12 @@ namespace XMLReaderCS
                 catch (Exception ex)
                 {
                     ClearControls();
-                   TreeNode errNode=  TV_Parcels.Nodes.Add("Error in " + Path.GetFileName(filename));
-                    errNode.Nodes.Add(ex.Message);
-                    TV_Parcels.TopNode.Expand();
+                   TreeNode errNodePatr=  TV_Parcels.Nodes.Add("Error in " + Path.GetFileName(filename));
+                    errNodePatr.Nodes.Add(ex.Message);
+
+					if (TV_Parcels.TopNode != null) TV_Parcels.TopNode.Expand();
+					else
+						errNodePatr.ExpandAll();
                     return;
                 }
               }

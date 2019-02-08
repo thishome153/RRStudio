@@ -4251,6 +4251,7 @@ namespace RRTypes.CommonParsers
                 TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
                 TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.DateCreated = (kv.Realty.Building.DateCreatedSpecified) ? kv.Realty.Building.DateCreated.ToString().Replace("0:00:00", "") : "";
+				if (kv.Realty.Building.ParentCadastralNumbers != null)
                 Bld.ParentCadastralNumbers.AddRange(kv.Realty.Building.ParentCadastralNumbers);
                 Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
                 Bld.Name = kv.Realty.Building.Name;
