@@ -240,36 +240,47 @@ namespace XMLReaderCS
 						label_doc_GUID.Text = ze_local;
 						TreeNode MPNode = treeView1.Nodes.Add(MP_Root.Name + "( " + MP_Root.SelectSingleNode("GeneralCadastralWorks/@DateCadastral").Value + ")");
 
-						if (SignaturePresent(ze))
-						{
-							Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.sign;
-							Label_sig_Properties.Text = "";
-							foreach (string sub in SignatureSubjects(ze + ".sig"))
-							{
-								Label_sig_Properties.Text += sub;
-							}
-						}
-						else
-						{
-							Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.cross;
-							Label_sig_Properties.Text = "Документ не подписан";
-						}
 
 						TreeNode TitleNodes = MPNode.Nodes.Add("Общие сведения");
 						// / MP / GeneralCadastralWorks / Reason
 						TreeNode ReasonNode = TitleNodes.Nodes.Add("Межевой план подготовлен в результате выполнения кадастровых работ в связи с:");
 						ReasonNode.Nodes.Add(MP_Root.SelectSingleNode("GeneralCadastralWorks/Reason").FirstChild.Value);
+
 						TreeNode CadEngNode = ReasonNode.Nodes.Add("Кадастровый инженер");
-						string ContractorNames = MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/FamilyName").FirstChild.Value + " " +
+						string ContractorName = MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/FamilyName").FirstChild.Value + " " +
 							MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/FirstName").FirstChild.Value + " " +
 							MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/Patronymic").FirstChild.Value;
-						CadEngNode.Nodes.Add(ContractorNames);
-						//Проверить соответствие: 
-						if (ContractorNames.Equals(Label_sig_Properties.Text))
-							Label_sig_Properties.LinkColor = System.Drawing.Color.Green;
-						else
-							Label_sig_Properties.LinkColor = System.Drawing.Color.Red;
+						TreeNode CadEngNameNode = CadEngNode.Nodes.Add(ContractorName);
+
 						CadEngNode.Nodes.Add(MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/NCertificate").FirstChild.Value);
+						CadEngNode.Nodes.Add(MP_Root.SelectSingleNode("GeneralCadastralWorks/Contractor/Email").FirstChild.Value);
+
+
+						if (SignaturePresent(ze))
+						{
+							Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.sign;
+							Label_sig_Properties.Text = "";
+							Label_sig_Properties.LinkColor = System.Drawing.Color.Red;
+							PopulateSignatureNodes(CadEngNameNode, ze + ".sig");
+
+							foreach (string sub in SignatureSubjects(ze + ".sig"))
+							{
+								Label_sig_Properties.Text += sub;
+								//Проверить соответствие: 
+								if (ContractorName.Equals(sub))
+									Label_sig_Properties.LinkColor = System.Drawing.Color.Green;
+							}
+						}
+						else
+						{
+							Label_sig_Properties.LinkColor = System.Drawing.Color.Blue;
+							Label_sig_Properties.Image = XMLReaderCS.Properties.Resources.cross;
+							Label_sig_Properties.Text = "Документ не подписан";
+						}
+
+
+
+
 
 
 						// /MP / InputData / Documents / Document[1] / Name

@@ -283,22 +283,27 @@ namespace netFteo.Crypt
             if (signature == null)
                 throw new ArgumentNullException("signature");
             List<string> res = new List<string>();
-            try
-            {
-                // decode the signature
+			try
+			{
+				// decode the signature
 
-                System.Security.Cryptography.Pkcs.SignedCms verifyCms = new System.Security.Cryptography.Pkcs.SignedCms();
-                verifyCms.Decode(signature);
-                var test = verifyCms.ContentInfo;
-                X509Certificate2Collection cmsCerts = verifyCms.Certificates;
-                foreach (X509Certificate2 c in cmsCerts)
-                    res.Add(c.GetNameInfo(X509NameType.SimpleName, false));
-
-            }
-            catch (CryptographicException)
-            {
-                return null;
-            }
+				System.Security.Cryptography.Pkcs.SignedCms verifyCms = new System.Security.Cryptography.Pkcs.SignedCms();
+				verifyCms.Decode(signature);
+				var test = verifyCms.ContentInfo;
+				X509Certificate2Collection cmsCerts = verifyCms.Certificates;
+				foreach (X509Certificate2 c in cmsCerts)
+				{
+					//TODO : how to distinct cadeng cert?:
+				//	if (c.Subject.Contains("OID.1.2.840.113549.1.9.8")) // OID - certNumber
+					{
+						res.Add(c.GetNameInfo(X509NameType.SimpleName, false));
+					}
+				}
+			}
+			catch (CryptographicException)
+			{
+				return null;
+			}
             return res;
         }
 
