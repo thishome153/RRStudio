@@ -308,7 +308,9 @@ namespace GKNData
             
             TFiles files = new TFiles();
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+
             data = new DataTable();
+			
             da = new MySqlDataAdapter("SELECT kpt_id,block_id,xml_file_name,kpt_num,kpt_date,kpt_serial,xml_ns,requestnum,acesscode,"+
                    " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt where block_id = " + block_id.ToString() +
                                       " order by kpt_id asc", conn);
@@ -328,10 +330,35 @@ namespace GKNData
                 file.AccessCode = row[8].ToString();
                 if (row[9] != DBNull.Value)
                 file.xmlSize_SQL = Convert.ToDouble(row[9]);
-                files.Add(file);
+				file.Type =  110; //KPT old than V11
+				files.Add(file);
             }
-            return files;
+			data.Reset();
+			//KPT11 load:
+			da = new MySqlDataAdapter("SELECT kpt_id, kpt_type,block_id,GUID,kpt_num,kpt_serial,kpt_date,requestnum,acesscode,	xml_file_name," +
+				   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11 where block_id = " + block_id.ToString() +
+									  " order by kpt_id asc", conn);
+
+			da.Fill(data);
+			foreach (DataRow row in data.Rows)
+			{
+				TFile file = new TFile(); // CN
+				file.id = Convert.ToInt32(row[0]);           // id
+				file.Type = Convert.ToByte(row[1]);           // kpt type
+				file.FileName = row[9].ToString();           // block_id
+				file.Number   = row[4].ToString();
+				file.Doc_Date = Convert.ToString(row[6]).Substring(0, Convert.ToString(row[6]).Length - 7);
+				// срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+				file.Serial = row[5].ToString();
+				file.RequestNum = row[7].ToString();
+				file.AccessCode = row[8].ToString();
+				if (row[10] != DBNull.Value)
+					file.xmlSize_SQL = Convert.ToDouble(row[10]);
+				files.Add(file);
+			}
+			return files;
         }
+
         private TFiles LoadParcelFiles(MySqlConnection conn, int parcel_id)
         {
 

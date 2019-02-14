@@ -73,7 +73,7 @@ namespace GKNData
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
                 LV.SubItems.Add(file.Number);
-                LV.SubItems.Add(file.FileName);
+                LV.SubItems.Add("("+file.Type.ToString()+") " +file.FileName);
                 LV.SubItems.Add(file.xmlSize_SQL.ToString());
                 LV.SubItems.Add(file.RequestNum); //Комментарий/ Номер запроса
                 listView1.Items.Add(LV);
@@ -153,7 +153,30 @@ namespace GKNData
             }
             else return null;
         }
-        private TFileHistory LoadBlockHistory(MySqlConnection conn, int block_id)
+
+		public MemoryStream GetKPT11Body(MySqlConnection conn, int kpt_id)
+		{
+			if (conn == null) return null;
+			if (conn.State != ConnectionState.Open) return null;
+
+			data = new DataTable();
+			da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
+											" OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11" +
+											" where kpt_id = " + kpt_id.ToString(), conn);
+
+			da.Fill(data);
+
+			if (data.Rows.Count == 1)
+			{
+				DataRow row = data.Rows[0];
+				byte[] outbyte = (byte[])row[1];
+				MemoryStream res = new MemoryStream(outbyte);
+				return res;
+			}
+			else return null;
+		}
+
+		private TFileHistory LoadBlockHistory(MySqlConnection conn, int block_id)
         {
             TFileHistory files = new TFileHistory(block_id);
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
@@ -206,9 +229,14 @@ namespace GKNData
 
         private void ReadXMLfromSelectedNode(int item_id)
         {
- 
-                if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
-                    ITEM.KPTXmlBodyList.UploadFileBody(item_id, GetKPTBody(CF.conn, item_id));
+
+			if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
+			{
+				//ITEM.KPTXmlBodyList.UploadFileBody(item_id, GetKPTBody(CF.conn, item_id));
+				//??? откуда грузить?
+				ITEM.KPTXmlBodyList.UploadFileBody(item_id, GetKPT11Body(CF.conn, item_id));
+			}
+
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader в составе приложения

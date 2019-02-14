@@ -22,7 +22,7 @@ namespace netFteo.Rosreestr
             Dictionary<string, string> items = new Dictionary<string, string>()
             {
                 { "Item01","Землепользование"},
-                { "Item0101","Квартал"}, // Дополнительные
+				{ "Item0101","Квартал"}, // Дополнительные
                 { "Item0102","Территориальная Зона"}, // Дополнительные
                 { "Item0103","Зона Охранная"},// Дополнительные
                 { "Item0104","Здание"},// Дополнительные
@@ -36,34 +36,38 @@ namespace netFteo.Rosreestr
                 { "ItemMIF","Полигоны mif"},
                 { "Itemnefteo::TMyPolygon","Полигон"},
                 { "Item06","Значение отсутствует"},
-            };
+				// KPT11 types:
+				{ "Item002001001000","Землепользование"},
+			};
             if (Item != null)
                 return items[Item];
             else return null;
-        }
- 
+		}
 
-        public static string ItemToName_cased(string Item)
-        {
+		
+			/*
+			public static string ItemToName_cased(string Item)
+			{
 
-            switch (Item)
-            {
-                case "Item01": return "Землепользование";
-                case "Item0101": return "Квартал"; // Дополнительные
-                case "Item0102": return "Территориальная Зона"; // Дополнительные
-                case "Item0103": return "Зона Охранная";// Дополнительные
-                case "Item0104": return "Здание";// Дополнительные
-                case "Item0105": return "Сооружение";// Дополнительные
-                case "Item0106": return "НезавершенныйОКС";// Дополнительные
-                case "Item02": return "Единое землепользование";
-                case "Item03": return "Обособленный участок";
-                case "Item04": return "Условный участок";
-                case "Item05": return "Многоконтурный участок";
-                case "Item06": return "Значение отсутствует";
-                default: return "Значение отсутствует";
-            }
-        }
-    }
+				switch (Item)
+				{
+					case "Item01": return "Землепользование";
+					case "Item0101": return "Квартал"; // Дополнительные
+					case "Item0102": return "Территориальная Зона"; // Дополнительные
+					case "Item0103": return "Зона Охранная";// Дополнительные
+					case "Item0104": return "Здание";// Дополнительные
+					case "Item0105": return "Сооружение";// Дополнительные
+					case "Item0106": return "НезавершенныйОКС";// Дополнительные
+					case "Item02": return "Единое землепользование";
+					case "Item03": return "Обособленный участок";
+					case "Item04": return "Условный участок";
+					case "Item05": return "Многоконтурный участок";
+					case "Item06": return "Значение отсутствует";
+					default: return "Значение отсутствует";
+				}
+			}
+			*/
+		}
 
     /// <summary>
     /// Справочник типов обьектов недвижимости

@@ -3099,6 +3099,7 @@ SCAN:
     public class TFile : TDocument
     {
         public int id;
+		public Byte Type;
         public string AccessCode;
         public string FileName;
         public string RequestNum;

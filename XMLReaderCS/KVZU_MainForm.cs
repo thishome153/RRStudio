@@ -412,8 +412,16 @@ namespace XMLReaderCS
             }
 
 
+			//Не КПТ v11 ли это?
+			if (DocInfo.DocRootName == "extract_cadastral_plan_territory") 
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				this.DocInfo = parser.ParseKPT11(this.DocInfo, xmldoc);
+			}
 
-            /*
+
+
+			/*
                 if (DocInfo.DocRootName == "MapPlan")
                 {
                     toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
@@ -445,8 +453,8 @@ namespace XMLReaderCS
 
                 }
              * */
-            
-              if (DocInfo.DocRootName == "SchemaParcels")
+
+			if (DocInfo.DocRootName == "SchemaParcels")
                 {
                     toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
                     SchemaKPTMainForm frm = new SchemaKPTMainForm();
