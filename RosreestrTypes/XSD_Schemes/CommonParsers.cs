@@ -2880,6 +2880,8 @@ namespace RRTypes.CommonParsers
 			Point.oldX = Point.x;
 			Point.oldY = Point.y;
 			Point.NumGeopointA = netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "num_geopoint");
+			if (netFteo.XML.XMLWrapper.SelectNodeChild(Spelement_Unit, "delta_geopoint") != null)
+			Point.Mt = Convert.ToDouble( netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "delta_geopoint"));
 			return Point;
 		}
 
