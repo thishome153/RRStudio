@@ -3526,25 +3526,40 @@ namespace RRTypes.CommonParsers
 			*/
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
 			if (Blocksnodes != null)
-			{
+			{  //count items of every block:
 				for (int i = 0; i <= Blocksnodes.Count - 1; i++)
 				{
-					var parcels = Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records");
-					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
+					if (Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records") != null)
 					{
-						this.TotalItems2Process++;
+						this.TotalItems2Process += Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records").ChildNodes.Count;
 					}
+					if (Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records") != null)
+					{
+						TotalItems2Process += Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records").ChildNodes.Count;
+					}
+					if (Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records") != null)
+					{
+						TotalItems2Process += Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records").ChildNodes.Count;
+					}
+					if (Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records") != null)
+					{
+						TotalItems2Process += Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records").ChildNodes.Count;
+					}
+
 				}
+
+
 
 				XMLParsingStartProc("start xml", TotalItems2Process, null);
 
 				for (int i = 0; i <= Blocksnodes.Count - 1; i++)
 				{
 					TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
-
-
-					
+				
 					var parcels = Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records");
+					var build_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records");
+					var construction_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records");
+					var under_constr_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records");
 					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
 					{
 						System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
@@ -3592,9 +3607,31 @@ namespace RRTypes.CommonParsers
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
+					for (int iP = 0; iP <= build_records.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode build = build_records.ChildNodes[iP];
+						//   object/common_data/cad_number
+						XMLParsingProc("xml", ++FileParsePosition, null);
+					}
+
+					for (int iP = 0; iP <= construction_records.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode build = construction_records.ChildNodes[iP];
+						//   object/common_data/cad_number
+						XMLParsingProc("xml", ++FileParsePosition, null);
+					}
+
+					for (int iP = 0; iP <=under_constr_records.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode build = under_constr_records.ChildNodes[iP];
+						//   object/common_data/cad_number
+						XMLParsingProc("xml", ++FileParsePosition, null);
+					}
+
+
 					//ОИПД Квартала:
 					//Виртуальный OIPD типа "Квартал":
-			
+
 					if (Blocksnodes[i].SelectSingleNode("spatial_data") != null)
 
 					{
@@ -4509,6 +4546,7 @@ namespace RRTypes.CommonParsers
 				Constructions.ParentCadastralNumbers.AddRange(kv.Realty.Construction.ParentCadastralNumbers);
 				Constructions.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
 				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				if (kv.Realty.Construction.Floors != null)
 				Constructions.Floors = kv.Realty.Construction.Floors.Floors;
 				Constructions.UndergroundFloors = kv.Realty.Construction.Floors.UndergroundFloors;
 				foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)

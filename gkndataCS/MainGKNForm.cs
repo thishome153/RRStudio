@@ -54,7 +54,7 @@ namespace GKNData
 			StatusLabel_DBName.ToolTipText = "-";
 			StatusLabel_SubRf_CN.Text = "-";
 			StatusLabel_SubRf_CN.ToolTipText = "-";
-			StatusLabel_AllMessages.Text = "-";
+	//		StatusLabel_AllMessages.Text = "-";
 
 
 			if (CF.conn != null)
@@ -73,15 +73,43 @@ namespace GKNData
 				{
 					StatusLabel_DBName.Image = GKNData.Properties.Resources.cross;
 					StatusLabel_DBName.ToolTipText = "Отключено";
+					StatusLabel_AllMessages.Text = "Отключено";
 					StatusLabel_CurrentItem.Text = "-";
 				}
 			}
 		}
 
+		const int TIMEOUT_DONE = 30 * 1000;
+		private void TimeOut_TimerTick(object sender, EventArgs e)
+		{
+			//	throw new NotImplementedException();
+			var last = netFteo.Runtime.UserInput.GetLastInputTime();
+			var ms = TIMEOUT_DONE - last;
+
+			//StatusLabel_AllMessages.Text = "wait... " + (ms / 1000) + " last " + (last);
+			if (last < 1000 ) toolStripProgressBar1.Value = toolStripProgressBar1.Maximum; // reset bar
+
+		if (ms < 0)
+			{
+				this.Close();
+			}
+
+			else if (ms < 5000)
+			{
+				GoDisconnect();
+			}
+			else
+			{
+				if (toolStripProgressBar1.Value >0)
+					toolStripProgressBar1.Value--;
+			}
+		}
+
+
 		/// <summary>
 		/// Операции при загрузке/перезагрузке районов/кварталов
 		/// </summary>
-		/// <param name="tv"></param>
+		/// <param name="tv">TreeView для отображения</param>
 		private void ConnectOps(TreeView tv)
 		{
 
@@ -94,9 +122,9 @@ namespace GKNData
 			Application.DoEvents();
 			CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
 			ListBlockListTreeView(CadBloksList, tv);
+			AppendHistory(CF.conn, CF.Cfg);
 			loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
 			loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
-			AppendHistory(CF.conn, CF.Cfg);
 		}
 
 		private bool ConnectGo()
@@ -168,6 +196,15 @@ namespace GKNData
 				toolStripProgressBar1.Value = 0;
 			}
 			StatusLabel_AllMessages.Text = "";
+
+		}
+
+		private void CloseAllForm()
+		{
+			//Cf
+			//Edit Block
+			//Edit Lot
+			//XMLReader
 
 		}
 
@@ -678,7 +715,6 @@ namespace GKNData
 				}
 			}
 			return false;
-
 		}
 
 		private bool Toggle_SearchTextBox(TextBox sender)
@@ -928,7 +964,14 @@ namespace GKNData
 		private void MainGKNForm_Load(object sender, EventArgs e)
 		{
 			loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
+			var timer = new Timer();
+			timer.Interval = 1000;
+			timer.Tick += TimeOut_TimerTick;
+			timer.Start();
 		}
+
+
+
 
 		private void свойстваToolStripMenuItem_Click(object sender, EventArgs e)
 		{

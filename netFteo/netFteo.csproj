@@ -292,6 +292,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="IPoint_TODO.txt" />
+    <Compile Include="netFteoRuntime.cs" />
     <Content Include="Schemes\Polygon.xml">
       <CustomToolNamespace>netFteo.BaseClasess</CustomToolNamespace>
     </Content>
