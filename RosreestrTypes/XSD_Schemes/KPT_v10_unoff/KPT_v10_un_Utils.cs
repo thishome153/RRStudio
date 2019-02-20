@@ -120,28 +120,28 @@ namespace RRTypes
 
             }
         }
-      public static netFteo.Rosreestr.TAddress AddrKPT10(tAddressOut Address)
+      public static netFteo.Rosreestr.TLocation LocAddrKPT10(tAddressOut Address)
       {
           if (Address == null) return null;
-            netFteo.Rosreestr.TAddress Adr = new netFteo.Rosreestr.TAddress();
-       Adr.KLADR = Address.KLADR;
-       Adr.Note = Address.Note;
-       Adr.OKATO = Address.OKATO;
-       Adr.OKTMO = Address.Note;
-       Adr.Region = Address.Region.ToString();
+            netFteo.Rosreestr.TLocation Loc = new netFteo.Rosreestr.TLocation();
+       Loc.Address.KLADR = Address.KLADR;
+			Loc.Address.Note = Address.Note;
+			Loc.Address.OKATO = Address.OKATO;
+			Loc.Address.OKTMO = Address.Note;
+			Loc.Address.Region = Address.Region.ToString();
        if (Address.District != null)
-           Adr.District = Address.District.Name;
+				Loc.Address.District = Address.District.Name;
        if (Address.Locality != null)
-           Adr.Locality = Address.Locality.Name;
+				Loc.Address.Locality = Address.Locality.Name;
        if (Address.City != null)
-           Adr.City = Address.City.Type + " "+ Address.City.Name;
+				Loc.Address.City = Address.City.Type + " "+ Address.City.Name;
        if (Address.Street != null)
-           Adr.Street = Address.Street.Name;
+				Loc.Address.Street = Address.Street.Name;
        if (Address.Level1 != null)
-           Adr.Level1 = Address.Level1.Type.ToString()+ " " + Address.Level1.Value;
+				Loc.Address.Level1 = Address.Level1.Type.ToString()+ " " + Address.Level1.Value;
 
          // dRegionsRF.Item99.
-       return Adr;
+       return Loc;
       }
       
       public static string BoundToName(tCadastralBlockBound GKNBound)

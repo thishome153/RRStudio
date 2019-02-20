@@ -2739,7 +2739,7 @@ SCAN:
         {
             this.PositionInObject = new TPositionInObject();
             this.CN = cn;
-			this.Location.Address = new Rosreestr.TAddress();
+			this.Location = new Rosreestr.TLocation();
             this.KeyParameters = new TKeyParameters();
         }
     }
@@ -2933,11 +2933,14 @@ SCAN:
         {
             this.id = Gen_id.newId;
             this.ParentCadastralNumbers = new List<string>();
+			this.Location = new Rosreestr.TLocation();
         }
+
         public TMyRealty(string cn) : this()
         {
             this.CN = cn;
         }
+
         public TMyRealty(string cn, Rosreestr.dRealty_v03 rlt_type) : this(cn)
         {
             switch (rlt_type)
@@ -2966,6 +2969,9 @@ SCAN:
 						break; }
 				case "002001004000" :
 				 { this.Construction = new TConstruction(); break; }
+				case "002001005000":
+				{ this.Uncompleted = new TUncompleted(); break; }
+
 				default: this.Building = new TBuilding(); break;
 			}
 		}

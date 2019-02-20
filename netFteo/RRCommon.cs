@@ -373,6 +373,7 @@ namespace netFteo.Rosreestr
         public TLocation()
         {
             this.Elaboration = new TElaboration();
+			this.Address = new TAddress();
         }
 
         public string AsString()

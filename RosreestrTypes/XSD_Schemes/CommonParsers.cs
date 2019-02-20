@@ -2985,18 +2985,21 @@ namespace RRTypes.CommonParsers
 				Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "readable_address");
 				
 				if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/level_settlement/city") != null)
-					Adr.City = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/level_settlement/city/type_city").FirstChild.Value+ " " +
-						netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/level_settlement/city/name_city").FirstChild.Value;
+					Adr.City = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/type_city")+ " " +
+						netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/name_city");
 
 				if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/street/type_street") != null)
 				{
-					Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/street/type_street").FirstChild.Value + " " +
-						netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/street/name_street").FirstChild.Value;
+					Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/type_street") + " " +
+						netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/name_street");
 				}
+				
 
-				if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias /detailed_level/level1") != null)
-				{
-					Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias /detailed_level/level1/name_level1").FirstChild.Value;
+				//if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/level1") != null)
+				{		
+
+					Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/type_level1") + " " +
+								 netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/name_level1");
 				}
 
 				Adr.Region = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/region/code");
@@ -3451,7 +3454,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Building = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
 							Building.Building.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
 							Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
-							Building.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
+							Building.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
@@ -3463,7 +3466,7 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
-							Constructions.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
+							Constructions.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
 							Constructions.Construction.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
@@ -3484,7 +3487,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Uncompleted = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
 							Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
 							Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
-							Uncompleted.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
+							Uncompleted.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
 							Uncompleted.Uncompleted.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 
@@ -4569,8 +4572,11 @@ namespace RRTypes.CommonParsers
 				Constructions.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
 				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				if (kv.Realty.Construction.Floors != null)
-				Constructions.Floors = kv.Realty.Construction.Floors.Floors;
-				Constructions.UndergroundFloors = kv.Realty.Construction.Floors.UndergroundFloors;
+					if (kv.Realty.Construction.Floors != null)
+					{
+						Constructions.Floors = kv.Realty.Construction.Floors.Floors;
+						Constructions.UndergroundFloors = kv.Realty.Construction.Floors.UndergroundFloors;
+					}
 				foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
 					Constructions.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
 				foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Construction.OldNumbers)
