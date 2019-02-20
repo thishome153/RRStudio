@@ -2679,7 +2679,8 @@ SCAN:
                                         //    public TKeyParameters KeyParameters; // для всех оКСОв, и для зданий  -в них этажность будем вносить И разную хуйню
         public decimal Area;
         public string Notes; // Особые отметки
-        public Rosreestr.TAddress Address;
+  //      public Rosreestr.TAddress Address;
+		public Rosreestr.TLocation Location;
 		public TCadasterItem2()
         {
             this.OldNumbers = new TKeyParameters();
@@ -2738,7 +2739,7 @@ SCAN:
         {
             this.PositionInObject = new TPositionInObject();
             this.CN = cn;
-            this.Address = new Rosreestr.TAddress();
+			this.Location.Address = new Rosreestr.TAddress();
             this.KeyParameters = new TKeyParameters();
         }
     }
@@ -2948,10 +2949,28 @@ SCAN:
 
                 default: this.Building = new TBuilding(); break;
             }
-
-
         }
-        public TKeyParameters KeyParameters
+
+		/// <summary>
+		/// Contructor for KPT11 realty`s
+		/// </summary>
+		/// <param name="cn"></param>
+		/// <param name="type_code"></param>
+		public TMyRealty(string cn, string type_code) : this(cn)
+		{
+			this.ObjectType = type_code;
+			switch (type_code)
+			{
+				case "002001002000":
+					{ this.Building = new TBuilding();
+						break; }
+				case "002001004000" :
+				 { this.Construction = new TConstruction(); break; }
+				default: this.Building = new TBuilding(); break;
+			}
+		}
+
+		public TKeyParameters KeyParameters
         {
             get
             {

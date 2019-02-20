@@ -20,6 +20,8 @@ namespace GKNData
 		private DataTable data;
 		private MySqlDataAdapter da;
 		private MySqlCommandBuilder cb;
+		private int TIMEOUT_DONE;
+		private Timer TimeOutTimer; // iddle timer
 		ConnectorForm CF = new ConnectorForm();
 		public TMyBlockCollection CadBloksList; // Глобальный перечень кварталов
 
@@ -79,7 +81,7 @@ namespace GKNData
 			}
 		}
 
-		const int TIMEOUT_DONE = 30 * 1000;
+		
 		private void TimeOut_TimerTick(object sender, EventArgs e)
 		{
 			//	throw new NotImplementedException();
@@ -112,7 +114,6 @@ namespace GKNData
 		/// <param name="tv">TreeView для отображения</param>
 		private void ConnectOps(TreeView tv)
 		{
-
 			tv.BackColor = SystemColors.Control;
 			loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
 			loadingCircleToolStripMenuItem1.Visible = true;
@@ -125,12 +126,16 @@ namespace GKNData
 			AppendHistory(CF.conn, CF.Cfg);
 			loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
 			loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
+#if !DEBUG
+			TimeOutTimer.Start(); // start timeout timer for distrubuted release
+#endif
 		}
 
 		private bool ConnectGo()
 		{
 			CF.Cfg.CfgRead(); // Загрyзимся из реестра
 							  //  if (CF.ShowDialog() == DialogResult.Yes)
+			TIMEOUT_DONE = Convert.ToInt16(CF.Cfg.IddleTimeOut);
 			{
 				if (CF.conn != null)
 					CF.conn.Close();
@@ -766,9 +771,9 @@ namespace GKNData
 		}
 
 
-		#endregion
+#endregion
 
-		#region Назначенные Обработчики событий
+#region Назначенные Обработчики событий
 		private void MenuItem_Connect_Click(object sender, EventArgs e)
 		{
 			ConnectGo();
@@ -840,7 +845,7 @@ namespace GKNData
 		{
 			ConnectGo();
 		}
-		#endregion
+#endregion
 
 		private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -964,10 +969,9 @@ namespace GKNData
 		private void MainGKNForm_Load(object sender, EventArgs e)
 		{
 			loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
-			var timer = new Timer();
-			timer.Interval = 1000;
-			timer.Tick += TimeOut_TimerTick;
-			timer.Start();
+			this.TimeOutTimer = new Timer();
+			TimeOutTimer.Interval = 1000;
+			TimeOutTimer.Tick += TimeOut_TimerTick;
 		}
 
 

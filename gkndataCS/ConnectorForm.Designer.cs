@@ -45,6 +45,7 @@ namespace GKNData
 			this.comboBox_Database = new System.Windows.Forms.ComboBox();
 			this.textBox_Port = new System.Windows.Forms.TextBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.textBox_TimeOut = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.button2 = new System.Windows.Forms.Button();
@@ -217,6 +218,7 @@ namespace GKNData
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.textBox_TimeOut);
 			this.tabPage2.Controls.Add(this.label2);
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
@@ -226,14 +228,23 @@ namespace GKNData
 			this.tabPage2.Text = "Общие";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// textBox_TimeOut
+			// 
+			this.textBox_TimeOut.Location = new System.Drawing.Point(153, 17);
+			this.textBox_TimeOut.Margin = new System.Windows.Forms.Padding(4);
+			this.textBox_TimeOut.Name = "textBox_TimeOut";
+			this.textBox_TimeOut.Size = new System.Drawing.Size(75, 23);
+			this.textBox_TimeOut.TabIndex = 19;
+			this.textBox_TimeOut.Text = "10 ms";
+			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(8, 17);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(56, 17);
+			this.label2.Size = new System.Drawing.Size(122, 17);
 			this.label2.TabIndex = 18;
-			this.label2.Text = "Сервер";
+			this.label2.Text = "Таймаут простоя";
 			// 
 			// panel1
 			// 
@@ -319,5 +330,6 @@ namespace GKNData
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-    }
+		private System.Windows.Forms.TextBox textBox_TimeOut;
+	}
 }

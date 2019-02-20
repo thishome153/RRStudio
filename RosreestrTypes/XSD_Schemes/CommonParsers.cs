@@ -484,9 +484,10 @@ namespace RRTypes.CommonCast
 			return Adr;
 		}
 
-		private static string ObjectTypeToStr(string s)
+		public static string ObjectTypeToStr(string s)
 		{
-
+			//002001002000
+			if (!s.Contains("Item")) s = "Item" + s;
 			if (s == "Item002001002000") return "Здание";
 			if (s == "Item002001003000") return "Помещение";
 			if (s == "Item002001004000") return "Сооружение";
@@ -2471,7 +2472,7 @@ namespace RRTypes.CommonParsers
 						OKS.Name = bld.Name;
 						OKS.Floors = bld.Floors.Floors;
 						OKS.UndergroundFloors = bld.Floors.UndergroundFloors;
-						OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(bld.Address);
+						OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(bld.Address);
 						OKS.CadastralBlock = bld.CadastralBlocks[0];
 						OKS.ParentCadastralNumbers.AddRange(bld.ParentCadastralNumbers);
 						OKS.Building.Area = bld.Area;
@@ -2485,7 +2486,7 @@ namespace RRTypes.CommonParsers
 				{
 					OKS = new TMyRealty(TP.Building.Package.NewApartHouse.NewBuilding.Name, netFteo.Rosreestr.dRealty_v03.Здание);
 					OKS.Name = TP.Building.Package.NewApartHouse.NewBuilding.Name;
-					OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.NewBuilding.Address);
+					OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.NewBuilding.Address);
 					OKS.CadastralBlock = TP.Building.Package.NewApartHouse.NewBuilding.CadastralBlocks[0];
 					OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.NewApartHouse.NewBuilding.ParentCadastralNumbers);
 					OKS.Building.Area = TP.Building.Package.NewApartHouse.NewBuilding.Area;
@@ -2509,7 +2510,7 @@ namespace RRTypes.CommonParsers
 							Flat.AssignationCode = TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationCode.ToString();
 							if (TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationTypeSpecified)
 								Flat.AssignationType = TP.Building.Package.NewApartHouse.Flats[i].Assignation.AssignationType.ToString();
-							Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.Flats[i].Address);
+							Flat.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.Flats[i].Address);
 							Flat.Area = TP.Building.Package.NewApartHouse.Flats[i].Area;
 							OKS.Building.Flats.Add(Flat);
 						}
@@ -2522,7 +2523,7 @@ namespace RRTypes.CommonParsers
 					OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
 					OKS.CN = TP.Building.Package.ExistBuilding.CadastralNumber;
 					OKS.Name = TP.Building.Package.ExistBuilding.Name;
-					OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.ExistBuilding.Address);
+					OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.ExistBuilding.Address);
 					OKS.CadastralBlock = TP.Building.Package.ExistBuilding.CadastralBlocks[0];
 					OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.ExistBuilding.ParentCadastralNumbers);
 					OKS.Building.Area = TP.Building.Package.ExistBuilding.Area;
@@ -2551,7 +2552,7 @@ namespace RRTypes.CommonParsers
 					{
 						OKS = new TMyRealty("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
 						OKS.Name = constr.Name;
-						OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(constr.Address);
+						OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(constr.Address);
 						OKS.CadastralBlock = constr.CadastralBlocks[0];
 						if (constr.ParentCadastralNumbers != null)
 							OKS.ParentCadastralNumbers.AddRange(constr.ParentCadastralNumbers);
@@ -2568,7 +2569,7 @@ namespace RRTypes.CommonParsers
 					OKS = new TMyRealty("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
 					OKS.CN = TP.Construction.Package.ExistConstruction.CadastralNumber;
 					OKS.Name = TP.Construction.Package.ExistConstruction.Name;
-					OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Construction.Package.ExistConstruction.Address);
+					OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Construction.Package.ExistConstruction.Address);
 					OKS.CadastralBlock = TP.Construction.Package.ExistConstruction.CadastralBlocks[0];
 					OKS.ParentCadastralNumbers.AddRange(TP.Construction.Package.ExistConstruction.ParentCadastralNumbers);
 					foreach (RRTypes.V03_TP.tKeyParameter param in TP.Construction.Package.ExistConstruction.KeyParameters)
@@ -2597,7 +2598,7 @@ namespace RRTypes.CommonParsers
 				{
 					OKS = new TMyRealty(TP.Flat.Package.ExistFlat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
 					//OKS.Name = TP.Flat.Package.ExistFlat......;
-					OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Flat.Package.ExistFlat.Address);
+					OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Flat.Package.ExistFlat.Address);
 					OKS.CadastralBlock = TP.Flat.Package.ExistFlat.CadastralBlock;
 					//OKS.Building.ParentCadastralNumbers.AddRange(TP.Flat.Package.ExistFlat..ParentCadastralNumbers);
 					OKS.Flat.Area = TP.Flat.Package.ExistFlat.Area;
@@ -2632,7 +2633,7 @@ namespace RRTypes.CommonParsers
 						foreach (RRTypes.V03_TP.tPlanJPG jpegname in fl.PositionInObject.Levels[0].Position.Plans)
 							lvl.AddPlan(jpegname.Name);
 						Flat.PositionInObject.Levels.Add(lvl);
-						Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(fl.Address);
+						Flat.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(fl.Address);
 						Flat.Area = fl.Area;
 						OKS.Building.Flats.Add(Flat);
 						Bl.AddOKS(OKS);
@@ -2659,7 +2660,7 @@ namespace RRTypes.CommonParsers
 						foreach (RRTypes.V03_TP.tNewUncompleted un in TP.Uncompleted.Package.NewUncompleteds)
 						{
 							OKS.Uncompleted.AssignationName = un.AssignationName;
-							OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(un.Address);
+							OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(un.Address);
 							OKS.CadastralBlock = un.CadastralBlocks[0];
 							OKS.Uncompleted.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", un.EntitySpatial);
 							OKS.ParentCadastralNumbers.AddRange(un.ParentCadastralNumbers);
@@ -2673,7 +2674,7 @@ namespace RRTypes.CommonParsers
 				if (TP.Uncompleted.Package.ExistUncompleted != null)
 				{
 					OKS.Uncompleted.AssignationName = TP.Uncompleted.Package.ExistUncompleted.AssignationName;
-					OKS.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Uncompleted.Package.ExistUncompleted.Address);
+					OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Uncompleted.Package.ExistUncompleted.Address);
 					OKS.CadastralBlock = TP.Uncompleted.Package.ExistUncompleted.CadastralBlocks[0];
 					OKS.ParentCadastralNumbers.AddRange(TP.Uncompleted.Package.ExistUncompleted.ParentCadastralNumbers);
 					foreach (RRTypes.V03_TP.tKeyParameter param in TP.Uncompleted.Package.ExistUncompleted.KeyParameters)
@@ -3248,7 +3249,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Building = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
 							Building.Building.ES = KPT_v09Utils.KPT09OKSEntSpatToFteo(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
 							Building.Building.AssignationBuilding = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
-							Building.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
+							Building.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
@@ -3260,7 +3261,7 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Constructions = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
-							Constructions.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
+							Constructions.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
 							if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count == 1)
 							{
 								// Constructions.Construction.KeyName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters[0].Type.ToString();
@@ -3277,7 +3278,7 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Uncompleted = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
 							Uncompleted.Uncompleted.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
-							Uncompleted.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
+							Uncompleted.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
 							Uncompleted.Uncompleted.ES = KPT_v09Utils.KPT09OKSEntSpatToFteo(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber,
 																							 KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 							Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
@@ -3450,7 +3451,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Building = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
 							Building.Building.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
 							Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
-							Building.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
+							Building.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
@@ -3462,7 +3463,7 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
-							Constructions.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
+							Constructions.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
 							Constructions.Construction.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
@@ -3483,7 +3484,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Uncompleted = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
 							Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
 							Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
-							Uncompleted.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
+							Uncompleted.Location.Address = KPT_v10Utils.AddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
 							Uncompleted.Uncompleted.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 
@@ -3545,10 +3546,7 @@ namespace RRTypes.CommonParsers
 					{
 						TotalItems2Process += Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records").ChildNodes.Count;
 					}
-
 				}
-
-
 
 				XMLParsingStartProc("start xml", TotalItems2Process, null);
 
@@ -3607,24 +3605,48 @@ namespace RRTypes.CommonParsers
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
+					// Здания
 					for (int iP = 0; iP <= build_records.ChildNodes.Count - 1; iP++)
 					{
 						System.Xml.XmlNode build = build_records.ChildNodes[iP];
 						//   object/common_data/cad_number
+
+						//Также параллельное TmyOKS
+						TMyRealty Building = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+						Building.Location  = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
+
+						if (build.SelectSingleNode("contours/contour/entity_spatial") != null)
+						{
+							Building.Building.ES = KPT11LandEntSpatToFteo(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
+						}
+
+						/*
+							Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
+							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
+				*/
+						Bl.AddOKS(Building);
+						res.MifOKSPolygons.AddPolygon((TMyPolygon)Building.Building.ES);
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
+					//Сооружения
 					for (int iP = 0; iP <= construction_records.ChildNodes.Count - 1; iP++)
 					{
 						System.Xml.XmlNode build = construction_records.ChildNodes[iP];
 						//   object/common_data/cad_number
+						TMyRealty Construct = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+						Construct.Location = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
+						Bl.AddOKS(Construct);
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
-
+					//ОНС
 					for (int iP = 0; iP <=under_constr_records.ChildNodes.Count - 1; iP++)
 					{
-						System.Xml.XmlNode build = under_constr_records.ChildNodes[iP];
+						System.Xml.XmlNode under = under_constr_records.ChildNodes[iP];
 						//   object/common_data/cad_number
+						TMyRealty UnderConstruct = new TMyRealty(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
+						UnderConstruct.Location = Parse_LocationKPT11(under.SelectSingleNode("address_location"));
+						Bl.AddOKS(UnderConstruct);
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
@@ -4348,7 +4370,7 @@ namespace RRTypes.CommonParsers
 				Bld.DateCreated = kv.Realty.Building.DateCreated.ToString("dd.MM.yyyy");
 				Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
 				Bld.Name = kv.Realty.Building.Name;
-				Bld.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
+				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
 				Bld.Area = kv.Realty.Building.Area;
 				Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
@@ -4394,8 +4416,8 @@ namespace RRTypes.CommonParsers
 					flatObject.ParentCadastralNumbers.Add(kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberFlat);
 				flatObject.DateCreated = kv.Realty.Flat.DateCreated.ToString("dd.MM.yyyy");
 				flatObject.Flat.AssignationCode = netFteo.Rosreestr.dAssFlatv01.ItemToName(kv.Realty.Flat.Assignation.AssignationCode.ToString());
-				flatObject.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
-				flatObject.Flat.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
+				flatObject.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
+				flatObject.Flat.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Flat.Address);
 				flatObject.Area = kv.Realty.Flat.Area;
 				flatObject.Flat.Area = kv.Realty.Flat.Area;
 
@@ -4433,7 +4455,7 @@ namespace RRTypes.CommonParsers
 				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
 				Constructions.Name = kv.Realty.Construction.Name;
 				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
-				Constructions.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
+				Constructions.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
 				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				if (Constructions.Construction.ES.GetType().Name == "TMyPolygon")
 					res.MifOKSPolygons.AddPolygon((TMyPolygon)Constructions.Construction.ES);
@@ -4494,7 +4516,7 @@ namespace RRTypes.CommonParsers
 					Bld.ParentCadastralNumbers.AddRange(kv.Realty.Building.ParentCadastralNumbers);
 				Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
 				Bld.Name = kv.Realty.Building.Name;
-				Bld.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
+				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
 				Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.Building.Area = kv.Realty.Building.Area;
 				Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
@@ -4544,7 +4566,7 @@ namespace RRTypes.CommonParsers
 				Constructions.Name = kv.Realty.Construction.Name;
 				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
 				Constructions.ParentCadastralNumbers.AddRange(kv.Realty.Construction.ParentCadastralNumbers);
-				Constructions.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
+				Constructions.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
 				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				if (kv.Realty.Construction.Floors != null)
 				Constructions.Floors = kv.Realty.Construction.Floors.Floors;

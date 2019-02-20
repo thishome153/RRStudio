@@ -49,7 +49,8 @@ namespace GKNData
             this.comboBox_Database.Text = this.Cfg.DatabaseName;
             this.comboBox_CharSet.Text = this.Cfg.CharSet;
             this.textBox_pswrd.Text = this.Cfg.UserPwrd;
-        }
+			this.textBox_TimeOut.Text = this.Cfg.IddleTimeOut;
+		}
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
         {
@@ -102,16 +103,18 @@ namespace GKNData
         public int District_id;
         public string District_KN;
         public string District_Name;
-        /// <summary>
-        /// Количество кварталов в районе
-        /// </summary>
-        public int BlockCount;
+		public string IddleTimeOut;
+		/// <summary>
+		/// Количество кварталов в районе
+		/// </summary>
+		public int BlockCount;
         public DialogResult Result;
 
         public TAppCfgRecord()
         {
             this.CurrentItem = new TCurrentItem();
         }
+
         /// <summary>
         /// Запись в реестр
         /// </summary>
@@ -135,11 +138,13 @@ namespace GKNData
                 this.District_id = (int)nk.GetValue("district_ID");
                 this.District_KN = (string)nk.GetValue("District_KN");
                 this.District_Name = (string)nk.GetValue("District_Name");
-            }
+				this.IddleTimeOut = (string)nk.GetValue("IddleTimeOut");
+			}
             catch
             {
             }
         }
+
         /// <summary>
         /// Запись в реестр
         /// </summary>
@@ -164,7 +169,11 @@ namespace GKNData
                 nk.SetValue("district_ID", this.District_id);
                 nk.SetValue("District_KN", this.District_KN);
                 nk.SetValue("District_Name", this.District_Name);
-            }
+				if (this.IddleTimeOut != null)
+				nk.SetValue("IddleTimeOut", this.IddleTimeOut);
+				else
+					nk.SetValue("IddleTimeOut", "10000");
+			}
             catch
             {
             }

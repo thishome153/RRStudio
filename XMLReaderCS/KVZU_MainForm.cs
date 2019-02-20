@@ -1165,7 +1165,7 @@ namespace XMLReaderCS
                 TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
                 Bld.Name = kv.Realty.Building.Name;
-                Bld.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
+                Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
                 Bld.Area = kv.Realty.Building.Area;
                 Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
@@ -1235,7 +1235,7 @@ namespace XMLReaderCS
                     TMyCadastralBlock Bl = new TMyCadastralBlock();
                     TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
                     Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
-                    Constructions.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
+                    Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
                     Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(TP.Construction.Package.New_Construction[0].Assignation_Name,
                                                                                      TP.Construction.Package.New_Construction[0].Entity_Spatial);
                     Bl.AddOKS(Constructions);
@@ -1929,19 +1929,22 @@ namespace XMLReaderCS
                 TreeNode OksNameNode = PNode.Nodes.Add("OksNameNode","Наименование").Nodes.Add("Name", oks.Name);
             }
             */
-            if (oks.Address != null)
+            if ((oks.Location != null) &&
+				(oks.Location.Address != null))
             {
-                ListAdress(PNode, oks.Address, oks.id);
+                ListAdress(PNode, oks.Location.Address, oks.id);
             }
                 //oks.KeyParameters
             if (oks.Notes != null)
                 PNode.Nodes.Add("SpecNotes", "Особые отметки").Nodes.Add("Note", oks.Notes);
-            if (oks.ParentCadastralNumbers.Count > 0)
+
+            if ((oks.ParentCadastralNumbers != null) && (oks.ParentCadastralNumbers.Count > 0))
             {
                 TreeNode flatsnodes = PNode.Nodes.Add("ParentCadastralNumbers" + oks.id.ToString(), "Земельные участки");
                 foreach (string s in oks.ParentCadastralNumbers)
                     flatsnodes.Nodes.Add("CN" + s, s);
             }
+
             ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
@@ -2285,11 +2288,11 @@ namespace XMLReaderCS
                     LVi.SubItems.Add(fl.CN);
                 }
                 LVi.SubItems.Add(fl.Area.ToString());
-                LVi.SubItems.Add(fl.Address.AsString());//Adress
-                if ( fl.Address.Other != null)
-                LVi.SubItems.Add(fl.Address.Other);
-                if ( fl.Address.Note != null )
-                    LVi.SubItems.Add(fl.Address.Note); 
+                LVi.SubItems.Add(fl.Location.Address.AsString());//Adress
+                if ( fl.Location.Address.Other != null)
+                LVi.SubItems.Add(fl.Location.Address.Other);
+                if ( fl.Location.Address.Note != null )
+                    LVi.SubItems.Add(fl.Location.Address.Note); 
                 LV.Items.Add(LVi);
 
                 if (fl.PositionInObject.Levels.Count > 1)
@@ -2597,7 +2600,7 @@ namespace XMLReaderCS
                             }
                     }
                     */
-                    AdressToListView(LV, P.Address);
+                    AdressToListView(LV, P.Location.Address);
 
                     if (P.Name != null)
                     {
