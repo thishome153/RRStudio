@@ -378,7 +378,7 @@ namespace GKNData
 				file.AccessCode = row[8].ToString();
 				if (row[9] != DBNull.Value)
 					file.xmlSize_SQL = Convert.ToDouble(row[9]);
-				file.Type = 110; //KPT old than V11
+				file.Type = dFileTypes.KPT10; //KPT old than V11
 				files.Add(file);
 			}
 			data.Reset();
@@ -392,7 +392,7 @@ namespace GKNData
 			{
 				TFile file = new TFile(); // CN
 				file.id = Convert.ToInt32(row[0]);           // id
-				file.Type = Convert.ToByte(row[1]);           // kpt type
+				file.Type = dFileTypes.KPT11; //Convert.ToByte(row[1]);           // kpt type
 				file.FileName = row[9].ToString();           // block_id
 				file.Number = row[4].ToString();
 				file.Doc_Date = Convert.ToString(row[6]).Substring(0, Convert.ToString(row[6]).Length - 7);

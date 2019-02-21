@@ -772,7 +772,6 @@ namespace RRTypes.CommonCast
 
 	}
 
-
 	/// <summary>
 	/// Общий класс утилит для кастинга разных версий схем ZU
 	/// </summary>
@@ -1787,7 +1786,6 @@ namespace RRTypes.CommonParsers
 			OnParsing(this, e);
 		}
 
-
 		protected void XMLParsingStartProc(string sender, int process, byte[] Data)
 		{
 			if (OnParsing == null) return;
@@ -1829,7 +1827,6 @@ namespace RRTypes.CommonParsers
 		}
 
 	}
-
 
 	public class Doc2Type : Parser
 	{
@@ -3109,6 +3106,18 @@ namespace RRTypes.CommonParsers
 			res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/registration_number");
 			res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/organ_registr_rights");
 		}
+		//TODO types 1, 2, 0
+
+		public static string BoundToName(string Boundtype)
+		{
+			switch (Boundtype)
+			{
+				case "3": return "Граница муниципального образования";
+			}
+			// if (GKNBound.SubjectsBoundary != null) return "Граница между субъектами Российской Федерации";
+			// if (GKNBound.InhabitedLocalityBoundary != null) return "Граница населенного пункта";
+			return null;
+		}
 
 
 
@@ -3561,6 +3570,10 @@ namespace RRTypes.CommonParsers
 					var build_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records");
 					var construction_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records");
 					var under_constr_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records");
+					var boundary = Blocksnodes[i].SelectSingleNode("municipal_boundaries");
+					//  zones_and_territories_boundaries/zones_and_territories_record
+					var zones = Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries");
+
 					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
 					{
 						System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
@@ -3653,7 +3666,34 @@ namespace RRTypes.CommonParsers
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
+					//Bounds 
+					for (int iP = 0; iP <= boundary.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode bound = boundary.ChildNodes[iP];
+						TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_municipal_boundary/b_object/reg_numb_border").FirstChild.Value,
+							BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
+						//TODO - spatial detecting:
+						BoundItem.EntitySpatial = KPT11LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+						res.MifPolygons.Add(BoundItem.EntitySpatial);
+						Bl.AddBound(BoundItem);
+					}
 
+					//Zones:
+
+					for (int iP = 0; iP <= zones.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode zone = zones.ChildNodes[iP];
+						TZone ZoneItem;
+
+						ZoneItem = new TZone(zone.SelectSingleNode("b_object_zones_and_territories/b_object/reg_numb_border").FirstChild.Value); //KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
+
+						ZoneItem.Description = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/b_object/type_boundary/value")+ " " +
+											   netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/number");
+						ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value");
+						ZoneItem.EntitySpatial = KPT11LandEntSpatToFteo(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+						Bl.AddZone(ZoneItem);
+					}
+	
 					//ОИПД Квартала:
 					//Виртуальный OIPD типа "Квартал":
 

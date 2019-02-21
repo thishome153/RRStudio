@@ -3118,13 +3118,24 @@ SCAN:
         public string Doc_Date;
     }
 
-    /// <summary>
-    /// класс Файл. Представляет xml-файл всех видов
-    /// </summary>
-    public class TFile : TDocument
+
+	public enum dFileTypes
+	{
+		KPT11 = 111,
+		KPT10 = 110,
+		KPT09 = 109,
+		KPT08 = 108,
+		KPT07 = 107,
+		Undefined = -1
+	}
+
+	/// <summary>
+	/// класс Файл. Представляет xml-файл всех видов
+	/// </summary>
+	public class TFile : TDocument
     {
         public int id;
-		public Byte Type;
+		public dFileTypes Type;
         public string AccessCode;
         public string FileName;
         public string RequestNum;
@@ -3144,14 +3155,14 @@ SCAN:
                 return this.fFileBody;
             }
         }
-        public void UploadFileBody(MemoryStream filebody)
+        public void DownLoadFileBody(MemoryStream filebody)
         {
             filebody.Seek(0, 0);
             if (this.fFileBody == null)
                 this.fFileBody = new System.Xml.XmlDocument();
             this.fFileBody.Load(filebody);
-
         }
+
         public TFile()
         {
             // this.fFileBody = new System.Xml.XmlDocument();
@@ -3163,13 +3174,13 @@ SCAN:
     /// </summary>
     public class TFiles : List<TFile>
     {
-        public TFile UploadFileBody(int file_id, MemoryStream filebody)
+        public TFile DownLoadFileBody(int file_id, MemoryStream filebody)
         {
             foreach (TFile file in this)
             {
                 if (file.id == file_id)
                 {
-                    file.UploadFileBody(filebody);
+                    file.DownLoadFileBody(filebody);
                     //FileBody = filebody;
                     return file;
                 }
@@ -3190,7 +3201,19 @@ SCAN:
             return false;
         }
 
-        public System.Xml.XmlDocument GetBody(int file_id)
+		public dFileTypes GetFileType(int file_id)
+		{
+			foreach (TFile file in this)
+			{
+				if (file.id == file_id)
+				{
+					return file.Type;
+				}
+			}
+			return dFileTypes.Undefined;
+		}
+
+		public System.Xml.XmlDocument GetFileBody(int file_id)
         {
             foreach (TFile file in this)
             {
@@ -3201,7 +3224,8 @@ SCAN:
             }
             return null;
         }
-        public TFile GetFile(int file_id)
+
+		public TFile GetFile(int file_id)
         {
             foreach (TFile file in this)
             {
@@ -3212,7 +3236,19 @@ SCAN:
             }
             return null;
         }
-    }
+
+		public string GetFileName(int file_id)
+		{
+			foreach (TFile file in this)
+			{
+				if (file.id == file_id)
+				{
+					return file.FileName;
+				}
+			}
+			return null;
+		}
+	}
 
     public class TFileHistoryItem
     {

@@ -221,27 +221,49 @@ namespace GKNData
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (ITEM.KPTXmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
-                        ITEM.KPTXmlBodyList.UploadFileBody((int)listView1.SelectedItems[0].Tag, GetKPTBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
+                        ITEM.KPTXmlBodyList.DownLoadFileBody((int)listView1.SelectedItems[0].Tag, GetKPTBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
                     xmlFile.xml_file_body.Save(saveFileDialog1.FileName);
                 }
             }
         }
 
+
+		/// <summary>
+		/// Загрузка тела КПТ из BLOB поля таблицы
+		/// </summary>
+		/// <param name="item_id"></param>
         private void ReadXMLfromSelectedNode(int item_id)
         {
-
+		 dFileTypes item_type =	ITEM.KPTXmlBodyList.GetFileType(item_id);
 			if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
 			{
-				//ITEM.KPTXmlBodyList.UploadFileBody(item_id, GetKPTBody(CF.conn, item_id));
+				switch (item_type)
+				{
+					case dFileTypes.KPT10:
+						{
+							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
+						}
+
+					case dFileTypes.KPT11:
+						{
+							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPT11Body(CF.conn, item_id));break;
+						}
+
+					default:
+						{
+							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
+						}
+				}
+				//
 				//??? откуда грузить?
-				ITEM.KPTXmlBodyList.UploadFileBody(item_id, GetKPT11Body(CF.conn, item_id));
+
 			}
 
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader в составе приложения
-                frmReader.DocInfo.FileName = ITEM.KPTXmlBodyList.GetFile(item_id).FileName;
-                frmReader.Read(ITEM.KPTXmlBodyList.GetBody(item_id));
+                frmReader.DocInfo.FileName = ITEM.KPTXmlBodyList.GetFileName(item_id);
+                frmReader.Read(ITEM.KPTXmlBodyList.GetFileBody(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
         }

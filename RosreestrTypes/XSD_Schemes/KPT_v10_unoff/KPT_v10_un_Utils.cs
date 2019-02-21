@@ -154,7 +154,9 @@ namespace RRTypes
           //return GKNBound.Description;
           return null;
       }
-      public static string ZoneToName(tCadastralBlockZone GKNZone)
+
+
+		public static string ZoneToName(tCadastralBlockZone GKNZone)
       {
           if (GKNZone.SpecialZone != null) return "Зона с особыми условиями использования территорий";
           if (GKNZone.TerritorialZone != null) return "Территориальная зона";
