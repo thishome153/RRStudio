@@ -129,6 +129,8 @@ namespace GKNData
 #if !DEBUG
 			TimeOutTimer.Start(); // start timeout timer for distrubuted release
 #endif
+			netFteo.Runtime.ScreenWriter screen = new netFteo.Runtime.ScreenWriter();
+			screen.CaptureScreenToFile("Screenshot.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 		}
 
 		private bool ConnectGo()
