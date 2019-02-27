@@ -5,47 +5,13 @@ using System.Text;
 using System.ComponentModel; // BackgroundWorker
 using System.Windows.Forms;
 using System.Drawing;
-
+using netFteo.Windows;
 namespace RRTypes
 
 {
     namespace pkk5
     {
-        //Модифицированный класс компонента для работы в потоках
-        public class TMyLabel : Label
-        {
-          public  TMyLabel()
-            {
-                this.BackColor = System.Drawing.Color.LightCyan;
-                this.BorderStyle = BorderStyle.FixedSingle;
-                //this.Height = 15;
-                this.AutoSize = true;
-            }
-
-          delegate void SetProgressCallbackText(string value);
-
-          public void SetTextInThread(string value)
-          {
-              // InvokeRequired required compares the thread ID of the
-              // calling thread to the thread ID of the creating thread.
-              // If these threads are different, it returns true.
-
-              // InvokeRequired требует сравнения id вызывающего потока
-              //с id данного. 
-              if (this.InvokeRequired) // Они отличаются, это разные потоки - напрямую нельзя,
-                                       // и требуется Invoke
-              {
-                  SetProgressCallbackText d = new SetProgressCallbackText(SetTextInThread);
-
-                  this.Invoke(d, new object[] { value });
-              }
-              else  // это наш поток, и можно к объекту обратиться напрямую:
-              {
-                  this.Text = value;
-              }
-          }
-
-        }
+     
 
  
         /// <summary>
@@ -99,6 +65,7 @@ namespace RRTypes
                     handler(this, e);
                 }
             }
+
             protected virtual void OnQuerySuccefull(EventArgs e)
             {
                 EventHandler handler = this.QuerySuccefull;
@@ -344,19 +311,20 @@ namespace RRTypes
                 if (this.Result_Full.util_by_doc != null)
                     ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
                 ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
-                ge.DrawString("2016@Fixosoft pkk5 Viewer " + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 200, 2);
+                ge.DrawString("2019@Fixosoft pkk5 Viewer " + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 200, 2);
                 ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);
                 ge.DrawString(DateTime.Now.ToString(), font2, Brushes.Black, this.Image.Width - 120, 18); // this.Image.Width не равен this.Width
+				ge.DrawString(this.Server.TODO_TEst_URL, font2, Brushes.Black, this.Image.Width - 120, 101);
 
 
-                /*
+				/*
                 if (this.Server.jsonResponse != null)
                     if (this.Server.jsonResponse.features.Count > 0) // на количество тоже надо проверять - бывают "пустые ответы", но со статусом 200 , т.е. ОК
                 {
                     this.Result_Address = this.Server.jsonResponse.features[0].attrs.address;
                 }
                */
-                if (backgroundWorkerCounter.IsBusy)
+				if (backgroundWorkerCounter.IsBusy)
                 {
                   //  backgroundWorkerCounter.CancelAsync();
                     //backgroundWorkerCounter.ReportProgress();
@@ -369,6 +337,7 @@ namespace RRTypes
             {
                 this.SetProgress(e.ProgressPercentage);
             }
+
             private void SetProgress(int value)
             {
                 // InvokeRequired required compares the thread ID of the

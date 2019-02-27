@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
+using netFteo.Windows;
 
 namespace XMLReaderCS
 {
@@ -104,7 +105,7 @@ namespace XMLReaderCS
                     this.CollapseAll();
                 }
 
-                TreeNode res = netFteo.TreeViewFinder.SearchNodes(this.Nodes[0], searchtbox.Text.ToUpper());
+                TreeNode res = TreeViewFinder.SearchNodes(this.Nodes[0], searchtbox.Text.ToUpper());
 
                 if (res != null)
                 {

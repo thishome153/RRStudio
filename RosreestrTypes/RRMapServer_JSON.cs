@@ -202,10 +202,11 @@ namespace RRTypes
         public class pkk5_Rosreestr_ru
         {
             public const string url_api      = "http://pkk5.rosreestr.ru/api/features/";
-            public string url_arcgis_export  = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/Cadastre/MapServer/export?bbox=";
+            public string url_arcgis_export  = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
             public string url_arcgis_exportZ ="http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
             public pkk5_json_response jsonResponse; //Ответ сервера, краткий
             public pkk5_json_Fullresponse jsonFResponse;// Ответ полный, на запрос по id
+			public string TODO_TEst_URL;
             private int fImage_Width;
             private int fImage_Height;
             public int Image_Width {
@@ -259,8 +260,8 @@ namespace RRTypes
                     this.Nodes.Add(PWebNode);
 
                     WebRequest wrGETURL = null;
-                    //Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
-                    wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() +"?text="+ CN);
+					//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
+					wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() +"?text="+ CN);
                     wrGETURL.Proxy = WebProxy.GetDefaultProxy();
                     wrGETURL.Timeout = this.Timeout;
                     Stream objStream;

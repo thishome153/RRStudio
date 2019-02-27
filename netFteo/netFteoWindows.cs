@@ -5,8 +5,10 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Text;
 
-
-namespace netFteo
+/// <summary>
+/// Not An MS Windows, everyvere window, controls, forms etc.
+/// </summary>
+namespace netFteo.Windows
 {
     /// <summary>
     /// Модернизированный класс для Controls в WPF
@@ -176,29 +178,43 @@ namespace netFteo
 
     }
     
-    /// <summary>
-    /// Map class- viewPort for netfteo application
-    /// </summary>
-    public class Map :  UserControl
-    {
-        string _FileName;
+  
+	//Модифицированный класс компонента для работы в потоках
+	public class TMyLabel : Label
+	{
+		public TMyLabel()
+		{
+			this.BackColor = System.Drawing.Color.LightCyan;
+			this.BorderStyle = BorderStyle.FixedSingle;
+			//this.Height = 15;
+			this.AutoSize = true;
+		}
 
-        /// <summary>
-        /// Gets or sets filename of viewed file
-        /// </summary>
-        public string FileName
-        {
-            get
-            {
-              return  this._FileName;
-            }
+		delegate void SetProgressCallbackText(string value);
 
-            set
-            {
-                this._FileName = value;
-            }
-        }
-    }
+		public void SetTextInThread(string value)
+		{
+			// InvokeRequired required compares the thread ID of the
+			// calling thread to the thread ID of the creating thread.
+			// If these threads are different, it returns true.
+
+			// InvokeRequired требует сравнения id вызывающего потока
+			//с id данного. 
+			if (this.InvokeRequired) // Они отличаются, это разные потоки - напрямую нельзя,
+									 // и требуется Invoke
+			{
+				SetProgressCallbackText d = new SetProgressCallbackText(SetTextInThread);
+
+				this.Invoke(d, new object[] { value });
+			}
+			else  // это наш поток, и можно к объекту обратиться напрямую:
+			{
+				this.Text = value;
+			}
+		}
+
+	}
+
 }
 
 

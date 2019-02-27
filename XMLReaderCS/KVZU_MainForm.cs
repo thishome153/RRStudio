@@ -20,6 +20,7 @@ using System.Runtime.InteropServices;
 
 
 using netFteo.Spatial;
+using netFteo.Windows;
 using RRTypes.pkk5;
 
 #endregion
@@ -37,7 +38,7 @@ namespace XMLReaderCS
         RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
         RRTypes.MP_V05.MP MPV05;
         //System.Windows.Window ESwindow;
-        netFteo.MyWindowEx ESwindow;
+        MyWindowEx ESwindow;
         EntityViewer ViewWindow; // xaml WPF control
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace XMLReaderCS
             const string keyName_LastDir = FixosoftKey+ "\\Recent";
             string test_LastDir = (string)Microsoft.Win32.Registry.GetValue(keyName_LastDir, "LastDir", 0);
             //if (Microsoft.Win32.Registry.GetValue(keyName, "LastDir", 0) == )
-            ESwindow = new netFteo.MyWindowEx(); //System.Windows.Window();// Окно визуализации ПД
+            ESwindow = new MyWindowEx(); //System.Windows.Window();// Окно визуализации ПД
         }
 
         private void SaveRegistry(string lastdir)
@@ -4357,7 +4358,7 @@ namespace XMLReaderCS
 
               }
 
-              if (TV_Parcels.SelectedNode.Name.Contains("TopNode"))
+              if (TV_Parcels.SelectedNode.Name.Contains("TopNode")) // Квартал
               {
                   //Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
                   if (this.DocInfo.MyBlocks.Blocks.Count == 1)
@@ -5247,14 +5248,17 @@ namespace XMLReaderCS
             debugToolStripMenuItem.Visible = true;
             картапланToolStripMenuItem.Visible = true;
             сКПТToolStripMenuItem.Visible = true;
-            //TMyPoints test = new TMyPoints();
-            //test.PoininTest();
+			fteoImage.Visible = true;
+			pkk5Viewer1.Start("26:05:043433", pkk5_Types.Block);
+				//TMyPoints test = new TMyPoints();
+			//test.PoininTest();
 #else
             debugToolStripMenuItem.Visible = false;
             картапланToolStripMenuItem.Visible = false;
             сКПТToolStripMenuItem.Visible = false;
+			fteoImage.Visible = false;
 #endif
-            this.TextDefault = this.Text;
+			this.TextDefault = this.Text;
             ClearFiles();
         }
 

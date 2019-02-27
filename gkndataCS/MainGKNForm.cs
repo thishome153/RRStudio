@@ -9,7 +9,8 @@ using System.Windows.Forms;
 using System.IO;
 //using namespace System.Xml;
 using MySql.Data.MySqlClient;
-using netFteo;
+
+using netFteo.Windows;
 using netFteo.Spatial;
 namespace GKNData
 
@@ -908,7 +909,7 @@ namespace GKNData
 				//FindNode не ходит далее одного root элемента:
 				//FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
 
-				TreeNode res = netFteo.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+				TreeNode res = TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
 
 				if (res != null)
 				{
@@ -928,7 +929,7 @@ namespace GKNData
 		{
 			if ((treeView1.SelectedNode != null) && (treeView1.SelectedNode.NextNode != null))
 			{
-				TreeNode res = netFteo.TreeViewFinder.SeekNode(netFteo.TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
+				TreeNode res = TreeViewFinder.SeekNode(TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
 				if (res != null)
 				{
 					treeView1.SelectedNode = res;
