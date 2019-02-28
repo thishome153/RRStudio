@@ -2654,15 +2654,16 @@ namespace RRTypes.CommonParsers
 					OKS = new TMyRealty("ОНС", netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
 					if (TP.Uncompleted.Package.NewUncompleteds.Count == 1)
 
-						foreach (RRTypes.V03_TP.tNewUncompleted un in TP.Uncompleted.Package.NewUncompleteds)
+						foreach (V03_TP.tNewUncompleted un in TP.Uncompleted.Package.NewUncompleteds)
 						{
 							OKS.Uncompleted.AssignationName = un.AssignationName;
-							OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(un.Address);
+							OKS.Location.Address = CommonCast.CasterOKS.CastAddress(un.Address);
 							OKS.CadastralBlock = un.CadastralBlocks[0];
-							OKS.Uncompleted.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", un.EntitySpatial);
+							OKS.Uncompleted.ES = CommonCast.CasterOKS.ES_OKS("", un.EntitySpatial);
+
 							OKS.ParentCadastralNumbers.AddRange(un.ParentCadastralNumbers);
 							OKS.Uncompleted.DegreeReadiness = un.DegreeReadiness.ToString();
-							foreach (RRTypes.V03_TP.tKeyParameter param in un.KeyParameters)
+							foreach (V03_TP.tKeyParameter param in un.KeyParameters)
 								OKS.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
 						}
 				}

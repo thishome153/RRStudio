@@ -3005,10 +3005,12 @@ SCAN:
             }
             return null;
         }
+
         public Object GetEs(int Layer_id)
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
+
                 if (this[i].Building != null)
 
                     if ((this[i]).Building.ES != null)
@@ -3060,7 +3062,33 @@ SCAN:
                                 return (TMyPolygon)this[i].Construction.ES;
                     }
 
-            }
+
+				if (this[i].Uncompleted != null)
+					if ((this[i]).Uncompleted.ES != null)
+					{
+
+						if ((this[i]).Uncompleted.ES.GetType().Name == "TPolyLines")
+						{
+							if (((TPolyLines)(this[i]).Uncompleted.ES).ParentID == Layer_id)
+								return (TPolyLines)(this[i]).Uncompleted.ES;
+						}
+
+						if ((this[i]).Uncompleted.ES.GetType().Name == "TPolyLines")
+						{
+							TPolyLines ES = (TPolyLines)this[i].Uncompleted.ES;
+
+							for (int il = 0; il <= ES.Count - 1; il++)
+								if (ES[il].Layer_id == Layer_id)
+									return ES[il];
+						}
+
+						if (this[i].Uncompleted.ES.GetType().Name == "TMyPolygon")
+							if (((TMyPolygon)this[i].Uncompleted.ES).Layer_id == Layer_id)
+								return (TMyPolygon)this[i].Uncompleted.ES;
+					}
+
+
+			}
             return null;
         }
     }

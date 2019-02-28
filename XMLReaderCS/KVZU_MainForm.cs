@@ -1922,15 +1922,32 @@ namespace XMLReaderCS
                     }
                 }
             }
-                
-            
-            /*
+
+			if (oks.Uncompleted != null) //.Type == "Сооружение")
+			{
+				ListOldNumbers(PNode, oks.Uncompleted.OldNumbers);
+				if (oks.Uncompleted.ES != null)
+				{
+					if (oks.Uncompleted.ES.GetType().Name == "TMyPolygon")
+					{
+						if (((TMyPolygon)oks.Uncompleted.ES).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Uncompleted.ES, "SPElem.", "Границы", 6);
+					}
+
+					if (oks.Uncompleted.ES.GetType().Name == "TPolyLines")
+					{
+						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Uncompleted.ES, "SPElem.", "ПолиЛинии", 6);
+					}
+				}
+			}
+
+			/*
             if (oks.Name != null)
             {
                 TreeNode OksNameNode = PNode.Nodes.Add("OksNameNode","Наименование").Nodes.Add("Name", oks.Name);
             }
             */
-            if ((oks.Location != null) &&
+			if ((oks.Location != null) &&
 				(oks.Location.Address != null))
             {
                 ListAdress(PNode, oks.Location.Address, oks.id);
