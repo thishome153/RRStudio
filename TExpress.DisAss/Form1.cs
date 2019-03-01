@@ -71,7 +71,7 @@ namespace TExpress.DisAss
                 //FindNode не ходит далее одного root элемента:
                 //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
                 
-                TreeNode res = netFteo.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
+                TreeNode res = netFteo.Windows.TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
                   
                 if (res != null)
                 {
@@ -96,7 +96,7 @@ namespace TExpress.DisAss
         {
             if ((treeView1.SelectedNode != null) && (treeView1.SelectedNode.NextNode != null))
             {
-                TreeNode res = netFteo.TreeViewFinder.SeekNode(netFteo.TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
+                TreeNode res = netFteo.Windows.TreeViewFinder.SeekNode(netFteo.Windows.TreeViewFinder.SearchNextNode(treeView1.SelectedNode), SearchTextBox.Text.ToUpper());
                 if (res != null)
                 {
                     treeView1.SelectedNode = res;

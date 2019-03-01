@@ -81,7 +81,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.treeViewSearchable1 = new netFteo.TreeViewSearchable();
+            this.treeViewSearchable1 = new netFteo.Windows.TreeViewSearchable();
             this.panel1 = new System.Windows.Forms.Panel();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -257,7 +257,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TreeView treeView1;
-        private netFteo.TreeViewSearchable treeViewSearchable1;
+        private netFteo.Windows.TreeViewSearchable treeViewSearchable1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox SearchTextBox;

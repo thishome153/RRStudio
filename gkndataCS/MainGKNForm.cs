@@ -380,11 +380,12 @@ namespace GKNData
 				file.RequestNum = row[7].ToString();
 				file.AccessCode = row[8].ToString();
 				if (row[9] != DBNull.Value)
-					file.xmlSize_SQL = Convert.ToDouble(row[9]);
+					file.xmlSize_SQL = Math.Round( Convert.ToDouble(row[9]));
 				file.Type = dFileTypes.KPT10; //KPT old than V11
 				files.Add(file);
 			}
 			data.Reset();
+
 			//KPT11 load:
 			da = new MySqlDataAdapter("SELECT kpt_id, kpt_type,block_id,GUID,kpt_num,kpt_serial,kpt_date,requestnum,acesscode,	xml_file_name," +
 				   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11 where block_id = " + block_id.ToString() +
@@ -404,7 +405,7 @@ namespace GKNData
 				file.RequestNum = row[7].ToString();
 				file.AccessCode = row[8].ToString();
 				if (row[10] != DBNull.Value)
-					file.xmlSize_SQL = Convert.ToDouble(row[10]);
+					file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[10]));
 				files.Add(file);
 			}
 			return files;
