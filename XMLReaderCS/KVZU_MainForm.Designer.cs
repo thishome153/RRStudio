@@ -1010,6 +1010,10 @@
 			// 
 			this.columnHeader12.Text = "-";
 			// 
+			// columnHeader10
+			// 
+			this.columnHeader10.Text = "--";
+			// 
 			// contextMenuStrip_OIPD
 			// 
 			this.contextMenuStrip_OIPD.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {

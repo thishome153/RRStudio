@@ -21,14 +21,13 @@ namespace XMLReaderCS
             this.labelProductName.Text = AssemblyProduct;
 #endif
             this.Text = String.Format("О {0}", AssemblyTitle);
-            this.labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
+			this.labelProductName.Text = AssemblyDescription + " " + String.Format(" v{0}", AssemblyVersion) +
+				"\r\n" + AssemblyCompany + " " + AssemblyCopyright;
             this.textBoxDescription.Text = AssemblyDescription;
             this.textBoxDescription.AppendText("\r\n IDE :");
-            this.textBoxDescription.AppendText("\r\n MSVC 2010.Express Edition");
-            this.textBoxDescription.AppendText("\r\n Visual Studio 2017 Community");
-            this.textBoxDescription.AppendText("\r\n \r\n Assemblys:");
+            this.textBoxDescription.AppendText("\r\n Begin design:   MSVC 2010.Express Edition");
+            this.textBoxDescription.AppendText("\r\n Current time (: Visual Studio 2017 Community");
+            this.textBoxDescription.AppendText("\r\n Assemblys:");
             foreach (string ass in Assemblys)
             {
                 this.textBoxDescription.AppendText("\r\n "+ass);

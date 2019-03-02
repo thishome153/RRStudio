@@ -27,6 +27,7 @@ namespace netDxf.Entities
 {
     /// <summary>
     /// Represents a light weight polyline <see cref="EntityObject">entity</see>.
+	/// Also used as default for my Nanocad cad drawings
     /// </summary>
     /// <remarks>
     /// Light weight polylines are bidimensional polylines that can hold information about the width of the lines and arcs that compose them.
@@ -89,6 +90,7 @@ namespace netDxf.Entities
 
         /// <summary>
         /// Gets or sets if the light weight polyline is closed.
+		/// Closed polyline equal "Polygon"..
         /// </summary>
         public bool IsClosed
         {

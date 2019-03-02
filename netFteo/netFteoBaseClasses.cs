@@ -1891,13 +1891,25 @@ SCAN:
         public TMyPolygon AddPolygon(object poly_)
         {
             if (poly_ == null) return null;
-            if (poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon"))
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
+				(((TMyPolygon)poly_).PointCount >0))
             {
                 this.Add((TMyPolygon)poly_);
                 return (TMyPolygon)poly_;
             }
-            //"netFteo.Spatial.TPolyLine" ????
-            return null;
+			
+			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyOutLayer")) &&
+		 (((TMyOutLayer)poly_).PointCount > 0))
+			{
+				TMyPolygon Vpoly = new TMyPolygon();
+				Vpoly.AppendPoints((TMyOutLayer)poly_);
+				Vpoly.Definition = ((TMyOutLayer)poly_).Definition;
+				 this.AddPolygon(Vpoly);
+				return Vpoly;
+			}
+
+			//"netFteo.Spatial.TPolyLine" ????
+			return null;
         }
 
         public TPolygonCollection AddPolygons(TPolygonCollection polys_)

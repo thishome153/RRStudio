@@ -80,64 +80,75 @@ namespace netFteo.IO
                 return res;
         }
 
-        /// <summary>
-        /// Импорт dxf-файлов
-        /// </summary>
-        /// <returns></returns>
-        public TPolygonCollection ParseDXF()
-        {
-            TPolygonCollection res = new TPolygonCollection();
-            if (dxfFile == null) return null;
-            //if Block`s present:
-            if (dxfFile.Blocks.Count > 0)
-            {
-                foreach (netDxf.Blocks.Block block in dxfFile.Blocks)
-                {
-                    foreach (netDxf.Entities.EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
-                    {
-                        if (entity.CodeName.Equals("LWPOLYLINE"))
-                        {
-                            DxfParsingProc("dxf", ++FileParsePosition, null);
-                            TMyPolygon Polygon = DXF_ParseRegion(block.Entities);
-                            if (Polygon != null)
-                                try
-                                {
-                                    if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["Кад_номер"].Value != null))
-                                        Polygon.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
-                                    else
-                                        Polygon.Definition = block.CodeName + "." + block.Handle;
-                                    if (Polygon.Definition =="")
-                                        Polygon.Definition = block.CodeName + "." + block.Handle;
-                                    res.AddPolygon(Polygon);
-                                    goto NEXTBlock; // all entites here is ring + inner rings
-                                }
-                                catch (ArgumentException error)
-                                {
-                                    goto NEXTBlock;
-                                    //return null; // wrong block entities
-                                }
+		/// <summary>
+		/// Импорт dxf-файлов
+		/// </summary>
+		/// <returns></returns>
+		public TPolygonCollection ParseDXF()
+		{
+			TPolygonCollection res = new TPolygonCollection();
+			if (dxfFile == null) return null;
+			// Direct objects (not blocked):
+			// Polylines (every - closed & open)
+			foreach (LwPolyline poly in dxfFile.LwPolylines)
+			{
+				DxfParsingProc("dxf", ++FileParsePosition, null);
+				TMyOutLayer Polyline = DXF_ParseRing(poly);
+				if (Polyline != null)
+					try
+					{
+						Polyline.Definition = poly.CodeName + "." + poly.Handle; ;
+						res.AddPolygon(Polyline);
+					}
+
+					catch (ArgumentException error)
+					{
+
+						//return null; // wrong block entities
+					}
+			}
 
 
-                        }
-                    }
-                NEXTBlock: int fakeVariable = 0;
-                }
+			//Blocked Objects
+			if (dxfFile.Blocks.Count > 0)
+			{
+				foreach (Block block in dxfFile.Blocks)
+				{
+					foreach (EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
+					{
+						if (entity.CodeName.Equals("LWPOLYLINE"))
+						{
+							DxfParsingProc("dxf", ++FileParsePosition, null);
+							TMyPolygon Polygon = DXF_ParseRegion(block.Entities);
+							if (Polygon != null)
+								try
+								{
+									if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["Кад_номер"].Value != null))
+										Polygon.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
+									else
+										Polygon.Definition = block.CodeName + "." + block.Handle;
+									if (Polygon.Definition == "")
+										Polygon.Definition = block.CodeName + "." + block.Handle;
+									res.AddPolygon(Polygon);
+									goto NEXTBlock; // all entites here is ring + inner rings
+								}
+								catch (ArgumentException error)
+								{
+									goto NEXTBlock;
+									//return null; // wrong block entities
+								}
 
 
-                if (dxfFile.LwPolylines.Count > 0)
-                    foreach (netDxf.Entities.LwPolyline polygon in dxfFile.LwPolylines)
-                    {
-                        if (polygon.IsClosed)
-                        {
-                            TMyPolygon poly = new TMyPolygon();
-                            poly.Definition = polygon.CodeName + "." + polygon.Handle; ;
-                            poly.AppendPoints(DXF_ParseRing(polygon));
-                            res.AddPolygon(poly);
-                        }
-                    }
-            }
-            return res;
-        }
+						}
+					}
+					NEXTBlock: int fakeVariable = 0;
+				}
+
+
+	
+			}
+			return res;
+		}
 
 
         public int  AddedObjects;
@@ -161,10 +172,15 @@ namespace netFteo.IO
             OnParsing(this, e);
         }
 
-        private TMyOutLayer DXF_ParseRing(netDxf.Entities.LwPolyline poly)
+		/// <summary>
+		/// Parse dxf LwPolyLine to point list
+		/// </summary>
+		/// <param name="poly"></param>
+		/// <returns></returns>
+        private TMyOutLayer DXF_ParseRing(LwPolyline poly)
         {
-            if (!poly.IsClosed) return null;
-            if (poly.Vertexes.Count < 3) return null;
+          //  if (!poly.IsClosed) return null;
+            if (poly.Vertexes.Count < 2) return null;
             int ptNum = 0;
             TMyOutLayer res = new TMyOutLayer();
             try
@@ -187,15 +203,14 @@ namespace netFteo.IO
             return res;
         }
 
-        private TMyPolygon DXF_ParseRegion(netDxf.Collections.EntityCollection polys)
+        private TMyPolygon DXF_ParseRegion(EntityCollection polys)
         {
-
             TMyPolygon res = new TMyPolygon("dxfblock");
             try
             {
                 if ((polys.Count > 0) && (polys[0].CodeName.Equals("LWPOLYLINE")))
                 {
-                    res.AppendPoints(DXF_ParseRing((netDxf.Entities.LwPolyline)polys[0]));
+                    res.AppendPoints(DXF_ParseRing((LwPolyline)polys[0]));
                 }
                 // childs:
 
@@ -203,10 +218,9 @@ namespace netFteo.IO
                 {
                     if ((polys.Count > 0) && (polys[i].CodeName.Equals("LWPOLYLINE")))
                     {
-                        res.AddChild(DXF_ParseRing((netDxf.Entities.LwPolyline)polys[i]));
+                        res.AddChild(DXF_ParseRing((LwPolyline)polys[i]));
                     }
                 }
-
             }
 
             catch (IOException ex)

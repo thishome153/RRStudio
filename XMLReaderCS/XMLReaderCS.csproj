@@ -516,6 +516,7 @@
     <None Include="Resources\Find.bmp" />
     <None Include="Resources\Пересечения16x16.bmp" />
     <None Include="Resources\sign.gif" />
+    <None Include="Resources\Fixoso.gif" />
     <Content Include="Записочки_MLReaderCS.txt" />
     <None Include="Resources\asterisk_orange.png" />
     <None Include="Resources\application_error.png" />
