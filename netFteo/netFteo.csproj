@@ -281,6 +281,7 @@
     <Compile Include="netFteoDXF.cs" />
     <Compile Include="netFteoBaseClasses.cs" />
     <Compile Include="netFteoGeodethics.cs" />
+    <Compile Include="netFteoNetwork.cs" />
     <Compile Include="NetFteoNikonRaw.cs" />
     <Compile Include="netFteoTraverse.cs" />
     <Compile Include="netFteoUtils.cs" />

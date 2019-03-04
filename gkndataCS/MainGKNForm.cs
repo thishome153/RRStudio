@@ -759,8 +759,8 @@ namespace GKNData
 									 "`hi_data`, `hi_status_id`,  `hi_rid_id`,`hi_comment`,  `hi_host`,  `hi_ip`, " +
 									 "`hi_systemusername`,`hi_dbusername`) " +
 									 "VALUES(NULL," + Config.District_id.ToString() + ",'200'," + Config.CurrentItem.Item_id.ToString() +
-									 ",'" + dt + "','200','-1','.NET App v" + ver + " connect','" + netFteo.IO.NetWrapper.Host + "','"+ netFteo.IO.NetWrapper.HostIP + "'," +
-									 "'"+ netFteo.IO.NetWrapper.UserName + "','" + Config.UserName + "');";
+									 ",'" + dt + "','200','-1','.NET App v" + ver + " connect','" + netFteo.NetWork.NetWrapper.Host + "','"+ netFteo.NetWork.NetWrapper.HostIP + "'," +
+									 "'"+ netFteo.NetWork.NetWrapper.UserName + "','" + Config.UserName + "');";
 
 
 			//INSERT INTO `history` (`history_id`, `hi_disrtict_id`, `hi_item_type`, `hi_item_id`, `hi_data`, `hi_status_id`, `hi_rid_id`, `hi_comment`, `hi_host`, `hi_ip`, `hi_systemusername`, `hi_dbusername`) VALUES(NULL, NULL, '200', '1', 

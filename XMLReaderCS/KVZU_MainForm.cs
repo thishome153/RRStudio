@@ -5277,9 +5277,15 @@ namespace XMLReaderCS
 #endif
 			this.TextDefault = this.Text;
             ClearFiles();
+			LogStarttoWebServer();
         }
 
 
+		private void LogStarttoWebServer()
+		{
+			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log");
+		//	srv.Get_WebOnline_th("");
+		}
 
         private void TV_Parcels_DoubleClick(object sender, EventArgs e)
         {

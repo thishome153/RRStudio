@@ -2,8 +2,6 @@
  * Intput output classes. Unusable higher .NET 3.5
  * 
  */
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +11,11 @@ using System.Net;
 
 //using System.Runtime.InteropServices;
 //using System.Drawing; // inter sect with netfteo Point
-
-
-
-
-/// changes 
 using netFteo.Spatial;
 //changes 3 to 11 ( и Sync)
+
 namespace netFteo.IO
 {
-	// Используются Текстовые файлы.....
 	/// <summary>
 	///Класс для операций с файлами Fteo, mif, dxf
 	/// </summary>
@@ -1358,41 +1351,6 @@ namespace netFteo.IO
 	}
 
 
-	public static class NetWrapper
-	{
-		public static string Host
-		{
-			get
-			{
-				return System.Net.Dns.GetHostName();
-			}
-		}
-
-		public static string HostIP
-		{
-			get
-			{
-				string res = "";
-				// Then using host name, get the IP address list..
-				var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
-				foreach (var addr in host.AddressList)
-				{
-					if (addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-						res += addr.ToString();
-				}
-				return res;
-			}
-		}
-
-		public static string UserName
-		{
-			get
-			{
-				return System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("\\", "/");
-			}
-		}
-	}
-
 
 	//Класс, описывающий ответ сервера в виде массива объектов (при поиске типа /1?text=26...)
 	public class LogServer_response
@@ -1408,10 +1366,7 @@ namespace netFteo.IO
 		public string stateText { get; set; }
 	}
 
-	public class LogServer_feature
-	{
-		public LogServer_json_attrs attrs { get; set; }
-	}
+	
 	/*
 	{
    "Service": "nodeapi",
@@ -1425,27 +1380,73 @@ namespace netFteo.IO
    "stateText": "Server ok"
 }
 */
-public class LogServer_json_attrs
-	{
-		public string address { get; set; }
-		public string cn { get; set; } // "cn": "26:05:043417:133", 
-		public string id { get; set; } // "id": "26:5:43417:133"
-	}
 
 
 	public class LogServer
 	{
-		public const string url_api = "http://82.119.138.82/node/log";
+		public string url_api;
 		public LogServer_response jsonResponse; //Ответ сервера, краткий
 		public string TODO_TEst_URL;
 		public int Timeout;
 		public int ElapsedTime;
 		public System.Diagnostics.Stopwatch watch;
-
-		public LogServer()
+		public event EventHandler QueryStart; // Событие без данных, просто EventHandler
+		System.ComponentModel.BackgroundWorker BackgroundThread;
+		
+		public LogServer(string url)
 		{
+			this.url_api = url;
+			this.Timeout = 500;//System.Threading.Timeout.Infinite;
 			this.watch = new System.Diagnostics.Stopwatch();
+			this.BackgroundThread = new System.ComponentModel.BackgroundWorker();
+			BackgroundThread.DoWork += backgroundWorker_DoWork;
+			BackgroundThread.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+			BackgroundThread.WorkerReportsProgress = true;
+			BackgroundThread.WorkerSupportsCancellation = true;
+			BackgroundThread.RunWorkerAsync();
 		}
+
+
+		
+
+		// Own events:
+		public event EventHandler QuerySuccefull; // Событие без данных, просто EventHandler
+		public event EventHandler LogStart; // Событие без данных, просто EventHandler
+
+		protected virtual void OnQueryStart(EventArgs e)
+		{
+			EventHandler handler = this.QueryStart;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+		protected virtual void OnQuerySuccefull(EventArgs e)
+		{
+			EventHandler handler = this.QuerySuccefull;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
+		/// Work start
+		private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		{
+			this.OnQueryStart(new EventArgs());
+			Get_WebOnline_th(this.url_api);
+		}
+
+		private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+		{
+			if (this.jsonResponse != null)
+			{
+				// Дадим событие, что ответ получен%
+				this.OnQuerySuccefull(new EventArgs()); // что же мы в событие отправим то ,,
+			}
+		}
+
+
 
 		public bool Get_WebOnline_th(string query)
 		{
@@ -1472,8 +1473,6 @@ public class LogServer_json_attrs
 
 					jsonResponse = sr.Deserialize<LogServer_response>(jsonResult);
 					if (jsonResponse != null)
-						if (jsonResponse.features != null)
-							if (jsonResponse.features.Count > 0) // на количество тоже надо проверять - бывают "пустые ответы", но со статусом 200 , т.е. ОК
 							{
 								this.watch.Stop();
 								return true;
