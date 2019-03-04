@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.Net;
 
 //using System.Runtime.InteropServices;
 //using System.Drawing; // inter sect with netfteo Point
@@ -1390,6 +1391,107 @@ namespace netFteo.IO
 				return System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace("\\", "/");
 			}
 		}
+	}
+
+
+	//Класс, описывающий ответ сервера в виде массива объектов (при поиске типа /1?text=26...)
+	public class LogServer_response
+	{
+		public string Service { get; set; }
+		public string Version { get; set; }
+		public string Client { get; set; }
+		public string ApplicationType { get; set; }
+		public string AppVersion { get; set; }
+		public string Type { get; set; }
+		public string Time { get; set; }
+		public string state { get; set; }
+		public string stateText { get; set; }
+	}
+
+	public class LogServer_feature
+	{
+		public LogServer_json_attrs attrs { get; set; }
+	}
+	/*
+	{
+   "Service": "nodeapi",
+   "Version": "1.0.0.22",
+   "Client ": "10.66.77.150 login log",
+   "ApplicationType ": "AppType expected",
+   "AppVersion": "NC",
+   "Type": "Login log",
+   "Time ": "2019-03-04T08:30:16.780Z",
+   "state": 200,
+   "stateText": "Server ok"
+}
+*/
+public class LogServer_json_attrs
+	{
+		public string address { get; set; }
+		public string cn { get; set; } // "cn": "26:05:043417:133", 
+		public string id { get; set; } // "id": "26:5:43417:133"
+	}
+
+
+	public class LogServer
+	{
+		public const string url_api = "http://82.119.138.82/node/log";
+		public LogServer_response jsonResponse; //Ответ сервера, краткий
+		public string TODO_TEst_URL;
+		public int Timeout;
+		public int ElapsedTime;
+		public System.Diagnostics.Stopwatch watch;
+
+		public LogServer()
+		{
+			this.watch = new System.Diagnostics.Stopwatch();
+		}
+
+		public bool Get_WebOnline_th(string query)
+		{
+			if (query == null) return false;
+			this.watch.Reset();
+			this.watch.Start();
+			try
+			{
+				WebRequest wrGETURL = null;
+				//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
+				wrGETURL = WebRequest.Create(url_api + "?AppType=" + query);
+				wrGETURL.Proxy = WebProxy.GetDefaultProxy();
+				wrGETURL.Timeout = this.Timeout;
+				Stream objStream;
+				WebResponse wr = wrGETURL.GetResponse();
+				objStream = wr.GetResponseStream();
+				if (objStream != null)
+				{
+					StreamReader objReader = new StreamReader(objStream);
+					string jsonResult = objReader.ReadToEnd();
+					objReader.Close();
+					//Понадобилась ссылка на System.Web.Extensions
+					System.Web.Script.Serialization.JavaScriptSerializer sr = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+					jsonResponse = sr.Deserialize<LogServer_response>(jsonResult);
+					if (jsonResponse != null)
+						if (jsonResponse.features != null)
+							if (jsonResponse.features.Count > 0) // на количество тоже надо проверять - бывают "пустые ответы", но со статусом 200 , т.е. ОК
+							{
+								this.watch.Stop();
+								return true;
+							}
+				}
+				this.watch.Stop();
+				return false;
+			}
+
+			catch (IOException ex)
+			{
+				// MessageBox.Show(ex.ToString());
+				this.watch.Stop();
+				return false;
+			}
+		}
+
+
 	}
 }
 

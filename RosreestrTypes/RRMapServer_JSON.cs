@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net; // http???
 using System.IO;
-using System.Web;
-using netFteo.Spatial;
 
 namespace RRTypes
 {
@@ -73,19 +69,21 @@ namespace RRTypes
         {
             public List<pkk5_json_feature> features { get; set; }
         }
+
         public class pkk5_json_feature
         {
             public pkk5_json_attrs attrs { get; set; }
             public pkk5_json_extent extent { get; set; }
             public pkk5_json_center center { get; set; }
         }
+
         public class pkk5_json_attrs
         {
             public string address { get; set; }
             public string cn { get; set; } // "cn": "26:05:043417:133", 
             public string id { get; set; } // "id": "26:5:43417:133"
-
         }
+
         public class pkk5_json_extent
         {
             public string xmax { get; set; }
@@ -103,10 +101,12 @@ namespace RRTypes
         {
             public pkk5_json_Ffeature feature { get; set; }
         }
+
         public class pkk5_json_Ffeature
         {
             public pkk5_json_Fattrs attrs { get; set; }
         }
+
         public class pkk5_json_Fattrs
         {
             public string address { get; set; }
