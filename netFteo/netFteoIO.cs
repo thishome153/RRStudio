@@ -1385,6 +1385,8 @@ namespace netFteo.IO
 	public class LogServer
 	{
 		public string url_api;
+		public string App_type;
+		public string App_Version;
 		public LogServer_response jsonResponse; //Ответ сервера, краткий
 		public string TODO_TEst_URL;
 		public int Timeout;
@@ -1393,9 +1395,11 @@ namespace netFteo.IO
 		public event EventHandler QueryStart; // Событие без данных, просто EventHandler
 		System.ComponentModel.BackgroundWorker BackgroundThread;
 		
-		public LogServer(string url)
+		public LogServer(string url, LogServer_response LogData)
 		{
 			this.url_api = url;
+			this.App_type = LogData.ApplicationType;
+			this.App_Version = LogData.AppVersion;
 			this.Timeout = 500;//System.Threading.Timeout.Infinite;
 			this.watch = new System.Diagnostics.Stopwatch();
 			this.BackgroundThread = new System.ComponentModel.BackgroundWorker();
@@ -1434,7 +1438,7 @@ namespace netFteo.IO
 		private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			this.OnQueryStart(new EventArgs());
-			Get_WebOnline_th(this.url_api);
+			Get_WebOnline_th(this.App_type + " " + this.App_Version);
 		}
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -1446,8 +1450,6 @@ namespace netFteo.IO
 			}
 		}
 
-
-
 		public bool Get_WebOnline_th(string query)
 		{
 			if (query == null) return false;
@@ -1457,7 +1459,9 @@ namespace netFteo.IO
 			{
 				WebRequest wrGETURL = null;
 				//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
-				wrGETURL = WebRequest.Create(url_api + "?AppType=" + query);
+				wrGETURL = WebRequest.Create(url_api + "?AppType=" + query+
+											"&UserName="+ netFteo.NetWork.NetWrapper.UserName+
+											"&Host=" + netFteo.NetWork.NetWrapper.Host);
 				wrGETURL.Proxy = WebProxy.GetDefaultProxy();
 				wrGETURL.Timeout = this.Timeout;
 				Stream objStream;

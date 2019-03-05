@@ -5283,9 +5283,16 @@ namespace XMLReaderCS
 
 		private void LogStarttoWebServer()
 		{
-			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log");
-		//	srv.Get_WebOnline_th("");
-		}
+			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log",
+				new netFteo.IO.LogServer_response()
+				{
+					ApplicationType = "XML Reader Desktop",
+					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+					Client = netFteo.NetWork.NetWrapper.UserName
+				});
+
+					//	srv.Get_WebOnline_th("");
+				}
 
         private void TV_Parcels_DoubleClick(object sender, EventArgs e)
         {

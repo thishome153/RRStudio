@@ -71,6 +71,7 @@
     <Compile Include="..\netFteo\RRCommon.cs">
       <Link>RRCommon.cs</Link>
     </Compile>
+    <Compile Include="netFteoNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
