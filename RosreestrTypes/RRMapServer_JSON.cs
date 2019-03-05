@@ -138,6 +138,7 @@ namespace RRTypes
                 if (area_type == "022") return "Значение площади отсутствует";
                 return "";
             }
+			public string retest = "ref";
             public string Unit2Str(string area_unit)
             {
                 if (area_unit == "003") return "мм";

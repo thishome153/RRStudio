@@ -206,12 +206,14 @@ namespace RRTypes.CommonCast
 				}
 				return PolyCollection;
 			}
-
-
-
-
-
 		}
+
+		/// <summary>
+		/// Cast Entity for OKS  
+		/// </summary>
+		/// <param name="Definition"></param>
+		/// <param name="ES"></param>
+		/// <returns></returns>
 		public static Object ES_OKS(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
 		{
 			if (ES == null) return null;
@@ -225,7 +227,9 @@ namespace RRTypes.CommonCast
 					netFteo.Spatial.Point P = new netFteo.Spatial.Point();
 					P.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[ip].Ordinate.X);
 					P.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[ip].Ordinate.Y);
-					P.NumGeopointA = ES.SpatialElement[0].SpelementUnit[ip].Ordinate.NumGeopoint;
+					P.NumGeopointA = ES.SpatialElement[0].SpelementUnit[ip].Ordinate.NumGeopoint != null ?  ES.SpatialElement[0].SpelementUnit[ip].Ordinate.NumGeopoint :
+									P.NumGeopointA = ES.SpatialElement[0].SpelementUnit[ip].SuNmb;
+
 					P.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[ip].Ordinate.DeltaGeopoint);
 					fES.AddPoint(P);
 				}
@@ -241,7 +245,8 @@ namespace RRTypes.CommonCast
 						netFteo.Spatial.Point P = new netFteo.Spatial.Point();
 						P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 						P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-						P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+						P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint !=null? ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint:
+							ES.SpatialElement[i].SpelementUnit[ip].SuNmb;
 						P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
 						ESch.AddPoint(P);
 					}
@@ -1097,7 +1102,7 @@ namespace RRTypes.CommonCast
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
 			else
-			{ int test = 0; }
+		
 			if (location.inBounds != null)
 				loc.Inbounds = location.inBounds.ToString();
 
@@ -1538,9 +1543,8 @@ namespace RRTypes.CommonCast
 				}
 			}
 			return EntSpat;
-
-			return null;
 		}
+
 		public static TPolygonCollection ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
 		{
 			TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
@@ -3069,7 +3073,6 @@ namespace RRTypes.CommonParsers
 					loc.Elaboration.Distance = netFteo.XML.XMLWrapper.SelectNodeChildValue(elaboration, "Distance");
 			}
 			else
-			{ int test = 0; }
 			if (netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "inBounds") != null)
 				loc.Inbounds = netFteo.XML.XMLWrapper.SelectNodeChildValue(xmllocation, "inBounds");
 
@@ -4598,8 +4601,29 @@ namespace RRTypes.CommonParsers
 				Bl.AddOKS(Bld);
 				res.MyBlocks.Blocks.Add(Bl);
 			}
+			
+			//Uncompleted
+			if (kv.Realty.Uncompleted != null)
+			{
+				TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Uncompleted.CadastralBlocks[0].ToString());
+				TMyRealty Unc = new TMyRealty(kv.Realty.Uncompleted.CadastralNumber, dRealty_v03.Объект_незавершённого_строительства);
+				Unc.DateCreated = (kv.Realty.Uncompleted.DateCreatedSpecified) ? kv.Realty.Uncompleted.DateCreated.ToString().Replace("0:00:00", "") : "";
+				if (kv.Realty.Uncompleted.ParentCadastralNumbers != null)
+					Unc.ParentCadastralNumbers.AddRange(kv.Realty.Uncompleted.ParentCadastralNumbers);
+				Unc.Uncompleted.AssignationName = kv.Realty.Uncompleted.AssignationName;
+				Unc.Location.Address = CommonCast.CasterOKS.CastAddress(kv.Realty.Uncompleted.Address);
+				Unc.Uncompleted.ES = CommonCast.CasterOKS.ES_OKS(kv.Realty.Uncompleted.CadastralNumber, kv.Realty.Uncompleted.EntitySpatial);
+				Unc.Uncompleted.DegreeReadiness  = kv.Realty.Uncompleted.DegreeReadiness.ToString();
+				Unc.Rights = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
 
+				foreach (kvoks_v07.tOldNumber n in kv.Realty.Uncompleted.OldNumbers)
+					Unc.Building.OldNumbers.Add(new TKeyParameter() { Type = dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
+				res.CommentsType = " Особые отметки";
+				res.Comments = Unc.Notes;
+				Bl.AddOKS(Unc);
+				res.MyBlocks.Blocks.Add(Bl);
+			}
 
 			if (kv.Realty.Construction != null)
 			{

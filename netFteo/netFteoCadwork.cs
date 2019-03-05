@@ -7,8 +7,7 @@ namespace netFteo
 {
    class TCadwork
     {
-       public int Parent_id;
-       public int CodeType;
+
        public Spatial.PointList Points;
        public Spatial.TMyParcelCollection Parcels;
        public NikonRaw.TNikonRaw RawData;

@@ -104,7 +104,7 @@ namespace netFteo.IO
 								//Внутренние границы
 								goto nextPolygonstring;
 
-							ChildsHere:
+								ChildsHere:
 
 								if (line.Contains("Child"))
 								{
@@ -126,12 +126,12 @@ namespace netFteo.IO
 										line = readFile.ReadLine();
 									}
 								}
-							nextPolygonstring: line = readFile.ReadLine();
+								nextPolygonstring: line = readFile.ReadLine();
 							}
 							resPolys.AddPolygon(resPoly);
 						}
 					}
-				next:;
+					next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -486,8 +486,8 @@ namespace netFteo.IO
 				return null;
 				//  MessageBox.Show(ex.ToString());
 			}
-			return null;
 		}
+
 		private TMyPolygon ImportNXYZDFile2014(string Fname)
 		{
 			try
@@ -527,7 +527,7 @@ namespace netFteo.IO
 						FilePoint.Description = SplittedStr[4].ToString();
 						resPoly.AddPoint(FilePoint);
 					}
-				next:;
+					next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -538,8 +538,8 @@ namespace netFteo.IO
 				return null;
 				//  MessageBox.Show(ex.ToString());
 			}
-			return null;
 		}
+
 		private TPolygonCollection ImportNXYZDFile2015(string Fname)
 		{
 			TPolygonCollection resPolys = new TPolygonCollection();
@@ -585,7 +585,7 @@ namespace netFteo.IO
 								resPoly.AddPoint(FilePoint);
 								//Внутренние границы
 								goto nextPolygonstring;
-							ChildsHere:
+								ChildsHere:
 
 								if (line.Contains("Child"))
 								{
@@ -606,12 +606,12 @@ namespace netFteo.IO
 										line = readFile.ReadLine();
 									}
 								}
-							nextPolygonstring: line = readFile.ReadLine();
+								nextPolygonstring: line = readFile.ReadLine();
 							}
 							resPolys.AddPolygon(resPoly);
 						}
 					}
-				next:;
+					next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -622,7 +622,6 @@ namespace netFteo.IO
 				//  MessageBox.Show(ex.ToString());
 				return null;
 			}
-			return null;
 		}
 		private TPolygonCollection ImportNXYZDFile2016(string Fname)
 		{
@@ -671,7 +670,7 @@ namespace netFteo.IO
 								resPoly.AddPoint(FilePoint);
 								//Внутренние границы
 								goto nextPolygonstring;
-							ChildsHere:
+								ChildsHere:
 
 								if (line.Contains("Child"))
 								{
@@ -693,12 +692,12 @@ namespace netFteo.IO
 										line = readFile.ReadLine();
 									}
 								}
-							nextPolygonstring: line = readFile.ReadLine();
+								nextPolygonstring: line = readFile.ReadLine();
 							}
 							resPolys.AddPolygon(resPoly);
 						}
 					}
-				next:;
+					next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -773,7 +772,7 @@ namespace netFteo.IO
 								resPoly.AddPoint(FilePoint);
 								//Внутренние границы
 								goto nextPolygonstring;
-							ChildsHere:
+								ChildsHere:
 
 								if (line.Contains("Child"))
 								{
@@ -808,12 +807,12 @@ namespace netFteo.IO
 										line = readFile.ReadLine();
 									}
 								}
-							nextPolygonstring: line = readFile.ReadLine();
+								nextPolygonstring: line = readFile.ReadLine();
 							}
 							resPolys.AddPolygon(resPoly);
 						}
 					}
-				next:;
+					next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -824,10 +823,7 @@ namespace netFteo.IO
 				//  MessageBox.Show(ex.ToString());
 				return null;
 			}
-			return null;
 		}
-
-
 	}
 
 	public class TextWriter
@@ -1415,7 +1411,6 @@ namespace netFteo.IO
 
 		// Own events:
 		public event EventHandler QuerySuccefull; // Событие без данных, просто EventHandler
-		public event EventHandler LogStart; // Событие без данных, просто EventHandler
 
 		protected virtual void OnQueryStart(EventArgs e)
 		{
@@ -1489,6 +1484,7 @@ namespace netFteo.IO
 			catch (IOException ex)
 			{
 				// MessageBox.Show(ex.ToString());
+				string g= ex.Message;
 				this.watch.Stop();
 				return false;
 			}

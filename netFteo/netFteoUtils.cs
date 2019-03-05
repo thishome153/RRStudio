@@ -19,7 +19,7 @@ namespace netFteo
  public static string  ReplaceComma(string  Texts)
     {
 
- int FindPosition= 0;
+
      string Result = Texts;
      /* 
      FindPosition = pos(',',Result);

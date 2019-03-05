@@ -3850,7 +3850,6 @@ namespace netDxf
             Vector3? endTangent = null;
 
             // fit points variable (not used)
-            int numFitPoints = 0;
             List<Vector3> fitPoints = new List<Vector3>();
             double fitX = 0;
             double fitY = 0;

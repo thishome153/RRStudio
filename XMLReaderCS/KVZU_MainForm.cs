@@ -5286,7 +5286,7 @@ namespace XMLReaderCS
 			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log",
 				new netFteo.IO.LogServer_response()
 				{
-					ApplicationType = "XML Reader Desktop",
+					ApplicationType = "XMLReader (debug) Desktop",
 					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
 					Client = netFteo.NetWork.NetWrapper.UserName
 				});
