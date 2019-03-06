@@ -51,6 +51,7 @@ namespace XMLReaderCS
         //public string FilePath;        
         string pathToHtmlFile;
         string hrefToXSLT;
+		string AppConfiguration;
         string[] args; //Аргументы коммандной строки
 
         /// <summary>
@@ -5234,15 +5235,36 @@ namespace XMLReaderCS
 
         private void KVZU_Form_Load(object sender, EventArgs e)
         {
-            if ((int)this.Tag == 3) // load from NET application
+#if (DEBUG)
+			this.AppConfiguration = "DEBUG";
+			this.Text += "/DEBUG {2019}";
+			debugToolStripMenuItem.Visible = true;
+			картапланToolStripMenuItem.Visible = true;
+			сКПТToolStripMenuItem.Visible = true;
+			fteoImage.Visible = true;
+			pkk5Viewer1.Start("26:05:043433", pkk5_Types.Block);
+			//TMyPoints test = new TMyPoints();
+			//test.PoininTest();
+#else
+			this.AppConfiguration = "";
+            debugToolStripMenuItem.Visible = false;
+            картапланToolStripMenuItem.Visible = false;
+            сКПТToolStripMenuItem.Visible = false;
+			fteoImage.Visible = false;
+#endif
+
+			if ((int)this.Tag == 3) // load from NET application
             {
                 this.Text = "XMl Reader в составе приложения";
                 this.ShowInTaskbar = true;
-            }
+				LogStarttoWebServer("XMl Reader Slaveform");
+
+			}
             else
             {  // load as standalone application with args in cli:
                 this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
-                this.ShowInTaskbar = true;
+				LogStarttoWebServer("XMl Reader Desktop");
+				this.ShowInTaskbar = true;
                 args = Environment.GetCommandLineArgs();
                 if (args.Length > 1)
                 {
@@ -5259,34 +5281,18 @@ namespace XMLReaderCS
             //anyway - MyBlocks must be exist at this point:
             ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
             ListFileInfo(DocInfo);
-#if (DEBUG)
-            this.Text += "/DEBUG {2019}";
-
-            debugToolStripMenuItem.Visible = true;
-            картапланToolStripMenuItem.Visible = true;
-            сКПТToolStripMenuItem.Visible = true;
-			fteoImage.Visible = true;
-			pkk5Viewer1.Start("26:05:043433", pkk5_Types.Block);
-				//TMyPoints test = new TMyPoints();
-			//test.PoininTest();
-#else
-            debugToolStripMenuItem.Visible = false;
-            картапланToolStripMenuItem.Visible = false;
-            сКПТToolStripMenuItem.Visible = false;
-			fteoImage.Visible = false;
-#endif
 			this.TextDefault = this.Text;
             ClearFiles();
-			LogStarttoWebServer();
         }
 
 
-		private void LogStarttoWebServer()
+		private void LogStarttoWebServer(string AppTypeName)
 		{
+
 			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log",
 				new netFteo.IO.LogServer_response()
 				{
-					ApplicationType = "XMLReader (debug) Desktop",
+					ApplicationType = AppTypeName +" "+ this.AppConfiguration,
 					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
 					Client = netFteo.NetWork.NetWrapper.UserName
 				});
