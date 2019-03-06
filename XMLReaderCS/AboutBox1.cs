@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-
+using netFteo.Runtime;
 namespace XMLReaderCS
 {
     partial class AboutBox1 : Form
@@ -32,7 +32,10 @@ namespace XMLReaderCS
             {
                 this.textBoxDescription.AppendText("\r\n "+ass);
             }
-        }
+			this.textBoxDescription.AppendText("\r\n Operation System Information:");
+			this.textBoxDescription.AppendText("\r\n"+ OSInfo.Name+" " + OSInfo.Edition + " " +OSInfo.ServicePack);
+			this.textBoxDescription.AppendText("\r\n Version " + OSInfo.VersionString +" " +  OSInfo.Bits + "bit");
+		}
 
         #region Методы доступа к атрибутам сборки
 
