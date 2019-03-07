@@ -1433,7 +1433,7 @@ namespace netFteo.IO
 		private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			this.OnQueryStart(new EventArgs());
-			Get_WebOnline_th(this.App_type + " " + this.App_Version);
+			Get_WebOnline_th(this.App_type);
 		}
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -1455,7 +1455,8 @@ namespace netFteo.IO
 				WebRequest wrGETURL = null;
 				//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
 				wrGETURL = WebRequest.Create(url_api + "?AppType=" + query+
-											"&UserName="+ netFteo.NetWork.NetWrapper.UserName+
+											"&AppVer=" + this.App_Version+
+											"&UserName=" + netFteo.NetWork.NetWrapper.UserName+
 											"&Host=" + netFteo.NetWork.NetWrapper.Host);
 				wrGETURL.Proxy = WebProxy.GetDefaultProxy();
 				wrGETURL.Timeout = this.Timeout;

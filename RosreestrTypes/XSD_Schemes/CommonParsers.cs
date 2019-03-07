@@ -4613,6 +4613,7 @@ namespace RRTypes.CommonParsers
 				Unc.Uncompleted.AssignationName = kv.Realty.Uncompleted.AssignationName;
 				Unc.Location.Address = CommonCast.CasterOKS.CastAddress(kv.Realty.Uncompleted.Address);
 				Unc.Uncompleted.ES = CommonCast.CasterOKS.ES_OKS(kv.Realty.Uncompleted.CadastralNumber, kv.Realty.Uncompleted.EntitySpatial);
+				Unc.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Uncompleted.ObjectType);
 				Unc.Uncompleted.DegreeReadiness  = kv.Realty.Uncompleted.DegreeReadiness.ToString();
 				Unc.Rights = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
 

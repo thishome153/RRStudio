@@ -2726,12 +2726,15 @@ namespace XMLReaderCS
                         LV.Items.Add(LViAr);
                     }
 
-					ListViewItem LViFloors = new ListViewItem();
-					LViFloors.Text = "Количество этажей";
-					LViFloors.SubItems.Add(P.Floors);
-					if (P.UndergroundFloors != "")
-						LViFloors.SubItems.Add(" подземных " + P.UndergroundFloors);
-					LV.Items.Add(LViFloors);
+					if (P.Floors != null)
+					{
+						ListViewItem LViFloors = new ListViewItem();
+						LViFloors.Text = "Количество этажей";
+						LViFloors.SubItems.Add(P.Floors);
+						if (P.UndergroundFloors != null)
+							LViFloors.SubItems.Add(" подземных " + P.UndergroundFloors);
+						LV.Items.Add(LViFloors);
+					}
 					KeyParametersToListView(LV, P.KeyParameters);
                 }
 
@@ -5294,6 +5297,7 @@ namespace XMLReaderCS
 				{
 					ApplicationType = AppTypeName +" "+ this.AppConfiguration,
 					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+					state= "ste",
 					Client = netFteo.NetWork.NetWrapper.UserName
 				});
 

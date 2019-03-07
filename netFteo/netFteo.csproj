@@ -296,23 +296,11 @@
   <ItemGroup>
     <Content Include="IPoint_TODO.txt" />
     <Compile Include="netFteoRuntime.cs" />
-    <Content Include="Schemes\Polygon.xml">
-      <CustomToolNamespace>netFteo.BaseClasess</CustomToolNamespace>
-    </Content>
     <Content Include="Schemes\Contours_.xml">
       <CustomToolNamespace>netFteo.BaseClasess</CustomToolNamespace>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Schemes\Contours_.xsc">
-      <DependentUpon>Contours_.xsd</DependentUpon>
-    </None>
-    <None Include="Schemes\Contours_.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemes\Contours_.xss">
-      <DependentUpon>Contours_.xsd</DependentUpon>
-    </None>
     <None Include="Schemes\Points.xsc">
       <DependentUpon>Points.xsd</DependentUpon>
     </None>
@@ -328,7 +316,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2000/1/1" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2000/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

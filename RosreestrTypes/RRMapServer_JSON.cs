@@ -10,7 +10,7 @@ namespace RRTypes
     {
 
         /// <summary>
-        /// Парсер JSON протокола сервера Росреестра. Сущность - ответ сервера
+        /// Парсер JSON протокола сервера Росреестра. Сущность - ответ сервера ppk5.rosreestr.ru
         /// </summary>
         public class JSON_Response
         {
