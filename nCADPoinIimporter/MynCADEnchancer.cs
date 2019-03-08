@@ -22,10 +22,19 @@
 
         public class MynCADEnchancer
     {
+		public MynCADEnchancer()
+		{
+			LogStarttoWebServer("Nanocad .NET plugin");
+			DocumentCollection dm = Platform.ApplicationServices.Application.DocumentManager;
+			// Get the command line editor object
+			Editor ed = dm.MdiActiveDocument.Editor;
+			ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
+			ed.WriteMessage("\nInstance created. Log success");
+		}
             private bool ParseData(DocumentCollection dm, Editor ed, PromptFileNameResult sourceFileName, TPolygonCollection FteoFile)
             {
                 if (FteoFile == null) return false;
-                ed.WriteMessage("\nFixosoft Nanocad Enchancer @2015-18. v" + AssemblyVersion());
+                ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
                 ed.WriteMessage("\nОбработка файла " + Path.GetFileNameWithoutExtension(sourceFileName.StringResult));
                 ed.WriteMessage("\nРазбор файла  " + sourceFileName.StringResult);
                 if (FteoFile.Count == 0) { ed.WriteMessage("\nОшибка файла - пустой файл. Проверьте формат и файл!"); return false; };
@@ -730,7 +739,29 @@
             return fvi.FileVersion;
         }
 
-    }
+		private void LogStarttoWebServer(string AppTypeName)
+		{
+			string AppConfiguration;
+#if (DEBUG)
+			AppConfiguration = "DEBUG";
+#else
+			AppConfiguration = "";
+#endif
+			IO.LogServer srv = new IO.LogServer("82.119.136.82",
+				new IO.LogServer_response()
+				{
+					ApplicationType = AppTypeName + " " + AppConfiguration,
+					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+
+					Client = NetWork.NetWrapper.UserName
+				});
+
+			//	srv.Get_WebOnline_th("");
+		}
+
+
+
+	}
 }
  
 

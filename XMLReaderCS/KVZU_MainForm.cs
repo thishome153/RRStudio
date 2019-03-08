@@ -5292,17 +5292,17 @@ namespace XMLReaderCS
 		private void LogStarttoWebServer(string AppTypeName)
 		{
 
-			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("http://82.119.136.82/node/log",
+			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("82.119.136.82",
 				new netFteo.IO.LogServer_response()
 				{
-					ApplicationType = AppTypeName +" "+ this.AppConfiguration,
+					ApplicationType = AppTypeName + " " + this.AppConfiguration,
 					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-					state= "ste",
+					state = "ste",
 					Client = netFteo.NetWork.NetWrapper.UserName
 				});
 
-					//	srv.Get_WebOnline_th("");
-				}
+			//	srv.Get_WebOnline_th("");
+		}
 
         private void TV_Parcels_DoubleClick(object sender, EventArgs e)
         {
@@ -5410,6 +5410,16 @@ namespace XMLReaderCS
                 PointListToListView(listView1, Pl);
             }
         }
-    }
+
+		private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			if (Pl != null)
+			{
+				Pl.Reverse_Points();
+				PointListToListView(listView1, Pl);
+			}
+		}
+	}
 }
 

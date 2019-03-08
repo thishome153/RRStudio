@@ -175,6 +175,7 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+			this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -1025,9 +1026,10 @@
             this.MoveUpMenuItem,
             this.фиксироватьToolStripMenuItem,
             this.изменитьToolStripMenuItem,
-            this.замкнутьToolStripMenuItem});
+            this.замкнутьToolStripMenuItem,
+            this.обратныйПорядокToolStripMenuItem});
 			this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 202);
+			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 246);
 			this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
 			// 
 			// ChangeXYToolStripMenuItem
@@ -1504,6 +1506,13 @@
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
 			// 
+			// обратныйПорядокToolStripMenuItem
+			// 
+			this.обратныйПорядокToolStripMenuItem.Name = "обратныйПорядокToolStripMenuItem";
+			this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
+			this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
+			// 
 			// KVZU_Form
 			// 
 			this.AllowDrop = true;
@@ -1696,6 +1705,7 @@
         private System.Windows.Forms.ToolStripMenuItem фиксироватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem изменитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem замкнутьToolStripMenuItem;
-    }
+		private System.Windows.Forms.ToolStripMenuItem обратныйПорядокToolStripMenuItem;
+	}
 }
 

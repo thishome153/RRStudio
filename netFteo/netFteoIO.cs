@@ -1362,7 +1362,7 @@ namespace netFteo.IO
 		public string stateText { get; set; }
 	}
 
-	
+
 	/*
 	{
    "Service": "nodeapi",
@@ -1377,10 +1377,14 @@ namespace netFteo.IO
 }
 */
 
+	
 
 	public class LogServer
 	{
-		public string url_api;
+		public const string Protocol = "http://";
+		private const string ServiceURL = "/node/log";
+		private string fServiceHost;
+		private string url_api;
 		public string App_type;
 		public string App_Version;
 		public LogServer_response jsonResponse; //Ответ сервера, краткий
@@ -1391,12 +1395,13 @@ namespace netFteo.IO
 		public event EventHandler QueryStart; // Событие без данных, просто EventHandler
 		System.ComponentModel.BackgroundWorker BackgroundThread;
 		
-		public LogServer(string url, LogServer_response LogData)
+		public LogServer(string ServiceHost, LogServer_response LogData)
 		{
-			this.url_api = url;
+			this.fServiceHost = ServiceHost;
+			this.url_api = Protocol + fServiceHost + ServiceURL;
 			this.App_type = LogData.ApplicationType;
 			this.App_Version = LogData.AppVersion;
-			this.Timeout = 500;//System.Threading.Timeout.Infinite;
+			this.Timeout = 1500;//System.Threading.Timeout.Infinite;
 			this.watch = new System.Diagnostics.Stopwatch();
 			this.BackgroundThread = new System.ComponentModel.BackgroundWorker();
 			BackgroundThread.DoWork += backgroundWorker_DoWork;

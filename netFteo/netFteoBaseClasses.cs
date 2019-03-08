@@ -1357,6 +1357,19 @@ SCAN:
             }
         }
 
+		public void Reverse_Points()
+		{
+			TMyOutLayer tmpList = new TMyOutLayer();
+			//for (int i = this.Count-1 ; i <= this.Count - 1; i++)
+			int count = this.Count;
+			foreach(Point pt in this)
+			{
+				tmpList.AddPoint(this[(count--) - 1]);
+			}
+			this.Clear();
+			this.ImportObjects(tmpList);
+		}
+
         public int Reorder_Points(int StartIndex)
         {
             foreach (Point pt in this)
