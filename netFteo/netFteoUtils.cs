@@ -127,7 +127,7 @@ namespace netFteo
         }
         
 
-        public static void ListEntSpat(TreeNode NodeTo, netFteo.Spatial.TMyPolygon ES, string NodeName,string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo,Spatial.TMyPolygon ES, string NodeName,string Definition, int Status)
         {
             if (ES == null) return;
             TreeNode       Node = NodeTo.Nodes.Add(NodeName+ ES.Layer_id.ToString(), Definition);
@@ -143,13 +143,12 @@ namespace netFteo
         }
 
 
-        public static void ListEntSpat(TreeNode NodeTo, netFteo.Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
         {
             if (ES == null) return;
             TreeNode Node = NodeTo.Nodes.Add("TPLines." + ES.ParentID.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status);
             Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
-
 
             for (int i = 0; i <= ES.Count - 1; i++)
             {
@@ -159,17 +158,24 @@ namespace netFteo
         }
 
 
-        public static void ListEntSpat(TreeNode NodeTo, netFteo.Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
         {
             if (ES == null) return;
             TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.Layer_id.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status);
             Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
-
         }
 
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string NodeName, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode Node = NodeTo.Nodes.Add("TCircle." + ES.id.ToString(), Definition);
+			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
+			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+		}
 
-        public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
+
+		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
         {
             if (ES == null) return null;
             ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);

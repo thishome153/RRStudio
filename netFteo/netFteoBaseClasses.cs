@@ -464,18 +464,18 @@ namespace netFteo.Spatial
     /// <summary>
     /// Circle. Just circle
     /// </summary>
-    public class TCircle : Geometry
+    public class TCircle : Point
     {
         /// <summary>
         /// Radius
         /// </summary>
         public double R;
-        public Coordinate Center;
-        public TCircle(double x, double y, double radius)
+        //public Point Center;
+        public TCircle(decimal x, decimal y, decimal radius)
         {
-            this.Center.X = x;
-            this.Center.Y = y;
-            this.R = radius;
+			this.x = Convert.ToDouble(x);
+            this.y = Convert.ToDouble(y);
+            this.R = Convert.ToDouble(radius);
         }
     }
 
@@ -2840,6 +2840,7 @@ SCAN:
         public string AssignationName;  // Назначение сооружения; 
         //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
         public TKeyParameters KeyParameters; // 
+		
 		public Object ES
         {
             get { return this.fEntitySpatial; }
@@ -2853,10 +2854,14 @@ SCAN:
 
                 if (value.GetType().Name == "TPolyLines")
                     this.fEntitySpatial = (TPolyLines)value;
-
-            }
+				
+				if (value.GetType().Name == "TCircle")
+					this.fEntitySpatial = (TCircle)value;
+			}
         }
-        public TConstruction()
+		
+		public TEntitySpatial ES2;
+		public TConstruction()
         {
             this.KeyParameters = new TKeyParameters();
         }
@@ -2884,6 +2889,9 @@ SCAN:
 
             }
         }
+
+	
+
         public TUncompleted()
         {
             this.KeyParameters = new TKeyParameters();
@@ -3637,6 +3645,7 @@ SCAN:
             else
                 return null;
         }
+
         public Object GetEs(int Layer_id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
@@ -3650,6 +3659,7 @@ SCAN:
             }
             return null;
         }
+
         /// <summary>
         /// Выборка ОИПД из коллекции зон
         /// </summary>
@@ -3732,7 +3742,7 @@ SCAN:
     #endregion
 
     #region Полилиния (знает площадь)
-    public class TPolyLine : TMyOutLayer
+    public class TPolyLine : TMyOutLayer, IGeometry
     {
         public double Length()
         {
@@ -3750,14 +3760,20 @@ SCAN:
     }
 
 
-    public class TPolyLines : BindingList<TPolyLine>
-    {
-        public int ParentID;
-        public TPolyLines(int parentid)
-        {
-            this.ParentID = parentid;
-        }
-    }
+	public class TPolyLines : BindingList<TPolyLine>
+	{
+		public int ParentID;
+		public TPolyLines(int parentid)
+		{
+			this.ParentID = parentid;
+		}
+	}
+
+	public class TEntitySpatial : List<IGeometry>
+	{
+
+	}
+
     #endregion
 }
 

@@ -1904,25 +1904,59 @@ namespace XMLReaderCS
                 }
             }
 
-            if (oks.Construction != null) //.Type == "Сооружение")
-            {
-                ListOldNumbers(PNode,oks.Construction.OldNumbers);
-                if (oks.Construction.ES != null)
-                {
+			if (oks.Construction != null) //.Type == "Сооружение")
+			{
+				ListOldNumbers(PNode, oks.Construction.OldNumbers);
+				/*
+				if (oks.Construction.ES != null)
+				{
 
 
-                    if (oks.Construction.ES.GetType().Name == "TMyPolygon")
-                    {
-                        if (((TMyPolygon)oks.Construction.ES).PointCount > 0)
-                            netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Construction.ES, "SPElem.", "Границы", 6);
-                    }
+					if (oks.Construction.ES.GetType().Name == "TMyPolygon")
+					{
+						if (((TMyPolygon)oks.Construction.ES).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Construction.ES, "SPElem.", "Границы", 6);
+					}
 
-                    if (oks.Construction.ES.GetType().Name == "TPolyLines")
-                    {
-                        netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Construction.ES, "SPElem.", "ПолиЛинии", 6);
-                    }
-                }
-            }
+
+					if (oks.Construction.ES.GetType().Name == "TPolyLines")
+					{
+						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Construction.ES, "SPElem.", "ПолиЛинии", 6);
+					}
+
+					if (oks.Construction.ES.GetType().Name == "TCircle")
+					{
+						netFteo.ObjectLister.ListEntSpat(PNode, (TCircle)oks.Construction.ES, "SPElem.", "Окружность", 6);
+					}
+				}
+				*/
+
+				if (oks.Construction.ES2 != null)
+				{
+					TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
+					foreach (IGeometry feature in oks.Construction.ES2)
+					{
+						string testNAme = feature.GetType().Name;
+						if (feature.GetType().Name == "TMyPolygon")
+						{
+							if (((TMyPolygon)feature).PointCount > 0)
+								netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.", "Полигон", 6);
+						}
+
+						if (feature.GetType().Name == "TPolyLine")
+						{
+							if (((TPolyLine)feature).PointCount > 0)
+								netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", "Ломаная", 6);
+						}
+
+						if (feature.GetType().Name == "TCircle")
+						{
+							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", "Окружность", 6);
+						}
+
+					}
+				}
+			}
 
 			if (oks.Uncompleted != null) //.Type == "Сооружение")
 			{
@@ -2977,8 +3011,8 @@ namespace XMLReaderCS
                 PropertiesToListView(listView_Properties, Pl);
             }
 
-            //Стереть предыдыущее изображение
-            /*
+			//Стереть предыдыущее изображение
+			/*
                    if (toolStripMI_ShowES.Checked)
                    {
                        ViewWindow.Spatial = Pl;
@@ -2989,17 +3023,27 @@ namespace XMLReaderCS
                    }
                    */
 
-            if (STrN.Name.Contains("TPolyLine."))
-            {
-                int chek_id = Convert.ToInt32(STrN.Name.Substring(10));
-                Object Entity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
-                if (Entity != null)
-                {
-                    PointListToListView(listView1, (PointList) Entity);
-                }
-              }
+			if (STrN.Name.Contains("TPolyLine."))
+			{
+				int chek_id = Convert.ToInt32(STrN.Name.Substring(10));
+				Object Entity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+				if (Entity != null)
+				{
+					PointListToListView(listView1, (PointList)Entity);
+				}
+			}
 
-            if (STrN.Name.Contains("PNode"))
+			if (STrN.Name.Contains("TCircle."))
+			{
+				int chek_id = Convert.ToInt32(STrN.Name.Substring(8));
+				Object Entity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
+				if (Entity != null)
+				{
+					PointListToListView(listView1, (PointList)Entity);
+				}
+			}
+
+			if (STrN.Name.Contains("PNode"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
