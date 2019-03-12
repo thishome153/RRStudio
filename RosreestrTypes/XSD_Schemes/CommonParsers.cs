@@ -282,7 +282,6 @@ namespace RRTypes.CommonCast
 
 
 		}
-
 		public static TMyPolygon ES_OKS(string Definition, STD_TPV02.Entity_Spatial ES)
 		{
 			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
@@ -320,7 +319,6 @@ namespace RRTypes.CommonCast
 			}
 			return EntSpat;
 		}
-
 		public static Object ES_OKS(string Definition, V03_TP.tEntitySpatialOKSInp ES)
 		{
 			if (ES == null) return null;
@@ -392,7 +390,49 @@ namespace RRTypes.CommonCast
 
 
 		}
+		public static TEntitySpatial ES_OKS2(string Definition, STD_TPV02.Entity_Spatial ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
 
+			for (int i = 0; i <= ES.Spatial_Element.Count - 1; i++)
+			{
+				if (ES.Spatial_Element[i].Spelement_Unit[0].Ordinate[0].X == ES.Spatial_Element[i].Spelement_Unit[ES.Spatial_Element[i].Spelement_Unit.Count() - 1].Ordinate[0].X)
+				{
+					TMyPolygon Polygon = new TMyPolygon();
+					Polygon.Definition = ES.Spatial_Element[i].Number;
+					//OUT ring
+					for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
+					{
+						Point P = new Point();
+						P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
+						P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
+						P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
+						P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
+						Polygon.AddPoint(P);
+					}
+
+
+					//childs inner ring
+					for (int ii = 1; ii <= ES.Spatial_Element.Count - 1; ii++)
+					{
+						TMyOutLayer ESch = Polygon.AddChild();
+
+						for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
+						{
+							netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+							P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
+							P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
+							P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
+							P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
+							ESch.AddPoint(P);
+						}
+					}
+					res.Add(Polygon);
+				}
+			}
+			return res;
+		}
 		public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -407,7 +447,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
 					res.Add(fES);
 				}
 
@@ -449,6 +489,291 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
+						line.Layer_id = Gen_id.newId;
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+						}
+						res.Add(line);
+					}
+				}
+			}
+			return res;
+		}
+		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
+
+			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+			{
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Окружность)
+				{
+					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+											  ES.SpatialElement[i].SpelementUnit[0].R);
+					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					res.Add(fES);
+				}
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Точка)
+				{
+					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+					{
+						TMyPolygon Polygon = new TMyPolygon();
+						Polygon.Definition = ES.SpatialElement[i].Number;
+						//OUT ring
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = new Point();
+							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+							Polygon.AddPoint(P);
+						}
+
+
+						//childs inner ring
+						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+						{
+							TMyOutLayer ESch = Polygon.AddChild();
+
+							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+							{
+								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								ESch.AddPoint(P);
+							}
+						}
+						res.Add(Polygon);
+					}
+					else
+					{   //unclosed line - polyline
+						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
+						line.Layer_id = Gen_id.newId;
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+						}
+						res.Add(line);
+					}
+				}
+			}
+			return res;
+		}
+		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
+
+			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+			{
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit ==  kpoks_v04.tSpelementUnitZUOutTypeUnit.Окружность)
+				{
+					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+											  ES.SpatialElement[i].SpelementUnit[0].R);
+					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					res.Add(fES);
+				}
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v04.tSpelementUnitZUOutTypeUnit.Точка)
+				{
+					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+					{
+						TMyPolygon Polygon = new TMyPolygon();
+						Polygon.Definition = ES.SpatialElement[i].Number;
+						//OUT ring
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = new Point();
+							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+							Polygon.AddPoint(P);
+						}
+
+
+						//childs inner ring
+						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+						{
+							TMyOutLayer ESch = Polygon.AddChild();
+
+							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+							{
+								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								ESch.AddPoint(P);
+							}
+						}
+						res.Add(Polygon);
+					}
+					else
+					{   //unclosed line - polyline
+						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
+						line.Layer_id = Gen_id.newId;
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+						}
+						res.Add(line);
+					}
+				}
+			}
+			return res;
+		}
+		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
+
+			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+			{
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Окружность)
+				{
+					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+											  ES.SpatialElement[i].SpelementUnit[0].R);
+					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					res.Add(fES);
+				}
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Точка)
+				{
+					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+					{
+						TMyPolygon Polygon = new TMyPolygon();
+						Polygon.Definition = ES.SpatialElement[i].Number;
+						//OUT ring
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = new Point();
+							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+							Polygon.AddPoint(P);
+						}
+
+
+						//childs inner ring
+						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+						{
+							TMyOutLayer ESch = Polygon.AddChild();
+
+							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+							{
+								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								ESch.AddPoint(P);
+							}
+						}
+						res.Add(Polygon);
+					}
+					else
+					{   //unclosed line - polyline
+						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
+						line.Layer_id = Gen_id.newId;
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+						}
+						res.Add(line);
+					}
+				}
+			}
+			return res;
+		}
+		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
+
+			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+			{
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Окружность)
+				{
+					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+											  ES.SpatialElement[i].SpelementUnit[0].R);
+					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					res.Add(fES);
+				}
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Точка)
+				{
+					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+					{
+						TMyPolygon Polygon = new TMyPolygon();
+						Polygon.Definition = ES.SpatialElement[i].Number;
+						//OUT ring
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = new Point();
+							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+							Polygon.AddPoint(P);
+						}
+
+
+						//childs inner ring
+						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+						{
+							TMyOutLayer ESch = Polygon.AddChild();
+
+							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+							{
+								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								ESch.AddPoint(P);
+							}
+						}
+						res.Add(Polygon);
+					}
+					else
+					{   //unclosed line - polyline
+						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
 						line.Layer_id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -2644,7 +2969,7 @@ namespace RRTypes.CommonParsers
 						foreach (RRTypes.V03_TP.tKeyParameter param in constr.KeyParameters)
 							OKS.Construction.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
 						OKS.Construction.AssignationName = constr.AssignationName; ;
-						OKS.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", constr.EntitySpatial);
+						OKS.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2("", constr.EntitySpatial);
 					}
 				}
 
@@ -2661,8 +2986,7 @@ namespace RRTypes.CommonParsers
 						OKS.Construction.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
 					if (TP.Construction.Package.ExistConstruction.AssignationName != null)
 						OKS.Construction.AssignationName = TP.Construction.Package.ExistConstruction.AssignationName;
-			//		OKS.Construction.ES = CommonCast.CasterOKS.ES_OKS("", TP.Construction.Package.ExistConstruction.EntitySpatial);
-					OKS.Construction.ES2 = CommonCast.CasterOKS.ES_OKS2("", TP.Construction.Package.ExistConstruction.EntitySpatial);
+					OKS.ES2 = CommonCast.CasterOKS.ES_OKS2("", TP.Construction.Package.ExistConstruction.EntitySpatial);
 				}
 
 				Bl.CN = OKS.CadastralBlock;
@@ -3354,7 +3678,7 @@ namespace RRTypes.CommonParsers
 							Building.Area = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Building.Building.ES);
+							res.MifOKSSpatialCollection.Add(((TMyPolygon)Building.Building.ES));
 						}
 
 
@@ -3369,10 +3693,11 @@ namespace RRTypes.CommonParsers
 								// Constructions.Construction.KeyValue = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters[0].Value.ToString();
 							}
 							Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.ObjectType);
-							Constructions.Construction.ES = KPT_v09Utils.KPT09OKSEntSpatToFteo(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
+							Constructions.ES2 = KPT_v09Utils.KPT09OKSEsToEs(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							Bl.AddOKS(Constructions);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Constructions.Construction.ES);
+							if (Constructions.ES2 != null)
+							res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
 						}
 
 						if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
@@ -3386,7 +3711,7 @@ namespace RRTypes.CommonParsers
 							foreach (RRTypes.kpt09.tKeyParameter param in KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.KeyParameters)
 								Uncompleted.KeyParameters.AddParameter(netFteo.Rosreestr.dTypeParameter_v01.ItemToName(param.Type.ToString()), param.Value.ToString());
 							Bl.AddOKS(Uncompleted);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Uncompleted.Uncompleted.ES);
+							res.MifOKSSpatialCollection.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
 						}
 					}
 				}
@@ -3556,7 +3881,7 @@ namespace RRTypes.CommonParsers
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Building.Building.ES);
+							res.MifOKSSpatialCollection.Add((TMyPolygon)Building.Building.ES);
 						}
 
 
@@ -3565,7 +3890,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
 							Constructions.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
-							Constructions.Construction.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
+							Constructions.ES2 = KPT_v10Utils.KPT10OKSEsToEs(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
 							{
@@ -3577,7 +3902,8 @@ namespace RRTypes.CommonParsers
 							}
 							Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.ObjectType);
 							Bl.AddOKS(Constructions);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Constructions.Construction.ES);
+							if (Constructions.ES2 != null)
+							res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
 						}
 
 						if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
@@ -3590,7 +3916,7 @@ namespace RRTypes.CommonParsers
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 
 							Bl.AddOKS(Uncompleted);
-							res.MifOKSPolygons.AddPolygon((TMyPolygon)Uncompleted.Uncompleted.ES);
+							res.MifOKSSpatialCollection.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
 						}
 					}
 				}
@@ -3730,7 +4056,7 @@ namespace RRTypes.CommonParsers
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 				*/
 						Bl.AddOKS(Building);
-						res.MifOKSPolygons.AddPolygon((TMyPolygon)Building.Building.ES);
+						//res.MifOKSSpatialCollection.Add(Building.Building.ES);
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
 
@@ -4586,17 +4912,13 @@ namespace RRTypes.CommonParsers
 				Constructions.DateCreated = kv.Realty.Construction.DateCreated.ToString("dd.MM.yyyy");
 				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
 				Constructions.Name = kv.Realty.Construction.Name;
-				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
-				Constructions.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
-				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-				if (Constructions.Construction.ES.GetType().Name == "TMyPolygon")
-					res.MifOKSPolygons.AddPolygon((TMyPolygon)Constructions.Construction.ES);
+				Constructions.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
+				Constructions.Location.Address = CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
+				Constructions.ES2 = CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
 				res.CommentsType = "Особые отметки";
 				res.Comments = Constructions.Notes;
-
 				Bl.AddOKS(Constructions);
-
-
 				res.MyBlocks.Blocks.Add(Bl);
 			}
 			/*
@@ -4721,7 +5043,7 @@ namespace RRTypes.CommonParsers
 				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
 				Constructions.ParentCadastralNumbers.AddRange(kv.Realty.Construction.ParentCadastralNumbers);
 				Constructions.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
-				Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				Constructions.ES2 = CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				if (kv.Realty.Construction.Floors != null)
 					if (kv.Realty.Construction.Floors != null)
 					{

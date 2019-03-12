@@ -372,12 +372,12 @@ namespace netFteo.XML
         public string CommentsType; // Conclusion, Notes
 
         public netFteo.Spatial.TMyBlockCollection MyBlocks;
-        public netFteo.Spatial.TPolygonCollection MifOKSPolygons;
+        public Spatial.TEntitySpatial MifOKSSpatialCollection;
         public netFteo.Spatial.TPolygonCollection MifPolygons;
         public FileInfo()
         {
             this.MifPolygons = new netFteo.Spatial.TPolygonCollection();
-            this.MifOKSPolygons = new netFteo.Spatial.TPolygonCollection();
+            this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
             this.MyBlocks = new netFteo.Spatial.TMyBlockCollection();
             this.Contractors = new List<Rosreestr.TEngineerOut>();
             this.DocType = "-";

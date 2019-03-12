@@ -1110,7 +1110,7 @@ namespace XMLReaderCS
 
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 Constructions.Name = kv.Realty.Construction.Name;
-                Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+                Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
                foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
                       Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number } );
                 Bl.AddOKS(Constructions);
@@ -1194,7 +1194,7 @@ namespace XMLReaderCS
                 TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber,netFteo.Rosreestr.dRealty_v03.Сооружение);
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
-                Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+                Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
                 Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Bl.AddOKS(Constructions);
                 //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
@@ -1238,10 +1238,10 @@ namespace XMLReaderCS
                     TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
                     Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
                     Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
-                    Constructions.Construction.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(TP.Construction.Package.New_Construction[0].Assignation_Name,
+                    Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
                                                                                      TP.Construction.Package.New_Construction[0].Entity_Spatial);
                     Bl.AddOKS(Constructions);
-                    this.DocInfo.MifOKSPolygons.AddPolygon((TMyPolygon)Constructions.Construction.ES);
+                    this.DocInfo.MifOKSSpatialCollection.AddRange(Constructions.ES2);
                     this.DocInfo.MyBlocks.Blocks.Add(Bl);
                 }
                 
@@ -1931,31 +1931,7 @@ namespace XMLReaderCS
 				}
 				*/
 
-				if (oks.Construction.ES2 != null)
-				{
-					TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
-					foreach (IGeometry feature in oks.Construction.ES2)
-					{
-						string testNAme = feature.GetType().Name;
-						if (feature.GetType().Name == "TMyPolygon")
-						{
-							if (((TMyPolygon)feature).PointCount > 0)
-								netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.", "Полигон", 6);
-						}
 
-						if (feature.GetType().Name == "TPolyLine")
-						{
-							if (((TPolyLine)feature).PointCount > 0)
-								netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", "Ломаная", 6);
-						}
-
-						if (feature.GetType().Name == "TCircle")
-						{
-							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", "Окружность", 6);
-						}
-
-					}
-				}
 			}
 
 			if (oks.Uncompleted != null) //.Type == "Сооружение")
@@ -1998,7 +1974,32 @@ namespace XMLReaderCS
                     flatsnodes.Nodes.Add("CN" + s, s);
             }
 
-            ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
+			if (oks.ES2 != null)
+			{
+				TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
+				foreach (IGeometry feature in oks.ES2)
+				{
+					string testNAme = feature.GetType().Name;
+					if (feature.GetType().Name == "TMyPolygon")
+					{
+						if (((TMyPolygon)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.",((TMyPolygon)feature).Definition, 6);
+					}
+
+					if (feature.GetType().Name == "TPolyLine")
+					{
+						if (((TPolyLine)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", ((TPolyLine)feature).Definition, 6);
+					}
+
+					if (feature.GetType().Name == "TCircle")
+					{
+						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", ((TCircle)feature).NumGeopointA, 6);
+					}
+				}
+			}
+
+			ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
 
@@ -2070,7 +2071,23 @@ namespace XMLReaderCS
             return res;
         }
 
-        private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.PointList PList)
+		// Листинг точек окружностней в ListView
+		private ListViewItem PointListToListView(ListView LV, TCircle PList)
+		{
+			if (PList == null) return null;
+			LV.Items.Clear();
+			LV.Tag = PList.id;
+			PointList CircleAsPoint = new PointList();
+			CircleAsPoint.AddPoint(PList);
+			ListViewItem res = PointListToListView(LV, (PointList)CircleAsPoint);
+
+			ListViewItem LViEmpty = new ListViewItem();
+			LViEmpty.Text = "";
+			LV.Items.Add(LViEmpty);
+			return res;
+		}
+
+		private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.PointList PList)
         {
             if (PList.Count == 0) return null;
             string BName;
@@ -2114,10 +2131,11 @@ namespace XMLReaderCS
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
             LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "-";
+            LV.Columns[4].Text = "R";
             LV.Columns[5].Text = "-";
             LV.Columns[6].Text = "-";
             LV.View = System.Windows.Forms.View.Details;
+
             if (ES.ToString() == "netFteo.Spatial.TPolygonCollection")
             {
                 TPolygonCollection Contours = (TPolygonCollection)ES;
@@ -2736,8 +2754,7 @@ namespace XMLReaderCS
                         LViAssgn.Text = "Назначение";
                         LViAssgn.SubItems.Add(P.Construction.AssignationName);
                         LV.Items.Add(LViAssgn);
-                        EsToListView(listView1, P.Construction.ES, P.id);
-                    }
+                           }
 
                     if (P.Uncompleted != null)
                     {
@@ -2769,6 +2786,8 @@ namespace XMLReaderCS
 							LViFloors.SubItems.Add(" подземных " + P.UndergroundFloors);
 						LV.Items.Add(LViFloors);
 					}
+
+					EsToListView(listView1, P.ES2, P.id);
 					KeyParametersToListView(LV, P.KeyParameters);
                 }
 
@@ -3011,17 +3030,7 @@ namespace XMLReaderCS
                 PropertiesToListView(listView_Properties, Pl);
             }
 
-			//Стереть предыдыущее изображение
-			/*
-                   if (toolStripMI_ShowES.Checked)
-                   {
-                       ViewWindow.Spatial = Pl;
-                       ViewWindow.label2.Content = Pl.Definition;
-                       ViewWindow.BringIntoView();
-                       ViewWindow.CreateView(Pl);
 
-                   }
-                   */
 
 			if (STrN.Name.Contains("TPolyLine."))
 			{
@@ -3036,10 +3045,10 @@ namespace XMLReaderCS
 			if (STrN.Name.Contains("TCircle."))
 			{
 				int chek_id = Convert.ToInt32(STrN.Name.Substring(8));
-				Object Entity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
-				if (Entity != null)
+				Object CircleEntity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
+				if (CircleEntity != null)
 				{
-					PointListToListView(listView1, (PointList)Entity);
+					PointListToListView(listView1, (TCircle)CircleEntity);
 				}
 			}
 
@@ -3747,8 +3756,10 @@ namespace XMLReaderCS
                     {
                         TR.SaveAsmif(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
                         string test = Path.GetDirectoryName(saveFileDialog1.FileName) + "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName);
+						/* TODO
                         TR.SaveAsmif(Path.GetDirectoryName(saveFileDialog1.FileName) + "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName),
                                                       this.DocInfo.MifOKSPolygons);
+													  */
                     }
 
 
@@ -4067,8 +4078,10 @@ namespace XMLReaderCS
                 {
                     netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
                     TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, this.DocInfo.MifPolygons, Encoding.Unicode);
+					/* TODO:
                     TR.SaveAsFixosoftTXT2018(Path.GetDirectoryName(saveFileDialog1.FileName) + 
                                              "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName), this.DocInfo.MifOKSPolygons, Encoding.Unicode);
+											 */
                 }
 
             //"OKSsNode"

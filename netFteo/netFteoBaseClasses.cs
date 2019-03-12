@@ -1012,11 +1012,13 @@ SCAN:
             get { return this.fDefinition; }
             set { this.fDefinition = value; }
         }
+
         public int Layer_id
         {
             get { return this.FLayer_id; }
             set { this.FLayer_id = value; }
         }
+
         public string PerymethrFmt(string Format)
         {
 
@@ -2840,7 +2842,7 @@ SCAN:
         public string AssignationName;  // Назначение сооружения; 
         //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
         public TKeyParameters KeyParameters; // 
-		
+		/*
 		public Object ES
         {
             get { return this.fEntitySpatial; }
@@ -2859,8 +2861,7 @@ SCAN:
 					this.fEntitySpatial = (TCircle)value;
 			}
         }
-		
-		public TEntitySpatial ES2;
+		*/
 		public TConstruction()
         {
             this.KeyParameters = new TKeyParameters();
@@ -2952,10 +2953,16 @@ SCAN:
         public string Type;
 		public string Floors;
 		public string UndergroundFloors;
-		public netFteo.Rosreestr.TMyRights Rights; // как бы ГКН-Права
-        public netFteo.Rosreestr.TMyRights EGRN;
+		public Rosreestr.TMyRights Rights; // как бы ГКН-Права
+        public Rosreestr.TMyRights EGRN;
+		public TEntitySpatial ES2;
+		//SubTypes:
+		public TBuilding Building;
+		public TFlat Flat;
+		public TConstruction Construction;
+		public TUncompleted Uncompleted;
 
-        public string ObjectType
+		public string ObjectType
         {
             set { this.fObjectType = value; }
             get { return this.fObjectType; }
@@ -3020,10 +3027,7 @@ SCAN:
                 return null;
             }
         }
-        public TBuilding Building;
-        public TFlat Flat;
-        public TConstruction Construction;
-        public TUncompleted Uncompleted;
+ 
     }
 
 
@@ -3069,7 +3073,7 @@ SCAN:
                                 return (TMyPolygon)this[i].Building.ES;
                     }
 
-
+				/* TODO kill, goes to ES2
                 if (this[i].Construction != null)
 
                     if ((this[i]).Construction.ES != null)
@@ -3095,7 +3099,7 @@ SCAN:
                                 return (TMyPolygon)this[i].Construction.ES;
                     }
 
-
+				*/
 				if (this[i].Uncompleted != null)
 					if ((this[i]).Uncompleted.ES != null)
 					{
@@ -3120,9 +3124,31 @@ SCAN:
 								return (TMyPolygon)this[i].Uncompleted.ES;
 					}
 
+				//again for ES2 (common spatial data collection)
+				if ((this[i]).ES2 != null)
+				{
+					foreach (IGeometry feature in (this[i]).ES2)
+					{
+						//string test = feature.GetType().Name;
+						if (feature.GetType().Name == "TCircle")
+						{
+							if (((TCircle)feature).id == Layer_id)
+								return (TCircle)feature;
+						}
 
+						if (feature.GetType().Name == "TPolyLine")
+						{
+							if (((TPolyLine)feature).Layer_id == Layer_id)
+								return (TPolyLine)feature;
+						}
+
+						if (feature.GetType().Name == "TMyPolygon")
+							if (((TMyPolygon)feature).Layer_id == Layer_id)
+								return (TMyPolygon)feature;
+					}
+				}
 			}
-            return null;
+			return null;
         }
     }
     public class TMyParcelCollection
@@ -3692,11 +3718,12 @@ SCAN:
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
                 for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
                 {
-                  if ((this.Blocks[i].ObjectRealtys[iz].Construction != null) &&
-                        (this.Blocks[i].ObjectRealtys[iz].Construction.ES != null) 
-                        )
-                            Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Construction.ES);
 
+					/*
+                  if ((this.Blocks[i].ObjectRealtys[iz].Construction != null) &&
+                        (this.Blocks[i].ObjectRealtys[iz].Construction.ES != null))
+                            Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Construction.ES);
+				  */
                     if (
                         (this.Blocks[i].ObjectRealtys[iz].Building != null) &&
                         (this.Blocks[i].ObjectRealtys[iz].Building.ES != null)
