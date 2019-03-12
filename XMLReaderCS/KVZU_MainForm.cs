@@ -1249,6 +1249,7 @@ namespace XMLReaderCS
 
             }
         }
+
         private void ParseCoordSystems(RRTypes.V03_TP.tCoordSystems CS, string Conclusion)
         {
         }
@@ -2072,22 +2073,36 @@ namespace XMLReaderCS
         }
 
 		// Листинг точек окружностней в ListView
-		private ListViewItem PointListToListView(ListView LV, TCircle PList)
+		private ListViewItem PointListToListView(ListView LV, TCircle Circle)
 		{
-			if (PList == null) return null;
+			if (Circle == null) return null;
 			LV.Items.Clear();
-			LV.Tag = PList.id;
+			LV.Tag = Circle.id;
+			/*
 			PointList CircleAsPoint = new PointList();
 			CircleAsPoint.AddPoint(PList);
 			ListViewItem res = PointListToListView(LV, (PointList)CircleAsPoint);
-
-			ListViewItem LViEmpty = new ListViewItem();
-			LViEmpty.Text = "";
-			LV.Items.Add(LViEmpty);
-			return res;
+			*/
+			string BName = Circle.Pref + Circle.NumGeopointA + Circle.OrdIdent;
+			ListViewItem LVi = new ListViewItem();
+			LVi.Text = BName;
+			LVi.Tag = Circle.id;
+			LVi.SubItems.Add(Circle.x_s);
+			LVi.SubItems.Add(Circle.y_s);
+			LVi.SubItems.Add(Circle.Mt_s);
+			LVi.SubItems.Add(Circle.R.ToString());
+			LVi.SubItems.Add(Circle.Description);
+			if (Circle.Pref == "н")
+				LVi.ForeColor = Color.Red;
+			else LVi.ForeColor = Color.Black;
+			if (Circle.Status == 6)
+				LVi.ForeColor = Color.Blue;
+	
+			LV.Items.Add(LVi);
+			return LVi;
 		}
 
-		private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.PointList PList)
+		private ListViewItem PointListToListView(ListView LV, PointList PList)
         {
             if (PList.Count == 0) return null;
             string BName;
@@ -2116,10 +2131,21 @@ namespace XMLReaderCS
             }
             LV.EndUpdate();
             return res; // вернем первую строчку Items
-        }
+		}
 
-        //Листинг ПД 
-        private void EsToListView(ListView LV, object ES, int parent_id)
+		private ListViewItem PointListToListView(ListView LV, object PointList)
+		{
+			if (PointList.ToString() == "netFteo.Spatial.TMyPolygon")
+				return PointListToListView(LV, (TMyPolygon)PointList);
+			if (PointList.ToString() == "netFteo.Spatial.TPolyLine")
+				return PointListToListView(LV, (TPolyLine)PointList);
+			if (PointList.ToString() == "netFteo.Spatial.TCircle")
+				return PointListToListView(LV, (TCircle)PointList);
+			return null;
+		}
+
+		//Листинг ПД 
+		private void EsToListView(ListView LV, object ES, int parent_id)
         {
             if (ES == null)
             {
@@ -2134,22 +2160,28 @@ namespace XMLReaderCS
             LV.Columns[4].Text = "R";
             LV.Columns[5].Text = "-";
             LV.Columns[6].Text = "-";
-            LV.View = System.Windows.Forms.View.Details;
+            LV.View = View.Details;
 
-            if (ES.ToString() == "netFteo.Spatial.TPolygonCollection")
-            {
-                TPolygonCollection Contours = (TPolygonCollection)ES;
-                if (Contours.Count == 0) return;
-                string BName;
-                for (int i = 0; i <= Contours.Count - 1; i++)
-                {
-                    ListViewItem LVi = new ListViewItem();
-                    LVi.Text = Contours[i].Definition;
-                    LVi_Commands = PointListToListView(LV, Contours[i]);
-                    LV.Items.Add(LVi);
-                }
-            }
+			if (ES.ToString() == "netFteo.Spatial.TPolygonCollection")
+			{
+				TPolygonCollection Contours = (TPolygonCollection)ES;
+				if (Contours.Count == 0) return;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = Contours.Defintion;
+				LVi_Commands = PointListToListView(LV, Contours.AsPointList());
+				LV.Items.Add(LVi);
+			}
 
+			LVi_Commands = PointListToListView(LV, ES);
+			// Visualizer check:
+			if (toolStripMI_ShowES.Checked)
+			{
+				ViewWindow.Spatial = ES;
+				//ViewWindow.label2.Content = poly.Definition;
+				ViewWindow.BringIntoView();
+				ViewWindow.CreateView(ES);
+			}
+			/*
             if (ES.ToString() == "netFteo.Spatial.TMyPolygon")
             {
                 TMyPolygon poly = (TMyPolygon)ES;
@@ -2166,11 +2198,21 @@ namespace XMLReaderCS
                   ViewWindow.CreateView(ES);
               }
             }
-            
-            //ListViewItem LVi_Commands = new ListViewItem();
-            //LVi_Commands.Text = "**";
-            //LV.Items.Add(LVi_Commands);
-            ToolTip tt = new ToolTip();
+
+			if (ES.ToString() == "netFteo.Spatial.TCircle")
+			{
+				TCircle circle = (TCircle)ES;
+				LVi_Commands = PointListToListView(LV, circle);
+				if (toolStripMI_ShowES.Checked)
+				{
+					ViewWindow.Spatial = circle;
+					ViewWindow.label2.Content = circle.NumGeopointA;
+					ViewWindow.BringIntoView();
+					ViewWindow.CreateView(circle);
+				}
+			}
+			*/
+			ToolTip tt = new ToolTip();
 
            // if (parent_id > 0) // до момента наладки с parent_id будем проверять его наличие
              if (LV.Items.Count > 3)    // если что-то было отображено
@@ -3048,7 +3090,8 @@ namespace XMLReaderCS
 				Object CircleEntity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
 				if (CircleEntity != null)
 				{
-					PointListToListView(listView1, (TCircle)CircleEntity);
+					EsToListView(listView1, CircleEntity, (int)STrN.Tag);
+					//PointListToListView(listView1, (TCircle)CircleEntity);
 				}
 			}
 
