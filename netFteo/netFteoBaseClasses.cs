@@ -3775,10 +3775,8 @@ SCAN:
         {
             return this.Perymethr();
         }
-        public bool Closed
-        {
-            get { return true; } // написать процедуру проверки иденичности точки по-координатам
-        }
+
+     
         public TPolyLine()
         {
             // this.MainPoint = new netFteoPoints();
@@ -3796,8 +3794,17 @@ SCAN:
 		}
 	}
 
-	public class TEntitySpatial : List<IGeometry>
+	/// <summary>
+	/// Getero spatial data collection -lines, polygons, points, circles 
+	/// </summary>
+	public class TEntitySpatial : List<IGeometry>, IGeometry
 	{
+		private int fid;
+		public int id
+		{
+			get { return this.fid; }
+			set { this.fid = value; }
+		}
 
 	}
 

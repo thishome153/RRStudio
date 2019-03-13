@@ -433,6 +433,7 @@ namespace RRTypes.CommonCast
 			}
 			return res;
 		}
+
 		public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -470,6 +471,8 @@ namespace RRTypes.CommonCast
 
 
 						//childs inner ring
+						//TODO: howto detect childs rings ???
+						/*
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
 							TMyOutLayer ESch = Polygon.AddChild();
@@ -477,13 +480,14 @@ namespace RRTypes.CommonCast
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
 								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
 								ESch.AddPoint(P);
 							}
 						}
+						*/
 						res.Add(Polygon);
 					}
 					else
@@ -504,6 +508,7 @@ namespace RRTypes.CommonCast
 			}
 			return res;
 		}
+
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -575,6 +580,7 @@ namespace RRTypes.CommonCast
 			}
 			return res;
 		}
+
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -646,6 +652,7 @@ namespace RRTypes.CommonCast
 			}
 			return res;
 		}
+
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -717,6 +724,7 @@ namespace RRTypes.CommonCast
 			}
 			return res;
 		}
+
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();

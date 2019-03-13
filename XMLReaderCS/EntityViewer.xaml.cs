@@ -65,7 +65,6 @@ namespace XMLReaderCS
                 this.fViewKoeffecient = value;
                 if (fSpatial != null)
                 {
-
                     if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                     {
                         netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;

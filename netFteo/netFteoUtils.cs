@@ -164,6 +164,7 @@ namespace netFteo
             TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.Layer_id.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status);
             Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+			Node.Tag = ES.id;
         }
 
 		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string NodeName, string Definition, int Status)
@@ -172,6 +173,7 @@ namespace netFteo
 			TreeNode Node = NodeTo.Nodes.Add("TCircle." + ES.id.ToString(), Definition);
 			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
 			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+			Node.Tag = ES.id;
 		}
 
 
