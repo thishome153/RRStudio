@@ -293,6 +293,13 @@ namespace netFteo.Rosreestr
             //throw new NotImplementedException();
         }
         */
+		public bool Empty
+		{
+			get
+			{
+				return ((this.Region == null) && (this.City == null) && (this.District == null));
+			}
+				}
     }
 
     /// <summary>

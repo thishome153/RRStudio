@@ -3805,7 +3805,10 @@ SCAN:
 			get { return this.fid; }
 			set { this.fid = value; }
 		}
-
+		public TEntitySpatial()
+		{
+			this.id = Gen_id.newId;
+		}
 	}
 
     #endregion

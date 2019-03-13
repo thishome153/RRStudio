@@ -139,9 +139,7 @@ namespace netFteo
                            Node.ImageIndex = 3;
                            Node.SelectedImageIndex = 3;
                            Node.Tag = ES.Layer_id;//
-            
         }
-
 
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
         {
@@ -156,7 +154,6 @@ namespace netFteo
             }
 
         }
-
 
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
         {
@@ -176,6 +173,32 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
+		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, string NodeName, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode NodeTo = NodeES.Nodes.Add("ES."+ES.id.ToString(), NodeName);
+			NodeTo.Tag = ES.id;
+			foreach (Spatial.IGeometry feature in ES)
+			{
+				string testNAme = feature.GetType().Name;
+				if (feature.GetType().Name == "TMyPolygon")
+				{
+					if (((Spatial.TMyPolygon)feature).PointCount > 0)
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TMyPolygon)feature, "SPElem.", ((Spatial.TMyPolygon)feature).Definition, 6);
+				}
+
+				if (feature.GetType().Name == "TPolyLine")
+				{
+					if (((Spatial.TPolyLine)feature).PointCount > 0)
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
+				}
+
+				if (feature.GetType().Name == "TCircle")
+				{
+					netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, "SPElem.", ((Spatial.TCircle)feature).NumGeopointA, 6);
+				}
+			}
+		}
 
 		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
         {

@@ -1814,8 +1814,8 @@ namespace XMLReaderCS
                     {
                         TreeNode InnerCNNode = InnerCNsNode.Nodes.Add("oNode"+i.ToString(), Parcel.PrevCadastralNumbers[i]);
                     }
-
                 }
+
             ListRights(PNode, Parcel.Rights, Parcel.id, "Права", "Rights");
             ListRights(PNode, Parcel.EGRN, Parcel.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /KPZU/ReestrExtract"
             ListEncums(PNode, Parcel.Encumbrances);
@@ -1825,7 +1825,7 @@ namespace XMLReaderCS
 
         private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, int id)
         {
-            if (Address != null)
+			if (Address.Empty) return;
             {
                 TreeNode Adrs = Node.Nodes.Add("Adrss" + id.ToString(), "Адрес");
 
@@ -1975,35 +1975,43 @@ namespace XMLReaderCS
                 foreach (string s in oks.ParentCadastralNumbers)
                     flatsnodes.Nodes.Add("CN" + s, s);
             }
+			/*
+		if (oks.ES2 != null)
+		{
+			TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
 
-			if (oks.ES2 != null)
+			foreach (IGeometry feature in oks.ES2)
 			{
-				TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
-				foreach (IGeometry feature in oks.ES2)
+				string testNAme = feature.GetType().Name;
+				if (feature.GetType().Name == "TMyPolygon")
 				{
-					string testNAme = feature.GetType().Name;
-					if (feature.GetType().Name == "TMyPolygon")
-					{
-						if (((TMyPolygon)feature).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.",((TMyPolygon)feature).Definition, 6);
-					}
+					if (((TMyPolygon)feature).PointCount > 0)
+						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.",((TMyPolygon)feature).Definition, 6);
+				}
 
-					if (feature.GetType().Name == "TPolyLine")
-					{
-						if (((TPolyLine)feature).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", ((TPolyLine)feature).Definition, 6);
-					}
+				if (feature.GetType().Name == "TPolyLine")
+				{
+					if (((TPolyLine)feature).PointCount > 0)
+						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", ((TPolyLine)feature).Definition, 6);
+				}
 
-					if (feature.GetType().Name == "TCircle")
-					{
-						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", ((TCircle)feature).NumGeopointA, 6);
-					}
+				if (feature.GetType().Name == "TCircle")
+				{
+					netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", ((TCircle)feature).NumGeopointA, 6);
 				}
 			}
-
+			
+		}
+		*/
+			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2, "Границы ES", oks.CN, 6);
 			ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
+
+		private void ListES(TreeNode ESNode, TEntitySpatial ES)
+		{
+
+		}
 
         private void ListBound(TreeNode Node, TBound Parcel)
         {
@@ -2486,7 +2494,7 @@ namespace XMLReaderCS
 
         private void AdressToListView(ListView LV, netFteo.Rosreestr.TAddress Address)
         {
-            if (Address != null)
+			if (Address.Empty) return;
             {
                 if (Address.Note != null)
                 {
@@ -3699,6 +3707,7 @@ namespace XMLReaderCS
             AboutBox1 AB1 = new AboutBox1();
             AB1.ShowDialog(this);
         }
+
       /// <summary>
       /// Очистка временных файлов
       /// </summary>
