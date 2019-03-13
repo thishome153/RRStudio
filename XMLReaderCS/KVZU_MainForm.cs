@@ -1958,6 +1958,7 @@ namespace XMLReaderCS
                 TreeNode OksNameNode = PNode.Nodes.Add("OksNameNode","Наименование").Nodes.Add("Name", oks.Name);
             }
             */
+
 			if ((oks.Location != null) &&
 				(oks.Location.Address != null))
             {
@@ -2016,13 +2017,11 @@ namespace XMLReaderCS
                     netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntitySpatial, "SPElem.", "Границы",6);
                 }
         }
-        private void ListZone(TreeNode Node, TZone Parcel)
-        {
-        
-            netFteo.ObjectLister.ListZone(Node, Parcel);
-        }
 
-
+		private void ListZone(TreeNode Node, TZone Parcel)
+		{
+			netFteo.ObjectLister.ListZone(Node, Parcel);
+		}
        
         // Листинг отрезков границ в ListView
         private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
