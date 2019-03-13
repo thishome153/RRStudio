@@ -434,6 +434,7 @@ namespace RRTypes.CommonCast
 			return res;
 		}
 
+
 		public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -456,39 +457,45 @@ namespace RRTypes.CommonCast
 				{
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
-						TMyPolygon Polygon = new TMyPolygon();
-						Polygon.Definition = ES.SpatialElement[i].Number;
-						//OUT ring
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						//may be already included as some child ??? used prdeicate (lambda ops):
+						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
-							Point P = new Point();
-							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-							Polygon.AddPoint(P);
-						}
-
-
-						//childs inner ring
-						//TODO: howto detect childs rings ???
-						/*
-						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-						{
-							TMyOutLayer ESch = Polygon.AddChild();
-
+							TMyPolygon Polygon = new TMyPolygon();
+							Polygon.Definition = ES.SpatialElement[i].Number;
+							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
-								P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								ESch.AddPoint(P);
+								Point P = new Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								Polygon.AddPoint(P);
 							}
+
+							// find other elements with same Number - childs
+							//childs inner ring
+							//TODO: howto detect childs rings ???
+
+							for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
+							{
+								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
+									(i != ii))
+								{
+									TMyOutLayer ESch = Polygon.AddChild();
+									for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
+									{
+										Point P = new Point();
+										P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
+										P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
+										P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
+										P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+										ESch.AddPoint(P);
+									}
+								}
+							}
+							res.Add(Polygon);
 						}
-						*/
-						res.Add(Polygon);
 					}
 					else
 					{   //unclosed line - polyline
@@ -509,6 +516,85 @@ namespace RRTypes.CommonCast
 			return res;
 		}
 
+		public static TEntitySpatial ES_OKS2(string Definition, kpt10_un.tEntitySpatialOKSOut ES)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return null;
+
+			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+			{
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Окружность)
+				{
+					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+											  ES.SpatialElement[i].SpelementUnit[0].R);
+					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					res.Add(fES);
+				}
+
+				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Точка)
+				{
+					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+					{
+						//may be already included as some child ??? used prdeicate (lambda ops):
+						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
+						{
+							TMyPolygon Polygon = new TMyPolygon();
+							Polygon.Definition = ES.SpatialElement[i].Number;
+							//OUT ring
+							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+							{
+								Point P = new Point();
+								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+								Polygon.AddPoint(P);
+							}
+
+
+							//childs inner ring
+							for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+							{
+								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
+									(i != ii))
+								{
+									TMyOutLayer ESch = Polygon.AddChild();
+
+									for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+									{
+										netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+										P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+										P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+										P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+										P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+										ESch.AddPoint(P);
+									}
+								}
+							}
+							res.Add(Polygon);
+						}
+					}
+					else
+					{   //unclosed line - polyline
+						TPolyLine line = new TPolyLine();
+						line.Definition = ES.SpatialElement[i].Number;
+						line.Layer_id = Gen_id.newId;
+						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+						{
+							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+						}
+						res.Add(line);
+					}
+				}
+			}
+			return res;
+		}
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -3898,7 +3984,7 @@ namespace RRTypes.CommonParsers
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
 							Constructions.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
-							Constructions.ES2 = KPT_v10Utils.KPT10OKSEsToEs(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
+							Constructions.ES2 = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
 							{

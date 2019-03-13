@@ -161,6 +161,8 @@ namespace netFteo
             TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.Layer_id.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status);
             Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+			Node.ImageIndex = 13;
+			Node.SelectedImageIndex = 13;
 			Node.Tag = ES.id;
         }
 
@@ -170,6 +172,8 @@ namespace netFteo
 			TreeNode Node = NodeTo.Nodes.Add("TCircle." + ES.id.ToString(), Definition);
 			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
 			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+			Node.ImageIndex = 11;
+			Node.SelectedImageIndex = 11;
 			Node.Tag = ES.id;
 		}
 

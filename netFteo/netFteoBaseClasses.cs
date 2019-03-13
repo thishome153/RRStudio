@@ -43,6 +43,7 @@ namespace netFteo.Spatial
     public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
     {
         int id { get; set; }
+		string  Definition { get; set; }
     }
 
     /// <summary>
@@ -56,10 +57,17 @@ namespace netFteo.Spatial
             get { return this.fid; }
             set { this.fid = value; }
         }
-        /// <summary>
-        /// Construct base Geometry object
-        /// </summary>
-        public Geometry()
+
+		private string fDefinition;
+		public string Definition
+		{
+			get { return this.fDefinition; }
+			set { this.fDefinition = value; }
+		}
+		/// <summary>
+		/// Construct base Geometry object
+		/// </summary>
+		public Geometry()
         {
             this.id = Gen_id.newId;
         }
@@ -502,17 +510,22 @@ namespace netFteo.Spatial
         //public PointList Points;
         public int Parent_Id; // ид Участка или чего тоо ттам
         private int fid;
-        public int id
+		private string fDefinition;
+		public int id
         {
             get { return this.fid; }
             set { this.fid = value; }
         }
-
-        /// <summary>
-        /// Конструктор base Geometry object,
-        /// Для сериализаций в Xml конструктор должен быть без параметров
-        /// </summary>
-        public PointList()
+		public string Definition
+		{
+			get { return this.fDefinition; }
+			set { this.fDefinition = value; }
+		}
+		/// <summary>
+		/// Конструктор base Geometry object,
+		/// Для сериализаций в Xml конструктор должен быть без параметров
+		/// </summary>
+		public PointList()
         {
             this.id = Gen_id.newId;
         }
@@ -1006,13 +1019,14 @@ SCAN:
     {
         // public BindingList<Point> Points;
         private int FLayer_id;
+		/*
         private string fDefinition;
         public string Definition
         {
             get { return this.fDefinition; }
             set { this.fDefinition = value; }
         }
-
+		*/
         public int Layer_id
         {
             get { return this.FLayer_id; }
@@ -1245,6 +1259,7 @@ SCAN:
         /// <returns></returns>
         public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
         {
+			if (this.Bounds == null) return -1;
             double scale = 0;
             double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
             double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
@@ -3800,10 +3815,16 @@ SCAN:
 	public class TEntitySpatial : List<IGeometry>, IGeometry
 	{
 		private int fid;
+		private string fDefinition;
 		public int id
 		{
 			get { return this.fid; }
 			set { this.fid = value; }
+		}
+		public string Definition
+		{
+			get { return this.fDefinition; }
+			set { this.fDefinition = value; }
 		}
 		public TEntitySpatial()
 		{

@@ -136,6 +136,7 @@
 			this.фиксироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.замкнутьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.listView_Properties = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -175,7 +176,6 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-			this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -938,13 +938,17 @@
 			this.imList_dStates.Images.SetKeyName(0, "accept.png");
 			this.imList_dStates.Images.SetKeyName(1, "ЗУ_1.bmp");
 			this.imList_dStates.Images.SetKeyName(2, "house.png");
-			this.imList_dStates.Images.SetKeyName(3, "golf1-16.bmp");
+			this.imList_dStates.Images.SetKeyName(3, "Полигон16x16.bmp");
 			this.imList_dStates.Images.SetKeyName(4, "globe.gif");
 			this.imList_dStates.Images.SetKeyName(5, "ggs_16x16.gif");
 			this.imList_dStates.Images.SetKeyName(6, "ОхрЗона16x16.bmp");
 			this.imList_dStates.Images.SetKeyName(7, "ВнутренГраницы16x16.bmp");
 			this.imList_dStates.Images.SetKeyName(8, "mail.bmp");
 			this.imList_dStates.Images.SetKeyName(9, "users16_h.gif");
+			this.imList_dStates.Images.SetKeyName(10, "golf1-16.bmp");
+			this.imList_dStates.Images.SetKeyName(11, "ОМ2.bmp");
+			this.imList_dStates.Images.SetKeyName(12, "sitemap_off.BMP");
+			this.imList_dStates.Images.SetKeyName(13, "PolyLine16x16.bmp");
 			// 
 			// listView1
 			// 
@@ -1029,7 +1033,7 @@
             this.замкнутьToolStripMenuItem,
             this.обратныйПорядокToolStripMenuItem});
 			this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 246);
+			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 224);
 			this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
 			// 
 			// ChangeXYToolStripMenuItem
@@ -1092,6 +1096,13 @@
 			this.замкнутьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
 			this.замкнутьToolStripMenuItem.Text = "Замкнуть";
 			this.замкнутьToolStripMenuItem.Click += new System.EventHandler(this.замкнутьToolStripMenuItem_Click);
+			// 
+			// обратныйПорядокToolStripMenuItem
+			// 
+			this.обратныйПорядокToolStripMenuItem.Name = "обратныйПорядокToolStripMenuItem";
+			this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
+			this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
 			// 
 			// splitter1
 			// 
@@ -1505,13 +1516,6 @@
 			this.PreloaderMenuItem.Name = "PreloaderMenuItem";
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
-			// 
-			// обратныйПорядокToolStripMenuItem
-			// 
-			this.обратныйПорядокToolStripMenuItem.Name = "обратныйПорядокToolStripMenuItem";
-			this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-			this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
-			this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
 			// 
 			// KVZU_Form
 			// 
