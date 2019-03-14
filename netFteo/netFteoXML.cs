@@ -373,10 +373,10 @@ namespace netFteo.XML
 
         public netFteo.Spatial.TMyBlockCollection MyBlocks;
         public Spatial.TEntitySpatial MifOKSSpatialCollection;
-        public netFteo.Spatial.TPolygonCollection MifPolygons;
+        public netFteo.Spatial.TEntitySpatial MifPolygons;
         public FileInfo()
         {
-            this.MifPolygons = new netFteo.Spatial.TPolygonCollection();
+            this.MifPolygons = new netFteo.Spatial.TEntitySpatial();
             this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
             this.MyBlocks = new netFteo.Spatial.TMyBlockCollection();
             this.Contractors = new List<Rosreestr.TEngineerOut>();

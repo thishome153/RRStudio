@@ -946,6 +946,18 @@ namespace netFteo.IO
 			writer.Close();
 		}
 
+		public void SaveAsFixosoftTXT2018(string FileName, TEntitySpatial ES, Encoding encoding)
+		{
+			TPolygonCollection items = new TPolygonCollection();
+			foreach (IGeometry feature in ES)
+			{
+				if (feature.GetType().ToString() == "TMyPolygon")
+					items.Add((TMyPolygon)feature);
+			}
+
+			SaveAsFixosoftTXT2018(FileName, items, encoding);
+		}
+
 		public void SaveAsFixosoftTXT2018(string FileName, TMyPolygon ES, Encoding encoding)
 		{
 			TPolygonCollection items = new TPolygonCollection();
@@ -1247,12 +1259,24 @@ namespace netFteo.IO
 
 		}
 
-		/// <summary>
-		/// Mapinfo mif-file export functions
-		/// </summary>
-		/// <param name="writer"></param>
-		/// <param name="Points"></param>
-		public void SaveAsmif(string FileName, TMyPolygon ES)
+		public void SaveAsmif(string FileName, TEntitySpatial ES)
+		{
+			TPolygonCollection items = new TPolygonCollection();
+			foreach (IGeometry feature in ES)
+			{
+				if (feature.GetType().ToString() == "TMyPolygon")
+					items.Add((TMyPolygon)feature);
+			}
+
+			SaveAsmif(FileName, items);
+		}
+
+	/// <summary>
+	/// Mapinfo mif-file export functions
+	/// </summary>
+	/// <param name="writer"></param>
+	/// <param name="Points"></param>
+	public void SaveAsmif(string FileName, TMyPolygon ES)
 		{
 			TPolygonCollection pls = new TPolygonCollection(ES.Parent_Id);
 			pls.AddPolygon(ES);

@@ -30,17 +30,18 @@ namespace netFteo
     }
 
 
- public static void RemoveParentCN(string ParentCN, Spatial.TPolygonCollection Target)
+ public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)
  {
      if (ParentCN == null) return;
-     for (int scan = 0; scan <= Target.Count - 1; scan++)
-         foreach (Spatial.TMyPolygon poly in Target)
-     {
-        if (poly.Definition.Contains(ParentCN))
-            if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
-                poly.Definition = poly.Definition.Substring(ParentCN.Length);
-     }
+			foreach (Spatial.IGeometry poly in Target)
+			{
+				if((poly.GetType().ToString() == "Spatial.TMyPolygon") &&
+				 (poly.Definition.Contains(ParentCN)))
+					if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
+						poly.Definition = poly.Definition.Substring(ParentCN.Length);
+			}
  }
+
 //-----------------------------------------------------------------------------
  public static string ReplaceSlash(string  LayerName)
    {

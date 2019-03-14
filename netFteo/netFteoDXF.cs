@@ -304,6 +304,7 @@ namespace netFteo.IO
                 dxfDoc.AddEntity(PointHatch);
             }
         }
+
         private EntityObject CreatePoint(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netFteo.Spatial.Point point)
         {
             netDxf.Entities.Point Pt = new Point(point.y, point.x, point.z);
@@ -320,123 +321,116 @@ namespace netFteo.IO
             return Pt;
         }
 
-        /// <summary>
-        /// Запись пространственных данных в файл dxf
-        /// </summary>
-        /// <param name="Filename">File name, of coarse</param>
-        /// <param name="ES">Spatial data</param>
-        /// <param name="HatchRadius"> Штриховки окружностей - эмуляция точек. 0.75 для 1:500, 45 - для 1:33333</param>
-        public void SaveAsDxfScale(string Filename, Object ES, double HatchRadius)
-        {
-            DxfDocument dxfDoc = new DxfDocument();
-            dxfDoc.Comments.Clear();
-            dxfDoc.Comments.Add("Producer: netfteo v"+
-            String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
-            dxfDoc.Comments.Add("DxfVersion.AutoCad2004");
-            //DxfVersion dxfVersion = new DxfVersion();
-            dxfDoc.DrawingVariables.AcadVer =  netDxf.Header.DxfVersion.AutoCad2004;
-            //netDxf.Matrix3 ucsMatrix = new Matrix3();
-            netDxf.Tables.Layer LayerHatches = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Штриховки");
-            netDxf.Tables.Layer LayerText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " ТочкиНомер");
-            netDxf.Tables.Layer LayerPoints = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Точки");
-            netDxf.Tables.Layer LayerCN = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " КН");
-            netDxf.Tables.Layer LayerPoly = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Полигоны");
-            LayerPoly.Color = AciColor.Magenta;
-            LayerCN.Color = AciColor.Blue;
-            LayerCN.IsVisible = false;
-            LayerPoints.IsVisible = false;
-            LayerText.IsVisible = false; LayerHatches.IsVisible = false;
-            dxfDoc.Layers.Add(LayerHatches);
-            dxfDoc.Layers.Add(LayerText);
-            dxfDoc.Layers.Add(LayerPoints);
-            dxfDoc.Layers.Add(LayerCN);
-            dxfDoc.Layers.Add(LayerPoly);
-            dxfDoc.Layers.Add(LayerCN);
+		/// <summary>
+		/// Запись пространственных данных в файл dxf
+		/// </summary>
+		/// <param name="Filename">File name, of coarse</param>
+		/// <param name="ES">Spatial data</param>
+		/// <param name="HatchRadius"> Штриховки окружностей - эмуляция точек. 0.75 для 1:500, 45 - для 1:33333</param>
+		public void SaveAsDxfScale(string Filename, TEntitySpatial ES, double HatchRadius)
+		{
+			DxfDocument dxfDoc = new DxfDocument();
+			dxfDoc.Comments.Clear();
+			dxfDoc.Comments.Add("Producer: netfteo v" +
+			String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
+			dxfDoc.Comments.Add("DxfVersion.AutoCad2004");
+			//DxfVersion dxfVersion = new DxfVersion();
+			dxfDoc.DrawingVariables.AcadVer = netDxf.Header.DxfVersion.AutoCad2004;
+			//netDxf.Matrix3 ucsMatrix = new Matrix3();
+			netDxf.Tables.Layer LayerHatches = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Штриховки");
+			netDxf.Tables.Layer LayerText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " ТочкиНомер");
+			netDxf.Tables.Layer LayerPoints = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Точки");
+			netDxf.Tables.Layer LayerCN = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " КН");
+			netDxf.Tables.Layer LayerPoly = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Полигоны");
+			LayerPoly.Color = AciColor.Magenta;
+			LayerCN.Color = AciColor.Blue;
+			LayerCN.IsVisible = false;
+			LayerPoints.IsVisible = false;
+			LayerText.IsVisible = false; LayerHatches.IsVisible = false;
+			dxfDoc.Layers.Add(LayerHatches);
+			dxfDoc.Layers.Add(LayerText);
+			dxfDoc.Layers.Add(LayerPoints);
+			dxfDoc.Layers.Add(LayerCN);
+			dxfDoc.Layers.Add(LayerPoly);
+			dxfDoc.Layers.Add(LayerCN);
+
+			int ic = 0;
+			foreach (IGeometry feature in (TEntitySpatial)ES)
+			{
+				//// TODO:
+				///
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+				{
+					TMyPolygon polygon = (TMyPolygon)feature;
+					netDxf.Entities.Text ContourDef = new netDxf.Entities.Text();
+					ContourDef.Value = polygon.Definition;
+					ContourDef.Height = HatchRadius;
+					ContourDef.Position = new Vector3(Math.Abs(polygon.CentroidMassive.y), Math.Abs(polygon.CentroidMassive.x), polygon.CentroidMassive.z);
+					ContourDef.Layer = LayerCN;
+					dxfDoc.AddEntity(ContourDef); // если в блок то не надо - дважды Entity не вставтляется
 
 
-            string test = ES.GetType().Name;
-            if ((ES.GetType().Name == "TPolygonCollection")
-                || (ES.GetType().Name == "TCompozitionEZ"))
-            {
-                TPolygonCollection Contours = (TPolygonCollection)ES;
-                for (int ic = 0; ic <= Contours.Count - 1; ic++)
-                {
-                    netDxf.Entities.Text ContourDef = new netDxf.Entities.Text();
-                    ContourDef.Value = Contours[ic].Definition;
-                    ContourDef.Height = HatchRadius;
-                    ContourDef.Position = new Vector3(Math.Abs(Contours[ic].CentroidMassive.y), Math.Abs(Contours[ic].CentroidMassive.x), Contours[ic].CentroidMassive.z);
-                    ContourDef.Layer = LayerCN;
-                    dxfDoc.AddEntity(ContourDef); // если в блок то не надо - дважды Entity не вставтляется
+					netDxf.Blocks.Block block = new netDxf.Blocks.Block("Polygon" + ic++.ToString());
+					//block.Layer = LayerPoly;// new netDxf.Tables.Layer("BlockSample");
+					//block.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x), Contours.Items[ic].Centroid.z);
+					AttributeDefinition attdef = new AttributeDefinition("Кад_номер"); // без пробелов!!!
+					attdef.Text = "atribute def .Text";///Contours.Items[ic].Definition;
+					attdef.Value = polygon.Definition;
+					attdef.Flags = AttributeFlags.Hidden;
+					/* //Можно отображать  атрибуты:
+					attdef.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x+1), Contours.Items[ic].Centroid.z);
+					TextStyle txt = new TextStyle("MyStyle", "Arial.ttf");
+					txt.IsVertical = true;
+					attdef.Style = txt;
+					attdef.WidthFactor = 1;
+					attdef.Height = HatchRadius;
+					attdef.Alignment = TextAlignment.MiddleCenter;
+					attdef.Rotation = 45;*/
+					AttributeDefinition attdefArea = new AttributeDefinition("Площадь"); // без пробелов!!!
+					attdefArea.Flags = AttributeFlags.Hidden;
+					attdefArea.Value = polygon.AreaSpatialFmt("0.00");
+					block.AttributeDefinitions.Add(attdef);
+					block.AttributeDefinitions.Add(attdefArea);
 
+					block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon));
 
-                    netDxf.Blocks.Block block = new netDxf.Blocks.Block("Polygon" + ic.ToString());
-                    //block.Layer = LayerPoly;// new netDxf.Tables.Layer("BlockSample");
-                    //block.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x), Contours.Items[ic].Centroid.z);
-                    AttributeDefinition attdef = new AttributeDefinition("Кад_номер"); // без пробелов!!!
-                    attdef.Text = "atribute def .Text";///Contours.Items[ic].Definition;
-                    attdef.Value = Contours[ic].Definition;
-                    attdef.Flags = AttributeFlags.Hidden;
-                    /* //Можно отображать  атрибуты:
-                    attdef.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x+1), Contours.Items[ic].Centroid.z);
-                    TextStyle txt = new TextStyle("MyStyle", "Arial.ttf");
-                    txt.IsVertical = true;
-                    attdef.Style = txt;
-                    attdef.WidthFactor = 1;
-                    attdef.Height = HatchRadius;
-                    attdef.Alignment = TextAlignment.MiddleCenter;
-                    attdef.Rotation = 45;*/
-                    AttributeDefinition attdefArea = new AttributeDefinition("Площадь"); // без пробелов!!!
-                    attdefArea.Flags = AttributeFlags.Hidden;
-                    attdefArea.Value = Contours[ic].AreaSpatialFmt("0.00");
-                    block.AttributeDefinitions.Add(attdef);
-                    block.AttributeDefinitions.Add(attdefArea);
+					CreatePolygonHatches(dxfDoc, LayerHatches, polygon, HatchRadius);
+					//внутренние границы   
+					for (int i = 0; i <= polygon.Childs.Count - 1; i++)
+					{
+						block.Entities.Add(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon.Childs[i]));
+						CreatePolygonHatches(dxfDoc, LayerHatches, polygon.Childs[i], HatchRadius);
+					}
+					Insert insDm = new Insert(block);
+					insDm.Layer = LayerPoly;
+					dxfDoc.AddEntity(insDm);
+				}
 
-                    block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Contours[ic]));
+				if (feature.TypeName == "TPolyLine")
+				{
+					TPolyLine Plines = (TPolyLine)feature;
+					netDxf.Entities.Text ContourDef = new Text();
+					ContourDef.Value = Plines[ic].Definition;
+					ContourDef.Height = 30;
+					ContourDef.Position = new Vector3(Math.Abs(Plines.CentroidMassive.y), Math.Abs(Plines.CentroidMassive.x), Plines.CentroidMassive.z);
+					ContourDef.Layer = LayerCN;
+					dxfDoc.AddEntity(ContourDef);
+					dxfDoc.AddEntity(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines));
+					CreatePolygonHatches(dxfDoc, LayerHatches, Plines, HatchRadius);
+				}
 
-                    CreatePolygonHatches(dxfDoc, LayerHatches, Contours[ic], HatchRadius);
-                    //внутренние границы   
-                    for (int i = 0; i <= Contours[ic].Childs.Count - 1; i++)
-                    {
-                        block.Entities.Add(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Contours[ic].Childs[i]));
-                        CreatePolygonHatches(dxfDoc, LayerHatches, Contours[ic].Childs[i], HatchRadius);
-                    }
-                    Insert insDm = new Insert(block);
-                    insDm.Layer = LayerPoly;
-                    dxfDoc.AddEntity(insDm);
-                }
-            }
+				if (feature.TypeName == "TMyPoints")
+				{
+					PointList Points = (PointList)feature;
+					for (int i = 0; i <= Points.PointCount - 1; i++)
+					{
+						CreatePoint(dxfDoc, LayerPoints, LayerText, Points[i]);
+					}
+				}
 
-            if (ES.GetType().Name == "TPolyLines")
-            {
-                TPolyLines Plines = (TPolyLines)ES;
-                for (int ic = 0; ic <= Plines.Count - 1; ic++)
-                {
-                    netDxf.Entities.Text ContourDef = new Text();
-                    ContourDef.Value = Plines[ic].Definition;
-                    ContourDef.Height = 30;
-                    ContourDef.Position = new Vector3(Math.Abs(Plines[ic].CentroidMassive.y), Math.Abs(Plines[ic].CentroidMassive.x), Plines[ic].CentroidMassive.z);
-                    ContourDef.Layer = LayerCN;
-                    dxfDoc.AddEntity(ContourDef);
-
-                    dxfDoc.AddEntity(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines[ic]));
-                    CreatePolygonHatches(dxfDoc, LayerHatches, Plines[ic], HatchRadius);
-
-                }
-            }
-
-            if (ES.GetType().Name == "TMyPoints")
-            {
-                PointList Points = (PointList)ES;
-                for (int ic = 0; ic <= Points.PointCount - 1; ic++)
-                {
-                    CreatePoint(dxfDoc, LayerPoints, LayerText, Points[ic]);
-                }
-            }
-
-
-
-            dxfDoc.Save(Filename);// "sample 2004.dxf"); 
-        }
+			}
+			dxfDoc.Save(Filename);// "sample 2004.dxf"); 
+		}
 
         #region Пример использования dxf.Block
         private static void BlockWithAttributes(DxfDocument dxf)

@@ -643,8 +643,8 @@ namespace XMLReaderCS
 #else
                 //LV_SchemaDisAssembly.Visible = false;                      
 #endif
-                this.DocInfo.MifPolygons.Defintion = Path.GetFileName(FileName);
-                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(this.DocInfo.MifPolygons.Defintion) + "_mif";
+                this.DocInfo.MifPolygons.Definition = Path.GetFileName(FileName);
+                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(this.DocInfo.MifPolygons.Definition) + "_mif";
                 //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
             }
 
@@ -680,7 +680,7 @@ namespace XMLReaderCS
 
             if (NeedListing)
             {
-                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+                ListMyCoolections(this.DocInfo.MyBlocks);
                 ListFileInfo(DocInfo);
             }
             PreloaderMenuItem.LoadingCircleControl.Active = false;
@@ -903,7 +903,7 @@ namespace XMLReaderCS
             TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
             MainObj.EntitySpatial = xmlPolygon;
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
         private void ParseTMyPolygon(TPolygonCollection xmlPolygons)
@@ -917,7 +917,7 @@ namespace XMLReaderCS
                 MainObj.EntitySpatial = xmlPolygons[i];    
             }
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
    
@@ -1117,7 +1117,7 @@ namespace XMLReaderCS
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
 
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
    
@@ -1201,7 +1201,7 @@ namespace XMLReaderCS
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
 
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
 
@@ -1245,7 +1245,7 @@ namespace XMLReaderCS
                     this.DocInfo.MyBlocks.Blocks.Add(Bl);
                 }
                 
-                ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+                ListMyCoolections(this.DocInfo.MyBlocks);
 
             }
         }
@@ -1476,7 +1476,7 @@ namespace XMLReaderCS
 
             }
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
 
@@ -1530,7 +1530,7 @@ namespace XMLReaderCS
 
         /// </summary>
         /// <param name="kpt09"></param>
-        private void ListMyCoolections(TMyBlockCollection BlockList, TPolygonCollection mifPolygons)
+        private void ListMyCoolections(TMyBlockCollection BlockList)
         {
             //TreeNode TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName);
             TreeNode TopNode_ = null;
@@ -1603,13 +1603,12 @@ namespace XMLReaderCS
                 }
 
                 //ОМС: все  в один,,,.
-                if ((BlockList.OMSPoints.PointCount) != 0)
+                if ((BlockList.OMSPoints.AsPointList.Count) > 0)
                 {
                     TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС");
                     OMSNode.SelectedImageIndex = 5;
                     OMSNode.ImageIndex = 5;
-                    // for (int i = 0; i <= BlockList.OMSPoints.PointCount - 1; i++)
-                    ListPointList(OMSNode, BlockList.OMSPoints, 0);
+                    ListPointList(OMSNode, BlockList.OMSPoints.AsPointList, 0);
                 }
 
                 //ОИПД Квартала
@@ -2341,7 +2340,7 @@ namespace XMLReaderCS
         }
 
 
-        private void OMSPointsToListView(ListView LV, OMSPoints list)
+        private void OMSPointsToListView(ListView LV, PointList list)
         {
             if (list.PointCount == 0) return;
             LV.Columns[0].Text = "#";
@@ -3057,7 +3056,13 @@ namespace XMLReaderCS
             listView_Properties.Items.Clear();
             listView_Properties.Controls.Clear();
 
-            if (STrN.Name.Contains("SPElem."))
+			if (STrN.Name.Contains("ES."))
+			{
+				int chek_id = Convert.ToInt32(STrN.Name.Substring(3));
+				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+			}
+
+				if (STrN.Name.Contains("SPElem."))
             {
                 int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
                 /*
@@ -3236,7 +3241,7 @@ namespace XMLReaderCS
 
             if (STrN.Name.Contains("OMSPoints"))
             {
-                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints);
+                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
             }
         }
 
@@ -3592,7 +3597,7 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
 
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Pl,ScaleRaduis);
+                       // wr.SaveAsDxfScale(saveFileDialog1.FileName, Pl,ScaleRaduis);
                     }
                 }
             }
@@ -3605,18 +3610,19 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
 
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Lot.CompozitionEZ, ScaleRaduis);
+                   //     wr.SaveAsDxfScale(saveFileDialog1.FileName, Lot.CompozitionEZ, ScaleRaduis);
                     }
                 }
             }
  
+
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
                 TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
-                    TPolygonCollection PC = new TPolygonCollection();
-                    PC.AddPolygon(Pl);
+                    TEntitySpatial PC = new TEntitySpatial();
+                    PC.Add(Pl);
                     saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
@@ -3627,19 +3633,7 @@ namespace XMLReaderCS
             }
           
 
-            if (TV_Parcels.SelectedNode.Name.Contains("TPLines."))  
-            {
-                TPolyLines Plist = (TPolyLines) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
-                if (Plist != null)
-                {
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Plist, ScaleRaduis);
-                    }
-                }
-
-            }
+        
 
             //Не Все зоны - только территориальные, ==(1) ??
             if (TV_Parcels.SelectedNode.Name.Contains("ZonesNode"))
@@ -3651,30 +3645,29 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
 
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Plc, ScaleRaduis);
+                    //    wr.SaveAsDxfScale(saveFileDialog1.FileName, Plc, ScaleRaduis);
                     }
                 }
             }
 
-            //"OKSsNode"
-            if (TV_Parcels.SelectedNode.Name.Contains("OKSsNode"))
+    
+
+			if (TV_Parcels.SelectedNode.Name.Contains("ES."))
+			{
+				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(3)));
+				if (es != null)
+				{
+					saveFileDialog1.FileName = "OKSsNode";
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						wr.SaveAsDxfScale(saveFileDialog1.FileName, (TEntitySpatial)es, ScaleRaduis);
+					}
+				}
+			}
+
+			if (TV_Parcels.SelectedNode.Name.Contains("OMSPoints"))
             {
-                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetRealtyEs();
-                if (Plc != null)
-                {
-                    saveFileDialog1.FileName = "OKSsNode";
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, Plc, ScaleRaduis);
-                    }
-                }
-            }
-
-
-            if (TV_Parcels.SelectedNode.Name.Contains("OMSPoints"))
-            {
-                if (this.DocInfo.MyBlocks.OMSPoints.PointCount > 0)
+                if (this.DocInfo.MyBlocks.OMSPoints.Count > 0)
                 {
                     saveFileDialog1.FileName = "omsPoints";
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
@@ -3684,10 +3677,10 @@ namespace XMLReaderCS
                     }
                 }
             }
-        }
 
-  
-   
+
+
+        }
 
 
         #endregion
@@ -3820,7 +3813,7 @@ namespace XMLReaderCS
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
 
-                        SaveAsmifOMS(saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints);
+                        SaveAsmifOMS(saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
 
                     }
                 }
@@ -4111,20 +4104,20 @@ namespace XMLReaderCS
           }
 
 
-
-          if (TV_Parcels.SelectedNode.Name == "OMSPoints")
-          {
-              if (this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA != null)
-                  saveFileDialog1.FileName = "ОМС-" + this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA;
-              else saveFileDialog1.FileName = "ОМС";
-              if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-              {
-                  netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                  TR.SaveAsOMSTXT(this.DocInfo.MyBlocks.SingleCN(), saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints);
-              }
-          }
-
-            if (TV_Parcels.SelectedNode.Name == "TopNode")
+			/* TODO:
+			if (TV_Parcels.SelectedNode.Name == "OMSPoints")
+			{
+				if (this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA != null)
+					saveFileDialog1.FileName = "ОМС-" + this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA;
+				else saveFileDialog1.FileName = "ОМС";
+				if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+				{
+					netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+					TR.SaveAsOMSTXT(this.DocInfo.MyBlocks.SingleCN(), saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints);
+				}
+			}
+			*/
+			if (TV_Parcels.SelectedNode.Name == "TopNode")
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
@@ -4310,7 +4303,7 @@ namespace XMLReaderCS
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                    TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
+                 //   TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
 
                 }
         }
@@ -5390,7 +5383,7 @@ namespace XMLReaderCS
                 else toolStripStatusLabel3.Text = "Нет аргументов";
             }
             //anyway - MyBlocks must be exist at this point:
-            ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+            ListMyCoolections(this.DocInfo.MyBlocks);
             ListFileInfo(DocInfo);
 			this.TextDefault = this.Text;
             ClearFiles();

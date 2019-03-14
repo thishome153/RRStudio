@@ -44,6 +44,7 @@ namespace netFteo.Spatial
     {
         int id { get; set; }
 		string  Definition { get; set; }
+		string  TypeName { get; }
     }
 
     /// <summary>
@@ -64,6 +65,15 @@ namespace netFteo.Spatial
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
 		}
+
+		public string TypeName
+		{
+			get
+			{
+				return this.GetType().ToString();
+			}
+		}
+
 		/// <summary>
 		/// Construct base Geometry object
 		/// </summary>
@@ -516,10 +526,19 @@ namespace netFteo.Spatial
             get { return this.fid; }
             set { this.fid = value; }
         }
+
 		public string Definition
 		{
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
+		}
+
+		public string TypeName
+		{
+			get
+			{
+				return this.GetType().ToString();
+			}
 		}
 		/// <summary>
 		/// Конструктор base Geometry object,
@@ -3140,7 +3159,11 @@ SCAN:
 					}
 
 				//again for ES2 (common spatial data collection)
-				if ((this[i]).ES2 != null)
+				if ((this[i].ES2 != null) &&
+					(this[i].ES2.id == Layer_id))
+					return this[i].ES2;
+
+				if (this[i].ES2 != null) 
 				{
 					foreach (IGeometry feature in (this[i]).ES2)
 					{
@@ -3161,7 +3184,9 @@ SCAN:
 							if (((TMyPolygon)feature).Layer_id == Layer_id)
 								return (TMyPolygon)feature;
 					}
+					
 				}
+
 			}
 			return null;
         }
@@ -3662,13 +3687,13 @@ SCAN:
         public string DistrictCN;   // Кадастровый номер района
         public string DistrictName; // Название района
         public List<TMyCadastralBlock> Blocks;
-        public OMSPoints OMSPoints
+        public TEntitySpatial OMSPoints
         {
             get
             {
-                OMSPoints res = new OMSPoints();
+                TEntitySpatial res = new TEntitySpatial();
                 foreach (TMyCadastralBlock bl in Blocks)
-                    res.AppendPoints(bl.OMSPoints);
+                    res.Add(bl.OMSPoints);
                 return res;
             }
         }
@@ -3826,9 +3851,39 @@ SCAN:
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
 		}
+		public string TypeName
+		{
+			get
+			{
+				return this.GetType().ToString();
+			}
+		}
 		public TEntitySpatial()
 		{
 			this.id = Gen_id.newId;
+		}
+
+		public PointList AsPointList
+		{
+			get
+			{
+				PointList res = new PointList();
+
+				foreach (IGeometry feature in this)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+						res.AppendPoints(((TMyPolygon)feature).AsPointList());
+					
+					if (feature.TypeName == "netFteo.Spatial.PointList")
+						res.AppendPoints(((PointList)feature));
+					
+					if (feature.TypeName == "netFteo.Spatial.OMSPoints")
+						res.AppendPoints(((PointList)feature));
+				}
+
+
+				return res;
+			}
 		}
 	}
 
