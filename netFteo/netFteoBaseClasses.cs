@@ -44,7 +44,9 @@ namespace netFteo.Spatial
     {
         int id { get; set; }
 		string  Definition { get; set; }
+		string Name { get; set; }
 		string  TypeName { get; }
+		string LayerHandle { get; set; } // handle of the layer (dxf ecosystem)
     }
 
     /// <summary>
@@ -66,6 +68,20 @@ namespace netFteo.Spatial
 			set { this.fDefinition = value; }
 		}
 
+		private string fName;
+		public string Name
+		{
+			get { return this.fName; }
+			set { this.fName = value; }
+		}
+
+		private string fLayerHandle;
+		public string LayerHandle
+		{
+			get { return this.fLayerHandle; }
+			set { this.fLayerHandle = value; }
+		}
+
 		public string TypeName
 		{
 			get
@@ -80,7 +96,8 @@ namespace netFteo.Spatial
 		public Geometry()
         {
             this.id = Gen_id.newId;
-        }
+			this.fLayerHandle = "FFFF"; //Default
+		}
     }
 
 
@@ -533,6 +550,18 @@ namespace netFteo.Spatial
 			set { this.fDefinition = value; }
 		}
 
+		private string fLayerHandle;
+		public string LayerHandle
+		{
+			get { return this.fLayerHandle; }
+			set { this.fLayerHandle = value; }
+		}
+		private string fName;
+		public string Name
+		{
+			get { return this.fName; }
+			set { this.fName = value; }
+		}
 		public string TypeName
 		{
 			get
@@ -1484,7 +1513,8 @@ SCAN:
             this.Childs = new List<TMyOutLayer>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
-        }
+			this.LayerHandle = "FFFF"; // default
+		}
 
         public TMyPolygon(int id):this()
         {
@@ -3841,6 +3871,16 @@ SCAN:
 		}
 	}
 
+
+	public class TLayer : Geometry
+	{
+		public TLayer()
+		{
+			this.Name = "0";
+		}
+	}
+
+
 	/// <summary>
 	/// Getero spatial data collection -lines, polygons, points, circles 
 	/// </summary>
@@ -3853,11 +3893,24 @@ SCAN:
 			get { return this.fid; }
 			set { this.fid = value; }
 		}
+		private string fLayerHandle;
+		public string LayerHandle
+		{
+			get { return this.fLayerHandle; }
+			set { this.fLayerHandle = value; }
+		}
+		private string fName;
+		public string Name
+		{
+			get { return this.fName; }
+			set { this.fName = value; }
+		}
 		public string Definition
 		{
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
 		}
+
 		public string TypeName
 		{
 			get
@@ -3865,10 +3918,15 @@ SCAN:
 				return this.GetType().ToString();
 			}
 		}
+
+		public List<TLayer> Layers;
+
 		public TEntitySpatial()
 		{
 			this.id = Gen_id.newId;
 			this.Definition = "Границы";
+			this.Layers = new List<TLayer>();
+			this.Layers.Add(new TLayer()); // default layer 0, handle = FFFF
 		}
 
 		public PointList AsPointList
