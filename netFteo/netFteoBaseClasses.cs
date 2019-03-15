@@ -1046,11 +1046,13 @@ SCAN:
             set { this.fDefinition = value; }
         }
 		*/
+		/*
         public int Layer_id
         {
             get { return this.FLayer_id; }
             set { this.FLayer_id = value; }
         }
+		*/
 
         public string PerymethrFmt(string Format)
         {
@@ -1480,14 +1482,14 @@ SCAN:
         public TMyPolygon()
         {
             this.Childs = new List<TMyOutLayer>();
-            this.Layer_id = Gen_id.newId; //RND.Next(1, 10000);
+            this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
         }
 
         public TMyPolygon(int id):this()
         {
           //  this.Childs = new List<TMyOutLayer>();
-            this.Layer_id = id;
+            this.id = id;
         }
 
         public TMyPolygon(string Def):this()
@@ -1783,14 +1785,14 @@ SCAN:
         public TMyOutLayer AddChild()
         {
             this.Childs.Add(new TMyOutLayer());
-            this.Childs[this.Childs.Count - 1].Layer_id = Gen_id.newId;
+            this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
             return this.Childs[this.Childs.Count - 1];
         }
 
         public TMyOutLayer AddChild(TMyOutLayer child)
         {
             this.Childs.Add(child);
-            this.Childs[this.Childs.Count - 1].Layer_id = Gen_id.newId;
+            this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
             return this.Childs[this.Childs.Count - 1];
         }
 
@@ -1813,11 +1815,11 @@ SCAN:
 
         public TMyOutLayer GetEs(int Layer_id)
         {
-            if (this.Layer_id == Layer_id) return this;
+            if (this.id == Layer_id) return this;
 
             for (int i = 0; i <= this.Childs.Count - 1; i++)
             {
-                if (this.Childs[i].Layer_id == Layer_id) return this.Childs[i];
+                if (this.Childs[i].id == Layer_id) return this.Childs[i];
             }
             return null;
         }
@@ -2035,7 +2037,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (this[i].Layer_id == Layer_id)
+                if (this[i].id == Layer_id)
                 {
                     return this[i];
                 }
@@ -2280,7 +2282,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Items.Count - 1; i++)
             {
-                if (this.Items[i].EntSpat.Layer_id == Layer_id)
+                if (this.Items[i].EntSpat.id == Layer_id)
                     return this.Items[i].EntSpat;
 
                 for (int ic = 0; ic <= this.Items[i].Contours.Count - 1; ic++)
@@ -2569,7 +2571,7 @@ SCAN:
 
         public object GetEs(int Layer_id)
         {
-            if (this.EntitySpatial != null) if (this.EntitySpatial.Layer_id == Layer_id) return this.EntitySpatial;
+            if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
             if (this.Contours != null) if (this.Contours.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
             if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
             if (this.CompozitionEZ != null) if (this.CompozitionEZ.GetEs(Layer_id) != null) return this.CompozitionEZ.GetEs(Layer_id);
@@ -3098,12 +3100,12 @@ SCAN:
                             TPolyLines ES = (TPolyLines)this[i].Building.ES;
 
                             for (int il = 0; il <= ES.Count - 1; il++)
-                                if (ES[il].Layer_id == Layer_id)
+                                if (ES[il].id == Layer_id)
                                     return ES[il];
                         }
 
                         if (this[i].Building.ES.GetType().Name == "TMyPolygon")
-                            if (((TMyPolygon)this[i].Building.ES).Layer_id == Layer_id)
+                            if (((TMyPolygon)this[i].Building.ES).id == Layer_id)
                                 return (TMyPolygon)this[i].Building.ES;
                     }
 
@@ -3149,12 +3151,12 @@ SCAN:
 							TPolyLines ES = (TPolyLines)this[i].Uncompleted.ES;
 
 							for (int il = 0; il <= ES.Count - 1; il++)
-								if (ES[il].Layer_id == Layer_id)
+								if (ES[il].id == Layer_id)
 									return ES[il];
 						}
 
 						if (this[i].Uncompleted.ES.GetType().Name == "TMyPolygon")
-							if (((TMyPolygon)this[i].Uncompleted.ES).Layer_id == Layer_id)
+							if (((TMyPolygon)this[i].Uncompleted.ES).id == Layer_id)
 								return (TMyPolygon)this[i].Uncompleted.ES;
 					}
 
@@ -3176,12 +3178,12 @@ SCAN:
 
 						if (feature.GetType().Name == "TPolyLine")
 						{
-							if (((TPolyLine)feature).Layer_id == Layer_id)
+							if (((TPolyLine)feature).id == Layer_id)
 								return (TPolyLine)feature;
 						}
 
 						if (feature.GetType().Name == "TMyPolygon")
-							if (((TMyPolygon)feature).Layer_id == Layer_id)
+							if (((TMyPolygon)feature).id == Layer_id)
 								return (TMyPolygon)feature;
 					}
 					
@@ -3483,7 +3485,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (this[i].EntitySpatial.Layer_id == Layer_id)
+                if (this[i].EntitySpatial.id == Layer_id)
                     return this[i].EntitySpatial;
             }
 
@@ -3507,7 +3509,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (this[i].EntitySpatial.Layer_id == Layer_id)
+                if (this[i].EntitySpatial.id == Layer_id)
                     return this[i].EntitySpatial;
             }
 
@@ -3635,7 +3637,7 @@ SCAN:
             {
                 if (this.Parcels.Parcels[i].CompozitionEZ != null)
                     for (int ij = 0; ij <= this.Parcels.Parcels[i].CompozitionEZ.Count - 1; ij++)
-                        if (this.Parcels.Parcels[i].CompozitionEZ[ij].Layer_id == id)
+                        if (this.Parcels.Parcels[i].CompozitionEZ[ij].id == id)
                             return this.Parcels.Parcels[i].CompozitionEZ[ij];
             }
 
@@ -3698,6 +3700,7 @@ SCAN:
             }
         }
 
+		public TEntitySpatial SpatialData;
         public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
         public TMyBlockCollection()
         {
@@ -3714,15 +3717,18 @@ SCAN:
 
         public Object GetEs(int Layer_id)
         {
-            for (int i = 0; i <= this.Blocks.Count - 1; i++)
-            {
-                Object Entity = this.Blocks[i].GetEs(Layer_id);
-                if (Entity != null)
-                    return Entity;
-                {
+			for (int i = 0; i <= this.Blocks.Count - 1; i++)
+			{
+				Object Entity = this.Blocks[i].GetEs(Layer_id);
+				if (Entity != null)
+					return Entity;
+			}
+			foreach (IGeometry feature in this.SpatialData)
+			{
+				if (feature.id == Layer_id)
+					return feature;
 
-                }
-            }
+			}
             return null;
         }
 
@@ -3819,7 +3825,8 @@ SCAN:
      
         public TPolyLine()
         {
-            // this.MainPoint = new netFteoPoints();
+			// this.MainPoint = new netFteoPoints();
+			int check = this.id;
         }
 
     }
@@ -3861,6 +3868,7 @@ SCAN:
 		public TEntitySpatial()
 		{
 			this.id = Gen_id.newId;
+			this.Definition = "Границы";
 		}
 
 		public PointList AsPointList

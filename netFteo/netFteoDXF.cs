@@ -84,21 +84,21 @@ namespace netFteo.IO
 		/// Импорт dxf-файлов
 		/// </summary>
 		/// <returns></returns>
-		public TPolygonCollection ParseDXF()
+		public TEntitySpatial ParseDXF()
 		{
-			TPolygonCollection res = new TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
 			if (dxfFile == null) return null;
 			// Direct objects (not blocked):
 			// Polylines (every - closed & open)
 			foreach (LwPolyline poly in dxfFile.LwPolylines)
 			{
 				DxfParsingProc("dxf", ++FileParsePosition, null);
-				TMyOutLayer Polyline = DXF_ParseRing(poly);
-				if (Polyline != null)
+				IGeometry DXFPolyline = DXF_ParseRing(poly);
+				if (DXFPolyline != null)
 					try
 					{
-						Polyline.Definition = poly.CodeName + "." + poly.Handle; ;
-						res.AddPolygon(Polyline);
+						DXFPolyline.Definition = poly.CodeName + "." + poly.Handle; ;
+						res.Add(DXFPolyline);
 					}
 
 					catch (ArgumentException error)
@@ -129,7 +129,7 @@ namespace netFteo.IO
 										Polygon.Definition = block.CodeName + "." + block.Handle;
 									if (Polygon.Definition == "")
 										Polygon.Definition = block.CodeName + "." + block.Handle;
-									res.AddPolygon(Polygon);
+									res.Add(Polygon);
 									goto NEXTBlock; // all entites here is ring + inner rings
 								}
 								catch (ArgumentException error)
@@ -147,6 +147,7 @@ namespace netFteo.IO
 
 	
 			}
+			res.Definition = this.FileName;
 			return res;
 		}
 
@@ -177,30 +178,48 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="poly"></param>
 		/// <returns></returns>
-        private TMyOutLayer DXF_ParseRing(LwPolyline poly)
+        private IGeometry DXF_ParseRing(LwPolyline poly)
         {
           //  if (!poly.IsClosed) return null;
             if (poly.Vertexes.Count < 2) return null;
             int ptNum = 0;
-            TMyOutLayer res = new TMyOutLayer();
-            try
-            {
-                foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
-                {
-                    netFteo.Spatial.Point point = new  netFteo.Spatial.Point(vertex.Location.Y, vertex.Location.X);
-                    point.oldX = vertex.Location.Y;
-                    point.oldY = vertex.Location.X;
-                    point.NumGeopointA = "dxf" + (++ptNum).ToString();
-                    res.AddPoint(point);
-                }
-            }
+			try
+			{
+				if (poly.IsClosed)
+				{
+					TMyPolygon res = new TMyPolygon();
+					foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
+					{
+						netFteo.Spatial.Point point = new netFteo.Spatial.Point(vertex.Location.Y, vertex.Location.X);
+						point.oldX = vertex.Location.Y;
+						point.oldY = vertex.Location.X;
+						point.NumGeopointA = "dxf" + (++ptNum).ToString();
+						res.AddPoint(point);
+					}
+					return res;
+				}
+				else
+				{
+					TPolyLine res = new TPolyLine();
+					foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
+					{
+						netFteo.Spatial.Point point = new netFteo.Spatial.Point(vertex.Location.Y, vertex.Location.X);
+						point.oldX = vertex.Location.Y;
+						point.oldY = vertex.Location.X;
+						point.NumGeopointA = "dxf" + (++ptNum).ToString();
+						res.AddPoint(point);
+					}
+					return res;
+				}
+
+			}
 
             catch (IOException ex)
             {
                 return null;
                 //  MessageBox.Show(ex.ToString());
             }
-            return res;
+
         }
 
         private TMyPolygon DXF_ParseRegion(EntityCollection polys)
@@ -208,17 +227,20 @@ namespace netFteo.IO
             TMyPolygon res = new TMyPolygon("dxfblock");
             try
             {
-                if ((polys.Count > 0) && (polys[0].CodeName.Equals("LWPOLYLINE")))
-                {
-                    res.AppendPoints(DXF_ParseRing((LwPolyline)polys[0]));
-                }
-                // childs:
+                if ((polys.Count > 0) && (polys[0].CodeName.Equals("LWPOLYLINE")) &&
+					((LwPolyline)polys[0]).Flags == PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM)
 
+				{
+                    res.AppendPoints((PointList)DXF_ParseRing((LwPolyline)polys[0]));
+                }
+
+                // childs:
                 for (int i = 1; i <= polys.Count - 1; i++)
                 {
-                    if ((polys.Count > 0) && (polys[i].CodeName.Equals("LWPOLYLINE")))
+                    if ((polys.Count > 0) && (polys[i].CodeName.Equals("LWPOLYLINE")) &&
+					((LwPolyline)polys[i]).Flags == PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM)
                     {
-                        res.AddChild(DXF_ParseRing((LwPolyline)polys[i]));
+                        res.AddChild((TMyOutLayer)DXF_ParseRing((LwPolyline)polys[i]));
                     }
                 }
             }
@@ -244,7 +266,7 @@ namespace netFteo.IO
     public class DXFWriter
     {
         // Полигон, точнее замкнутуая полилиния, понимаемый и редактируемый NanoCad
-        private EntityObject CreateDxfPolygon(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netDxf.Tables.Layer LayerPoly, netFteo.Spatial.PointList Points)
+        private EntityObject CreateDxfPolygon(DxfDocument dxfDoc, Layer LayerPoints, Layer LayerText, Layer LayerPoly, PointList Points, bool isClosed)
         {
 
             List<LwPolylineVertex> PlVertexLst = new List<LwPolylineVertex>();  //Список Vertexов (вершин) полилинии:
@@ -275,7 +297,7 @@ namespace netFteo.IO
                    dxfDoc.AddEntity(PLine);        //Вгоняем в dxf:
              * */
             // 2d Полилиния
-            LwPolyline lwpolyline = new LwPolyline(PlVertexLst, true); //Сама полилиния, замкнутая true:
+            LwPolyline lwpolyline = new LwPolyline(PlVertexLst, isClosed); //Сама полилиния, замкнутая true:
             lwpolyline.Layer = LayerPoly;
             //dxfDoc.AddEntity(lwpolyline);        //Вгоняем в dxf: вгоним в  блок
             return lwpolyline;
@@ -392,13 +414,13 @@ namespace netFteo.IO
 					block.AttributeDefinitions.Add(attdef);
 					block.AttributeDefinitions.Add(attdefArea);
 
-					block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon));
+					block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon, true));
 
 					CreatePolygonHatches(dxfDoc, LayerHatches, polygon, HatchRadius);
 					//внутренние границы   
 					for (int i = 0; i <= polygon.Childs.Count - 1; i++)
 					{
-						block.Entities.Add(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon.Childs[i]));
+						block.Entities.Add(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon.Childs[i],true));
 						CreatePolygonHatches(dxfDoc, LayerHatches, polygon.Childs[i], HatchRadius);
 					}
 					Insert insDm = new Insert(block);
@@ -406,20 +428,39 @@ namespace netFteo.IO
 					dxfDoc.AddEntity(insDm);
 				}
 
-				if (feature.TypeName == "TPolyLine")
+				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
 				{
 					TPolyLine Plines = (TPolyLine)feature;
 					netDxf.Entities.Text ContourDef = new Text();
-					ContourDef.Value = Plines[ic].Definition;
-					ContourDef.Height = 30;
-					ContourDef.Position = new Vector3(Math.Abs(Plines.CentroidMassive.y), Math.Abs(Plines.CentroidMassive.x), Plines.CentroidMassive.z);
+					ContourDef.Value = Plines.Definition;
+					ContourDef.Height = HatchRadius;
+					ContourDef.Position = new Vector3(Math.Abs(Plines[0].y), Math.Abs(Plines[0].x), Plines[0].z);
 					ContourDef.Layer = LayerCN;
 					dxfDoc.AddEntity(ContourDef);
-					dxfDoc.AddEntity(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines));
+					dxfDoc.AddEntity(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines, false));
 					CreatePolygonHatches(dxfDoc, LayerHatches, Plines, HatchRadius);
 				}
 
-				if (feature.TypeName == "TMyPoints")
+				if (feature.TypeName == "netFteo.Spatial.TCircle")
+				{
+					TCircle circle = (TCircle)feature;
+					netDxf.Entities.Circle DxfCircle = new Circle();
+					netDxf.Entities.Text ContourDef = new Text();
+					ContourDef.Value = circle.Definition;
+					ContourDef.Height = HatchRadius;
+					ContourDef.Position = new Vector3(circle.y+1, circle.x+1, circle.z);
+					ContourDef.Layer = LayerCN;
+
+					DxfCircle.Center = new Vector3(circle.y, circle.x, circle.z);
+					if (circle.R == 0)
+						DxfCircle.Radius =HatchRadius;// Default radius
+					else DxfCircle.Radius = circle.R;
+					DxfCircle.Layer = LayerPoly;
+					dxfDoc.AddEntity(ContourDef);
+					dxfDoc.AddEntity(DxfCircle);//CreatePoint(dxfDoc, LayerPoints, LayerText, circle));
+				}
+
+					if (feature.TypeName == "netFteo.Spatial.TMyPoints")
 				{
 					PointList Points = (PointList)feature;
 					for (int i = 0; i <= Points.PointCount - 1; i++)
@@ -427,6 +468,7 @@ namespace netFteo.IO
 						CreatePoint(dxfDoc, LayerPoints, LayerText, Points[i]);
 					}
 				}
+
 
 			}
 			dxfDoc.Save(Filename);// "sample 2004.dxf"); 

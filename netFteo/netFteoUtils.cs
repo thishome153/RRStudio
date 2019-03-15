@@ -128,10 +128,10 @@ namespace netFteo
         }
         
 
-        public static void ListEntSpat(TreeNode NodeTo,Spatial.TMyPolygon ES, string NodeName,string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName,string Definition, int Status)
         {
             if (ES == null) return;
-            TreeNode       Node = NodeTo.Nodes.Add(NodeName+ ES.Layer_id.ToString(), Definition);
+            TreeNode       Node = NodeTo.Nodes.Add(NodeName+ ES.id.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status) + ES.HasChanges;
                            Node.ForeColor   = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
             //redifine status color, if happend changes:
@@ -139,7 +139,7 @@ namespace netFteo
                 Node.ForeColor = Spatial.TMyColors.StatusToColor(0);
                            Node.ImageIndex = 3;
                            Node.SelectedImageIndex = 3;
-                           Node.Tag = ES.Layer_id;//
+                           Node.Tag = ES.id;//
         }
 
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
@@ -159,7 +159,7 @@ namespace netFteo
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
         {
             if (ES == null) return;
-            TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.Layer_id.ToString(), Definition);
+            TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.id.ToString(), Definition);
             Node.ToolTipText = Spatial.TMyState.StateToString(Status);
             Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
 			Node.ImageIndex = 13;
@@ -178,27 +178,26 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
-		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, string NodeName, string Definition, int Status)
+		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, int Status)
 		{
 			if (ES == null) return;
-			TreeNode NodeTo = NodeES.Nodes.Add("ES."+ES.id.ToString(), NodeName);
+			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), ES.Definition);
 			NodeTo.Tag = ES.id;
 			foreach (Spatial.IGeometry feature in ES)
 			{
-				string testNAme = feature.GetType().Name;
-				if (feature.GetType().Name == "TMyPolygon")
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 				{
 					if (((Spatial.TMyPolygon)feature).PointCount > 0)
 						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TMyPolygon)feature, "SPElem.", ((Spatial.TMyPolygon)feature).Definition, 6);
 				}
 
-				if (feature.GetType().Name == "TPolyLine")
+				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
 				{
 					if (((Spatial.TPolyLine)feature).PointCount > 0)
 						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
 				}
 
-				if (feature.GetType().Name == "TCircle")
+				if (feature.TypeName == "netFteo.Spatial.TCircle")
 				{
 					netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, "SPElem.", ((Spatial.TCircle)feature).NumGeopointA, 6);
 				}

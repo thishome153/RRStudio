@@ -63,7 +63,7 @@ namespace RRTypes.CommonCast
 				for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 				{
 					netFteo.Spatial.TPolyLine line = new netFteo.Spatial.TPolyLine();
-					line.Layer_id = netFteo.Spatial.Gen_id.newId;
+					line.id = netFteo.Spatial.Gen_id.newId;
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
 						netFteo.Spatial.Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -128,7 +128,7 @@ namespace RRTypes.CommonCast
 				for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 				{
 					netFteo.Spatial.TPolyLine line = new netFteo.Spatial.TPolyLine();
-					line.Layer_id = netFteo.Spatial.Gen_id.newId;
+					line.id = netFteo.Spatial.Gen_id.newId;
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
 						netFteo.Spatial.Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -193,7 +193,7 @@ namespace RRTypes.CommonCast
 				for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 				{
 					netFteo.Spatial.TPolyLine line = new netFteo.Spatial.TPolyLine();
-					line.Layer_id = netFteo.Spatial.Gen_id.newId;
+					line.id = netFteo.Spatial.Gen_id.newId;
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
 						netFteo.Spatial.Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -263,7 +263,7 @@ namespace RRTypes.CommonCast
 				for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 				{
 					netFteo.Spatial.TPolyLine line = new netFteo.Spatial.TPolyLine();
-					line.Layer_id = netFteo.Spatial.Gen_id.newId;
+					line.id = netFteo.Spatial.Gen_id.newId;
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
 						netFteo.Spatial.Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -371,7 +371,7 @@ namespace RRTypes.CommonCast
 				for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 				{
 					TPolyLine line = new TPolyLine();
-					line.Layer_id = Gen_id.newId;
+					line.id = Gen_id.newId;
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
 						netFteo.Spatial.Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -497,7 +497,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -580,7 +580,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -660,7 +660,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -732,7 +732,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -804,7 +804,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -876,7 +876,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -927,7 +927,8 @@ namespace RRTypes.CommonCast
 						}
 
 
-						//childs inner ring
+						//childs inner ring //Full SHIT 
+						//TODO:  howto detect childs ???
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
 							TMyOutLayer ESch = Polygon.AddChild();
@@ -948,7 +949,7 @@ namespace RRTypes.CommonCast
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
-						line.Layer_id = Gen_id.newId;
+						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
@@ -5239,9 +5240,9 @@ namespace RRTypes.CommonParsers
 						Constructions.Floors = kv.Realty.Construction.Floors.Floors;
 						Constructions.UndergroundFloors = kv.Realty.Construction.Floors.UndergroundFloors;
 					}
-				foreach (RRTypes.kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
+				foreach (kvoks_v07.tKeyParameter param in kv.Realty.Construction.KeyParameters)
 					Constructions.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
-				foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Construction.OldNumbers)
+				foreach (kvoks_v07.tOldNumber n in kv.Realty.Construction.OldNumbers)
 					Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 				Bl.AddOKS(Constructions);
 				Constructions.Notes = kv.Realty.Construction.Notes;
@@ -5332,28 +5333,33 @@ namespace RRTypes.CommonParsers
 		public netFteo.XML.FileInfo ParseDXF(netFteo.XML.FileInfo fi, netFteo.IO.DXFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
 			netFteo.XML.FileInfo res = InitFileInfo(fi, null);
-			TPolygonCollection polyfromMIF = mifreader.ParseDXF();
+			TEntitySpatial DXfEntitys = mifreader.ParseDXF();
 
-			// Virtual Parcel with contours:
-			if (polyfromMIF != null)
+
+			if (DXfEntitys != null)
 			{
+				/*
+				 * 			// Virtual Parcel with contours:
 				TMyCadastralBlock Bl = new TMyCadastralBlock();
 				Bl.CN = mifreader.Version;  //System.IO.Path.GetFileNameWithoutExtension(mifreader.FileName);
 				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(mifreader.FileName, "DXF"));
-				MainObj.Contours.AddPolygons(polyfromMIF);
+
 				res.MyBlocks.Blocks.Clear();
 				res.MyBlocks.Blocks.Add(Bl);
+				*/
+				res.MyBlocks.SpatialData = DXfEntitys;
 			}
 
-			res.DocTypeNick = "dxf";
-			res.CommentsType = "DXF";
-			res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
-			res.Encoding = mifreader.BodyEncoding;
-			res.Number = "Encoding  " + mifreader.BodyEncoding;
-			res.DocType = "dxf";
-			res.Version = mifreader.Version;
 
-			return res;
+				res.DocTypeNick = "dxf";
+				res.CommentsType = "DXF";
+				res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
+				res.Encoding = mifreader.BodyEncoding;
+				res.Number = "Encoding  " + mifreader.BodyEncoding;
+				res.DocType = "dxf";
+				res.Version = mifreader.Version;
+				return res;
+
 		}
 		#endregion
 

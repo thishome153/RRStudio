@@ -583,6 +583,7 @@ namespace XMLReaderCS
                     dxfreader.OnParsing += DXFStateUpdater;
                     RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
                     this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
+
                 }
 
                 catch (ArgumentException err)
@@ -1525,8 +1526,9 @@ namespace XMLReaderCS
 
                 listView_Contractors.Items.Add(LVi);
             }
-            
-        }
+
+			
+		}
 
         /// </summary>
         /// <param name="kpt09"></param>
@@ -1637,7 +1639,15 @@ namespace XMLReaderCS
 
 
             } // block block
-            if (TopNode_ != null) TopNode_.Expand();
+
+			//ОИПД если нет кварталов - не было импорта ЕГРН, значит только пространственный файл
+			if (BlockList.Blocks.Count == 0)
+			{
+				if (BlockList.SpatialData != null)
+					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode", BlockList.SpatialData.Definition), BlockList.SpatialData, 6);
+			}
+
+			if (TopNode_ != null) TopNode_.Expand();
             TV_Parcels.EndUpdate();
             contextMenuStrip_SaveAs.Enabled = true;
         }
@@ -2002,7 +2012,7 @@ namespace XMLReaderCS
 			
 		}
 		*/
-			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2, "Границы ES", oks.CN, 6);
+			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2,  6);
 			ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
@@ -2037,7 +2047,7 @@ namespace XMLReaderCS
             if (PList.Count == 0) return;
             string BName;
             LV.Items.Clear();
-            LV.Tag = PList.Layer_id;
+            LV.Tag = PList.id;
             for (int i = 0; i <= PList.Count - 2; i++)
             {
                 BName = PList[i].Pref + PList[i].NumGeopointA+" - "+
@@ -2062,7 +2072,7 @@ namespace XMLReaderCS
             if (PList.Count == 0) return null;
             string BName;
             LV.Items.Clear();
-            LV.Tag = PList.Layer_id;
+            LV.Tag = PList.id;
             ListViewItem res = PointListToListView(LV, (PointList) PList);
 
             for (int ic = 0; ic <= PList.Childs.Count - 1; ic++)
@@ -2072,6 +2082,7 @@ namespace XMLReaderCS
                 LV.Items.Add(LViEmpty_ch);
                 PointListToListView(LV, PList.Childs[ic]);
             }
+
             ListViewItem LViEmpty = new ListViewItem();
             LViEmpty.Text = "";
             LV.Items.Add(LViEmpty);
