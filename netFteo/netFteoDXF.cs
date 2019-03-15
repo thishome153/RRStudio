@@ -86,8 +86,23 @@ namespace netFteo.IO
 		/// <returns></returns>
 		public TEntitySpatial ParseDXF()
 		{
-			TEntitySpatial res = new TEntitySpatial();
 			if (dxfFile == null) return null;
+			TEntitySpatial res = new TEntitySpatial();
+			
+			foreach(Layer layer in dxfFile.Layers)
+			{
+				if (layer.Name == "0") // update default layer handle
+				{
+					res.Layers[0].LayerHandle = layer.Handle;
+				}
+				else 
+				res.Layers.Add(new TLayer()
+				{
+					LayerHandle = layer.Handle,
+					Name = layer.Name
+				});
+			}
+
 			// Direct objects (not blocked):
 			// Polylines (every - closed & open)
 			foreach (LwPolyline poly in dxfFile.LwPolylines)
@@ -97,7 +112,8 @@ namespace netFteo.IO
 				if (DXFPolyline != null)
 					try
 					{
-						DXFPolyline.Definition = poly.CodeName + "." + poly.Handle; ;
+						DXFPolyline.Definition = poly.CodeName + "." + poly.Handle;
+						DXFPolyline.LayerHandle = poly.Layer.Handle;
 						res.Add(DXFPolyline);
 					}
 
@@ -129,6 +145,7 @@ namespace netFteo.IO
 										Polygon.Definition = block.CodeName + "." + block.Handle;
 									if (Polygon.Definition == "")
 										Polygon.Definition = block.CodeName + "." + block.Handle;
+									Polygon.LayerHandle = block.Layer.Handle;
 									res.Add(Polygon);
 									goto NEXTBlock; // all entites here is ring + inner rings
 								}

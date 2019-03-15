@@ -178,29 +178,43 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
+		private static void ListFeature(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
+		{
+			foreach (Spatial.IGeometry feature in ES)
+			{
+				if (feature.LayerHandle == LayerHandle)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					{
+						if (((Spatial.TMyPolygon)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TMyPolygon)feature, "SPElem.", ((Spatial.TMyPolygon)feature).Definition, 6);
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						if (((Spatial.TPolyLine)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TCircle")
+					{
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, "SPElem.", ((Spatial.TCircle)feature).NumGeopointA, 6);
+					}
+				}
+			}
+		}
+
 		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, int Status)
 		{
 			if (ES == null) return;
-			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), ES.Definition);
+			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
 			NodeTo.Tag = ES.id;
-			foreach (Spatial.IGeometry feature in ES)
+			//Show layers of ES
+			foreach (netFteo.Spatial.TLayer layer in ES.Layers)
 			{
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-				{
-					if (((Spatial.TMyPolygon)feature).PointCount > 0)
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TMyPolygon)feature, "SPElem.", ((Spatial.TMyPolygon)feature).Definition, 6);
-				}
-
-				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-				{
-					if (((Spatial.TPolyLine)feature).PointCount > 0)
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
-				}
-
-				if (feature.TypeName == "netFteo.Spatial.TCircle")
-				{
-					netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, "SPElem.", ((Spatial.TCircle)feature).NumGeopointA, 6);
-				}
+				TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
+				//TODO Filter features by LINQ : Spatial.TEntitySpatial LayerFeatures = ES.SelectMany(xd => xd.LayerHandle == layer.LayerHandle, Spatial.TEntitySpatial);
+				ListFeature(ES, LayerNode, layer.LayerHandle);
 			}
 		}
 

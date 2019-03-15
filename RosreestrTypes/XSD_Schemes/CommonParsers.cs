@@ -894,6 +894,7 @@ namespace RRTypes.CommonCast
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
+	
 			if (ES == null) return null;
 
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
@@ -915,6 +916,7 @@ namespace RRTypes.CommonCast
 					{
 						TMyPolygon Polygon = new TMyPolygon();
 						Polygon.Definition = ES.SpatialElement[i].Number;
+
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
