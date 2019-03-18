@@ -505,8 +505,16 @@ namespace netFteo.Spatial
         /// Radius
         /// </summary>
         public double R;
-        //public Point Center;
-        public TCircle(decimal x, decimal y, decimal radius)
+		//public Point Center;
+
+		public TCircle(double x, double y, double radius)
+		{
+			this.x = x;
+			this.y = y;
+			this.R = radius;
+		}
+
+		public TCircle(decimal x, decimal y, decimal radius)
         {
 			this.x = Convert.ToDouble(x);
             this.y = Convert.ToDouble(y);

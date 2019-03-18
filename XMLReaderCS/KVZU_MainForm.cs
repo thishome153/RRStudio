@@ -1962,13 +1962,6 @@ namespace XMLReaderCS
 				}
 			}
 
-			/*
-            if (oks.Name != null)
-            {
-                TreeNode OksNameNode = PNode.Nodes.Add("OksNameNode","Наименование").Nodes.Add("Name", oks.Name);
-            }
-            */
-
 			if ((oks.Location != null) &&
 				(oks.Location.Address != null))
             {
@@ -1984,44 +1977,13 @@ namespace XMLReaderCS
                 foreach (string s in oks.ParentCadastralNumbers)
                     flatsnodes.Nodes.Add("CN" + s, s);
             }
-			/*
-		if (oks.ES2 != null)
-		{
-			TreeNode PNodeSpat = PNode.Nodes.Add("Границы");
-
-			foreach (IGeometry feature in oks.ES2)
-			{
-				string testNAme = feature.GetType().Name;
-				if (feature.GetType().Name == "TMyPolygon")
-				{
-					if (((TMyPolygon)feature).PointCount > 0)
-						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TMyPolygon)feature, "SPElem.",((TMyPolygon)feature).Definition, 6);
-				}
-
-				if (feature.GetType().Name == "TPolyLine")
-				{
-					if (((TPolyLine)feature).PointCount > 0)
-						netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TPolyLine)feature, "SPElem.", ((TPolyLine)feature).Definition, 6);
-				}
-
-				if (feature.GetType().Name == "TCircle")
-				{
-					netFteo.ObjectLister.ListEntSpat(PNodeSpat, (TCircle)feature, "SPElem.", ((TCircle)feature).NumGeopointA, 6);
-				}
-			}
-			
-		}
-		*/
+	
 			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2,  6);
 			ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
 
-		private void ListES(TreeNode ESNode, TEntitySpatial ES)
-		{
-
-		}
-
+	
         private void ListBound(TreeNode Node, TBound Parcel)
         {
             string CN = Parcel.Description;

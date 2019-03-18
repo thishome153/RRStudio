@@ -622,7 +622,8 @@ namespace RRTypes.CommonCast
 						{
 							TMyPolygon Polygon = new TMyPolygon();
 							Polygon.Definition = ES.SpatialElement[i].Number;
-							//OUT ring
+							Polygon.LayerHandle =  res.Layers[0].LayerHandle; //  "FFFF"; //default
+																			   //OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
 								Point P = new Point();
@@ -661,6 +662,7 @@ namespace RRTypes.CommonCast
 						TPolyLine line = new TPolyLine();
 						line.Definition = ES.SpatialElement[i].Number;
 						line.id = Gen_id.newId;
+						line.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
 							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),

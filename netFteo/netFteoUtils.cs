@@ -213,7 +213,8 @@ namespace netFteo
 			foreach (netFteo.Spatial.TLayer layer in ES.Layers)
 			{
 				TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
-				//TODO Filter features by LINQ : Spatial.TEntitySpatial LayerFeatures = ES.SelectMany(xd => xd.LayerHandle == layer.LayerHandle, Spatial.TEntitySpatial);
+				//TODO Filter features by LINQ : 
+				//Spatial.TEntitySpatial LayerFeatures = ES..Select <Spatial.IGeometry>(fnc => < Spatial.IGeometry, Spatial.TEntitySpatial >)(xd => xd.LayerHandle == layer.LayerHandle);
 				ListFeature(ES, LayerNode, layer.LayerHandle);
 			}
 		}

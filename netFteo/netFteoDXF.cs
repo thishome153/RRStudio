@@ -103,9 +103,18 @@ namespace netFteo.IO
 				});
 			}
 
-			// Direct objects (not blocked):
-			// Polylines (every - closed & open)
-			foreach (LwPolyline poly in dxfFile.LwPolylines)
+			foreach (Circle dxfCircleS in dxfFile.Circles)
+			{
+				IGeometry Circle = new TCircle(dxfCircleS.Center.Y, dxfCircleS.Center.X, dxfCircleS.Radius);
+				Circle.LayerHandle = dxfCircleS.Layer.Handle;
+				Circle.Definition = dxfCircleS.CodeName+"."+dxfCircleS.Handle;
+				res.Add(Circle);
+			}
+
+
+				// Direct objects (not blocked):
+				// Polylines (every - closed & open)
+				foreach (LwPolyline poly in dxfFile.LwPolylines)
 			{
 				DxfParsingProc("dxf", ++FileParsePosition, null);
 				IGeometry DXFPolyline = DXF_ParseRing(poly);
@@ -145,7 +154,7 @@ namespace netFteo.IO
 										Polygon.Definition = block.CodeName + "." + block.Handle;
 									if (Polygon.Definition == "")
 										Polygon.Definition = block.CodeName + "." + block.Handle;
-									Polygon.LayerHandle = block.Layer.Handle;
+									Polygon.LayerHandle = entity.Layer.Handle;
 									res.Add(Polygon);
 									goto NEXTBlock; // all entites here is ring + inner rings
 								}
