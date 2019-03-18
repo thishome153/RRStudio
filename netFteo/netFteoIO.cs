@@ -1217,6 +1217,35 @@ namespace netFteo.IO
 			}
 		}
 
+		private string WriteMifRegion(TMyPolygon Poly)
+		{
+			string res = "";
+			res += "Region " + Convert.ToString(Poly.Childs.Count + 1);
+			res += Poly.Count.ToString();
+			for (int ip = 0; ip <= Poly.Count - 1; ip++)
+			{
+				res += Poly[ip].y_s;
+				res += " ";
+				res += Poly[ip].x_s;
+			}
+
+			//Внутр. границы
+			for (int cc = 0; cc <= Poly.Childs.Count - 1; cc++)
+			{
+				res += Poly.Childs[cc].Count.ToString();
+				for (int ip = 0; ip <= Poly.Childs[cc].Count - 1; ip++)
+				{
+					res += Poly.Childs[cc][ip].y_s;
+			res += " ";
+					res += Poly.Childs[cc][ip].x_s;
+				}
+			}
+			res += "Pen (1,2,0)";
+			res += "Brush (1,0,16777215)";
+			res += "\"" + Poly.Definition + "\"$";
+			return res;
+		}
+
 		private void WriteMifRegion(System.IO.TextWriter writer, System.IO.TextWriter writerMIDA, TMyPolygon Poly)
 		{
 			writer.WriteLine("Region " + Convert.ToString(Poly.Childs.Count + 1));
@@ -1258,42 +1287,44 @@ namespace netFteo.IO
 			writer.WriteLine("    Pen (1,2,0)");
 
 		}
-
+		/*
 		public void SaveAsmif(string FileName, TEntitySpatial ES)
 		{
 			TPolygonCollection items = new TPolygonCollection();
 			foreach (IGeometry feature in ES)
 			{
-				if (feature.GetType().ToString() == "TMyPolygon")
+				
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 					items.Add((TMyPolygon)feature);
 			}
 
 			SaveAsmif(FileName, items);
 		}
-
+		*/
 	/// <summary>
 	/// Mapinfo mif-file export functions
 	/// </summary>
 	/// <param name="writer"></param>
 	/// <param name="Points"></param>
+	 /*
 	public void SaveAsmif(string FileName, TMyPolygon ES)
 		{
 			TPolygonCollection pls = new TPolygonCollection(ES.Parent_Id);
 			pls.AddPolygon(ES);
 			SaveAsmif(FileName, pls);
 		}
-
+		*/
 		/// <summary>
 		/// Mapinfo mif-file export functions
 		/// </summary>
 		/// <param name="writer"></param>
 		/// <param name="writerMIDA"></param>
 		/// <param name="Points"></param>
-		public void SaveAsmif(string FileName, TPolygonCollection XmlPolygons)
+		public void SaveAsmif(string FileName, TEntitySpatial ES)
 		{
 			{
-				if (XmlPolygons == null) return;
-				if (XmlPolygons.Count == 0) return;
+				if (ES == null) return;
+				if (ES.Count == 0) return;
 
 				string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
 
@@ -1304,12 +1335,13 @@ namespace netFteo.IO
 
 
 				// точки  и полинии  в отдельный файл:
+
 				writer.WriteLine("Version 450");
 				writer.WriteLine("Charset \"WindowsCyrillic\"");
 				writer.WriteLine("Delimiter \"$\"");
 				writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
-											XmlPolygons.Get_Bounds.MinY.ToString() + "," + XmlPolygons.Get_Bounds.MinX.ToString() + ")  (" +
-											XmlPolygons.Get_Bounds.MaxY.ToString() + "," + XmlPolygons.Get_Bounds.MaxX.ToString() + ")");
+											ES.Get_Bounds.MinY.ToString() + "," + ES.Get_Bounds.MinX.ToString() + ")  (" +
+											ES.Get_Bounds.MaxY.ToString() + "," + ES.Get_Bounds.MaxX.ToString() + ")");
 				writer.WriteLine("Columns 5");
 				writer.WriteLine("    Point_Name Char(127)");
 				writer.WriteLine("    Net_Klass  Char(127)");
@@ -1324,8 +1356,10 @@ namespace netFteo.IO
 				writerP.WriteLine("Charset \"WindowsCyrillic\"");
 				writerP.WriteLine("Delimiter \"$\"");
 				writerP.WriteLine("CoordSys NonEarth Units \"m\"");
-				writerP.WriteLine("Bounds (" + XmlPolygons.Get_Bounds.MinY.ToString() + "," + XmlPolygons.Get_Bounds.MinX.ToString() + ")  (" +
-											  XmlPolygons.Get_Bounds.MaxY.ToString() + "," + XmlPolygons.Get_Bounds.MaxX.ToString() + ")");
+
+				writerP.WriteLine("Bounds (" + ES.Get_Bounds.MinY.ToString() + "," + ES.Get_Bounds.MinX.ToString() + ")  (" +
+											  ES.Get_Bounds.MaxY.ToString() + "," + ES.Get_Bounds.MaxX.ToString() + ")");
+
 				writerP.WriteLine("Columns 3");
 				writerP.WriteLine("CN Char(127)");
 				writerP.WriteLine("BlockCN  Char(127)");
@@ -1333,31 +1367,24 @@ namespace netFteo.IO
 				writerP.WriteLine("Data");
 				writerP.WriteLine("");
 
-
-				for (int i = 0; i <= XmlPolygons.Count() - 1; i++)
-					if (XmlPolygons[i].PointCount > 0)
+				foreach (IGeometry feature in ES)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 					{
-						if ((XmlPolygons[i][0].x != XmlPolygons[i][XmlPolygons[i].PointCount - 1].x) &
-							(XmlPolygons[i][0].y != XmlPolygons[i][XmlPolygons[i].PointCount - 1].y))
-							WriteMifPline(writer, XmlPolygons[i]);
-
-						else // Polygons only file (layer):
-						{
-
-							WriteMifRegion(writerP, writerMIDP, XmlPolygons[i]);
-
-						}
-
+						TMyPolygon poly = (TMyPolygon)feature;
+						WriteMifPoints(writer, writerMID, poly);
+						// точки вгграниц:
+						for (int cc = 0; cc <= poly.Childs.Count - 1; cc++)
+							WriteMifPoints(writer, writerMID, poly.Childs[cc]);
+							WriteMifRegion(writerP, writerMIDP, poly);
 					}
 
-
-				for (int i = 0; i <= XmlPolygons.Count - 1; i++)
-				{
-					WriteMifPoints(writer, writerMID, XmlPolygons[i]);
-					// точки вгграниц:
-					for (int cc = 0; cc <= XmlPolygons[i].Childs.Count - 1; cc++)
-						WriteMifPoints(writer, writerMID, XmlPolygons[i].Childs[cc]);
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						WriteMifPline(writerP, (TPolyLine)feature);
+					}
 				}
+
 				writer.Close();
 				writerMID.Close();
 				writerP.Close();

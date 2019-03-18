@@ -28,394 +28,394 @@ using RRTypes.pkk5;
 namespace XMLReaderCS
           
 {
-   
-  public  partial class KVZU_Form : Form
-    { // Глобальные объекты:
-        IntPtr Ptr;
-        string TextDefault; // Текст заголовока по учмолчанию
 
-        RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
-        RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
-        RRTypes.MP_V05.MP MPV05;
-        //System.Windows.Window ESwindow;
-        MyWindowEx ESwindow;
-        EntityViewer ViewWindow; // xaml WPF control
+	public partial class KVZU_Form : Form
+	{ // Глобальные объекты:
+		IntPtr Ptr;
+		string TextDefault; // Текст заголовока по учмолчанию
 
-        /// <summary>
-        /// Current file properies
-        /// </summary>
-        public netFteo.XML.FileInfo DocInfo = new netFteo.XML.FileInfo(); 
-        ZipFile zip;
+		RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
+		RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
+		RRTypes.MP_V05.MP MPV05;
+		//System.Windows.Window ESwindow;
+		MyWindowEx ESwindow;
+		EntityViewer ViewWindow; // xaml WPF control
 
-        //public string FileName;
-        //public string FilePath;        
-        string pathToHtmlFile;
-        string hrefToXSLT;
+		/// <summary>
+		/// Current file properies
+		/// </summary>
+		public netFteo.XML.FileInfo DocInfo = new netFteo.XML.FileInfo();
+		ZipFile zip;
+
+		//public string FileName;
+		//public string FilePath;        
+		string pathToHtmlFile;
+		string hrefToXSLT;
 		string AppConfiguration;
-        string[] args; //Аргументы коммандной строки
+		string[] args; //Аргументы коммандной строки
 
-        /// <summary>
-        /// List of files, dragged on to form
-        /// </summary>
-        string[] DraggedFiles; 
+		/// <summary>
+		/// List of files, dragged on to form
+		/// </summary>
+		string[] DraggedFiles;
 
-        /// <summary>
-        /// Default WorkingDirectory for temporary deflating archives
-        /// </summary>
-        string Folder_Unzip;
+		/// <summary>
+		/// Default WorkingDirectory for temporary deflating archives
+		/// </summary>
+		string Folder_Unzip;
 
-        string ArchiveFolder; //Текущий файл архива
-        /// <summary>
-        /// Default WorkingDirectory 
-        /// </summary>
-        string Folder_AppStart;
-        string Folder_XSD;
-        netFteo.XML.XSDFile dutilizations_v01;
-        netFteo.XML.XSDFile dRegionsRF_v01;
-        netFteo.XML.XSDFile dCategories_v01;
-        netFteo.XML.XSDFile dStates_v01;
-        netFteo.XML.XSDFile dLocationLevel1_v01;//.xsd;
-        string dLocationLevel2_v01;
-        public string MP_06_schema;
+		string ArchiveFolder; //Текущий файл архива
+							  /// <summary>
+							  /// Default WorkingDirectory 
+							  /// </summary>
+		string Folder_AppStart;
+		string Folder_XSD;
+		netFteo.XML.XSDFile dutilizations_v01;
+		netFteo.XML.XSDFile dRegionsRF_v01;
+		netFteo.XML.XSDFile dCategories_v01;
+		netFteo.XML.XSDFile dStates_v01;
+		netFteo.XML.XSDFile dLocationLevel1_v01;//.xsd;
+		string dLocationLevel2_v01;
+		public string MP_06_schema;
 
-        const string FixosoftKey = "HKEY_CURRENT_USER\\Software\\Fixosoft\\GKNData\\NET";      
+		const string FixosoftKey = "HKEY_CURRENT_USER\\Software\\Fixosoft\\GKNData\\NET";
 
-        //Импорт библиотеки
-        [DllImport("ESViewer_lib_mcvc.dll")]
-        public static extern void Function1(int id);
+		//Импорт библиотеки
+		[DllImport("ESViewer_lib_mcvc.dll")]
+		public static extern void Function1(int id);
 
-        // c++ Fteo 6 library
-        [DllImport("ESChecker.dll")]
-        unsafe  public static extern void *Func2(int id);
+		// c++ Fteo 6 library
+		[DllImport("ESChecker.dll")]
+		unsafe public static extern void* Func2(int id);
 
-       // c++ CodeBlocks library
-        [DllImport("ESlib.dll")]
-        public static extern void Function2(int id);
+		// c++ CodeBlocks library
+		[DllImport("ESlib.dll")]
+		public static extern void Function2(int id);
 
-            //Конструктор:
-        public KVZU_Form()
-        {
-            InitializeComponent();
-            this.Tag = 1; // "Как приложение"
-            ClearControls();
-            this.Folder_AppStart = Application.StartupPath;
-            this.Folder_XSD = Folder_AppStart+"\\Schema";
-            this.Folder_Unzip = Folder_AppStart + "\\~tmp.zip";
-            InitSchemas(this.Folder_XSD); 
+		//Конструктор:
+		public KVZU_Form()
+		{
+			InitializeComponent();
+			this.Tag = 1; // "Как приложение"
+			ClearControls();
+			this.Folder_AppStart = Application.StartupPath;
+			this.Folder_XSD = Folder_AppStart + "\\Schema";
+			this.Folder_Unzip = Folder_AppStart + "\\~tmp.zip";
+			InitSchemas(this.Folder_XSD);
 
-            /// Позиция запуска
-            ///HKEY_CURRENT_USER\Software\Fixosoft\GKNData\FormState\MainForm 
-            const string keyName = FixosoftKey + "\\FormStartPosition";
-            //Проверим, есть ли запись:
-            if (Microsoft.Win32.Registry.GetValue(keyName, "ActivePosition", 0) != null)
-                if ((int)Microsoft.Win32.Registry.GetValue(keyName, "ActivePosition", 0) == 1)
-                {
-                    this.StartPosition = FormStartPosition.Manual;
-                    this.Top = (int)Microsoft.Win32.Registry.GetValue(keyName, "Top", this.Top) + 20;
-                    this.Left = (int)Microsoft.Win32.Registry.GetValue(keyName, "Left", this.Left) + 20;
-                }
-                else this.StartPosition = FormStartPosition.WindowsDefaultLocation;
+			/// Позиция запуска
+			///HKEY_CURRENT_USER\Software\Fixosoft\GKNData\FormState\MainForm 
+			const string keyName = FixosoftKey + "\\FormStartPosition";
+			//Проверим, есть ли запись:
+			if (Microsoft.Win32.Registry.GetValue(keyName, "ActivePosition", 0) != null)
+				if ((int)Microsoft.Win32.Registry.GetValue(keyName, "ActivePosition", 0) == 1)
+				{
+					this.StartPosition = FormStartPosition.Manual;
+					this.Top = (int)Microsoft.Win32.Registry.GetValue(keyName, "Top", this.Top) + 20;
+					this.Left = (int)Microsoft.Win32.Registry.GetValue(keyName, "Left", this.Left) + 20;
+				}
+				else this.StartPosition = FormStartPosition.WindowsDefaultLocation;
 
-            const string keyName_LastDir = FixosoftKey+ "\\Recent";
-            string test_LastDir = (string)Microsoft.Win32.Registry.GetValue(keyName_LastDir, "LastDir", 0);
-            //if (Microsoft.Win32.Registry.GetValue(keyName, "LastDir", 0) == )
-            ESwindow = new MyWindowEx(); //System.Windows.Window();// Окно визуализации ПД
-        }
+			const string keyName_LastDir = FixosoftKey + "\\Recent";
+			string test_LastDir = (string)Microsoft.Win32.Registry.GetValue(keyName_LastDir, "LastDir", 0);
+			//if (Microsoft.Win32.Registry.GetValue(keyName, "LastDir", 0) == )
+			ESwindow = new MyWindowEx(); //System.Windows.Window();// Окно визуализации ПД
+		}
 
-        private void SaveRegistry(string lastdir)
-        {
-            const string subKey_LastDir = FixosoftKey + "\\Recent";
-            const string keyName_LastDir = "" + subKey_LastDir;
-            Microsoft.Win32.Registry.SetValue(keyName_LastDir, "LastDir", lastdir);
-        }
+		private void SaveRegistry(string lastdir)
+		{
+			const string subKey_LastDir = FixosoftKey + "\\Recent";
+			const string keyName_LastDir = "" + subKey_LastDir;
+			Microsoft.Win32.Registry.SetValue(keyName_LastDir, "LastDir", lastdir);
+		}
 
-        private void SaveLastDir(string lastdir)
-        {
-            XMLReaderCS.Properties.Settings.Default.LastDir = lastdir;
-            SaveRegistry(lastdir);
-        }
+		private void SaveLastDir(string lastdir)
+		{
+			XMLReaderCS.Properties.Settings.Default.LastDir = lastdir;
+			SaveRegistry(lastdir);
+		}
 
 
-        private static string GetXPathToNode(XmlNode node)
-        {
-            if (node.NodeType == XmlNodeType.Attribute)
-            {
-                // attributes have an OwnerElement, not a ParentNode; also they have
-                // to be matched by name, not found by position
-                return String.Format(
-                    "{0}/@{1}",
-                    GetXPathToNode(((XmlAttribute)node).OwnerElement),
-                    node.Name
-                    );
-            }
-            if (node.ParentNode == null)
-            {
-                // the only node with no parent is the root node, which has no path
-                return "";
-            }
-            //get the index
-            int iIndex = 1;
-            XmlNode xnIndex = node;
-            while (xnIndex.PreviousSibling != null) { iIndex++; xnIndex = xnIndex.PreviousSibling; }
-            // the path to a node is the path to its parent, plus "/node()[n]", where 
-            // n is its position among its siblings.
-            return String.Format(
-                "{0}/node()[{1}]",
-                GetXPathToNode(node.ParentNode),
-                iIndex
-                );
-        }
+		private static string GetXPathToNode(XmlNode node)
+		{
+			if (node.NodeType == XmlNodeType.Attribute)
+			{
+				// attributes have an OwnerElement, not a ParentNode; also they have
+				// to be matched by name, not found by position
+				return String.Format(
+					"{0}/@{1}",
+					GetXPathToNode(((XmlAttribute)node).OwnerElement),
+					node.Name
+					);
+			}
+			if (node.ParentNode == null)
+			{
+				// the only node with no parent is the root node, which has no path
+				return "";
+			}
+			//get the index
+			int iIndex = 1;
+			XmlNode xnIndex = node;
+			while (xnIndex.PreviousSibling != null) { iIndex++; xnIndex = xnIndex.PreviousSibling; }
+			// the path to a node is the path to its parent, plus "/node()[n]", where 
+			// n is its position among its siblings.
+			return String.Format(
+				"{0}/node()[{1}]",
+				GetXPathToNode(node.ParentNode),
+				iIndex
+				);
+		}
 
-        //Обработчик события OnDXFParsing
-        private void DXFStateUpdater(object Sender, ESCheckingEventArgs e)
-        {
-            int currProc = e.Process;
-            /*
+		//Обработчик события OnDXFParsing
+		private void DXFStateUpdater(object Sender, ESCheckingEventArgs e)
+		{
+			int currProc = e.Process;
+			/*
             if (e.Definition == "26:01:071402:12")
             {
                 int here100 = 1000;
             }
             */
-            if (e.Process < toolStripProgressBar1.Maximum)
-                toolStripProgressBar1.Value = e.Process;
-            // toolStripStatusLabel3.Text = e.Definition;
-            this.Update();
-        }
+			if (e.Process < toolStripProgressBar1.Maximum)
+				toolStripProgressBar1.Value = e.Process;
+			// toolStripStatusLabel3.Text = e.Definition;
+			this.Update();
+		}
 
-        private void XMLStartUpdater(object Sender, ESCheckingEventArgs e)
-        {
-                toolStripProgressBar1.Maximum = e.Process;
-            this.Update();
-        }
-
-
-        #region Открываем Файл (слава http://code.google.com/p/xsd-to-classes/wiki/Usage ):
-        /// <summary>
-        /// Открыть файл xml
-        /// </summary>
-        private void OpenFile()
-        {
-            openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;"+
-                "|Про$транственные данные|*.dxf;*.mif;*.txt";
-            openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
-            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-                Read(openFileDialog1.FileName, true);
-
-        }
-        /// <summary>
-        ///   Читать документ из объекта(instance)
-        /// </summary>
-        /// <param name="xmldoc">Объект типа XMLDocument</param>
-        public void Read(XmlDocument xmldoc)
-        {
-            if (xmldoc == null)
-            {
-                toolStripStatusLabel1.Text = "document null" ;
-                return;
-            }
-            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
-            DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
-                                                                      // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
-            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
-            toolStripStatusLabel2.Text = "<" + DocInfo.DocRootName + "> " + label_FileSize.Text;
-            toolStripStatusLabel3.Text = DocInfo.Namespace;
-            linkLabel_tns.Text = DocInfo.Namespace;
-            документToolStripMenuItem.Enabled = true;
-            // Вначале отобразим xml, вдруг далее парсеры слажают... :)
-            cXmlTreeView2.RootName = DocInfo.FileName;
-            tabPage5.Text = this.DocInfo.FileName;
-            cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+		private void XMLStartUpdater(object Sender, ESCheckingEventArgs e)
+		{
+			toolStripProgressBar1.Maximum = e.Process;
+			this.Update();
+		}
 
 
-            Stream stream = new MemoryStream(); 
-            xmldoc.Save(stream);
-            stream.Seek(0, 0);
-            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); //prepare parser
+		#region Открываем Файл (слава http://code.google.com/p/xsd-to-classes/wiki/Usage ):
+		/// <summary>
+		/// Открыть файл xml
+		/// </summary>
+		private void OpenFile()
+		{
+			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;" +
+				"|Про$транственные данные|*.dxf;*.mif;*.txt";
+			openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
+			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+				Read(openFileDialog1.FileName, true);
 
-            if (DocInfo.DocRootName == "TMyPolygon")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "netfteo::TMyPolygon";
-                {
-                    toolStripStatusLabel3.Text = "netfteo::";
-                    XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
-                    TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(stream);
-                    ParseTMyPolygon(xmlPolygon);
-                }
-            }
-
-            if (DocInfo.DocRootName == "TPolygonCollection")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "PolygonCollection";
-                {
-                    toolStripStatusLabel3.Text = "netfteo::";
-                    XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
-                    TPolygonCollection xmlPolygons = (TPolygonCollection)serializer.Deserialize(stream);
-                    ParseTMyPolygon(xmlPolygons);
-                }
-            }
-            // EZP hard editing:
-            if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "tExistEZEntryParcelCollection";
-                {
-                    toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.MP_V06.tExistEZEntryParcelCollection));
-                    RRTypes.MP_V06.tExistEZEntryParcelCollection xmlPolygons = (RRTypes.MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(stream);
-                }
-            }
-
-            //Если это КВЗУ V04/V05
-            if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
-            {
-                  toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                string ver_Vidimus="";
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                        (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))       
-                    ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
-
-                if ( ver_Vidimus.Equals("04")) // Проверим
-                {
-                    this.DocInfo = parser.ParseKVZU04(this.DocInfo, xmldoc);
-                }
-                // Проверим
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
-                {
-                    this.DocInfo = parser.ParseKVZU05(this.DocInfo, xmldoc);
-                }
-            }
-
-            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "Кадастровая выписка 6";
-                this.DocInfo = parser.ParseKVZU06(this.DocInfo, xmldoc);
-            }
+		}
+		/// <summary>
+		///   Читать документ из объекта(instance)
+		/// </summary>
+		/// <param name="xmldoc">Объект типа XMLDocument</param>
+		public void Read(XmlDocument xmldoc)
+		{
+			if (xmldoc == null)
+			{
+				toolStripStatusLabel1.Text = "document null";
+				return;
+			}
+			DocInfo.DocRootName = xmldoc.DocumentElement.Name;
+			DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
+																	  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
+			if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+				DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+			toolStripStatusLabel2.Text = "<" + DocInfo.DocRootName + "> " + label_FileSize.Text;
+			toolStripStatusLabel3.Text = DocInfo.Namespace;
+			linkLabel_tns.Text = DocInfo.Namespace;
+			документToolStripMenuItem.Enabled = true;
+			// Вначале отобразим xml, вдруг далее парсеры слажают... :)
+			cXmlTreeView2.RootName = DocInfo.FileName;
+			tabPage5.Text = this.DocInfo.FileName;
+			cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
 
 
-            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKVZU07(this.DocInfo, xmldoc);
-            }
+			Stream stream = new MemoryStream();
+			xmldoc.Save(stream);
+			stream.Seek(0, 0);
+			RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); //prepare parser
 
-            if (DocInfo.DocRootName == "KPZU")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
-                {
-                      this.DocInfo = parser.ParseKPZU508(this.DocInfo, xmldoc);
-                }
+			if (DocInfo.DocRootName == "TMyPolygon")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				tabPage1.Text = "netfteo::TMyPolygon";
+				{
+					toolStripStatusLabel3.Text = "netfteo::";
+					XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
+					TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(stream);
+					ParseTMyPolygon(xmlPolygon);
+				}
+			}
 
-                // KPZU_V6 01  - ЕГРН
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
-                {
-                    this.DocInfo = parser.ParseKPZU(this.DocInfo, xmldoc);
-                }
-            }
-            
-            //Выписка ЕГРП, блядь есть и такое
-            if (xmldoc.DocumentElement.Name == "Extract")
-            {
-                this.DocInfo = parser.ParseEGRP(this.DocInfo, xmldoc);
+			if (DocInfo.DocRootName == "TPolygonCollection")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				tabPage1.Text = "PolygonCollection";
+				{
+					toolStripStatusLabel3.Text = "netfteo::";
+					XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
+					TPolygonCollection xmlPolygons = (TPolygonCollection)serializer.Deserialize(stream);
+					ParseTMyPolygon(xmlPolygons);
+				}
+			}
+			// EZP hard editing:
+			if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				tabPage1.Text = "tExistEZEntryParcelCollection";
+				{
+					toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
+					XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.MP_V06.tExistEZEntryParcelCollection));
+					RRTypes.MP_V06.tExistEZEntryParcelCollection xmlPolygons = (RRTypes.MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(stream);
+				}
+			}
 
-            }
+			//Если это КВЗУ V04/V05
+			if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				string ver_Vidimus = "";
+				if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+						(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))
+					ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
 
+				if (ver_Vidimus.Equals("04")) // Проверим
+				{
+					this.DocInfo = parser.ParseKVZU04(this.DocInfo, xmldoc);
+				}
+				// Проверим
+				if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
+				{
+					this.DocInfo = parser.ParseKVZU05(this.DocInfo, xmldoc);
+				}
+			}
 
-            if (xmldoc.DocumentElement.Name == "Users")
-            {
-                XmlElement xRoot = xmldoc.DocumentElement;
-
-                // выбор всех дочерних узлов
-                //XmlNodeList childnodes = xRoot.SelectNodes("*");
-                //Выберем все узлы <user>:
-                XmlNodeList childnodes = xRoot.SelectNodes("//user/company");
-            }
-
-
-
-            if (DocInfo.DocRootName == "KVOKS")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvoks_v02.KVOKS));
-                    KVoks02 = (RRTypes.kvoks_v02.KVOKS)serializer.Deserialize(stream);
-                    ParseKVOKS(KVoks02);
-                }
-             
-                //Под этим urn urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1 как бы выписка версии KVOKS_V07
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
-                {
-                    this.DocInfo = parser.ParseKVOKS07(this.DocInfo, xmldoc);
-                }
-            }
-
-            if (DocInfo.DocRootName == "KPOKS")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpoks_v03.KPOKS));
-                    KPoks03 = (RRTypes.kpoks_v03.KPOKS)serializer.Deserialize(stream);
-                    ParseKPOKS(KPoks03);
-                }
-
-                // KPOKS_V4
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
-                {
-                    this.DocInfo = parser.ParseKPOKS(this.DocInfo, xmldoc);
-                }
-            }
+			if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9"))
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				tabPage1.Text = "Кадастровая выписка 6";
+				this.DocInfo = parser.ParseKVZU06(this.DocInfo, xmldoc);
+			}
 
 
-            if ((DocInfo.DocRootName == "Region_Cadastr"))
-            {
-                DocInfo.DocTypeNick = "КПТ";
-                DocInfo.DocType = "Кадастровый план территории";
-                //Не КПТ v07 ли это?   
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
-                {
-                    DocInfo.Version = "07..coming soon";
-                }
+			if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				this.DocInfo = parser.ParseKVZU07(this.DocInfo, xmldoc);
+			}
 
-                //Не КПТ v08 ли это?            
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
-                {
-                    toolStripProgressBar1.Minimum = 0;
-                    toolStripProgressBar1.Value = 0;
-                    parser.OnParsing += DXFStateUpdater;
-                    parser.OnStartParsing += XMLStartUpdater;
-                    DocInfo.Version = "08";
-                    this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
-                }
-            }
-            
-            //Не КПТ v09 ли это?            
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKPT09(this.DocInfo, xmldoc);
-            }
+			if (DocInfo.DocRootName == "KPZU")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
+				{
+					this.DocInfo = parser.ParseKPZU508(this.DocInfo, xmldoc);
+				}
 
-            //Не КПТ v10 ли это?
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
-            {
-                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo =  parser.ParseKPT10(this.DocInfo, xmldoc);
-            }
+				// KPZU_V6 01  - ЕГРН
+				if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
+				{
+					this.DocInfo = parser.ParseKPZU(this.DocInfo, xmldoc);
+				}
+			}
+
+			//Выписка ЕГРП, блядь есть и такое
+			if (xmldoc.DocumentElement.Name == "Extract")
+			{
+				this.DocInfo = parser.ParseEGRP(this.DocInfo, xmldoc);
+
+			}
+
+
+			if (xmldoc.DocumentElement.Name == "Users")
+			{
+				XmlElement xRoot = xmldoc.DocumentElement;
+
+				// выбор всех дочерних узлов
+				//XmlNodeList childnodes = xRoot.SelectNodes("*");
+				//Выберем все узлы <user>:
+				XmlNodeList childnodes = xRoot.SelectNodes("//user/company");
+			}
+
+
+
+			if (DocInfo.DocRootName == "KVOKS")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
+				{
+					XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvoks_v02.KVOKS));
+					KVoks02 = (RRTypes.kvoks_v02.KVOKS)serializer.Deserialize(stream);
+					ParseKVOKS(KVoks02);
+				}
+
+				//Под этим urn urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1 как бы выписка версии KVOKS_V07
+				if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
+				{
+					this.DocInfo = parser.ParseKVOKS07(this.DocInfo, xmldoc);
+				}
+			}
+
+			if (DocInfo.DocRootName == "KPOKS")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+
+				if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
+				{
+					XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpoks_v03.KPOKS));
+					KPoks03 = (RRTypes.kpoks_v03.KPOKS)serializer.Deserialize(stream);
+					ParseKPOKS(KPoks03);
+				}
+
+				// KPOKS_V4
+				if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
+				{
+					this.DocInfo = parser.ParseKPOKS(this.DocInfo, xmldoc);
+				}
+			}
+
+
+			if ((DocInfo.DocRootName == "Region_Cadastr"))
+			{
+				DocInfo.DocTypeNick = "КПТ";
+				DocInfo.DocType = "Кадастровый план территории";
+				//Не КПТ v07 ли это?   
+				if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+				  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
+				{
+					DocInfo.Version = "07..coming soon";
+				}
+
+				//Не КПТ v08 ли это?            
+				if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+				(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
+				{
+					toolStripProgressBar1.Minimum = 0;
+					toolStripProgressBar1.Value = 0;
+					parser.OnParsing += DXFStateUpdater;
+					parser.OnStartParsing += XMLStartUpdater;
+					DocInfo.Version = "08";
+					this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
+				}
+			}
+
+			//Не КПТ v09 ли это?            
+			if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				this.DocInfo = parser.ParseKPT09(this.DocInfo, xmldoc);
+			}
+
+			//Не КПТ v10 ли это?
+			if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				this.DocInfo = parser.ParseKPT10(this.DocInfo, xmldoc);
+			}
 
 
 			//Не КПТ v11 ли это?
-			if (DocInfo.DocRootName == "extract_cadastral_plan_territory") 
+			if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
 			{
 				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
 				this.DocInfo = parser.ParseKPT11(this.DocInfo, xmldoc);
@@ -457,100 +457,100 @@ namespace XMLReaderCS
              * */
 
 			if (DocInfo.DocRootName == "SchemaParcels")
-                {
-                    toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
-                    SchemaKPTMainForm frm = new SchemaKPTMainForm();
-                    frm.Top = this.Top; frm.Left = this.Left ;
-                    frm.StartPosition = FormStartPosition.Manual;
-                    frm.OpenXML( xmldoc);
-                    this.Visible = false;
-                    frm.ShowDialog();
-                    this.Close();
-                }
-                
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
+				SchemaKPTMainForm frm = new SchemaKPTMainForm();
+				frm.Top = this.Top; frm.Left = this.Left;
+				frm.StartPosition = FormStartPosition.Manual;
+				frm.OpenXML(xmldoc);
+				this.Visible = false;
+				frm.ShowDialog();
+				this.Close();
+			}
 
-            if (DocInfo.DocRootName == "STD_MP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                /*
+
+			if (DocInfo.DocRootName == "STD_MP")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				/*
                 XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.STD_MPV04.STD_MP));
                 RRTypes.STD_MPV04.STD_MP MP = (RRTypes.STD_MPV04.STD_MP)serializerMP.Deserialize(stream);
                 ParseSTDMPV04(MP);
                 */
-                this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
+				this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
 
-            }
-
-
-            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
-            {
-
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V05.MP));
-                MPV05 = (RRTypes.MP_V05.MP)serializerMP.Deserialize(stream);
-                ParseMPV05(MPV05);
-            }
-
-            // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
-            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
-                this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
-            }
+			}
 
 
-            if (DocInfo.DocRootName == "STD_TP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
-                RRTypes.STD_TPV02.STD_TP TP = (RRTypes.STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
-                ParseSTDTPV02(TP);
-            }
+			if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
+			{
 
-            //TP
-            if (DocInfo.DocRootName == "TP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
-            }
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V05.MP));
+				MPV05 = (RRTypes.MP_V05.MP)serializerMP.Deserialize(stream);
+				ParseMPV05(MPV05);
+			}
 
-        }
+			// Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
+			if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
+				this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
+			}
 
 
-        /// <summary>
-        /// Читать документ из файла
-        /// </summary>
-        /// <param name="FileName">Имя файла</param>
-        /// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
-        public void Read(string FileName, bool NeedListing)
-        {
-            if (!File.Exists(FileName))
-            {
-                toolStripStatusLabel1.Text = "not exist:"+ Path.GetFileName(FileName);
-                return;
-            }
+			if (DocInfo.DocRootName == "STD_TP")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
+				RRTypes.STD_TPV02.STD_TP TP = (RRTypes.STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
+				ParseSTDTPV02(TP);
+			}
 
-            ClearControls();
-            PreloaderMenuItem.LoadingCircleControl.Active = true;
-            PreloaderMenuItem.Visible = true;
-            Application.DoEvents();
-            SaveLastDir(Path.GetDirectoryName(FileName));
-            if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
-            linkLabel_FileName.Text = Path.GetFileName(FileName);
-            toolStripStatusLabel1.Text = Path.GetFileName(FileName);
-            label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
-            // got mif file:
-            if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
-            {
-                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-                TPolygonCollection polyfromMIF = mifreader.ImportMIF(FileName);
+			//TP
+			if (DocInfo.DocRootName == "TP")
+			{
+				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
+			}
 
-                // Virtual Parcel with contours:
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
-                Bl.CN = "Полигоны MIF";
-                
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "MIF"));
-                /*
+		}
+
+
+		/// <summary>
+		/// Читать документ из файла
+		/// </summary>
+		/// <param name="FileName">Имя файла</param>
+		/// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
+		public void Read(string FileName, bool NeedListing)
+		{
+			if (!File.Exists(FileName))
+			{
+				toolStripStatusLabel1.Text = "not exist:" + Path.GetFileName(FileName);
+				return;
+			}
+
+			ClearControls();
+			PreloaderMenuItem.LoadingCircleControl.Active = true;
+			PreloaderMenuItem.Visible = true;
+			Application.DoEvents();
+			SaveLastDir(Path.GetDirectoryName(FileName));
+			if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
+			linkLabel_FileName.Text = Path.GetFileName(FileName);
+			toolStripStatusLabel1.Text = Path.GetFileName(FileName);
+			label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
+			// got mif file:
+			if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
+			{
+				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+				TPolygonCollection polyfromMIF = mifreader.ImportMIF(FileName);
+
+				// Virtual Parcel with contours:
+				TMyCadastralBlock Bl = new TMyCadastralBlock();
+				Bl.CN = "Полигоны MIF";
+
+				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "MIF"));
+				/*
                 if (polyfromMIF.Count == 1)
                 {
                     MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01"); 
@@ -558,307 +558,307 @@ namespace XMLReaderCS
                 }
                 else
                     */
-                    MainObj.Contours.AddPolygons(polyfromMIF);
+				MainObj.Contours.AddPolygons(polyfromMIF);
 
-                this.DocInfo.MyBlocks.Blocks.Clear();
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
-                this.DocInfo.DocTypeNick = "Mapinfo mif";
-                this.DocInfo.DocType = "Mapinfo mif";
-                this.DocInfo.CommentsType = "MIF";
-                this.DocInfo.Comments = mifreader.Body;
-                this.DocInfo.Encoding = mifreader.BodyEncoding;
-                this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
-              }
+				this.DocInfo.MyBlocks.Blocks.Clear();
+				this.DocInfo.MyBlocks.Blocks.Add(Bl);
+				this.DocInfo.DocTypeNick = "Mapinfo mif";
+				this.DocInfo.DocType = "Mapinfo mif";
+				this.DocInfo.CommentsType = "MIF";
+				this.DocInfo.Comments = mifreader.Body;
+				this.DocInfo.Encoding = mifreader.BodyEncoding;
+				this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
+			}
 
-            // got AutoCad Drawing Exchange Format -  dxf file:
-            if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
-            {
+			// got AutoCad Drawing Exchange Format -  dxf file:
+			if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
+			{
 
-                try
-                {
-                    netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
-                    toolStripProgressBar1.Maximum = dxfreader.PolygonsCount();  //TODO: number of items ???
-                    toolStripProgressBar1.Minimum = 0;
-                    toolStripProgressBar1.Value = 0;
-                    dxfreader.OnParsing += DXFStateUpdater;
-                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
-                    this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
+				try
+				{
+					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
+					toolStripProgressBar1.Maximum = dxfreader.PolygonsCount();  //TODO: number of items ???
+					toolStripProgressBar1.Minimum = 0;
+					toolStripProgressBar1.Value = 0;
+					dxfreader.OnParsing += DXFStateUpdater;
+					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
 
-                }
+				}
 
-                catch (ArgumentException err)
-                {
-                    ClearControls();
-                    this.DocInfo.DocTypeNick = "dxf";
-                    this.DocInfo.CommentsType = "DXF error...";
-                    this.DocInfo.Comments = err.Message;
-                }
-
-
-            }
-
-                if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
-            {
-                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-                TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(FileName);
-                if (polyfromMIF != null)
-                {
-
-                    // Virtual Parcel with contours:
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    Bl.CN = "Полигоны txt";
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
-
-                    if (polyfromMIF.Count == 1)
-                    {
-                        MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
-                        MainObj.EntitySpatial = polyfromMIF[0];
-                    }
-                    else
-                        MainObj.Contours.AddPolygons(polyfromMIF);
-
-                    this.DocInfo.MyBlocks.Blocks.Clear();
-                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
-                }
-
-                this.DocInfo.DocTypeNick = "Текстовый файл";
-                this.DocInfo.CommentsType = "TXT";
-                this.DocInfo.Comments = mifreader.Body;
-                this.DocInfo.Encoding = mifreader.BodyEncoding;
-                this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
-            }
+				catch (ArgumentException err)
+				{
+					ClearControls();
+					this.DocInfo.DocTypeNick = "dxf";
+					this.DocInfo.CommentsType = "DXF error...";
+					this.DocInfo.Comments = err.Message;
+				}
 
 
-            if (Path.GetExtension(FileName).Equals(".xml"))
-            {
-               this.DocInfo.FileName = Path.GetFileName(FileName);
-               this.DocInfo.FilePath = Path.GetFullPath(FileName);
-               TextReader reader = new StreamReader(FileName);
-               XmlDocument XMLDocFromFile = new XmlDocument();
-               XMLDocFromFile.Load(reader);
-               reader.Close();
-                Read(XMLDocFromFile);
+			}
+
+			if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
+			{
+				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+				TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(FileName);
+				if (polyfromMIF != null)
+				{
+
+					// Virtual Parcel with contours:
+					TMyCadastralBlock Bl = new TMyCadastralBlock();
+					Bl.CN = "Полигоны txt";
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
+
+					if (polyfromMIF.Count == 1)
+					{
+						MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
+						MainObj.EntitySpatial = polyfromMIF[0];
+					}
+					else
+						MainObj.Contours.AddPolygons(polyfromMIF);
+
+					this.DocInfo.MyBlocks.Blocks.Clear();
+					this.DocInfo.MyBlocks.Blocks.Add(Bl);
+				}
+
+				this.DocInfo.DocTypeNick = "Текстовый файл";
+				this.DocInfo.CommentsType = "TXT";
+				this.DocInfo.Comments = mifreader.Body;
+				this.DocInfo.Encoding = mifreader.BodyEncoding;
+				this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
+			}
+
+
+			if (Path.GetExtension(FileName).Equals(".xml"))
+			{
+				this.DocInfo.FileName = Path.GetFileName(FileName);
+				this.DocInfo.FilePath = Path.GetFullPath(FileName);
+				TextReader reader = new StreamReader(FileName);
+				XmlDocument XMLDocFromFile = new XmlDocument();
+				XMLDocFromFile.Load(reader);
+				reader.Close();
+				Read(XMLDocFromFile);
 
 #if (DEBUG)
-               //LV_SchemaDisAssembly.Visible =  TODO...;                      
+				//LV_SchemaDisAssembly.Visible =  TODO...;                      
 #else
                 //LV_SchemaDisAssembly.Visible = false;                      
 #endif
-                this.DocInfo.MifPolygons.Definition = Path.GetFileName(FileName);
-                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(this.DocInfo.MifPolygons.Definition) + "_mif";
-                //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
-            }
+				this.DocInfo.MyBlocks.SpatialData.Definition = Path.GetFileName(FileName);
+				saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(netFteo.StringUtils.ReplaceComma(this.DocInfo.MyBlocks.SpatialData.Definition));
+				//На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
+			}
 
-            // Got XSD schema file
-            if (Path.GetExtension(FileName).Equals(".xsd"))
-            {
-                netFteo.XML.XSDFile xsdenum = new netFteo.XML.XSDFile(FileName);
-            }
+			// Got XSD schema file
+			if (Path.GetExtension(FileName).Equals(".xsd"))
+			{
+				netFteo.XML.XSDFile xsdenum = new netFteo.XML.XSDFile(FileName);
+			}
 
-            // We recieve archive package GKUOKS, GKUZU:
-            if (Path.GetExtension(FileName).Equals(".zip"))
-                if (FileName.Contains("GKU"))
-                {
-                    ClearFiles();
-                    BackgroundWorker w1 = new BackgroundWorker();
-                    w1.WorkerSupportsCancellation = false;
-                    w1.WorkerReportsProgress = true;
-                    w1.DoWork += this.UnZipit;
-                    w1.RunWorkerCompleted += this.UnZipComplete;
-                    w1.RunWorkerAsync(FileName);
-                }
+			// We recieve archive package GKUOKS, GKUZU:
+			if (Path.GetExtension(FileName).Equals(".zip"))
+				if (FileName.Contains("GKU"))
+				{
+					ClearFiles();
+					BackgroundWorker w1 = new BackgroundWorker();
+					w1.WorkerSupportsCancellation = false;
+					w1.WorkerReportsProgress = true;
+					w1.DoWork += this.UnZipit;
+					w1.RunWorkerCompleted += this.UnZipComplete;
+					w1.RunWorkerAsync(FileName);
+				}
 
-            //Если есть парная ЭЦП:
-            if (File.Exists(FileName + ".sig"))
-            {
-                frmCertificates certfrm = new frmCertificates();
-                List<string> sigs = certfrm.ParseSignature(FileName+".sig");
-                if (sigs != null)
-                    foreach (string sig in sigs)
-                        textBox_FIO.Text += "\n ЭЦП= " + sig;
+			//Если есть парная ЭЦП:
+			if (File.Exists(FileName + ".sig"))
+			{
+				frmCertificates certfrm = new frmCertificates();
+				List<string> sigs = certfrm.ParseSignature(FileName + ".sig");
+				if (sigs != null)
+					foreach (string sig in sigs)
+						textBox_FIO.Text += "\n ЭЦП= " + sig;
 
-            }
+			}
 
-            if (NeedListing)
-            {
-                ListMyCoolections(this.DocInfo.MyBlocks);
-                ListFileInfo(DocInfo);
-            }
-            PreloaderMenuItem.LoadingCircleControl.Active = false;
-            PreloaderMenuItem.Visible = false;
-        }
+			if (NeedListing)
+			{
+				ListMyCoolections(this.DocInfo.MyBlocks);
+				ListFileInfo(DocInfo);
+			}
+			PreloaderMenuItem.LoadingCircleControl.Active = false;
+			PreloaderMenuItem.Visible = false;
+		}
 
 
-        private void InitSchemas(string folder_xsd)
-        {
-            dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
-            dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
-            dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
-            dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
-            dLocationLevel1_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dLocationLevel1_v01.xsd");
-            dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
-            MP_06_schema = folder_xsd + "\\V06_MP" + "\\MP_v06.xsd";
-        }
+		private void InitSchemas(string folder_xsd)
+		{
+			dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
+			dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
+			dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
+			dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
+			dLocationLevel1_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dLocationLevel1_v01.xsd");
+			dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
+			MP_06_schema = folder_xsd + "\\V06_MP" + "\\MP_v06.xsd";
+		}
 
-        
 
-      //Zip utils 
-        public void ZipExtractProgress(object sender, ExtractProgressEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action<Object, ExtractProgressEventArgs>(ZipExtractProgress),  new Object[] { sender, e });
-            }
-            else
-            {
-                switch (e.EventType)
-                {
-                        /*
-                    case ZipProgressEventType.Extracting_BeforeExtractAll:
-                        //Console.WriteLine("pb max {0}", e.EntriesTotal);
-                        this.progressBar1.Maximum = e.EntriesTotal;
-                        this.progressBar1.Value = 0;
-                        this.progressBar1.Minimum = 0;
-                        this.progressBar1.Step = 1;
-                        break;
-                        */
-                    case ZipProgressEventType.Extracting_BeforeExtractEntry:
-                        //Console.WriteLine("entry {0}", e.CurrentEntry.FileName);
-                        this.toolStripStatusLabel3.Text ="["+e.EntriesTotal.ToString()+"] " + e.CurrentEntry.FileName;
-                        break;
 
-                    case ZipProgressEventType.Extracting_AfterExtractEntry:
-                        this.toolStripProgressBar1.PerformStep();
-                        break;
-                }
-                this.Update();
-                Application.DoEvents();
-            }
-        }
+		//Zip utils 
+		public void ZipExtractProgress(object sender, ExtractProgressEventArgs e)
+		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<Object, ExtractProgressEventArgs>(ZipExtractProgress), new Object[] { sender, e });
+			}
+			else
+			{
+				switch (e.EventType)
+				{
+					/*
+				case ZipProgressEventType.Extracting_BeforeExtractAll:
+					//Console.WriteLine("pb max {0}", e.EntriesTotal);
+					this.progressBar1.Maximum = e.EntriesTotal;
+					this.progressBar1.Value = 0;
+					this.progressBar1.Minimum = 0;
+					this.progressBar1.Step = 1;
+					break;
+					*/
+					case ZipProgressEventType.Extracting_BeforeExtractEntry:
+						//Console.WriteLine("entry {0}", e.CurrentEntry.FileName);
+						this.toolStripStatusLabel3.Text = "[" + e.EntriesTotal.ToString() + "] " + e.CurrentEntry.FileName;
+						break;
 
-      /*
-        public void ZipReadProgress(object sender, ReadProgressEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action<Object, ReadProgressEventArgs>(ZipReadProgress), new Object[] { sender, e });
-            }
-            else
-            {
-                switch (e.EventType)
-                {
-                    case ZipProgressEventType.Reading_Completed:
-                        //Console.WriteLine("pb max {0}", e.EntriesTotal);
-                        this.progressBar1.Maximum = e.EntriesTotal;
-                        this.progressBar1.Value = 0;
-                        this.progressBar1.Minimum = 0;
-                        this.progressBar1.Step = 1;
-                        break;
-                }
-                this.Update();
-                Application.DoEvents();
-            }
-        }
-      */
-        private void UnZipit(object sender, DoWorkEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action<Object, DoWorkEventArgs>(UnZipit), new Object[] { sender, e });
-            }
-            else
-            {
-                try
-                {
-                    ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
-                    //ro.ReadProgress += ZipReadProgress;
+					case ZipProgressEventType.Extracting_AfterExtractEntry:
+						this.toolStripProgressBar1.PerformStep();
+						break;
+				}
+				this.Update();
+				Application.DoEvents();
+			}
+		}
 
-                    zip = ZipFile.Read((string)e.Argument, ro);
-                    this.toolStripProgressBar1.Maximum = zip.Count();
-                    this.toolStripProgressBar1.Value = 0;
-                    this.toolStripProgressBar1.Minimum = 0;
-                    this.toolStripProgressBar1.Step = 1;
+		/*
+		  public void ZipReadProgress(object sender, ReadProgressEventArgs e)
+		  {
+			  if (this.InvokeRequired)
+			  {
+				  this.Invoke(new Action<Object, ReadProgressEventArgs>(ZipReadProgress), new Object[] { sender, e });
+			  }
+			  else
+			  {
+				  switch (e.EventType)
+				  {
+					  case ZipProgressEventType.Reading_Completed:
+						  //Console.WriteLine("pb max {0}", e.EntriesTotal);
+						  this.progressBar1.Maximum = e.EntriesTotal;
+						  this.progressBar1.Value = 0;
+						  this.progressBar1.Minimum = 0;
+						  this.progressBar1.Step = 1;
+						  break;
+				  }
+				  this.Update();
+				  Application.DoEvents();
+			  }
+		  }
+		*/
+		private void UnZipit(object sender, DoWorkEventArgs e)
+		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<Object, DoWorkEventArgs>(UnZipit), new Object[] { sender, e });
+			}
+			else
+			{
+				try
+				{
+					ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
+					//ro.ReadProgress += ZipReadProgress;
 
-                    zip.ExtractProgress += this.ZipExtractProgress;
-                    ArchiveFolder = this.Folder_Unzip +
-                              "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
-                    /*
+					zip = ZipFile.Read((string)e.Argument, ro);
+					this.toolStripProgressBar1.Maximum = zip.Count();
+					this.toolStripProgressBar1.Value = 0;
+					this.toolStripProgressBar1.Minimum = 0;
+					this.toolStripProgressBar1.Step = 1;
+
+					zip.ExtractProgress += this.ZipExtractProgress;
+					ArchiveFolder = this.Folder_Unzip +
+							  "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
+					/*
                      */
-                    //if (zip.EntryFileNames.Contains(".xml")) // wrong ???? not working .Contains !!!
-                    {
-                        zip.ExtractAll(ArchiveFolder);
+					//if (zip.EntryFileNames.Contains(".xml")) // wrong ???? not working .Contains !!!
+					{
+						zip.ExtractAll(ArchiveFolder);
 
-                    }
+					}
 
-                }
-                catch (Exception ex1)
-                {
-                    this.richTextBox1.Text = "Zip Exception: " + ex1.ToString();
-                }
-            }
-        }
+				}
+				catch (Exception ex1)
+				{
+					this.richTextBox1.Text = "Zip Exception: " + ex1.ToString();
+				}
+			}
+		}
 
-      //Распаковка окончена, читаем результаты:
-        private void UnZipComplete(object sender, RunWorkerCompletedEventArgs e)
-        {
-           // string ArchiveFolder = this.Folder_Unzip +
-             //                 "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
-            //string ArchiveFolder = (string)e.Result;
-            if (Directory.Exists(ArchiveFolder))
-            {
-                DirectoryInfo di = new DirectoryInfo(ArchiveFolder);
-                string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+		//Распаковка окончена, читаем результаты:
+		private void UnZipComplete(object sender, RunWorkerCompletedEventArgs e)
+		{
+			// string ArchiveFolder = this.Folder_Unzip +
+			//                 "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
+			//string ArchiveFolder = (string)e.Result;
+			if (Directory.Exists(ArchiveFolder))
+			{
+				DirectoryInfo di = new DirectoryInfo(ArchiveFolder);
+				string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
 
-                if (File.Exists(ArchiveFolder + "\\" + firstFileName))
-                {
-                    DocInfo.FileName = firstFileName;
-                    //until unzipping, start checking MP for bugs :
-                    if (firstFileName.Contains("GKUZU"))
-                    {
-                        BugReport_MP06_II(ArchiveFolder);
-                    }
-                    //else
-                        Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
-                }
+				if (File.Exists(ArchiveFolder + "\\" + firstFileName))
+				{
+					DocInfo.FileName = firstFileName;
+					//until unzipping, start checking MP for bugs :
+					if (firstFileName.Contains("GKUZU"))
+					{
+						BugReport_MP06_II(ArchiveFolder);
+					}
+					//else
+					Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
+				}
 
-            }
+			}
 
 
 
-        }
+		}
 
-        private void Zipit(object sender, DoWorkEventArgs e)
-        {
-            //int delay = 1200; // ms to keep form open after completion
-            try
-            {
-                using (var zip = new ZipFile())
-                {
-                    /*
+		private void Zipit(object sender, DoWorkEventArgs e)
+		{
+			//int delay = 1200; // ms to keep form open after completion
+			try
+			{
+				using (var zip = new ZipFile())
+				{
+					/*
                     zip.AddSelectedFiles(selectionCriteria, ".", "", true);
                     zip.SaveProgress += this.SaveProgress;
                     zip.Save(zipfileName); */
-                }
-            }
-            catch (Exception ex1)
-            {
-                this.label1.Text = "Exception: " +  ex1.ToString();
-                //delay = 4000;
-            }
+				}
+			}
+			catch (Exception ex1)
+			{
+				this.label1.Text = "Exception: " + ex1.ToString();
+				//delay = 4000;
+			}
 
-            /*
+			/*
             var timer1 =  new System.Timers.Timer(delay);
             timer1.Enabled = true;
             timer1.AutoReset = false;
             timer1.Elapsed += this.OnTimerEvent; */
-        }
+		}
 
 
 
-        //------------Запись xml-файла-спутника  pinfo_......xml---------------------------------------------------------------
-        private void SaveOpenedFileInfo(netFteo.XML.FileInfo Doc, string FileName)
-        {
-            /*          Doc.Number = textBox_DocNum.Text;
+		//------------Запись xml-файла-спутника  pinfo_......xml---------------------------------------------------------------
+		private void SaveOpenedFileInfo(netFteo.XML.FileInfo Doc, string FileName)
+		{
+			/*          Doc.Number = textBox_DocNum.Text;
                     Doc.Date = textBox_DocDate.Text;
                     Doc.FIO = textBox_FIO.Text;
                     Doc.FileName = FileName;
@@ -886,44 +886,44 @@ namespace XMLReaderCS
                     serializer.Serialize(writer, Doc);
                     writer.Close();
              * */
-        }
-        #endregion
+		}
+		#endregion
 
 
-        private void Parse_Polygon(TMyPolygon xmlPolygon)
-        {
-       
-        }
+		private void Parse_Polygon(TMyPolygon xmlPolygon)
+		{
 
-        private void ParseTMyPolygon(TMyPolygon xmlPolygon)
-        {
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
-            if (xmlPolygon.Definition != null)
-                Bl.CN = xmlPolygon.Definition;
-            else Bl.CN = "Polygon";
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
-            MainObj.EntitySpatial = xmlPolygon;
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
+		}
 
-        private void ParseTMyPolygon(TPolygonCollection xmlPolygons)
-        {
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
-            Bl.CN = xmlPolygons.Defintion;// "imported xml polygons";
+		private void ParseTMyPolygon(TMyPolygon xmlPolygon)
+		{
+			TMyCadastralBlock Bl = new TMyCadastralBlock();
+			if (xmlPolygon.Definition != null)
+				Bl.CN = xmlPolygon.Definition;
+			else Bl.CN = "Polygon";
+			TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
+			MainObj.EntitySpatial = xmlPolygon;
+			this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			ListMyCoolections(this.DocInfo.MyBlocks);
+		}
 
-            for (int i = 0; i <= xmlPolygons.Count - 1; i++)
-            {
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TMyPolygon"));
-                MainObj.EntitySpatial = xmlPolygons[i];    
-            }
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
+		private void ParseTMyPolygon(TPolygonCollection xmlPolygons)
+		{
+			TMyCadastralBlock Bl = new TMyCadastralBlock();
+			Bl.CN = xmlPolygons.Defintion;// "imported xml polygons";
 
-   
-        #region разбор Кадастрового паспорта  KPZU V05
-        /*
+			for (int i = 0; i <= xmlPolygons.Count - 1; i++)
+			{
+				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TMyPolygon"));
+				MainObj.EntitySpatial = xmlPolygons[i];
+			}
+			this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			ListMyCoolections(this.DocInfo.MyBlocks);
+		}
+
+
+		#region разбор Кадастрового паспорта  KPZU V05
+		/*
         private void ParseKPZU(RRTypes.kpzu.KPZU kp)
         {
             TMyCadastralBlock Bl = new TMyCadastralBlock();
@@ -1041,238 +1041,238 @@ namespace XMLReaderCS
 
 
   */
-      
-
-        #endregion
 
 
-
- 
-
-        #region разбор КВ на ОКС. Сооружение.  KPZU V02
-        // С Наступающим 2016!
-        private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
-        {
-
-            label_DocType.Text = "Кадастровая выписка";
-            tabPage1.Text = "ОКС";
-            textBox_DocNum.Text = kv.CertificationDoc.Number;
-            textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
-            if (kv.CertificationDoc.Official != null)
-            {
-                textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
-                textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
-            }
-
-            textBox_OrgName.Text = kv.CertificationDoc.Organization;
-
-
-            for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
-            {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
-
-            }
-
-            for (int i = 0; i <= kv.Contractors.Count - 1; i++)
-            {
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
-                LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
-                LVi.SubItems.Add(kv.Contractors[i].NCertificate);
-
-                if (kv.Contractors[i].Organization != null)
-                    LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
-                else LVi.SubItems.Add("-");
-
-
-                listView_Contractors.Items.Add(LVi);
-
-            }
-
-            if (kv.Realty.Building != null)
-            {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
-                Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
-                Bld.Name = kv.Realty.Building.Name;
-                //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
-                Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
-                Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            }
+		#endregion
 
 
 
-            if (kv.Realty.Construction != null)
-            {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty  Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
-
-                Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
-                Constructions.Name = kv.Realty.Construction.Name;
-                Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-               foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
-                      Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number } );
-                Bl.AddOKS(Constructions);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            }
-
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
-
-   
-
-        //  Привет Росреесстру... а в это время здесь http://centsrv.geocom.lan/eclipse/hw_eclipse/gd_getBlocks.php  идет стройка 
-        private void ParseKPOKS(RRTypes.kpoks_v03.KPOKS kv)
-        {
-
-            label_DocType.Text = "Кадастровый паспорт";
-            tabPage1.Text = "ОКС";
-            textBox_DocNum.Text = kv.CertificationDoc.Number;
-            textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
-            if (kv.CertificationDoc.Official != null)
-            {
-                textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
-                textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
-            }
-
-            textBox_OrgName.Text = kv.CertificationDoc.Organization;
 
 
-            for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
-            {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+		#region разбор КВ на ОКС. Сооружение.  KPZU V02
+		// С Наступающим 2016!
+		private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
+		{
 
-            }
+			label_DocType.Text = "Кадастровая выписка";
+			tabPage1.Text = "ОКС";
+			textBox_DocNum.Text = kv.CertificationDoc.Number;
+			textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
+			if (kv.CertificationDoc.Official != null)
+			{
+				textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
+				textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
+			}
 
-            for (int i = 0; i <= kv.Contractors.Count - 1; i++)
-            {
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
-                LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
-                LVi.SubItems.Add(kv.Contractors[i].NCertificate);
-
-                if (kv.Contractors[i].Organization != null)
-                    LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
-                else LVi.SubItems.Add("-");
+			textBox_OrgName.Text = kv.CertificationDoc.Organization;
 
 
-                listView_Contractors.Items.Add(LVi);
+			for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
+			{
+				this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
-            }
+			}
 
-            if (kv.Realty.Building != null)
-            {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
-                Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
-                Bld.Name = kv.Realty.Building.Name;
-                Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
-                Bld.Area = kv.Realty.Building.Area;
-                Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
-                Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
-                if (kv.Realty.Building.CadastralNumbersFlats != null)
-                    if (kv.Realty.Building.CadastralNumbersFlats.Count() > 0)
-                    {
-                        foreach (string s in kv.Realty.Building.CadastralNumbersFlats)
-                        {
-                            TFlat flat = new TFlat(s);
-                            Bld.Building.Flats.Add(flat);
-                        }
-                    }
-                 
-                Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            }
+			for (int i = 0; i <= kv.Contractors.Count - 1; i++)
+			{
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
+				LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
+				LVi.SubItems.Add(kv.Contractors[i].NCertificate);
+
+				if (kv.Contractors[i].Organization != null)
+					LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
+				else LVi.SubItems.Add("-");
+
+
+				listView_Contractors.Items.Add(LVi);
+
+			}
+
+			if (kv.Realty.Building != null)
+			{
+				TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+				TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+				Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
+				Bld.Name = kv.Realty.Building.Name;
+				//Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
+				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bl.AddOKS(Bld);
+				//MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+				this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			}
 
 
 
-            if (kv.Realty.Construction != null)
-            {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber,netFteo.Rosreestr.dRealty_v03.Сооружение);
-                Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
-                //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
-                Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-                Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
-                Bl.AddOKS(Constructions);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            }
+			if (kv.Realty.Construction != null)
+			{
+				TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+				TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
+				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
+				Constructions.Name = kv.Realty.Construction.Name;
+				Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
+					Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number });
+				Bl.AddOKS(Constructions);
+				this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			}
+
+			ListMyCoolections(this.DocInfo.MyBlocks);
+		}
 
 
-        #endregion
-  
-        #region  Разбор STD_TP ТехПлан
 
-        private void ParseSTDTPV02(RRTypes.STD_TPV02.STD_TP TP)
-        {
-            label_DocType.Text = "Технический план";
-            tabPage1.Text = "ОКС";
-            if (TP.Construction != null)
-            {
-                
-                richTextBox1.AppendText(TP.Construction.Conclusion);
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.Coord_Systems[0].Name, TP.Construction.Coord_Systems[0].Cs_Id));
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = TP.Construction.Contractor.Date.ToString();
-                LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
-                                     " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic);
-                LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.N_Certificate);
-                listView_Contractors.Items.Add(LVi);
-                textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
-                                 " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic + ";  " + TP.Construction.Contractor.Cadastral_Engineer.E_mail;
-                textBox_DocDate.Text = TP.Construction.Contractor.Date.ToString();
-                if (TP.Construction.Contractor.Cadastral_Organization != null)
-                textBox_OrgName.Text = TP.Construction.Contractor.Cadastral_Organization.Name;
-                textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.N_Certificate;
-                textBox_DocNum.Text = TP.GUID;
+		//  Привет Росреесстру... а в это время здесь http://centsrv.geocom.lan/eclipse/hw_eclipse/gd_getBlocks.php  идет стройка 
+		private void ParseKPOKS(RRTypes.kpoks_v03.KPOKS kv)
+		{
 
-                if (TP.Construction.Package.New_Construction.Count> 0)
-                {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
-                    Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
-                    Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
-                    Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
-                                                                                     TP.Construction.Package.New_Construction[0].Entity_Spatial);
-                    Bl.AddOKS(Constructions);
-                    this.DocInfo.MifOKSSpatialCollection.AddRange(Constructions.ES2);
-                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
-                }
-                
-                ListMyCoolections(this.DocInfo.MyBlocks);
+			label_DocType.Text = "Кадастровый паспорт";
+			tabPage1.Text = "ОКС";
+			textBox_DocNum.Text = kv.CertificationDoc.Number;
+			textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
+			if (kv.CertificationDoc.Official != null)
+			{
+				textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
+				textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
+			}
 
-            }
-        }
+			textBox_OrgName.Text = kv.CertificationDoc.Organization;
 
-        private void ParseCoordSystems(RRTypes.V03_TP.tCoordSystems CS, string Conclusion)
-        {
-        }
 
-        private void ParseGeneralCadastralWorks(RRTypes.V03_TP.tGeneralCadastralWorks GW, string Conclusion)
-        {
-            richTextBox1.AppendText("\n----------------------------------------------------------------Технический план v3" +
-                                          "----------------------------------------------------------------\n Подготовлен " +
-                            GW.DateCadastral.ToString().Replace("0:00:00", "") +
-                            " в результате выполнения кадастровых работ в связи с\n" +
-                            GW.Reason);
-            richTextBox1.AppendText("\n------------------------------------------------   Заключение кадастрового инженера" +
-                                       "   ------------------------------------------------\n");
-            richTextBox1.AppendText(Conclusion + "\n ");
-            richTextBox1.AppendText("\n----------------------------------------------------------------" +
-                                       "----------------------------------------------------------------\n" +
-                                       GW.Contractor.FamilyName +
-                                 " " + GW.Contractor.FirstName +
-                                 " " + GW.Contractor.Patronymic + "\n " +
-                                 " " + GW.DateCadastral.ToString().Replace("0:00:00", ""));
+			for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
+			{
+				this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
-            /*
+			}
+
+			for (int i = 0; i <= kv.Contractors.Count - 1; i++)
+			{
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
+				LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
+				LVi.SubItems.Add(kv.Contractors[i].NCertificate);
+
+				if (kv.Contractors[i].Organization != null)
+					LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
+				else LVi.SubItems.Add("-");
+
+
+				listView_Contractors.Items.Add(LVi);
+
+			}
+
+			if (kv.Realty.Building != null)
+			{
+				TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+				TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+				Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
+				Bld.Name = kv.Realty.Building.Name;
+				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
+				Bld.Area = kv.Realty.Building.Area;
+				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
+				if (kv.Realty.Building.CadastralNumbersFlats != null)
+					if (kv.Realty.Building.CadastralNumbersFlats.Count() > 0)
+					{
+						foreach (string s in kv.Realty.Building.CadastralNumbersFlats)
+						{
+							TFlat flat = new TFlat(s);
+							Bld.Building.Flats.Add(flat);
+						}
+					}
+
+				Bl.AddOKS(Bld);
+				//MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+				this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			}
+
+
+
+			if (kv.Realty.Construction != null)
+			{
+				TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+				TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
+				//Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
+				Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
+				Bl.AddOKS(Constructions);
+				//MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+				this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			}
+
+			ListMyCoolections(this.DocInfo.MyBlocks);
+		}
+
+
+		#endregion
+
+		#region  Разбор STD_TP ТехПлан
+
+		private void ParseSTDTPV02(RRTypes.STD_TPV02.STD_TP TP)
+		{
+			label_DocType.Text = "Технический план";
+			tabPage1.Text = "ОКС";
+			if (TP.Construction != null)
+			{
+
+				richTextBox1.AppendText(TP.Construction.Conclusion);
+				this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.Coord_Systems[0].Name, TP.Construction.Coord_Systems[0].Cs_Id));
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = TP.Construction.Contractor.Date.ToString();
+				LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
+									 " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic);
+				LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.N_Certificate);
+				listView_Contractors.Items.Add(LVi);
+				textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
+								 " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic + ";  " + TP.Construction.Contractor.Cadastral_Engineer.E_mail;
+				textBox_DocDate.Text = TP.Construction.Contractor.Date.ToString();
+				if (TP.Construction.Contractor.Cadastral_Organization != null)
+					textBox_OrgName.Text = TP.Construction.Contractor.Cadastral_Organization.Name;
+				textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.N_Certificate;
+				textBox_DocNum.Text = TP.GUID;
+
+				if (TP.Construction.Package.New_Construction.Count > 0)
+				{
+					TMyCadastralBlock Bl = new TMyCadastralBlock();
+					TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
+					Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
+					Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
+					Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
+																					 TP.Construction.Package.New_Construction[0].Entity_Spatial);
+					Bl.AddOKS(Constructions);
+					this.DocInfo.MyBlocks.SpatialData.AddRange(Constructions.ES2);
+					this.DocInfo.MyBlocks.Blocks.Add(Bl);
+				}
+
+				ListMyCoolections(this.DocInfo.MyBlocks);
+
+			}
+		}
+
+		private void ParseCoordSystems(RRTypes.V03_TP.tCoordSystems CS, string Conclusion)
+		{
+		}
+
+		private void ParseGeneralCadastralWorks(RRTypes.V03_TP.tGeneralCadastralWorks GW, string Conclusion)
+		{
+			richTextBox1.AppendText("\n----------------------------------------------------------------Технический план v3" +
+										  "----------------------------------------------------------------\n Подготовлен " +
+							GW.DateCadastral.ToString().Replace("0:00:00", "") +
+							" в результате выполнения кадастровых работ в связи с\n" +
+							GW.Reason);
+			richTextBox1.AppendText("\n------------------------------------------------   Заключение кадастрового инженера" +
+									   "   ------------------------------------------------\n");
+			richTextBox1.AppendText(Conclusion + "\n ");
+			richTextBox1.AppendText("\n----------------------------------------------------------------" +
+									   "----------------------------------------------------------------\n" +
+									   GW.Contractor.FamilyName +
+								 " " + GW.Contractor.FirstName +
+								 " " + GW.Contractor.Patronymic + "\n " +
+								 " " + GW.DateCadastral.ToString().Replace("0:00:00", ""));
+
+			/*
             ListViewItem LVi = new ListViewItem();
             LVi.Text = GW.DateCadastral.ToString().Replace("0:00:00", "");
             LVi.SubItems.Add(GW.Contractor.FamilyName+
@@ -1284,361 +1284,361 @@ namespace XMLReaderCS
 
             listView_Contractors.Items.Add(LVi);
             */
-            listView_Contractors.Visible = false;
-            label4.Text = "Сведения о кадастровом инженере";
-            textBox_FIO.Text = GW.Contractor.FamilyName +
-                                 " " + GW.Contractor.FirstName +
-                                 " " + GW.Contractor.Patronymic +
-                                 "\n" + GW.Contractor.NCertificate;
-            textBox_DocDate.Text = GW.DateCadastral.ToString().Replace("0:00:00", "");
-            textBox_Appointment.Text = GW.Contractor.Email;
-            if (GW.Contractor.Organization != null)
-                textBox_OrgName.Text = GW.Contractor.Organization.Name + " \n" +
-                                       GW.Contractor.Organization.AddressOrganization;
-            else textBox_OrgName.Text = GW.Contractor.Address;
-            label2.Text = "Заказчик работ";
-            if (GW.Clients.Count == 1)
-            {
-                if (GW.Clients[0].Organization != null)
-                {
-                    linkLabel_Recipient.Text = GW.Clients[0].Organization.Name;
-                    linkLabel_Request.Text = GW.Clients[0].Organization.INN;
-                }
+			listView_Contractors.Visible = false;
+			label4.Text = "Сведения о кадастровом инженере";
+			textBox_FIO.Text = GW.Contractor.FamilyName +
+								 " " + GW.Contractor.FirstName +
+								 " " + GW.Contractor.Patronymic +
+								 "\n" + GW.Contractor.NCertificate;
+			textBox_DocDate.Text = GW.DateCadastral.ToString().Replace("0:00:00", "");
+			textBox_Appointment.Text = GW.Contractor.Email;
+			if (GW.Contractor.Organization != null)
+				textBox_OrgName.Text = GW.Contractor.Organization.Name + " \n" +
+									   GW.Contractor.Organization.AddressOrganization;
+			else textBox_OrgName.Text = GW.Contractor.Address;
+			label2.Text = "Заказчик работ";
+			if (GW.Clients.Count == 1)
+			{
+				if (GW.Clients[0].Organization != null)
+				{
+					linkLabel_Recipient.Text = GW.Clients[0].Organization.Name;
+					linkLabel_Request.Text = GW.Clients[0].Organization.INN;
+				}
 
-                if (GW.Clients[0].Person != null)
-                {
-                    linkLabel_Recipient.Text = GW.Clients[0].Person.FamilyName + " "
-                        + GW.Clients[0].Person.FirstName + " " + GW.Clients[0].Person.Patronymic;
-                    if (GW.Clients[0].Person.SNILS != null)
-                        linkLabel_Request.Text = "СНИЛС " + GW.Clients[0].Person.SNILS;
-                    else linkLabel_Request.Text = "";
-                }
-            }
-        }
-        
-  
-#endregion
-
-        
-        #region  Разбор Межевого Плана V05
-        
-      private void ParseMPV05(RRTypes.MP_V05.MP MP)
-        {
-            label_DocType.Text = "Межевой план";
-                richTextBox1.AppendText("\n");
-                richTextBox1.AppendText("\n____________________________________ТИТУЛЬНЫЙ ЛИСТ___________________________________");
-                richTextBox1.AppendText("\nМежевой план подготовлен в результате выполнения кадастровых работ в связи с:");
-                richTextBox1.AppendText("\n");
-                richTextBox1.AppendText(MP.GeneralCadastralWorks.Reason);
-
-            if (MP.Conclusion != null)
-            {
-                richTextBox1.AppendText("\n");
-                richTextBox1.AppendText("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
-                richTextBox1.AppendText("\n");
-                richTextBox1.AppendText(MP.Conclusion);
-                richTextBox1.AppendText("\n");
-            }
-            //this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
-            ListViewItem LVi = new ListViewItem();
-            ListViewItem LViadd = new ListViewItem();
-            ListViewItem LViorg = new ListViewItem();
-            ListViewItem LViTel = new ListViewItem();
-
-            LVi.Text = MP.GeneralCadastralWorks.DateCadastral.ToString();
-            LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.FamilyName + " " + MP.GeneralCadastralWorks.Contractor.FirstName +
-                                 " " + MP.GeneralCadastralWorks.Contractor.Patronymic);
-            LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.NCertificate);
-
-            if (MP.GeneralCadastralWorks.Contractor.Organization != null)
-            {
-                LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.Name);
-            }
+				if (GW.Clients[0].Person != null)
+				{
+					linkLabel_Recipient.Text = GW.Clients[0].Person.FamilyName + " "
+						+ GW.Clients[0].Person.FirstName + " " + GW.Clients[0].Person.Patronymic;
+					if (GW.Clients[0].Person.SNILS != null)
+						linkLabel_Request.Text = "СНИЛС " + GW.Clients[0].Person.SNILS;
+					else linkLabel_Request.Text = "";
+				}
+			}
+		}
 
 
-            LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Address);
-            LViadd.SubItems.Add("-");
-            if (MP.GeneralCadastralWorks.Contractor.Organization != null)
-            {
-                LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization);
-            }
+		#endregion
 
-            LViorg.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Email);
-            LViTel.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Telephone);
-            listView_Contractors.Items.Add(LVi);
-            listView_Contractors.Items.Add(LViadd);
-            listView_Contractors.Items.Add(LViorg);
-            listView_Contractors.Items.Add(LViTel);
-            textBox_DocNum.Text = MP.GUID;
-            textBox_DocDate.Text = MP.GeneralCadastralWorks.DateCadastral.ToString("dd/MM/yyyy");
 
-            /*
+		#region  Разбор Межевого Плана V05
+
+		private void ParseMPV05(RRTypes.MP_V05.MP MP)
+		{
+			label_DocType.Text = "Межевой план";
+			richTextBox1.AppendText("\n");
+			richTextBox1.AppendText("\n____________________________________ТИТУЛЬНЫЙ ЛИСТ___________________________________");
+			richTextBox1.AppendText("\nМежевой план подготовлен в результате выполнения кадастровых работ в связи с:");
+			richTextBox1.AppendText("\n");
+			richTextBox1.AppendText(MP.GeneralCadastralWorks.Reason);
+
+			if (MP.Conclusion != null)
+			{
+				richTextBox1.AppendText("\n");
+				richTextBox1.AppendText("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
+				richTextBox1.AppendText("\n");
+				richTextBox1.AppendText(MP.Conclusion);
+				richTextBox1.AppendText("\n");
+			}
+			//this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
+			ListViewItem LVi = new ListViewItem();
+			ListViewItem LViadd = new ListViewItem();
+			ListViewItem LViorg = new ListViewItem();
+			ListViewItem LViTel = new ListViewItem();
+
+			LVi.Text = MP.GeneralCadastralWorks.DateCadastral.ToString();
+			LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.FamilyName + " " + MP.GeneralCadastralWorks.Contractor.FirstName +
+								 " " + MP.GeneralCadastralWorks.Contractor.Patronymic);
+			LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.NCertificate);
+
+			if (MP.GeneralCadastralWorks.Contractor.Organization != null)
+			{
+				LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.Name);
+			}
+
+
+			LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Address);
+			LViadd.SubItems.Add("-");
+			if (MP.GeneralCadastralWorks.Contractor.Organization != null)
+			{
+				LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization);
+			}
+
+			LViorg.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Email);
+			LViTel.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Telephone);
+			listView_Contractors.Items.Add(LVi);
+			listView_Contractors.Items.Add(LViadd);
+			listView_Contractors.Items.Add(LViorg);
+			listView_Contractors.Items.Add(LViTel);
+			textBox_DocNum.Text = MP.GUID;
+			textBox_DocDate.Text = MP.GeneralCadastralWorks.DateCadastral.ToString("dd/MM/yyyy");
+
+			/*
             textBox_FIO.Text = MP.Title.Contractor.FIO.Surname + " " + MP.Title.Contractor.FIO.First +
                                  " " + MP.Title.Contractor.FIO.Patronymic + ";  " + MP.Title.Contractor.E_mail; ;
 
             textBox_OrgName.Text = MP.Title.Contractor.Organization;
             textBox_Appointment.Text = MP.Title.Contractor.N_Certificate;
             */
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
-            string ParcelName;
-            if (MP.Package.FormParcels != null)
-            {
-                for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
-                {
-                   if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
-                        ParcelName = "Item05";
-                    else
-                        ParcelName = "Item01";
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
-                      MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
-                    MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
-                      MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
-                      MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
-                      if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
-                      {
-                          MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("",MP.Package.FormParcels.NewParcel[i].EntitySpatial));
-                      }
-                    if (MP.Package.FormParcels.NewParcel[i].Contours != null)
-                        for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
-                        {
-                            TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
-                                                                            MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
-                        }
-                }
+			TMyCadastralBlock Bl = new TMyCadastralBlock();
+			string ParcelName;
+			if (MP.Package.FormParcels != null)
+			{
+				for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
+				{
+					if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
+						ParcelName = "Item05";
+					else
+						ParcelName = "Item01";
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
+					MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
+					MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
+					MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
+					MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
+					if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
+					{
+						MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
+					}
+					if (MP.Package.FormParcels.NewParcel[i].Contours != null)
+						for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
+						{
+							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+																			MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
+						}
+				}
 
-            }
-
-            
-            //Если Мп по уточнению:
-            if (MP.Package.SpecifyParcel != null)
-            {
-                //уточнение ЗУ, МКЗУ 
-                if (MP.Package.SpecifyParcel.ExistParcel != null)
-            {
-                ParcelName = "Item01"; // default
-                if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
-                    if (MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count > 0 || MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count > 0)
-
-                        ParcelName = "Item05";
-                    else
-                        ParcelName = "Item01";
+			}
 
 
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
-                    MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную??
-                    if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
-                    {
-                        for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
-                        {
-                            TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
-                                                                            MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
-                        }
-                        for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
-                        {
-                            TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
-                                                                            MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
-                        }
-                    }
+			//Если Мп по уточнению:
+			if (MP.Package.SpecifyParcel != null)
+			{
+				//уточнение ЗУ, МКЗУ 
+				if (MP.Package.SpecifyParcel.ExistParcel != null)
+				{
+					ParcelName = "Item01"; // default
+					if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+						if (MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count > 0 || MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count > 0)
 
-                  if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
-                      MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("",MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
-
-            }
-            // Уточнение ЕЗП
-                if (MP.Package.SpecifyParcel.ExistEZ != null)
-                {
-                    ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
-                }
-            }
-            //Только образование частей 
-            if (MP.Package.SubParcels != null)
-            {
-                ParcelName = "Item06";  // Значение отсутствует
-                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
-
-                if (MP.Package.SubParcels.NewSubParcel.Count > 0)
-                    for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
-                    {
-                        TmySlot Sl = new TmySlot();
-                        Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
-                        Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
-                        Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
-                         if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
-                               Sl.EntSpat.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
-                         if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
-                             Sl.Contours = RRTypes.CommonCast.CasterZU.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition,MP.Package.SubParcels.NewSubParcel[ii].Contours);
-                                                
-
-                        MainObj.SubParcels.Add(Sl);
-                    }
+							ParcelName = "Item05";
+						else
+							ParcelName = "Item01";
 
 
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
+					MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную??
+					if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+					{
+						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
+						{
+							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+																			MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
+						}
+						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
+						{
+							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+																			MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
+						}
+					}
 
-            }
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
+					if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
+						MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
+
+				}
+				// Уточнение ЕЗП
+				if (MP.Package.SpecifyParcel.ExistEZ != null)
+				{
+					ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
+				}
+			}
+			//Только образование частей 
+			if (MP.Package.SubParcels != null)
+			{
+				ParcelName = "Item06";  // Значение отсутствует
+				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
+
+				if (MP.Package.SubParcels.NewSubParcel.Count > 0)
+					for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
+					{
+						TmySlot Sl = new TmySlot();
+						Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
+						Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
+						Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
+						if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
+							Sl.EntSpat.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
+						if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
+							Sl.Contours = RRTypes.CommonCast.CasterZU.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].Contours);
 
 
-  
-      // TODO:
-      private void CreateSignature(string filename, string SubjectName)
-      {
-           
-      }
-
-  
-      
-        #endregion
-
-        
+						MainObj.SubParcels.Add(Sl);
+					}
 
 
-        #region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
-        private void ListFileInfo(netFteo.XML.FileInfo fileinfo)
-        {
-            label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
-            textBox_DocNum.Text = fileinfo.Number;
-            if (fileinfo.Date != null)
-            textBox_DocDate.Text = fileinfo.Date.ToString();
-            textBox_OrgName.Text = fileinfo.Cert_Doc_Organization;
-            textBox_Appointment.Text = fileinfo.Appointment;
-            textBox_FIO.Text = fileinfo.AppointmentFIO;
-            tabPage1.Text = fileinfo.DocTypeNick +" "+ fileinfo.Version;// "КПТ + 10";
-            tabPage3.Text = fileinfo.CommentsType;// "Conclusion/Notes";
-            linkLabel_Recipient.Text = fileinfo.ReceivName + " " + fileinfo.ReceivAdress;
-            linkLabel_Request.Text = fileinfo.RequeryNumber;
-            if (fileinfo.Comments != null)
-            richTextBox1.AppendText(fileinfo.Comments.Replace("<br>", "\n"));
 
-            
-            foreach(netFteo.Rosreestr.TEngineerOut eng in fileinfo.Contractors)
-            {
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = eng.Date;
-                LVi.SubItems.Add(eng.FamilyName + " " + eng.FirstName + " " + eng.Patronymic);
-                LVi.SubItems.Add(eng.NCertificate);
-
-                if (eng.Organization_Name != null)
-                    LVi.SubItems.Add(eng.Organization_Name);
-                else LVi.SubItems.Add("-");
-
-                listView_Contractors.Items.Add(LVi);
-            }
-
-			
+			}
+			this.DocInfo.MyBlocks.Blocks.Add(Bl);
+			ListMyCoolections(this.DocInfo.MyBlocks);
 		}
 
-        /// </summary>
-        /// <param name="kpt09"></param>
-        private void ListMyCoolections(TMyBlockCollection BlockList)
-        {
-            //TreeNode TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName);
-            TreeNode TopNode_ = null;
-            TV_Parcels.BeginUpdate();
-            for (int bc = 0; bc <= BlockList.Blocks.Count - 1; bc++)
-            {
-
-                if (BlockList.Blocks.Count == 1)
-                {
-
-                    TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN);
-                    this.Text = BlockList.Blocks[bc].CN;
-                    if (BlockList.Blocks[bc].Parcels.Parcels.Count == 1)
-                    {
-                        this.Text = BlockList.Blocks[bc].Parcels.Parcels[0].CN;
-                    }
-
-                    if (BlockList.Blocks[bc].ObjectRealtys.Count == 1)
-                    {
-                        this.Text = BlockList.Blocks[bc].ObjectRealtys[0].CN;
-                    }
-                }// DocInfo.DocRootName);}
-
-                else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName); }
-
-                TMyParcelCollection ObjList = BlockList.Blocks[bc].Parcels;
-
-                if (ObjList.Parcels.Count > 0)
-                {
-                    TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
-                    for (int i = 0; i <= ObjList.Parcels.Count - 1; i++)
-                    {
-                        TreeNode TnP = ListMyParcel(ParcelsNode_, ObjList.Parcels[i]);
-                        if (ObjList.Parcels.Count == 1) TnP.Expand();
-                    }
-
-                    if (ObjList.Parcels.Count == 1)
-                    {
-                        pkk5Viewer1.Start(ObjList.Parcels[0].CN, pkk5_Types.Parcel);
-                        ParcelsNode_.Expand();
-                    }
-
-                }
-
-                if (BlockList.Blocks[bc].ObjectRealtys.Count > 0)
-                {
-                    TreeNode OKSsNode_ = TopNode_.Nodes.Add("OKSsNode", "ОКС");
-                    for (int i = 0; i <= BlockList.Blocks[bc].ObjectRealtys.Count - 1; i++)
-                    {
-                        ListMyOKS(OKSsNode_, BlockList.Blocks[bc].ObjectRealtys[i]);
-                    }
-                }
-
-                if (BlockList.Blocks[bc].GKNBounds.Count > 0)
-                {
-                    TreeNode BNDsNode_ = TopNode_.Nodes.Add("BNDsNode", "Границы ГКН");
-                    for (int i = 0; i <= BlockList.Blocks[bc].GKNBounds.Count - 1; i++)
-                    {
-                        ListBound(BNDsNode_, BlockList.Blocks[bc].GKNBounds[i]);
-                    }
-                }
-
-                if (BlockList.Blocks[bc].GKNZones.Count > 0)
-                {
-                    TreeNode BNDsNode_ = TopNode_.Nodes.Add("ZonesNode", "Объекты землеустройства-зоны");
-                    for (int i = 0; i <= BlockList.Blocks[bc].GKNZones.Count - 1; i++)
-                    {
-                        ListZone(BNDsNode_, BlockList.Blocks[bc].GKNZones[i]);
-                    }
-                }
-
-                //ОМС: все  в один,,,.
-                if ((BlockList.OMSPoints.AsPointList.Count) > 0)
-                {
-                    TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС");
-                    OMSNode.SelectedImageIndex = 5;
-                    OMSNode.ImageIndex = 5;
-                    ListPointList(OMSNode, BlockList.OMSPoints.AsPointList, 0);
-                }
-
-                //ОИПД Квартала
-                if (BlockList.Blocks[bc].Entity_Spatial.PointCount != 0)
-                {
-                    //TreeNode KvEntitytNode = TopNode_.Nodes.Add("OMSPoints", "Границы квартала");
-                    //TreeNode KvEntityItemNode = TopNode_.Nodes.Add("SPElem." + BlockList.Blocks[bc].Entity_Spatial.Layer_id, "Границы " + BlockList.Blocks[bc].CN);
-                    //netFteo.ObjectLister.ListEntSpat(KvEntityItemNode, BlockList.Blocks[bc].Entity_Spatial);
-                    netFteo.ObjectLister.ListEntSpat(TopNode_, BlockList.Blocks[bc].Entity_Spatial, "SPElem.", "Границы ",6);
-                }
-
-                //СК Квартала
-                if (BlockList.CSs.Count != 0)
-                {
-                    //TreeNode KvEntitytNode = TopNode_.Nodes.Add("OMSPoints", "Границы квартала");
-                    TreeNode CSSNode = TopNode_.Nodes.Add("CSS", "Системы координат ");
-                    CSSNode.SelectedImageIndex = 4;
-                    CSSNode.ImageIndex = 4;
-                    for (int i = 0; i <= BlockList.CSs.Count - 1; i++)
-                    {
-                        TreeNode CSSItemNode = CSSNode.Nodes.Add("CSSItem", BlockList.CSs[i].Name);
-                        CSSItemNode.ImageIndex = 4; CSSItemNode.SelectedImageIndex = 4;
-                        TreeNode CSSidItemNode = CSSItemNode.Nodes.Add("CSSid", BlockList.CSs[i].CSid);
-                    }
-                }
 
 
-            } // block block
+		// TODO:
+		private void CreateSignature(string filename, string SubjectName)
+		{
+
+		}
+
+
+
+		#endregion
+
+
+
+
+		#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
+		private void ListFileInfo(netFteo.XML.FileInfo fileinfo)
+		{
+			label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
+			textBox_DocNum.Text = fileinfo.Number;
+			if (fileinfo.Date != null)
+				textBox_DocDate.Text = fileinfo.Date.ToString();
+			textBox_OrgName.Text = fileinfo.Cert_Doc_Organization;
+			textBox_Appointment.Text = fileinfo.Appointment;
+			textBox_FIO.Text = fileinfo.AppointmentFIO;
+			tabPage1.Text = fileinfo.DocTypeNick + " " + fileinfo.Version;// "КПТ + 10";
+			tabPage3.Text = fileinfo.CommentsType;// "Conclusion/Notes";
+			linkLabel_Recipient.Text = fileinfo.ReceivName + " " + fileinfo.ReceivAdress;
+			linkLabel_Request.Text = fileinfo.RequeryNumber;
+			if (fileinfo.Comments != null)
+				richTextBox1.AppendText(fileinfo.Comments.Replace("<br>", "\n"));
+
+
+			foreach (netFteo.Rosreestr.TEngineerOut eng in fileinfo.Contractors)
+			{
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = eng.Date;
+				LVi.SubItems.Add(eng.FamilyName + " " + eng.FirstName + " " + eng.Patronymic);
+				LVi.SubItems.Add(eng.NCertificate);
+
+				if (eng.Organization_Name != null)
+					LVi.SubItems.Add(eng.Organization_Name);
+				else LVi.SubItems.Add("-");
+
+				listView_Contractors.Items.Add(LVi);
+			}
+
+
+		}
+
+		/// </summary>
+		/// <param name="kpt09"></param>
+		private void ListMyCoolections(TMyBlockCollection BlockList)
+		{
+			//TreeNode TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName);
+			TreeNode TopNode_ = null;
+			TV_Parcels.BeginUpdate();
+			for (int bc = 0; bc <= BlockList.Blocks.Count - 1; bc++)
+			{
+
+				if (BlockList.Blocks.Count == 1)
+				{
+
+					TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN);
+					this.Text = BlockList.Blocks[bc].CN;
+					if (BlockList.Blocks[bc].Parcels.Parcels.Count == 1)
+					{
+						this.Text = BlockList.Blocks[bc].Parcels.Parcels[0].CN;
+					}
+
+					if (BlockList.Blocks[bc].ObjectRealtys.Count == 1)
+					{
+						this.Text = BlockList.Blocks[bc].ObjectRealtys[0].CN;
+					}
+				}// DocInfo.DocRootName);}
+
+				else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName); }
+
+				TMyParcelCollection ObjList = BlockList.Blocks[bc].Parcels;
+
+				if (ObjList.Parcels.Count > 0)
+				{
+					TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
+					for (int i = 0; i <= ObjList.Parcels.Count - 1; i++)
+					{
+						TreeNode TnP = ListMyParcel(ParcelsNode_, ObjList.Parcels[i]);
+						if (ObjList.Parcels.Count == 1) TnP.Expand();
+					}
+
+					if (ObjList.Parcels.Count == 1)
+					{
+						pkk5Viewer1.Start(ObjList.Parcels[0].CN, pkk5_Types.Parcel);
+						ParcelsNode_.Expand();
+					}
+
+				}
+
+				if (BlockList.Blocks[bc].ObjectRealtys.Count > 0)
+				{
+					TreeNode OKSsNode_ = TopNode_.Nodes.Add("OKSsNode", "ОКС");
+					for (int i = 0; i <= BlockList.Blocks[bc].ObjectRealtys.Count - 1; i++)
+					{
+						ListMyOKS(OKSsNode_, BlockList.Blocks[bc].ObjectRealtys[i]);
+					}
+				}
+
+				if (BlockList.Blocks[bc].GKNBounds.Count > 0)
+				{
+					TreeNode BNDsNode_ = TopNode_.Nodes.Add("BNDsNode", "Границы ГКН");
+					for (int i = 0; i <= BlockList.Blocks[bc].GKNBounds.Count - 1; i++)
+					{
+						ListBound(BNDsNode_, BlockList.Blocks[bc].GKNBounds[i]);
+					}
+				}
+
+				if (BlockList.Blocks[bc].GKNZones.Count > 0)
+				{
+					TreeNode BNDsNode_ = TopNode_.Nodes.Add("ZonesNode", "Объекты землеустройства-зоны");
+					for (int i = 0; i <= BlockList.Blocks[bc].GKNZones.Count - 1; i++)
+					{
+						ListZone(BNDsNode_, BlockList.Blocks[bc].GKNZones[i]);
+					}
+				}
+
+				//ОМС: все  в один,,,.
+				if ((BlockList.OMSPoints.AsPointList.Count) > 0)
+				{
+					TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС");
+					OMSNode.SelectedImageIndex = 5;
+					OMSNode.ImageIndex = 5;
+					ListPointList(OMSNode, BlockList.OMSPoints.AsPointList, 0);
+				}
+
+				//ОИПД Квартала
+				if (BlockList.Blocks[bc].Entity_Spatial.PointCount != 0)
+				{
+					//TreeNode KvEntitytNode = TopNode_.Nodes.Add("OMSPoints", "Границы квартала");
+					//TreeNode KvEntityItemNode = TopNode_.Nodes.Add("SPElem." + BlockList.Blocks[bc].Entity_Spatial.Layer_id, "Границы " + BlockList.Blocks[bc].CN);
+					//netFteo.ObjectLister.ListEntSpat(KvEntityItemNode, BlockList.Blocks[bc].Entity_Spatial);
+					netFteo.ObjectLister.ListEntSpat(TopNode_, BlockList.Blocks[bc].Entity_Spatial, "SPElem.", "Границы ", 6);
+				}
+
+				//СК Квартала
+				if (BlockList.CSs.Count != 0)
+				{
+					//TreeNode KvEntitytNode = TopNode_.Nodes.Add("OMSPoints", "Границы квартала");
+					TreeNode CSSNode = TopNode_.Nodes.Add("CSS", "Системы координат ");
+					CSSNode.SelectedImageIndex = 4;
+					CSSNode.ImageIndex = 4;
+					for (int i = 0; i <= BlockList.CSs.Count - 1; i++)
+					{
+						TreeNode CSSItemNode = CSSNode.Nodes.Add("CSSItem", BlockList.CSs[i].Name);
+						CSSItemNode.ImageIndex = 4; CSSItemNode.SelectedImageIndex = 4;
+						TreeNode CSSidItemNode = CSSItemNode.Nodes.Add("CSSid", BlockList.CSs[i].CSid);
+					}
+				}
+
+
+			} // block block
 
 			//ОИПД если нет кварталов - не было импорта ЕГРН, значит только пространственный файл
 			if (BlockList.Blocks.Count == 0)
@@ -1648,271 +1648,272 @@ namespace XMLReaderCS
 			}
 
 			if (TopNode_ != null) TopNode_.Expand();
-            TV_Parcels.EndUpdate();
-            contextMenuStrip_SaveAs.Enabled = true;
-        }
+			TV_Parcels.EndUpdate();
+			contextMenuStrip_SaveAs.Enabled = true;
+		}
 
-        //-------------------------------------------------------------------------------------------------------------------
-        private TreeNode ListMyParcel(TreeNode Node, TMyParcel Parcel)
-        {
-            if (Parcel.SpecialNote != null)
-            {
-                tabPage3.Text = "Особые отметки";
-                richTextBox1.AppendText(Parcel.SpecialNote);
-            }
-            else tabPage3.Hide();
+		//-------------------------------------------------------------------------------------------------------------------
+		private TreeNode ListMyParcel(TreeNode Node, TMyParcel Parcel)
+		{
+			if (Parcel.SpecialNote != null)
+			{
+				tabPage3.Text = "Особые отметки";
+				richTextBox1.AppendText(Parcel.SpecialNote);
+			}
+			else tabPage3.Hide();
 
-            TreeNode PNode;
-            if (Parcel.CN != null)
-            {
-                PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.CN);
-            }
-            else
-            {
-                PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.Definition);
-            }
-            PNode.ImageIndex = 1;
-            PNode.SelectedImageIndex = 1;
-            PNode.ForeColor = Color.Green;
-            if (Parcel.ParentCN != null)
-            { TreeNode ParNode = PNode.Nodes.Add("ParNode", "В составе " + Parcel.ParentCN); }
-            if (Parcel.Location != null)
-            {
-                if (Parcel.Location.Elaboration.AsString() != null)
-                {
-                    TreeNode LocNameNode = PNode.Nodes.Add("LocNodes" + Parcel.id.ToString(), "Уточнение местоположения").Nodes.Add("LocNode", Parcel.Location.AsString());
-                }
-                ListAdress(PNode, Parcel.Location.Address, Parcel.id);
-            }
-           /*
-            if (Parcel.Purpose != null)
-            { TreeNode LPurposeNode = PNode.Nodes.Add("LPurposeNode", Parcel.Purpose);  }
-            if (Parcel.UtilbyDoc != null)
-            { TreeNode LUtildocNode = PNode.Nodes.Add("LUtildocNode", Parcel.UtilbyDoc); }
-            */
-            if (Parcel.State != null)
-            {
-                PNode.ToolTipText = dStates_v01.Item2Annotation(Parcel.State);
-                PNode.ForeColor = RRTypes.KVZU_v06Utils.State2Color(Parcel.State.ToString());
-            }
+			TreeNode PNode;
+			if (Parcel.CN != null)
+			{
+				PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.CN);
+			}
+			else
+			{
+				PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.Definition);
+			}
+			PNode.ImageIndex = 1;
+			PNode.SelectedImageIndex = 1;
+			PNode.ForeColor = Color.Green;
+			if (Parcel.ParentCN != null)
+			{ TreeNode ParNode = PNode.Nodes.Add("ParNode", "В составе " + Parcel.ParentCN); }
+			if (Parcel.Location != null)
+			{
+				if (Parcel.Location.Elaboration.AsString() != null)
+				{
+					TreeNode LocNameNode = PNode.Nodes.Add("LocNodes" + Parcel.id.ToString(), "Уточнение местоположения").Nodes.Add("LocNode", Parcel.Location.AsString());
+				}
+				ListAdress(PNode, Parcel.Location.Address, Parcel.id);
+			}
+			/*
+			 if (Parcel.Purpose != null)
+			 { TreeNode LPurposeNode = PNode.Nodes.Add("LPurposeNode", Parcel.Purpose);  }
+			 if (Parcel.UtilbyDoc != null)
+			 { TreeNode LUtildocNode = PNode.Nodes.Add("LUtildocNode", Parcel.UtilbyDoc); }
+			 */
+			if (Parcel.State != null)
+			{
+				PNode.ToolTipText = dStates_v01.Item2Annotation(Parcel.State);
+				PNode.ForeColor = RRTypes.KVZU_v06Utils.State2Color(Parcel.State.ToString());
+			}
 
-            if (Parcel.EntitySpatial != null)
-                if (Parcel.EntitySpatial.Count > 0)
-                {
-                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + .ToString(), );
-                    
-                    netFteo.ObjectLister.ListEntSpat(PNode,
-                                                     Parcel.EntitySpatial,
-                                                     "SPElem.","Границы",6);
-                    
-                }
+			if (Parcel.EntitySpatial != null)
+				if (Parcel.EntitySpatial.Count > 0)
+				{
+					//TreeNode ESNode = PNode.Nodes.Add("SPElem." + .ToString(), );
 
-            if (Parcel.CompozitionEZ != null)
-            {
-                if (Parcel.CompozitionEZ.Count() > 0)
-                {
-                    TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Входящие в ЕЗП (" + Parcel.CompozitionEZ.Count().ToString() + ")");
-                    for (int i = 0; i <= Parcel.CompozitionEZ.Count - 1; i++)
-                    {
-                        // TreeNode EntrSNode = PNode.Nodes.Add("EntryNode." + Parcel.CompozitionEZ[i].Layer_id.ToString(), 
-                        //                                                   Parcel.CompozitionEZ[i].Definition); 
-                        netFteo.ObjectLister.ListEntSpat(EntrysNode,
-                                                           Parcel.CompozitionEZ[i],
-                                                           "SPElem.", Parcel.CompozitionEZ[i].Definition, Parcel.CompozitionEZ[i].State);
-                    }
-                }
-                if (Parcel.CompozitionEZ.DeleteEntryParcels.Count() > 0)
-                {
-                    TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Исключаемые из ЕЗП (" + Parcel.CompozitionEZ.DeleteEntryParcels.Count().ToString() + ")");
-                    for (int i = 0; i <= Parcel.CompozitionEZ.DeleteEntryParcels.Count - 1; i++)
-                    {
-                        EntrysNode.Nodes.Add(Parcel.CompozitionEZ.DeleteEntryParcels[i]);
-                    }
-                }
+					netFteo.ObjectLister.ListEntSpat(PNode,
+													 Parcel.EntitySpatial,
+													 "SPElem.", "Границы", 6);
 
-                if (Parcel.CompozitionEZ.TransformationEntryParcel.Count() > 0)
-                {
-                    TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Измененные в ЕЗП (" + Parcel.CompozitionEZ.TransformationEntryParcel.Count().ToString() + ")");
-                    for (int i = 0; i <= Parcel.CompozitionEZ.TransformationEntryParcel.Count - 1; i++)
-                    {
-                        EntrysNode.Nodes.Add(Parcel.CompozitionEZ.TransformationEntryParcel[i]);
-                    }
-                }
+				}
 
-            }
+			if (Parcel.CompozitionEZ != null)
+			{
+				if (Parcel.CompozitionEZ.Count() > 0)
+				{
+					TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Входящие в ЕЗП (" + Parcel.CompozitionEZ.Count().ToString() + ")");
+					for (int i = 0; i <= Parcel.CompozitionEZ.Count - 1; i++)
+					{
+						// TreeNode EntrSNode = PNode.Nodes.Add("EntryNode." + Parcel.CompozitionEZ[i].Layer_id.ToString(), 
+						//                                                   Parcel.CompozitionEZ[i].Definition); 
+						netFteo.ObjectLister.ListEntSpat(EntrysNode,
+														   Parcel.CompozitionEZ[i],
+														   "SPElem.", Parcel.CompozitionEZ[i].Definition, Parcel.CompozitionEZ[i].State);
+					}
+				}
+				if (Parcel.CompozitionEZ.DeleteEntryParcels.Count() > 0)
+				{
+					TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Исключаемые из ЕЗП (" + Parcel.CompozitionEZ.DeleteEntryParcels.Count().ToString() + ")");
+					for (int i = 0; i <= Parcel.CompozitionEZ.DeleteEntryParcels.Count - 1; i++)
+					{
+						EntrysNode.Nodes.Add(Parcel.CompozitionEZ.DeleteEntryParcels[i]);
+					}
+				}
 
-            if //(Parcel.Name == "Многоконтурный участок") && 
-                (Parcel.Contours != null)
-                if (Parcel.Contours.Count > 0 )
-                {
-                    TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
-                    ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
-                    for (int i = 0; i <= Parcel.Contours.Count - 1; i++)
-                    {
-                        netFteo.ObjectLister.ListEntSpat(ContNode,
-                                                         Parcel.Contours[i],
-                                                        "SPElem.", 
-                                                        Parcel.Contours[i].Definition, Parcel.Contours[i].State);
-                    }
-                }
-            if (Parcel.SubParcels != null)
-            if (Parcel.SubParcels.Count > 0)
-            {
-                TreeNode Slotsnode = PNode.Nodes.Add("SlotsNode", "Части земельного участка");
+				if (Parcel.CompozitionEZ.TransformationEntryParcel.Count() > 0)
+				{
+					TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Измененные в ЕЗП (" + Parcel.CompozitionEZ.TransformationEntryParcel.Count().ToString() + ")");
+					for (int i = 0; i <= Parcel.CompozitionEZ.TransformationEntryParcel.Count - 1; i++)
+					{
+						EntrysNode.Nodes.Add(Parcel.CompozitionEZ.TransformationEntryParcel[i]);
+					}
+				}
 
-                for (int i = 0; i <= Parcel.SubParcels.Count - 1; i++)
-                {
-                    TreeNode SlotNode = Slotsnode.Nodes.Add("SlotNode" + Parcel.SubParcels[i].id, "Часть "+Parcel.SubParcels[i].NumberRecord);
-                        if (Parcel.SubParcels[i].Encumbrances != null)
-                        {
-                            ListEncums(SlotNode, Parcel.SubParcels[i].Encumbrances);
-                        }
-                    if (Parcel.SubParcels[i].EntSpat != null)
-                        if (Parcel.SubParcels[i].EntSpat.PointCount > 0)
-                        {
-                            //TreeNode SlotESNode = SlotNode.Nodes.Add("SPElem." + Parcel.SubParcels[i].EntSpat.Layer_id.ToString(), "Границы");
-                           // netFteo.ObjectLister.ListEntSpat(SlotESNode, Parcel.SubParcels[i].EntSpat);
+			}
 
-                            netFteo.ObjectLister.ListEntSpat(SlotNode,
-                                                             Parcel.SubParcels[i].EntSpat, 
-                                                             "SPElem.", 
-                                                             "Границы",6);
-                        }
+			if //(Parcel.Name == "Многоконтурный участок") && 
+				(Parcel.Contours != null)
+				if (Parcel.Contours.Count > 0)
+				{
+					TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
+					ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
+					for (int i = 0; i <= Parcel.Contours.Count - 1; i++)
+					{
+						netFteo.ObjectLister.ListEntSpat(ContNode,
+														 Parcel.Contours[i],
+														"SPElem.",
+														Parcel.Contours[i].Definition, Parcel.Contours[i].State);
+					}
+				}
+			if (Parcel.SubParcels != null)
+				if (Parcel.SubParcels.Count > 0)
+				{
+					TreeNode Slotsnode = PNode.Nodes.Add("SlotsNode", "Части земельного участка");
 
-                    if (Parcel.SubParcels[i].Contours != null)
-                        if (Parcel.SubParcels[i].Contours.Count > 0)
-                        {
-                            for (int ic = 0; ic <= Parcel.SubParcels[i].Contours.Count - 1; ic++)
-                            
-                            netFteo.ObjectLister.ListEntSpat(SlotNode,
-                                                             Parcel.SubParcels[i].Contours[ic],
-                                                             "SPElem.",
-                                                             Parcel.SubParcels[i].Contours[ic].Definition, 6);
-                        }
-                }
-            }
-            // 
-            if (Parcel.AllOffspringParcel != null)
-            if (Parcel.AllOffspringParcel.Count > 0)
-            {
-                TreeNode OffSpringsNode = PNode.Nodes.Add("Все образованные земельные участки");
-                for (int i = 0; i <= Parcel.AllOffspringParcel.Count - 1; i++)
-                {
+					for (int i = 0; i <= Parcel.SubParcels.Count - 1; i++)
+					{
+						TreeNode SlotNode = Slotsnode.Nodes.Add("SlotNode" + Parcel.SubParcels[i].id, "Часть " + Parcel.SubParcels[i].NumberRecord);
+						if (Parcel.SubParcels[i].Encumbrances != null)
+						{
+							ListEncums(SlotNode, Parcel.SubParcels[i].Encumbrances);
+						}
+						if (Parcel.SubParcels[i].EntSpat != null)
+							if (Parcel.SubParcels[i].EntSpat.PointCount > 0)
+							{
+								//TreeNode SlotESNode = SlotNode.Nodes.Add("SPElem." + Parcel.SubParcels[i].EntSpat.Layer_id.ToString(), "Границы");
+								// netFteo.ObjectLister.ListEntSpat(SlotESNode, Parcel.SubParcels[i].EntSpat);
 
-                    TreeNode OffSpringNode = OffSpringsNode.Nodes.Add("CN",
-                                                                       Parcel.AllOffspringParcel[i]);
-                }
+								netFteo.ObjectLister.ListEntSpat(SlotNode,
+																 Parcel.SubParcels[i].EntSpat,
+																 "SPElem.",
+																 "Границы", 6);
+							}
 
-            }
-            if (Parcel.InnerCadastralNumbers != null)
-            if (Parcel.InnerCadastralNumbers.Count > 0)
-            {
-                TreeNode InnerCNsNode = PNode.Nodes.Add("ОКС на земельном участке");
-                for (int i = 0; i <= Parcel.InnerCadastralNumbers.Count - 1; i++)
-                {
-                    TreeNode InnerCNNode = InnerCNsNode.Nodes.Add(Parcel.InnerCadastralNumbers[i]);
-                }
+						if (Parcel.SubParcels[i].Contours != null)
+							if (Parcel.SubParcels[i].Contours.Count > 0)
+							{
+								for (int ic = 0; ic <= Parcel.SubParcels[i].Contours.Count - 1; ic++)
 
-            }
+									netFteo.ObjectLister.ListEntSpat(SlotNode,
+																	 Parcel.SubParcels[i].Contours[ic],
+																	 "SPElem.",
+																	 Parcel.SubParcels[i].Contours[ic].Definition, 6);
+							}
+					}
+				}
+			// 
+			if (Parcel.AllOffspringParcel != null)
+				if (Parcel.AllOffspringParcel.Count > 0)
+				{
+					TreeNode OffSpringsNode = PNode.Nodes.Add("Все образованные земельные участки");
+					for (int i = 0; i <= Parcel.AllOffspringParcel.Count - 1; i++)
+					{
 
-            if (Parcel.PrevCadastralNumbers != null)
-                if (Parcel.PrevCadastralNumbers.Count > 0)
-                {
-                    TreeNode InnerCNsNode = PNode.Nodes.Add("Предыдущие номера");
-                    for (int i = 0; i <= Parcel.PrevCadastralNumbers.Count - 1; i++)
-                    {
-                        TreeNode InnerCNNode = InnerCNsNode.Nodes.Add("oNode"+i.ToString(), Parcel.PrevCadastralNumbers[i]);
-                    }
-                }
+						TreeNode OffSpringNode = OffSpringsNode.Nodes.Add("CN",
+																		   Parcel.AllOffspringParcel[i]);
+					}
 
-            ListRights(PNode, Parcel.Rights, Parcel.id, "Права", "Rights");
-            ListRights(PNode, Parcel.EGRN, Parcel.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /KPZU/ReestrExtract"
-            ListEncums(PNode, Parcel.Encumbrances);
-            return PNode;
-        }
+				}
+			if (Parcel.InnerCadastralNumbers != null)
+				if (Parcel.InnerCadastralNumbers.Count > 0)
+				{
+					TreeNode InnerCNsNode = PNode.Nodes.Add("ОКС на земельном участке");
+					for (int i = 0; i <= Parcel.InnerCadastralNumbers.Count - 1; i++)
+					{
+						TreeNode InnerCNNode = InnerCNsNode.Nodes.Add(Parcel.InnerCadastralNumbers[i]);
+					}
+
+				}
+
+			if (Parcel.PrevCadastralNumbers != null)
+				if (Parcel.PrevCadastralNumbers.Count > 0)
+				{
+					TreeNode InnerCNsNode = PNode.Nodes.Add("Предыдущие номера");
+					for (int i = 0; i <= Parcel.PrevCadastralNumbers.Count - 1; i++)
+					{
+						TreeNode InnerCNNode = InnerCNsNode.Nodes.Add("oNode" + i.ToString(), Parcel.PrevCadastralNumbers[i]);
+					}
+				}
+
+			ListRights(PNode, Parcel.Rights, Parcel.id, "Права", "Rights");
+			ListRights(PNode, Parcel.EGRN, Parcel.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /KPZU/ReestrExtract"
+			ListEncums(PNode, Parcel.Encumbrances);
+			return PNode;
+		}
 
 
-        private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, int id)
-        {
+		private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, int id)
+		{
 			if (Address.Empty) return;
-            {
-                TreeNode Adrs = Node.Nodes.Add("Adrss" + id.ToString(), "Адрес");
+			{
+				TreeNode Adrs = Node.Nodes.Add("Adrss" + id.ToString(), "Адрес");
 
-               if (Address.Region != null)
-                   if (dRegionsRF_v01 != null)
-                    Adrs.Nodes.Add("Adr", "Регион").Nodes.Add(dRegionsRF_v01.Item2Annotation(Address.Region));
+				if (Address.Region != null)
+					if (dRegionsRF_v01 != null)
+						Adrs.Nodes.Add("Adr", "Регион").Nodes.Add(dRegionsRF_v01.Item2Annotation(Address.Region));
 
-                if (Address.District != null)
-                    Adrs.Nodes.Add("Adr", "Район").Nodes.Add(Address.District);
-                if (Address.City != null)
-                    Adrs.Nodes.Add("Adr", "Муниципальное образование").Nodes.Add(Address.City);
+				if (Address.District != null)
+					Adrs.Nodes.Add("Adr", "Район").Nodes.Add(Address.District);
+				if (Address.City != null)
+					Adrs.Nodes.Add("Adr", "Муниципальное образование").Nodes.Add(Address.City);
 
-                if (Address.Locality != null)
-                    Adrs.Nodes.Add("Adr", "Населённый пункт").Nodes.Add(Address.Locality);
-                if (Address.Street != null)
-                    Adrs.Nodes.Add("Adr", "Улица").Nodes.Add(Address.Street);
-                if (Address.Level1 != null)
-                    Adrs.Nodes.Add("Adr", "Дом").Nodes.Add(Address.Level1);
-                if (Address.Level2 != null)
-                    Adrs.Nodes.Add("Adr", "Стр.").Nodes.Add(Address.Level2);
-                if (Address.Apartment != null)
-                    Adrs.Nodes.Add("Adr", "Квартира").Nodes.Add(Address.Apartment);
+				if (Address.Locality != null)
+					Adrs.Nodes.Add("Adr", "Населённый пункт").Nodes.Add(Address.Locality);
+				if (Address.Street != null)
+					Adrs.Nodes.Add("Adr", "Улица").Nodes.Add(Address.Street);
+				if (Address.Level1 != null)
+					Adrs.Nodes.Add("Adr", "Дом").Nodes.Add(Address.Level1);
+				if (Address.Level2 != null)
+					Adrs.Nodes.Add("Adr", "Стр.").Nodes.Add(Address.Level2);
+				if (Address.Apartment != null)
+					Adrs.Nodes.Add("Adr", "Квартира").Nodes.Add(Address.Apartment);
 
-                if (Address.Note != null)
-                {
-                    TreeNode an = Adrs.Nodes.Add("AdrNote", "Неформализованное описание");
-                    an.ToolTipText = "Неформализованное описание";
-                    an.Nodes.Add(Address.Note.Replace("Российская федерация", "РФ.."));
-                }
+				if (Address.Note != null)
+				{
+					TreeNode an = Adrs.Nodes.Add("AdrNote", "Неформализованное описание");
+					an.ToolTipText = "Неформализованное описание";
+					an.Nodes.Add(Address.Note.Replace("Российская федерация", "РФ.."));
+				}
 
-            }
-        }
+			}
+		}
 
-        private void ListOldNumbers(TreeNode node, TKeyParameters oldnumbers)
-        {
-            if ((oldnumbers != null) &&
-                       (oldnumbers.Count > 0))
-            {
-                TreeNode oldNumsNode = node.Nodes.Add("OldNumsNodes", "Ранее присвоенные номера");
-                foreach (TKeyParameter s in oldnumbers)
-                    oldNumsNode.Nodes.Add("Number", s.Type).Nodes.Add(s.Value);
-                oldNumsNode.ExpandAll();
-            }
-        }
+		private void ListOldNumbers(TreeNode node, TKeyParameters oldnumbers)
+		{
+			if ((oldnumbers != null) &&
+					   (oldnumbers.Count > 0))
+			{
+				TreeNode oldNumsNode = node.Nodes.Add("OldNumsNodes", "Ранее присвоенные номера");
+				foreach (TKeyParameter s in oldnumbers)
+					oldNumsNode.Nodes.Add("Number", s.Type).Nodes.Add(s.Value);
+				oldNumsNode.ExpandAll();
+			}
+		}
 
-    private void ListMyOKS(TreeNode Node, TMyRealty oks)
-        {
-            TreeNode PNode = Node.Nodes.Add("PNode" + oks.id.ToString(), oks.CN);
+		private void ListMyOKS(TreeNode Node, TMyRealty oks)
+		{
+			TreeNode PNode = Node.Nodes.Add("PNode" + oks.id.ToString(), oks.CN);
 
-            if (oks.Building != null ) 
-            {
-                PNode.ImageIndex = 2;
-                PNode.SelectedImageIndex = 2;
+			if (oks.Building != null)
+			{
+				PNode.ImageIndex = 2;
+				PNode.SelectedImageIndex = 2;
 
-                if (oks.Building.Flats.Count >0)
-                {
-                    TreeNode flatsnodes = PNode.Nodes.Add("Flats" + oks.id.ToString(), "Помещения (" + oks.Building.Flats.Count.ToString()+")");
-                   foreach (TFlat s in oks.Building.Flats)
-                       flatsnodes.Nodes.Add("FlatItem" + s.id.ToString(), s.CN);
-                }
+				if (oks.Building.Flats.Count > 0)
+				{
+					TreeNode flatsnodes = PNode.Nodes.Add("Flats" + oks.id.ToString(), "Помещения (" + oks.Building.Flats.Count.ToString() + ")");
+					foreach (TFlat s in oks.Building.Flats)
+						flatsnodes.Nodes.Add("FlatItem" + s.id.ToString(), s.CN);
+				}
 
-                ListOldNumbers(PNode, oks.Building.OldNumbers);
+				ListOldNumbers(PNode, oks.Building.OldNumbers);
+				/*
+				if (oks.ES2 != null)
+				{
+					string test = oks.Building.ES.GetType().Name;
+					if (oks.Building.ES.GetType().Name == "TMyPolygon")
+					{
+						if (((TMyPolygon)oks.Building.ES).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Building.ES, "SPElem.", "Границы", 6);
+					}
 
-                if (oks.Building.ES != null)
-                {
-                    string test = oks.Building.ES.GetType().Name;
-                    if (oks.Building.ES.GetType().Name == "TMyPolygon")
-                    {
-                        if (((TMyPolygon)oks.Building.ES).PointCount > 0)
-                            netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Building.ES, "SPElem.", "Границы", 6);
-                    }
-
-                    if (oks.Building.ES.GetType().Name == "TPolyLines")
-                    {
-                        netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Building.ES, "SPElem.", "ПолиЛинии", 6);
-                    }
-                }
-            }
+					if (oks.Building.ES.GetType().Name == "TPolyLines")
+					{
+						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Building.ES, "SPElem.", "ПолиЛинии", 6);
+					}
+				}
+				*/
+			}
 
 			if (oks.Construction != null) //.Type == "Сооружение")
 			{
@@ -1964,92 +1965,92 @@ namespace XMLReaderCS
 
 			if ((oks.Location != null) &&
 				(oks.Location.Address != null))
-            {
-                ListAdress(PNode, oks.Location.Address, oks.id);
-            }
-                //oks.KeyParameters
-            if (oks.Notes != null)
-                PNode.Nodes.Add("SpecNotes", "Особые отметки").Nodes.Add("Note", oks.Notes);
+			{
+				ListAdress(PNode, oks.Location.Address, oks.id);
+			}
+			//oks.KeyParameters
+			if (oks.Notes != null)
+				PNode.Nodes.Add("SpecNotes", "Особые отметки").Nodes.Add("Note", oks.Notes);
 
-            if ((oks.ParentCadastralNumbers != null) && (oks.ParentCadastralNumbers.Count > 0))
-            {
-                TreeNode flatsnodes = PNode.Nodes.Add("ParentCadastralNumbers" + oks.id.ToString(), "Земельные участки");
-                foreach (string s in oks.ParentCadastralNumbers)
-                    flatsnodes.Nodes.Add("CN" + s, s);
-            }
-	
-			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2,  6);
-			ListRights(PNode, oks.Rights, oks.id, "Права","Rights");
-            ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
-        }
+			if ((oks.ParentCadastralNumbers != null) && (oks.ParentCadastralNumbers.Count > 0))
+			{
+				TreeNode flatsnodes = PNode.Nodes.Add("ParentCadastralNumbers" + oks.id.ToString(), "Земельные участки");
+				foreach (string s in oks.ParentCadastralNumbers)
+					flatsnodes.Nodes.Add("CN" + s, s);
+			}
 
-	
-        private void ListBound(TreeNode Node, TBound Parcel)
-        {
-            string CN = Parcel.Description;
-            TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.Description);
-            TreeNode AddressNode = PNode.Nodes.Add("BNDTypeNode", Parcel.TypeName);
-            if (Parcel.EntitySpatial != null)
-                if (Parcel.EntitySpatial.Count > 0)
-                {
-                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Parcel.EntitySpatial.Layer_id.ToString(), "Границы");
-                   // netFteo.ObjectLister.ListEntSpat(ESNode, Parcel.EntitySpatial);
-                    netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntitySpatial, "SPElem.", "Границы",6);
-                }
-        }
+			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2, 6);
+			ListRights(PNode, oks.Rights, oks.id, "Права", "Rights");
+			ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
+		}
+
+
+		private void ListBound(TreeNode Node, TBound Parcel)
+		{
+			string CN = Parcel.Description;
+			TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.Description);
+			TreeNode AddressNode = PNode.Nodes.Add("BNDTypeNode", Parcel.TypeName);
+			if (Parcel.EntitySpatial != null)
+				if (Parcel.EntitySpatial.Count > 0)
+				{
+					//TreeNode ESNode = PNode.Nodes.Add("SPElem." + Parcel.EntitySpatial.Layer_id.ToString(), "Границы");
+					// netFteo.ObjectLister.ListEntSpat(ESNode, Parcel.EntitySpatial);
+					netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntitySpatial, "SPElem.", "Границы", 6);
+				}
+		}
 
 		private void ListZone(TreeNode Node, TZone Parcel)
 		{
 			netFteo.ObjectLister.ListZone(Node, Parcel);
 		}
-       
-        // Листинг отрезков границ в ListView
-        private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
-        {
-            if (PList.Count == 0) return;
-            string BName;
-            LV.Items.Clear();
-            LV.Tag = PList.id;
-            for (int i = 0; i <= PList.Count - 2; i++)
-            {
-                BName = PList[i].Pref + PList[i].NumGeopointA+" - "+
-                        PList[i+1].Pref + PList[i+1].NumGeopointA;
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = BName;
-               /* LVi.SubItems.Add(PList.Points[i].x_s);
-                LVi.SubItems.Add(PList.Points[i].y_s);
-                LVi.SubItems.Add(PList.Points[i].Mt_s);
-                LVi.SubItems.Add(PList.Points[i].Description);
-                * */
-                if (PList[i].Pref == "н")
-                    LVi.ForeColor = Color.Red;
-                else LVi.ForeColor = Color.Black;
-                LV.Items.Add(LVi);
-            }
-        }
 
-        // Листинг точек в ListView
-        private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
-        {
-            if (PList.Count == 0) return null;
-            string BName;
-            LV.Items.Clear();
-            LV.Tag = PList.id;
-            ListViewItem res = PointListToListView(LV, (PointList) PList);
+		// Листинг отрезков границ в ListView
+		private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
+		{
+			if (PList.Count == 0) return;
+			string BName;
+			LV.Items.Clear();
+			LV.Tag = PList.id;
+			for (int i = 0; i <= PList.Count - 2; i++)
+			{
+				BName = PList[i].Pref + PList[i].NumGeopointA + " - " +
+						PList[i + 1].Pref + PList[i + 1].NumGeopointA;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				/* LVi.SubItems.Add(PList.Points[i].x_s);
+				 LVi.SubItems.Add(PList.Points[i].y_s);
+				 LVi.SubItems.Add(PList.Points[i].Mt_s);
+				 LVi.SubItems.Add(PList.Points[i].Description);
+				 * */
+				if (PList[i].Pref == "н")
+					LVi.ForeColor = Color.Red;
+				else LVi.ForeColor = Color.Black;
+				LV.Items.Add(LVi);
+			}
+		}
 
-            for (int ic = 0; ic <= PList.Childs.Count - 1; ic++)
-            {  //Пустая строчка - разделитель
-                ListViewItem LViEmpty_ch = new ListViewItem();
-                LViEmpty_ch.Text = "";
-                LV.Items.Add(LViEmpty_ch);
-                PointListToListView(LV, PList.Childs[ic]);
-            }
+		// Листинг точек в ListView
+		private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
+		{
+			if (PList.Count == 0) return null;
+			string BName;
+			LV.Items.Clear();
+			LV.Tag = PList.id;
+			ListViewItem res = PointListToListView(LV, (PointList)PList);
 
-            ListViewItem LViEmpty = new ListViewItem();
-            LViEmpty.Text = "";
-            LV.Items.Add(LViEmpty);
-            return res;
-        }
+			for (int ic = 0; ic <= PList.Childs.Count - 1; ic++)
+			{  //Пустая строчка - разделитель
+				ListViewItem LViEmpty_ch = new ListViewItem();
+				LViEmpty_ch.Text = "";
+				LV.Items.Add(LViEmpty_ch);
+				PointListToListView(LV, PList.Childs[ic]);
+			}
+
+			ListViewItem LViEmpty = new ListViewItem();
+			LViEmpty.Text = "";
+			LV.Items.Add(LViEmpty);
+			return res;
+		}
 
 		// Листинг точек окружностней в ListView
 		private ListViewItem PointListToListView(ListView LV, TCircle Circle)
@@ -2076,40 +2077,40 @@ namespace XMLReaderCS
 			else LVi.ForeColor = Color.Black;
 			if (Circle.Status == 6)
 				LVi.ForeColor = Color.Blue;
-	
+
 			LV.Items.Add(LVi);
 			return LVi;
 		}
 
 		private ListViewItem PointListToListView(ListView LV, PointList PList)
-        {
-            if (PList.Count == 0) return null;
-            string BName;
-            LV.BeginUpdate();
-            //LV.Items.Clear();
-            //LV.Tag = PList.Parent_Id;
-            ListViewItem res = null; ;
-            for (int i = 0; i <= PList.Count - 1; i++)
-            {
-                BName = PList[i].Pref + PList[i].NumGeopointA + PList[i].OrdIdent;
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = BName;
-                LVi.Tag = PList[i].id;
-                LVi.SubItems.Add(PList[i].x_s);
-                LVi.SubItems.Add(PList[i].y_s);
-                LVi.SubItems.Add(PList[i].Mt_s);
-                LVi.SubItems.Add(PList[i].Description);
-                if (PList[i].Pref == "н")
-                    LVi.ForeColor = Color.Red;
-                else LVi.ForeColor = Color.Black;
-                if (PList[i].Status == 6)
-                    LVi.ForeColor = Color.Blue;
-                if (i ==0) res = LV.Items.Add(LVi);
-                else
-                LV.Items.Add(LVi);
-            }
-            LV.EndUpdate();
-            return res; // вернем первую строчку Items
+		{
+			if (PList.Count == 0) return null;
+			string BName;
+			LV.BeginUpdate();
+			//LV.Items.Clear();
+			//LV.Tag = PList.Parent_Id;
+			ListViewItem res = null; ;
+			for (int i = 0; i <= PList.Count - 1; i++)
+			{
+				BName = PList[i].Pref + PList[i].NumGeopointA + PList[i].OrdIdent;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				LVi.Tag = PList[i].id;
+				LVi.SubItems.Add(PList[i].x_s);
+				LVi.SubItems.Add(PList[i].y_s);
+				LVi.SubItems.Add(PList[i].Mt_s);
+				LVi.SubItems.Add(PList[i].Description);
+				if (PList[i].Pref == "н")
+					LVi.ForeColor = Color.Red;
+				else LVi.ForeColor = Color.Black;
+				if (PList[i].Status == 6)
+					LVi.ForeColor = Color.Blue;
+				if (i == 0) res = LV.Items.Add(LVi);
+				else
+					LV.Items.Add(LVi);
+			}
+			LV.EndUpdate();
+			return res; // вернем первую строчку Items
 		}
 
 		private ListViewItem PointListToListView(ListView LV, object PointList)
@@ -2125,21 +2126,21 @@ namespace XMLReaderCS
 
 		//Листинг ПД 
 		private void EsToListView(ListView LV, object ES, int parent_id)
-        {
-            if (ES == null)
-            {
-                if (ViewWindow != null) ViewWindow.Spatial = null; // сотрем картинку (последнюю)
-                return;
-            }
-            ListViewItem LVi_Commands = null;
-            LV.Columns[0].Text = "Имя";
-            LV.Columns[1].Text = "x, м.";
-            LV.Columns[2].Text = "y, м.";
-            LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "R";
-            LV.Columns[5].Text = "-";
-            LV.Columns[6].Text = "-";
-            LV.View = View.Details;
+		{
+			if (ES == null)
+			{
+				if (ViewWindow != null) ViewWindow.Spatial = null; // сотрем картинку (последнюю)
+				return;
+			}
+			ListViewItem LVi_Commands = null;
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "R";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
 
 			if (ES.ToString() == "netFteo.Spatial.TPolygonCollection")
 			{
@@ -2193,484 +2194,484 @@ namespace XMLReaderCS
 			*/
 			ToolTip tt = new ToolTip();
 
-           // if (parent_id > 0) // до момента наладки с parent_id будем проверять его наличие
-             if (LV.Items.Count > 3)    // если что-то было отображено
-            {
-                LinkLabel pkk5Label = new LinkLabel();
-                pkk5Label.Click += new System.EventHandler(OnPKK5LabelActionClick);
-                pkk5Label.Tag = parent_id; //CN
-                //pkk5Label.Text = "ПКК5 :)";
-                pkk5Label.Image = XMLReaderCS.Properties.Resources.Rosreestr;
-                pkk5Label.ImageAlign = ContentAlignment.MiddleLeft;
-                pkk5Label.Cursor = Cursors.Hand;
-                tt.SetToolTip(pkk5Label, "Найти на ПКК5 (Онлайн)");
-                if (LVi_Commands == null) LVi_Commands = new ListViewItem("Полигон...не полигон?");
-                pkk5Label.SetBounds(400, LVi_Commands.Position.Y, 32, 32);
-                LV.Controls.Add(pkk5Label);
+			// if (parent_id > 0) // до момента наладки с parent_id будем проверять его наличие
+			if (LV.Items.Count > 3)    // если что-то было отображено
+			{
+				LinkLabel pkk5Label = new LinkLabel();
+				pkk5Label.Click += new System.EventHandler(OnPKK5LabelActionClick);
+				pkk5Label.Tag = parent_id; //CN
+										   //pkk5Label.Text = "ПКК5 :)";
+				pkk5Label.Image = XMLReaderCS.Properties.Resources.Rosreestr;
+				pkk5Label.ImageAlign = ContentAlignment.MiddleLeft;
+				pkk5Label.Cursor = Cursors.Hand;
+				tt.SetToolTip(pkk5Label, "Найти на ПКК5 (Онлайн)");
+				if (LVi_Commands == null) LVi_Commands = new ListViewItem("Полигон...не полигон?");
+				pkk5Label.SetBounds(400, LVi_Commands.Position.Y, 32, 32);
+				LV.Controls.Add(pkk5Label);
 
-                Button SaveButt = new Button();
-                //SaveButt.Text = "Сохранить";
-                SaveButt.Image = XMLReaderCS.Properties.Resources.disk_multiple;
-                SaveButt.Click += new System.EventHandler(OnPKK5ButtonActionClick);
-                SaveButt.ImageAlign = ContentAlignment.MiddleCenter;
-                SaveButt.FlatStyle = FlatStyle.Flat;
-                SaveButt.SetBounds(435, LVi_Commands.Position.Y, 20, 20);
-                tt.SetToolTip(SaveButt, "Сохранить как...");
-                LV.Controls.Add(SaveButt);
-            }
-        }
+				Button SaveButt = new Button();
+				//SaveButt.Text = "Сохранить";
+				SaveButt.Image = XMLReaderCS.Properties.Resources.disk_multiple;
+				SaveButt.Click += new System.EventHandler(OnPKK5ButtonActionClick);
+				SaveButt.ImageAlign = ContentAlignment.MiddleCenter;
+				SaveButt.FlatStyle = FlatStyle.Flat;
+				SaveButt.SetBounds(435, LVi_Commands.Position.Y, 20, 20);
+				tt.SetToolTip(SaveButt, "Сохранить как...");
+				LV.Controls.Add(SaveButt);
+			}
+		}
 
-      /// <summary>
-      /// Вывод списка строк в ListView
-      /// Вот порнография по  листингу строчки: split . Требует полной переработки!!! Позор 
-      /// </summary>
-      /// <param name="LV">Listview для отображения</param>
-      /// <param name="list">список строк с разделителем "\t"</param>
-        private void ListToListView(ListView LV, List<string> list)
-        {
-            if (list.Count == 0) return;
-            LV.BeginUpdate();
-            LV.View = System.Windows.Forms.View.Details;
-            for (int i = 0; i <= list.Count - 1; i++)
-            {
-                if (list[i].Split('\t').Count() > 0)
-                {
-                    ListViewItem LVi = new ListViewItem();
-                    LVi.Text = list[i].Split('\t')[0];
+		/// <summary>
+		/// Вывод списка строк в ListView
+		/// Вот порнография по  листингу строчки: split . Требует полной переработки!!! Позор 
+		/// </summary>
+		/// <param name="LV">Listview для отображения</param>
+		/// <param name="list">список строк с разделителем "\t"</param>
+		private void ListToListView(ListView LV, List<string> list)
+		{
+			if (list.Count == 0) return;
+			LV.BeginUpdate();
+			LV.View = System.Windows.Forms.View.Details;
+			for (int i = 0; i <= list.Count - 1; i++)
+			{
+				if (list[i].Split('\t').Count() > 0)
+				{
+					ListViewItem LVi = new ListViewItem();
+					LVi.Text = list[i].Split('\t')[0];
 
-                    for (int ii = 1; ii <= list[i].Split('\t').Count() - 1; ii++)
-                        LVi.SubItems.Add(list[i].Split('\t')[ii]);
-                    LV.Items.Add(LVi);
-                }
-            }
+					for (int ii = 1; ii <= list[i].Split('\t').Count() - 1; ii++)
+						LVi.SubItems.Add(list[i].Split('\t')[ii]);
+					LV.Items.Add(LVi);
+				}
+			}
 
-            LV.EndUpdate();
-        }
+			LV.EndUpdate();
+		}
 
-        private void EZPEntryListToListView(ListView LV, List<string> list)
-        {
-            if (list.Count == 0) return;
+		private void EZPEntryListToListView(ListView LV, List<string> list)
+		{
+			if (list.Count == 0) return;
 
-            LV.Columns[0].Text = "Номер";
-            LV.Columns[1].Text = "Площадь граф.";
-            LV.Columns[2].Text = "Площадь сем.";
-            LV.Columns[3].Text = "Δ"; LV.Columns[3].TextAlign = HorizontalAlignment.Center;
-            LV.Columns[4].Text = "ΔP";
-            LV.Columns[5].Text = "изм.";
-            LV.Columns[6].Text = "-";
-            LV.Columns[7].Text = "-";
-            ListToListView(LV, list);
+			LV.Columns[0].Text = "Номер";
+			LV.Columns[1].Text = "Площадь граф.";
+			LV.Columns[2].Text = "Площадь сем.";
+			LV.Columns[3].Text = "Δ"; LV.Columns[3].TextAlign = HorizontalAlignment.Center;
+			LV.Columns[4].Text = "ΔP";
+			LV.Columns[5].Text = "изм.";
+			LV.Columns[6].Text = "-";
+			LV.Columns[7].Text = "-";
+			ListToListView(LV, list);
 
-        }
-
-  
-
-        private void RightsToListView(ListView LV, List<string> list)
-        {
-            if (list.Count == 0) return;
-            LV.Columns[0].Text = "Субъект";
-            LV.Columns[1].Text = "Право";
-            LV.Columns[2].Text = "Рег. номер";
-            LV.Columns[3].Text = "Доля в праве";
-            LV.Columns[4].Text = "Особые отметки";
-            LV.Columns[5].Text = "Обременения";
-            ListToListView(LV, list);
-        }
+		}
 
 
-        /// <summary>
-        /// Для установки IconSpacing нагуглил код через SendMessage (как в детстве):
-        /// </summary>
-        /// <param name="hwnd"></param>
-        /// <param name="wMsg"></param>
-        /// <param name="wParam"></param>
-        /// <param name="lParam"></param>
-        /// <returns></returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        private static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, Int32 lParam);
 
-        const int LVM_FIRST = 0x1000;
-        const int LVM_SETICONSPACING = LVM_FIRST + 53;
-
-        public void SetControlSpacing(Control control, Int16 x, Int16 y)
-        {
-            SendMessage(control.Handle, LVM_SETICONSPACING, 0, x * 65536 + y);
-            control.Refresh();
-        }
+		private void RightsToListView(ListView LV, List<string> list)
+		{
+			if (list.Count == 0) return;
+			LV.Columns[0].Text = "Субъект";
+			LV.Columns[1].Text = "Право";
+			LV.Columns[2].Text = "Рег. номер";
+			LV.Columns[3].Text = "Доля в праве";
+			LV.Columns[4].Text = "Особые отметки";
+			LV.Columns[5].Text = "Обременения";
+			ListToListView(LV, list);
+		}
 
 
-       
+		/// <summary>
+		/// Для установки IconSpacing нагуглил код через SendMessage (как в детстве):
+		/// </summary>
+		/// <param name="hwnd"></param>
+		/// <param name="wMsg"></param>
+		/// <param name="wParam"></param>
+		/// <param name="lParam"></param>
+		/// <returns></returns>
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+		private static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, Int32 lParam);
 
+		const int LVM_FIRST = 0x1000;
+		const int LVM_SETICONSPACING = LVM_FIRST + 53;
 
-        private void LongTextToListView(ListView LV, string Text, string TextTitle)
-        {
-            LV.Columns[0].Text = TextTitle;
-            LV.Controls.Clear();
-            CRichTextBox rt = new CRichTextBox(Text);
-            rt.Dock = DockStyle.Fill;
-            rt.ReadOnly = true;
-            LV.Controls.Add(rt);
-        }
-
-
-        private void OMSPointsToListView(ListView LV, PointList list)
-        {
-            if (list.PointCount == 0) return;
-            LV.Columns[0].Text = "#";
-            LV.Columns[1].Text = "Номер";
-            LV.Columns[2].Text = "х, м.";
-            LV.Columns[3].Text = "y, м.";
-            LV.Columns[4].Text = "Тип";
-            LV.Columns[5].Text = "Описание";
-
-
-            List<string> lst = new List<string>();
-             for (int i = 0; i <= list.PointCount - 1; i++)
-            {
-                 string flat_string = (i+1).ToString();
-                 flat_string += "\t" + list[i].NumGeopointA + "\t" +
-                                       list[i].x_s + "\t" +
-                                       list[i].y_s + "\t" +
-                                       list[i].Description + "\t"+
-                                       list[i].Code;
-                lst.Add(flat_string);
-            }
-            ListToListView(LV, lst);
-        }
-
-        private void FlatsToListView(ListView LV, TFlats list)
-        {
-            if (list.Count == 0) return;
-            LV.Columns[0].Text = "#";
-            LV.Columns[1].Text = "Назначение,вид";
-            LV.Columns[2].Text = "Этаж";
-            LV.Columns[3].Text = "Номер этажа";
-            LV.Columns[4].Text = "КН / Обозначение на плане";
-            LV.Columns[5].Text = "Площадь";
-            LV.Columns[6].Text = "Адрес";
-            LV.Columns[7].Text = "Адрес нестр.";
-            LV.BeginUpdate();
-            LV.View = System.Windows.Forms.View.Details;
-
-            List<string> lst = new List<string>();
-            int cnt = 1;
-            foreach (TFlat fl in list)
-            {
-                string flat_string = "" ;  
-                if (fl.AssignationType == "")
-                    flat_string += fl.AssignationCode;
-                else
-                    flat_string += fl.AssignationCode + "/" + fl.AssignationType;
-
-                ListViewItem LVi = new ListViewItem();
-                LVi.Text = cnt++.ToString();
-                LVi.SubItems.Add(flat_string);
-
-                if (fl.PositionInObject.Levels.Count == 1)
-                {
-                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Type);
-                    LVi.SubItems.Add(fl.PositionInObject.Levels[0].Number);
-                    LVi.SubItems.Add(fl.CN + "/  "+ fl.PositionInObject.Levels[0].Position.NumberOnPlan);
-                }
-                else
-                {
-                    LVi.BackColor = System.Drawing.Color.LightGray;
-                    LVi.SubItems.Add("");
-                    LVi.SubItems.Add("");
-                    LVi.SubItems.Add(fl.CN);
-                }
-                LVi.SubItems.Add(fl.Area.ToString());
-                LVi.SubItems.Add(fl.Location.Address.AsString());//Adress
-                if ( fl.Location.Address.Other != null)
-                LVi.SubItems.Add(fl.Location.Address.Other);
-                if ( fl.Location.Address.Note != null )
-                    LVi.SubItems.Add(fl.Location.Address.Note); 
-                LV.Items.Add(LVi);
-
-                if (fl.PositionInObject.Levels.Count > 1)
-                    foreach (TLevel lv in fl.PositionInObject.Levels)
-                {
-                    ListViewItem LVip = new ListViewItem();
-                    LVip.Text = ""; //пропустим
-                    LVip.SubItems.Add(flat_string);
-                    LVip.SubItems.Add(lv.Type); //Тип этажа
-                    LVip.SubItems.Add(lv.Number); // Номер этажа
-                    LVip.SubItems.Add(lv.Position.NumberOnPlan);
-                    LV.Items.Add(LVip);
-                }
-                
-
-            }
-
-            LV.EndUpdate();
-        }
+		public void SetControlSpacing(Control control, Int16 x, Int16 y)
+		{
+			SendMessage(control.Handle, LVM_SETICONSPACING, 0, x * 65536 + y);
+			control.Refresh();
+		}
 
 
 
 
 
-        private void FlatToListView(ListView LV, TFlat flat)
-        {
-            if (flat == null) return;
-            LV.BeginUpdate();
-            LV.Items.Clear();
-            LV.View = System.Windows.Forms.View.LargeIcon;
-            ImageList jpegs = new ImageList()
-            {
-                ImageSize = new Size(256, 182) // 1.4
-            };
-            LV.LargeImageList = jpegs;
-            int imgindex = 0;
-            foreach (TLevel lev in flat.PositionInObject.Levels)
-            {
-                foreach (string jpegname in lev.Position.Plans_Plan_JPEG)
-                {
-                    ListViewItem LVi = new ListViewItem()
-                    {
-                        Text = jpegname,
-                        ImageIndex = imgindex++
-                    };
-                    LV.Items.Add(LVi);
-                }
-            }
-            LV.EndUpdate();
+		private void LongTextToListView(ListView LV, string Text, string TextTitle)
+		{
+			LV.Columns[0].Text = TextTitle;
+			LV.Controls.Clear();
+			CRichTextBox rt = new CRichTextBox(Text);
+			rt.Dock = DockStyle.Fill;
+			rt.ReadOnly = true;
+			LV.Controls.Add(rt);
+		}
 
-   //populate items with pictures
-            foreach (TLevel lev in flat.PositionInObject.Levels)
-            {
-                foreach (string jpegname in lev.Position.Plans_Plan_JPEG)
-                {
-                    string testPath = Folder_Unzip + "\\" + jpegname;
-                    System.Drawing.Image FileJpeg = null;
-                    System.Drawing.Image FileJpegSmall = null;
-                    /*
+
+		private void OMSPointsToListView(ListView LV, PointList list)
+		{
+			if (list.PointCount == 0) return;
+			LV.Columns[0].Text = "#";
+			LV.Columns[1].Text = "Номер";
+			LV.Columns[2].Text = "х, м.";
+			LV.Columns[3].Text = "y, м.";
+			LV.Columns[4].Text = "Тип";
+			LV.Columns[5].Text = "Описание";
+
+
+			List<string> lst = new List<string>();
+			for (int i = 0; i <= list.PointCount - 1; i++)
+			{
+				string flat_string = (i + 1).ToString();
+				flat_string += "\t" + list[i].NumGeopointA + "\t" +
+									  list[i].x_s + "\t" +
+									  list[i].y_s + "\t" +
+									  list[i].Description + "\t" +
+									  list[i].Code;
+				lst.Add(flat_string);
+			}
+			ListToListView(LV, lst);
+		}
+
+		private void FlatsToListView(ListView LV, TFlats list)
+		{
+			if (list.Count == 0) return;
+			LV.Columns[0].Text = "#";
+			LV.Columns[1].Text = "Назначение,вид";
+			LV.Columns[2].Text = "Этаж";
+			LV.Columns[3].Text = "Номер этажа";
+			LV.Columns[4].Text = "КН / Обозначение на плане";
+			LV.Columns[5].Text = "Площадь";
+			LV.Columns[6].Text = "Адрес";
+			LV.Columns[7].Text = "Адрес нестр.";
+			LV.BeginUpdate();
+			LV.View = System.Windows.Forms.View.Details;
+
+			List<string> lst = new List<string>();
+			int cnt = 1;
+			foreach (TFlat fl in list)
+			{
+				string flat_string = "";
+				if (fl.AssignationType == "")
+					flat_string += fl.AssignationCode;
+				else
+					flat_string += fl.AssignationCode + "/" + fl.AssignationType;
+
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = cnt++.ToString();
+				LVi.SubItems.Add(flat_string);
+
+				if (fl.PositionInObject.Levels.Count == 1)
+				{
+					LVi.SubItems.Add(fl.PositionInObject.Levels[0].Type);
+					LVi.SubItems.Add(fl.PositionInObject.Levels[0].Number);
+					LVi.SubItems.Add(fl.CN + "/  " + fl.PositionInObject.Levels[0].Position.NumberOnPlan);
+				}
+				else
+				{
+					LVi.BackColor = System.Drawing.Color.LightGray;
+					LVi.SubItems.Add("");
+					LVi.SubItems.Add("");
+					LVi.SubItems.Add(fl.CN);
+				}
+				LVi.SubItems.Add(fl.Area.ToString());
+				LVi.SubItems.Add(fl.Location.Address.AsString());//Adress
+				if (fl.Location.Address.Other != null)
+					LVi.SubItems.Add(fl.Location.Address.Other);
+				if (fl.Location.Address.Note != null)
+					LVi.SubItems.Add(fl.Location.Address.Note);
+				LV.Items.Add(LVi);
+
+				if (fl.PositionInObject.Levels.Count > 1)
+					foreach (TLevel lv in fl.PositionInObject.Levels)
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = ""; //пропустим
+						LVip.SubItems.Add(flat_string);
+						LVip.SubItems.Add(lv.Type); //Тип этажа
+						LVip.SubItems.Add(lv.Number); // Номер этажа
+						LVip.SubItems.Add(lv.Position.NumberOnPlan);
+						LV.Items.Add(LVip);
+					}
+
+
+			}
+
+			LV.EndUpdate();
+		}
+
+
+
+
+
+		private void FlatToListView(ListView LV, TFlat flat)
+		{
+			if (flat == null) return;
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.View = System.Windows.Forms.View.LargeIcon;
+			ImageList jpegs = new ImageList()
+			{
+				ImageSize = new Size(256, 182) // 1.4
+			};
+			LV.LargeImageList = jpegs;
+			int imgindex = 0;
+			foreach (TLevel lev in flat.PositionInObject.Levels)
+			{
+				foreach (string jpegname in lev.Position.Plans_Plan_JPEG)
+				{
+					ListViewItem LVi = new ListViewItem()
+					{
+						Text = jpegname,
+						ImageIndex = imgindex++
+					};
+					LV.Items.Add(LVi);
+				}
+			}
+			LV.EndUpdate();
+
+			//populate items with pictures
+			foreach (TLevel lev in flat.PositionInObject.Levels)
+			{
+				foreach (string jpegname in lev.Position.Plans_Plan_JPEG)
+				{
+					string testPath = Folder_Unzip + "\\" + jpegname;
+					System.Drawing.Image FileJpeg = null;
+					System.Drawing.Image FileJpegSmall = null;
+					/*
                     if (File.Exists(testPath))
                         FileJpeg = new Bitmap(testPath); //in deflated zip folder
                     */
-                    string testPath2 = Path.GetDirectoryName(this.DocInfo.FilePath) + "\\" + jpegname;
-                    if (File.Exists(testPath2))
-                    {
-                        FileJpeg = new Bitmap(testPath2); // in folder
-                        netFteo.Drawing.FteoJpeg fj = new netFteo.Drawing.FteoJpeg();
-                        FileJpegSmall = fj.resizeImage(FileJpeg, 256, 182); //1.4
-                        FileJpeg.Dispose(); // free memory
-                        FileJpeg = null;    // this not freed, just point to null
-                        if (FileJpegSmall != null)
-                            jpegs.Images.Add(FileJpegSmall);
-                    }
-                }
-            }
-   
-            //jpegs.Dispose(); // memory not freed
-        }
+					string testPath2 = Path.GetDirectoryName(this.DocInfo.FilePath) + "\\" + jpegname;
+					if (File.Exists(testPath2))
+					{
+						FileJpeg = new Bitmap(testPath2); // in folder
+						netFteo.Drawing.FteoJpeg fj = new netFteo.Drawing.FteoJpeg();
+						FileJpegSmall = fj.resizeImage(FileJpeg, 256, 182); //1.4
+						FileJpeg.Dispose(); // free memory
+						FileJpeg = null;    // this not freed, just point to null
+						if (FileJpegSmall != null)
+							jpegs.Images.Add(FileJpegSmall);
+					}
+				}
+			}
 
-        private void AdressToListView(ListView LV, netFteo.Rosreestr.TAddress Address)
-        {
+			//jpegs.Dispose(); // memory not freed
+		}
+
+		private void AdressToListView(ListView LV, netFteo.Rosreestr.TAddress Address)
+		{
 			if (Address.Empty) return;
-            {
-                if (Address.Note != null)
-                {
-                    ListViewItem LViAssgn = new ListViewItem();
-                    LViAssgn.Text = "Адрес (местоположение)";
-                    LViAssgn.SubItems.Add(Address.Note.Replace("Российская федерация", "РФ.."));
-                    LV.Items.Add(LViAssgn);
-                }
-                //Есть структ. адресс ?:
-               // if (Address.Locality != null)
-                //    if (Address.Locality.Length > 2)
-                  //  {
-                        ListViewItem LViAssgn2 = new ListViewItem();
-                        LViAssgn2.Text = "Адрес (структ.)";
-                        LViAssgn2.SubItems.Add(this.dRegionsRF_v01.Item2Annotation(Address.Region)+" "+ Address.AsString());
-                        LV.Items.Add(LViAssgn2);
-                  //  }
-            }
-        }
-        private void KeyParametersToListView(ListView LV, netFteo.Spatial.TKeyParameters ps)
-        {
-            if (ps == null) return;
-            foreach (netFteo.Spatial.TKeyParameter param in ps)
-            {
-                ListViewItem LViAssgn = new ListViewItem();
-                LViAssgn.Text = param.Type;
-                LViAssgn.SubItems.Add(param.Value);
-                LV.Items.Add(LViAssgn);
-            }
-        }
-        
-      private void PropertiesToListView(ListView LV, object Obj)
-        {
-            
-            if (Obj == null)
-                LV.Items.Clear();
-            else
-            {
-                    LV.Controls.Clear();
-                    LV.BeginUpdate();
-                if (Obj.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)Obj;
-                    LV.Items.Clear();
-                    LV.Controls.Clear();
+			{
+				if (Address.Note != null)
+				{
+					ListViewItem LViAssgn = new ListViewItem();
+					LViAssgn.Text = "Адрес (местоположение)";
+					LViAssgn.SubItems.Add(Address.Note.Replace("Российская федерация", "РФ.."));
+					LV.Items.Add(LViAssgn);
+				}
+				//Есть структ. адресс ?:
+				// if (Address.Locality != null)
+				//    if (Address.Locality.Length > 2)
+				//  {
+				ListViewItem LViAssgn2 = new ListViewItem();
+				LViAssgn2.Text = "Адрес (структ.)";
+				LViAssgn2.SubItems.Add(this.dRegionsRF_v01.Item2Annotation(Address.Region) + " " + Address.AsString());
+				LV.Items.Add(LViAssgn2);
+				//  }
+			}
+		}
+		private void KeyParametersToListView(ListView LV, netFteo.Spatial.TKeyParameters ps)
+		{
+			if (ps == null) return;
+			foreach (netFteo.Spatial.TKeyParameter param in ps)
+			{
+				ListViewItem LViAssgn = new ListViewItem();
+				LViAssgn.Text = param.Type;
+				LViAssgn.SubItems.Add(param.Value);
+				LV.Items.Add(LViAssgn);
+			}
+		}
 
-                    //Отрисуем и отлистаем ПД (not for contours):
-                    EsToListView(listView1, P.EntitySpatial, P.id);
+		private void PropertiesToListView(ListView LV, object Obj)
+		{
 
-                    ListViewItem LViCN = new ListViewItem();
-                    if (P.CN != null)
-                    {
-                        LViCN.Text = "Кадастровый номер";
-                        LViCN.SubItems.Add(P.CN);
-                        LViCN.SubItems.Add(P.DateCreated);
-                    }
-                    if (P.Definition != null)
-                    {
-                        LViCN.Text = "Обозначение";
-                        LViCN.SubItems.Add(P.Definition);
-                    }
-                    LV.Items.Add(LViCN);
+			if (Obj == null)
+				LV.Items.Clear();
+			else
+			{
+				LV.Controls.Clear();
+				LV.BeginUpdate();
+				if (Obj.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)Obj;
+					LV.Items.Clear();
+					LV.Controls.Clear();
 
-                    AdressToListView(LV, P.Location.Address);
-                    ListViewItem LVNa = new ListViewItem();
-                    LVNa.Text = "Тип";
-                    LVNa.SubItems.Add(P.Name);
-                    LV.Items.Add(LVNa);
+					//Отрисуем и отлистаем ПД (not for contours):
+					EsToListView(listView1, P.EntitySpatial, P.id);
 
-                    if (P.ParentCN != null)
-                    {
-                        ListViewItem LVCN = new ListViewItem();
-                        LVCN.Text = "Входит в состав";
-                        LVCN.SubItems.Add(P.ParentCN);
-                        LV.Items.Add(LVCN);
+					ListViewItem LViCN = new ListViewItem();
+					if (P.CN != null)
+					{
+						LViCN.Text = "Кадастровый номер";
+						LViCN.SubItems.Add(P.CN);
+						LViCN.SubItems.Add(P.DateCreated);
+					}
+					if (P.Definition != null)
+					{
+						LViCN.Text = "Обозначение";
+						LViCN.SubItems.Add(P.Definition);
+					}
+					LV.Items.Add(LViCN);
 
-                    }
+					AdressToListView(LV, P.Location.Address);
+					ListViewItem LVNa = new ListViewItem();
+					LVNa.Text = "Тип";
+					LVNa.SubItems.Add(P.Name);
+					LV.Items.Add(LVNa);
 
-                    if (P.Area_float > 0)
-                    {
-                        ListViewItem LVipg = new ListViewItem();
-                        LVipg.Text = "Площадь (коорд.)";
-                        LVipg.SubItems.Add(P.Area("#0.00"));
-                        LVipg.SubItems.Add("кв.м.");
-                        ListViewItem addedItem = LV.Items.Add(LVipg);
-                    }
-                    else LV.Controls.Clear();
+					if (P.ParentCN != null)
+					{
+						ListViewItem LVCN = new ListViewItem();
+						LVCN.Text = "Входит в состав";
+						LVCN.SubItems.Add(P.ParentCN);
+						LV.Items.Add(LVCN);
 
-                    if (P.AreaValue != null)
-                    {
-                        ListViewItem LVipgv = new ListViewItem();
-                        LVipgv.Text = "Площадь";
-                        LVipgv.SubItems.Add(P.AreaValue);
-                        LVipgv.SubItems.Add("кв.м.");
-                        LV.Items.Add(LVipgv);
+					}
 
-                    }
+					if (P.Area_float > 0)
+					{
+						ListViewItem LVipg = new ListViewItem();
+						LVipg.Text = "Площадь (коорд.)";
+						LVipg.SubItems.Add(P.Area("#0.00"));
+						LVipg.SubItems.Add("кв.м.");
+						ListViewItem addedItem = LV.Items.Add(LVipg);
+					}
+					else LV.Controls.Clear();
 
-                    //отобразим отклонение в площади выичсленной и указанной
-                    try
-                    {
-                        ListViewItem LVip3d = new ListViewItem();
-                        double area = Convert.ToDouble(P.AreaValue);
-                        LVip3d.Text = "Δ";
-                        LVip3d.SubItems.Add((P.Area_float - area).ToString("0.00"));
-                        LVip3d.SubItems.Add("кв.м");
-                        LV.Items.Add(LVip3d);
-                    }
-                    catch
-                    {
+					if (P.AreaValue != null)
+					{
+						ListViewItem LVipgv = new ListViewItem();
+						LVipgv.Text = "Площадь";
+						LVipgv.SubItems.Add(P.AreaValue);
+						LVipgv.SubItems.Add("кв.м.");
+						LV.Items.Add(LVipgv);
 
-                    }
+					}
 
+					//отобразим отклонение в площади выичсленной и указанной
+					try
+					{
+						ListViewItem LVip3d = new ListViewItem();
+						double area = Convert.ToDouble(P.AreaValue);
+						LVip3d.Text = "Δ";
+						LVip3d.SubItems.Add((P.Area_float - area).ToString("0.00"));
+						LVip3d.SubItems.Add("кв.м");
+						LV.Items.Add(LVip3d);
+					}
+					catch
+					{
 
-                    if (!P.AreaGKN.Contains("-1"))
-                    {
-                        ListViewItem LVip = new ListViewItem();
-                        LVip.Text = "Площадь ГКН";
-                        LVip.SubItems.Add(P.AreaGKN);
-                        LVip.SubItems.Add("кв.м.");
-                        LV.Items.Add(LVip);
-                    }
-
-                    if (P.Category != null)
-                    {
-                        ListViewItem LViCat = new ListViewItem();
-                        LViCat.Text = "Категория";
-                        LViCat.SubItems.Add(this.dCategories_v01.Item2Annotation(P.Category));
-                        LV.Items.Add(LViCat);
-                    }
-
-                    if (P.Utilization.UtilbyDoc != null)
-                    {
-                        ListViewItem LViPurpDoc = new ListViewItem();
-                        LViPurpDoc.Text = "Разр. использование (док)";
-                        LViPurpDoc.SubItems.Add(P.Utilization.UtilbyDoc);
-                        LV.Items.Add(LViPurpDoc);
-                    }
-
-                    if (P.Utilization.UtilizationSpecified)
-                    {
-                        ListViewItem LViPurp = new ListViewItem();
-                        LViPurp.Text = "Разр. использование (кл)";
-                        LViPurp.SubItems.Add(this.dutilizations_v01.Item2Annotation(P.Utilization.Untilization));
-                        LV.Items.Add(LViPurp);
-                    }
-                }
+					}
 
 
-                if (Obj.ToString() == "netFteo.Spatial.TBuilding")
-                {
-                    netFteo.Spatial.TBuilding bld = (netFteo.Spatial.TBuilding) Obj;
-                    if (bld.Flats != null)
-                    {
-                        if (bld.Flats.Count > 0)
-                        {
-                            ListViewItem LViPurp = new ListViewItem();
-                            LViPurp.Text = "Помещения";
-                            LViPurp.SubItems.Add(bld.Flats.Count.ToString());
-                            LV.Items.Add(LViPurp);
-                        }
-                        if (bld.Flats.TotalArea > 0)
-                        {
-                            ListViewItem LViFlats = new ListViewItem();
-                            LViFlats.Text = "Площадь помещений";
-                            LViFlats.SubItems.Add(bld.Flats.TotalArea.ToString());
-                            LViFlats.SubItems.Add(" кв.м.");
-                            LV.Items.Add(LViFlats);
-                        }
+					if (!P.AreaGKN.Contains("-1"))
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = "Площадь ГКН";
+						LVip.SubItems.Add(P.AreaGKN);
+						LVip.SubItems.Add("кв.м.");
+						LV.Items.Add(LVip);
+					}
 
-                        if (bld.Flats.AreabyCode("Жилое помещение") > 0)
-                        {
-                            ListViewItem LViFlatsLive = new ListViewItem();
-                            LViFlatsLive.Text = "Жилых помещений " + bld.Flats.CountbyCode("Жилое помещение").ToString();
-                            LViFlatsLive.SubItems.Add(bld.Flats.AreabyCode("Жилое помещение").ToString());
-                            LViFlatsLive.SubItems.Add(" кв.м.");
-                            LV.Items.Add(LViFlatsLive);
-                        }
+					if (P.Category != null)
+					{
+						ListViewItem LViCat = new ListViewItem();
+						LViCat.Text = "Категория";
+						LViCat.SubItems.Add(this.dCategories_v01.Item2Annotation(P.Category));
+						LV.Items.Add(LViCat);
+					}
 
-                        if (bld.Flats.AreabyCode("Нежилое помещение") > 0)
-                        {
-                            ListViewItem LViFlatsLive = new ListViewItem();
-                            LViFlatsLive.Text = "Нежилых помещений " + bld.Flats.CountbyCode("Нежилое помещение").ToString();
-                            LViFlatsLive.SubItems.Add(bld.Flats.AreabyCode("Нежилое помещение").ToString());
-                            LViFlatsLive.SubItems.Add(" кв.м.");
-                            LV.Items.Add(LViFlatsLive);
-                        }
-                    }
+					if (P.Utilization.UtilbyDoc != null)
+					{
+						ListViewItem LViPurpDoc = new ListViewItem();
+						LViPurpDoc.Text = "Разр. использование (док)";
+						LViPurpDoc.SubItems.Add(P.Utilization.UtilbyDoc);
+						LV.Items.Add(LViPurpDoc);
+					}
+
+					if (P.Utilization.UtilizationSpecified)
+					{
+						ListViewItem LViPurp = new ListViewItem();
+						LViPurp.Text = "Разр. использование (кл)";
+						LViPurp.SubItems.Add(this.dutilizations_v01.Item2Annotation(P.Utilization.Untilization));
+						LV.Items.Add(LViPurp);
+					}
+				}
 
 
-                }
+				if (Obj.ToString() == "netFteo.Spatial.TBuilding")
+				{
+					netFteo.Spatial.TBuilding bld = (netFteo.Spatial.TBuilding)Obj;
+					if (bld.Flats != null)
+					{
+						if (bld.Flats.Count > 0)
+						{
+							ListViewItem LViPurp = new ListViewItem();
+							LViPurp.Text = "Помещения";
+							LViPurp.SubItems.Add(bld.Flats.Count.ToString());
+							LV.Items.Add(LViPurp);
+						}
+						if (bld.Flats.TotalArea > 0)
+						{
+							ListViewItem LViFlats = new ListViewItem();
+							LViFlats.Text = "Площадь помещений";
+							LViFlats.SubItems.Add(bld.Flats.TotalArea.ToString());
+							LViFlats.SubItems.Add(" кв.м.");
+							LV.Items.Add(LViFlats);
+						}
 
-                if (Obj.ToString() == "netFteo.Spatial.TMyRealty")
-                {
-                    TMyRealty P = (TMyRealty)Obj;
-                    LV.Items.Clear();
-                  
-                    ListViewItem LViCN = new ListViewItem();
-                    LViCN.Text = "Кадастровый номер";
-                    LViCN.SubItems.Add(P.CN);
-                    LViCN.SubItems.Add(P.DateCreated);
-                    LV.Items.Add(LViCN);
+						if (bld.Flats.AreabyCode("Жилое помещение") > 0)
+						{
+							ListViewItem LViFlatsLive = new ListViewItem();
+							LViFlatsLive.Text = "Жилых помещений " + bld.Flats.CountbyCode("Жилое помещение").ToString();
+							LViFlatsLive.SubItems.Add(bld.Flats.AreabyCode("Жилое помещение").ToString());
+							LViFlatsLive.SubItems.Add(" кв.м.");
+							LV.Items.Add(LViFlatsLive);
+						}
 
-                    /*
+						if (bld.Flats.AreabyCode("Нежилое помещение") > 0)
+						{
+							ListViewItem LViFlatsLive = new ListViewItem();
+							LViFlatsLive.Text = "Нежилых помещений " + bld.Flats.CountbyCode("Нежилое помещение").ToString();
+							LViFlatsLive.SubItems.Add(bld.Flats.AreabyCode("Нежилое помещение").ToString());
+							LViFlatsLive.SubItems.Add(" кв.м.");
+							LV.Items.Add(LViFlatsLive);
+						}
+					}
+
+
+				}
+
+				if (Obj.ToString() == "netFteo.Spatial.TMyRealty")
+				{
+					TMyRealty P = (TMyRealty)Obj;
+					LV.Items.Clear();
+
+					ListViewItem LViCN = new ListViewItem();
+					LViCN.Text = "Кадастровый номер";
+					LViCN.SubItems.Add(P.CN);
+					LViCN.SubItems.Add(P.DateCreated);
+					LV.Items.Add(LViCN);
+
+					/*
                     if (P.Address != null)
                     {
                         if (P.Address.Note != null)
@@ -2692,63 +2693,62 @@ namespace XMLReaderCS
                             }
                     }
                     */
-                    AdressToListView(LV, P.Location.Address);
+					AdressToListView(LV, P.Location.Address);
 
-                    if (P.Name != null)
-                    {
-                        ListViewItem LViAssgn = new ListViewItem();
-                        LViAssgn.Text = "Наименование";
-                        LViAssgn.SubItems.Add(P.Name);
-                        LV.Items.Add(LViAssgn);
-                    }
+					if (P.Name != null)
+					{
+						ListViewItem LViAssgn = new ListViewItem();
+						LViAssgn.Text = "Наименование";
+						LViAssgn.SubItems.Add(P.Name);
+						LV.Items.Add(LViAssgn);
+					}
 
-                    ListViewItem LViType = new ListViewItem();
-                    LViType.Text = "Вид объекта недвижимости";
-                    LViType.SubItems.Add(P.ObjectType);
-                    LV.Items.Add(LViType);
+					ListViewItem LViType = new ListViewItem();
+					LViType.Text = "Вид объекта недвижимости";
+					LViType.SubItems.Add(P.ObjectType);
+					LV.Items.Add(LViType);
 
-                    if (P.Building != null)
-                    {
-                        ListViewItem LViAssgn = new ListViewItem();
-                        LViAssgn.Text = "Назначение";
-                        LViAssgn.SubItems.Add(P.Building.AssignationBuilding);
-                        LV.Items.Add(LViAssgn);
-                        EsToListView(listView1, P.Building.ES, P.id);
+					if (P.Building != null)
+					{
+						ListViewItem LViAssgn = new ListViewItem();
+						LViAssgn.Text = "Назначение";
+						LViAssgn.SubItems.Add(P.Building.AssignationBuilding);
+						LV.Items.Add(LViAssgn);
 
-                        //TFlats:
-                        if (P.Building.Flats != null)
-                            if (P.Building.Flats.Count >0)
-                        {
-                            //LV.Items.Clear();
-                            ListViewItem LViFlats = new ListViewItem();
-                            LViFlats.Text = "Помещения (" + P.Building.Flats.Count.ToString()+ ")";
-                            if (P.Building.Flats.Area > 0)
-                            {
-                                LViFlats.SubItems.Add(P.Building.Flats.Area.ToString());
-                                LViFlats.SubItems.Add(" кв.м.");
-                            }
-                            LV.Items.Add(LViFlats);
-                        }
+						//TFlats:
+						if (P.Building.Flats != null)
+							if (P.Building.Flats.Count > 0)
+							{
+								//LV.Items.Clear();
+								ListViewItem LViFlats = new ListViewItem();
+								LViFlats.Text = "Помещения (" + P.Building.Flats.Count.ToString() + ")";
+								if (P.Building.Flats.Area > 0)
+								{
+									LViFlats.SubItems.Add(P.Building.Flats.Area.ToString());
+									LViFlats.SubItems.Add(" кв.м.");
+								}
+								LV.Items.Add(LViFlats);
+							}
 
-                        if (P.Building.Area != 0)
-                        {
-                            ListViewItem LViAr = new ListViewItem();
-                            LViAr.Text = "Площадь";
-                            LViAr.SubItems.Add(P.Building.Area.ToString());
-                            LViAr.SubItems.Add(" кв.м.");
-                            LV.Items.Add(LViAr);
-                        }
+						if (P.Building.Area != 0)
+						{
+							ListViewItem LViAr = new ListViewItem();
+							LViAr.Text = "Площадь";
+							LViAr.SubItems.Add(P.Building.Area.ToString());
+							LViAr.SubItems.Add(" кв.м.");
+							LV.Items.Add(LViAr);
+						}
 
-						
+
 					}
 
 					//{netFteo.Spatial.TFlat}
 					if (P.Flat != null)
-                    {
-                        TFlats flats = new TFlats();
-                        flats.AddFlat(P.Flat);
-                        FlatsToListView(listView1, flats);
-                        /*
+					{
+						TFlats flats = new TFlats();
+						flats.AddFlat(P.Flat);
+						FlatsToListView(listView1, flats);
+						/*
                         if (P.Flat.PositionInObject != null)
                         {
 
@@ -2764,39 +2764,39 @@ namespace XMLReaderCS
                             LV.Items.Add(LViAssgn);
                         }
                         */
-                       // AdressToListView(LV, P.Address);
-                    }
+						// AdressToListView(LV, P.Address);
+					}
 
 
 
-                    if (P.Construction != null)
-                    {
-                        ListViewItem LViAssgn = new ListViewItem();
-                        LViAssgn.Text = "Назначение";
-                        LViAssgn.SubItems.Add(P.Construction.AssignationName);
-                        LV.Items.Add(LViAssgn);
-                           }
+					if (P.Construction != null)
+					{
+						ListViewItem LViAssgn = new ListViewItem();
+						LViAssgn.Text = "Назначение";
+						LViAssgn.SubItems.Add(P.Construction.AssignationName);
+						LV.Items.Add(LViAssgn);
+					}
 
-                    if (P.Uncompleted != null)
-                    {
-                        ListViewItem LViAssgn = new ListViewItem();
-                        LViAssgn.Text = "Проектируемое назначение";
-                        LViAssgn.SubItems.Add(P.Uncompleted.AssignationName);
-                        LV.Items.Add(LViAssgn);
-                        ListViewItem LViReady = new ListViewItem();
-                        LViReady.Text = "Степень готовности";
-                        LViReady.SubItems.Add(P.Uncompleted.DegreeReadiness + "%");
-                        LV.Items.Add(LViReady);
-                        EsToListView(listView1, P.Uncompleted.ES, P.id);
-                    }
+					if (P.Uncompleted != null)
+					{
+						ListViewItem LViAssgn = new ListViewItem();
+						LViAssgn.Text = "Проектируемое назначение";
+						LViAssgn.SubItems.Add(P.Uncompleted.AssignationName);
+						LV.Items.Add(LViAssgn);
+						ListViewItem LViReady = new ListViewItem();
+						LViReady.Text = "Степень готовности";
+						LViReady.SubItems.Add(P.Uncompleted.DegreeReadiness + "%");
+						LV.Items.Add(LViReady);
+						EsToListView(listView1, P.Uncompleted.ES, P.id);
+					}
 
-                    if (P.Area != 0)
-                    {
-                        ListViewItem LViAr = new ListViewItem();
-                        LViAr.Text = "Площадь";
-                        LViAr.SubItems.Add(P.Area.ToString());
-                        LV.Items.Add(LViAr);
-                    }
+					if (P.Area != 0)
+					{
+						ListViewItem LViAr = new ListViewItem();
+						LViAr.Text = "Площадь";
+						LViAr.SubItems.Add(P.Area.ToString());
+						LV.Items.Add(LViAr);
+					}
 
 					if (P.Floors != null)
 					{
@@ -2810,224 +2810,224 @@ namespace XMLReaderCS
 
 					EsToListView(listView1, P.ES2, P.id);
 					KeyParametersToListView(LV, P.KeyParameters);
-                }
-
-   
-                //  Если это часть: 
-                if (Obj.ToString() == "netFteo.Spatial.TmySlot")
-                {
-                    TmySlot P = (TmySlot)Obj;
-                    LV.Items.Clear();
-                    ListViewItem LViCN = new ListViewItem();
-                    LViCN.Text = "Учетный номер части";
-                    LViCN.SubItems.Add(P.NumberRecord);
-                    LV.Items.Add(LViCN);
-
-                    ListViewItem LVipg = new ListViewItem();
-                    LVipg.Text = "Площадь (коорд.)";
-                    LVipg.SubItems.Add(P.EntSpat.AreaSpatialFmt("#0.00"));
-                    LVipg.SubItems.Add("кв.м.");
-                    LV.Items.Add(LVipg);
-
-                    ListViewItem LVip = new ListViewItem();
-                    LVip.Text = "Площадь ГКН";
-                    LVip.SubItems.Add(P.AreaGKN);
-                    LVip.SubItems.Add("кв.м.");
-                    LV.Items.Add(LVip);
-
-                    if (P.Encumbrances.Count == 1)
-                    {
-                        ListViewItem LViCat = new ListViewItem();
-                        LViCat.Text = "Характеристика";
-                        LViCat.SubItems.Add(P.Encumbrances[0].Name);
-                        LV.Items.Add(LViCat);
-
-                        ListViewItem LViCatE = new ListViewItem();
-                        LViCatE.Text = "Тип";
-                        LViCatE.SubItems.Add(P.Encumbrances[0].Type);
-                        LV.Items.Add(LViCatE);
-
-                        ListViewItem LViDoc = new ListViewItem();
-                        LViDoc.Text = "Документ";
-                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.DocName);
-                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.Number);
-                        LViDoc.SubItems.Add(P.Encumbrances[0].Document.Date);
-                        LV.Items.Add(LViDoc);
-                    }
-                }
-
-                if (Obj.ToString() == "netFteo.Spatial.TMyPolygon")
-                {
-                    TMyPolygon Poly = (TMyPolygon)Obj;
-                    LV.Items.Clear();
-                    ListViewItem LVip = new ListViewItem();
-                    LVip.Text = "Площадь граф. [1.." + Poly.PointCount.ToString() + "]";
-                    LVip.SubItems.Add(Poly.AreaSpatialFmt("#,0.00"));
-                    LVip.SubItems.Add("кв.м.");
-                    LV.Items.Add(LVip);
-
-                    if (Poly.AreaValue != -1)
-                    {
-                        ListViewItem LVipG = new ListViewItem();
-                        LVipG.Text = "Площадь";
-                        LVipG.SubItems.Add(Poly.AreaValue.ToString());
-                        LVipG.SubItems.Add("кв.м.");
-                        LV.Items.Add(LVipG);
-                    }
-                    ListViewItem LVipP = new ListViewItem();
-                    LVipP.Text = "Периметр";
-                    LVipP.SubItems.Add(Poly.PerymethrFmt("#,0.00"));
-                    LVipP.SubItems.Add("м.");
-                    LV.Items.Add(LVipP);
-
-                    if (Poly.Childs.Count > 0)
-                    {
-                        ListViewItem LVipIB = new ListViewItem();
-                        LVipIB.Text = "Внутренние границы";
-                        LVipIB.SubItems.Add(Poly.Childs.Count.ToString());
-                        LV.Items.Add(LVipIB);
-                    }
-
-                    // list borders:
-                    netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
-                }
-
-                if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
-                {
-                    LV.Items.Clear();
-                    netFteo.Rosreestr.TMyRights R = (netFteo.Rosreestr.TMyRights)Obj;
-                    if (R.Count > 0)
-                    {
-                        ListViewItem LVip = new ListViewItem();
-                        LVip.Text = "Права";
-                        LVip.SubItems.Add(R.Count.ToString());
-                        LV.Items.Add(LVip);
-                    }
-                }
-
-                //string tst = Obj.GetType().ToString();
-                if (Obj.ToString() == "netFteo.Spatial.TPolygonCollection")
-
-                {
-                    LV.Items.Clear();
-                    netFteo.Spatial.TPolygonCollection cEZ = (netFteo.Spatial.TPolygonCollection)Obj;
-                    if (cEZ.Count > 0)
-                    {
-                        ListViewItem LVip = new ListViewItem();
-                        LVip.Text = "Состав";
-                        LVip.SubItems.Add( cEZ.Count.ToString());
-                        LV.Items.Add(LVip);
-
-                        ListViewItem LVip2 = new ListViewItem();
-                        LVip2.Text = "Площадь";
-                        LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
-                        LV.Items.Add(LVip2);
-
-                        ListViewItem LVip3 = new ListViewItem();
-                        LVip3.Text = "Площадь сем.";
-                        LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt("0.00", true));
-                        LV.Items.Add(LVip3);
+				}
 
 
-                    }
-                }
+				//  Если это часть: 
+				if (Obj.ToString() == "netFteo.Spatial.TmySlot")
+				{
+					TmySlot P = (TmySlot)Obj;
+					LV.Items.Clear();
+					ListViewItem LViCN = new ListViewItem();
+					LViCN.Text = "Учетный номер части";
+					LViCN.SubItems.Add(P.NumberRecord);
+					LV.Items.Add(LViCN);
 
-                
-                if (Obj.ToString() == "netFteo.Spatial.TCompozitionEZ")
+					ListViewItem LVipg = new ListViewItem();
+					LVipg.Text = "Площадь (коорд.)";
+					LVipg.SubItems.Add(P.EntSpat.AreaSpatialFmt("#0.00"));
+					LVipg.SubItems.Add("кв.м.");
+					LV.Items.Add(LVipg);
 
-                {
-                    LV.Items.Clear();
-                    netFteo.Spatial.TCompozitionEZ cEZ = (netFteo.Spatial.TCompozitionEZ)Obj;
-                    if (cEZ.Count > 0)
-                    {
-                        ListViewItem LVip = new ListViewItem();
-                        LVip.Text = "Состав";
-                        LVip.SubItems.Add(cEZ.Count.ToString());
-                        LV.Items.Add(LVip);
+					ListViewItem LVip = new ListViewItem();
+					LVip.Text = "Площадь ГКН";
+					LVip.SubItems.Add(P.AreaGKN);
+					LVip.SubItems.Add("кв.м.");
+					LV.Items.Add(LVip);
 
-                        ListViewItem LVip2 = new ListViewItem();
-                        LVip2.Text = "Площадь";
-                        LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
-                        LV.Items.Add(LVip2);
+					if (P.Encumbrances.Count == 1)
+					{
+						ListViewItem LViCat = new ListViewItem();
+						LViCat.Text = "Характеристика";
+						LViCat.SubItems.Add(P.Encumbrances[0].Name);
+						LV.Items.Add(LViCat);
 
-                        ListViewItem LVip3 = new ListViewItem();
-                        LVip3.Text = "Площадь сем.";
-                        LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt ("0.00", true));
-                        LV.Items.Add(LVip3);
+						ListViewItem LViCatE = new ListViewItem();
+						LViCatE.Text = "Тип";
+						LViCatE.SubItems.Add(P.Encumbrances[0].Type);
+						LV.Items.Add(LViCatE);
 
-                        ListViewItem LVip3d = new ListViewItem();
-                        LVip3d.Text = "Δ";
-                        LVip3d.SubItems.Add(cEZ.AreaVariance.ToString("0.00"));
-                        LVip3d.SubItems.Add("кв.м");
-                        LV.Items.Add(LVip3d);
+						ListViewItem LViDoc = new ListViewItem();
+						LViDoc.Text = "Документ";
+						LViDoc.SubItems.Add(P.Encumbrances[0].Document.DocName);
+						LViDoc.SubItems.Add(P.Encumbrances[0].Document.Number);
+						LViDoc.SubItems.Add(P.Encumbrances[0].Document.Date);
+						LV.Items.Add(LViDoc);
+					}
+				}
 
-                        ListViewItem LVipP = new ListViewItem();
-                        LVipP.Text = "Периметр";
-                        LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
-                        LVipP.SubItems.Add("м.");
-                        LV.Items.Add(LVipP);
+				if (Obj.ToString() == "netFteo.Spatial.TMyPolygon")
+				{
+					TMyPolygon Poly = (TMyPolygon)Obj;
+					LV.Items.Clear();
+					ListViewItem LVip = new ListViewItem();
+					LVip.Text = "Площадь граф. [1.." + Poly.PointCount.ToString() + "]";
+					LVip.SubItems.Add(Poly.AreaSpatialFmt("#,0.00"));
+					LVip.SubItems.Add("кв.м.");
+					LV.Items.Add(LVip);
 
-                    }
-                }
+					if (Poly.AreaValue != -1)
+					{
+						ListViewItem LVipG = new ListViewItem();
+						LVipG.Text = "Площадь";
+						LVipG.SubItems.Add(Poly.AreaValue.ToString());
+						LVipG.SubItems.Add("кв.м.");
+						LV.Items.Add(LVipG);
+					}
+					ListViewItem LVipP = new ListViewItem();
+					LVipP.Text = "Периметр";
+					LVipP.SubItems.Add(Poly.PerymethrFmt("#,0.00"));
+					LVipP.SubItems.Add("м.");
+					LV.Items.Add(LVipP);
 
-                if (Obj.ToString() == "netFteo.Spatial.TZone")
-                {
-                    LV.Items.Clear();
-                    netFteo.Spatial.TZone Zn = (netFteo.Spatial.TZone)Obj;
-                    ListViewItem LVip = new ListViewItem();
-                    LVip.Text = "Идентификационный реестровый номер";
-                    LVip.SubItems.Add(Zn.AccountNumber);
-                    LV.Items.Add(LVip);
+					if (Poly.Childs.Count > 0)
+					{
+						ListViewItem LVipIB = new ListViewItem();
+						LVipIB.Text = "Внутренние границы";
+						LVipIB.SubItems.Add(Poly.Childs.Count.ToString());
+						LV.Items.Add(LVipIB);
+					}
 
-                    ListViewItem LVip3 = new ListViewItem();
-                    LVip3.Text = "Тип";
-                    LVip3.SubItems.Add(Zn.TypeName);
-                    LV.Items.Add(LVip3);
+					// list borders:
+					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
+				}
 
-                    ListViewItem LVip2 = new ListViewItem();
-                    LVip2.Text = "Описание";
-                    LVip2.SubItems.Add(Zn.Description);
-                    LV.Items.Add(LVip2);
-                }
-                LV.EndUpdate();
-            }
+				if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
+				{
+					LV.Items.Clear();
+					netFteo.Rosreestr.TMyRights R = (netFteo.Rosreestr.TMyRights)Obj;
+					if (R.Count > 0)
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = "Права";
+						LVip.SubItems.Add(R.Count.ToString());
+						LV.Items.Add(LVip);
+					}
+				}
 
-        }
+				//string tst = Obj.GetType().ToString();
+				if (Obj.ToString() == "netFteo.Spatial.TPolygonCollection")
 
-        //--------------Листинг ОМС --------------
-        private void ListPointList(TreeNode Node, netFteo.Spatial.PointList PList, int InternalNumber)
-        {
-            if (PList.Count == 0) return;
-            string BName;
-            for (int i = 0; i <= PList.Count - 1; i++)
-            {
-                if (InternalNumber == 0)
-                {
-                    BName = PList[i].NumGeopointA;
-                }
-                else BName = PList[i].NumGeopointA + "." + Convert.ToString(InternalNumber);
-                TreeNode PNode = Node.Nodes.Add("PointNode", BName);
-                PNode.ToolTipText = "Номер пункта опорной межевой сети на плане";
-                PNode.Nodes.Add("Ordinate", PList[i].x_s);
-                PNode.Nodes.Add("Ordinate", PList[i].y_s);
-                if (PList[i].Mt_s != null)
-                    if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
-                if (PList[i].Description != null) PNode.Nodes.Add("Ordinate", PList[i].Description);
-                if (PList[i].Code != null) { PNode.Nodes.Add("Code", PList[i].Code).ToolTipText = "Номер, тип пункта опорной межевой сети"; }
-            }
+				{
+					LV.Items.Clear();
+					netFteo.Spatial.TPolygonCollection cEZ = (netFteo.Spatial.TPolygonCollection)Obj;
+					if (cEZ.Count > 0)
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = "Состав";
+						LVip.SubItems.Add(cEZ.Count.ToString());
+						LV.Items.Add(LVip);
 
-        }
+						ListViewItem LVip2 = new ListViewItem();
+						LVip2.Text = "Площадь";
+						LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
+						LV.Items.Add(LVip2);
+
+						ListViewItem LVip3 = new ListViewItem();
+						LVip3.Text = "Площадь сем.";
+						LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt("0.00", true));
+						LV.Items.Add(LVip3);
 
 
-        //--------------Проверим ноду--------------
-        private void ListSelectedNode(TreeNode STrN)
-        {
-            if (STrN == null) return;
-            toolStripStatusLabel2.Text = STrN.Name;
-            listView1.Items.Clear();
-            listView1.Controls.Clear();
-            listView_Properties.Items.Clear();
-            listView_Properties.Controls.Clear();
+					}
+				}
+
+
+				if (Obj.ToString() == "netFteo.Spatial.TCompozitionEZ")
+
+				{
+					LV.Items.Clear();
+					netFteo.Spatial.TCompozitionEZ cEZ = (netFteo.Spatial.TCompozitionEZ)Obj;
+					if (cEZ.Count > 0)
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = "Состав";
+						LVip.SubItems.Add(cEZ.Count.ToString());
+						LV.Items.Add(LVip);
+
+						ListViewItem LVip2 = new ListViewItem();
+						LVip2.Text = "Площадь";
+						LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
+						LV.Items.Add(LVip2);
+
+						ListViewItem LVip3 = new ListViewItem();
+						LVip3.Text = "Площадь сем.";
+						LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt("0.00", true));
+						LV.Items.Add(LVip3);
+
+						ListViewItem LVip3d = new ListViewItem();
+						LVip3d.Text = "Δ";
+						LVip3d.SubItems.Add(cEZ.AreaVariance.ToString("0.00"));
+						LVip3d.SubItems.Add("кв.м");
+						LV.Items.Add(LVip3d);
+
+						ListViewItem LVipP = new ListViewItem();
+						LVipP.Text = "Периметр";
+						LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
+						LVipP.SubItems.Add("м.");
+						LV.Items.Add(LVipP);
+
+					}
+				}
+
+				if (Obj.ToString() == "netFteo.Spatial.TZone")
+				{
+					LV.Items.Clear();
+					netFteo.Spatial.TZone Zn = (netFteo.Spatial.TZone)Obj;
+					ListViewItem LVip = new ListViewItem();
+					LVip.Text = "Идентификационный реестровый номер";
+					LVip.SubItems.Add(Zn.AccountNumber);
+					LV.Items.Add(LVip);
+
+					ListViewItem LVip3 = new ListViewItem();
+					LVip3.Text = "Тип";
+					LVip3.SubItems.Add(Zn.TypeName);
+					LV.Items.Add(LVip3);
+
+					ListViewItem LVip2 = new ListViewItem();
+					LVip2.Text = "Описание";
+					LVip2.SubItems.Add(Zn.Description);
+					LV.Items.Add(LVip2);
+				}
+				LV.EndUpdate();
+			}
+
+		}
+
+		//--------------Листинг ОМС --------------
+		private void ListPointList(TreeNode Node, netFteo.Spatial.PointList PList, int InternalNumber)
+		{
+			if (PList.Count == 0) return;
+			string BName;
+			for (int i = 0; i <= PList.Count - 1; i++)
+			{
+				if (InternalNumber == 0)
+				{
+					BName = PList[i].NumGeopointA;
+				}
+				else BName = PList[i].NumGeopointA + "." + Convert.ToString(InternalNumber);
+				TreeNode PNode = Node.Nodes.Add("PointNode", BName);
+				PNode.ToolTipText = "Номер пункта опорной межевой сети на плане";
+				PNode.Nodes.Add("Ordinate", PList[i].x_s);
+				PNode.Nodes.Add("Ordinate", PList[i].y_s);
+				if (PList[i].Mt_s != null)
+					if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
+				if (PList[i].Description != null) PNode.Nodes.Add("Ordinate", PList[i].Description);
+				if (PList[i].Code != null) { PNode.Nodes.Add("Code", PList[i].Code).ToolTipText = "Номер, тип пункта опорной межевой сети"; }
+			}
+
+		}
+
+
+		//--------------Проверим ноду--------------
+		private void ListSelectedNode(TreeNode STrN)
+		{
+			if (STrN == null) return;
+			toolStripStatusLabel2.Text = STrN.Name;
+			listView1.Items.Clear();
+			listView1.Controls.Clear();
+			listView_Properties.Items.Clear();
+			listView_Properties.Controls.Clear();
 
 			if (STrN.Name.Contains("ES."))
 			{
@@ -3035,27 +3035,27 @@ namespace XMLReaderCS
 				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
 			}
 
-				if (STrN.Name.Contains("SPElem."))
-            {
-                int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
-                /*
+			if (STrN.Name.Contains("SPElem."))
+			{
+				int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
+				/*
                 object parent = this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(STrN.Name.Substring(7)));
                 if (parent != null)
                 {
                     object Mparent = this.DocInfo.MyBlocks.GetObject(((TMyPolygon)parent).Parent_Id);
                 }
                 */
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
-                
-                if (Pl != null)
-                {
-                    if (Pl.Parent_Id > 0)
-                        EsToListView(listView1, Pl, Pl.Parent_Id);
-                    else
-                        EsToListView(listView1, Pl, (int)STrN.Tag);
-                } 
-                PropertiesToListView(listView_Properties, Pl);
-            }
+				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+
+				if (Pl != null)
+				{
+					if (Pl.Parent_Id > 0)
+						EsToListView(listView1, Pl, Pl.Parent_Id);
+					else
+						EsToListView(listView1, Pl, (int)STrN.Tag);
+				}
+				PropertiesToListView(listView_Properties, Pl);
+			}
 
 
 
@@ -3081,579 +3081,475 @@ namespace XMLReaderCS
 			}
 
 			if (STrN.Name.Contains("PNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                PropertiesToListView(listView_Properties, O);
-                
-                if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
-                    {
-                    TMyParcel parcel = (TMyParcel)O;
-                    if (parcel.Contours!= null)
-                    EZPEntryListToListView(listView1, parcel.Contours.AsList());
-                }
-            }
-
-            if (STrN.Name.Contains("ZNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
-                PropertiesToListView(listView_Properties, O);
-            }
-
-            
-
-
-            if ((STrN.Name.Contains("SpecNotes")) ||
-                (STrN.Name.Contains("AdrNote"))
-                )
-
-            {
-                LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
-            }
-
-            if (STrN.Name.Contains("SlotNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                PropertiesToListView(listView_Properties, O);
-            }
-
-
-            if (STrN.Name.Contains("Rights"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    PropertiesToListView(listView_Properties, P.Rights);
-                    // PropertiesToListView(listView_Properties, P.EGRN);
-                    if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
-                    //  if (P.EGRN != null)    RightsToListView(listView1, P.EGRN.AsList());
-                }
-            }
-
-           if (STrN.Name.Contains("EGRNRight"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    //PropertiesToListView(listView_Properties, P.Rights);
-                    PropertiesToListView(listView_Properties, P.EGRN);
-                    //if (P.Rights != null)  RightsToListView(listView1, P.Rights.AsList());
-                    if (P.EGRN != null)    RightsToListView(listView1, P.EGRN.AsList());
-                }
-
-            }
-
-            
-            if (STrN.Name.Contains("Flats"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-
-                if (O.ToString() == "netFteo.Spatial.TMyRealty")
-                {
-                    TMyRealty P = (TMyRealty)O;
-                    if (P.Building != null )
-                        if (P.Building.Flats.Count >0)
-                    {
-                        FlatsToListView(listView1, P.Building.Flats);
-                        PropertiesToListView(listView_Properties, P.Building);
-
-                    }
-                }
-            }
-
-            if (STrN.Name.Contains("FlatItem"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-
-                if (O.ToString() == "netFteo.Spatial.TFlat")
-                {
-                    TFlat P = (TFlat)O;
-                    if (P != null)
-                        {
-                            PropertiesToListView(listView_Properties, P);
-                            FlatToListView(listView1, P);
-                        }
-                }
-            }
-
-
-            if (STrN.Name.Contains("EntrysNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
-                    PropertiesToListView(listView_Properties, P.CompozitionEZ);
-                }
-            }
-
-            if (STrN.Name.Contains("Contours"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O != null )
-                    if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
-                    {
-                        netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
-                        EZPEntryListToListView(listView1, P.AsList());
-                        PropertiesToListView(listView_Properties, P);
-                    }
-                
-            }
-
-            if (STrN.Name.Contains("OMSPoints"))
-            {
-                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
-            }
-        }
-
-
-        private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
-        {
-            if (Rights == null) return;
-            if (Rights.Count > 0)
-            {
-                TreeNode Rnode = PNode.Nodes.Add(Nodename + ownerid.ToString(), Name);
-
-                for (int i = 0; i <= Rights.Count - 1; i++)
-                {
-                    TreeNode RNameNode = Rnode.Nodes.Add("RightItemNode", Rights[i].Name);
-                    RNameNode.Nodes.Add(Rights[i].Type);
-                    RNameNode.Nodes.Add(Rights[i].RegNumber + " " + Rights[i].RegDate);
-                    if (Rights[i].Owners.Count > 0)
-                    {
-                        TreeNode ROwnersNode = RNameNode.Nodes.Add("Правообладатели");
-                        ROwnersNode.SelectedImageIndex = 9;
-                        ROwnersNode.ImageIndex = 9;
-                    for (int io = 0; io <= Rights[i].Owners.Count - 1; io++)
-                    {
-                        TreeNode ROwnerNode = ROwnersNode.Nodes.Add(Rights[i].Owners[io].OwnerName);
-                        if (Rights[i].Owners[io].ContactOwner != null)
-                        {
-                            TreeNode ROwnerContactsNode = ROwnerNode.Nodes.Add(Rights[i].Owners[io].ContactOwner);
-                            ROwnerContactsNode.ToolTipText = "Связь с правообладателем";
-                            ROwnerContactsNode.ForeColor = Color.Red;
-                            ROwnerContactsNode.SelectedImageIndex = 8;
-                            ROwnerContactsNode.ImageIndex = 8;
-                        }
-                    }
-                    }
-
-                    if (Rights[i].ShareText != null)
-                        RNameNode.Nodes.Add(Rights[i].ShareText).ToolTipText = "Доля в праве (текстом)";
-
-                    foreach (netFteo.Rosreestr.TMyEncumbrance enc in Rights[i].Encumbrances)
-                    {
-                        ListEncum(RNameNode, enc);
-                    }
-
-                }
-            }
-        }
-
-        private void ListEncum(TreeNode Rnode, netFteo.Rosreestr.TMyEncumbrance Encums)
-        {
-            if (Encums == null) return;
-            string EncType = Encums.Type;
-            //if (Encums.Type == null) EncType = "Обременение";
-			 
-            TreeNode RNameNode = Rnode.Nodes.Add("RencNode", (Encums.Type != null ? Encums.Type : "Обременение"));
-
-            if (Encums.Name != null)
-                RNameNode.Nodes.Add(Encums.Name);
-            if (Encums.Document.DocName != null)
-            {
-                TreeNode RDocNode = RNameNode.Nodes.Add("Документ: " + Encums.Document.DocName);
-                     RDocNode.Nodes.Add(Encums.Document.Date);
-                     RDocNode.Nodes.Add(Encums.Document.Number);
-            }
-
-            if (Encums.AccountNumber != null)
-            RNameNode.Nodes.Add("Учетный номер " + Encums.AccountNumber);
-            if (Encums.RegNumber != null)
-            {
-                TreeNode RNameRegNode = RNameNode.Nodes.Add("Государственная регистрация");
-                RNameRegNode.Nodes.Add(Encums.RegNumber);
-                RNameRegNode.Nodes.Add(Encums.RegDate);
-            }
-
-            if (Encums.Owners.Count > 0)
-            {
-                TreeNode RNameOwnNode = RNameNode.Nodes.Add("В пользу");
-                for (int io = 0; io <= Encums.Owners.Count - 1; io++)
-                    RNameOwnNode.Nodes.Add(Encums.Owners[io].OwnerName);
-            }
-            if (Encums.DurationStarted != null)
-            {
-                TreeNode RDurStrN = RNameNode.Nodes.Add("Дата возникновения");
-                RDurStrN.Nodes.Add(Encums.DurationStarted);
-            }
-            if (Encums.DurationStopped != null)
-            {
-                TreeNode RDurStopN = RNameNode.Nodes.Add("Дата прекращения");
-                RDurStopN.Nodes.Add(Encums.DurationStopped);
-            }
-            if (Encums.DurationTerm != null)
-            {
-                TreeNode RDurTerm = RNameNode.Nodes.Add("Продолжительность");
-                RDurTerm.Nodes.Add(Encums.DurationTerm);
-            }
-        }
-        private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
-        {
-            if (Ens == null) return;
-            TreeNode PEnsNode = new TreeNode();
-            if (Ens.Count > 0)
-            {
-                PEnsNode = PNode.Nodes.Add("EncNode", "Обременения");
-                for (int i = 0; i <= Ens.Count - 1; i++)
-                {
-                    ListEncum(PEnsNode, Ens[i]);
-                }
-            }
-        }
-
-
-        /*
-         /// <summary>
-         /// Он-лайн запрос сведений по кварталу
-         /// </summary>
-         /// <param name="treeView_Web">"Дерево для отображения он-лайн сведений"</param>
-         /// <param name="Block">"Кадастровый квартал"</param>
-         public System.Drawing.Image GetCadastralBlockWebOnline(TreeView treeView_Web, TMyCadastralBlock Block)
-         {
-             treeView_Web.Visible = true;
-             treeView_Web.Nodes.Clear();
-
-             try
-             {
-                 TreeNode PWebNode = treeView_Web.Nodes.Add(Block.CN);
-                 WebRequest wrGETURL;
-                 //Запрос кварталов по кадастровому номеру, возвращает массив (сокращенные атрибуты):
-                 wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2?text=" + Block.CN);
-                 wrGETURL.Proxy = WebProxy.GetDefaultProxy();
-                 wrGETURL.Timeout = 1000;
-                 Stream objStream;
-                 WebResponse wr = wrGETURL.GetResponse();
-                 objStream = wr.GetResponseStream();
-                 if (objStream != null)
-                 {
-                     StreamReader objReader = new StreamReader(objStream);
-                     string jsonResult = objReader.ReadToEnd();
-                     objReader.Close();
-                     //Понадобилась ссылка на System.Web.Extensions
-                     System.Web.Script.Serialization.JavaScriptSerializer sr = new System.Web.Script.Serialization.JavaScriptSerializer();
-                     pkk5_json_response jsonResponse = sr.Deserialize<pkk5_json_response>(jsonResult);
-                     if (jsonResponse != null)
-                         if (jsonResponse.features != null)
-                             if (jsonResponse.features.Count > 0)
-                         {
-                             PWebNode.Nodes.Add(jsonResponse.features[0].attrs.address).Expand();
-                             //Запрос по конкретному id:
-                             wrGETURL = WebRequest.Create("http://pkk5.rosreestr.ru/api/features/2/" + jsonResponse.features[0].attrs.id);
-                             wrGETURL.Timeout = 10000;
-                             WebResponse wrF = wrGETURL.GetResponse();
-                             objStream = wrF.GetResponseStream();
-                             if (objStream != null)
-                             {
-                                 StreamReader objFReader = new StreamReader(objStream);
-                                 string jsonFResult = objFReader.ReadToEnd();
-                                 objFReader.Close();
-                                 pkk5_json_Fullresponse jsonFResponse = sr.Deserialize<pkk5_json_Fullresponse>(jsonFResult);
-                                 if (jsonFResponse != null)
-                                     if (jsonFResponse.feature != null)
-                                     {
-                                        // PWebNode.Nodes.Add(jsonFResponse.feature.attrs.util_by_doc);
-                                         //PWebNode.Nodes.Add(jsonFResponse.feature.attrs.AreaType2Str(jsonFResponse.feature.attrs.area_type)).Nodes.Add(jsonFResponse.feature.attrs.area_value +
-                                        //     " " + jsonFResponse.feature.attrs.Unit2Str(jsonFResponse.feature.attrs.area_unit));
-                                       //  PWebNode.ExpandAll();
-
-                                       //  if (jsonFResponse.feature.attrs.cad_eng_data != null)
-                                         {
-                                           //  TreeNode PWebNodec = PWebNode.Nodes.Add("Документы для ГКУ подготовлены");
-                                          //   PWebNodec.Nodes.Add(jsonFResponse.feature.attrs.cad_eng_data.ci_surname + " " +
-                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_first + " " +
-                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_patronymic + " " +
-                                          //       jsonFResponse.feature.attrs.cad_eng_data.ci_n_certificate);
-                                         //    PWebNodec.Nodes.Add("Дата обновления атрибутов : " + jsonFResponse.feature.attrs.cad_eng_data.actual_date);
-                                         //    PWebNodec.Nodes.Add("lastmodified:" + jsonFResponse.feature.attrs.cad_eng_data.lastmodified);
-                                         }
-                                     }
-                             }
-
-                             // если есть ОИПД:
-                             if (jsonResponse.features[0].extent != null)
-                             {
-                                 TreeNode PWebNodeExt = PWebNode.Nodes.Add("Экстент (ПД)");
-                                 TreeNode PWebNodebbox = PWebNodeExt.Nodes.Add("bbox");
-                                 PWebNodebbox.ToolTipText = "Extent (bounding box) of the exported image";
-                                 TreeNode PWebNodebboxV = PWebNodebbox.Nodes.Add(jsonResponse.features[0].extent.xmin.ToString() + "," +
-                                                                                jsonResponse.features[0].extent.ymin.ToString() + "," +
-                                                                                jsonResponse.features[0].extent.xmax.ToString() + "," +
-                                                                                jsonResponse.features[0].extent.ymax.ToString());
-                                 PWebNodebboxV.Tag = 256; // признак bbox value node;
-                                 PWebNodebboxV.ToolTipText = "Строка xmin,ymin,xmax,ymax. Для вызова pkk5/MapServer";
-
-                                 TreeNode PWebNodeCenter = PWebNodeExt.Nodes.Add("center");
-                                 PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.x.ToString()).ToolTipText = "x";
-                                 PWebNodeCenter.Nodes.Add(jsonResponse.features[0].center.y.ToString()).ToolTipText = "y";
-                                 TreeNode PWebNodeCenterV = PWebNodeCenter.Nodes.Add("#x=" + jsonResponse.features[0].center.x.ToString() +
-                                                          "&y=" + jsonResponse.features[0].center.y.ToString() + "&z=20&app=search&opened=1");
-                                 PWebNodeCenterV.ToolTipText = "Для вызова pkk5 direct";
-                                 PWebNodeCenterV.Tag = 255;
-
-
-                                 // Запрос изображения в jpeg по bbox:
-                                 string sURLpkk5_jpeg = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/Cadastre/MapServer/export?bbox=" +
-                                                           jsonResponse.features[0].extent.xmin + "%2C" +
-                                                           jsonResponse.features[0].extent.ymin + "%2C" +
-                                                           jsonResponse.features[0].extent.xmax + "%2C" +
-                                                           jsonResponse.features[0].extent.ymax + "%2C" +
-                                                                     "&bboxSR=&layers=&layerDefs=&size=" +
-                                                           pictureBox1.Size.Width.ToString() + "%2C" +
-                                                           pictureBox1.Size.Height.ToString() +
-                                                           "&imageSR=&format=jpg&transparent=true&dpi=&time=&layerTimeOptions=&dynamicLayers=&gdbVersion=" +
-                                                           "&f=image";
-                                                            //"&mapScale=1000&f=image";
-                                 wrGETURL = WebRequest.Create(sURLpkk5_jpeg);
-                                 wrGETURL.Timeout = 10000;
-                                 WebResponse wrJpeg = wrGETURL.GetResponse();
-                                 objStream = wrJpeg.GetResponseStream();
-                                 if (objStream != null)
-                                     //pictureBox1.Image = Bitmap.FromStream(objStream);
-                                  return Bitmap.FromStream(objStream);
-                             }
-                         }
-                 }
-             }
-
-             catch (IOException ex)
-             {
-                 //  MessageBox.Show(ex.ToString());
-                 toolStripStatusLabel1.Text = ex.ToString();
-                 return null;
-             }
-             return null;
-         }
-         */
-
-        #endregion
-
-        private void WriteRights(string FileName, netFteo.Rosreestr.TMyRights Rights)
-        {
-            if (Rights == null) return;
-            if (Rights.Count > 0)
-            {
-                TextWriter writer = new StreamWriter(FileName, true, Encoding.Unicode);
-                for (int i = 0; i <= Rights.Count - 1; i++)
-                {
-                    writer.Write(Rights[i].Name + "\t" +
-                                           Rights[i].Type + "\t" +
-                                           Rights[i].RegNumber + "\t" +
-                                           Rights[i].RegDate + "\t"+
-                                           Rights[i].Desc + "\t"+
-                                           Rights[i].ShareText + "\t");
-
-                    for (int io = 0; io <= Rights[i].Owners.Count - 1; io++)
-                        writer.WriteLine(Rights[i].Owners[io].OwnerName);
-
-                }
-
-                writer.Close();
-            }
-
-        }
-       
-        private void SaveAsmifOMS(string FileName, PointList OMS)
-        {
-            if (OMS == null) return;
-            if (OMS.PointCount == 0) return;
-            TextWriter writer = new StreamWriter(FileName);
-            TextWriter writerMIDA = new StreamWriter(Path.GetFileNameWithoutExtension(FileName) + ".mid", false, Encoding.GetEncoding("Windows-1251"));
-            writer.WriteLine("Version 450");
-            writer.WriteLine("Charset \"WindowsCyrillic\"");
-            writer.WriteLine("Delimiter \"$\"");
-            writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
-                             OMS.Bounds.MinY.ToString() + "," + OMS.Bounds.MinX.ToString() + ")  (" +
-                             OMS.Bounds.MaxY.ToString() + "," + OMS.Bounds.MaxX.ToString() + ")");
-            writer.WriteLine("Columns 3");
-            writer.WriteLine("    Point_Name Char(127)");
-            writer.WriteLine("    Net_Klass  Char(127)");
-            writer.WriteLine("    Number Char(127)");
-            writer.WriteLine("Data");
-            writer.WriteLine("");
-            netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-            TR.WriteMifPoints(writer, writerMIDA, OMS);
-            writer.Close();
-            writerMIDA.Close();
-        }
-       
-        #region Запись в DXF
-
-
-
-    /*
-        private void CreateDxf3dPolygon(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netDxf.Tables.Layer LayerPoly, netFteo.Spatial.PointList Points)
-        {
-            List<PolylineVertex> PlVertexLst = new List<PolylineVertex>();  //Список Vertexов (вершин) полилинии:
-
-            for (int i = 0; i <= Points.Count - 1; i++)
-            {
-
-                PlVertexLst.Add(new PolylineVertex(Points[i].y, Points[i].x, Points[i].z));
-                netDxf.Entities.Point Pt = new Point(Points[i].y, Points[i].x, Points[i].z);
-                Pt.Layer = LayerPoints;
-                dxfDoc.AddEntity(Pt);
-                netDxf.Entities.Text PointName = new Text();
-                if (Points[i].NumGeopointA == null)
-                    PointName.Value = i.ToString();
-                else PointName.Value = Points[i].NumGeopointA;
-                PointName.Height = 5;
-                PointName.Position = new Vector3(Points[i].y, Points[i].x, Points[i].z);
-                PointName.Layer = LayerText;
-                dxfDoc.AddEntity(PointName);
-            }
-
-            //3Д Полилиния
-            Polyline PLine = new Polyline(PlVertexLst, true); //Сама полилиния, замкнутая true:
-            PLine.Layer = LayerPoly;
-            dxfDoc.AddEntity(PLine);        //Вгоняем в dxf:
-        }
-       
-        */
-        //------------------------------------------------------------------------------------------
-        private void SaveAsDxf(int Scale)
-        {
-            double ScaleRaduis;
-            switch (Scale)
-            {
-                case 33333: ScaleRaduis = 22.5; //
-                    break;
-                case 10000: ScaleRaduis = 7.5;
-                    break;
-                case 5000: ScaleRaduis = 3.75;
-                    break;
-                case 1000: ScaleRaduis = 0.75;
-                    break;
-                case  500: ScaleRaduis = 0.375;
-                    break;
-                default:   ScaleRaduis = 0.75; // aka 1:1000 is default scale
-                    break;
-            }
-            netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
-            saveFileDialog1.FilterIndex = 3;
-            if (TV_Parcels.SelectedNode.Name == "TopNode")
-                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                {
-                    //Заменить в полигонах CN квартала
-                    netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN(), this.DocInfo.MifPolygons);
-                    wr.SaveAsDxfScale(saveFileDialog1.FileName, this.DocInfo.MifPolygons, ScaleRaduis);
-                }
-
-            if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
-            {
-                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = "contours_" + Pl.Defintion;
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                       // wr.SaveAsDxfScale(saveFileDialog1.FileName, Pl,ScaleRaduis);
-                    }
-                }
-            }
-            
-            if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
-            {
-                TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
-                if (Lot != null)
-                {
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                   //     wr.SaveAsDxfScale(saveFileDialog1.FileName, Lot.CompozitionEZ, ScaleRaduis);
-                    }
-                }
-            }
- 
-
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
-            {
-                TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                if (Pl != null)
-                {
-                    TEntitySpatial PC = new TEntitySpatial();
-                    PC.Add(Pl);
-                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, PC, ScaleRaduis);
-                    }
-                }
-            }
-          
-
-        
-
-            //Не Все зоны - только территориальные, ==(1) ??
-            if (TV_Parcels.SelectedNode.Name.Contains("ZonesNode"))
-            {
-                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetZonesEs(1);
-                if (Plc != null)
-                {
-                    saveFileDialog1.FileName = "ZonesNode";
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                    //    wr.SaveAsDxfScale(saveFileDialog1.FileName, Plc, ScaleRaduis);
-                    }
-                }
-            }
-
-    
-
-			if (TV_Parcels.SelectedNode.Name.Contains("ES."))
 			{
-				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(3)));
-				if (es != null)
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				PropertiesToListView(listView_Properties, O);
+
+				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
 				{
-					saveFileDialog1.FileName = "OKSsNode";
-					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					TMyParcel parcel = (TMyParcel)O;
+					if (parcel.Contours != null)
+						EZPEntryListToListView(listView1, parcel.Contours.AsList());
+				}
+			}
+
+			if (STrN.Name.Contains("ZNode"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
+				PropertiesToListView(listView_Properties, O);
+			}
+
+
+
+
+			if ((STrN.Name.Contains("SpecNotes")) ||
+				(STrN.Name.Contains("AdrNote"))
+				)
+
+			{
+				LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
+			}
+
+			if (STrN.Name.Contains("SlotNode"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				PropertiesToListView(listView_Properties, O);
+			}
+
+
+			if (STrN.Name.Contains("Rights"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					PropertiesToListView(listView_Properties, P.Rights);
+					// PropertiesToListView(listView_Properties, P.EGRN);
+					if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
+					//  if (P.EGRN != null)    RightsToListView(listView1, P.EGRN.AsList());
+				}
+			}
+
+			if (STrN.Name.Contains("EGRNRight"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					//PropertiesToListView(listView_Properties, P.Rights);
+					PropertiesToListView(listView_Properties, P.EGRN);
+					//if (P.Rights != null)  RightsToListView(listView1, P.Rights.AsList());
+					if (P.EGRN != null) RightsToListView(listView1, P.EGRN.AsList());
+				}
+
+			}
+
+
+			if (STrN.Name.Contains("Flats"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+
+				if (O.ToString() == "netFteo.Spatial.TMyRealty")
+				{
+					TMyRealty P = (TMyRealty)O;
+					if (P.Building != null)
+						if (P.Building.Flats.Count > 0)
+						{
+							FlatsToListView(listView1, P.Building.Flats);
+							PropertiesToListView(listView_Properties, P.Building);
+
+						}
+				}
+			}
+
+			if (STrN.Name.Contains("FlatItem"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+
+				if (O.ToString() == "netFteo.Spatial.TFlat")
+				{
+					TFlat P = (TFlat)O;
+					if (P != null)
 					{
-						wr.SaveAsDxfScale(saveFileDialog1.FileName, (TEntitySpatial)es, ScaleRaduis);
+						PropertiesToListView(listView_Properties, P);
+						FlatToListView(listView1, P);
 					}
 				}
 			}
 
-			if (TV_Parcels.SelectedNode.Name.Contains("OMSPoints"))
-            {
-                if (this.DocInfo.MyBlocks.OMSPoints.Count > 0)
-                {
-                    saveFileDialog1.FileName = "omsPoints";
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
 
-                        wr.SaveAsDxfScale(saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints, ScaleRaduis);
-                    }
-                }
-            }
+			if (STrN.Name.Contains("EntrysNode"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
+					PropertiesToListView(listView_Properties, P.CompozitionEZ);
+				}
+			}
+
+			if (STrN.Name.Contains("Contours"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O != null)
+					if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
+					{
+						netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
+						EZPEntryListToListView(listView1, P.AsList());
+						PropertiesToListView(listView_Properties, P);
+					}
+
+			}
+
+			if (STrN.Name.Contains("OMSPoints"))
+			{
+				OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
+			}
+		}
+
+
+		private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
+		{
+			if (Rights == null) return;
+			if (Rights.Count > 0)
+			{
+				TreeNode Rnode = PNode.Nodes.Add(Nodename + ownerid.ToString(), Name);
+
+				for (int i = 0; i <= Rights.Count - 1; i++)
+				{
+					TreeNode RNameNode = Rnode.Nodes.Add("RightItemNode", Rights[i].Name);
+					RNameNode.Nodes.Add(Rights[i].Type);
+					RNameNode.Nodes.Add(Rights[i].RegNumber + " " + Rights[i].RegDate);
+					if (Rights[i].Owners.Count > 0)
+					{
+						TreeNode ROwnersNode = RNameNode.Nodes.Add("Правообладатели");
+						ROwnersNode.SelectedImageIndex = 9;
+						ROwnersNode.ImageIndex = 9;
+						for (int io = 0; io <= Rights[i].Owners.Count - 1; io++)
+						{
+							TreeNode ROwnerNode = ROwnersNode.Nodes.Add(Rights[i].Owners[io].OwnerName);
+							if (Rights[i].Owners[io].ContactOwner != null)
+							{
+								TreeNode ROwnerContactsNode = ROwnerNode.Nodes.Add(Rights[i].Owners[io].ContactOwner);
+								ROwnerContactsNode.ToolTipText = "Связь с правообладателем";
+								ROwnerContactsNode.ForeColor = Color.Red;
+								ROwnerContactsNode.SelectedImageIndex = 8;
+								ROwnerContactsNode.ImageIndex = 8;
+							}
+						}
+					}
+
+					if (Rights[i].ShareText != null)
+						RNameNode.Nodes.Add(Rights[i].ShareText).ToolTipText = "Доля в праве (текстом)";
+
+					foreach (netFteo.Rosreestr.TMyEncumbrance enc in Rights[i].Encumbrances)
+					{
+						ListEncum(RNameNode, enc);
+					}
+
+				}
+			}
+		}
+
+		private void ListEncum(TreeNode Rnode, netFteo.Rosreestr.TMyEncumbrance Encums)
+		{
+			if (Encums == null) return;
+			string EncType = Encums.Type;
+			//if (Encums.Type == null) EncType = "Обременение";
+
+			TreeNode RNameNode = Rnode.Nodes.Add("RencNode", (Encums.Type != null ? Encums.Type : "Обременение"));
+
+			if (Encums.Name != null)
+				RNameNode.Nodes.Add(Encums.Name);
+			if (Encums.Document.DocName != null)
+			{
+				TreeNode RDocNode = RNameNode.Nodes.Add("Документ: " + Encums.Document.DocName);
+				RDocNode.Nodes.Add(Encums.Document.Date);
+				RDocNode.Nodes.Add(Encums.Document.Number);
+			}
+
+			if (Encums.AccountNumber != null)
+				RNameNode.Nodes.Add("Учетный номер " + Encums.AccountNumber);
+			if (Encums.RegNumber != null)
+			{
+				TreeNode RNameRegNode = RNameNode.Nodes.Add("Государственная регистрация");
+				RNameRegNode.Nodes.Add(Encums.RegNumber);
+				RNameRegNode.Nodes.Add(Encums.RegDate);
+			}
+
+			if (Encums.Owners.Count > 0)
+			{
+				TreeNode RNameOwnNode = RNameNode.Nodes.Add("В пользу");
+				for (int io = 0; io <= Encums.Owners.Count - 1; io++)
+					RNameOwnNode.Nodes.Add(Encums.Owners[io].OwnerName);
+			}
+			if (Encums.DurationStarted != null)
+			{
+				TreeNode RDurStrN = RNameNode.Nodes.Add("Дата возникновения");
+				RDurStrN.Nodes.Add(Encums.DurationStarted);
+			}
+			if (Encums.DurationStopped != null)
+			{
+				TreeNode RDurStopN = RNameNode.Nodes.Add("Дата прекращения");
+				RDurStopN.Nodes.Add(Encums.DurationStopped);
+			}
+			if (Encums.DurationTerm != null)
+			{
+				TreeNode RDurTerm = RNameNode.Nodes.Add("Продолжительность");
+				RDurTerm.Nodes.Add(Encums.DurationTerm);
+			}
+		}
+		private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
+		{
+			if (Ens == null) return;
+			TreeNode PEnsNode = new TreeNode();
+			if (Ens.Count > 0)
+			{
+				PEnsNode = PNode.Nodes.Add("EncNode", "Обременения");
+				for (int i = 0; i <= Ens.Count - 1; i++)
+				{
+					ListEncum(PEnsNode, Ens[i]);
+				}
+			}
+		}
+
+
+	
+
+		#endregion
+
+		private void WriteRights(string FileName, netFteo.Rosreestr.TMyRights Rights)
+		{
+			if (Rights == null) return;
+			if (Rights.Count > 0)
+			{
+				TextWriter writer = new StreamWriter(FileName, true, Encoding.Unicode);
+				for (int i = 0; i <= Rights.Count - 1; i++)
+				{
+					writer.Write(Rights[i].Name + "\t" +
+										   Rights[i].Type + "\t" +
+										   Rights[i].RegNumber + "\t" +
+										   Rights[i].RegDate + "\t" +
+										   Rights[i].Desc + "\t" +
+										   Rights[i].ShareText + "\t");
+
+					for (int io = 0; io <= Rights[i].Owners.Count - 1; io++)
+						writer.WriteLine(Rights[i].Owners[io].OwnerName);
+
+				}
+
+				writer.Close();
+			}
+
+		}
+
+		private void SaveAsmifOMS(string FileName, PointList OMS)
+		{
+			if (OMS == null) return;
+			if (OMS.PointCount == 0) return;
+			TextWriter writer = new StreamWriter(FileName);
+			TextWriter writerMIDA = new StreamWriter(Path.GetFileNameWithoutExtension(FileName) + ".mid", false, Encoding.GetEncoding("Windows-1251"));
+			writer.WriteLine("Version 450");
+			writer.WriteLine("Charset \"WindowsCyrillic\"");
+			writer.WriteLine("Delimiter \"$\"");
+			writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
+							 OMS.Bounds.MinY.ToString() + "," + OMS.Bounds.MinX.ToString() + ")  (" +
+							 OMS.Bounds.MaxY.ToString() + "," + OMS.Bounds.MaxX.ToString() + ")");
+			writer.WriteLine("Columns 3");
+			writer.WriteLine("    Point_Name Char(127)");
+			writer.WriteLine("    Net_Klass  Char(127)");
+			writer.WriteLine("    Number Char(127)");
+			writer.WriteLine("Data");
+			writer.WriteLine("");
+			netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+			TR.WriteMifPoints(writer, writerMIDA, OMS);
+			writer.Close();
+			writerMIDA.Close();
+		}
+
+		#region Запись в DXF
 
 
 
-        }
+		/*
+			private void CreateDxf3dPolygon(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netDxf.Tables.Layer LayerPoly, netFteo.Spatial.PointList Points)
+			{
+				List<PolylineVertex> PlVertexLst = new List<PolylineVertex>();  //Список Vertexов (вершин) полилинии:
+
+				for (int i = 0; i <= Points.Count - 1; i++)
+				{
+
+					PlVertexLst.Add(new PolylineVertex(Points[i].y, Points[i].x, Points[i].z));
+					netDxf.Entities.Point Pt = new Point(Points[i].y, Points[i].x, Points[i].z);
+					Pt.Layer = LayerPoints;
+					dxfDoc.AddEntity(Pt);
+					netDxf.Entities.Text PointName = new Text();
+					if (Points[i].NumGeopointA == null)
+						PointName.Value = i.ToString();
+					else PointName.Value = Points[i].NumGeopointA;
+					PointName.Height = 5;
+					PointName.Position = new Vector3(Points[i].y, Points[i].x, Points[i].z);
+					PointName.Layer = LayerText;
+					dxfDoc.AddEntity(PointName);
+				}
+
+				//3Д Полилиния
+				Polyline PLine = new Polyline(PlVertexLst, true); //Сама полилиния, замкнутая true:
+				PLine.Layer = LayerPoly;
+				dxfDoc.AddEntity(PLine);        //Вгоняем в dxf:
+			}
+
+			*/
+		//------------------------------------------------------------------------------------------
+		private void SaveAs(string Format, string ItemName, int scale= 1000)
+		{
+			//1. Get ES: 
+			TEntitySpatial ES = GetES(ItemName);
+
+			//2. Set Format
+			if (ES != null)
+	
+			{
+					switch (Format)
+					{
+						case "MIF":
+							{
+							netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+							saveFileDialog1.FilterIndex = 1; // mif
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+								TR.SaveAsmif(saveFileDialog1.FileName, ES);
+								break; }
+
+						case "DXF":
+							{
+								double ScaleRaduis;
+								switch (scale)
+								{
+									case 33333:
+										ScaleRaduis = 22.5; //
+										break;
+									case 10000:
+										ScaleRaduis = 7.5;
+										break;
+									case 5000:
+										ScaleRaduis = 3.75;
+										break;
+									case 1000:
+										ScaleRaduis = 0.75;
+										break;
+									case 500:
+										ScaleRaduis = 0.375;
+										break;
+									default:
+										ScaleRaduis = 0.75; // aka 1:1000 is default scale
+										break;
+								}
+								netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
+								saveFileDialog1.FilterIndex = 3;
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+								wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, ScaleRaduis);
+								break;
+							}
+					}
+			}
+
+		}
+
+		private TEntitySpatial GetES(string NodeName)
+		{
+			if (NodeName == "TopNode")
+				return this.DocInfo.MyBlocks.SpatialData;
+
+			if (NodeName.Contains("Contours"))
+			{
+				TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
+				if (Pl != null)
+				{
+					TEntitySpatial res = new TEntitySpatial();
+					res.AddRange(Pl);
+					return res;
+				}
+			}
+
+			if (NodeName.Contains("EntrysNode"))
+			{
+				TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
+				if (Lot != null)
+				{
+					TEntitySpatial res = new TEntitySpatial();
+					res.AddRange(Lot.CompozitionEZ);
+					return res;
+				}
+			}
+
+
+			if (NodeName.Contains("SPElem."))
+			{
+				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+				if (Pl != null)
+				{
+					TEntitySpatial PC = new TEntitySpatial();
+					PC.Add(Pl);
+					return PC;
+				}
+			}
+
+
+
+
+			//Не Все зоны - только территориальные, ==(1) ??
+			if (NodeName.Contains("ZonesNode"))
+			{
+				TPolygonCollection Plc = this.DocInfo.MyBlocks.GetZonesEs(1);
+				if (Plc != null)
+				{
+					TEntitySpatial PC = new TEntitySpatial();
+					PC.AddRange(Plc);
+					return PC;
+				}
+			}
+
+			if (NodeName.Contains("OKSsNode"))
+			{
+				return this.DocInfo.MyBlocks.GetRealtyEs(); // TODO All data
+			}
+
+			if (NodeName.Contains("ParcelsNode"))
+			{
+				return this.DocInfo.MyBlocks.GetParcelsEs(); // TODO All data
+			}
+
+			if (NodeName.Contains("ES."))
+			{
+				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(3)));
+				return (TEntitySpatial)es;
+			}
+
+
+
+			if (NodeName.Contains("Layer."))
+			{
+				return (TEntitySpatial)this.DocInfo.MyBlocks.GetEs(TV_Parcels.SelectedNode.Name.Substring(6));
+
+			}
+
+			if (NodeName.Contains("OMSPoints"))
+			{
+				return this.DocInfo.MyBlocks.OMSPoints;
+			}
+			return null;
+		}
 
 
         #endregion
@@ -3763,7 +3659,8 @@ namespace XMLReaderCS
         // ********************************************** mif ********************************************
         private void mifКПТToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+			SaveAs("MIF", TV_Parcels.SelectedNode.Name, 500);
+			/*
             netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
             saveFileDialog1.FilterIndex = 1; // mif
             {
@@ -3771,74 +3668,76 @@ namespace XMLReaderCS
                 if (TV_Parcels.SelectedNode.Name == "TopNode")
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
-                        TR.SaveAsmif(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
+                        TR.SaveAsmif(saveFileDialog1.FileName, this.DocInfo.MyBlocks.SpatialData);
                         string test = Path.GetDirectoryName(saveFileDialog1.FileName) + "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName);
 						/* TODO
                         TR.SaveAsmif(Path.GetDirectoryName(saveFileDialog1.FileName) + "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName),
                                                       this.DocInfo.MifOKSPolygons);
 													  */
-                    }
+
+			/*
+						}
+			 * 
+					if (TV_Parcels.SelectedNode.Name == "OMSPoints")
+					{
+						saveFileDialog1.FileName = "ОМС.mif";// +this.DocInfo.MyBlocks.Blocks[0].CN;
+						if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+						{
+
+							SaveAsmifOMS(saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
+
+						}
+					}
+
+					//Для отдельного ОИПД выгружаем:
+					if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
+					{
+						TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+						if (Pl != null)
+						{
+							saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+							{
+								TR.SaveAsmif(saveFileDialog1.FileName, Pl);
+							}
+
+						}
+					}
+
+					if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
+					{
+						TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
+						if (Lot != null)
+						{
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+							{
+								//saveFileDialog1.FileName = "EZP_" + netFteo.StringUtils.ReplaceSlash(Lot.CN);
+								TR.SaveAsmif(saveFileDialog1.FileName, Lot.CompozitionEZ);
+							}
+						}
+					}
+
+					if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
+					{
+						TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
+						if (Pl != null)
+						{
+							saveFileDialog1.FileName = "Contours_" + netFteo.StringUtils.ReplaceSlash(Pl.Defintion);
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+							{
+								TR.SaveAsmif(saveFileDialog1.FileName, Pl);
+							}
+						}
+					}
+
+				}
+				*/
+		}
 
 
-                if (TV_Parcels.SelectedNode.Name == "OMSPoints")
-                {
-                    saveFileDialog1.FileName = "ОМС.mif";// +this.DocInfo.MyBlocks.Blocks[0].CN;
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-                        SaveAsmifOMS(saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
-
-                    }
-                }
-
-                //Для отдельного ОИПД выгружаем:
-                if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
-                {
-                    TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                    if (Pl != null)
-                    {
-                        saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                        if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                        {
-                            TR.SaveAsmif(saveFileDialog1.FileName, Pl);
-                        }
-
-                    }
-                }
-
-                if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
-                {
-                    TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
-                    if (Lot != null)
-                    {
-                        if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                        {
-                            //saveFileDialog1.FileName = "EZP_" + netFteo.StringUtils.ReplaceSlash(Lot.CN);
-                            TR.SaveAsmif(saveFileDialog1.FileName, Lot.CompozitionEZ);
-                        }
-                    }
-                }
-
-                if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
-                {
-                    TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
-                    if (Pl != null)
-                    {
-                        saveFileDialog1.FileName = "Contours_" + netFteo.StringUtils.ReplaceSlash(Pl.Defintion);
-                        if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                        {
-                            TR.SaveAsmif(saveFileDialog1.FileName, Pl);
-                        }
-                    }
-                }
-
-            }
-        }
 
 
-
-
-        private void TV_Parcels_KeyUp(object sender, KeyEventArgs e)
+		private void TV_Parcels_KeyUp(object sender, KeyEventArgs e)
         {
             //  ListSelectedNode(TV_Parcels.SelectedNode);
         }
@@ -4094,17 +3993,13 @@ namespace XMLReaderCS
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                    TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, this.DocInfo.MifPolygons, Encoding.Unicode);
-					/* TODO:
-                    TR.SaveAsFixosoftTXT2018(Path.GetDirectoryName(saveFileDialog1.FileName) + 
-                                             "\\OKS_" + Path.GetFileName(saveFileDialog1.FileName), this.DocInfo.MifOKSPolygons, Encoding.Unicode);
-											 */
+                    TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, this.DocInfo.MyBlocks.SpatialData, Encoding.Unicode);
                 }
 
             //"OKSsNode"
             if (TV_Parcels.SelectedNode.Name.Contains("OKSsNode"))
             {
-                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetRealtyEs();
+                TEntitySpatial Plc = this.DocInfo.MyBlocks.GetRealtyEs();
                 if (Plc != null)
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
@@ -4149,7 +4044,7 @@ namespace XMLReaderCS
 
         private void m1500ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAsDxf(500);
+            SaveAs("DXF", TV_Parcels.SelectedNode.Name,500);
         }
         #endregion
 
@@ -4166,7 +4061,7 @@ namespace XMLReaderCS
 
         private void m11000ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAsDxf(1000);
+            SaveAs("DXF", TV_Parcels.SelectedNode.Name, 1000);
         }
 
         private void listView_Properties_SelectedIndexChanged(object sender, EventArgs e)
@@ -4283,7 +4178,7 @@ namespace XMLReaderCS
 
         private void m110000ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAsDxf(10000);
+			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 10000);
         }
 
         private void label_FileSize_Click(object sender, EventArgs e)
@@ -4520,7 +4415,7 @@ namespace XMLReaderCS
 
         private void m5000ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAsDxf(5000);
+			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 5000);
         }
 
 // Save xml. Точнее сериализовать в XML 
@@ -4529,14 +4424,14 @@ namespace XMLReaderCS
             saveFileDialog1.FilterIndex = 5; // xml
 
 
-            if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.MifPolygons != null))
+            if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.MyBlocks.SpatialData != null))
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     //Заменить в полигонах CN квартала
                     //netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN(), this.DocInfo.MifPolygons);
                     XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
                     TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                    serializer.Serialize(writer, this.DocInfo.MifPolygons);
+                    serializer.Serialize(writer, this.DocInfo.MyBlocks.SpatialData);
                     writer.Close();
                 }
             
@@ -4910,7 +4805,7 @@ namespace XMLReaderCS
 
         private void m133333ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveAsDxf(33333);
+			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 33333);
         }
 
         private void RecentFilesMenuItem_Click(object sender, EventArgs e)
@@ -5211,15 +5106,15 @@ namespace XMLReaderCS
                         if (res.PointCount > 0)
                         {
 
-                            TMyPolygon poly = new TMyPolygon("intersections");
-                            poly.AppendPoints(res);
+                            TEntitySpatial ES = new TEntitySpatial();
+                            ES.AddRange(res);
 
                             netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
                             saveFileDialog1.FilterIndex = 1; // mif
                             {
                                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                                 {
-                                    TR.SaveAsmif(saveFileDialog1.FileName, poly);
+                                    TR.SaveAsmif(saveFileDialog1.FileName, ES);
                                 }
                             }
 
@@ -5229,11 +5124,11 @@ namespace XMLReaderCS
                                 if (res.PointCount == 0)
                                     ViewWindow.Spatial = null;
                                 else
-                                    ViewWindow.Spatial = poly;
+                                    ViewWindow.Spatial = ES;
 
                                 ViewWindow.label2.Content = res.Parent_Id.ToString();
                                 ViewWindow.BringIntoView();
-                                ViewWindow.CreateView(poly);
+                                ViewWindow.CreateView(ES);
                             }
                         }
                         

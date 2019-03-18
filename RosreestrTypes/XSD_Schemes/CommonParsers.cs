@@ -3066,7 +3066,7 @@ namespace RRTypes.CommonParsers
 						OKS.ParentCadastralNumbers.AddRange(bld.ParentCadastralNumbers);
 						OKS.Building.Area = bld.Area;
 						OKS.Building.AssignationBuilding = bld.AssignationBuilding.ToString(); ;
-						OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", bld.EntitySpatial);
+						OKS.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2("", bld.EntitySpatial);// RRTypes.CommonCast.CasterOKS.ES_OKS("", bld.EntitySpatial);
 					}
 				}
 
@@ -3080,7 +3080,7 @@ namespace RRTypes.CommonParsers
 					OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.NewApartHouse.NewBuilding.ParentCadastralNumbers);
 					OKS.Building.Area = TP.Building.Package.NewApartHouse.NewBuilding.Area;
 					OKS.Building.AssignationBuilding = TP.Building.Package.NewApartHouse.NewBuilding.AssignationBuilding.ToString();
-					OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Building.Package.NewApartHouse.NewBuilding.EntitySpatial);
+					OKS.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2("", TP.Building.Package.NewApartHouse.NewBuilding.EntitySpatial);
 					if (TP.Building.Package.NewApartHouse.Flats.Count > 0)
 					{
 						for (int i = 0; i <= TP.Building.Package.NewApartHouse.Flats.Count - 1; i++)
@@ -3118,7 +3118,7 @@ namespace RRTypes.CommonParsers
 					OKS.Building.Area = TP.Building.Package.ExistBuilding.Area;
 					if (TP.Building.Package.ExistBuilding.AssignationBuildingSpecified)
 						OKS.Building.AssignationBuilding = TP.Building.Package.ExistBuilding.AssignationBuilding.ToString();
-					OKS.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS("", TP.Building.Package.ExistBuilding.EntitySpatial);
+					OKS.ES2= RRTypes.CommonCast.CasterOKS.ES_OKS2("", TP.Building.Package.ExistBuilding.EntitySpatial);
 				}
 				Bl.CN = OKS.CadastralBlock;
 				Bl.AddOKS(OKS);
@@ -3342,7 +3342,7 @@ namespace RRTypes.CommonParsers
 						MainObj.EntitySpatial.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Area").SelectSingleNode("Area").FirstChild.Value);
 						MainObj.EntitySpatial.Parent_Id = MainObj.id;
 						MainObj.EntitySpatial.Definition = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
-						res.MifPolygons.Add(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+						res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
 																parcel.SelectSingleNode("Entity_Spatial")));
 					}
 					//Многоконтурный
@@ -3356,7 +3356,8 @@ namespace RRTypes.CommonParsers
 							TMyPolygon NewCont = MainObj.Contours.AddPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
 																  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
 																  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
-							res.MifPolygons.Add(NewCont);
+							//res.MifPolygons.Add(NewCont);
+							res.MyBlocks.SpatialData.AddRange(NewCont);
 						}
 					}
 					XMLParsingProc("xml", ++FileParsePosition, null);
@@ -3393,9 +3394,11 @@ namespace RRTypes.CommonParsers
 						//ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
 						ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 							zone.SelectSingleNode("Entity_Spatial"));
+						/*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+																   zone.SelectSingleNode("Entity_Spatial"))); */
+						res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 																   zone.SelectSingleNode("Entity_Spatial")));
-
 						if (zone.SelectSingleNode("Documents") != null)
 							foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
 							{
@@ -3557,6 +3560,42 @@ namespace RRTypes.CommonParsers
 				}
 				return EntSpat;
 			}
+		}
+		private static TEntitySpatial KPT11LandEntSpatToES2(string Definition, System.Xml.XmlNode ES)
+		{
+			if (ES == null) return null;
+			TEntitySpatial res = new TEntitySpatial();
+			TMyPolygon EntSpat = new TMyPolygon();
+			EntSpat.Definition = Definition;
+
+			System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
+
+			//Первый Spatial_Element - внешний контур ( 0 )
+			System.Xml.XmlNode OuterRing = ESEntSpat[0].SelectSingleNode("ordinates");
+
+
+			for (int iSpelement = 0; iSpelement <= OuterRing.ChildNodes.Count - 1; iSpelement++)
+			{
+				EntSpat.AddPoint(KPT11_ES_ParseOrdinate(OuterRing.ChildNodes[iSpelement]));
+			}
+
+			//Второй и след. Spatial_Element - Внутренние контура
+			if (ESEntSpat.Count > 1)
+			{
+				for (int ring = 1; ring <= ESEntSpat.Count - 1; ring++)
+				{
+					System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
+
+					TMyOutLayer InLayer = EntSpat.AddChild();
+
+					for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
+					{
+						InLayer.AddPoint(KPT11_ES_ParseOrdinate(childRing.ChildNodes[iSpelement]));
+					}
+				}
+			}
+			res.Add(EntSpat);
+			return res;
 		}
 
 		/// <summary>
@@ -3753,8 +3792,9 @@ namespace RRTypes.CommonParsers
 							MainObj.EntitySpatial.Parent_Id = MainObj.id;
 							MainObj.EntitySpatial.AreaValue = (decimal)Convert.ToDouble(KPT09.CadastralBlocks[i].Parcels[iP].Area.Area);
 							MainObj.EntitySpatial.Definition = KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber;
-							res.MifPolygons.Add(KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber,
+							res.MyBlocks.SpatialData.AddRange(KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber,
 																  KPT09.CadastralBlocks[i].Parcels[iP].EntitySpatial));
+
 						}
 					//Многоконтурный
 					if (KPT09.CadastralBlocks[i].Parcels[iP].Contours != null)
@@ -3765,7 +3805,7 @@ namespace RRTypes.CommonParsers
 																  KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
 																  KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial));
 							//NewCont.GKNArea = KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].
-							res.MifPolygons.Add(NewCont);
+							res.MyBlocks.SpatialData.AddRange(NewCont);
 						}
 					}
 					//ЕЗП - В КПТ нет ОИПД!!
@@ -3806,7 +3846,8 @@ namespace RRTypes.CommonParsers
 						ZoneItem = new TZone(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber);
 						ZoneItem.Description = KPT09.CadastralBlocks[i].Zones[iP].Description;
 						ZoneItem.EntitySpatial = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial);
-						res.MifPolygons.Add(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
+						res.MyBlocks.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
+						
 						if (KPT09.CadastralBlocks[i].Zones[iP].Documents != null)
 							foreach (RRTypes.kpt09.tDocumentWithoutAppliedFile doc in KPT09.CadastralBlocks[i].Zones[iP].Documents)
 							{
@@ -3835,7 +3876,7 @@ namespace RRTypes.CommonParsers
 						for (int ibb = 0; ibb <= KPT09.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
 						{
 							BoundItem.EntitySpatial = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
-							res.MifPolygons.Add(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
+							res.MyBlocks.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
 						}
 						Bl.AddBound(BoundItem);
 					}
@@ -3851,13 +3892,12 @@ namespace RRTypes.CommonParsers
 
 							//Также параллельное TmyOKS
 							TMyRealty Building = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
-							Building.Building.ES = KPT_v09Utils.KPT09OKSEntSpatToFteo(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
+							Building.ES2 = CommonCast.CasterOKS.ES_OKS2(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
 							Building.Building.AssignationBuilding = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
 							Building.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
-							res.MifOKSSpatialCollection.Add(((TMyPolygon)Building.Building.ES));
 						}
 
 
@@ -3890,7 +3930,7 @@ namespace RRTypes.CommonParsers
 																							 KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							Bl.AddOKS(Constructions);
 							if (Constructions.ES2 != null)
-							res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
+							res.MyBlocks.SpatialData.AddRange(Constructions.ES2);
 						}
 
 						if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
@@ -3904,7 +3944,7 @@ namespace RRTypes.CommonParsers
 							foreach (RRTypes.kpt09.tKeyParameter param in KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.KeyParameters)
 								Uncompleted.KeyParameters.AddParameter(netFteo.Rosreestr.dTypeParameter_v01.ItemToName(param.Type.ToString()), param.Value.ToString());
 							Bl.AddOKS(Uncompleted);
-							res.MifOKSSpatialCollection.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
+							res.MyBlocks.SpatialData.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
 						}
 					}
 				}
@@ -3965,7 +4005,7 @@ namespace RRTypes.CommonParsers
 							MainObj.EntitySpatial.AreaValue = (decimal)Convert.ToDouble(KPT10.CadastralBlocks[i].Parcels[iP].Area.Area);
 							MainObj.EntitySpatial.Parent_Id = MainObj.id;
 							MainObj.EntitySpatial.Definition = KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber;
-							res.MifPolygons.Add(KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
+							res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
 																	KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial));
 						}
 					//Многоконтурный
@@ -3977,7 +4017,7 @@ namespace RRTypes.CommonParsers
 																  KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
 																  KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial));
 							//NewCont.GKNArea = KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].
-							res.MifPolygons.Add(KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
+							res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
 																   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
 																   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial));
 						}
@@ -4021,7 +4061,7 @@ namespace RRTypes.CommonParsers
 						ZoneItem = new TZone(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
 						ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
 						ZoneItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
-						res.MifPolygons.Add(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
+						res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
 						if (KPT10.CadastralBlocks[i].Zones[iP].Documents != null)
 							foreach (RRTypes.kpt10_un.tDocumentWithoutAppliedFile doc in KPT10.CadastralBlocks[i].Zones[iP].Documents)
 							{
@@ -4052,7 +4092,7 @@ namespace RRTypes.CommonParsers
 						for (int ibb = 0; ibb <= KPT10.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
 						{
 							BoundItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
-							res.MifPolygons.Add(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
+							res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
 						}
 						Bl.AddBound(BoundItem);
 					}
@@ -4069,13 +4109,12 @@ namespace RRTypes.CommonParsers
 
 							//Также параллельное TmyOKS
 							TMyRealty Building = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
-							Building.Building.ES = KPT_v10Utils.KPT10OKSEntSpatToFteo(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
+							Building.ES2 = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
 							Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
 							Building.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
 							Building.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
-							res.MifOKSSpatialCollection.Add((TMyPolygon)Building.Building.ES);
 						}
 
 
@@ -4097,7 +4136,7 @@ namespace RRTypes.CommonParsers
 							Constructions.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.ObjectType);
 							Bl.AddOKS(Constructions);
 							if (Constructions.ES2 != null)
-							res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
+							res.MyBlocks.SpatialData.AddRange(Constructions.ES2);
 						}
 
 						if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
@@ -4110,7 +4149,7 @@ namespace RRTypes.CommonParsers
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 
 							Bl.AddOKS(Uncompleted);
-							res.MifOKSSpatialCollection.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
+							res.MyBlocks.SpatialData.Add((TMyPolygon)Uncompleted.Uncompleted.ES);
 						}
 					}
 				}
@@ -4207,8 +4246,9 @@ namespace RRTypes.CommonParsers
 							MainObj.EntitySpatial.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
 							MainObj.EntitySpatial.Parent_Id = MainObj.id;
 							MainObj.EntitySpatial.Definition = MainObj.CN;
-							res.MifPolygons.Add(KPT11LandEntSpatToFteo(MainObj.CN,
+						/*	res.MyBlocks.SpatialData.AddRange(KPT11LandEntSpatToFteo(MainObj.CN,
 																  parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial")));
+																  */
 						}
 						
 						//TODO:
@@ -4224,7 +4264,7 @@ namespace RRTypes.CommonParsers
 								TMyPolygon NewCont = MainObj.Contours.AddPolygon(KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
 																	  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
 																	  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial")));
-								res.MifPolygons.Add(NewCont);
+								res.MyBlocks.SpatialData.AddRange(NewCont);
 							}
 						}
 						XMLParsingProc("xml", ++FileParsePosition, null);
@@ -4242,7 +4282,7 @@ namespace RRTypes.CommonParsers
 
 						if (build.SelectSingleNode("contours/contour/entity_spatial") != null)
 						{
-							Building.Building.ES = KPT11LandEntSpatToFteo(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
+							Building.ES2 =  KPT11LandEntSpatToES2(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
 						}
 
 						/*
@@ -4283,7 +4323,7 @@ namespace RRTypes.CommonParsers
 							BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
 						//TODO - spatial detecting:
 						BoundItem.EntitySpatial = KPT11LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
-						res.MifPolygons.Add(BoundItem.EntitySpatial);
+						res.MyBlocks.SpatialData.AddRange(BoundItem.EntitySpatial);
 						Bl.AddBound(BoundItem);
 					}
 
@@ -4372,7 +4412,7 @@ namespace RRTypes.CommonParsers
 				if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
 				{
 					MainObj.EntitySpatial = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial);
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
 				}
 			//Многоконтурный
 			if (kp.Parcel.Contours != null)
@@ -4380,7 +4420,7 @@ namespace RRTypes.CommonParsers
 
 				for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
 				{
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
 														 kp.Parcel.Contours[ic].NumberRecord + ")",
 														 kp.Parcel.Contours[ic].EntitySpatial));
 					TMyPolygon NewCont = MainObj.Contours.AddPolygon(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
@@ -4402,7 +4442,7 @@ namespace RRTypes.CommonParsers
 																	 kp.Parcel.CompositionEZ[i].EntitySpatial));
 
 
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
 														  kp.Parcel.CompositionEZ[i].EntitySpatial));
 				}
 			}
@@ -4421,7 +4461,7 @@ namespace RRTypes.CommonParsers
 						TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
 																			   kp.Parcel.SubParcels[i].EntitySpatial);
 						Sl.EntSpat.ImportPolygon(SlEs);
-						res.MifPolygons.Add(SlEs);
+						res.MyBlocks.SpatialData.Add(SlEs);
 					}
 
 				}
@@ -4489,7 +4529,7 @@ namespace RRTypes.CommonParsers
 				if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
 				{
 					MainObj.EntitySpatial = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial);
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
 				}
 			//Многоконтурный
 			if (kp.Parcel.Contours != null)
@@ -4497,7 +4537,7 @@ namespace RRTypes.CommonParsers
 
 				for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
 				{
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
 														 kp.Parcel.Contours[ic].NumberRecord + ")",
 														 kp.Parcel.Contours[ic].EntitySpatial));
 					TMyPolygon NewCont = MainObj.Contours.AddPolygon(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
@@ -4519,7 +4559,7 @@ namespace RRTypes.CommonParsers
 																	 kp.Parcel.CompositionEZ[i].EntitySpatial));
 
 
-					res.MifPolygons.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
 														  kp.Parcel.CompositionEZ[i].EntitySpatial));
 				}
 			}
@@ -4539,7 +4579,7 @@ namespace RRTypes.CommonParsers
 						TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord,
 																			   kp.Parcel.SubParcels[i].EntitySpatial);
 						Sl.EntSpat.ImportPolygon(SlEs);
-						res.MifPolygons.Add(SlEs);
+						res.MyBlocks.SpatialData.Add(SlEs);
 					}
 
 				}
@@ -4601,7 +4641,7 @@ namespace RRTypes.CommonParsers
 									MainObj.EntitySpatial = KV04_Utils.AddEntSpatKVZU04(parcel.CadastralNumber,
 																		   parcel.Entity_Spatial);
 									MainObj.EntitySpatial.Parent_Id = MainObj.id;
-									res.MifPolygons.Add(KV04_Utils.AddEntSpatKVZU04(parcel.CadastralNumber,
+									res.MyBlocks.SpatialData.Add(KV04_Utils.AddEntSpatKVZU04(parcel.CadastralNumber,
 																		   parcel.Entity_Spatial));
 								}
 
@@ -4611,7 +4651,7 @@ namespace RRTypes.CommonParsers
 								//   if (MainObj.Contours == null) MainObj.Contours = new TPolygonCollection(MainObj.id);
 								for (int ic = 0; ic <= parcel.Contours.Count - 1; ic++)
 								{
-									res.MifPolygons.Add(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
+									res.MyBlocks.SpatialData.Add(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
 																								 parcel.Contours[ic].Entity_Spatial));
 									TMyPolygon NewCont = MainObj.Contours.AddPolygon(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
 																															parcel.Contours[ic].Entity_Spatial));
@@ -4631,7 +4671,7 @@ namespace RRTypes.CommonParsers
 										if (parcel.SubParcels[i].Object_Entry != null)
 										{
 											MainObj.CompozitionEZ.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, -1, 6, SlEs);
-											res.MifPolygons.Add(SlEs);
+											res.MyBlocks.SpatialData.Add(SlEs);
 										}
 									}
 								}
@@ -4660,7 +4700,7 @@ namespace RRTypes.CommonParsers
 											TMyPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
 												parcel.SubParcels[i].Entity_Spatial);
 											Sl.EntSpat.ImportPolygon(SlEs);
-											res.MifPolygons.Add(SlEs);
+											res.MyBlocks.SpatialData.Add(SlEs);
 										}
 									}
 
@@ -4732,10 +4772,10 @@ namespace RRTypes.CommonParsers
 			if (kv.Parcels.Parcel.EntitySpatial != null)
 				if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
 				{
-					MainObj.EntitySpatial = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
+					MainObj.EntitySpatial = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
 														   kv.Parcels.Parcel.EntitySpatial);
 					MainObj.EntitySpatial.Parent_Id = MainObj.id;
-					res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
+					res.MyBlocks.SpatialData.Add(KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
 														   kv.Parcels.Parcel.EntitySpatial));
 				}
 			//Многоконтурный
@@ -4744,7 +4784,7 @@ namespace RRTypes.CommonParsers
 				//   if (MainObj.Contours == null) MainObj.Contours = new TPolygonCollection(MainObj.id);
 				for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
 				{
-					res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+					res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
 																				 kv.Parcels.Parcel.Contours[ic].EntitySpatial));
 					TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
 																											kv.Parcels.Parcel.Contours[ic].EntitySpatial));
@@ -4762,7 +4802,7 @@ namespace RRTypes.CommonParsers
 					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
 					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
 
-					res.MifPolygons.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+					res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
 
 				}
@@ -4780,7 +4820,7 @@ namespace RRTypes.CommonParsers
 					{
 						TMyPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
 						Sl.EntSpat.ImportPolygon(SlEs);
-						res.MifPolygons.Add(SlEs);
+						res.MyBlocks.SpatialData.Add(SlEs);
 					}
 
 				}
@@ -4890,7 +4930,7 @@ namespace RRTypes.CommonParsers
 					MainObj.EntitySpatial = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
 														   kv.Parcels.Parcel.EntitySpatial);
 					MainObj.EntitySpatial.Parent_Id = MainObj.id;
-					res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
 														   kv.Parcels.Parcel.EntitySpatial));
 				}
 			//Многоконтурный
@@ -4899,7 +4939,7 @@ namespace RRTypes.CommonParsers
 				// ??? MainObj.Contours.Parent_id = MainObj.id;
 				for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
 				{
-					res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
 																				 kv.Parcels.Parcel.Contours[ic].EntitySpatial));
 					TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
 																											kv.Parcels.Parcel.Contours[ic].EntitySpatial));
@@ -4918,7 +4958,7 @@ namespace RRTypes.CommonParsers
 					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
 					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
 
-					res.MifPolygons.Add(RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
 					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
 				}
@@ -4936,7 +4976,7 @@ namespace RRTypes.CommonParsers
 					{
 						TMyPolygon SlEs = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
 						Sl.EntSpat.ImportPolygon(SlEs);
-						res.MifPolygons.Add(SlEs);
+						res.MyBlocks.SpatialData.Add(SlEs);
 					}
 
 				}
@@ -5024,7 +5064,7 @@ namespace RRTypes.CommonParsers
 				Bld.Name = kv.Realty.Building.Name;
 				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
 				Bld.Area = kv.Realty.Building.Area;
-				Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
 				Bld.KeyParameters.AddParameter("Этажность", kv.Realty.Building.Floors.Floors);
 				Bld.KeyParameters.AddParameter("Подземная этажность", kv.Realty.Building.Floors.UndergroundFloors);
@@ -5109,7 +5149,7 @@ namespace RRTypes.CommonParsers
 				Constructions.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
 				Constructions.Location.Address = CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
 				Constructions.ES2 = CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-				res.MifOKSSpatialCollection.AddRange(Constructions.ES2);
+				res.MyBlocks.SpatialData.AddRange(Constructions.ES2);
 				res.CommentsType = "Особые отметки";
 				res.Comments = Constructions.Notes;
 				Bl.AddOKS(Constructions);
@@ -5165,7 +5205,7 @@ namespace RRTypes.CommonParsers
 				Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
 				Bld.Name = kv.Realty.Building.Name;
 				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
-				Bld.Building.ES = RRTypes.CommonCast.CasterOKS.ES_OKS(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.Building.Area = kv.Realty.Building.Area;
 				Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
 				Bld.Floors = kv.Realty.Building.Floors.Floors;
@@ -5342,16 +5382,8 @@ namespace RRTypes.CommonParsers
 
 			if (DXfEntitys != null)
 			{
-				/*
-				 * 			// Virtual Parcel with contours:
-				TMyCadastralBlock Bl = new TMyCadastralBlock();
-				Bl.CN = mifreader.Version;  //System.IO.Path.GetFileNameWithoutExtension(mifreader.FileName);
-				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(mifreader.FileName, "DXF"));
-
-				res.MyBlocks.Blocks.Clear();
-				res.MyBlocks.Blocks.Add(Bl);
-				*/
-				res.MyBlocks.SpatialData = DXfEntitys;
+	
+				// TODO where place for results ??? : res.MyBlocks.SpatialData = DXfEntitys;
 			}
 
 

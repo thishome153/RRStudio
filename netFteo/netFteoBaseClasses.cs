@@ -1829,6 +1829,7 @@ SCAN:
 
         public TMyOutLayer AddChild(TMyOutLayer child)
         {
+			if (child == null) return null;
             this.Childs.Add(child);
             this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
             return this.Childs[this.Childs.Count - 1];
@@ -1971,10 +1972,10 @@ SCAN:
                         if (this[i - 1].Bounds.MaxY > Result.MaxY) Result.MaxY = this[i - 1].Bounds.MaxY;
                     }
                 }
-
                 return Result;
             }
         }
+
         public string Defintion;
 
         public TMyPolygon AddPolygon(object poly_)
@@ -2976,14 +2977,16 @@ SCAN:
     public class TBuilding : TCadasterItem2
     {
         private string fAssBuilding;
-        private Object fEntitySpatial; //Может быть многоконтурным???
+
         //public List<TFlat> Flats;//Кадастровые номера помещений, расположенных в объекте недвижимости
         public TKeyParameters KeyParameters; // 
 		public TFlats Flats; // Помещения, расположенных в объекте недвижимости
-		/// <summary>
-		/// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
-		/// </summary>
+							 /// <summary>
+							 /// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
+							 /// </summary>
 		//public TMyPolygon EntitySpatial; //Может быть многоконтурным???
+		/*TODO migrate to ES2
+		private Object fEntitySpatial; //Может быть многоконтурным???
 		public Object ES
         {
             get { return this.fEntitySpatial; }
@@ -3000,10 +3003,11 @@ SCAN:
 
             }
         }
+		*/
 
         public TBuilding()
         {
-            this.fEntitySpatial = new TMyPolygon();
+            //this.fEntitySpatial = new TMyPolygon();
             this.KeyParameters = new TKeyParameters();
             this.Flats = new TFlats();//new List<TFlat>();
         }
@@ -3022,7 +3026,6 @@ SCAN:
         private string fObjectType;
         public string CadastralBlock;
         public List<string> ParentCadastralNumbers; //
-        public string Name;//Наименование
         //public decimal Area;
         public string Type;
 		public string Floors;
@@ -3121,7 +3124,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
-
+				/* TODO kill, goes to ES2
                 if (this[i].Building != null)
 
                     if ((this[i]).Building.ES != null)
@@ -3147,7 +3150,7 @@ SCAN:
                                 return (TMyPolygon)this[i].Building.ES;
                     }
 
-				/* TODO kill, goes to ES2
+
                 if (this[i].Construction != null)
 
                     if ((this[i]).Construction.ES != null)
@@ -3610,8 +3613,8 @@ SCAN:
         {
             this.ObjectRealtys.Add(newOKS);
             return (TMyRealty)this.ObjectRealtys[this.ObjectRealtys.Count - 1];
-
         }
+
         public TBound AddBound(TBound newBound)
         {
             this.GKNBounds.Add(newBound);
@@ -3738,12 +3741,30 @@ SCAN:
             }
         }
 
-		public TEntitySpatial SpatialData;
+		/// <summary>
+		/// Common spatial data collection
+		/// </summary>
+		public TEntitySpatial SpatialData
+		{
+			get
+			{
+				TEntitySpatial res = new TEntitySpatial();
+				//Realtys
+				res.Add(this.GetRealtyEs());
+				//Parcels
+				res.Add(this.GetParcelsEs());
+				//Zones
+				//Bound
+				return res;
+			}
+		}
+
         public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
         public TMyBlockCollection()
         {
             this.Blocks = new List<TMyCadastralBlock>();
-            this.CSs = new TCoordSystems();
+			//this.SpatialData = new TEntitySpatial();
+			this.CSs = new TCoordSystems();
         }
         public string SingleCN() // Если квартал один, вернуть его CN
         {
@@ -3761,6 +3782,7 @@ SCAN:
 				if (Entity != null)
 					return Entity;
 			}
+
 			foreach (IGeometry feature in this.SpatialData)
 			{
 				if (feature.id == Layer_id)
@@ -3770,12 +3792,29 @@ SCAN:
             return null;
         }
 
-        /// <summary>
-        /// Выборка ОИПД из коллекции зон
-        /// </summary>
-        /// <param name="ZoneType">"1 - тер. зоны"</param>
-        /// <returns></returns>
-        public TPolygonCollection GetZonesEs(int ZoneType)
+		/// <summary>
+		/// Select features from ES by handling layer
+		/// </summary>
+		/// <param name="Layer_Handle">Owner layer</param>
+		/// <returns>ES</returns>
+		public IGeometry GetEs(string  Layer_Handle)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			res.Definition = this.SpatialData.Definition;
+			foreach (IGeometry feature in this.SpatialData)
+			{
+				if (feature.LayerHandle == Layer_Handle)
+					res.Add(feature);
+			}
+			return res;
+		}
+
+		/// <summary>
+		/// Выборка ОИПД из коллекции зон
+		/// </summary>
+		/// <param name="ZoneType">"1 - тер. зоны"</param>
+		/// <returns></returns>
+		public TPolygonCollection GetZonesEs(int ZoneType)
         {
             TPolygonCollection Res = new TPolygonCollection();
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
@@ -3796,31 +3835,42 @@ SCAN:
             return Res;
         }
 
-        public TPolygonCollection GetRealtyEs()
+		public TEntitySpatial GetParcelsEs()
+		{
+			TEntitySpatial Res = new TEntitySpatial();
+			for (int i = 0; i <= this.Blocks.Count - 1; i++)
+				foreach (TMyParcel parcel in this.Blocks[i].Parcels.Parcels)
+				{
+					if (parcel.EntitySpatial != null)
+						Res.Add(parcel.EntitySpatial);
+					if (parcel.Contours != null)
+						foreach (IGeometry feature in parcel.Contours)
+							Res.Add(feature);
+				}
+			return Res;
+		}
+
+		public TEntitySpatial GetRealtyEs()
         {
-            TPolygonCollection Res = new TPolygonCollection();
-            for (int i = 0; i <= this.Blocks.Count - 1; i++)
-                for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
-                {
-
+            TEntitySpatial Res = new TEntitySpatial();
+			for (int i = 0; i <= this.Blocks.Count - 1; i++)
+				for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
+				{
+					if (
+				   (this.Blocks[i].ObjectRealtys[iz].ES2 != null))
+						foreach(IGeometry feature in this.Blocks[i].ObjectRealtys[iz].ES2)
+						Res.Add(feature);
+					//TODO ES to ES2 migrate 
 					/*
-                  if ((this.Blocks[i].ObjectRealtys[iz].Construction != null) &&
-                        (this.Blocks[i].ObjectRealtys[iz].Construction.ES != null))
-                            Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Construction.ES);
-				  */
-                    if (
-                        (this.Blocks[i].ObjectRealtys[iz].Building != null) &&
-                        (this.Blocks[i].ObjectRealtys[iz].Building.ES != null)
-                        )
-                        Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Building.ES);
+				
 
-                    if (
-                        (this.Blocks[i].ObjectRealtys[iz].Uncompleted    != null) &&
-                        (this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES != null)
-                        )
-                        Res.AddPolygon(this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES);
-
-                }
+					if (
+						(this.Blocks[i].ObjectRealtys[iz].Uncompleted != null) &&
+						(this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES != null)
+						)
+						Res.Add(this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES);
+					*/
+				}
             return Res;
         }
 
@@ -3947,10 +3997,10 @@ SCAN:
 				{
 					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 						res.AppendPoints(((TMyPolygon)feature).AsPointList());
-					
+
 					if (feature.TypeName == "netFteo.Spatial.PointList")
 						res.AppendPoints(((PointList)feature));
-					
+
 					if (feature.TypeName == "netFteo.Spatial.OMSPoints")
 						res.AppendPoints(((PointList)feature));
 				}
@@ -3959,6 +4009,38 @@ SCAN:
 				return res;
 			}
 		}
+
+		public TMyRect Get_Bounds
+		{
+			get
+			{
+				TMyRect Result = new TMyRect();
+				foreach (IGeometry feature in this)
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					{
+						TMyPolygon poly = (TMyPolygon)feature;
+						/*
+					Result.MinX = poly.Bounds.MinX;
+					Result.MaxX = poly.Bounds.MaxX;
+					Result.MaxY = poly.Bounds.MaxY;
+					Result.MinY = poly.Bounds.MinY;
+						*/
+						for (int i = 1; i <= this.Count; i++)
+						{
+							//рассчитаем диапазон карты
+							if (poly.Bounds != null)
+							{
+								if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+								if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+								if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+								if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+							}
+						}
+					}
+				return Result;
+			}
+		}
+
 	}
 
     #endregion

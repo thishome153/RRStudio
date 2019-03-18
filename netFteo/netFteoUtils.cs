@@ -35,8 +35,8 @@ namespace netFteo
      if (ParentCN == null) return;
 			foreach (Spatial.IGeometry poly in Target)
 			{
-				if((poly.GetType().ToString() == "Spatial.TMyPolygon") &&
-				 (poly.Definition.Contains(ParentCN)))
+				if (poly.Definition != null &&
+					poly.Definition.Contains(ParentCN))
 					if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
 						poly.Definition = poly.Definition.Substring(ParentCN.Length);
 			}
