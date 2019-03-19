@@ -51,7 +51,8 @@ namespace netFteo.Spatial
 	 /// Fraq ordinates values to format
 	/// </summary>
 	/// <param name="Format"></param>
-		void Fraq(string Format);// { get; set; };
+		void Fraq(string Format);
+		int ReorderPoints(int StartNumber);
 	}
 
     /// <summary>
@@ -98,6 +99,11 @@ namespace netFteo.Spatial
 		public void Fraq(string Format)
 		{
 		 // nothing to fraq :)
+		}
+
+		public int ReorderPoints(int ind)
+		{
+			return -1;
 		}
 		/// <summary>
 		/// Construct base Geometry object
@@ -609,6 +615,20 @@ namespace netFteo.Spatial
 				}
 			}
 		}
+
+		public int ReorderPoints(int StartIndex =1 )
+		{
+			foreach (Point pt in this)
+			{
+				pt.NumGeopointA = StartIndex++.ToString();
+			}
+			/*
+			if (this.Closed)
+				this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
+			*/
+			return StartIndex;
+		}
+
 		/// <summary>
 		/// Конструктор base Geometry object,
 		/// Для сериализаций в Xml конструктор должен быть без параметров
@@ -1442,17 +1462,7 @@ SCAN:
 			this.ImportObjects(tmpList);
 		}
 
-        public int Reorder_Points(int StartIndex)
-        {
-            foreach (Point pt in this)
-            {
-                pt.NumGeopointA = StartIndex++.ToString();
-            }
-
-            if (this.Closed)
-                this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
-            return StartIndex;
-        }
+    
 
 
 
@@ -1520,7 +1530,7 @@ SCAN:
     /// <summary>
     /// Класс Полигон
     /// </summary>
-    public class TMyPolygon : TMyOutLayer
+    public class TMyPolygon : TMyOutLayer, IGeometry
     {
 
         public List<TMyOutLayer> Childs;
@@ -1581,21 +1591,40 @@ SCAN:
         }
 
 
-        public void Fraq(string format)
+        public  void Fraq(string Format)
         {
-            this.Fraq(format);
-            foreach (TMyOutLayer child in this.Childs)
-                child.Fraq(format);
+			foreach (Point pt in this)
+			{
+				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
+				{
+
+					pt.x = fraqtedX;
+					pt.oldX = fraqtedX;
+				}
+
+				if (Double.TryParse(pt.y.ToString(Format), out double fraqtedY))
+				{
+					pt.y = fraqtedY;
+					pt.oldY = fraqtedY;
+				}
+			}
+			foreach (TMyOutLayer child in this.Childs)
+                child.Fraq(Format);
         }
 
 
-        public void ReorderPoints(int StartIndex)
+        public int ReorderPoints(int StartIndex =1 )
         {
-            StartIndex += this.Reorder_Points(StartIndex);
-            foreach (TMyOutLayer child in this.Childs)
-                StartIndex += child.Reorder_Points(StartIndex);
-        }
+			foreach (Point pt in this)
+			{
+				pt.NumGeopointA = StartIndex++.ToString();
+			}
 
+			foreach (TMyOutLayer child in this.Childs)
+                StartIndex += child.ReorderPoints(StartIndex);
+			return StartIndex;
+        }
+		
 
         public int State;
         /// <summary>
@@ -4000,8 +4029,9 @@ SCAN:
 			this.Layers.Add(new TLayer()); // default layer 0, handle = FFFF
 		}
 
-		public void Fraq (string Format)
+		public void Fraq(string Format)
 		{
+			/*
 			foreach (IGeometry feature in this)
 			{
 				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
@@ -4013,7 +4043,23 @@ SCAN:
 				if (feature.TypeName == "netFteo.Spatial.OMSPoints")
 					((PointList)feature).Fraq(Format);
 			}
+			*/
+			foreach (IGeometry feature in this)
+			{
+				feature.Fraq(Format);
+			}
+
 		}
+
+		public int ReorderPoints(int Startindex =1)
+		{
+			foreach (IGeometry feature in this)
+			{
+			 Startindex += 	feature.ReorderPoints(Startindex);
+			}
+			return Startindex;
+		}
+
 		public PointList AsPointList
 		{
 			get

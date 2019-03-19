@@ -2034,7 +2034,6 @@ namespace XMLReaderCS
 		private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
 		{
 			if (PList.Count == 0) return null;
-			string BName;
 			LV.Items.Clear();
 			LV.Tag = PList.id;
 			ListViewItem res = PointListToListView(LV, (PointList)PList);
@@ -2090,7 +2089,7 @@ namespace XMLReaderCS
 			LV.BeginUpdate();
 			//LV.Items.Clear();
 			//LV.Tag = PList.Parent_Id;
-			LV.Tag = PList.id;
+			//LV.Tag = PList.id;
 			ListViewItem res = null; ;
 			for (int i = 0; i <= PList.Count - 1; i++)
 			{
@@ -2115,8 +2114,9 @@ namespace XMLReaderCS
 			return res; // вернем первую строчку Items
 		}
 
-		private ListViewItem PointListToListView(ListView LV, object PointList)
+		private ListViewItem GeometryToListView(ListView LV, IGeometry PointList)
 		{
+			
 			if (PointList.ToString() == "netFteo.Spatial.TMyPolygon")
 				return PointListToListView(LV, (TMyPolygon)PointList);
 			if (PointList.ToString() == "netFteo.Spatial.TPolyLine")
@@ -2124,10 +2124,14 @@ namespace XMLReaderCS
 			if (PointList.ToString() == "netFteo.Spatial.TCircle")
 				return PointListToListView(LV, (TCircle)PointList);
 			return null;
+			
+			/*  // Example for StackOverFlow: infinite call self without type checking
+			 * return PointListToListView(LV, PointList);
+			  */
 		}
 
 		//Листинг ПД 
-		private void EsToListView(ListView LV, object ES, int parent_id)
+		private void EsToListView(ListView LV, IGeometry ES, int parent_id)
 		{
 			if (ES == null)
 			{
@@ -2154,7 +2158,7 @@ namespace XMLReaderCS
 				LV.Items.Add(LVi);
 			}
 
-			LVi_Commands = PointListToListView(LV, ES);
+			LVi_Commands = GeometryToListView(LV, ES);
 			// Visualizer check:
 			if (toolStripMI_ShowES.Checked)
 			{
@@ -3082,7 +3086,7 @@ namespace XMLReaderCS
 			if (STrN.Name.Contains("TCircle."))
 			{
 				int chek_id = Convert.ToInt32(STrN.Name.Substring(8));
-				Object CircleEntity = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
+				IGeometry CircleEntity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
 				if (CircleEntity != null)
 				{
 					EsToListView(listView1, CircleEntity, (int)STrN.Tag);
@@ -5274,17 +5278,17 @@ namespace XMLReaderCS
 			if (Feature != null)
 			{
 				Feature.Fraq("0.00");
-				PointListToListView(listView1, Feature);
+				GeometryToListView(listView1, Feature);
 			}
         }
 
         private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-            if (Pl != null)
-            {
-                Pl.ReorderPoints(1);
-                PointListToListView(listView1, Pl);
+			IGeometry Feature = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			if (Feature != null)
+			{
+				Feature.ReorderPoints(1);
+				GeometryToListView(listView1, Feature);
             }
         }
 
