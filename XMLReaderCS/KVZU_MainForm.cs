@@ -1096,7 +1096,7 @@ namespace XMLReaderCS
 				Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
 				Bld.Name = kv.Realty.Building.Name;
 				//Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
-				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bl.AddOKS(Bld);
 				//MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
 				this.DocInfo.MyBlocks.Blocks.Add(Bl);
@@ -1111,7 +1111,7 @@ namespace XMLReaderCS
 
 				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
 				Constructions.Name = kv.Realty.Construction.Name;
-				Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
 					Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number });
 				Bl.AddOKS(Constructions);
@@ -1170,7 +1170,7 @@ namespace XMLReaderCS
 				Bld.Name = kv.Realty.Building.Name;
 				Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
 				Bld.Area = kv.Realty.Building.Area;
-				Bld.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+				Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
 				if (kv.Realty.Building.CadastralNumbersFlats != null)
 					if (kv.Realty.Building.CadastralNumbersFlats.Count() > 0)
@@ -1195,7 +1195,7 @@ namespace XMLReaderCS
 				TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 				Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
 				//Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
-				Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+				Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
 				Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
 				Bl.AddOKS(Constructions);
 				//MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
@@ -1239,10 +1239,10 @@ namespace XMLReaderCS
 					TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
 					Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
 					Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
-					Constructions.ES2 = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
+					Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
 																					 TP.Construction.Package.New_Construction[0].Entity_Spatial);
 					Bl.AddOKS(Constructions);
-					this.DocInfo.MyBlocks.SpatialData.AddRange(Constructions.ES2);
+					this.DocInfo.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
 					this.DocInfo.MyBlocks.Blocks.Add(Bl);
 				}
 
@@ -1643,8 +1643,8 @@ namespace XMLReaderCS
 			//ОИПД если нет кварталов - не было импорта ЕГРН, значит только пространственный файл
 			if (BlockList.Blocks.Count == 0)
 			{
-				if (BlockList.SpatialData != null)
-					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode", BlockList.SpatialData.Definition), BlockList.SpatialData, 6);
+				if (BlockList.ParsedSpatial != null)
+					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode", BlockList.ParsedSpatial.Definition), BlockList.ParsedSpatial, 6);
 			}
 
 			if (TopNode_ != null) TopNode_.Expand();
@@ -1948,6 +1948,7 @@ namespace XMLReaderCS
 			if (oks.Uncompleted != null) //.Type == "Сооружение")
 			{
 				ListOldNumbers(PNode, oks.Uncompleted.OldNumbers);
+				/*
 				if (oks.Uncompleted.ES != null)
 				{
 					if (oks.Uncompleted.ES.GetType().Name == "TMyPolygon")
@@ -1960,7 +1961,7 @@ namespace XMLReaderCS
 					{
 						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Uncompleted.ES, "SPElem.", "ПолиЛинии", 6);
 					}
-				}
+				} */
 			}
 
 			if ((oks.Location != null) &&
@@ -1979,7 +1980,7 @@ namespace XMLReaderCS
 					flatsnodes.Nodes.Add("CN" + s, s);
 			}
 
-			netFteo.ObjectLister.ListEntSpat(PNode, oks.ES2, 6);
+			netFteo.ObjectLister.ListEntSpat(PNode, oks.EntSpat, 6);
 			ListRights(PNode, oks.Rights, oks.id, "Права", "Rights");
 			ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
 		}
@@ -2089,6 +2090,7 @@ namespace XMLReaderCS
 			LV.BeginUpdate();
 			//LV.Items.Clear();
 			//LV.Tag = PList.Parent_Id;
+			LV.Tag = PList.id;
 			ListViewItem res = null; ;
 			for (int i = 0; i <= PList.Count - 1; i++)
 			{
@@ -2787,7 +2789,7 @@ namespace XMLReaderCS
 						LViReady.Text = "Степень готовности";
 						LViReady.SubItems.Add(P.Uncompleted.DegreeReadiness + "%");
 						LV.Items.Add(LViReady);
-						EsToListView(listView1, P.Uncompleted.ES, P.id);
+						EsToListView(listView1, P.EntSpat, P.id);
 					}
 
 					if (P.Area != 0)
@@ -2808,7 +2810,7 @@ namespace XMLReaderCS
 						LV.Items.Add(LViFloors);
 					}
 
-					EsToListView(listView1, P.ES2, P.id);
+					EsToListView(listView1, P.EntSpat, P.id);
 					KeyParametersToListView(LV, P.KeyParameters);
 				}
 
@@ -2891,8 +2893,22 @@ namespace XMLReaderCS
 					// list borders:
 					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
 				}
+				
+				if (Obj.ToString() == "netFteo.Spatial.TPolyLine")
+				{
+					TPolyLine Poly = (TPolyLine)Obj;
+					LV.Items.Clear();
+					// list borders:
+					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
 
-				if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
+					ListViewItem LVipP = new ListViewItem();
+					LVipP.Text = "Длина";
+					LVipP.SubItems.Add(Poly.Length().ToString("#,0.00"));
+					LVipP.SubItems.Add("м.");
+					LV.Items.Add(LVipP);
+				}
+
+					if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
 				{
 					LV.Items.Clear();
 					netFteo.Rosreestr.TMyRights R = (netFteo.Rosreestr.TMyRights)Obj;
@@ -3038,14 +3054,7 @@ namespace XMLReaderCS
 			if (STrN.Name.Contains("SPElem."))
 			{
 				int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
-				/*
-                object parent = this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(STrN.Name.Substring(7)));
-                if (parent != null)
-                {
-                    object Mparent = this.DocInfo.MyBlocks.GetObject(((TMyPolygon)parent).Parent_Id);
-                }
-                */
-				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+					TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
 
 				if (Pl != null)
 				{
@@ -3066,6 +3075,7 @@ namespace XMLReaderCS
 				if (Entity != null)
 				{
 					PointListToListView(listView1, (PointList)Entity);
+					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
 
@@ -3078,6 +3088,37 @@ namespace XMLReaderCS
 					EsToListView(listView1, CircleEntity, (int)STrN.Tag);
 					//PointListToListView(listView1, (TCircle)CircleEntity);
 				}
+			}
+
+			if (STrN.Name.Contains("EntrysNode"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
+					PropertiesToListView(listView_Properties, P.CompozitionEZ);
+				}
+			}
+
+			if (STrN.Name.Contains("Contours"))
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O != null)
+					if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
+					{
+						netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
+						EZPEntryListToListView(listView1, P.AsList());
+						PropertiesToListView(listView_Properties, P);
+					}
+
+			}
+
+			if (STrN.Name.Contains("OMSPoints"))
+			{
+				OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
 			}
 
 			if (STrN.Name.Contains("PNode"))
@@ -3101,8 +3142,6 @@ namespace XMLReaderCS
 				LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
 				PropertiesToListView(listView_Properties, O);
 			}
-
-
 
 
 			if ((STrN.Name.Contains("SpecNotes")) ||
@@ -3129,9 +3168,7 @@ namespace XMLReaderCS
 				{
 					TMyParcel P = (TMyParcel)O;
 					PropertiesToListView(listView_Properties, P.Rights);
-					// PropertiesToListView(listView_Properties, P.EGRN);
 					if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
-					//  if (P.EGRN != null)    RightsToListView(listView1, P.EGRN.AsList());
 				}
 			}
 
@@ -3186,36 +3223,7 @@ namespace XMLReaderCS
 			}
 
 
-			if (STrN.Name.Contains("EntrysNode"))
-			{
-				Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-				object O = this.DocInfo.MyBlocks.GetObject(id);
-				if (O.ToString() == "netFteo.Spatial.TMyParcel")
-				{
-					TMyParcel P = (TMyParcel)O;
-					EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
-					PropertiesToListView(listView_Properties, P.CompozitionEZ);
-				}
-			}
-
-			if (STrN.Name.Contains("Contours"))
-			{
-				Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-				object O = this.DocInfo.MyBlocks.GetObject(id);
-				if (O != null)
-					if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
-					{
-						netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
-						EZPEntryListToListView(listView1, P.AsList());
-						PropertiesToListView(listView_Properties, P);
-					}
-
-			}
-
-			if (STrN.Name.Contains("OMSPoints"))
-			{
-				OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
-			}
+		
 		}
 
 
@@ -3310,6 +3318,7 @@ namespace XMLReaderCS
 				RDurTerm.Nodes.Add(Encums.DurationTerm);
 			}
 		}
+
 		private void ListEncums(TreeNode PNode, netFteo.Rosreestr.TMyEncumbrances Ens)
 		{
 			if (Ens == null) return;
@@ -3323,9 +3332,6 @@ namespace XMLReaderCS
 				}
 			}
 		}
-
-
-	
 
 		#endregion
 
@@ -3354,114 +3360,81 @@ namespace XMLReaderCS
 
 		}
 
-		private void SaveAsmifOMS(string FileName, PointList OMS)
-		{
-			if (OMS == null) return;
-			if (OMS.PointCount == 0) return;
-			TextWriter writer = new StreamWriter(FileName);
-			TextWriter writerMIDA = new StreamWriter(Path.GetFileNameWithoutExtension(FileName) + ".mid", false, Encoding.GetEncoding("Windows-1251"));
-			writer.WriteLine("Version 450");
-			writer.WriteLine("Charset \"WindowsCyrillic\"");
-			writer.WriteLine("Delimiter \"$\"");
-			writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
-							 OMS.Bounds.MinY.ToString() + "," + OMS.Bounds.MinX.ToString() + ")  (" +
-							 OMS.Bounds.MaxY.ToString() + "," + OMS.Bounds.MaxX.ToString() + ")");
-			writer.WriteLine("Columns 3");
-			writer.WriteLine("    Point_Name Char(127)");
-			writer.WriteLine("    Net_Klass  Char(127)");
-			writer.WriteLine("    Number Char(127)");
-			writer.WriteLine("Data");
-			writer.WriteLine("");
-			netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-			TR.WriteMifPoints(writer, writerMIDA, OMS);
-			writer.Close();
-			writerMIDA.Close();
-		}
-
-		#region Запись в DXF
-
-
-
-		/*
-			private void CreateDxf3dPolygon(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netDxf.Tables.Layer LayerPoly, netFteo.Spatial.PointList Points)
-			{
-				List<PolylineVertex> PlVertexLst = new List<PolylineVertex>();  //Список Vertexов (вершин) полилинии:
-
-				for (int i = 0; i <= Points.Count - 1; i++)
-				{
-
-					PlVertexLst.Add(new PolylineVertex(Points[i].y, Points[i].x, Points[i].z));
-					netDxf.Entities.Point Pt = new Point(Points[i].y, Points[i].x, Points[i].z);
-					Pt.Layer = LayerPoints;
-					dxfDoc.AddEntity(Pt);
-					netDxf.Entities.Text PointName = new Text();
-					if (Points[i].NumGeopointA == null)
-						PointName.Value = i.ToString();
-					else PointName.Value = Points[i].NumGeopointA;
-					PointName.Height = 5;
-					PointName.Position = new Vector3(Points[i].y, Points[i].x, Points[i].z);
-					PointName.Layer = LayerText;
-					dxfDoc.AddEntity(PointName);
-				}
-
-				//3Д Полилиния
-				Polyline PLine = new Polyline(PlVertexLst, true); //Сама полилиния, замкнутая true:
-				PLine.Layer = LayerPoly;
-				dxfDoc.AddEntity(PLine);        //Вгоняем в dxf:
-			}
-
-			*/
+		#region Запись в DXF, MIF, TXT 
+	
 		//------------------------------------------------------------------------------------------
-		private void SaveAs(string Format, string ItemName, int scale= 1000)
+		private void SaveAs(string Format, string ItemName, int scale = 1000)
 		{
 			//1. Get ES: 
 			TEntitySpatial ES = GetES(ItemName);
 
-			//2. Set Format
+			//2. Set Format and write out file
 			if (ES != null)
-	
+
 			{
-					switch (Format)
-					{
-						case "MIF":
-							{
+				switch (Format)
+				{
+					case "MIF":
+						{
 							netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
 							saveFileDialog1.FilterIndex = 1; // mif
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 								TR.SaveAsmif(saveFileDialog1.FileName, ES);
-								break; }
+							break; }
 
-						case "DXF":
+					case "CSV":
+						{
+							saveFileDialog1.FilterIndex = 4;
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 							{
-								double ScaleRaduis;
-								switch (scale)
-								{
-									case 33333:
-										ScaleRaduis = 22.5; //
-										break;
-									case 10000:
-										ScaleRaduis = 7.5;
-										break;
-									case 5000:
-										ScaleRaduis = 3.75;
-										break;
-									case 1000:
-										ScaleRaduis = 0.75;
-										break;
-									case 500:
-										ScaleRaduis = 0.375;
-										break;
-									default:
-										ScaleRaduis = 0.75; // aka 1:1000 is default scale
-										break;
-								}
-								netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
-								saveFileDialog1.FilterIndex = 3;
+								netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+								TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, ES);
+							}
+							break;
+						}
+
+					case "TXT":
+						{
+							saveFileDialog1.FilterIndex = 2;
+							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+							{
+								netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+								TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, ES, Encoding.Unicode);
+							}
+							break;
+						}
+
+					case "DXF":
+						{
+							double ScaleRaduis;
+							switch (scale)
+							{
+								case 33333:
+									ScaleRaduis = 22.5; //
+									break;
+								case 10000:
+									ScaleRaduis = 7.5;
+									break;
+								case 5000:
+									ScaleRaduis = 3.75;
+									break;
+								case 1000:
+									ScaleRaduis = 0.75;
+									break;
+								case 500:
+									ScaleRaduis = 0.375;
+									break;
+								default:
+									ScaleRaduis = 0.75; // aka 1:1000 is default scale
+									break;
+							}
+							netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
+							saveFileDialog1.FilterIndex = 3;
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 								wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, ScaleRaduis);
-								break;
-							}
-					}
+							break;
+						}
+				}
 			}
 
 		}
@@ -3473,7 +3446,7 @@ namespace XMLReaderCS
 
 			if (NodeName.Contains("Contours"))
 			{
-				TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
+				TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(8)));
 				if (Pl != null)
 				{
 					TEntitySpatial res = new TEntitySpatial();
@@ -3484,7 +3457,7 @@ namespace XMLReaderCS
 
 			if (NodeName.Contains("EntrysNode"))
 			{
-				TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
+				TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(NodeName.Substring(10)));
 				if (Lot != null)
 				{
 					TEntitySpatial res = new TEntitySpatial();
@@ -3496,7 +3469,7 @@ namespace XMLReaderCS
 
 			if (NodeName.Contains("SPElem."))
 			{
-				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(7)));
 				if (Pl != null)
 				{
 					TEntitySpatial PC = new TEntitySpatial();
@@ -3505,7 +3478,17 @@ namespace XMLReaderCS
 				}
 			}
 
+			if (NodeName.Contains("TPolyLine."))
+			{
+				TPolyLine Pl = (TPolyLine) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
+				if (Pl != null)
+				{
+					TEntitySpatial PC = new TEntitySpatial();
+					PC.Add(Pl);
+					return PC;
 
+				}
+			}
 
 
 			//Не Все зоны - только территориальные, ==(1) ??
@@ -3532,7 +3515,7 @@ namespace XMLReaderCS
 
 			if (NodeName.Contains("ES."))
 			{
-				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(3)));
+				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(3)));
 				return (TEntitySpatial)es;
 			}
 
@@ -3540,7 +3523,7 @@ namespace XMLReaderCS
 
 			if (NodeName.Contains("Layer."))
 			{
-				return (TEntitySpatial)this.DocInfo.MyBlocks.GetEs(TV_Parcels.SelectedNode.Name.Substring(6));
+				return (TEntitySpatial)this.DocInfo.MyBlocks.GetEs(NodeName.Substring(6));
 
 			}
 
@@ -3912,6 +3895,7 @@ namespace XMLReaderCS
         #region SaveAs Text (FixosoftTXT2018, Rights)
         private void toolStripMenuItem2_Click_1(object sender, EventArgs e)
         {
+			/*
             saveFileDialog1.FilterIndex = 2;
             if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
             {
@@ -3976,19 +3960,7 @@ namespace XMLReaderCS
           }
 
 
-			/* TODO:
-			if (TV_Parcels.SelectedNode.Name == "OMSPoints")
-			{
-				if (this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA != null)
-					saveFileDialog1.FileName = "ОМС-" + this.DocInfo.MyBlocks.OMSPoints[0].NumGeopointA;
-				else saveFileDialog1.FileName = "ОМС";
-				if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-				{
-					netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-					TR.SaveAsOMSTXT(this.DocInfo.MyBlocks.SingleCN(), saveFileDialog1.FileName, this.DocInfo.MyBlocks.OMSPoints);
-				}
-			}
-			*/
+		
 			if (TV_Parcels.SelectedNode.Name == "TopNode")
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
@@ -4008,7 +3980,9 @@ namespace XMLReaderCS
                         TR.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, Plc, Encoding.Unicode);
                     }
             }
+			*/
 
+			SaveAs("TXT", TV_Parcels.SelectedNode.Name);
             if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
@@ -4139,41 +4113,7 @@ namespace XMLReaderCS
 
         private void csvStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FilterIndex = 4;
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
-            {
-                TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                        TR.SaveAsTexnoCADCSV (saveFileDialog1.FileName, Pl);
-                    }
-                }
-            }
-
-            if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
-            {
-                TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10)));
-                if (Lot != null)
-                {
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                        TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, Lot.CompozitionEZ);
-                    }
-                }
-            }
-
-            if (TV_Parcels.SelectedNode.Name == "TopNode")
-                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                {
-                    netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                 //   TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, this.DocInfo.MifPolygons);
-
-                }
+			SaveAs("CSV", TV_Parcels.SelectedNode.Name);
         }
 
         private void m110000ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5275,7 +5215,8 @@ namespace XMLReaderCS
 
         private void TV_Parcels_DoubleClick(object sender, EventArgs e)
         {
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
+            if (TV_Parcels.SelectedNode != null &&
+				TV_Parcels.SelectedNode.Name.Contains("SPElem"))
             {
                 Toggle_Visualizer();
             }
@@ -5329,12 +5270,12 @@ namespace XMLReaderCS
 
         private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-            if (Pl != null)
-            {
-                Pl.Fraq("0.00");
-                PointListToListView(listView1, Pl);
-            }
+           IGeometry Feature =(IGeometry) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			if (Feature != null)
+			{
+				Feature.Fraq("0.00");
+				PointListToListView(listView1, Feature);
+			}
         }
 
         private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)

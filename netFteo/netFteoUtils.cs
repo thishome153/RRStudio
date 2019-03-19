@@ -213,13 +213,52 @@ namespace netFteo
 			foreach (netFteo.Spatial.TLayer layer in ES.Layers)
 			{
 				TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
-				//TODO Filter features by LINQ : 
-				//Spatial.TEntitySpatial LayerFeatures = ES..Select <Spatial.IGeometry>(fnc => < Spatial.IGeometry, Spatial.TEntitySpatial >)(xd => xd.LayerHandle == layer.LayerHandle);
+				//TODO Filter features by Inumerable selects : 
+				//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
 				ListFeature(ES, LayerNode, layer.LayerHandle);
 			}
 		}
 
 		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
+		{
+
+			if (ES == null) return null;
+			ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
+			res.Add("");
+			res.Add("Отрезки границ:");
+			netFteo.Spatial.BrdList Borders = new Spatial.BrdList();
+			Borders.AddItems("", ES);
+			int OutCount = Borders.Count;
+			owner.BeginUpdate();
+			for (int i = 0; i <= Borders.Count - 1; i++)
+			{
+				ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
+				LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
+				LVb.SubItems.Add(Borders[i].Definition);
+				res.Add(LVb);
+			}
+
+
+			for (int ic = 0; ic <= ES.Childs.Count - 1; ic++)
+			{
+				res.Add("");
+				Borders.AddItems((ic + 1).ToString() + ".", ES.Childs[ic]);
+
+				for (int i = OutCount; i <= Borders.Count - 1; i++)
+				{
+					ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
+					LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
+					LVb.SubItems.Add(Borders[i].Definition);
+					res.Add(LVb);
+				}
+				OutCount = OutCount + ES.Childs[ic].Count - 1;
+			}
+
+				owner.EndUpdate();
+			return res;
+		}
+
+		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TPolyLine ES)
         {
             if (ES == null) return null;
             ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
@@ -237,25 +276,8 @@ namespace netFteo
                 res.Add(LVb);
             }
 
-            for (int ic = 0; ic <= ES.Childs.Count - 1; ic++)
-            {
-                res.Add("");    
-                Borders.AddItems((ic + 1).ToString() + ".", ES.Childs[ic]);
-                
-                for (int i = OutCount; i <= Borders.Count - 1; i++)
-                {
-                    ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
-                    LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
-                    LVb.SubItems.Add(Borders[i].Definition);
-                    res.Add(LVb);
-                }
-                OutCount = OutCount + ES.Childs[ic].Count-1;
-            }
-
-
-            owner.EndUpdate();
-
-
+	
+			owner.EndUpdate();
                 return res;
         }
     }

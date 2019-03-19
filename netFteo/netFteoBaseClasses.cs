@@ -33,21 +33,26 @@ namespace netFteo.Spatial
             fid = 0;
         }
     }
-    #endregion
+	#endregion
 
-    #region Base classes of all base classes 
+	#region Base classes of all base classes 
 
-    /// <summary>
-    /// Мать всех матерей
-    /// </summary>
-    public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
-    {
-        int id { get; set; }
-		string  Definition { get; set; }
+	/// <summary>
+	/// Мать всех матерей
+	/// </summary>
+	public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
+	{
+		int id { get; set; }
+		string Definition { get; set; }
 		string Name { get; set; }
-		string  TypeName { get; }
+		string TypeName { get; }
 		string LayerHandle { get; set; } // handle of the layer (dxf ecosystem)
-    }
+	 /// <summary>
+	 /// Fraq ordinates values to format
+	/// </summary>
+	/// <param name="Format"></param>
+		void Fraq(string Format);// { get; set; };
+	}
 
     /// <summary>
     /// А также его имплементация
@@ -90,15 +95,23 @@ namespace netFteo.Spatial
 			}
 		}
 
+		public void Fraq(string Format)
+		{
+		 // nothing to fraq :)
+		}
 		/// <summary>
 		/// Construct base Geometry object
 		/// </summary>
 		public Geometry()
         {
             this.id = Gen_id.newId;
-			this.fLayerHandle = "FFFF"; //Default
+			this.fLayerHandle = "F"; //Default
 		}
-    }
+
+	
+
+
+	}
 
 
 
@@ -577,6 +590,25 @@ namespace netFteo.Spatial
 				return this.GetType().ToString();
 			}
 		}
+
+		public void Fraq(string Format)
+		{
+			foreach (Point pt in this)
+			{
+				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
+				{
+
+					pt.x = fraqtedX;
+					pt.oldX = fraqtedX;
+				}
+
+				if (Double.TryParse(pt.y.ToString(Format), out double fraqtedY))
+				{
+					pt.y = fraqtedY;
+					pt.oldY = fraqtedY;
+				}
+			}
+		}
 		/// <summary>
 		/// Конструктор base Geometry object,
 		/// Для сериализаций в Xml конструктор должен быть без параметров
@@ -584,7 +616,8 @@ namespace netFteo.Spatial
 		public PointList()
         {
             this.id = Gen_id.newId;
-        }
+			this.fLayerHandle = "F"; //Default
+		}
 
 
         public bool HasChangesBool
@@ -1073,23 +1106,8 @@ SCAN:
     //public class Ring: PointList
     public class TMyOutLayer : PointList
     {
-        // public BindingList<Point> Points;
-        private int FLayer_id;
-		/*
-        private string fDefinition;
-        public string Definition
-        {
-            get { return this.fDefinition; }
-            set { this.fDefinition = value; }
-        }
-		*/
-		/*
-        public int Layer_id
-        {
-            get { return this.FLayer_id; }
-            set { this.FLayer_id = value; }
-        }
-		*/
+     
+      //  private int FLayer_id;
 
         public string PerymethrFmt(string Format)
         {
@@ -1382,32 +1400,11 @@ SCAN:
             }
         }
 
-
         public void Set_Mt(double mt)
         {
             foreach (Point pt in this)
                 pt.Mt = mt;
         }
-
-        public void Set_Fraq(string format)
-        {
-            foreach (Point pt in this)
-            {
-                if (Double.TryParse(pt.x.ToString(format), out double fraqtedX))
-                {
-                    pt.x = fraqtedX;
-                    pt.oldX = fraqtedX;
-                }
-
-                if (Double.TryParse(pt.y.ToString(format), out double fraqtedY))
-                {
-                    pt.y = fraqtedY;
-                    pt.oldY = fraqtedY;
-                }
-            }
-        }
-
-   
 
         /// <summary>
         /// Closed figure - point First and Last are ident (in ordinates, not by name/Number)
@@ -1477,11 +1474,11 @@ SCAN:
         {
             get { return this.fid; }
         }
+
         public TBorder(string definition, double length)
         {
             this.fLength = length;
             this.Definition = definition;
-
             this.fid = Gen_id.newId;
         }
     }
@@ -1503,6 +1500,18 @@ SCAN:
             }
 
         }
+		 public double Length
+		{
+			get
+			{
+				double res = 0;
+				foreach(TBorder border in this)
+				{
+					res += border.Length;
+				}
+				return res;
+			}
+		}
     }
 
     #endregion
@@ -1521,7 +1530,7 @@ SCAN:
             this.Childs = new List<TMyOutLayer>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
-			this.LayerHandle = "FFFF"; // default
+//			this.LayerHandle = "FFFF"; // default
 		}
 
         public TMyPolygon(int id):this()
@@ -1574,9 +1583,9 @@ SCAN:
 
         public void Fraq(string format)
         {
-            this.Set_Fraq(format);
+            this.Fraq(format);
             foreach (TMyOutLayer child in this.Childs)
-                child.Set_Fraq(format);
+                child.Fraq(format);
         }
 
 
@@ -2945,11 +2954,15 @@ SCAN:
 
     public class TUncompleted : TCadasterItem2
     {
-        private Object fEntitySpatial; //Может быть многоконтурным???
+
+
         public string AssignationName;  // Проектируемое назначение
         public TKeyParameters KeyParameters; // 
         public string DegreeReadiness; //Степень готовности в процентах
-        public Object ES
+
+/*
+		private Object fEntitySpatial; //Может быть многоконтурным???
+		public Object ES
         {
             get { return this.fEntitySpatial; }
             set
@@ -2962,12 +2975,9 @@ SCAN:
 
                 if (value.GetType().Name == "TPolyLines")
                     this.fEntitySpatial = (TPolyLines)value;
-
             }
         }
-
-	
-
+*/
         public TUncompleted()
         {
             this.KeyParameters = new TKeyParameters();
@@ -2984,26 +2994,6 @@ SCAN:
 							 /// <summary>
 							 /// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
 							 /// </summary>
-		//public TMyPolygon EntitySpatial; //Может быть многоконтурным???
-		/*TODO migrate to ES2
-		private Object fEntitySpatial; //Может быть многоконтурным???
-		public Object ES
-        {
-            get { return this.fEntitySpatial; }
-            set
-            {
-                if (value == null) return;
-                string test = value.GetType().Name;
-
-                if (value.GetType().Name == "TMyPolygon")
-                    this.fEntitySpatial = (TMyPolygon)value;
-
-                if (value.GetType().Name == "TPolyLines")
-                    this.fEntitySpatial = (TPolyLines)value;
-
-            }
-        }
-		*/
 
         public TBuilding()
         {
@@ -3032,7 +3022,7 @@ SCAN:
 		public string UndergroundFloors;
 		public Rosreestr.TMyRights Rights; // как бы ГКН-Права
         public Rosreestr.TMyRights EGRN;
-		public TEntitySpatial ES2;
+		public TEntitySpatial EntSpat; //Spatial data
 		//SubTypes:
 		public TBuilding Building;
 		public TFlat Flat;
@@ -3176,7 +3166,7 @@ SCAN:
                                 return (TMyPolygon)this[i].Construction.ES;
                     }
 
-				*/
+
 				if (this[i].Uncompleted != null)
 					if ((this[i]).Uncompleted.ES != null)
 					{
@@ -3199,16 +3189,16 @@ SCAN:
 						if (this[i].Uncompleted.ES.GetType().Name == "TMyPolygon")
 							if (((TMyPolygon)this[i].Uncompleted.ES).id == Layer_id)
 								return (TMyPolygon)this[i].Uncompleted.ES;
-					}
+									*/
 
 				//again for ES2 (common spatial data collection)
-				if ((this[i].ES2 != null) &&
-					(this[i].ES2.id == Layer_id))
-					return this[i].ES2;
+				if ((this[i].EntSpat != null) &&
+					(this[i].EntSpat.id == Layer_id))
+					return this[i].EntSpat;
 
-				if (this[i].ES2 != null) 
+				if (this[i].EntSpat != null) 
 				{
-					foreach (IGeometry feature in (this[i]).ES2)
+					foreach (IGeometry feature in (this[i]).EntSpat)
 					{
 						//string test = feature.GetType().Name;
 						if (feature.GetType().Name == "TCircle")
@@ -3742,7 +3732,8 @@ SCAN:
         }
 
 		/// <summary>
-		/// Common spatial data collection
+		/// Common spatial data collection -results of parsing xml 
+		/// Store result of xml only ( with Cadastral Blocks)
 		/// </summary>
 		public TEntitySpatial SpatialData
 		{
@@ -3758,6 +3749,12 @@ SCAN:
 				return res;
 			}
 		}
+
+		/// <summary>
+		/// DXF, MIF spatial data collection - -results of parsing spatial files 
+		/// Store result of mif, dxf, csv, txt
+		/// </summary>
+		public TEntitySpatial ParsedSpatial;
 
         public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
         public TMyBlockCollection()
@@ -3789,7 +3786,15 @@ SCAN:
 					return feature;
 
 			}
-            return null;
+
+			foreach (IGeometry feature in this.ParsedSpatial)
+			{
+				if (feature.id == Layer_id)
+					return feature;
+
+			}
+
+			return null;
         }
 
 		/// <summary>
@@ -3857,8 +3862,8 @@ SCAN:
 				for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
 				{
 					if (
-				   (this.Blocks[i].ObjectRealtys[iz].ES2 != null))
-						foreach(IGeometry feature in this.Blocks[i].ObjectRealtys[iz].ES2)
+				   (this.Blocks[i].ObjectRealtys[iz].EntSpat != null))
+						foreach(IGeometry feature in this.Blocks[i].ObjectRealtys[iz].EntSpat)
 						Res.Add(feature);
 					//TODO ES to ES2 migrate 
 					/*
@@ -3885,10 +3890,12 @@ SCAN:
             }
             return null;
         }
+
         public TMyParcel GetParcel(int id)
         {
             return (TMyParcel)this.GetObject(id);
         }
+
         public object GetObject(int id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
@@ -3907,7 +3914,13 @@ SCAN:
     {
         public double Length()
         {
-            return this.Perymethr();
+			double res = 0;
+
+			for (int i = 0; i <= this.Count - 2; i++)
+			{
+				res += Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+			}
+			return res;
         }
 
      
@@ -3942,7 +3955,7 @@ SCAN:
 	/// <summary>
 	/// Getero spatial data collection -lines, polygons, points, circles 
 	/// </summary>
-	public class TEntitySpatial : List<IGeometry>, IGeometry
+	public class TEntitySpatial : List<IGeometry>, IGeometry  , IEnumerable
 	{
 		private int fid;
 		private string fDefinition;
@@ -3987,6 +4000,20 @@ SCAN:
 			this.Layers.Add(new TLayer()); // default layer 0, handle = FFFF
 		}
 
+		public void Fraq (string Format)
+		{
+			foreach (IGeometry feature in this)
+			{
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					((TMyPolygon)feature).Fraq(Format);
+
+				if (feature.TypeName == "netFteo.Spatial.PointList")
+					((PointList)feature).Fraq(Format);
+
+				if (feature.TypeName == "netFteo.Spatial.OMSPoints")
+					((PointList)feature).Fraq(Format);
+			}
+		}
 		public PointList AsPointList
 		{
 			get

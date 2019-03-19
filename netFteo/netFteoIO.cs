@@ -1124,6 +1124,28 @@ namespace netFteo.IO
              [1.1];н;6;;;531640,58;1262945,68;;;;0,00;626003000000
              [1.1];н;4;;;530684,92;1262376,38;;;;0,00;626003000000
           */
+
+		private void WriteEs2csv(System.IO.TextWriter writer, TPolyLine ES, int EsNumber)
+		{
+
+			writer.WriteLine(";;;;;;;;;;;");
+			for (int i = 0; i <= ES.PointCount - 1; i++)
+			{
+				writer.WriteLine("[" + EsNumber.ToString() + "];" +
+							  ES[i].Pref + ";" + ES[i].NumGeopointA + ";" +
+							  //oldx;oldx+
+							  ES[i].oldX_s + ";" +
+							  ES[i].oldY_s + ";" +
+							  ES[i].x_s + ";" +
+							  ES[i].y_s + ";" +
+									  ";;;" +
+							  ES[i].Mt_s + ";" +
+							  //Описание закрепления
+							  //626001000000 Долговременный межевой знак // 626002000000 Временный межевой знак // 626003000000 Закрепление отсутствует
+							  "626003000000");
+			}
+		}
+
 		private void WriteEs2csv(System.IO.TextWriter writer, TMyPolygon ES, int EsNumber)
 		{
 
@@ -1175,6 +1197,22 @@ namespace netFteo.IO
 				Console.WriteLine("Exception caught in process: {0}", ex);
 				return false;
 			}
+		}
+
+		public void SaveAsTexnoCADCSV(string FileName, TEntitySpatial ES)
+		{
+			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
+			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
+			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
+			int EsNumber = 0;
+			foreach (IGeometry Feature in ES)
+			{
+				if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					WriteEs2csv(writer, (TMyPolygon)Feature, ++EsNumber);
+				if (Feature.TypeName == "netFteo.Spatial.TPolyLine")
+					WriteEs2csv(writer, (TPolyLine)Feature, ++EsNumber);
+			}
+			writer.Close();
 		}
 
 		public void SaveAsTexnoCADCSV(string FileName, TMyPolygon ES)
@@ -1393,7 +1431,31 @@ namespace netFteo.IO
 			}
 		}
 
-
+		/*
+		public void SaveAsmifOMS(string FileName, PointList OMS)
+		{
+			if (OMS == null) return;
+			if (OMS.PointCount == 0) return;
+			TextWriter writer = new StreamWriter(FileName);
+			TextWriter writerMIDA = new StreamWriter(Path.GetFileNameWithoutExtension(FileName) + ".mid", false, Encoding.GetEncoding("Windows-1251"));
+			writer.WriteLine("Version 450");
+			writer.WriteLine("Charset \"WindowsCyrillic\"");
+			writer.WriteLine("Delimiter \"$\"");
+			writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
+							 OMS.Bounds.MinY.ToString() + "," + OMS.Bounds.MinX.ToString() + ")  (" +
+							 OMS.Bounds.MaxY.ToString() + "," + OMS.Bounds.MaxX.ToString() + ")");
+			writer.WriteLine("Columns 3");
+			writer.WriteLine("    Point_Name Char(127)");
+			writer.WriteLine("    Net_Klass  Char(127)");
+			writer.WriteLine("    Number Char(127)");
+			writer.WriteLine("Data");
+			writer.WriteLine("");
+			netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+			TR.WriteMifPoints(writer, writerMIDA, OMS);
+			writer.Close();
+			writerMIDA.Close();
+		}
+		*/
 
 	}
 
