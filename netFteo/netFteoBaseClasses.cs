@@ -53,12 +53,17 @@ namespace netFteo.Spatial
 	/// <param name="Format"></param>
 		void Fraq(string Format);
 		int ReorderPoints(int StartNumber);
+		void SetMt(double mt);
+		/// <summary>
+		/// Close figure - append last point, if not present
+		/// </summary>
+		void Close();
 	}
 
     /// <summary>
     /// А также его имплементация
     /// </summary>
-    public class Geometry : IGeometry
+    public  class Geometry : IGeometry
     {
         private int fid;
         public int id
@@ -105,16 +110,25 @@ namespace netFteo.Spatial
 		{
 			return -1;
 		}
+
+		public void SetMt(double mt)
+		{
+		
+		}
+
 		/// <summary>
 		/// Construct base Geometry object
 		/// </summary>
 		public Geometry()
         {
             this.id = Gen_id.newId;
-			this.fLayerHandle = "F"; //Default
+			this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
 		}
 
-	
+		public void Close()
+		{
+			// nothing to
+		}
 
 
 	}
@@ -541,24 +555,30 @@ namespace netFteo.Spatial
         }
     }
 
-    #region  Список точек. Его будем сериализовать в XML для обменов
+	#region  Список точек. Его будем сериализовать в XML для обменов
 
-    /// <summary>
-    /// Список точек на базе Dictionary
-    /// </summary>
-    //public class PointList : Dictionary<int, Point>  // есть мнение, что словарь работает быстрее.....
-    //  {
-    //     public void AddPoint(Point point)
-    //   {
-    //       if (point.id < 1) point.id = Gen_id.newId;
-    //       this.Add(point.id, point);
-    // }
-    //} 
+	/// <summary>
+	/// Список точек на базе Dictionary
+	/// </summary>
+	//public class PointList : Dictionary<int, Point>  // есть мнение, что словарь работает быстрее.....
+	//  {
+	//     public void AddPoint(Point point)
+	//   {
+	//       if (point.id < 1) point.id = Gen_id.newId;
+	//       this.Add(point.id, point);
+	// }
+	//} 
 
-    /// <summary>
-    /// Список точек на базе BindingList
-    /// </summary>
-    public class PointList : BindingList<Point>, IGeometry
+
+	public interface IPointList : IGeometry
+	{
+		//void SetMT(double mt);
+	}
+
+	/// <summary>
+	/// Список точек на базе BindingList
+	/// </summary>
+	public class PointList : BindingList<Point>, IGeometry
     {
         public const string TabDelimiter = "\t";  // tab
         //public PointList Points;
@@ -597,6 +617,11 @@ namespace netFteo.Spatial
 			}
 		}
 
+		public void Close()
+		{
+			// nothing to
+		}
+
 		public void Fraq(string Format)
 		{
 			foreach (Point pt in this)
@@ -627,6 +652,12 @@ namespace netFteo.Spatial
 				this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
 			*/
 			return StartIndex;
+		}
+
+		public void SetMt(double mt)
+		{
+			foreach (Point pt in this)
+			pt.Mt = mt;
 		}
 
 		/// <summary>
@@ -1420,11 +1451,7 @@ SCAN:
             }
         }
 
-        public void Set_Mt(double mt)
-        {
-            foreach (Point pt in this)
-                pt.Mt = mt;
-        }
+  
 
         /// <summary>
         /// Closed figure - point First and Last are ident (in ordinates, not by name/Number)
@@ -1441,7 +1468,7 @@ SCAN:
         /// <summary>
         /// Close figure - append last point, if not present
         /// </summary>
-        public void Close()
+        public new void Close()
         {
             if (! Closed)
             {
@@ -1583,11 +1610,12 @@ SCAN:
 
         }
 
-        public void SetMT(double mt)
+        public void SetMt(double mt)
         {
-            this.Set_Mt(mt);
-            foreach (TMyOutLayer child in this.Childs)
-                child.Set_Mt(mt);
+			foreach (Point pt in this)
+				pt.Mt = mt;
+			foreach (TMyOutLayer child in this.Childs)
+                child.SetMt(mt);
         }
 
 
@@ -4060,6 +4088,14 @@ SCAN:
 			return Startindex;
 		}
 
+		public void SetMt(double mt)
+		{
+			foreach (IGeometry feature in this)
+			{
+				feature.SetMt(mt);
+			}
+		}
+
 		public PointList AsPointList
 		{
 			get
@@ -4114,6 +4150,10 @@ SCAN:
 			}
 		}
 
+		public void Close()
+		{
+			// nothing to
+		}
 	}
 
     #endregion

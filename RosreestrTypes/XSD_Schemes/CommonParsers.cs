@@ -1582,7 +1582,8 @@ namespace RRTypes.CommonCast
 				if (location.Elaboration.ReferenceMark != null)
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
-			if (location.inBounds != null)
+
+
 				loc.Inbounds = location.inBounds.ToString();
 
 			return loc;
@@ -1604,7 +1605,7 @@ namespace RRTypes.CommonCast
 				if (location.Elaboration.ReferenceMark != null)
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
-			if (location.inBounds != null)
+
 				loc.Inbounds = location.inBounds.ToString();
 
 			return loc;
@@ -1625,7 +1626,6 @@ namespace RRTypes.CommonCast
 				if (location.Elaboration.ReferenceMark != null)
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
-			if (location.inBounds != null)
 				loc.Inbounds = location.inBounds.ToString();
 
 			return loc;
@@ -1647,11 +1647,11 @@ namespace RRTypes.CommonCast
 				if (location.Elaboration.ReferenceMark != null)
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
-			if (location.inBounds != null)
 				loc.Inbounds = location.inBounds.ToString();
 
 			return loc;
 		}
+
 		public static TLocation CastLocation(kpt09.tLocation location)
 		{
 			if (location == null) return null;
@@ -1668,7 +1668,7 @@ namespace RRTypes.CommonCast
 				if (location.Elaboration.ReferenceMark != null)
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
-			if (location.inBounds != null)
+
 				loc.Inbounds = location.inBounds.ToString();
 
 			return loc;
@@ -1690,10 +1690,7 @@ namespace RRTypes.CommonCast
 					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
 			}
 			else
-		
-			if (location.inBounds != null)
 				loc.Inbounds = location.inBounds.ToString();
-
 			return loc;
 		}
 
