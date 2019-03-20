@@ -425,6 +425,7 @@ namespace netFteo.IO
 					attdef.Text = "atribute def .Text";///Contours.Items[ic].Definition;
 					attdef.Value = polygon.Definition;
 					attdef.Flags = AttributeFlags.Hidden;
+					block.AttributeDefinitions.Add(attdef);
 					/* //Можно отображать  атрибуты:
 					attdef.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x+1), Contours.Items[ic].Centroid.z);
 					TextStyle txt = new TextStyle("MyStyle", "Arial.ttf");
@@ -437,11 +438,8 @@ namespace netFteo.IO
 					AttributeDefinition attdefArea = new AttributeDefinition("Площадь"); // без пробелов!!!
 					attdefArea.Flags = AttributeFlags.Hidden;
 					attdefArea.Value = polygon.AreaSpatialFmt("0.00");
-					block.AttributeDefinitions.Add(attdef);
 					block.AttributeDefinitions.Add(attdefArea);
-
 					block.Entities.Add((LwPolyline)CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, polygon, true));
-
 					CreatePolygonHatches(dxfDoc, LayerHatches, polygon, HatchRadius);
 					//внутренние границы   
 					for (int i = 0; i <= polygon.Childs.Count - 1; i++)
@@ -457,14 +455,27 @@ namespace netFteo.IO
 				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
 				{
 					TPolyLine Plines = (TPolyLine)feature;
+					
 					netDxf.Entities.Text ContourDef = new Text();
 					ContourDef.Value = Plines.Definition;
 					ContourDef.Height = HatchRadius;
 					ContourDef.Position = new Vector3(Math.Abs(Plines[0].y), Math.Abs(Plines[0].x), Plines[0].z);
 					ContourDef.Layer = LayerCN;
 					dxfDoc.AddEntity(ContourDef);
-					dxfDoc.AddEntity(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines, false));
+					
+					netDxf.Blocks.Block block = new netDxf.Blocks.Block("LWPolyLine"+ ic++.ToString());
+					
+					AttributeDefinition attdef = new AttributeDefinition("Кад_номер"); // без пробелов!!!
+					attdef.Text = "atribute def .Text";///Contours.Items[ic].Definition;
+					attdef.Value = Plines.Definition;
+					attdef.Flags = AttributeFlags.Hidden;
+					block.AttributeDefinitions.Add(attdef);
+					
+					block.Entities.Add(CreateDxfPolygon(dxfDoc, LayerPoints, LayerText, LayerPoly, Plines, false));
 					CreatePolygonHatches(dxfDoc, LayerHatches, Plines, HatchRadius);
+					Insert insDm = new Insert(block);
+					insDm.Layer = LayerPoly;
+					dxfDoc.AddEntity(insDm);
 				}
 
 				if (feature.TypeName == "netFteo.Spatial.TCircle")

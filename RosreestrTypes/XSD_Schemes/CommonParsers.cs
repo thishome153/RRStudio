@@ -540,7 +540,7 @@ namespace RRTypes.CommonCast
 						//if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
 							TMyPolygon Polygon = new TMyPolygon();
-							Polygon.Definition = ES.SpatialElement[i].Number;
+							Polygon.Definition = Definition;
 							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
@@ -579,7 +579,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition;
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -597,8 +597,9 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpt10_un.tEntitySpatialOKSOut ES)
 		{
-			TEntitySpatial res = new TEntitySpatial();
+
 			if (ES == null) return null;
+			TEntitySpatial res = new TEntitySpatial();
 
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
@@ -609,7 +610,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.NumGeopointA = Definition + "." + ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
 					res.Add(fES);
 				}
 
@@ -621,7 +622,7 @@ namespace RRTypes.CommonCast
 						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
 							TMyPolygon Polygon = new TMyPolygon();
-							Polygon.Definition = ES.SpatialElement[i].Number;
+							Polygon.Definition = Definition+ "." + ES.SpatialElement[i].Number;
 							Polygon.LayerHandle =  res.Layers[0].LayerHandle; //  "FFFF"; //default
 																			   //OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -660,7 +661,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition + "."+ES.SpatialElement[i].Number;
 						line.id = Gen_id.newId;
 						line.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -679,9 +680,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
 		{
-			TEntitySpatial res = new TEntitySpatial();
 			if (ES == null) return null;
-
+			TEntitySpatial res = new TEntitySpatial();
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -700,7 +700,7 @@ namespace RRTypes.CommonCast
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
 						TMyPolygon Polygon = new TMyPolygon();
-						Polygon.Definition = ES.SpatialElement[i].Number;
+						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -733,7 +733,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition;
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -751,9 +751,9 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
 		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return null;
 
+			if (ES == null) return null;
+			TEntitySpatial res = new TEntitySpatial();
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -772,7 +772,7 @@ namespace RRTypes.CommonCast
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
 						TMyPolygon Polygon = new TMyPolygon();
-						Polygon.Definition = ES.SpatialElement[i].Number;
+						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -805,7 +805,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition;
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -823,9 +823,9 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
 		{
-			TEntitySpatial res = new TEntitySpatial();
+	
 			if (ES == null) return null;
-
+			TEntitySpatial res = new TEntitySpatial();
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -835,7 +835,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.NumGeopointA = Definition;//.SpelementUnit[0].Ordinate.NumGeopoint;
 					res.Add(fES);
 				}
 
@@ -844,7 +844,7 @@ namespace RRTypes.CommonCast
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
 						TMyPolygon Polygon = new TMyPolygon();
-						Polygon.Definition = ES.SpatialElement[i].Number;
+						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -864,7 +864,7 @@ namespace RRTypes.CommonCast
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								netFteo.Spatial.Point P = new Point();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -877,7 +877,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition;
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -895,10 +895,10 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
 		{
-			TEntitySpatial res = new TEntitySpatial();
+		
 	
 			if (ES == null) return null;
-
+			TEntitySpatial res = new TEntitySpatial();
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -917,7 +917,7 @@ namespace RRTypes.CommonCast
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
 						TMyPolygon Polygon = new TMyPolygon();
-						Polygon.Definition = ES.SpatialElement[i].Number;
+						Polygon.Definition = Definition;
 
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -952,7 +952,7 @@ namespace RRTypes.CommonCast
 					else
 					{   //unclosed line - polyline
 						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
+						line.Definition = Definition;
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
@@ -4118,7 +4118,7 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
-							Constructions.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
+							Constructions.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
 							Constructions.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
@@ -4131,8 +4131,6 @@ namespace RRTypes.CommonParsers
 							}
 							Constructions.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.ObjectType);
 							Bl.AddOKS(Constructions);
-							if (Constructions.EntSpat != null)
-							res.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
 						}
 
 						if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
