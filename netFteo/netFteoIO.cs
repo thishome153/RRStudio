@@ -1459,9 +1459,7 @@ namespace netFteo.IO
 
 	}
 
-
-
-	//Класс, описывающий ответ сервера в виде массива объектов (при поиске типа /1?text=26...)
+	//Класс, описывающий ответ сервера в виде массива объектов (при поиске типа /1?text=...)
 	public class LogServer_response
 	{
 		public string Service { get; set; }
@@ -1475,8 +1473,7 @@ namespace netFteo.IO
 		public string stateText { get; set; }
 	}
 
-
-	/*
+	/* JSON response example:
 	{
    "Service": "nodeapi",
    "Version": "1.0.0.22",
@@ -1489,8 +1486,6 @@ namespace netFteo.IO
    "stateText": "Server ok"
 }
 */
-
-	
 
 	public class LogServer
 	{
@@ -1571,7 +1566,7 @@ namespace netFteo.IO
 			try
 			{
 				WebRequest wrGETURL = null;
-				//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
+				//Запрос 
 				wrGETURL = WebRequest.Create(url_api + "?AppType=" + query+
 											"&AppVer=" + this.App_Version+
 											"&UserName=" + netFteo.NetWork.NetWrapper.UserName+
@@ -1607,6 +1602,81 @@ namespace netFteo.IO
 				this.watch.Stop();
 				return false;
 			}
+		}
+
+
+	}
+
+	/// <summary>
+	/// Заложим класс Most Recently Used Files (MRU) 
+	/// для ведения автоматического рейтинга используемых файлов
+	/// https://www.codeproject.com/Articles/407513/Add-Most-Recently-Used-Files-MRU-List-to-Windows-A
+	/// </summary>
+	public class MRU //FavoritesRatig
+	{
+		private string NameOfProgram;
+		private string SubKeyName;
+		private System.Windows.Forms.ToolStripMenuItem ParentMenuItem;
+		private Action<object, EventArgs> OnRecentFileClick;
+		private Action<object, EventArgs> OnClearRecentFilesClick;
+
+		public void ReadFavorites() { }
+
+		public void AddUsedFile(string FileName) { }
+
+		public void DeleteUsedFile(string FileName) { }
+
+		private void _refreshRecentFilesMenu()
+		{
+			string s;
+			System.Windows.Forms.ToolStripItem tSI;
+			Microsoft.Win32.RegistryKey rK = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(this.SubKeyName, false);
+
+			this.ParentMenuItem.DropDownItems.Clear();
+			string[] valueNames = rK.GetValueNames();
+			foreach (string valueName in valueNames)
+			{
+				s = rK.GetValue(valueName, null) as string;
+				if (s == null)
+					continue;
+				tSI = this.ParentMenuItem.DropDownItems.Add(s);
+				tSI.Click += new EventHandler(this.OnRecentFileClick);
+			}
+
+			if (this.ParentMenuItem.DropDownItems.Count == 0)
+			{
+				this.ParentMenuItem.Enabled = false;
+				return;
+			}
+
+			this.ParentMenuItem.DropDownItems.Add("-");
+			tSI = this.ParentMenuItem.DropDownItems.Add("Clear list");
+			tSI.Click += new EventHandler(this._onClearRecentFiles_Click_SIMPLIFIED);
+			this.ParentMenuItem.Enabled = true;
+		}
+
+		private void _onClearRecentFiles_Click_SIMPLIFIED(object obj, EventArgs evt)
+		{
+			Microsoft.Win32.RegistryKey rK = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(this.SubKeyName, true);
+			if (rK == null)
+				return;
+			string[] values = rK.GetValueNames();
+			foreach (string valueName in values)
+				rK.DeleteValue(valueName, true);
+			rK.Close();
+			this.ParentMenuItem.DropDownItems.Clear();
+			this.ParentMenuItem.Enabled = false;
+
+			if (OnClearRecentFilesClick != null)
+				this.OnClearRecentFilesClick(obj, evt);
+		}
+
+		public MRU(
+		System.Windows.Forms.ToolStripMenuItem parentMenuItem,
+		string nameOfProgram,
+		Action<object, EventArgs> onRecentFileClick,
+		Action<object, EventArgs> onClearRecentFilesClick = null)
+		{
 		}
 
 

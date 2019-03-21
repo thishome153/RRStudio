@@ -47,17 +47,18 @@ namespace netFteo.Spatial
 		string Name { get; set; }
 		string TypeName { get; }
 		string LayerHandle { get; set; } // handle of the layer (dxf ecosystem)
-	 /// <summary>
-	 /// Fraq ordinates values to format
-	/// </summary>
-	/// <param name="Format"></param>
-		void Fraq(string Format);
-		int ReorderPoints(int StartNumber);
-		void SetMt(double mt);
+
 		/// <summary>
-		/// Close figure - append last point, if not present
+		/// Fraq ordinates values to format
 		/// </summary>
-		void Close();
+		/// <param name="Format"></param>
+		void Fraq(string Format);
+
+		/// <summary>
+		/// Listing geometry as ListView items (columns, rows)
+		/// </summary>
+		/// <param name="LV"></param>
+		/// <param name="SetTag"></param>
 		void ShowasListItems(ListView LV, bool SetTag);
 	}
 
@@ -112,15 +113,6 @@ namespace netFteo.Spatial
 
 		}
 
-		public int ReorderPoints(int ind)
-		{
-			return -1;
-		}
-
-		public void SetMt(double mt)
-		{
-		
-		}
 
 		/// <summary>
 		/// Construct base Geometry object
@@ -130,13 +122,13 @@ namespace netFteo.Spatial
             this.id = Gen_id.newId;
 			this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
 		}
-
+		/*
 		public void Close()
 		{
 			// nothing to
 		}
 
-
+		*/
 	}
 
 
@@ -578,13 +570,19 @@ namespace netFteo.Spatial
 
 	public interface IPointList : IGeometry
 	{
-		//void SetMT(double mt);
+		void Reverse_Points();
+		int ReorderPoints(int StartNumber);
+		/// <summary>
+		/// Close figure - append last point, if not present
+		/// </summary>
+		void Close();
+		void SetMt(double mt);
 	}
 
 	/// <summary>
 	/// Список точек на базе BindingList
 	/// </summary>
-	public class PointList : BindingList<Point>, IGeometry
+	public class PointList : BindingList<Point>, IPointList
     {
         public const string TabDelimiter = "\t";  // tab
         //public PointList Points;
@@ -666,7 +664,6 @@ namespace netFteo.Spatial
 			pt.Mt = mt;
 		}
 
-
 		public void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Count == 0) return;
@@ -710,6 +707,18 @@ namespace netFteo.Spatial
 			return;
 		}
 
+		public void Reverse_Points()
+		{
+			PointList tmpList = new PointList();
+
+			int count = this.Count;
+			foreach (Point pt in this)
+			{
+				tmpList.AddPoint(this[count-- -1]); //countdown  index
+			}
+			this.Clear();
+			this.ImportObjects(tmpList);
+		}
 
 		/// <summary>
 		/// Конструктор base Geometry object,
@@ -1527,6 +1536,7 @@ SCAN:
             }
         }
 
+		/*
 		public void Reverse_Points()
 		{
 			TMyOutLayer tmpList = new TMyOutLayer();
@@ -1539,7 +1549,7 @@ SCAN:
 			this.Clear();
 			this.ImportObjects(tmpList);
 		}
-
+		*/
     
 
 
@@ -4248,7 +4258,7 @@ SCAN:
 
 			public int ReorderPoints(int Startindex =1)
 		{
-			foreach (IGeometry feature in this)
+			foreach (IPointList feature in this)
 			{
 			 Startindex += 	feature.ReorderPoints(Startindex);
 			}
@@ -4257,7 +4267,7 @@ SCAN:
 
 		public void SetMt(double mt)
 		{
-			foreach (IGeometry feature in this)
+			foreach (IPointList feature in this)
 			{
 				feature.SetMt(mt);
 			}

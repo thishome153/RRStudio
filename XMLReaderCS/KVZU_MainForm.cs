@@ -46,8 +46,7 @@ namespace XMLReaderCS
 		/// </summary>
 		public netFteo.XML.FileInfo DocInfo = new netFteo.XML.FileInfo();
 		ZipFile zip;
-
-		//public string FileName;
+		//netFteo.IO.MRU MRU = new netFteo.IO.MRU(RecentFilesMenuItem, FixosoftKey + "\\MRU", mru);		//public string FileName;
 		//public string FilePath;        
 		string pathToHtmlFile;
 		string hrefToXSLT;
@@ -2079,7 +2078,13 @@ return res;
 }
 */
 
-		//Листинг точек ПД 
+		//Листинг точек ПД
+		/// <summary>
+		/// Draw geometry on ES (EntityViewer )
+		/// </summary>
+		/// <param name="LV"></param>
+		/// <param name="Feature"></param>
+		/// <returns></returns>
 		private ListViewItem GeometryToListView(ListView LV, IGeometry Feature)
 		{
 			if (Feature == null)
@@ -2435,6 +2440,11 @@ return res;
 			}
 		}
 
+		/// <summary>
+		/// Show properties of geometry (agregate and summarize data)
+		/// </summary>
+		/// <param name="LV"></param>
+		/// <param name="Obj"></param>
 		private void PropertiesToListView(ListView LV, object Obj)
 		{
 
@@ -2827,7 +2837,7 @@ return res;
 					// list borders:
 					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
 				}
-				
+
 				if (Obj.ToString() == "netFteo.Spatial.TPolyLine")
 				{
 					TPolyLine Poly = (TPolyLine)Obj;
@@ -2842,7 +2852,7 @@ return res;
 					LV.Items.Add(LVipP);
 				}
 
-					if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
+				if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")
 				{
 					LV.Items.Clear();
 					netFteo.Rosreestr.TMyRights R = (netFteo.Rosreestr.TMyRights)Obj;
@@ -2986,7 +2996,9 @@ return res;
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
 				if (Entity != null)
 				{
+					GeometryToListView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
 
@@ -2996,6 +3008,7 @@ return res;
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
 				if (Entity != null)
 				{
+					GeometryToListView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
 					PropertiesToListView(listView_Properties, Entity);
 				}
@@ -4367,10 +4380,38 @@ return res;
 
         }
 
-        
+		private void MRU_MenuItem_Click(object obj, EventArgs evt)
+		{
+			FileDialog openFileDlg = new OpenFileDialog();
+			openFileDlg.InitialDirectory = Environment.CurrentDirectory;
+			if (openFileDlg.ShowDialog() != DialogResult.OK)
+				return;
+			string openedFile = openFileDlg.FileName;
 
+			//Now give it to the MRUManager
+			//this.MRU.AddUsedFile(openedFile);
 
-        private void копироватьToolStripMenuItem1_Click(object sender, EventArgs e)
+			//do something with the file here
+			MessageBox.Show("Through the 'Open' menu item, you opened: " + openedFile);
+		}
+
+		private void MRU__recentFileGotClicked_handler(object obj, EventArgs evt)
+		{
+			string fName = (obj as ToolStripItem).Text;
+			if (!File.Exists(fName))
+			{
+				if (MessageBox.Show(string.Format("{0} doesn't exist. Remove from recent " +
+						 "workspaces?", fName), "File not found",
+						 MessageBoxButtons.YesNo) == DialogResult.Yes)
+				//	this.MRU.DeleteUsedFile(fName);
+				return;
+			}
+
+			//do something with the file here
+			MessageBox.Show(string.Format("Through the 'Recent Files' menu item, you opened: {0}", fName));
+		}
+
+		private void копироватьToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (TV_Parcels.SelectedNode != null)
             {
@@ -4421,7 +4462,9 @@ return res;
         {
             RecentFilesMenuItem.DropDownItems.Clear();
             ToolStripItem rc0 =   RecentFilesMenuItem.DropDownItems.Add(XMLReaderCS.Properties.Settings.Default.Recent0);
+
             rc0.Click += RecentFile0MenuItem_Click; // handler for sub menu
+
             openFileDialog1.InitialDirectory = XMLReaderCS.Properties.Settings.Default.LastDir;
           //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
           //  ListFileInfo(DocInfo);
@@ -5186,29 +5229,22 @@ return res;
 
         }
 
-        private void SetMT_MenuItem_Click(object sender, EventArgs e)
-        {
-			IGeometry Feature = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-			if (Feature != null)
-			{
-				Feature.SetMt(0.1);
-				Feature.ShowasListItems(listView1, true);
-			}
-        }
+    
 
         private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           IGeometry Feature =(IGeometry) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+           IPointList Feature =(IPointList) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
 				Feature.Fraq("0.00");
+				Feature.SetMt(0.1); // Also set Mt= 0.1
 				Feature.ShowasListItems(listView1, true);
 			}
         }
 
         private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-			IGeometry Feature = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
 				Feature.ReorderPoints(1);
@@ -5219,7 +5255,7 @@ return res;
 
 		private void замкнутьToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			IGeometry Feature = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
 				Feature.Close();
@@ -5229,6 +5265,14 @@ return res;
 
 		private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			if (Feature != null)
+			{
+				Feature.Reverse_Points();
+				Feature.ShowasListItems(listView1, true);
+			}
+
+
 			/*
 			TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Pl != null)

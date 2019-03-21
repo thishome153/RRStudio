@@ -129,7 +129,6 @@
 			this.contextMenuStrip_OIPD = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.ChangeXYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.копироватьToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-			this.SetMT_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.округлитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1024,7 +1023,6 @@
 			this.contextMenuStrip_OIPD.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ChangeXYToolStripMenuItem,
             this.копироватьToolStripMenuItem2,
-            this.SetMT_MenuItem,
             this.округлитьToolStripMenuItem,
             this.перенумероватьToolStripMenuItem,
             this.MoveUpMenuItem,
@@ -1033,74 +1031,67 @@
             this.замкнутьToolStripMenuItem,
             this.обратныйПорядокToolStripMenuItem});
 			this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(214, 224);
+			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(181, 224);
 			this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
 			// 
 			// ChangeXYToolStripMenuItem
 			// 
 			this.ChangeXYToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.arrow_switch;
 			this.ChangeXYToolStripMenuItem.Name = "ChangeXYToolStripMenuItem";
-			this.ChangeXYToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.ChangeXYToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.ChangeXYToolStripMenuItem.Text = "Поменять xy";
 			this.ChangeXYToolStripMenuItem.Click += new System.EventHandler(this.ChangeXYToolStripMenuItem_Click);
 			// 
 			// копироватьToolStripMenuItem2
 			// 
 			this.копироватьToolStripMenuItem2.Name = "копироватьToolStripMenuItem2";
-			this.копироватьToolStripMenuItem2.Size = new System.Drawing.Size(213, 22);
+			this.копироватьToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
 			this.копироватьToolStripMenuItem2.Text = "Копировать все";
 			this.копироватьToolStripMenuItem2.Click += new System.EventHandler(this.копироватьToolStripMenuItem2_Click);
-			// 
-			// SetMT_MenuItem
-			// 
-			this.SetMT_MenuItem.Name = "SetMT_MenuItem";
-			this.SetMT_MenuItem.Size = new System.Drawing.Size(213, 22);
-			this.SetMT_MenuItem.Text = "Установить погрешность";
-			this.SetMT_MenuItem.Click += new System.EventHandler(this.SetMT_MenuItem_Click);
 			// 
 			// округлитьToolStripMenuItem
 			// 
 			this.округлитьToolStripMenuItem.Name = "округлитьToolStripMenuItem";
-			this.округлитьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.округлитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.округлитьToolStripMenuItem.Text = "Округлить";
 			this.округлитьToolStripMenuItem.Click += new System.EventHandler(this.округлитьToolStripMenuItem_Click);
 			// 
 			// перенумероватьToolStripMenuItem
 			// 
 			this.перенумероватьToolStripMenuItem.Name = "перенумероватьToolStripMenuItem";
-			this.перенумероватьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.перенумероватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.перенумероватьToolStripMenuItem.Text = "Перенумеровать";
 			this.перенумероватьToolStripMenuItem.Click += new System.EventHandler(this.перенумероватьToolStripMenuItem_Click);
 			// 
 			// MoveUpMenuItem
 			// 
 			this.MoveUpMenuItem.Name = "MoveUpMenuItem";
-			this.MoveUpMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.MoveUpMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.MoveUpMenuItem.Text = "Вверх";
 			// 
 			// фиксироватьToolStripMenuItem
 			// 
 			this.фиксироватьToolStripMenuItem.Name = "фиксироватьToolStripMenuItem";
-			this.фиксироватьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.фиксироватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.фиксироватьToolStripMenuItem.Text = "Фиксировать";
 			// 
 			// изменитьToolStripMenuItem
 			// 
 			this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-			this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.изменитьToolStripMenuItem.Text = "Изменить";
 			// 
 			// замкнутьToolStripMenuItem
 			// 
 			this.замкнутьToolStripMenuItem.Name = "замкнутьToolStripMenuItem";
-			this.замкнутьToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.замкнутьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.замкнутьToolStripMenuItem.Text = "Замкнуть";
 			this.замкнутьToolStripMenuItem.Click += new System.EventHandler(this.замкнутьToolStripMenuItem_Click);
 			// 
 			// обратныйПорядокToolStripMenuItem
 			// 
 			this.обратныйПорядокToolStripMenuItem.Name = "обратныйПорядокToolStripMenuItem";
-			this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+			this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
 			this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
 			// 
@@ -1702,7 +1693,6 @@
         private CXmlTreeView cXmlTreeView2;
         private MRG.Controls.UI.LoadingCircleToolStripMenuItem PreloaderMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem SetMT_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem округлитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem перенумероватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MoveUpMenuItem;
