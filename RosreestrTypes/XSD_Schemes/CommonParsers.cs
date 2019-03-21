@@ -5376,7 +5376,7 @@ namespace RRTypes.CommonParsers
 			if (DXfEntitys != null)
 			{
 				// TODO where place for results ??? : 
-				res.MyBlocks.ParsedSpatial = DXfEntitys;
+				res.MyBlocks.ParsedSpatial.Add(DXfEntitys);
 			}
 
 				res.DocTypeNick = "dxf";

@@ -1644,7 +1644,7 @@ namespace XMLReaderCS
 			if (BlockList.Blocks.Count == 0)
 			{
 				if (BlockList.ParsedSpatial != null)
-					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode", BlockList.ParsedSpatial.Definition), BlockList.ParsedSpatial, 6);
+					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial, 6);
 			}
 
 			if (TopNode_ != null) TopNode_.Expand();
@@ -1897,50 +1897,13 @@ namespace XMLReaderCS
 				}
 
 				ListOldNumbers(PNode, oks.Building.OldNumbers);
-				/*
-				if (oks.ES2 != null)
-				{
-					string test = oks.Building.ES.GetType().Name;
-					if (oks.Building.ES.GetType().Name == "TMyPolygon")
-					{
-						if (((TMyPolygon)oks.Building.ES).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Building.ES, "SPElem.", "Границы", 6);
-					}
 
-					if (oks.Building.ES.GetType().Name == "TPolyLines")
-					{
-						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Building.ES, "SPElem.", "ПолиЛинии", 6);
-					}
-				}
-				*/
 			}
 
 			if (oks.Construction != null) //.Type == "Сооружение")
 			{
 				ListOldNumbers(PNode, oks.Construction.OldNumbers);
-				/*
-				if (oks.Construction.ES != null)
-				{
-
-
-					if (oks.Construction.ES.GetType().Name == "TMyPolygon")
-					{
-						if (((TMyPolygon)oks.Construction.ES).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Construction.ES, "SPElem.", "Границы", 6);
-					}
-
-
-					if (oks.Construction.ES.GetType().Name == "TPolyLines")
-					{
-						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Construction.ES, "SPElem.", "ПолиЛинии", 6);
-					}
-
-					if (oks.Construction.ES.GetType().Name == "TCircle")
-					{
-						netFteo.ObjectLister.ListEntSpat(PNode, (TCircle)oks.Construction.ES, "SPElem.", "Окружность", 6);
-					}
-				}
-				*/
+	
 
 
 			}
@@ -1948,20 +1911,7 @@ namespace XMLReaderCS
 			if (oks.Uncompleted != null) //.Type == "Сооружение")
 			{
 				ListOldNumbers(PNode, oks.Uncompleted.OldNumbers);
-				/*
-				if (oks.Uncompleted.ES != null)
-				{
-					if (oks.Uncompleted.ES.GetType().Name == "TMyPolygon")
-					{
-						if (((TMyPolygon)oks.Uncompleted.ES).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(PNode, (TMyPolygon)oks.Uncompleted.ES, "SPElem.", "Границы", 6);
-					}
-
-					if (oks.Uncompleted.ES.GetType().Name == "TPolyLines")
-					{
-						netFteo.ObjectLister.ListEntSpat(PNode, (TPolyLines)oks.Uncompleted.ES, "SPElem.", "ПолиЛинии", 6);
-					}
-				} */
+		
 			}
 
 			if ((oks.Location != null) &&
@@ -2006,31 +1956,7 @@ namespace XMLReaderCS
 		}
 
 		/*
-		// Листинг отрезков границ в ListView
-		private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
-		{
-			if (PList.Count == 0) return;
-			string BName;
-			LV.Items.Clear();
-			LV.Tag = PList.id;
-			for (int i = 0; i <= PList.Count - 2; i++)
-			{
-				BName = PList[i].Pref + PList[i].NumGeopointA + " - " +
-						PList[i + 1].Pref + PList[i + 1].NumGeopointA;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = BName;
-				/* LVi.SubItems.Add(PList.Points[i].x_s);
-				 LVi.SubItems.Add(PList.Points[i].y_s);
-				 LVi.SubItems.Add(PList.Points[i].Mt_s);
-				 LVi.SubItems.Add(PList.Points[i].Description);
-				 * */
-				 /*
-				if (PList[i].Pref == "н")
-					LVi.ForeColor = Color.Red;
-				else LVi.ForeColor = Color.Black;
-				LV.Items.Add(LVi);
-			}
-		}
+	
 		*/
 	
 
@@ -2040,6 +1966,16 @@ namespace XMLReaderCS
 			if (Circle == null) return null;
 			LV.Items.Clear();
 			LV.Tag = Circle.id;
+			LV.Items.Clear();
+			LV.Controls.Clear();
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "R";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
 
 			string BName = Circle.Pref + Circle.NumGeopointA + Circle.OrdIdent;
 			ListViewItem LVi = new ListViewItem();
@@ -2060,61 +1996,90 @@ namespace XMLReaderCS
 			return LVi;
 		}
 
-		private ListViewItem PointListToListView(ListView LV, PointList PList, bool SetTag)
+		/*
+		 * 
+		 * 	// Листинг отрезков границ в ListView
+		private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
 		{
-			if (PList.Count == 0) return null;
+			if (PList.Count == 0) return;
 			string BName;
-			LV.BeginUpdate();
-			//LV.Items.Clear();
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = PList.id;
-			ListViewItem res = null; ;
-			for (int i = 0; i <= PList.Count - 1; i++)
-			{
-				BName = PList[i].Pref + PList[i].NumGeopointA + PList[i].OrdIdent;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = BName;
-				LVi.Tag = PList[i].id;
-				LVi.SubItems.Add(PList[i].x_s);
-				LVi.SubItems.Add(PList[i].y_s);
-				LVi.SubItems.Add(PList[i].Mt_s);
-				LVi.SubItems.Add(PList[i].Description);
-				if (PList[i].Pref == "н")
-					LVi.ForeColor = Color.Red;
-				else LVi.ForeColor = Color.Black;
-				if (PList[i].Status == 6)
-					LVi.ForeColor = Color.Blue;
-				if (i == 0) res = LV.Items.Add(LVi);
-				else
-					LV.Items.Add(LVi);
-			}
-			LV.EndUpdate();
-			return res; // вернем первую строчку Items
-		}
-		
-		// Листинг точек TmyPolygon в ListView
-		private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
-		{
-			if (PList.Count == 0) return null;
 			LV.Items.Clear();
 			LV.Tag = PList.id;
-			ListViewItem res = PointListToListView(LV, (PointList)PList, true);
+			for (int i = 0; i <= PList.Count - 2; i++)
+			{
+				BName = PList[i].Pref + PList[i].NumGeopointA + " - " +
+						PList[i + 1].Pref + PList[i + 1].NumGeopointA;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				/* LVi.SubItems.Add(PList.Points[i].x_s);
+				 LVi.SubItems.Add(PList.Points[i].y_s);
+				 LVi.SubItems.Add(PList.Points[i].Mt_s);
+				 LVi.SubItems.Add(PList.Points[i].Description);
+				 * */
+		/*
+	   if (PList[i].Pref == "н")
+		   LVi.ForeColor = Color.Red;
+	   else LVi.ForeColor = Color.Black;
+	   LV.Items.Add(LVi);
+   }
+}
+private ListViewItem PointListToListView(ListView LV, PointList PList, bool SetTag)
+{
+if (PList.Count == 0) return null;
+string BName;
+LV.BeginUpdate();
+//LV.Items.Clear();
+//LV.Tag = PList.Parent_Id;
+if (SetTag) LV.Tag = PList.id;
+ListViewItem res = null; ;
+for (int i = 0; i <= PList.Count - 1; i++)
+{
+   BName = PList[i].Pref + PList[i].NumGeopointA + PList[i].OrdIdent;
+   ListViewItem LVi = new ListViewItem();
+   LVi.Text = BName;
+   LVi.Tag = PList[i].id;
+   LVi.SubItems.Add(PList[i].x_s);
+   LVi.SubItems.Add(PList[i].y_s);
+   LVi.SubItems.Add(PList[i].Mt_s);
+   LVi.SubItems.Add(PList[i].Description);
+   if (PList[i].Pref == "н")
+	   LVi.ForeColor = Color.Red;
+   else LVi.ForeColor = Color.Black;
+   if (PList[i].Status == 6)
+	   LVi.ForeColor = Color.Blue;
+   if (i == 0) res = LV.Items.Add(LVi);
+   else
+	   LV.Items.Add(LVi);
+}
+LV.EndUpdate();
+return res; // вернем первую строчку Items
+}
 
-			for (int ic = 0; ic <= PList.Childs.Count - 1; ic++)
-			{  //Пустая строчка - разделитель
-				ListViewItem LViEmpty_ch = new ListViewItem();
-				LViEmpty_ch.Text = "";
-				LV.Items.Add(LViEmpty_ch);
-				PointListToListView(LV, PList.Childs[ic], false);
-			}
+// Листинг точек TmyPolygon в ListView
 
-			ListViewItem LViEmpty = new ListViewItem();
-			LViEmpty.Text = "";
-			LV.Items.Add(LViEmpty);
-			return res;
-		}
+private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
+{
+if (PList.Count == 0) return null;
+LV.Items.Clear();
+LV.Tag = PList.id;
+ListViewItem res = PointListToListView(LV, (PointList)PList, true);
 
-		 //Листинг точек ПД 
+for (int ic = 0; ic <= PList.Childs.Count - 1; ic++)
+{  //Пустая строчка - разделитель
+   ListViewItem LViEmpty_ch = new ListViewItem();
+   LViEmpty_ch.Text = "";
+   LV.Items.Add(LViEmpty_ch);
+   PointListToListView(LV, PList.Childs[ic], false);
+}
+
+ListViewItem LViEmpty = new ListViewItem();
+LViEmpty.Text = "";
+LV.Items.Add(LViEmpty);
+return res;
+}
+*/
+
+		//Листинг точек ПД 
 		private ListViewItem GeometryToListView(ListView LV, IGeometry Feature)
 		{
 			if (Feature == null)
@@ -2130,21 +2095,10 @@ namespace XMLReaderCS
 			LV.Columns[1].Text = "x, м.";
 			LV.Columns[2].Text = "y, м.";
 			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "R";
+			LV.Columns[4].Text = "-";
 			LV.Columns[5].Text = "-";
 			LV.Columns[6].Text = "-";
 			LV.View = View.Details;
-
-			if (Feature.TypeName == "netFteo.Spatial.TEntitySpatial")
-			{
-				// TODO ?
-			}
-
-			if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
-				LVi_Commands = PointListToListView(LV, (TMyPolygon)Feature);
-
-			if (Feature.TypeName == "netFteo.Spatial.TPolyLine")
-				LVi_Commands = PointListToListView(LV, (TPolyLine)Feature, true);
 
 			if (Feature.TypeName == "netFteo.Spatial.TCircle")
 				LVi_Commands = CircleToListView(LV, (TCircle)Feature);
@@ -2155,7 +2109,8 @@ namespace XMLReaderCS
 				if (Contours.Count == 0) return null;
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = Contours.Defintion;
-				LVi_Commands = PointListToListView(LV, Contours.AsPointList(), false);
+				PointList ptlist = Contours.AsPointList();
+				ptlist.ShowasListItems(LV, false);
 				LV.Items.Add(LVi);
 			}
 
@@ -2295,6 +2250,8 @@ namespace XMLReaderCS
 		private void OMSPointsToListView(ListView LV, PointList list)
 		{
 			if (list.PointCount == 0) return;
+			LV.BeginUpdate();
+			LV.Items.Clear();
 			LV.Columns[0].Text = "#";
 			LV.Columns[1].Text = "Номер";
 			LV.Columns[2].Text = "х, м.";
@@ -2315,6 +2272,7 @@ namespace XMLReaderCS
 				lst.Add(flat_string);
 			}
 			ListToListView(LV, lst);
+			LV.EndUpdate();
 		}
 
 		private void FlatsToListView(ListView LV, TFlats list)
@@ -3022,37 +2980,37 @@ namespace XMLReaderCS
 
 			if (STrN.Name.Contains("ES."))
 			{
-				int chek_id = Convert.ToInt32(STrN.Name.Substring(3));
-				var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				//((IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)))).
+				//GeometryToListView(listView1, (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3))));
+
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				if (Entity != null)
+				{
+					Entity.ShowasListItems(listView1, true);
+				}
 			}
 
 			if (STrN.Name.Contains("SPElem."))
 			{
-				int chek_id = Convert.ToInt32(STrN.Name.Substring(7));
-					TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
-
-				if (Pl != null)
+				//GeometryToListView(listView1, (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7))));
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+				if (Entity != null)
 				{
-					if (Pl.Parent_Id > 0)
-						GeometryToListView(listView1, Pl);
-					else
-					{
-						// Pl.Parent_Id  ???? (int)STrN.Tag
-						GeometryToListView(listView1, Pl);
-					}
+					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
 				}
-				PropertiesToListView(listView_Properties, Pl);
+
 			}
 
 
 
 			if (STrN.Name.Contains("TPolyLine."))
 			{
-				int chek_id = Convert.ToInt32(STrN.Name.Substring(10));
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
 				if (Entity != null)
 				{
-					GeometryToListView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
+				//	GeometryToListView(listView1, Entity);
 					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
@@ -3064,7 +3022,6 @@ namespace XMLReaderCS
 				if (CircleEntity != null)
 				{
 					GeometryToListView(listView1, CircleEntity);
-					//PointListToListView(listView1, (TCircle)CircleEntity);
 				}
 			}
 
@@ -3091,7 +3048,6 @@ namespace XMLReaderCS
 						EZPEntryListToListView(listView1, P.AsList());
 						PropertiesToListView(listView_Properties, P);
 					}
-
 			}
 
 			if (STrN.Name.Contains("OMSPoints"))
@@ -3157,12 +3113,9 @@ namespace XMLReaderCS
 				if (O.ToString() == "netFteo.Spatial.TMyParcel")
 				{
 					TMyParcel P = (TMyParcel)O;
-					//PropertiesToListView(listView_Properties, P.Rights);
 					PropertiesToListView(listView_Properties, P.EGRN);
-					//if (P.Rights != null)  RightsToListView(listView1, P.Rights.AsList());
 					if (P.EGRN != null) RightsToListView(listView1, P.EGRN.AsList());
 				}
-
 			}
 
 
@@ -3179,7 +3132,6 @@ namespace XMLReaderCS
 						{
 							FlatsToListView(listView1, P.Building.Flats);
 							PropertiesToListView(listView_Properties, P.Building);
-
 						}
 				}
 			}
@@ -3199,9 +3151,6 @@ namespace XMLReaderCS
 					}
 				}
 			}
-
-
-		
 		}
 
 
@@ -4002,13 +3951,14 @@ namespace XMLReaderCS
 
         private void ChangeXYToolStripMenuItem_Click(object sender, EventArgs e)
         {
+			/*
             TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));// Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
             if (Pl != null)
             {
                 Pl.ExchangeXY();
                 PointListToListView(listView1, Pl);
             }
-
+			*/
         }
 
         private void m11000ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5242,7 +5192,7 @@ namespace XMLReaderCS
 			if (Feature != null)
 			{
 				Feature.SetMt(0.1);
-				GeometryToListView(listView1, Feature);
+				Feature.ShowasListItems(listView1, true);
 			}
         }
 
@@ -5252,7 +5202,7 @@ namespace XMLReaderCS
 			if (Feature != null)
 			{
 				Feature.Fraq("0.00");
-				GeometryToListView(listView1, Feature);
+				Feature.ShowasListItems(listView1, true);
 			}
         }
 
@@ -5262,8 +5212,8 @@ namespace XMLReaderCS
 			if (Feature != null)
 			{
 				Feature.ReorderPoints(1);
-				GeometryToListView(listView1, Feature);
-            }
+				Feature.ShowasListItems(listView1, true);
+			}
         }
 
 
@@ -5273,18 +5223,20 @@ namespace XMLReaderCS
 			if (Feature != null)
 			{
 				Feature.Close();
-				GeometryToListView(listView1, Feature);
+				Feature.ShowasListItems(listView1, true);
 			}
 		}
 
 		private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			/*
 			TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Pl != null)
 			{
 				Pl.Reverse_Points();
 				PointListToListView(listView1, Pl);
 			}
+			*/
 		}
 
 

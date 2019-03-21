@@ -58,6 +58,7 @@ namespace netFteo.Spatial
 		/// Close figure - append last point, if not present
 		/// </summary>
 		void Close();
+		void ShowasListItems(ListView LV, bool SetTag);
 	}
 
     /// <summary>
@@ -104,6 +105,11 @@ namespace netFteo.Spatial
 		public void Fraq(string Format)
 		{
 		 // nothing to fraq :)
+		}
+
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+
 		}
 
 		public int ReorderPoints(int ind)
@@ -659,6 +665,51 @@ namespace netFteo.Spatial
 			foreach (Point pt in this)
 			pt.Mt = mt;
 		}
+
+
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+			if (Count == 0) return;
+			string BName;
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.Controls.Clear();
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "Описание";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
+
+			LV.Items.Clear();
+			//LV.Tag = PList.Parent_Id;
+			if (SetTag) LV.Tag = id;
+			ListViewItem res = null; ;
+			for (int i = 0; i <= Count - 1; i++)
+			{
+				BName = this[i].Pref + this[i].NumGeopointA + this[i].OrdIdent;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				LVi.Tag = this[i].id;
+				LVi.SubItems.Add(this[i].x_s);
+				LVi.SubItems.Add(this[i].y_s);
+				LVi.SubItems.Add(this[i].Mt_s);
+				LVi.SubItems.Add(this[i].Description);
+				if (this[i].Pref == "н")
+					LVi.ForeColor = System.Drawing.Color.Red;
+				else LVi.ForeColor = System.Drawing.Color.Black;
+				if (this[i].Status == 6)
+					LVi.ForeColor = System.Drawing.Color.Blue;
+				if (i == 0) res = LV.Items.Add(LVi);
+				else
+					LV.Items.Add(LVi);
+			}
+			LV.EndUpdate();
+			return;
+		}
+
 
 		/// <summary>
 		/// Конструктор base Geometry object,
@@ -1652,9 +1703,66 @@ SCAN:
                 StartIndex += child.ReorderPoints(StartIndex);
 			return StartIndex;
         }
-		
 
-        public int State;
+		private void ShowListPoints(ListView LV, PointList points)
+		{
+			string BName;
+			for (int i = 0; i <= points.Count - 1; i++)
+			{
+				BName = points[i].Pref + points[i].NumGeopointA + points[i].OrdIdent;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				LVi.Tag = points[i].id;
+				LVi.SubItems.Add(points[i].x_s);
+				LVi.SubItems.Add(points[i].y_s);
+				LVi.SubItems.Add(points[i].Mt_s);
+				LVi.SubItems.Add(points[i].Description);
+				if (points[i].Pref == "н")
+					LVi.ForeColor = System.Drawing.Color.Red;
+				else LVi.ForeColor = System.Drawing.Color.Black;
+				if (points[i].Status == 6)
+					LVi.ForeColor = System.Drawing.Color.Blue;
+				//if (i == 0) res = LV.Items.Add(LVi);
+				//else
+					LV.Items.Add(LVi);
+			}
+		}
+
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.Controls.Clear();
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "Описание";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
+
+
+			if (PointCount == 0) return ;
+			LV.Items.Clear();
+			if (SetTag) LV.Tag = id;
+			ShowListPoints(LV, (PointList)this);
+
+			for (int ic = 0; ic <= this.Childs.Count - 1; ic++)
+			{  //Пустая строчка - разделитель
+				ListViewItem LViEmpty_ch = new ListViewItem();
+				LViEmpty_ch.Text = "";
+				LV.Items.Add(LViEmpty_ch);
+				ShowListPoints(LV, this.Childs[ic]);
+			}
+
+			ListViewItem LViEmpty = new ListViewItem();
+			LViEmpty.Text = "";
+			LV.Items.Add(LViEmpty);
+			LV.EndUpdate();
+		}
+
+		public int State;
         /// <summary>
         /// Площадь - значение (указанное). Типа Семантическая в ЕГРН
         /// </summary>
@@ -3811,15 +3919,17 @@ SCAN:
 		/// DXF, MIF spatial data collection - -results of parsing spatial files 
 		/// Store result of mif, dxf, csv, txt
 		/// </summary>
-		public TEntitySpatial ParsedSpatial;
+		public List<TEntitySpatial> ParsedSpatial;
 
         public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
+
         public TMyBlockCollection()
         {
             this.Blocks = new List<TMyCadastralBlock>();
-			//this.SpatialData = new TEntitySpatial();
+			this.ParsedSpatial = new List<TEntitySpatial>();
 			this.CSs = new TCoordSystems();
         }
+
         public string SingleCN() // Если квартал один, вернуть его CN
         {
             if (this.Blocks.Count == 1)
@@ -3828,29 +3938,40 @@ SCAN:
                 return null;
         }
 
-        public Object GetEs(int Layer_id)
+        public Object GetEs(int Item_id)
         {
+			//From Parcels
 			for (int i = 0; i <= this.Blocks.Count - 1; i++)
 			{
-				Object Entity = this.Blocks[i].GetEs(Layer_id);
+				Object Entity = this.Blocks[i].GetEs(Item_id);
 				if (Entity != null)
 					return Entity;
 			}
 
+			//From OKS
 			foreach (IGeometry feature in this.SpatialData)
 			{
-				if (feature.id == Layer_id)
+				if (feature.id == Item_id)
 					return feature;
 
 			}
 
-			foreach (IGeometry feature in this.ParsedSpatial)
-			{
-				if (feature.id == Layer_id)
-					return feature;
+			//From dxf, mif
+			//Full ES
+			foreach (TEntitySpatial ES in this.ParsedSpatial)
+				
+				{
+					if (ES.id == Item_id)
+						return ES;
+				}
 
-			}
-
+			//Single feature ES
+			foreach (TEntitySpatial ES in this.ParsedSpatial)
+				foreach (IGeometry feature in ES)
+				{
+					if (feature.id == Item_id)
+						return feature;
+				}
 			return null;
         }
 
@@ -3868,7 +3989,16 @@ SCAN:
 				if (feature.LayerHandle == Layer_Handle)
 					res.Add(feature);
 			}
-			return res;
+
+			foreach (IGeometry feature in this.ParsedSpatial)
+			{
+				if (feature.LayerHandle == Layer_Handle)
+					res.Add(feature);
+			}
+
+			if (res.Count == 0) return null;
+			else
+				return res;
 		}
 
 		/// <summary>
@@ -3936,8 +4066,6 @@ SCAN:
             return Res;
         }
 
-
-
         public TMyCadastralBlock GetBlock(int id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
@@ -3962,6 +4090,7 @@ SCAN:
             }
             return null;
         }
+
         public TCoordSystems CSs;
     }
     #endregion
@@ -4002,9 +4131,15 @@ SCAN:
 
 	public class TLayer : Geometry
 	{
+		public int Parent_id; //? what you think
 		public TLayer()
 		{
 			this.Name = "0";
+		}
+
+		public TLayer(int Parent_id) : this()
+		{
+			this.Parent_id = Parent_id;
 		}
 	}
 
@@ -4054,24 +4189,11 @@ SCAN:
 			this.id = Gen_id.newId;
 			this.Definition = "Границы";
 			this.Layers = new List<TLayer>();
-			this.Layers.Add(new TLayer()); // default layer 0, handle = FFFF
+			this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
 		}
 
 		public void Fraq(string Format)
 		{
-			/*
-			foreach (IGeometry feature in this)
-			{
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					((TMyPolygon)feature).Fraq(Format);
-
-				if (feature.TypeName == "netFteo.Spatial.PointList")
-					((PointList)feature).Fraq(Format);
-
-				if (feature.TypeName == "netFteo.Spatial.OMSPoints")
-					((PointList)feature).Fraq(Format);
-			}
-			*/
 			foreach (IGeometry feature in this)
 			{
 				feature.Fraq(Format);
@@ -4079,7 +4201,52 @@ SCAN:
 
 		}
 
-		public int ReorderPoints(int Startindex =1)
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+			if (Count == 0) return;
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.Columns[0].Text = "Name";
+			LV.Columns[1].Text = "Type";
+			LV.Columns[2].Text = "id";
+			LV.Columns[3].Text = "layer handle";
+			LV.Columns[4].Text = "-";
+			//LV.Tag = PList.Parent_Id;
+			if (SetTag) LV.Tag = id;
+
+			foreach (TLayer Layer in this.Layers)
+			{
+
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = Layer.Name;
+				LVi.Tag = Layer.id;
+				LVi.SubItems.Add(Layer.TypeName);
+				LVi.SubItems.Add(Layer.id.ToString());
+				LVi.SubItems.Add(Layer.LayerHandle);
+				LV.Items.Add(LVi);
+			}
+
+			foreach (IGeometry feature in this)
+			{
+
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = feature.Definition;
+				LVi.Tag = feature.id;
+				LVi.SubItems.Add(feature.TypeName);
+				LVi.SubItems.Add(feature.id.ToString());
+				LVi.SubItems.Add(feature.LayerHandle);
+				LV.Items.Add(LVi);
+			}
+
+
+
+			LV.EndUpdate();
+		}
+
+
+		
+
+			public int ReorderPoints(int Startindex =1)
 		{
 			foreach (IGeometry feature in this)
 			{

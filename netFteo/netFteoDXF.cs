@@ -96,7 +96,7 @@ namespace netFteo.IO
 					res.Layers[0].LayerHandle = layer.Handle;
 				}
 				else 
-				res.Layers.Add(new TLayer()
+				res.Layers.Add(new TLayer(res.id)
 				{
 					LayerHandle = layer.Handle,
 					Name = layer.Name

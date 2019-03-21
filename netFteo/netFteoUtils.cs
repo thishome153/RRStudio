@@ -207,15 +207,37 @@ namespace netFteo
 		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, int Status)
 		{
 			if (ES == null) return;
-			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
-			NodeTo.Tag = ES.id;
-			//Show layers of ES
-			foreach (netFteo.Spatial.TLayer layer in ES.Layers)
+		
+				TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
+				NodeTo.Tag = ES.id;
+				//Show layers of ES
+				foreach (netFteo.Spatial.TLayer layer in ES.Layers)
+				{
+					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
+					//TODO Filter features by Inumerable selects : 
+					//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
+					ListFeature(ES, LayerNode, layer.LayerHandle);
+				}
+		}
+
+		public static void ListEntSpat(TreeNode NodeES, List<Spatial.TEntitySpatial> ES, int Status)
+		{
+			if (ES == null) return;
+			foreach (Spatial.TEntitySpatial es in ES)
 			{
-				TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
-				//TODO Filter features by Inumerable selects : 
-				//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
-				ListFeature(ES, LayerNode, layer.LayerHandle);
+				ListEntSpat(NodeES, es, Status);
+				/*
+				TreeNode NodeTo = NodeES.Nodes.Add("ES." + es.id.ToString(), "Слои");
+				NodeTo.Tag = es.id;
+				//Show layers of ES
+				foreach (netFteo.Spatial.TLayer layer in es.Layers)
+				{
+					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
+					//TODO Filter features by Inumerable selects : 
+					//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
+					ListFeature(es, LayerNode, layer.LayerHandle);
+				}
+				*/
 			}
 		}
 
