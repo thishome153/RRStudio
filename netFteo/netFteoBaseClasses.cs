@@ -588,7 +588,6 @@ namespace netFteo.Spatial
 
 			//LV.Tag = PList.Parent_Id;
 			if (SetTag) LV.Tag = id;
-			ListViewItem res = null; ;
 			BName = this.Pref + this.NumGeopointA + this.OrdIdent;
 			ListViewItem LVi = new ListViewItem();
 			LVi.Text = BName;

@@ -243,7 +243,7 @@ namespace XMLReaderCS
 					ParseTMyPolygon(xmlPolygon);
 				}
 			}
-
+			/*
 			if (DocInfo.DocRootName == "TPolygonCollection")
 			{
 				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
@@ -255,6 +255,7 @@ namespace XMLReaderCS
 					ParseTMyPolygon(xmlPolygons);
 				}
 			}
+			*/
 			// EZP hard editing:
 			if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
 			{
@@ -542,25 +543,10 @@ namespace XMLReaderCS
 			if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
 			{
 				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-				TPolygonCollection polyfromMIF = mifreader.ImportMIF(FileName);
+				TEntitySpatial ESfromMIF = mifreader.ImportMIF(FileName);
 
-				// Virtual Parcel with contours:
-				TMyCadastralBlock Bl = new TMyCadastralBlock();
-				Bl.CN = "Полигоны MIF";
+				this.DocInfo.MyBlocks.ParsedSpatial.Add(ESfromMIF);
 
-				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "MIF"));
-				/*
-                if (polyfromMIF.Count == 1)
-                {
-                    MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01"); 
-                    MainObj.EntitySpatial = polyfromMIF[0];
-                }
-                else
-                    */
-				MainObj.Contours.AddPolygons(polyfromMIF);
-
-				this.DocInfo.MyBlocks.Blocks.Clear();
-				this.DocInfo.MyBlocks.Blocks.Add(Bl);
 				this.DocInfo.DocTypeNick = "Mapinfo mif";
 				this.DocInfo.DocType = "Mapinfo mif";
 				this.DocInfo.CommentsType = "MIF";
@@ -599,10 +585,11 @@ namespace XMLReaderCS
 			if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
 			{
 				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-				TPolygonCollection polyfromMIF = mifreader.ImportTxtFile(FileName);
+				TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
 				if (polyfromMIF != null)
 				{
-
+					this.DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
+					/* TODO kill
 					// Virtual Parcel with contours:
 					TMyCadastralBlock Bl = new TMyCadastralBlock();
 					Bl.CN = "Полигоны txt";
@@ -618,8 +605,9 @@ namespace XMLReaderCS
 
 					this.DocInfo.MyBlocks.Blocks.Clear();
 					this.DocInfo.MyBlocks.Blocks.Add(Bl);
+					*/
 				}
-
+				
 				this.DocInfo.DocTypeNick = "Текстовый файл";
 				this.DocInfo.CommentsType = "TXT";
 				this.DocInfo.Comments = mifreader.Body;
@@ -1637,9 +1625,9 @@ namespace XMLReaderCS
 				}
 
 
-			} // block block
+			} // block
 
-			//ОИПД если нет кварталов - не было импорта ЕГРН, значит только пространственный файл
+			//ОИПД если нет кварталов - не было импорта ЕГРН, значит только пространственный файл mif, dxf
 			if (BlockList.Blocks.Count == 0)
 			{
 				if (BlockList.ParsedSpatial != null)
@@ -2101,10 +2089,7 @@ return res;
 			LV.Columns[5].Text = "-";
 			LV.Columns[6].Text = "-";
 			LV.View = View.Details;
-			/*
-			if (Feature.TypeName == "netFteo.Spatial.TCircle")
-				LVi_Commands = CircleToListView(LV, (TCircle)Feature);
-			*/
+
 			if (Feature.TypeName == "netFteo.Spatial.TPolygonCollection")
 			{
 				TPolygonCollection Contours = (TPolygonCollection)Feature;
@@ -3347,7 +3332,7 @@ return res;
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 							{
 								netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-								TR.SaveAsTexnoCADCSV(saveFileDialog1.FileName, ES);
+								TR.SaveAsCSV(saveFileDialog1.FileName, ES);
 							}
 							break;
 						}
@@ -5018,15 +5003,15 @@ return res;
                         P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 
                         netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-                        TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
+                       // TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
 
-                        toolStripProgressBar1.Maximum = P.CompozitionEZ.Count *  polyfromMIF.Count;
+                      //  toolStripProgressBar1.Maximum = P.CompozitionEZ.Count *  polyfromMIF.Count;
                         toolStripProgressBar1.Minimum = 0;
                         toolStripProgressBar1.Value = 0;
 
                         PointList res = new PointList();
                       
-                        res.AppendPoints(P.CompozitionEZ.CheckESs(polyfromMIF));
+                       // res.AppendPoints(P.CompozitionEZ.CheckESs(polyfromMIF));
 
                         //Если пересечения не найдены - то общие точки:
                         if (res.PointCount == 0)

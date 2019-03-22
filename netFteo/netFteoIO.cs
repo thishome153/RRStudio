@@ -23,6 +23,7 @@ namespace netFteo.IO
 	{
 		public const string TabDelimiter = "\t";  // tab
 		public const string CommaDelimiter = ";";  // tab
+		public MifOptions MIF_Options;
 		public string FileType = "";  // tab
 		private String fBody;
 		public string Body
@@ -149,7 +150,7 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="Fname"></param>
 		/// <returns></returns>
-		public TPolygonCollection ImportTxtFile(string Fname)
+		public TEntitySpatial ImportTxtFile(string Fname)
 		{
 			string line = null;
 			System.IO.TextReader readFile = new StreamReader(Fname);
@@ -161,10 +162,11 @@ namespace netFteo.IO
 				if (line != null) //Читаем строку
 				{      //по строке
 					FileType = line;
+					/* TODO:
 					if (line.Contains("#Fixosoft NumXYZD data format V2014"))
 					{
-						TPolygonCollection rets = new TPolygonCollection();
-						rets.AddPolygon(ImportNXYZDFile2014(Fname));
+						TEntitySpatial rets = new TEntitySpatial();
+						rets.Add(ImportNXYZDFile2014(Fname));
 						return rets;
 					}
 					if (line.Contains("#Fixosoft NumXYZD data format V2015"))
@@ -175,7 +177,7 @@ namespace netFteo.IO
 
 					if (line.Equals("#Fixosoft spatial text file V2018"))
 						return ImportNXYZDFile2018(Fname);
-
+					*/
 				}
 			}
 			return null;
@@ -344,9 +346,10 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="Filename"></param>
 		/// <returns></returns>
-		public TPolygonCollection ImportMIF(string FileName)
+		public TEntitySpatial ImportMIF(string FileName)
 		{
-			TPolygonCollection res = new TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
+			MIF_Options = new MifOptions();
 			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
 
 			System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
@@ -376,7 +379,7 @@ namespace netFteo.IO
 							{
 								if (line.ToUpper().Substring(0, 9).Contains("DELIMITER"))
 								{
-									res.MIF_Options.Delimiter = line.Substring(11, 1);
+									MIF_Options.Delimiter = line.Substring(11, 1);
 								};
 							};
 
@@ -388,7 +391,7 @@ namespace netFteo.IO
 								{
 									for (int i = 1; i <= columnsCount; i++)
 									{
-										res.MIF_Options.AddColumn(i.ToString(), readFile.ReadLine());
+										MIF_Options.AddColumn(i.ToString(), readFile.ReadLine());
 									}
 								}
 							};
@@ -412,8 +415,8 @@ namespace netFteo.IO
 								//detect count of ring of polygon "Region 1"
 								Int16 ringCount = 0;
 								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out ringCount))
-									res.AddPolygon(MIF_ParseRegion(readFile, ringCount));
-								midline = MID_ParseRow(readMIDFile, res.MIF_Options).ToString();
+									res.Add(MIF_ParseRegion(readFile, ringCount));
+								midline = MID_ParseRow(readMIDFile, MIF_Options).ToString();
 							};
 						}
 						StrCounter++;
@@ -423,7 +426,7 @@ namespace netFteo.IO
 				readFile = null;
 				TMyPolygon MIF_Points_POly = new TMyPolygon("mifPoints");
 				MIF_Points_POly.AppendPoints(MIF_Points);
-				res.AddPolygon(MIF_Points_POly);
+				res.Add(MIF_Points_POly);
 			}
 
 			catch (IOException ex)
@@ -431,8 +434,8 @@ namespace netFteo.IO
 				return null;
 				//  MessageBox.Show(ex.ToString());
 			}
-			res.Defintion = FileName;
-			res.MIF_Options.Delimiter = delimiter;// ' " polygons " + PolygonCount.ToString();
+			res.Definition = FileName;
+			MIF_Options.Delimiter = delimiter;// ' " polygons " + PolygonCount.ToString();
 			return res;
 		}
 
