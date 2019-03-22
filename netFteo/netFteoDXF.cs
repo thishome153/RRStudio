@@ -497,7 +497,10 @@ namespace netFteo.IO
 					dxfDoc.AddEntity(DxfCircle);//CreatePoint(dxfDoc, LayerPoints, LayerText, circle));
 				}
 
-					if (feature.TypeName == "netFteo.Spatial.TMyPoints")
+				//
+
+					if ((feature.TypeName == "netFteo.Spatial.TMyPoints") ||
+						(feature.TypeName == "netFteo.Spatial.OMSPoints"))
 				{
 					PointList Points = (PointList)feature;
 					for (int i = 0; i <= Points.PointCount - 1; i++)

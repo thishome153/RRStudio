@@ -17,7 +17,7 @@ namespace RRTypes.CommonCast
 		/// </summary>
 		/// <param name="Address"></param>
 		/// <returns></returns>
-		/*
+		/* TODO:  kill waiting commented block
 		public static Object ES_OKS(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
 		{
 			if (ES == null) return null;
@@ -388,6 +388,7 @@ namespace RRTypes.CommonCast
 			}
 		}
 		*/
+
 		public static TEntitySpatial ES_OKS2(string Definition, STD_TPV02.Entity_Spatial ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
@@ -447,6 +448,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = ES.SpatialElement[i].Number;
 					res.Add(fES);
 				}
 
@@ -529,7 +531,9 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
+					goto NextElement; // skip to next, as here circle element
 				}
 
 				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt09.tSpelementUnitZUOutTypeUnit.Точка)
@@ -591,6 +595,7 @@ namespace RRTypes.CommonCast
 						res.Add(line);
 					}
 				}
+			NextElement:;
 			}
 			return res;
 		}
@@ -611,6 +616,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = Definition + "." + ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
 				}
 
@@ -692,6 +698,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
 				}
 
@@ -764,6 +771,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
 				}
 
@@ -836,6 +844,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = Definition;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
 				}
 
@@ -909,6 +918,7 @@ namespace RRTypes.CommonCast
 											  ES.SpatialElement[i].SpelementUnit[0].R);
 					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
 					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+					fES.Definition = Definition;
 					res.Add(fES);
 				}
 

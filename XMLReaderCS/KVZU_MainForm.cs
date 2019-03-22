@@ -1958,7 +1958,7 @@ namespace XMLReaderCS
 	
 		*/
 	
-
+			/*
 		// Листинг точек окружностней в ListView
 		private ListViewItem CircleToListView(ListView LV, TCircle Circle)
 		{
@@ -1994,7 +1994,7 @@ namespace XMLReaderCS
 			LV.Items.Add(LVi);
 			return LVi;
 		}
-
+*/
 		/*
 		 * 
 		 * 	// Листинг отрезков границ в ListView
@@ -2085,7 +2085,7 @@ return res;
 		/// <param name="LV"></param>
 		/// <param name="Feature"></param>
 		/// <returns></returns>
-		private ListViewItem GeometryToListView(ListView LV, IGeometry Feature)
+		private ListViewItem GeometryToSpatialView(ListView LV, IGeometry Feature)
 		{
 			if (Feature == null)
 			{
@@ -2093,9 +2093,6 @@ return res;
 				return null;
 			}
 			ListViewItem LVi_Commands = null;
-
-			LV.Items.Clear();
-			LV.Controls.Clear();
 			LV.Columns[0].Text = "Имя";
 			LV.Columns[1].Text = "x, м.";
 			LV.Columns[2].Text = "y, м.";
@@ -2104,10 +2101,10 @@ return res;
 			LV.Columns[5].Text = "-";
 			LV.Columns[6].Text = "-";
 			LV.View = View.Details;
-
+			/*
 			if (Feature.TypeName == "netFteo.Spatial.TCircle")
 				LVi_Commands = CircleToListView(LV, (TCircle)Feature);
-
+			*/
 			if (Feature.TypeName == "netFteo.Spatial.TPolygonCollection")
 			{
 				TPolygonCollection Contours = (TPolygonCollection)Feature;
@@ -2460,9 +2457,10 @@ return res;
 					LV.Items.Clear();
 					LV.Controls.Clear();
 
+					/*
 					//Отрисуем и отлистаем ПД (not for contours):
 					GeometryToListView(listView1, P.EntitySpatial);
-
+					*/
 					ListViewItem LViCN = new ListViewItem();
 					if (P.CN != null)
 					{
@@ -2733,7 +2731,6 @@ return res;
 						LViReady.Text = "Степень готовности";
 						LViReady.SubItems.Add(P.Uncompleted.DegreeReadiness + "%");
 						LV.Items.Add(LViReady);
-						GeometryToListView(listView1, P.EntSpat);
 					}
 
 					if (P.Area != 0)
@@ -2754,7 +2751,7 @@ return res;
 						LV.Items.Add(LViFloors);
 					}
 
-					GeometryToListView(listView1, P.EntSpat);
+					GeometryToSpatialView(listView1, P.EntSpat);
 					KeyParametersToListView(LV, P.KeyParameters);
 				}
 
@@ -2833,7 +2830,6 @@ return res;
 						LVipIB.SubItems.Add(Poly.Childs.Count.ToString());
 						LV.Items.Add(LVipIB);
 					}
-
 					// list borders:
 					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
 				}
@@ -2984,7 +2980,11 @@ return res;
 		{
 			if (STrN == null) return;
 			toolStripStatusLabel2.Text = STrN.Name;
-	
+			//clear items in any case:
+			listView1.Items.Clear();
+			listView1.Controls.Clear();
+			listView1.View = View.Details;
+			
 			listView_Properties.Items.Clear();
 			listView_Properties.Controls.Clear();
 
@@ -2996,7 +2996,7 @@ return res;
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
 				if (Entity != null)
 				{
-					GeometryToListView(listView1, Entity);
+					GeometryToSpatialView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
 					PropertiesToListView(listView_Properties, Entity);
 				}
@@ -3004,17 +3004,48 @@ return res;
 
 			if (STrN.Name.Contains("SPElem."))
 			{
-				//GeometryToListView(listView1, (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7))));
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
 				if (Entity != null)
 				{
-					GeometryToListView(listView1, Entity);
+					GeometryToSpatialView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
 					PropertiesToListView(listView_Properties, Entity);
 				}
-
 			}
 
+			if (STrN.Name.Contains("PNode")) // this is Parcel - list all about stuf
+			{
+				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
+				{
+					TMyParcel parcel = (TMyParcel)O;
+					if (parcel.Contours != null)
+						EZPEntryListToListView(listView1, parcel.Contours.AsList());
+					else
+					{
+
+						IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(parcel.EntitySpatial.id);
+						if (Entity != null)
+						{
+							GeometryToSpatialView(listView1, Entity);
+							Entity.ShowasListItems(listView1, true);
+						}
+					}
+				}
+
+				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))
+				{
+					TMyRealty parcel = (TMyRealty)O;
+					IGeometry Entity = (IGeometry)parcel.EntSpat;
+					if (Entity != null)
+					{
+						GeometryToSpatialView(listView1, Entity);
+						Entity.ShowasListItems(listView1, true);
+					}
+				}
+				PropertiesToListView(listView_Properties, O);
+			}
 
 
 			if (STrN.Name.Contains("TPolyLine."))
@@ -3022,8 +3053,8 @@ return res;
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
 				if (Entity != null)
 				{
+					GeometryToSpatialView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
-				//	GeometryToListView(listView1, Entity);
 					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
@@ -3031,10 +3062,11 @@ return res;
 			if (STrN.Name.Contains("TCircle."))
 			{
 				int chek_id = Convert.ToInt32(STrN.Name.Substring(8));
-				IGeometry CircleEntity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
-				if (CircleEntity != null)
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
+				if (Entity != null)
 				{
-					GeometryToListView(listView1, CircleEntity);
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
 				}
 			}
 
@@ -3068,19 +3100,7 @@ return res;
 				OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
 			}
 
-			if (STrN.Name.Contains("PNode"))
-			{
-				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-				object O = this.DocInfo.MyBlocks.GetObject(id);
-				PropertiesToListView(listView_Properties, O);
 
-				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
-				{
-					TMyParcel parcel = (TMyParcel)O;
-					if (parcel.Contours != null)
-						EZPEntryListToListView(listView1, parcel.Contours.AsList());
-				}
-			}
 
 			if (STrN.Name.Contains("ZNode"))
 			{
@@ -3089,7 +3109,6 @@ return res;
 				LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
 				PropertiesToListView(listView_Properties, O);
 			}
-
 
 			if ((STrN.Name.Contains("SpecNotes")) ||
 				(STrN.Name.Contains("AdrNote"))
@@ -3720,8 +3739,10 @@ return res;
 
         private void TV_Parcels_Click_1(object sender, EventArgs e)
         {
+			/*
             if (((MouseEventArgs)e).Button == MouseButtons.Left)
               ListSelectedNode(TV_Parcels.SelectedNode);
+			*/
         }
 
         private void TV_Parcels_BeforeSelect(object sender, TreeViewCancelEventArgs e)

@@ -193,7 +193,7 @@ namespace netFteo.Spatial
         //ICoordinateSequence CoordinateSequence { get; }
     }
 
-    public class Point : Geometry, IPoint //port из  FteoClasses.pas
+    public class Point : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
     {
         //implementation of interface method Clone():
         public object Clone()
@@ -265,28 +265,45 @@ namespace netFteo.Spatial
             set { this.fDescription = value; }
         }
 
-        /*
-        public double x_any
-        {
-            get
-            {
-                if (!Double.IsNaN(this.oldOrd.X)) return this.newOrd.X;
-                else return this.oldOrd.X;
-            }
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+			if (Empty) return;
+			string BName;
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.Controls.Clear();
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "Описание";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
 
-        }
 
-        public double y_any
-        {
-            get
-            {
-                if (!Double.IsNaN(this.newOrd.Y)) return this.newOrd.Y;
-                else return this.oldOrd.Y;
-            }
+			//LV.Tag = PList.Parent_Id;
+			if (SetTag) LV.Tag = id;
+			ListViewItem res = null; ;
+				BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = BName;
+				LVi.Tag = id;
+				LVi.SubItems.Add(x_s);
+				LVi.SubItems.Add(y_s);
+				LVi.SubItems.Add(Mt_s);
+				LVi.SubItems.Add(Description);
+				if (Pref == "н")
+					LVi.ForeColor = System.Drawing.Color.Red;
+				else LVi.ForeColor = System.Drawing.Color.Black;
+				if (Status == 6)
+					LVi.ForeColor = System.Drawing.Color.Blue;
+				LV.Items.Add(LVi);
+			LV.EndUpdate();
+			return;
+		}
 
-        }
-        */
-        public double x
+		public double x
         {
             /*
             get { return this.fx; }
@@ -530,7 +547,7 @@ namespace netFteo.Spatial
     /// <summary>
     /// Circle. Just circle
     /// </summary>
-    public class TCircle : Point
+    public class TCircle : Point , IGeometry
     {
         /// <summary>
         /// Radius
@@ -551,7 +568,45 @@ namespace netFteo.Spatial
             this.y = Convert.ToDouble(y);
             this.R = Convert.ToDouble(radius);
         }
-    }
+
+		public void ShowasListItems(ListView LV, bool SetTag)
+		{
+			if (Empty) return;
+			string BName;
+			LV.BeginUpdate();
+			LV.Items.Clear();
+			LV.Controls.Clear();
+			LV.Columns[0].Text = "Имя";
+			LV.Columns[1].Text = "x, м.";
+			LV.Columns[2].Text = "y, м.";
+			LV.Columns[3].Text = "Mt, м.";
+			LV.Columns[4].Text = "радиус";
+			LV.Columns[5].Text = "-";
+			LV.Columns[6].Text = "-";
+			LV.View = View.Details;
+
+
+			//LV.Tag = PList.Parent_Id;
+			if (SetTag) LV.Tag = id;
+			ListViewItem res = null; ;
+			BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+			ListViewItem LVi = new ListViewItem();
+			LVi.Text = BName;
+			LVi.Tag = id;
+			LVi.SubItems.Add(x_s);
+			LVi.SubItems.Add(y_s);
+			LVi.SubItems.Add(Mt_s);
+			LVi.SubItems.Add(R.ToString());
+			if (Pref == "н")
+				LVi.ForeColor = System.Drawing.Color.Red;
+			else LVi.ForeColor = System.Drawing.Color.Black;
+			if (Status == 6)
+				LVi.ForeColor = System.Drawing.Color.Blue;
+			LV.Items.Add(LVi);
+			LV.EndUpdate();
+			return;
+		}
+	}
 
 	#region  Список точек. Его будем сериализовать в XML для обменов
 
@@ -680,7 +735,7 @@ namespace netFteo.Spatial
 			LV.Columns[6].Text = "-";
 			LV.View = View.Details;
 
-			LV.Items.Clear();
+
 			//LV.Tag = PList.Parent_Id;
 			if (SetTag) LV.Tag = id;
 			ListViewItem res = null; ;
@@ -1618,7 +1673,7 @@ SCAN:
     /// <summary>
     /// Класс Полигон
     /// </summary>
-    public class TMyPolygon : TMyOutLayer, IGeometry
+    public class TMyPolygon : TMyOutLayer, IPointList, IGeometry
     {
 
         public List<TMyOutLayer> Childs;
@@ -1702,7 +1757,7 @@ SCAN:
         }
 
 
-        public int ReorderPoints(int StartIndex =1 )
+        public int  ReorderPoints(int StartIndex =1 )
         {
 			foreach (Point pt in this)
 			{
@@ -1740,9 +1795,11 @@ SCAN:
 
 		public void ShowasListItems(ListView LV, bool SetTag)
 		{
+			if (PointCount == 0) return;
 			LV.BeginUpdate();
 			LV.Items.Clear();
 			LV.Controls.Clear();
+			LV.View = View.Details;
 			LV.Columns[0].Text = "Имя";
 			LV.Columns[1].Text = "x, м.";
 			LV.Columns[2].Text = "y, м.";
@@ -1750,12 +1807,8 @@ SCAN:
 			LV.Columns[4].Text = "Описание";
 			LV.Columns[5].Text = "-";
 			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
-
-
-			if (PointCount == 0) return ;
-			LV.Items.Clear();
 			if (SetTag) LV.Tag = id;
+
 			ShowListPoints(LV, (PointList)this);
 
 			for (int ic = 0; ic <= this.Childs.Count - 1; ic++)

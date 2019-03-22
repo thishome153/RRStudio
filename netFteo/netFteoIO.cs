@@ -1138,8 +1138,11 @@ namespace netFteo.IO
 							  ES[i].oldY_s + ";" +
 							  ES[i].x_s + ";" +
 							  ES[i].y_s + ";" +
-									  ";;;" +
-							  ES[i].Mt_s + ";" +
+									  ";"+ //Method
+									  ";"+ //Formula
+									  ";"+ //R
+							  ES[i].Mt_s + 
+									  ";"+
 							  //Описание закрепления
 							  //626001000000 Долговременный межевой знак // 626002000000 Временный межевой знак // 626003000000 Закрепление отсутствует
 							  "626003000000");
@@ -1182,6 +1185,54 @@ namespace netFteo.IO
 			}
 		}
 
+		/// <summary>
+		///Save to  "Technocad Express" csv file format
+		/// </summary>
+		/// <param name="FileName"></param>
+		/// <param name="ES"></param>
+		public void SaveAsCSV(string FileName, TEntitySpatial ES)
+		{
+			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
+			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
+			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание;закрепления;Глубина;Высота;Кадастровый номер");
+
+			int EsNumber = 0;
+			foreach (IGeometry Feature in ES)
+			{
+				if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					WriteEs2csv(writer, (TMyPolygon)Feature, ++EsNumber);
+				if (Feature.TypeName == "netFteo.Spatial.TPolyLine")
+					WriteEs2csv(writer, (TPolyLine)Feature, ++EsNumber);
+			}
+			writer.Close();
+		}
+
+		/*
+		public void SaveAsTexnoCADCSV(string FileName, TMyPolygon ES)
+		{
+			if (ES.PointCount == 0) return;
+			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
+			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
+			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
+			WriteEs2csv(writer, ES, 1);
+			writer.Close();
+		}
+		/*
+		public void SaveAsTexnoCADCSV(string FileName, TPolygonCollection ES)
+		{
+			if (ES.Count == 0) return;
+			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
+			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
+			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
+			writer.WriteLine(";;;;;;;;;;;");
+			for (int ic = 0; ic <= ES.Count - 1; ic++)
+			{
+				WriteEs2csv(writer, ES[ic], ic + 1);
+			}
+			writer.Close();
+		}
+		*/
+
 		public bool ByteArrayToFile(string fileName, byte[] byteArray)
 		{
 			try
@@ -1198,47 +1249,6 @@ namespace netFteo.IO
 				return false;
 			}
 		}
-
-		public void SaveAsTexnoCADCSV(string FileName, TEntitySpatial ES)
-		{
-			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
-			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
-			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
-			int EsNumber = 0;
-			foreach (IGeometry Feature in ES)
-			{
-				if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					WriteEs2csv(writer, (TMyPolygon)Feature, ++EsNumber);
-				if (Feature.TypeName == "netFteo.Spatial.TPolyLine")
-					WriteEs2csv(writer, (TPolyLine)Feature, ++EsNumber);
-			}
-			writer.Close();
-		}
-
-		public void SaveAsTexnoCADCSV(string FileName, TMyPolygon ES)
-		{
-			if (ES.PointCount == 0) return;
-			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
-			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
-			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
-			WriteEs2csv(writer, ES, 1);
-			writer.Close();
-		}
-
-		public void SaveAsTexnoCADCSV(string FileName, TPolygonCollection ES)
-		{
-			if (ES.Count == 0) return;
-			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
-			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
-			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления");
-			writer.WriteLine(";;;;;;;;;;;");
-			for (int ic = 0; ic <= ES.Count - 1; ic++)
-			{
-				WriteEs2csv(writer, ES[ic], ic + 1);
-			}
-			writer.Close();
-		}
-
 
 		public void WriteMifPoints(System.IO.TextWriter writer, System.IO.TextWriter writerMIDA, PointList Points)
 		{
