@@ -45,9 +45,9 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="Fname"></param>
 		/// <returns></returns>
-		public TPolygonCollection ImportCSVFile(string Fname)
+		public TEntitySpatial ImportCSVFile(string Fname)
 		{
-			TPolygonCollection resPolys = new TPolygonCollection();
+			TEntitySpatial resPolys = new TEntitySpatial();
 			try
 			{
 				string line = null;
@@ -129,7 +129,7 @@ namespace netFteo.IO
 								}
 								nextPolygonstring: line = readFile.ReadLine();
 							}
-							resPolys.AddPolygon(resPoly);
+							resPolys.Add(resPoly);
 						}
 					}
 					next:;
@@ -188,30 +188,30 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="Fname">Имя файла</param>
 		/// <returns>Коллекция полигонов</returns>
-		public TPolygonCollection ImportXML(string Fname)
+		public TEntitySpatial ImportXML(string Fname)
 		{
 			System.IO.TextReader reader = new System.IO.StreamReader(Fname);
 			System.Xml.XmlDocument XMLDocFromFile = new System.Xml.XmlDocument();
 			XMLDocFromFile.Load(reader);
 			reader.Close();
 
-			TPolygonCollection res = new TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
 			if (XMLDocFromFile.DocumentElement.Name == "TMyPolygon")
 			{
 				reader = new System.IO.StreamReader(Fname);
 				System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TMyPolygon));
 				TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(reader);
-				res.AddPolygon(xmlPolygon);
+				res.Add(xmlPolygon);
 			}
 
-
+			/*
 			if (XMLDocFromFile.DocumentElement.Name == "TPolygonCollection")
 			{
 				reader = new System.IO.StreamReader(Fname);
 				System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TPolygonCollection));
 				res = (TPolygonCollection)serializer.Deserialize(reader);
 			}
-
+			*/
 			return res;
 		}
 

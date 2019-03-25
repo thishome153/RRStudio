@@ -2416,8 +2416,8 @@ return res;
 			foreach (netFteo.Spatial.TKeyParameter param in ps)
 			{
 				ListViewItem LViAssgn = new ListViewItem();
-				LViAssgn.Text = param.Type;
-				LViAssgn.SubItems.Add(param.Value);
+				LViAssgn.Text = "Осн. характеристика/Параметры";
+				LViAssgn.SubItems.Add(param.Type +" "+ param.Value);
 				LV.Items.Add(LViAssgn);
 			}
 		}
@@ -2599,29 +2599,6 @@ return res;
 					LViCN.SubItems.Add(P.CN);
 					LViCN.SubItems.Add(P.DateCreated);
 					LV.Items.Add(LViCN);
-
-					/*
-                    if (P.Address != null)
-                    {
-                        if (P.Address.Note != null)
-                        {
-                            ListViewItem LViAssgn = new ListViewItem();
-                            LViAssgn.Text = "Адрес (местоположение)";
-                            LViAssgn.SubItems.Add(P.Address.Note.Replace("Российская федерация", "РФ.."));
-                            LV.Items.Add(LViAssgn);
-                        }
-                        //Есть структ. адресс ?:
-                        if (P.Address.Locality != null)
-                            if (P.Address.Locality.Length > 2)
-                            {
-                                ListViewItem LViAssgn2 = new ListViewItem();
-                                LViAssgn2.Text = "Адрес (структ.)";
-                                LViAssgn2.SubItems.Add(P.Address.District + " " + P.Address.Locality + " " +
-                                                       P.Address.Street + " " + P.Address.Level1);
-                                LV.Items.Add(LViAssgn2);
-                            }
-                    }
-                    */
 					AdressToListView(LV, P.Location.Address);
 
 					if (P.Name != null)
@@ -2975,9 +2952,7 @@ return res;
 
 			if (STrN.Name.Contains("ES."))
 			{
-				//((IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)))).
-				//GeometryToListView(listView1, (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3))));
-
+	
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
 				if (Entity != null)
 				{

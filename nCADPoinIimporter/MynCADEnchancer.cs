@@ -31,7 +31,7 @@
 			ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
 			ed.WriteMessage("\nInstance created. Log success");
 		}
-            private bool ParseData(DocumentCollection dm, Editor ed, PromptFileNameResult sourceFileName, TPolygonCollection FteoFile)
+            private bool ParseData(DocumentCollection dm, Editor ed, PromptFileNameResult sourceFileName, TEntitySpatial FteoFile)
             {
                 if (FteoFile == null) return false;
                 ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
@@ -93,9 +93,12 @@
 
 
                         if (FteoFile != null)
-                            for (int i = 0; i <= FteoFile.Count - 1; i++)
+
+                        foreach(IGeometry Feature in FteoFile)
                             {
-                                CreatePolygonFull(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, ltCirId, ltColorid, FteoFile[i]);
+							
+							if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                                CreatePolygonFull(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, ltCirId, ltColorid, Feature);
                             }
 
                         ed.WriteMessage("Добавлено " + FteoFile.Count.ToString() + " полигонов.");
@@ -236,7 +239,7 @@
                     ed.WriteMessage("\nИмпорт текстового файла (Fixosoft2014, 2015,  2018)");
                     try
                     {
-                        netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();
+                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
                         netFteo.IO.TextReader TR = new IO.TextReader();
                         fteofile = TR.ImportTxtFile(sourceFileName.StringResult);
                         ParseData(dm,ed,sourceFileName, fteofile);
@@ -278,7 +281,7 @@
                     ed.WriteMessage("\nИмпорт  CSV файла (Technocad)");
                     try
                     {
-                        netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();
+                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
                         netFteo.IO.TextReader TR = new IO.TextReader();
                         fteofile = TR.ImportCSVFile(sourceFileName.StringResult);
                         ParseData(dm, ed, sourceFileName, fteofile);
@@ -321,7 +324,7 @@
                     ed.WriteMessage("\nИмпорт xml формата  (netfteo::BaseClasses)");
                     try
                     {
-                        netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();
+                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
                         netFteo.IO.TextReader TR = new IO.TextReader();
                         fteofile = TR.ImportXML(sourceFileName.StringResult);
                         ParseData(dm, ed, sourceFileName, fteofile);
@@ -367,7 +370,7 @@
                     ed.WriteMessage("\nИмпорт mif формата");
                     try
                     {
-                        netFteo.Spatial.TPolygonCollection fteofile = new TPolygonCollection();
+                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
                         netFteo.IO.TextReader TR = new IO.TextReader();
                         fteofile = TR.ImportMIF(sourceFileName.StringResult);
                         ParseData(dm, ed, sourceFileName, fteofile);
@@ -658,9 +661,9 @@
                                                            ObjectId ltPolyid, // id слоя с полигоном
                                                            ObjectId ltPId, 
                                                            ObjectId ltId,
-                                                           ObjectId ltCircleId, ObjectId ltColorsId, netFteo.Spatial.TMyPolygon Layer)
+                                                           ObjectId ltCircleId, ObjectId ltColorsId, netFteo.Spatial.IGeometry Layerfeature)
         {
-
+			TMyPolygon Layer = (TMyPolygon)Layerfeature;
             DBText PolygonName = new DBText();
             PolygonName.TextString = Layer.Definition;
             PolygonName.Height = 2;
