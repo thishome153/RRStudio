@@ -2416,7 +2416,7 @@ return res;
 			foreach (netFteo.Spatial.TKeyParameter param in ps)
 			{
 				ListViewItem LViAssgn = new ListViewItem();
-				LViAssgn.Text = "Осн. характеристика/Параметры";
+				LViAssgn.Text = "Осн. характеристика/ Параметры";
 				LViAssgn.SubItems.Add(param.Type +" "+ param.Value);
 				LV.Items.Add(LViAssgn);
 			}
