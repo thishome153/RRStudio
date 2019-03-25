@@ -2800,14 +2800,13 @@ return res;
 				{
 					TPolyLine Poly = (TPolyLine)Obj;
 					LV.Items.Clear();
-					// list borders:
-					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
-
 					ListViewItem LVipP = new ListViewItem();
 					LVipP.Text = "Длина";
-					LVipP.SubItems.Add(Poly.Length().ToString("#,0.00"));
+					LVipP.SubItems.Add(Poly.Length.ToString("#,0.00"));
 					LVipP.SubItems.Add("м.");
 					LV.Items.Add(LVipP);
+					// list borders:
+					netFteo.ObjectLister.EStoListViewCollection(LV, Poly);
 				}
 
 				if (Obj.ToString() == "netFteo.Rosreestr.TMyRights")

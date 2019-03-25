@@ -555,21 +555,25 @@ namespace netFteo.Spatial
         public double R;
 		//public Point Center;
 
-		public TCircle(double x, double y, double radius)
+		public TCircle()
+		{
+			Name = "Окружность";
+		}
+		public TCircle(double x, double y, double radius) : this()
 		{
 			this.x = x;
 			this.y = y;
 			this.R = radius;
 		}
 
-		public TCircle(decimal x, decimal y, decimal radius)
+		public TCircle(decimal x, decimal y, decimal radius) : this()
         {
 			this.x = Convert.ToDouble(x);
             this.y = Convert.ToDouble(y);
             this.R = Convert.ToDouble(radius);
         }
 
-		public void ShowasListItems(ListView LV, bool SetTag)
+		public new void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Empty) return;
 			string BName;
@@ -1682,6 +1686,7 @@ SCAN:
             this.Childs = new List<TMyOutLayer>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
+			Name = "Полигон";
 //			this.LayerHandle = "FFFF"; // default
 		}
 
@@ -4160,15 +4165,18 @@ SCAN:
     #region Полилиния (знает площадь)
     public class TPolyLine : TMyOutLayer, IGeometry
     {
-        public double Length()
+        public double Length
         {
-			double res = 0;
-
-			for (int i = 0; i <= this.Count - 2; i++)
+			get
 			{
-				res += Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+				double res = 0;
+
+				for (int i = 0; i <= this.Count - 2; i++)
+				{
+					res += Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+				}
+				return res;
 			}
-			return res;
         }
 
      
@@ -4176,6 +4184,7 @@ SCAN:
         {
 			// this.MainPoint = new netFteoPoints();
 			int check = this.id;
+			Name = "Ломаная";
         }
 
     }
@@ -4250,6 +4259,7 @@ SCAN:
 		{
 			this.id = Gen_id.newId;
 			this.Definition = "Границы";
+			Name = "Границы";
 			this.Layers = new List<TLayer>();
 			this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
 		}
@@ -4261,6 +4271,40 @@ SCAN:
 				feature.Fraq(Format);
 			}
 
+		}
+
+		public int FeaturesCount(string TypeName)
+		{
+			int res = 0;
+			foreach (IGeometry feature in this)
+			{
+				if (feature.TypeName == TypeName)
+				{
+					res++;
+				}
+			}
+			return res;
+		}
+
+		/// <summary>
+		/// Summ of all polylines length
+		/// </summary>
+		/// <param name="TypeName"></param>
+		/// <returns></returns>
+		public double PolylinesLength
+		{
+			get
+			{
+				double res = 0;
+				foreach (IGeometry feature in this)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						res += ((TPolyLine)feature).Length;
+					}
+				}
+				return res;
+			}
 		}
 
 		public void ShowasListItems(ListView LV, bool SetTag)
@@ -4288,20 +4332,30 @@ SCAN:
 				LV.Items.Add(LVi);
 			}
 
+			double polylinesLength = 0;
+
+
 			foreach (IGeometry feature in this)
 			{
 
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = feature.Definition;
 				LVi.Tag = feature.id;
-				LVi.SubItems.Add(feature.TypeName);
+				LVi.SubItems.Add(feature.Name);
 				LVi.SubItems.Add(feature.id.ToString());
 				LVi.SubItems.Add(feature.LayerHandle);
 				LV.Items.Add(LVi);
 			}
 
-
-
+			if (FeaturesCount("netFteo.Spatial.TPolyLine") > 0)
+			{
+				ListViewItem LVTotal = new ListViewItem();
+				LVTotal.Text = "Полилиний";
+				//LVTotal.Tag = feature.id;
+				LVTotal.SubItems.Add(FeaturesCount("netFteo.Spatial.TPolyLine").ToString());
+				LVTotal.SubItems.Add("Общая длина "+ PolylinesLength.ToString("0.00"));
+				LV.Items.Add(LVTotal);
+			}
 			LV.EndUpdate();
 		}
 
