@@ -77,7 +77,7 @@ namespace netFteo.IO
 								if (line.Contains("Child")) goto ChildsHere;
 								StrCounter++;
 								string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray()); //Сплпиттер по ";" - default for CSV
-								Point FilePoint = new Point();
+								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
 								FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
@@ -115,7 +115,7 @@ namespace netFteo.IO
 									{
 										StrCounter++;
 										string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-										Point ChildPoint = new Point();
+										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
 										ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
@@ -217,9 +217,9 @@ namespace netFteo.IO
 
 
 
-		private Point MIF_ParseOrdinate(string line, string pointName)
+		private TPoint MIF_ParseOrdinate(string line, string pointName)
 		{
-			Point res = new Point();
+			TPoint res = new TPoint();
 			res.NumGeopointA = "p" + pointName;
 			double Y = 0; double X = 0;
 			if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
@@ -471,7 +471,7 @@ namespace netFteo.IO
 
 						StrCounter++;
 						string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-						Point FilePoint = new Point();
+						TPoint FilePoint = new TPoint();
 						FilePoint.id = StrCounter;
 						FilePoint.NumGeopointA = StrCounter.ToString();
 						FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
@@ -521,7 +521,7 @@ namespace netFteo.IO
 
 						StrCounter++;
 						string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-						Point FilePoint = new Point();
+						TPoint FilePoint = new TPoint();
 						FilePoint.id = StrCounter;
 						FilePoint.NumGeopointA = SplittedStr[0].ToString();
 						FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
@@ -578,7 +578,7 @@ namespace netFteo.IO
 								if (line.Contains("Child")) goto ChildsHere;
 								StrCounter++;
 								string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-								Point FilePoint = new Point();
+								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
 								FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
@@ -598,7 +598,7 @@ namespace netFteo.IO
 									{
 										StrCounter++;
 										string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-										Point ChildPoint = new Point();
+										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
 										ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
@@ -662,7 +662,7 @@ namespace netFteo.IO
 								if (line.Contains("Child")) goto ChildsHere;
 								StrCounter++;
 								string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-								Point FilePoint = new Point();
+								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
 								FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
@@ -683,7 +683,7 @@ namespace netFteo.IO
 									{
 										StrCounter++;
 										string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-										Point ChildPoint = new Point();
+										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
 										ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
@@ -746,7 +746,7 @@ namespace netFteo.IO
 								if (line.Contains("Child")) goto ChildsHere;
 								StrCounter++;
 								SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-								Point FilePoint = new Point();
+								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
 
@@ -785,7 +785,7 @@ namespace netFteo.IO
 									{
 										StrCounter++;
 										string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-										Point ChildPoint = new Point();
+										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
 										if (!ChildStr[1].Contains("-"))

@@ -21,7 +21,7 @@ namespace RRTypes
             for (int iord = 0; iord <= ES.Spatial_Element[0].Spelement_Unit.Count - 1; iord++)
             {
 
-                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                 Point.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].X);
                 Point.y = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].Ordinate[0].Y);
                 Point.oldX = Point.x;
@@ -32,7 +32,7 @@ namespace RRTypes
             }
             //Есть замыкающие точки в KVZU 04?  Кажись нема!
             //Добавим 
-            netFteo.Spatial.Point Point_ = new netFteo.Spatial.Point();
+            netFteo.Spatial.TPoint Point_ = new netFteo.Spatial.TPoint();
             Point_.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].X);
             Point_.y = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[0].Ordinate[0].Y);
             Point_.oldX = Point_.x;
@@ -48,7 +48,7 @@ namespace RRTypes
                 for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
                 {
 
-                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                     Point.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].Ordinate[0].X);
                     Point.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].Ordinate[0].Y);
                     Point.oldX = Point.x; Point.oldY = Point.y;
@@ -57,7 +57,7 @@ namespace RRTypes
                     InLayer.AddPoint (Point);
                 }
                 //Добавим замыкающие точки
-                netFteo.Spatial.Point LastPoint = new netFteo.Spatial.Point();
+                netFteo.Spatial.TPoint LastPoint = new netFteo.Spatial.TPoint();
                 LastPoint.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[0].Ordinate[0].X);
                 LastPoint.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[0].Ordinate[0].Y);
                 LastPoint.oldX = LastPoint.x; LastPoint.oldY = LastPoint.y;

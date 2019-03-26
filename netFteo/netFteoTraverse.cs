@@ -22,7 +22,7 @@ namespace netFteo.Spatial
         public const int travType_Closed = 2;   //замкнутый, точки в начале и в конце одинаковые
         public const int travType_Unclosed = 3; //разомкнутый, точки в начале и в конце разные
         public double BegindirectAngle; // начальный дирекционный угол
-        public Point BeginPoint,  EndPoint,
+        public TPoint BeginPoint,  EndPoint,
                          BeginOrientir, EndOrientir;
         public PointList SourcePoints;
         public TTraverse()
@@ -40,7 +40,7 @@ namespace netFteo.Spatial
             this.SourcePoints = new PointList();
             this.SourcePoints.AppendPoints(Src);
         }
-        private void SetTraverseBegin(Point begPoint, Point begOrient) //Установить начало хода
+        private void SetTraverseBegin(TPoint begPoint, TPoint begOrient) //Установить начало хода
         {
             if (begPoint != null)
             {
@@ -56,7 +56,7 @@ namespace netFteo.Spatial
             if (begOrient != null & BeginPoint != null)
             BegindirectAngle = Geodethic.Atan(begOrient.x, begOrient.y,BeginPoint.x, BeginPoint.y);
        }
-        private void SetTraverseEnd(Point EPoint, Point EOrient) //Установить начало хода
+        private void SetTraverseEnd(TPoint EPoint, TPoint EOrient) //Установить начало хода
         {
             if (EndPoint != null)
             {
@@ -76,10 +76,10 @@ namespace netFteo.Spatial
         {
             // если вершины еще не  внесены? то будет ошибочка
             if (this.VertexList.Count == 0) return;
-            Point bp = this.SourcePoints.GetPointbyName(this.VertexList[0].Station.StationName);
-            Point bop = this.SourcePoints.GetPointbyName(this.VertexList[0].Station.BackStation);
-            Point ep = this.SourcePoints.GetPointbyName(this.VertexList[this.VertexList.Count - 1].Station.StationName);
-            Point eop = this.SourcePoints.GetPointbyName(this.VertexList[this.VertexList.Count - 1].NextVertexName);
+            TPoint bp = this.SourcePoints.GetPointbyName(this.VertexList[0].Station.StationName);
+            TPoint bop = this.SourcePoints.GetPointbyName(this.VertexList[0].Station.BackStation);
+            TPoint ep = this.SourcePoints.GetPointbyName(this.VertexList[this.VertexList.Count - 1].Station.StationName);
+            TPoint eop = this.SourcePoints.GetPointbyName(this.VertexList[this.VertexList.Count - 1].NextVertexName);
             SetTraverseBegin(bp, bop);
             SetTraverseEnd(ep, eop);
         }
@@ -121,8 +121,8 @@ namespace netFteo.Spatial
             TTraverseVertex V = new TTraverseVertex();
             V.NextVertex = Observ;
             V.Station = ST;
-            Point backst = this.SourcePoints.GetPointbyName(ST.BackStation);
-            Point thisst = this.SourcePoints.GetPointbyName(ST.StationName);
+            TPoint backst = this.SourcePoints.GetPointbyName(ST.BackStation);
+            TPoint thisst = this.SourcePoints.GetPointbyName(ST.StationName);
             if (backst != null & thisst != null)
              V.DirectionalAngle = Geodethic.Atan(backst.x, backst.y, thisst.x, thisst.y);    
             this.VertexList.Add(V);

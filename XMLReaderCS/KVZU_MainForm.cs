@@ -4959,7 +4959,7 @@ return res;
         /// </summary>
         private void TopoCheck(TreeNode STrN)
         {
-            netFteo.Spatial.Point test = new netFteo.Spatial.Point();
+            netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
 
             openFileDialog1.Filter = "Про$транственные данные|*.mif";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;

@@ -381,7 +381,7 @@ namespace RRTypes
            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
            {
 
-               netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+               netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                Point.Status = 1;
                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
@@ -396,7 +396,7 @@ namespace RRTypes
                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                {
 
-                   netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                   netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                    Point.Status = 1;
                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);

@@ -193,12 +193,12 @@ namespace netFteo.Spatial
         //ICoordinateSequence CoordinateSequence { get; }
     }
 
-    public class Point : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
+    public class TPoint : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
     {
         //implementation of interface method Clone():
         public object Clone()
         {
-            return new Point(this.x, this.y, this.NumGeopointA);
+            return new TPoint(this.x, this.y, this.NumGeopointA);
         }
 
         public int Borderid, fStatus, NumGeopoint;//, Order;
@@ -216,25 +216,25 @@ namespace netFteo.Spatial
         /// Default constructor. Inherited from parent, of coarse
         /// Неявно вызывает родительский конструктор
         /// </summary>
-        public Point()
+        public TPoint()
         {
             this.newOrd = new Coordinate();
             this.oldOrd = new Coordinate();
         }
 
-        public Point(double initx, double inity) : this()
+        public TPoint(double initx, double inity) : this()
         {
             this.x = initx;
             this.y = inity;
         }
 
 
-        public Point(double initx, double inity, double initz)
+        public TPoint(double initx, double inity, double initz)
             : this(initx, inity)
         {
             this.z = initz;
         }
-        public Point(double initx, double inity, string name) : this(initx, inity)
+        public TPoint(double initx, double inity, string name) : this(initx, inity)
         {
             this.NumGeopointA = name;
         }
@@ -488,9 +488,9 @@ namespace netFteo.Spatial
         /// <param name="A"></param>
         /// <param name="B"></param>
         /// <returns></returns>
-        public static Point operator +(Point A, Point B)
+        public static TPoint operator +(TPoint A, TPoint B)
         {
-            Point res = new Point();
+            TPoint res = new TPoint();
             res.id = Gen_id.newId;
             res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
             res.x = A.x + B.x;
@@ -510,7 +510,7 @@ namespace netFteo.Spatial
             return !(A == B);
         }
         */
-        public bool Equals(Point B)//Точки одинаковые ?
+        public bool Equals(TPoint B)//Точки одинаковые ?
         {
             //return (this == TestPoint); //применим оператор
             if ((this.id == B.id) &&                                 // один перв. ключ  
@@ -547,7 +547,7 @@ namespace netFteo.Spatial
     /// <summary>
     /// Circle. Just circle
     /// </summary>
-    public class TCircle : Point , IGeometry
+    public class TCircle : TPoint , IGeometry
     {
         /// <summary>
         /// Radius
@@ -640,7 +640,7 @@ namespace netFteo.Spatial
 	/// <summary>
 	/// Список точек на базе BindingList
 	/// </summary>
-	public class PointList : BindingList<Point>, IPointList
+	public class PointList : BindingList<TPoint>, IPointList
     {
         public const string TabDelimiter = "\t";  // tab
         //public PointList Points;
@@ -686,7 +686,7 @@ namespace netFteo.Spatial
 
 		public void Fraq(string Format)
 		{
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			{
 				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
 				{
@@ -705,7 +705,7 @@ namespace netFteo.Spatial
 
 		public int ReorderPoints(int StartIndex =1 )
 		{
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			{
 				pt.NumGeopointA = StartIndex++.ToString();
 			}
@@ -718,7 +718,7 @@ namespace netFteo.Spatial
 
 		public void SetMt(double mt)
 		{
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			pt.Mt = mt;
 		}
 
@@ -770,7 +770,7 @@ namespace netFteo.Spatial
 			PointList tmpList = new PointList();
 
 			int count = this.Count;
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			{
 				tmpList.AddPoint(this[count-- -1]); //countdown  index
 			}
@@ -793,7 +793,7 @@ namespace netFteo.Spatial
         {
             get
             {
-                foreach (Point pt in this)
+                foreach (TPoint pt in this)
                 {
                     if (pt.OrdIdent == "*")
                         return true;
@@ -805,7 +805,7 @@ namespace netFteo.Spatial
         public int Index (int item_id)
         {
             int res=-1; 
-            foreach(Point pt in this)
+            foreach(TPoint pt in this)
             {
                 res++;
                 if (pt.id == item_id)
@@ -823,7 +823,7 @@ namespace netFteo.Spatial
         public void Move (int index, int newPosition)
 
         {
-            Point Swap = this[newPosition]; // save object
+            TPoint Swap = this[newPosition]; // save object
             this.RemoveAt(newPosition);
             this.Insert(newPosition, this[index]);
             this.RemoveAt(index);
@@ -865,7 +865,7 @@ namespace netFteo.Spatial
 
 
                 //Поиск начальной точки
-                foreach (Point pt in this)
+                foreach (TPoint pt in this)
                 {
                     if (!Double.IsNaN(pt.x))
                     {
@@ -1006,7 +1006,7 @@ SCAN:
            this.Add(newP);
        }
         */
-        public void ImportObjects(BindingList<Point> Points)
+        public void ImportObjects(BindingList<TPoint> Points)
         {
             for (int i = 0; i <= Points.Count - 1; i++)
                 this.AddPoint(Points[i]);
@@ -1025,16 +1025,16 @@ SCAN:
             this.Points.Add(point);
         }
         */
-        public void AddPoint(Point point)
+        public void AddPoint(TPoint point)
         {
             if (point == null) return;
             if (point.id < 1) point.id = Gen_id.newId;
             this.Add(point);
 
         }
-        public Point AddPoint(string Name, double x_, double y_, string Descr)
+        public TPoint AddPoint(string Name, double x_, double y_, string Descr)
         {
-            Point Point = new Point();
+            TPoint Point = new TPoint();
             Point.x = x_;
             Point.y = y_;
             Point.Description = Descr;
@@ -1043,7 +1043,7 @@ SCAN:
             return this[this.Count - 1];
         }
 
-        public Point GetPointbyName(string ptName)
+        public TPoint GetPointbyName(string ptName)
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
@@ -1068,9 +1068,9 @@ SCAN:
         /// <param name="b1">Точка 1</param>
         /// <param name="b2">Точка 2</param>
         /// <returns></returns>
-        public PointList FindSects(Point b1, Point b2)
+        public PointList FindSects(TPoint b1, TPoint b2)
         {
-            PointList ResLayer = new PointList(); Point ResPoint;
+            PointList ResLayer = new PointList(); TPoint ResPoint;
             int PointCounter = 0; int NextPointIndex = 0;
             for (int i = 0; i <= this.PointCount - 1; i++)
             {
@@ -1124,7 +1124,7 @@ SCAN:
         /// </summary>
         /// <param name="b1">Точка для проверки</param>
         /// <returns></returns>
-        public bool Pointin(Point b1)
+        public bool Pointin(TPoint b1)
         {
             int CountP = 0; //счетчик событий, он же и результат
             bool fDown = false;
@@ -1166,13 +1166,13 @@ SCAN:
 
         private void PoininTest()
         {
-            this.AddPoint(new Point(0, 0, "11"));
-            this.AddPoint(new Point(1000, 0, "12"));
-            this.AddPoint(new Point(1000, 1000, "13"));
-            this.AddPoint(new Point(0, 1000, "14"));
-            bool flag = Pointin(new Point(1001, 1001)); // out
-            flag = Pointin(new Point(999.99, 999.99)); // in
-            flag = Pointin(new Point(1000.001, 1000.0001)); // on border (on ring, on anus...)
+            this.AddPoint(new TPoint(0, 0, "11"));
+            this.AddPoint(new TPoint(1000, 0, "12"));
+            this.AddPoint(new TPoint(1000, 1000, "13"));
+            this.AddPoint(new TPoint(0, 1000, "14"));
+            bool flag = Pointin(new TPoint(1001, 1001)); // out
+            flag = Pointin(new TPoint(999.99, 999.99)); // in
+            flag = Pointin(new TPoint(1000.001, 1000.0001)); // on border (on ring, on anus...)
         }
 
         /// <summary>
@@ -1183,7 +1183,7 @@ SCAN:
         public PointList Pointin(PointList points)
         {
             PointList res = new PointList();
-            foreach (Point pt in points)
+            foreach (TPoint pt in points)
                 if (this.Pointin(pt))
                     res.AddPoint(pt);
             if (res.PointCount > 0)
@@ -1212,7 +1212,7 @@ SCAN:
 
             for (int i = 0; i <= this.PointCount - 1; i++)
             {
-                foreach (Point pt in points)
+                foreach (TPoint pt in points)
 
                     if ((this[i].x == pt.x)
                         &&
@@ -1311,7 +1311,7 @@ SCAN:
         {
             get
             {
-                foreach (Point pt in this)
+                foreach (TPoint pt in this)
                 {
                     if (pt.Empty) return false; // return on first empty vertex
                 }
@@ -1331,7 +1331,7 @@ SCAN:
             {
                 PointList ring = new PointList();
   
-                foreach (Point pt in this)
+                foreach (TPoint pt in this)
 
                 {
                     //выбираем только точки с существующими ординатами .newOrd :
@@ -1454,7 +1454,7 @@ SCAN:
         ///  Центр масс полигона: 
         ///  возвращает точку центра масс
         /// </summary>
-        public Point CentroidMassive
+        public TPoint CentroidMassive
         {
             get
             {
@@ -1465,7 +1465,7 @@ SCAN:
                     Xsumm = Xsumm + (this[i].x + this[i + 1].x) * (this[i].x * this[i + 1].y - this[i + 1].x * this[i].y);
                     Ysumm = Ysumm + (this[i].y + this[i + 1].y) * (this[i].x * this[i + 1].y - this[i + 1].x * this[i].y);
                 }
-                Point Respoint = new Point();
+                TPoint Respoint = new TPoint();
                 Respoint.NumGeopointA = "Centroid";
                 Respoint.x = Xsumm * (1 / (6 * Area));
                 Respoint.y = Ysumm * (1 / (6 * Area));
@@ -1480,9 +1480,9 @@ SCAN:
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public Point Centroid(double canvas_width, double canvas_height, double scale)
+        public TPoint Centroid(double canvas_width, double canvas_height, double scale)
         {
-            Point pt = new Point();
+            TPoint pt = new TPoint();
             double canvasX;
             double canvasY;
 
@@ -1526,7 +1526,7 @@ SCAN:
         /// <summary>
         /// Средние значения координат полигона
         /// </summary>
-        public Point AverageCenter
+        public TPoint AverageCenter
         {
             get
             {
@@ -1541,7 +1541,7 @@ SCAN:
                         pointcnt++;
                     }
                 }
-                Point Respoint = new Point();
+                TPoint Respoint = new TPoint();
                 Respoint.NumGeopointA = "Center";
                 Respoint.x = Xsumm / pointcnt;
                 Respoint.y = Ysumm / pointcnt;
@@ -1562,7 +1562,7 @@ SCAN:
 
         public void Reset_Ordinates()
         {
-            foreach (Point pt in this)
+            foreach (TPoint pt in this)
             {
                 pt.oldX = Coordinate.NullOrdinate;
                 pt.oldY = Coordinate.NullOrdinate;
@@ -1641,7 +1641,7 @@ SCAN:
 
     public class BrdList : BindingList<TBorder>
     {
-        public void AddItem(string definition, Point A, Point B)
+        public void AddItem(string definition, TPoint A, TPoint B)
         {
             TBorder NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
             NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
@@ -1732,7 +1732,7 @@ SCAN:
 
         public void SetMt(double mt)
         {
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 				pt.Mt = mt;
 			foreach (TMyOutLayer child in this.Childs)
                 child.SetMt(mt);
@@ -1741,7 +1741,7 @@ SCAN:
 
         public  void Fraq(string Format)
         {
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			{
 				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
 				{
@@ -1763,7 +1763,7 @@ SCAN:
 
         public int  ReorderPoints(int StartIndex =1 )
         {
-			foreach (Point pt in this)
+			foreach (TPoint pt in this)
 			{
 				pt.NumGeopointA = StartIndex++.ToString();
 			}
@@ -1933,7 +1933,7 @@ SCAN:
         public PointList PointsIn(PointList ES)
         {
             PointList res = new PointList();
-            foreach (Point pt in ES)
+            foreach (TPoint pt in ES)
             {
                 if (this.Pointin(pt))
                 {
@@ -2152,7 +2152,6 @@ SCAN:
         public event ESCheckingHandler OnChecking;
         public MifOptions MIF_Options; // настройки для полигонов MIF
         private int totalItems;
-        private const string TabDelimiter = "\t";  // tab
         private int fParent_id;
         public int id;
         //public List<TMyPolygon> Items;
@@ -2163,6 +2162,7 @@ SCAN:
             this.id = Gen_id.newId;
             this.MIF_Options = new MifOptions();
         }
+
         public TPolygonCollection(int parent_id)  /// Конструктор
                                                : this()
         {
@@ -2175,9 +2175,9 @@ SCAN:
             this.AddPolygons(polys_);
         }
 
-
         public int Parent_id
         { get { return this.fParent_id; } }
+		/*
         public int TotalPointCount
         {
             get
@@ -2190,7 +2190,7 @@ SCAN:
                 return res;
             }
         }
-
+		*/
         public TMyRect Get_Bounds
         {
             get
@@ -2266,6 +2266,7 @@ SCAN:
                 return AreaC;
             }
         }
+
         /// <summary>
         /// Общая сумма геометрических площадей
         /// </summary>
@@ -2433,6 +2434,7 @@ SCAN:
             }
             return res;
         }
+
         private void EsChekerProc(string sender, int process, byte[] Data)
         {
             if (OnChecking == null) return;
@@ -3820,12 +3822,12 @@ SCAN:
         public OMSPoints AddOmsPoint(PointList oms)
         {
             OMSPoints res = new OMSPoints();
-            foreach (Point pt in oms)
+            foreach (TPoint pt in oms)
                res.AddPoint( AddOmsPoint(pt));
             return res;
         }
 
-        public Point AddOmsPoint(Point OMS)
+        public TPoint AddOmsPoint(TPoint OMS)
         {
             this.OMSPoints.AddPoint(OMS);
             return this.OMSPoints[this.OMSPoints.PointCount - 1];
@@ -4319,7 +4321,7 @@ SCAN:
 			LV.Columns[4].Text = "-";
 			//LV.Tag = PList.Parent_Id;
 			if (SetTag) LV.Tag = id;
-
+#if (DEBUG)
 			foreach (TLayer Layer in this.Layers)
 			{
 
@@ -4332,12 +4334,8 @@ SCAN:
 				LV.Items.Add(LVi);
 			}
 
-			double polylinesLength = 0;
-
-
 			foreach (IGeometry feature in this)
 			{
-
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = feature.Definition;
 				LVi.Tag = feature.id;
@@ -4346,14 +4344,15 @@ SCAN:
 				LVi.SubItems.Add(feature.LayerHandle);
 				LV.Items.Add(LVi);
 			}
-
+#endif
 			if (FeaturesCount("netFteo.Spatial.TPolyLine") > 0)
 			{
 				ListViewItem LVTotal = new ListViewItem();
 				LVTotal.Text = "Полилиний";
 				//LVTotal.Tag = feature.id;
 				LVTotal.SubItems.Add(FeaturesCount("netFteo.Spatial.TPolyLine").ToString());
-				LVTotal.SubItems.Add("Общая длина "+ PolylinesLength.ToString("0.00"));
+				LVTotal.SubItems.Add("Общая длина");
+				LVTotal.SubItems.Add(PolylinesLength.ToString("0.00"));
 				LV.Items.Add(LVTotal);
 			}
 			LV.EndUpdate();

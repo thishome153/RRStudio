@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using netFteo;
+using netFteo.Spatial;
 using netFteo.Drawing;
 
 namespace XMLReaderCS
@@ -26,7 +26,7 @@ namespace XMLReaderCS
         public string Definition;
         public double Scale;
         double fViewKoeffecient = 0.9;// polygon.AreaSpatial * 0.0003; //200; 
-        private object fSpatial; //Пд для визуализации
+        private IGeometry fSpatial; //Пд для визуализации
         public EntityViewer()
         {
             InitializeComponent();
@@ -65,13 +65,19 @@ namespace XMLReaderCS
                 this.fViewKoeffecient = value;
                 if (fSpatial != null)
                 {
-                    if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
+                    if (fSpatial.TypeName == "netFteo.Spatial.TMyPolygon")
                     {
-                        netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;
-                        Scale = polygon.ScaleEntity(canvas1.Width, canvas1.Height) / value;
-                        DrawSpatial();
+
+                        Scale = ((TMyPolygon)Spatial).ScaleEntity(canvas1.Width, canvas1.Height) / value;
                     }
-                }
+					
+					if (fSpatial.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						Scale = ((TPolyLine)Spatial).ScaleEntity(canvas1.Width, canvas1.Height) / value;
+					}
+
+					DrawSpatial();
+				}
                 else
                     InitCanvas(canvas1);
             }
@@ -82,7 +88,7 @@ namespace XMLReaderCS
             }
         }
 
-        public object Spatial
+        public IGeometry Spatial
         {
             set
             {
@@ -131,7 +137,7 @@ namespace XMLReaderCS
                 image1.Visibility = System.Windows.Visibility.Hidden; image2.Visibility = System.Windows.Visibility.Hidden;
                 if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                 {
-                    netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;
+                    TMyPolygon polygon = (TMyPolygon)Spatial;
                     label2.Content = polygon.Definition;
                     label1_Canvas_Sizes.Content = "Площадь " + polygon.AreaSpatialFmt("0.00");
                     Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
@@ -149,7 +155,27 @@ namespace XMLReaderCS
                         canvas1.Children.Add(label);
 
                 }
-            }
+				
+				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TPolyLine")
+				{
+					TPolyLine polygon = (TPolyLine)Spatial;
+					label2.Content = polygon.Definition;
+					label1_Canvas_Sizes.Content = "Длина " + polygon.Length.ToString("0.00");
+					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
+					//Полигон
+					foreach (UIElement el in CreateCanvasPolygons(polygon))
+						canvas1.Children.Add(el);
+					//Точки
+					List<UIElement> cnspts = CreateCanvasPoints(polygon);
+					foreach (UIElement pt in cnspts)
+						canvas1.Children.Add(pt);
+
+					//Метки
+					List<TextBlock> labels = CreateCanvasPointLabels((TMyOutLayer)polygon);
+					foreach (TextBlock label in labels)
+						canvas1.Children.Add(label);
+				}
+			}
         }
 
         //Измененение цветов меток точек
@@ -232,49 +258,76 @@ namespace XMLReaderCS
         /// </summary>
         /// <param name="polygon"></param>
         /// <returns></returns>
-        private UIElement CreateCanvasPolygon(PointCollection polygon)
-        {
-            Polygon myPolygon = new Polygon();
-            myPolygon.Stroke = System.Windows.Media.Brushes.Black;
-            myPolygon.Fill = System.Windows.Media.Brushes.LightGray;
-            myPolygon.StrokeThickness = 0.5;
-            myPolygon.HorizontalAlignment = HorizontalAlignment.Left;
-            myPolygon.VerticalAlignment = VerticalAlignment.Center;
-            myPolygon.Points = polygon;
-            return myPolygon;
-        }
+        private UIElement CreateCanvasPolygon(PointCollection polygon, bool Closed)
 
-        private List<UIElement> CreateCanvasPolygons(netFteo.Spatial.TMyPolygon polygon)
+		{
+			if (Closed)
+			{
+				var myPolyElement = new Polygon();
+				myPolyElement.Stroke = System.Windows.Media.Brushes.Black;
+				myPolyElement.Fill = System.Windows.Media.Brushes.LightGray;
+				myPolyElement.StrokeThickness = 0.5;
+				myPolyElement.HorizontalAlignment = HorizontalAlignment.Left;
+				myPolyElement.VerticalAlignment = VerticalAlignment.Center;
+				myPolyElement.Points = polygon;
+				return myPolyElement;
+			}
+
+			Polyline WPFPolyLine = new Polyline();
+			WPFPolyLine.Stroke = System.Windows.Media.Brushes.Black;
+			//WPFPolyLine.Fill = System.Windows.Media.Brushes.LightGray;
+			WPFPolyLine.StrokeThickness = 0.5;
+			WPFPolyLine.HorizontalAlignment = HorizontalAlignment.Left;
+			WPFPolyLine.VerticalAlignment = VerticalAlignment.Center;
+			WPFPolyLine.Points = polygon;
+			return WPFPolyLine;
+		}
+
+        private List<UIElement> CreateCanvasPolygons(TMyPolygon polygon)
         {
             List<UIElement> res = new List<UIElement>();
             List<PointCollection> polys =   PolygonToWindowsShape(polygon, true);
             List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
 
             foreach (PointCollection poly in polys)
-                res.Add(CreateCanvasPolygon(poly));
+                res.Add(CreateCanvasPolygon(poly,true));
 
             foreach (PointCollection poly in polysOld) // старые границы
-                res.Add(CreateCanvasPolygon(poly));
+                res.Add(CreateCanvasPolygon(poly, true));
             return res;
         }
 
 
-        /* WPF Coordinate System:
+		private List<UIElement> CreateCanvasPolygons(TPolyLine polygon)
+		{
+			List<UIElement> res = new List<UIElement>();
+			List<PointCollection> polys = PolygonToWindowsShape(polygon, true);
+			List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
+
+			foreach (PointCollection poly in polys)
+				res.Add(CreateCanvasPolygon(poly,false));
+
+			foreach (PointCollection poly in polysOld) // старые границы
+				res.Add(CreateCanvasPolygon(poly,false));
+			return res;
+		}
+
+		/* WPF Coordinate System:
          * For 2D graphics, the WPF coordinate system locates the origin in the upper-left corner of the rendering area. 
          * In the 2D space, the positive X-axis points to the right, and the positive Y-axis points to downward
          */
 
-        /// <summary>
-        /// Конвертация и масштабирование точек netfteo в точки windows PointCollection
-        /// </summary>
-        /// 
-        private PointCollection PointsToWindowsPoints(double originX, double originY, netFteo.Spatial.PointList layer, bool newOnly)
+		/// <summary>
+		/// Конвертация и масштабирование точек netfteo в точки windows PointCollection
+		/// </summary>
+		/// 
+		private PointCollection PointsToWindowsPoints(double originX, double originY, PointList layer, bool newOnly)
         {
             PointCollection myPointCollection = new PointCollection();
             double canvasX;
             double canvasY;
 
-            foreach (netFteo.Spatial.Point point in layer)
+            foreach (TPoint point in layer)
             {
                 if (newOnly)
                 {
@@ -300,9 +353,9 @@ namespace XMLReaderCS
 
 
         //Обратное преобразование с координат canvas в координаты МСК
-        private netFteo.Spatial.Point WindowsPointsToPoints(double x, double y, netFteo.Spatial.TMyOutLayer sourcelayer)
+        private netFteo.Spatial.TPoint WindowsPointsToPoints(double x, double y, TMyOutLayer sourcelayer)
         {
-            netFteo.Spatial.Point res = new netFteo.Spatial.Point();
+            netFteo.Spatial.TPoint res = new netFteo.Spatial.TPoint();
 
             res.y = sourcelayer.AverageCenter.y - (canvas1.Width/2 - x) * Scale;
             res.x = sourcelayer.AverageCenter.x - (y - canvas1.Height/2)* Scale;
@@ -313,7 +366,7 @@ namespace XMLReaderCS
         /// Конвертация полигона netfteo в список точек PointCollection
         /// TODO - отображение двойного полигона - для old newOrd?
         /// </summary>
-        private List<PointCollection> PolygonToWindowsShape(netFteo.Spatial.TMyPolygon polygon, bool newOnly)
+        private List<PointCollection> PolygonToWindowsShape(TMyPolygon polygon, bool newOnly)
         {
             List<PointCollection> res = new List<PointCollection>();
             PointCollection winPoints = new PointCollection();
@@ -329,9 +382,25 @@ namespace XMLReaderCS
             return res;
         }
 
+		private List<PointCollection> PolygonToWindowsShape(TPolyLine polygon, bool newOnly)
+		{
+			List<PointCollection> res = new List<PointCollection>();
+			PointCollection winPoints = new PointCollection();
 
+			winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
+			res.Add(winPoints);
+			/*
+			foreach (netFteo.Spatial.TMyOutLayer chld in polygon.Childs)
+			{
+				PointCollection childwinPoints = new PointCollection();
+				childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld, newOnly);
+				res.Add(childwinPoints);
+			}
+			*/
+			return res;
+		}
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+		private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             InitCanvas(canvas1);
             DrawSpatial();
@@ -405,17 +474,21 @@ namespace XMLReaderCS
                                                            e.GetPosition(canvas1).X, e.GetPosition(canvas1).Y);
                                        */
             label_DirectXMode.Content = "";
-            netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;
-            if (polygon != null)
-                label_DirectXMode.Content = String.Format(" {0:F3}, {1:F3} ", 
-                                                            WindowsPointsToPoints(e.GetPosition(canvas1).X,
-                                                                                  e.GetPosition(canvas1).Y, polygon).x,
-                                                            WindowsPointsToPoints(e.GetPosition(canvas1).X,
-                                                                                  e.GetPosition(canvas1).Y, polygon).y);
-            if (SnapPosition(canvas1, e.GetPosition(canvas1).X, e.GetPosition(canvas1).Y))
-            {
-                label_DirectXMode.Content = "s! " + label_DirectXMode.Content;
-            }
+			if (Spatial == null) return;
+			if (Spatial.TypeName == "netFteo.Spatial.TMyPolygon")
+			{
+				netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;
+				if (polygon != null)
+					label_DirectXMode.Content = String.Format(" {0:F3}, {1:F3} ",
+																WindowsPointsToPoints(e.GetPosition(canvas1).X,
+																					  e.GetPosition(canvas1).Y, polygon).x,
+																WindowsPointsToPoints(e.GetPosition(canvas1).X,
+																					  e.GetPosition(canvas1).Y, polygon).y);
+				if (SnapPosition(canvas1, e.GetPosition(canvas1).X, e.GetPosition(canvas1).Y))
+				{
+					label_DirectXMode.Content = "s! " + label_DirectXMode.Content; // Mouse  got SNAP !!
+				}
+			}
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)

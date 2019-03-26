@@ -403,7 +403,7 @@ namespace RRTypes.CommonCast
 					//OUT ring
 					for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
 					{
-						Point P = new Point();
+						TPoint P = new TPoint();
 						P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
 						P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
 						P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
@@ -419,7 +419,7 @@ namespace RRTypes.CommonCast
 
 						for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
 						{
-							netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+							netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
 							P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
 							P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
 							P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
@@ -464,7 +464,7 @@ namespace RRTypes.CommonCast
 							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								Point P = new Point();
+								TPoint P = new TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -484,7 +484,7 @@ namespace RRTypes.CommonCast
 									TMyOutLayer ESch = Polygon.AddChild();
 									for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
 									{
-										Point P = new Point();
+										TPoint P = new TPoint();
 										P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
 										P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
 										P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -502,7 +502,7 @@ namespace RRTypes.CommonCast
 						line.Definition = ES.SpatialElement[i].Number;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -548,7 +548,7 @@ namespace RRTypes.CommonCast
 							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								Point P = new Point();
+								TPoint P = new TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -587,7 +587,7 @@ namespace RRTypes.CommonCast
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -633,7 +633,7 @@ namespace RRTypes.CommonCast
 																			   //OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								Point P = new Point();
+								TPoint P = new TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -652,7 +652,7 @@ namespace RRTypes.CommonCast
 
 									for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 									{
-										netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+										netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
 										P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 										P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 										P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -672,7 +672,7 @@ namespace RRTypes.CommonCast
 						line.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -711,7 +711,7 @@ namespace RRTypes.CommonCast
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = new Point();
+							TPoint P = new TPoint();
 							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -727,7 +727,7 @@ namespace RRTypes.CommonCast
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -744,7 +744,7 @@ namespace RRTypes.CommonCast
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -784,7 +784,7 @@ namespace RRTypes.CommonCast
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = new Point();
+							TPoint P = new TPoint();
 							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -800,7 +800,7 @@ namespace RRTypes.CommonCast
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -817,7 +817,7 @@ namespace RRTypes.CommonCast
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -857,7 +857,7 @@ namespace RRTypes.CommonCast
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = new Point();
+							TPoint P = new TPoint();
 							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -873,7 +873,7 @@ namespace RRTypes.CommonCast
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new Point();
+								netFteo.Spatial.TPoint P = new TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -890,7 +890,7 @@ namespace RRTypes.CommonCast
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -932,7 +932,7 @@ namespace RRTypes.CommonCast
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = new Point();
+							TPoint P = new TPoint();
 							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -949,7 +949,7 @@ namespace RRTypes.CommonCast
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
-								netFteo.Spatial.Point P = new netFteo.Spatial.Point();
+								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
 								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
 								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
 								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
@@ -966,7 +966,7 @@ namespace RRTypes.CommonCast
 						line.id = Gen_id.newId;
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 						{
-							Point P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
 																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
 							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
 							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
@@ -1724,7 +1724,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
 				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1740,7 +1740,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1762,7 +1762,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
 				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1778,7 +1778,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1800,7 +1800,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.Y);
 				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
@@ -1816,7 +1816,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.Y);
 					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
@@ -1839,7 +1839,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
 				Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1855,7 +1855,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1929,7 +1929,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
@@ -1946,7 +1946,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -1966,7 +1966,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4;
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
@@ -1983,7 +1983,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
@@ -2016,10 +2016,10 @@ namespace RRTypes.CommonCast
 		/// </summary>
 		/// <param name="unit"></param>
 		/// <returns></returns>
-		private static Point GetUnit(MP_V06.tSpelementUnitOldNew unit)
+		private static TPoint GetUnit(MP_V06.tSpelementUnitOldNew unit)
 		{
 
-			netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 			if (unit.NewOrdinate != null)
 			{
@@ -2112,7 +2112,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 				Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
@@ -2129,7 +2129,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -2150,10 +2150,10 @@ namespace RRTypes.CommonCast
 		#endregion
 
 		#region SpelementUnitZUOut parsers
-		private static Point GetUnit(kpzu06.tSpelementUnitZUOut unit)
+		private static TPoint GetUnit(kpzu06.tSpelementUnitZUOut unit)
 		{
 
-			netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 			Point.x = Convert.ToDouble(unit.Ordinate.X);
 			Point.y = Convert.ToDouble(unit.Ordinate.Y);
@@ -2168,10 +2168,10 @@ namespace RRTypes.CommonCast
 			return Point;
 		}
 
-		private static Point GetUnit(kvzu07.tSpelementUnitZUOut unit)
+		private static TPoint GetUnit(kvzu07.tSpelementUnitZUOut unit)
 		{
 
-			netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 			Point.x = Convert.ToDouble(unit.Ordinate.X);
 			Point.y = Convert.ToDouble(unit.Ordinate.Y);
@@ -2186,10 +2186,10 @@ namespace RRTypes.CommonCast
 			return Point;
 		}
 
-		public static Point GetUnit(kpt09.tSpelementUnitZUOut unit)
+		public static TPoint GetUnit(kpt09.tSpelementUnitZUOut unit)
 		{
 
-			netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 			Point.x = Convert.ToDouble(unit.Ordinate.X);
 			Point.y = Convert.ToDouble(unit.Ordinate.Y);
@@ -2204,10 +2204,10 @@ namespace RRTypes.CommonCast
 			return Point;
 		}
 
-		public static Point GetUnit(kpt10_un.tSpelementUnitZUOut unit)
+		public static TPoint GetUnit(kpt10_un.tSpelementUnitZUOut unit)
 		{
 
-			netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
 			Point.x = Convert.ToDouble(unit.Ordinate.X);
 			Point.y = Convert.ToDouble(unit.Ordinate.Y);
@@ -2237,7 +2237,7 @@ namespace RRTypes.CommonCast
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
 			{
 
-				netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
 				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
 				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -2251,7 +2251,7 @@ namespace RRTypes.CommonCast
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
-					netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
 					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
 					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
@@ -2924,7 +2924,7 @@ namespace RRTypes.CommonParsers
 				if (MP.InputData.GeodesicBases != null)
 					foreach (MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
 					{
-						Point pt = new Point((double)oms.OrdX, (double)oms.OrdY);
+						TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
 						pt.NumGeopointA = oms.PName;
 						pt.Description = oms.PKlass;
 						pt.Code = oms.PName;
@@ -3029,7 +3029,7 @@ namespace RRTypes.CommonParsers
 			if (inpData.GeodesicBases != null)
 				foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
 				{
-					Point pt = new Point((double)oms.OrdX, (double)oms.OrdY);
+					TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
 					pt.NumGeopointA = oms.PName;
 					pt.Description = oms.PKlass;
 					pt.Code = oms.PName;
@@ -3377,7 +3377,7 @@ namespace RRTypes.CommonParsers
 				{
 					for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
 					{
-						Point OMS = new Point();
+						TPoint OMS = new TPoint();
 						System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
 						OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
 						OMS.Description = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
@@ -3460,9 +3460,9 @@ namespace RRTypes.CommonParsers
 		}
 
 		//Разбор Spelement_Unit
-		private static Point KPT08_ES_ParseSpelement_Unit(System.Xml.XmlNode Spelement_Unit)
+		private static TPoint KPT08_ES_ParseSpelement_Unit(System.Xml.XmlNode Spelement_Unit)
 		{
-			Point Point = new Point();
+			TPoint Point = new TPoint();
 			Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("Ordinate").Attributes.GetNamedItem("X").Value);
 			Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("Ordinate").Attributes.GetNamedItem("Y").Value);
 			Point.oldX = Point.x;
@@ -3473,9 +3473,9 @@ namespace RRTypes.CommonParsers
 
 
 		//Разбор ordinate KPT11
-		private static Point KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
+		private static TPoint KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
 		{
-			Point Point = new Point();
+			TPoint Point = new TPoint();
 			Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("x").FirstChild.Value);
 			Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("y").FirstChild.Value);
 			Point.oldX = Point.x;
@@ -3830,7 +3830,7 @@ namespace RRTypes.CommonParsers
 				{
 					for (int iP = 0; iP <= KPT09.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
 					{
-						Point OMS = new Point();
+						TPoint OMS = new TPoint();
 						OMS.NumGeopointA = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
 						OMS.Description = KPT09.CadastralBlocks[i].OMSPoints[iP].PKlass;
 						OMS.Code = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
@@ -4043,7 +4043,7 @@ namespace RRTypes.CommonParsers
 				{
 					for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
 					{
-						Point OMS = new Point();
+						TPoint OMS = new TPoint();
 						OMS.NumGeopointA = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;
 						OMS.Description = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;
 						OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;

@@ -187,7 +187,7 @@ namespace netFteo.Spatial
         /// <param name="B"></param>
         /// <param name="PointCount"></param>
         /// <returns></returns>
-        public static PointList DivideLine(Point A, Point B, int PointCount)
+        public static PointList DivideLine(TPoint A, TPoint B, int PointCount)
         {
             PointList res = new PointList();
             double u = Atan(A.x,A.y,B.x,B.y); 
@@ -230,7 +230,7 @@ namespace netFteo.Spatial
         return (v1*v2<0) & (v3*v4<0);
         }
 
-       public static bool LinesIntersect(Point A1, Point A2, Point B1, Point B2)
+       public static bool LinesIntersect(TPoint A1, TPoint A2, TPoint B1, TPoint B2)
        {
            return LinesIntersect(A1.x, A1.y, A2.x, A2.y, B1.x, B1.y, B2.x, B2.y);
        }
@@ -243,7 +243,7 @@ namespace netFteo.Spatial
         /// <param name="b1"></param>
         /// <param name="b2"></param>
         /// <returns></returns>
-       public static Point FindIntersect(Point a1, Point a2, Point b1, Point b2)
+       public static TPoint FindIntersect(TPoint a1, TPoint a2, TPoint b1, TPoint b2)
        {
            double Denominator1 = 0; double k1; double k2;
            double Denominator2 = 0; double q1; double q2;
@@ -263,7 +263,7 @@ namespace netFteo.Spatial
            //еще проверим, что деления на ноль не будет:
            if (k2 - k1 == 0) Denominator3 = MathExt.eps; else Denominator3 = k2 - k1;
 
-           Point FP = new Point();
+           TPoint FP = new TPoint();
            //FP.id = Gen_id.newId;
            FP.NumGeopointA = "pt" + FP.id.ToString();
            FP.x = (q1 - q2) / (Denominator3);

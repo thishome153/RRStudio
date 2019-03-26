@@ -47,7 +47,7 @@ namespace RRTypes.MP_V06
             tEntitySpatialOldNewSpatialElement res = new tEntitySpatialOldNewSpatialElement();
 
             tSpelementUnitOldNewCollection resP = new tSpelementUnitOldNewCollection();
-            foreach (netFteo.Spatial.Point point in layer)
+            foreach (netFteo.Spatial.TPoint point in layer)
             {
                 tSpelementUnitOldNew pt = new tSpelementUnitOldNew();
                 pt.NewOrdinate = new tSpelementUnitOldNewNewOrdinate();

@@ -218,7 +218,7 @@ namespace netFteo.NikonRaw
     /// <summary>
     /// Класс Станция Nikon
     /// </summary>
-  public class TStation : Point
+  public class TStation : TPoint
     {
         public List<TRawObservation> SS; //Список наблюдений со станции
         public TNikonRawProperties Properties;

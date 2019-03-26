@@ -216,7 +216,7 @@ namespace netFteo.IO
 					TMyPolygon res = new TMyPolygon();
 					foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
 					{
-						netFteo.Spatial.Point point = new netFteo.Spatial.Point(vertex.Location.Y, vertex.Location.X);
+						netFteo.Spatial.TPoint point = new netFteo.Spatial.TPoint(vertex.Location.Y, vertex.Location.X);
 						point.oldX = vertex.Location.Y;
 						point.oldY = vertex.Location.X;
 						point.NumGeopointA = "dxf" + (++ptNum).ToString();
@@ -229,7 +229,7 @@ namespace netFteo.IO
 					TPolyLine res = new TPolyLine();
 					foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
 					{
-						netFteo.Spatial.Point point = new netFteo.Spatial.Point(vertex.Location.Y, vertex.Location.X);
+						netFteo.Spatial.TPoint point = new netFteo.Spatial.TPoint(vertex.Location.Y, vertex.Location.X);
 						point.oldX = vertex.Location.Y;
 						point.oldY = vertex.Location.X;
 						point.NumGeopointA = "dxf" + (++ptNum).ToString();
@@ -353,7 +353,7 @@ namespace netFteo.IO
             }
         }
 
-        private EntityObject CreatePoint(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netFteo.Spatial.Point point)
+        private EntityObject CreatePoint(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netFteo.Spatial.TPoint point)
         {
             netDxf.Entities.Point Pt = new Point(point.y, point.x, point.z);
             Pt.Layer = LayerPoints;

@@ -30,7 +30,7 @@ namespace RRTypes
             for (int iord = 0; iord <= ES.Spatial_Element[0].Spelement_Unit.Count - 1; iord++)
             {
 
-                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                 Point.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].NewOrdinate.X);
                 Point.y = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].NewOrdinate.Y);
                 Point.Mt = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].NewOrdinate.Delta_Geopoint);
@@ -46,7 +46,7 @@ namespace RRTypes
                 for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
                 {
 
-                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                     Point.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.X);
                     Point.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.Y);
                     Point.Mt= Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.Delta_Geopoint);
@@ -104,7 +104,7 @@ namespace RRTypes
             for (int iord = 0; iord <= ES.Spatial_Element[0].Spelement_Unit.Count - 1; iord++)
             {
 
-                netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                 if (ES.Spatial_Element[0].Spelement_Unit[iord].NewOrdinate != null)
                 {
                     Point.x = Convert.ToDouble(ES.Spatial_Element[0].Spelement_Unit[iord].NewOrdinate.X);
@@ -123,7 +123,7 @@ namespace RRTypes
                 for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
                 {
 
-                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
                     Point.x = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.X);
                     Point.y = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.Y);
                     Point.Mt = Convert.ToDouble(ES.Spatial_Element[iES].Spelement_Unit[iord].NewOrdinate.Delta_Geopoint);
