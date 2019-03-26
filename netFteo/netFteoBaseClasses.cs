@@ -2150,7 +2150,7 @@ SCAN:
     public class TPolygonCollection : List<TMyPolygon>
     {
         public event ESCheckingHandler OnChecking;
-        public MifOptions MIF_Options; // настройки для полигонов MIF
+        //public MifOptions MIF_Options; // настройки для полигонов MIF
         private int totalItems;
         private int fParent_id;
         public int id;
@@ -2160,7 +2160,7 @@ SCAN:
         {
             //this.Items = new List<TMyPolygon>();
             this.id = Gen_id.newId;
-            this.MIF_Options = new MifOptions();
+            //this.MIF_Options = new MifOptions();
         }
 
         public TPolygonCollection(int parent_id)  /// Конструктор
@@ -2487,7 +2487,13 @@ SCAN:
     {
     }
 
-    public class TCompozitionEZ : TPolygonCollection
+	public class EZPEntry : TMyPolygon
+	{
+
+	}
+
+    public class TCompozitionEZ : List<EZPEntry>
+
     {
         public TCadastralNumbers DeleteEntryParcels;
         public TCadastralNumbers TransformationEntryParcel;
@@ -2497,14 +2503,15 @@ SCAN:
             this.TransformationEntryParcel = new TCadastralNumbers();
         }
 
-        public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ES)
+        public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
         {
-            if (ES == null) return;
-            ES.AreaValue = areaEntry;
-            ES.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
-            ES.Definition = entrynumber;
-            ES.State = state;
-            this.Add(ES);
+            if (ESs == null) return;
+			EZPEntry entry = new EZPEntry();
+            entry.AreaValue = areaEntry;
+			entry.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
+			entry.Definition = entrynumber;
+			entry.State = state;
+            this.Add(entry);
         }
 
         /// <summary>
@@ -2544,11 +2551,11 @@ SCAN:
         public string AreaGKN;
         public netFteo.Rosreestr.TMyEncumbrances Encumbrances;
         public TMyPolygon EntSpat;
-        public TPolygonCollection Contours;
+        public TEntitySpatial Contours;
         public TmySlot()
         {
             this.EntSpat = new TMyPolygon();
-            this.Contours = new TPolygonCollection();
+            this.Contours = new TEntitySpatial();
             this.Encumbrances = new Rosreestr.TMyEncumbrances();
             this.Fid = Gen_id.newId;
         }
@@ -2568,7 +2575,8 @@ SCAN:
                     return this.Items[i].EntSpat;
 
                 for (int ic = 0; ic <= this.Items[i].Contours.Count - 1; ic++)
-                    return (TMyPolygon)this.Items[i].Contours[ic].GetEs(Layer_id);
+					if (this.Items[i].Contours[ic].id == Layer_id)
+                    return (TMyPolygon)this.Items[i].Contours[ic];
             }
 
 
@@ -2682,7 +2690,7 @@ SCAN:
         private string FParentCN;
 
         private int Fid;
-        private TPolygonCollection fContours;
+        private TEntitySpatial fContours;
         private TCompozitionEZ fCompozitionEZ;
         private TMyPolygon fEntitySpatial;
         public string State;
@@ -2728,29 +2736,37 @@ SCAN:
         }
 
         // Взаимоисключающее свойство по отношению к .EntitySpatial
-        public TPolygonCollection Contours
+        public TEntitySpatial Contours
         {
             set
             {
                 if (value != null)               // проверим на "эффект волны"
                     this.fEntitySpatial = null; ; // "обнулим" признаки 
-                this.fContours = new TPolygonCollection(value);
+                this.fContours = new TEntitySpatial();
+				this.fContours = value;
             }
             get
             {
                 return this.fContours;
             }
         }
+
         public TFiles XmlBodyList;
+
+
         public TCompozitionEZ CompozitionEZ
         {
             set
             {
                 if (value != null)
                     this.fEntitySpatial = null;
-                this.fContours = new TPolygonCollection(value); // на свякий случай, как в Осетии: ЕЗП с контурами 
-                this.fCompozitionEZ = new TCompozitionEZ();
-            }
+                //this.fContours = new TEntitySpatial(); // на свякий случай, как в Осетии: ЕЗП с контурами 
+				//this.fContours.Add(value);
+				this.fCompozitionEZ = new TCompozitionEZ();
+				this.fCompozitionEZ = value;
+
+
+			}
             get
             {
                 return this.fCompozitionEZ;
@@ -2795,9 +2811,7 @@ SCAN:
                 case "Землепользование": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Обособленный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
-                case "Многоконтурный участок": { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
-                case "Полигоны dxf":  { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
-                case "Полигоны mif": { this.Contours = new TPolygonCollection(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                case "Многоконтурный участок": { this.Contours = new TEntitySpatial(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Единое землепользование":
                     {
                         //this.Contours = new TPolygonCollection(); // на свякий случай, как в Осетии: ЕЗП с контурами 
@@ -2854,9 +2868,9 @@ SCAN:
         public object GetEs(int Layer_id)
         {
             if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
-            if (this.Contours != null) if (this.Contours.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
+            //if (this.Contours != null) if (this.Contours.ge.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
             if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
-            if (this.CompozitionEZ != null) if (this.CompozitionEZ.GetEs(Layer_id) != null) return this.CompozitionEZ.GetEs(Layer_id);
+            if (this.CompozitionEZ != null)  return this.CompozitionEZ;
             if (this.SubParcels != null) if (this.SubParcels.GetEs(Layer_id) != null) return this.SubParcels.GetEs(Layer_id);
             return null;
         }
@@ -2887,12 +2901,13 @@ SCAN:
                 case "Землепользование": { return this.EntitySpatial.FindClip(Contours); }
                 case "Обособленный участок": { return this.EntitySpatial.FindClip(Contours); }
                 case "Условный участок": { return this.EntitySpatial.FindClip(Contours); }
-                case "Многоконтурный участок": { return this.Contours.CheckESs(Contours); }
+                //case "Многоконтурный участок": { return this.Contours.CheckESs(Contours); }
                 //  case "Единое землепользование": { return this.CompozitionEZ.CheckES(Contours); }
                 case "Значение отсутствует": { return null; }
                 default: return null;
             }
         }
+
         public string Area(string Format)
         {
             switch (this.Name)
@@ -2901,7 +2916,7 @@ SCAN:
                 case "Обособленный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Условный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Многоконтурный участок": { return this.Contours.AreaSpatialFmt(Format, true); }
-                case "Единое землепользование": { return this.CompozitionEZ.AreaSpatialFmt(Format, true); }
+             //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatialFmt(Format, true); }
                 case "Значение отсутствует": { return ""; }
                 default: return "";
             }
@@ -2917,7 +2932,7 @@ SCAN:
                     case "Обособленный участок": { return this.EntitySpatial.AreaSpatial; }
                     case "Условный участок": { return this.EntitySpatial.AreaSpatial; }
                     case "Многоконтурный участок": { return this.Contours.AreaSpatial; }
-                    case "Единое землепользование": { return this.CompozitionEZ.AreaSpatial; }
+                 //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatial; }
                     case "Значение отсутствует": { return -1; }
                     default: return -1;
                 }
@@ -4224,6 +4239,8 @@ SCAN:
 	{
 		private int fid;
 		private string fDefinition;
+		private int totalItems;
+		public event ESCheckingHandler OnChecking;
 		public int id
 		{
 			get { return this.fid; }
@@ -4265,6 +4282,120 @@ SCAN:
 			this.Layers = new List<TLayer>();
 			this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
 		}
+
+		public TMyPolygon AddPolygon(object poly_)
+		{
+			if (poly_ == null) return null;
+			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
+				(((TMyPolygon)poly_).PointCount > 0))
+			{
+				this.Add((TMyPolygon)poly_);
+				return (TMyPolygon)poly_;
+			}
+
+			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyOutLayer")) &&
+		 (((TMyOutLayer)poly_).PointCount > 0))
+			{
+				TMyPolygon Vpoly = new TMyPolygon();
+				Vpoly.AppendPoints((TMyOutLayer)poly_);
+				Vpoly.Definition = ((TMyOutLayer)poly_).Definition;
+				this.AddPolygon(Vpoly);
+				return Vpoly;
+			}
+
+			//"netFteo.Spatial.TPolyLine" ????
+			return null;
+		}
+
+		/// <summary>
+		/// Summ of polygons areas
+		/// </summary>
+		public double AreaSpatial
+		{
+			get
+			{
+				double AreaC = 0;
+				foreach (IGeometry feature in this)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+
+						AreaC += ((TMyPolygon)feature).AreaSpatial;
+				}
+				return AreaC;
+			}
+		}
+
+		/// <summary>
+		/// Общая сумма геометрических площадей
+		/// </summary>
+		/// <param name="format"></param>
+		/// <param name="ReturnCount"></param>
+		/// <returns></returns>
+		public string AreaSpatialFmt(string format, bool ReturnCount)
+		{
+			if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
+			else return AreaSpatial.ToString(format);
+		}
+
+		private void EsChekerProc(string sender, int process, byte[] Data)
+		{
+			if (OnChecking == null) return;
+			ESCheckingEventArgs e = new ESCheckingEventArgs();
+			e.Definition = sender;
+			e.Data = Data;
+			e.Process = totalItems;
+			OnChecking(this, e);
+		}
+
+
+		/// <summary>
+		/// Проверка на пересечения с полигоном ES
+		/// </summary>
+		/// <param name="ESs">Полигон для проверки</param>
+		/// <returns></returns>
+		public PointList CheckES(TMyPolygon ES)
+		{
+			PointList res = new PointList();
+			PointList PlREs;
+			totalItems++;// += ES.PolygonPointCount;
+
+			foreach (IGeometry feature in this)
+			{
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+				{
+					totalItems++;
+					PlREs = ((TMyPolygon)feature).FindClip(ES);
+					EsChekerProc(((TMyPolygon)feature).Definition, totalItems, null);
+					if (PlREs != null)
+					{
+						res.AppendPoints(PlREs);
+					}
+				}
+			}
+			return res;
+		}
+
+
+		/// <summary>
+		/// Проверка на пересечения с коллекцией полигонов ESs
+		/// </summary>
+		/// <param name="ESs">Коллекция полигонов</param>
+		/// <returns></returns>
+		public PointList CheckESs(TPolygonCollection ESs)
+		{
+			PointList res = new PointList();
+			PointList PlREs;
+			totalItems = 0;// this.Count + ESs.Count;
+			for (int i = 0; i <= ESs.Count - 1; i++)
+			{
+				PlREs = this.CheckES(ESs[i]);
+
+				if (PlREs != null)
+				{ res.AppendPoints(PlREs); }
+			}
+			return res;
+		}
+
 
 		public void Fraq(string Format)
 		{

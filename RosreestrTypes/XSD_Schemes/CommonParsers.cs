@@ -1866,11 +1866,11 @@ namespace RRTypes.CommonCast
 
 			return EntSpat;
 		}
-		public static netFteo.Spatial.TPolygonCollection AddContoursMP5(string Definition, MP_V05.tContoursSubParcelContourCollection cs)
+		public static TEntitySpatial AddContoursMP5(string Definition, MP_V05.tContoursSubParcelContourCollection cs)
 		{
-			netFteo.Spatial.TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
 			foreach (MP_V05.tContoursSubParcelContour item in cs)
-				res.AddPolygon(AddEntSpatMP5(item.Number, item));
+				res.Add(AddEntSpatMP5(item.Number, item));
 			return res;
 		}
 		#endregion
@@ -1995,17 +1995,19 @@ namespace RRTypes.CommonCast
 			return EntSpat;
 		}
 
-		public static TPolygonCollection ES_ZU(MP_V06.tNewContourCollection ESs)
+		//TODO Check for MP6 adding of contours
+		public static TEntitySpatial ES_ZU(MP_V06.tNewContourCollection ESs)
 		{
-			TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
 			foreach (MP_V06.tNewContour item in ESs)
 			{
-				TMyPolygon collItem = res.AddPolygon(ES_ZU(item.Definition, item.EntitySpatial));
+				TMyPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
 				//collItem.ResetOrdinates(); // because is only new tNewContour
 				collItem.State = 0; // tNewContour
 				collItem.AreaValue = item.Area.Area;
 				if (item.Area.InaccuracySpecified)
 					collItem.AreaInaccuracy = item.Area.Inaccuracy.ToString();
+				res.Add(collItem);
 			}
 			return res;
 		}
@@ -2140,11 +2142,11 @@ namespace RRTypes.CommonCast
 			return EntSpat;
 		}
 
-		public static TPolygonCollection ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
+		public static TEntitySpatial ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
 		{
-			TPolygonCollection res = new netFteo.Spatial.TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
 			foreach (MP_V06.tContoursSubParcelContour item in cs)
-				res.AddPolygon(ES_ZU(item.Number, item));
+				res.Add(ES_ZU(item.Number, item));
 			return res;
 		}
 		#endregion
@@ -2530,8 +2532,9 @@ namespace RRTypes.CommonParsers
 							if (MP.Package.FormParcels.NewParcel[i].Contours != null)
 								for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
 								{
-									TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
-																					MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial));
+									TMyPolygon NewCont = RRTypes.STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+																					MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
+									MainObj.Contours.Add(NewCont);
 									/*  RRTypes.RetResult Checkresut = RRTypes.STD_MP_Utils.CheckESMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
                                       if (Checkresut.HasError)
                                       {
@@ -4800,14 +4803,11 @@ namespace RRTypes.CommonParsers
 				for (int i = 0; i <= kv.Parcels.Parcel.CompositionEZ.Count - 1; i++)
 				// if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
 				{
-					MainObj.CompozitionEZ.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+					MainObj.CompozitionEZ.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1, RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State),
+					RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 																					 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
-					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
-					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
-
 					res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
-
 				}
 			}
 			//Части 
@@ -4955,11 +4955,11 @@ namespace RRTypes.CommonParsers
 				for (int i = 0; i <= kv.Parcels.Parcel.CompositionEZ.Count - 1; i++)
 				// if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
 				{
-					MainObj.CompozitionEZ.AddPolygon(
-												  RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+					MainObj.CompozitionEZ.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+												   kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1,
+												  KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State),
+												  CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 																						 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
-					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].AreaValue = kv.Parcels.Parcel.CompositionEZ[i].Area.Area;
-					MainObj.CompozitionEZ[MainObj.CompozitionEZ.Count - 1].State = RRTypes.KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State);
 
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));

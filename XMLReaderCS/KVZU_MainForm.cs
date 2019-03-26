@@ -894,6 +894,7 @@ namespace XMLReaderCS
 			ListMyCoolections(this.DocInfo.MyBlocks);
 		}
 
+		/*
 		private void ParseTMyPolygon(TPolygonCollection xmlPolygons)
 		{
 			TMyCadastralBlock Bl = new TMyCadastralBlock();
@@ -907,7 +908,7 @@ namespace XMLReaderCS
 			this.DocInfo.MyBlocks.Blocks.Add(Bl);
 			ListMyCoolections(this.DocInfo.MyBlocks);
 		}
-
+		*/
 
 		#region разбор Кадастрового паспорта  KPZU V05
 		/*
@@ -1737,9 +1738,8 @@ namespace XMLReaderCS
 					for (int i = 0; i <= Parcel.Contours.Count - 1; i++)
 					{
 						netFteo.ObjectLister.ListEntSpat(ContNode,
-														 Parcel.Contours[i],
-														"SPElem.",
-														Parcel.Contours[i].Definition, Parcel.Contours[i].State);
+														 Parcel.Contours,
+														 6); // ? 
 					}
 				}
 			if (Parcel.SubParcels != null)
@@ -1771,10 +1771,7 @@ namespace XMLReaderCS
 							{
 								for (int ic = 0; ic <= Parcel.SubParcels[i].Contours.Count - 1; ic++)
 
-									netFteo.ObjectLister.ListEntSpat(SlotNode,
-																	 Parcel.SubParcels[i].Contours[ic],
-																	 "SPElem.",
-																	 Parcel.SubParcels[i].Contours[ic].Definition, 6);
+									netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].Contours, 6);
 							}
 					}
 				}
@@ -2861,23 +2858,23 @@ return res;
 						LVip.Text = "Состав";
 						LVip.SubItems.Add(cEZ.Count.ToString());
 						LV.Items.Add(LVip);
+						/*
+											ListViewItem LVip2 = new ListViewItem();
+											LVip2.Text = "Площадь";
+											LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
+											LV.Items.Add(LVip2);
 
-						ListViewItem LVip2 = new ListViewItem();
-						LVip2.Text = "Площадь";
-						LVip2.SubItems.Add(cEZ.AreaSpatialFmt("0.00", true));
-						LV.Items.Add(LVip2);
+											ListViewItem LVip3 = new ListViewItem();
+											LVip3.Text = "Площадь сем.";
+											LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt("0.00", true));
+											LV.Items.Add(LVip3);
 
-						ListViewItem LVip3 = new ListViewItem();
-						LVip3.Text = "Площадь сем.";
-						LVip3.SubItems.Add(cEZ.AreaSpecifiedFmt("0.00", true));
-						LV.Items.Add(LVip3);
-
-						ListViewItem LVip3d = new ListViewItem();
-						LVip3d.Text = "Δ";
-						LVip3d.SubItems.Add(cEZ.AreaVariance.ToString("0.00"));
-						LVip3d.SubItems.Add("кв.м");
-						LV.Items.Add(LVip3d);
-
+											ListViewItem LVip3d = new ListViewItem();
+											LVip3d.Text = "Δ";
+											LVip3d.SubItems.Add(cEZ.AreaVariance.ToString("0.00"));
+											LVip3d.SubItems.Add("кв.м");
+											LV.Items.Add(LVip3d);
+											*/
 						ListViewItem LVipP = new ListViewItem();
 						LVipP.Text = "Периметр";
 						LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
@@ -2980,7 +2977,8 @@ return res;
 				{
 					TMyParcel parcel = (TMyParcel)O;
 					if (parcel.Contours != null)
-						EZPEntryListToListView(listView1, parcel.Contours.AsList());
+						//	EZPEntryListToListView(listView1, parcel.Contours.AsList()); 
+						;
 					else
 					{
 
@@ -3036,7 +3034,7 @@ return res;
 				if (O.ToString() == "netFteo.Spatial.TMyParcel")
 				{
 					TMyParcel P = (TMyParcel)O;
-					EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
+					//TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
 					PropertiesToListView(listView_Properties, P.CompozitionEZ);
 				}
 			}
@@ -4974,7 +4972,7 @@ return res;
                     {
                         TMyParcel P = (TMyParcel)O;
                         //подключим обработчик события
-                        P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
+                       //TODO P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 
                         netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
                        // TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
