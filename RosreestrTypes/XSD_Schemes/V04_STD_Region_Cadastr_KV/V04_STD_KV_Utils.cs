@@ -44,7 +44,7 @@ namespace RRTypes
             //Внутренние контура
             for (int iES = 1; iES <= ES.Spatial_Element.Count - 1; iES++)
             {
-                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
                 for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
                 {
 

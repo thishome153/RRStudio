@@ -109,7 +109,7 @@ namespace netFteo.IO
 
 								if (line.Contains("Child"))
 								{
-									TMyOutLayer child = resPoly.AddChild();
+									TRing child = resPoly.AddChild();
 									line = readFile.ReadLine();
 									while (!line.Contains("EndChild"))
 									{
@@ -268,7 +268,7 @@ namespace netFteo.IO
 									int VertexCount2 = 0;
 									if (Int32.TryParse(line, out VertexCount2))
 									{
-										TMyOutLayer childRing = res.AddChild();
+										TRing childRing = res.AddChild();
 										for (int i = 0; i <= VertexCount2 - 1; i++)
 										{
 											line = readFile.ReadLine();
@@ -592,7 +592,7 @@ namespace netFteo.IO
 
 								if (line.Contains("Child"))
 								{
-									TMyOutLayer child = resPoly.AddChild();
+									TRing child = resPoly.AddChild();
 									line = readFile.ReadLine();
 									while (!line.Contains("EndChild"))
 									{
@@ -677,7 +677,7 @@ namespace netFteo.IO
 
 								if (line.Contains("Child"))
 								{
-									TMyOutLayer child = resPoly.AddChild();
+									TRing child = resPoly.AddChild();
 									line = readFile.ReadLine();
 									while (!line.Contains("EndChild"))
 									{
@@ -779,7 +779,7 @@ namespace netFteo.IO
 
 								if (line.Contains("Child"))
 								{
-									TMyOutLayer child = resPoly.AddChild();
+									TRing child = resPoly.AddChild();
 									line = readFile.ReadLine();
 									while (!line.Contains("EndChild"))
 									{

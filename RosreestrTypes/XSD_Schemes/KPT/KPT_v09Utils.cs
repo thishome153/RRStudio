@@ -35,7 +35,7 @@ namespace RRTypes
                 //Внутренние контура
                 for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
                 {
-                    TMyOutLayer InLayer = EntSpat.AddChild();
+                    TRing InLayer = EntSpat.AddChild();
                     for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                     {
 
@@ -73,7 +73,7 @@ namespace RRTypes
                 //Внутренние контура
                 for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
                 {
-                    TMyOutLayer InLayer = EntSpat.AddChild();
+                    TRing InLayer = EntSpat.AddChild();
                     for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                     {
 
@@ -114,7 +114,7 @@ namespace RRTypes
                 //Внутренние контура
                 for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
                 {
-                    TMyOutLayer InLayer = EntSpat.AddChild();
+                    TRing InLayer = EntSpat.AddChild();
                     // Random Ingen = new Random();
                     // InLayer.Layer_id = Ingen.Next();
                     for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)

@@ -540,19 +540,19 @@ namespace netFteo.Spatial
         }
 
     };
-   
 
-    #endregion
-    
-    /// <summary>
-    /// Circle. Just circle
-    /// </summary>
-    public class TCircle : TPoint , IGeometry
-    {
-        /// <summary>
-        /// Radius
-        /// </summary>
-        public double R;
+
+	#endregion
+
+	/// <summary>
+	/// Circle. Just circle
+	/// </summary>
+	public class TCircle : TPoint, IGeometry
+	{
+		/// <summary>
+		/// Radius
+		/// </summary>
+		public double R;
 		//public Point Center;
 
 		public TCircle()
@@ -567,11 +567,11 @@ namespace netFteo.Spatial
 		}
 
 		public TCircle(decimal x, decimal y, decimal radius) : this()
-        {
+		{
 			this.x = Convert.ToDouble(x);
-            this.y = Convert.ToDouble(y);
-            this.R = Convert.ToDouble(radius);
-        }
+			this.y = Convert.ToDouble(y);
+			this.R = Convert.ToDouble(radius);
+		}
 
 		public new void ShowasListItems(ListView LV, bool SetTag)
 		{
@@ -609,10 +609,22 @@ namespace netFteo.Spatial
 			LV.EndUpdate();
 			return;
 		}
+
+		/// <summary>
+		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
+		/// </summary>
+		/// <param name="canvas_width">Ширина полотна</param>
+		/// <param name="canvas_height">Высота полотна</param>
+		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+		/// <returns></returns>
+		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+		{
+			//TODO need code. like Ring
+			return -1;
+		}
 	}
 
 	#region  Список точек. Его будем сериализовать в XML для обменов
-
 	/// <summary>
 	/// Список точек на базе Dictionary
 	/// </summary>
@@ -1230,7 +1242,7 @@ SCAN:
             //main ring:
             ResLayer.AppendPoints(this.CommonPoints((PointList)poly));
             //child rings:
-            foreach (TMyOutLayer child in poly.Childs)
+            foreach (TRing child in poly.Childs)
                 ResLayer.AppendPoints(this.CommonPoints((PointList)child));
             return ResLayer;
         }
@@ -1267,17 +1279,14 @@ SCAN:
     }
     #endregion
 
-    #region TMyOutLayer Полигон
+    #region TRing  - closed polyline
     /// <summary>
+	/// Ring - imperative closed polyline, other words - simple polygon.
+	/// It have area, perymetr
     /// TODO must stay into RING - YES of coarse,  unsere dear Friend!!!
     /// </summary>
-
-    //public class Ring: PointList
-    public class TMyOutLayer : PointList
+     public class TRing : PointList
     {
-     
-      //  private int FLayer_id;
-
         public string PerymethrFmt(string Format)
         {
 
@@ -1301,7 +1310,6 @@ SCAN:
                 Peryd += Test;
             return Peryd;
         }
-
 
         /// <summary>
         ///  Проверка вершин, 
@@ -1402,8 +1410,6 @@ SCAN:
             }
         }
     
-
-
     /*
       private double Area(PointList ring)
         {
@@ -1594,20 +1600,7 @@ SCAN:
             }
         }
 
-		/*
-		public void Reverse_Points()
-		{
-			TMyOutLayer tmpList = new TMyOutLayer();
-			//for (int i = this.Count-1 ; i <= this.Count - 1; i++)
-			int count = this.Count;
-			foreach(Point pt in this)
-			{
-				tmpList.AddPoint(this[(count--) - 1]);
-			}
-			this.Clear();
-			this.ImportObjects(tmpList);
-		}
-		*/
+
     
 
 
@@ -1676,14 +1669,14 @@ SCAN:
     /// <summary>
     /// Класс Полигон
     /// </summary>
-    public class TMyPolygon : TMyOutLayer, IPointList, IGeometry
+    public class TMyPolygon : TRing, IPointList, IGeometry
     {
 
-        public List<TMyOutLayer> Childs;
+        public List<TRing> Childs;
 
         public TMyPolygon()
         {
-            this.Childs = new List<TMyOutLayer>();
+            this.Childs = new List<TRing>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
 			Name = "Полигон";
@@ -1725,7 +1718,7 @@ SCAN:
         public void ResetOrdinates()
         {
             this.Reset_Ordinates();
-            foreach (TMyOutLayer child in this.Childs)
+            foreach (TRing child in this.Childs)
                 child.Reset_Ordinates();
 
         }
@@ -1734,7 +1727,7 @@ SCAN:
         {
 			foreach (TPoint pt in this)
 				pt.Mt = mt;
-			foreach (TMyOutLayer child in this.Childs)
+			foreach (TRing child in this.Childs)
                 child.SetMt(mt);
         }
 
@@ -1756,7 +1749,7 @@ SCAN:
 					pt.oldY = fraqtedY;
 				}
 			}
-			foreach (TMyOutLayer child in this.Childs)
+			foreach (TRing child in this.Childs)
                 child.Fraq(Format);
         }
 
@@ -1768,7 +1761,7 @@ SCAN:
 				pt.NumGeopointA = StartIndex++.ToString();
 			}
 
-			foreach (TMyOutLayer child in this.Childs)
+			foreach (TRing child in this.Childs)
                 StartIndex += child.ReorderPoints(StartIndex);
 			return StartIndex;
         }
@@ -1942,7 +1935,7 @@ SCAN:
                     //для внутренних границ точка как раз не должна быть внутри
                     //если она принадлежит "дырявому" полигону, то фактом её принадлежности будет 
                     // принадлежность внешнему и отсутствие принадлежности всем детям
-                    foreach (TMyOutLayer child in this.Childs)
+                    foreach (TRing child in this.Childs)
                     {
                         inchildFlag = child.Pointin(pt);
                     }
@@ -1962,7 +1955,7 @@ SCAN:
             PointList res = new PointList();
             res.AppendPoints(this.PointsIn(ES));
             //for each child in checked ES
-            foreach (TMyOutLayer child in ES.Childs)
+            foreach (TRing child in ES.Childs)
                 res.AppendPoints(this.PointsIn(child));
             if (res.PointCount > 0) return res;
             else
@@ -1984,7 +1977,7 @@ SCAN:
             PlREs = this.FindSects(ES);
             if (PlREs != null) { res.AppendPoints(PlREs); }
 
-            foreach (TMyOutLayer child in this.Childs)
+            foreach (TRing child in this.Childs)
             {
                 res.AppendPoints(child.FindSects(ES));
             }
@@ -2061,14 +2054,14 @@ SCAN:
             return res;
         }
 
-        public TMyOutLayer AddChild()
+        public TRing AddChild()
         {
-            this.Childs.Add(new TMyOutLayer());
+            this.Childs.Add(new TRing());
             this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
             return this.Childs[this.Childs.Count - 1];
         }
 
-        public TMyOutLayer AddChild(TMyOutLayer child)
+        public TRing AddChild(TRing child)
         {
 			if (child == null) return null;
             this.Childs.Add(child);
@@ -2093,7 +2086,7 @@ SCAN:
             }
         }
 
-        public TMyOutLayer GetEs(int Layer_id)
+        public TRing GetEs(int Layer_id)
         {
             if (this.id == Layer_id) return this;
 
@@ -2229,12 +2222,12 @@ SCAN:
                 return (TMyPolygon)poly_;
             }
 			
-			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyOutLayer")) &&
-		 (((TMyOutLayer)poly_).PointCount > 0))
+			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
+		 (((TRing)poly_).PointCount > 0))
 			{
 				TMyPolygon Vpoly = new TMyPolygon();
-				Vpoly.AppendPoints((TMyOutLayer)poly_);
-				Vpoly.Definition = ((TMyOutLayer)poly_).Definition;
+				Vpoly.AppendPoints((TRing)poly_);
+				Vpoly.Definition = ((TRing)poly_).Definition;
 				 this.AddPolygon(Vpoly);
 				return Vpoly;
 			}
@@ -2685,7 +2678,7 @@ SCAN:
 
     public delegate Object ESDelegate();
 
-    public class TMyParcel
+    public class TMyParcel : TCadasterItem
     {
         private string FParentCN;
         private int Fid;
@@ -4194,7 +4187,7 @@ SCAN:
     #endregion
 
     #region Полилиния (знает площадь)
-    public class TPolyLine : TMyOutLayer, IGeometry
+    public class TPolyLine : TRing, IGeometry
     {
         public double Length
         {
@@ -4307,12 +4300,12 @@ SCAN:
 				return (TMyPolygon)poly_;
 			}
 
-			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyOutLayer")) &&
-		 (((TMyOutLayer)poly_).PointCount > 0))
+			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
+		 (((TRing)poly_).PointCount > 0))
 			{
 				TMyPolygon Vpoly = new TMyPolygon();
-				Vpoly.AppendPoints((TMyOutLayer)poly_);
-				Vpoly.Definition = ((TMyOutLayer)poly_).Definition;
+				Vpoly.AppendPoints((TRing)poly_);
+				Vpoly.Definition = ((TRing)poly_).Definition;
 				this.AddPolygon(Vpoly);
 				return Vpoly;
 			}

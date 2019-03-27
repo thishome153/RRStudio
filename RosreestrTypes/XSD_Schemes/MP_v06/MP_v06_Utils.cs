@@ -11,7 +11,7 @@ namespace RRTypes.MP_V06
         public static string EntSysDefault = "Id35722ef2-a7d7-4159-af6a-ed98cb6236e3";
         public static string GeopointZacrepDefault = "Закрепление отсутствует";
         /*
-        private static tSpelementUnitOldNewCollection CastElementUnits(netFteo.Spatial.TMyOutLayer layer)
+        private static tSpelementUnitOldNewCollection CastElementUnits(netFteo.Spatial.TRing layer)
         {
             tSpelementUnitOldNewCollection res = new tSpelementUnitOldNewCollection();
                foreach(netFteo.Spatial.Point point in layer.Points)
@@ -41,7 +41,7 @@ namespace RRTypes.MP_V06
             return res;
         }
         */
-        private static tEntitySpatialOldNewSpatialElement CastElement(netFteo.Spatial.TMyOutLayer layer)
+        private static tEntitySpatialOldNewSpatialElement CastElement(netFteo.Spatial.TRing layer)
         {
             bool with_OldOrdinate = false; //случай с :511
             tEntitySpatialOldNewSpatialElement res = new tEntitySpatialOldNewSpatialElement();
@@ -74,7 +74,7 @@ namespace RRTypes.MP_V06
         }
 
         //Построение отрезков границ
-        private static List<tBordersInpBorder> BuildBorders(netFteo.Spatial.TMyOutLayer layer, string spatial)
+        private static List<tBordersInpBorder> BuildBorders(netFteo.Spatial.TRing layer, string spatial)
         {
            List< tBordersInpBorder> res = new List<tBordersInpBorder>();
 
@@ -118,7 +118,7 @@ namespace RRTypes.MP_V06
 
             res.SpatialElement.Add(CastElement(entryES)); // внешняя граница
             //Остальные внутренние
-            foreach (netFteo.Spatial.TMyOutLayer child in entryES.Childs)
+            foreach (netFteo.Spatial.TRing child in entryES.Childs)
             {
                 res.SpatialElement.Add(CastElement(child));
             }
@@ -128,7 +128,7 @@ namespace RRTypes.MP_V06
             res.Borders = new tBordersInpBorderCollection();
             res.Borders.AddRange(BuildBorders(entryES, (spatial_Num++).ToString("0")));
 
-            foreach (netFteo.Spatial.TMyOutLayer child in entryES.Childs)
+            foreach (netFteo.Spatial.TRing child in entryES.Childs)
             {
                 res.Borders.AddRange(BuildBorders(child, (spatial_Num++).ToString("0")));
             }

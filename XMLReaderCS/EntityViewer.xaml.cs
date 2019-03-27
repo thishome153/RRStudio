@@ -150,7 +150,7 @@ namespace XMLReaderCS
                         canvas1.Children.Add(pt);
 
                     //Метки
-                    List<TextBlock> labels = CreateCanvasPointLabels((netFteo.Spatial.TMyOutLayer) polygon);
+                    List<TextBlock> labels = CreateCanvasPointLabels((netFteo.Spatial.TRing) polygon);
                     foreach (TextBlock label in labels)
                         canvas1.Children.Add(label);
 
@@ -171,7 +171,7 @@ namespace XMLReaderCS
 						canvas1.Children.Add(pt);
 
 					//Метки
-					List<TextBlock> labels = CreateCanvasPointLabels((TMyOutLayer)polygon);
+					List<TextBlock> labels = CreateCanvasPointLabels((TRing)polygon);
 					foreach (TextBlock label in labels)
 						canvas1.Children.Add(label);
 				}
@@ -214,7 +214,7 @@ namespace XMLReaderCS
             return el;
         }
 
-        private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TMyOutLayer polygon)
+        private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TRing polygon)
         {
             List<UIElement> res = new List<UIElement>();
             PointCollection pts =   PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
@@ -239,7 +239,7 @@ namespace XMLReaderCS
             Canvas.SetTop(textBlock, y);
             return textBlock;
         }
-        private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TMyOutLayer polygon)
+        private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TRing polygon)
         {
             List<TextBlock> res = new List<TextBlock>();
             PointCollection pts = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
@@ -353,7 +353,7 @@ namespace XMLReaderCS
 
 
         //Обратное преобразование с координат canvas в координаты МСК
-        private netFteo.Spatial.TPoint WindowsPointsToPoints(double x, double y, TMyOutLayer sourcelayer)
+        private netFteo.Spatial.TPoint WindowsPointsToPoints(double x, double y, TRing sourcelayer)
         {
             netFteo.Spatial.TPoint res = new netFteo.Spatial.TPoint();
 
@@ -373,7 +373,7 @@ namespace XMLReaderCS
 
             winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
             res.Add(winPoints);
-            foreach (netFteo.Spatial.TMyOutLayer chld in polygon.Childs)
+            foreach (netFteo.Spatial.TRing chld in polygon.Childs)
             {
                 PointCollection childwinPoints = new PointCollection();
                 childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld,newOnly);
@@ -390,7 +390,7 @@ namespace XMLReaderCS
 			winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
 			res.Add(winPoints);
 			/*
-			foreach (netFteo.Spatial.TMyOutLayer chld in polygon.Childs)
+			foreach (netFteo.Spatial.TRing chld in polygon.Childs)
 			{
 				PointCollection childwinPoints = new PointCollection();
 				childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld, newOnly);

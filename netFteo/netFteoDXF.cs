@@ -266,7 +266,7 @@ namespace netFteo.IO
                     if ((polys.Count > 0) && (polys[i].CodeName.Equals("LWPOLYLINE")) &&
 					((LwPolyline)polys[i]).Flags == PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM)
                     {
-                        res.AddChild((TMyOutLayer)DXF_ParseRing((LwPolyline)polys[i]));
+                        res.AddChild((TRing)DXF_ParseRing((LwPolyline)polys[i]));
                     }
                 }
             }

@@ -40,7 +40,7 @@ namespace RRTypes.CommonCast
 				//childs
 				for (int i = 1; i <= ES.SpatialElement.Count - 1; i++)
 				{
-					netFteo.Spatial.TMyOutLayer ESch = fES.AddChild();
+					netFteo.Spatial.TRing ESch = fES.AddChild();
 
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
@@ -105,7 +105,7 @@ namespace RRTypes.CommonCast
 				//childs
 				for (int i = 1; i <= ES.SpatialElement.Count - 1; i++)
 				{
-					netFteo.Spatial.TMyOutLayer ESch = fES.AddChild();
+					netFteo.Spatial.TRing ESch = fES.AddChild();
 
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
@@ -170,7 +170,7 @@ namespace RRTypes.CommonCast
 				//childs
 				for (int i = 1; i <= ES.SpatialElement.Count - 1; i++)
 				{
-					netFteo.Spatial.TMyOutLayer ESch = fES.AddChild();
+					netFteo.Spatial.TRing ESch = fES.AddChild();
 
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
@@ -239,7 +239,7 @@ namespace RRTypes.CommonCast
 				//childs
 				for (int i = 1; i <= ES.SpatialElement.Count - 1; i++)
 				{
-					netFteo.Spatial.TMyOutLayer ESch = fES.AddChild();
+					netFteo.Spatial.TRing ESch = fES.AddChild();
 
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
@@ -306,7 +306,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.Spatial_Element.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
 				{
 
@@ -353,7 +353,7 @@ namespace RRTypes.CommonCast
 				//childs inner ring
 				for (int i = 1; i <= ES.SpatialElement.Count - 1; i++)
 				{
-					netFteo.Spatial.TMyOutLayer ESch = fES.AddChild();
+					netFteo.Spatial.TRing ESch = fES.AddChild();
 
 					for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 					{
@@ -415,7 +415,7 @@ namespace RRTypes.CommonCast
 					//childs inner ring
 					for (int ii = 1; ii <= ES.Spatial_Element.Count - 1; ii++)
 					{
-						TMyOutLayer ESch = Polygon.AddChild();
+						TRing ESch = Polygon.AddChild();
 
 						for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
 						{
@@ -481,7 +481,7 @@ namespace RRTypes.CommonCast
 								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
 									(i != ii))
 								{
-									TMyOutLayer ESch = Polygon.AddChild();
+									TRing ESch = Polygon.AddChild();
 									for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
 									{
 										TPoint P = new TPoint();
@@ -648,7 +648,7 @@ namespace RRTypes.CommonCast
 								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
 									(i != ii))
 								{
-									TMyOutLayer ESch = Polygon.AddChild();
+									TRing ESch = Polygon.AddChild();
 
 									for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 									{
@@ -723,7 +723,7 @@ namespace RRTypes.CommonCast
 						//childs inner ring
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
-							TMyOutLayer ESch = Polygon.AddChild();
+							TRing ESch = Polygon.AddChild();
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
@@ -796,7 +796,7 @@ namespace RRTypes.CommonCast
 						//childs inner ring
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
-							TMyOutLayer ESch = Polygon.AddChild();
+							TRing ESch = Polygon.AddChild();
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
@@ -869,7 +869,7 @@ namespace RRTypes.CommonCast
 						//childs inner ring
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
-							TMyOutLayer ESch = Polygon.AddChild();
+							TRing ESch = Polygon.AddChild();
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
@@ -945,7 +945,7 @@ namespace RRTypes.CommonCast
 						//TODO:  howto detect childs ???
 						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
-							TMyOutLayer ESch = Polygon.AddChild();
+							TRing ESch = Polygon.AddChild();
 
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
 							{
@@ -1736,7 +1736,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -1774,7 +1774,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -1812,7 +1812,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -1851,7 +1851,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -1898,7 +1898,7 @@ namespace RRTypes.CommonCast
             //Внутренние контура
             for (int iES = 1; iES <= ES.Spatial_Element.Count - 1; iES++)
             {
-                netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
                 for (int iord = 0; iord <= ES.Spatial_Element[iES].Spelement_Unit.Count - 1; iord++)
                 {
 
@@ -1942,7 +1942,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -1979,7 +1979,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -2090,7 +2090,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
@@ -2127,7 +2127,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -2249,7 +2249,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 
@@ -2292,7 +2292,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 					/*
@@ -2338,7 +2338,7 @@ namespace RRTypes.CommonCast
 			//Внутренние контура
 			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
 			{
-				netFteo.Spatial.TMyOutLayer InLayer = EntSpat.AddChild();
+				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
 				{
 					/*
@@ -3517,7 +3517,7 @@ namespace RRTypes.CommonParsers
 					for (int ring = 1; ring <= ES.ChildNodes.Count - 1; ring++)
 					{
 						System.Xml.XmlNodeList childRing = ES.ChildNodes[ring].ChildNodes;
-						TMyOutLayer InLayer = EntSpat.AddChild();
+						TRing InLayer = EntSpat.AddChild();
 
 						for (int iSpelement = 1; iSpelement <= childRing.Count - 1; iSpelement++)
 						{
@@ -3560,7 +3560,7 @@ namespace RRTypes.CommonParsers
 					{
 						System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
 
-						TMyOutLayer InLayer = EntSpat.AddChild();
+						TRing InLayer = EntSpat.AddChild();
 
 						for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
 						{
@@ -3596,7 +3596,7 @@ namespace RRTypes.CommonParsers
 				{
 					System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
 
-					TMyOutLayer InLayer = EntSpat.AddChild();
+					TRing InLayer = EntSpat.AddChild();
 
 					for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
 					{
