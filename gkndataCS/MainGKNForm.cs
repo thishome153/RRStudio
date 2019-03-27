@@ -343,7 +343,7 @@ namespace GKNData
 				parcel.CadastralBlock_id = Convert.ToInt32(row[4]); // block_id
 				parcel.SpecialNote = row[5].ToString(); // lot_comment
 				parcel.AreaGKN = row[6].ToString();
-				ParcelsList.Parcels.Add(parcel);
+				ParcelsList.Add(parcel);
 			}
 			return ParcelsList;
 		}
@@ -598,13 +598,13 @@ namespace GKNData
 			if (nodeType == "netFteo.Spatial.TMyCadastralBlock")
 			{
 				// Еще не загружены ли ЗУ
-				if ((((TMyCadastralBlock)inNode).HasParcels) && (((TMyCadastralBlock)inNode).Parcels.Parcels.Count == 0))
+				if ((((TMyCadastralBlock)inNode).HasParcels) && (((TMyCadastralBlock)inNode).Parcels.Count == 0))
 				{
 					TMyParcelCollection reloadP = LoadParcelsList(CF.conn, ((TMyCadastralBlock)inNode).id);
 					((TMyCadastralBlock)inNode).Parcels.AddParcels(reloadP);
 				}
 				{
-					foreach (TMyParcel parcel in ((TMyCadastralBlock)inNode).Parcels.Parcels)
+					foreach (TMyParcel parcel in ((TMyCadastralBlock)inNode).Parcels)
 					{
 						insertItem(parcel, inTreeNode);
 					}

@@ -1533,9 +1533,9 @@ namespace XMLReaderCS
 
 					TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN);
 					this.Text = BlockList.Blocks[bc].CN;
-					if (BlockList.Blocks[bc].Parcels.Parcels.Count == 1)
+					if (BlockList.Blocks[bc].Parcels.Count == 1)
 					{
-						this.Text = BlockList.Blocks[bc].Parcels.Parcels[0].CN;
+						this.Text = BlockList.Blocks[bc].Parcels[0].CN;
 					}
 
 					if (BlockList.Blocks[bc].ObjectRealtys.Count == 1)
@@ -1546,23 +1546,23 @@ namespace XMLReaderCS
 
 				else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName); }
 
-				TMyParcelCollection ObjList = BlockList.Blocks[bc].Parcels;
-
-				if (ObjList.Parcels.Count > 0)
+				if (BlockList.Blocks[bc].Parcels != null)
 				{
 					TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
-					for (int i = 0; i <= ObjList.Parcels.Count - 1; i++)
+					foreach (TMyParcel Parcel in BlockList.Blocks[bc].Parcels)
 					{
-						TreeNode TnP = ListMyParcel(ParcelsNode_, ObjList.Parcels[i]);
-						if (ObjList.Parcels.Count == 1) TnP.Expand();
-					}
 
-					if (ObjList.Parcels.Count == 1)
-					{
-						pkk5Viewer1.Start(ObjList.Parcels[0].CN, pkk5_Types.Parcel);
-						ParcelsNode_.Expand();
-					}
+						TreeNode TnP = ListMyParcel(ParcelsNode_, Parcel);
+						if (BlockList.Blocks[bc].Parcels.Count == 1) TnP.Expand();
 
+
+						if (BlockList.Blocks[bc].Parcels.Count == 1)
+						{
+							pkk5Viewer1.Start(BlockList.Blocks[bc].Parcels[0].CN, pkk5_Types.Parcel);
+							ParcelsNode_.Expand();
+						}
+
+					}
 				}
 
 				if (BlockList.Blocks[bc].ObjectRealtys.Count > 0)
@@ -1735,13 +1735,9 @@ namespace XMLReaderCS
 				{
 					TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
 					ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
-					for (int i = 0; i <= Parcel.Contours.Count - 1; i++)
-					{
-						netFteo.ObjectLister.ListEntSpat(ContNode,
-														 Parcel.Contours,
-														 6); // ? 
-					}
+					netFteo.ObjectLister.ListEntSpat(ContNode, Parcel.Contours); // ? 
 				}
+
 			if (Parcel.SubParcels != null)
 				if (Parcel.SubParcels.Count > 0)
 				{
@@ -1769,9 +1765,7 @@ namespace XMLReaderCS
 						if (Parcel.SubParcels[i].Contours != null)
 							if (Parcel.SubParcels[i].Contours.Count > 0)
 							{
-								for (int ic = 0; ic <= Parcel.SubParcels[i].Contours.Count - 1; ic++)
-
-									netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].Contours, 6);
+								netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].Contours);
 							}
 					}
 				}
@@ -1914,7 +1908,7 @@ namespace XMLReaderCS
 					flatsnodes.Nodes.Add("CN" + s, s);
 			}
 
-			netFteo.ObjectLister.ListEntSpat(PNode, oks.EntSpat, 6);
+			netFteo.ObjectLister.ListEntSpat(PNode, oks.EntSpat);
 			ListRights(PNode, oks.Rights, oks.id, "Права", "Rights");
 			ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
 		}

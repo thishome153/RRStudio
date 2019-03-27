@@ -204,7 +204,7 @@ namespace netFteo
 			}
 		}
 
-		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES, int Status)
+		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES)
 		{
 			if (ES == null) return;
 		
@@ -225,7 +225,7 @@ namespace netFteo
 			if (ES == null) return;
 			foreach (Spatial.TEntitySpatial es in ES)
 			{
-				ListEntSpat(NodeES, es, Status);
+				ListEntSpat(NodeES, es);
 				/*
 				TreeNode NodeTo = NodeES.Nodes.Add("ES." + es.id.ToString(), "Слои");
 				NodeTo.Tag = es.id;

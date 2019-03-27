@@ -836,6 +836,7 @@ namespace netFteo.IO
 		public const string FixosoftFileSignature3 = "#Fixosoft NumXYZD data format V2016";
 		public const string FixosoftFileSignature4 = "#Fixosoft NumXYZD data format V2017";
 		public const string FixosoftFileSign5 = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
+		/*
 		public void SaveAsFixosoftTXT2015(string FileName, TMyPolygon ES)
 		{
 			if (ES.PointCount == 0) return;
@@ -870,6 +871,8 @@ namespace netFteo.IO
 			writer.WriteLine("EndPolygon");
 			writer.Close();
 		}
+		*/
+		/*
 		public void SaveAsFixosoftTXT2015(string FileName, TPolygonCollection ES)
 		{
 			if (ES.Count == 0) return;
@@ -907,7 +910,7 @@ namespace netFteo.IO
 			}
 			writer.Close();
 		}
-		/*
+
 				public void SaveAsFixosoftTXT2016(string FileName, TMyPolygon ES)
 				{
 					TPolygonCollection pl = new TPolygonCollection(ES.Parent_Id);
@@ -916,64 +919,67 @@ namespace netFteo.IO
 				}
 
 		*/
-		public void SaveAsFixosoftTXT2017(string FileName, TPolyLines ES)
-		{
-			if (ES.Count == 0) return;
-			System.IO.TextWriter writer = new StreamWriter(FileName);
-			writer.WriteLine(FixosoftFileSignature4);
-			writer.WriteLine("# " + DateTime.Now.ToString());  //"Версия {0}", 
-			writer.WriteLine("# Producer: netfteo " +
-								String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
-			writer.WriteLine("# Разделители полей tab. Кодировка ANSI");
-			writer.WriteLine("# Поля файла " + FileName + " :");
-			writer.WriteLine("# ИмяТочки,x,y,z,Mt,Описание(Код).");
-			writer.WriteLine("# Полилиний " + ES.Count.ToString());
-			for (int ic = 0; ic <= ES.Count - 1; ic++)
-			{
-				writer.WriteLine("Polyline " + (ES[ic].Definition));
-				for (int i = 0; i <= ES[ic].PointCount - 1; i++)
+		/*
+				public void SaveAsFixosoftTXT2017(string FileName, TPolyLines ES)
 				{
-					string ptname;
-					if (ES[ic][i].Status == 0) ptname = "н" + ES[ic][i].NumGeopointA;
-					else ptname = ES[ic][i].NumGeopointA;
+					if (ES.Count == 0) return;
+					System.IO.TextWriter writer = new StreamWriter(FileName);
+					writer.WriteLine(FixosoftFileSignature4);
+					writer.WriteLine("# " + DateTime.Now.ToString());  //"Версия {0}", 
+					writer.WriteLine("# Producer: netfteo " +
+										String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
+					writer.WriteLine("# Разделители полей tab. Кодировка ANSI");
+					writer.WriteLine("# Поля файла " + FileName + " :");
+					writer.WriteLine("# ИмяТочки,x,y,z,Mt,Описание(Код).");
+					writer.WriteLine("# Полилиний " + ES.Count.ToString());
+					for (int ic = 0; ic <= ES.Count - 1; ic++)
+					{
+						writer.WriteLine("Polyline " + (ES[ic].Definition));
+						for (int i = 0; i <= ES[ic].PointCount - 1; i++)
+						{
+							string ptname;
+							if (ES[ic][i].Status == 0) ptname = "н" + ES[ic][i].NumGeopointA;
+							else ptname = ES[ic][i].NumGeopointA;
 
-					writer.WriteLine(ptname + "\t" +
-									 ES[ic][i].x_s + "\t" +
-									 ES[ic][i].y_s + "\t" +
-									 ES[ic][i].z_s + "\t" +
-									 ES[ic][i].Mt_s + "\t" +
-									 ES[ic][i].Description);
+							writer.WriteLine(ptname + "\t" +
+											 ES[ic][i].x_s + "\t" +
+											 ES[ic][i].y_s + "\t" +
+											 ES[ic][i].z_s + "\t" +
+											 ES[ic][i].Mt_s + "\t" +
+											 ES[ic][i].Description);
+						}
+						writer.WriteLine("EndPolyline");
+					}
+					writer.Close();
 				}
-				writer.WriteLine("EndPolyline");
-			}
-			writer.Close();
-		}
 
-		public void SaveAsFixosoftTXT2018(string FileName, TEntitySpatial ES, Encoding encoding)
-		{
-			TPolygonCollection items = new TPolygonCollection();
-			foreach (IGeometry feature in ES)
-			{
-				if (feature.GetType().ToString() == "TMyPolygon")
-					items.Add((TMyPolygon)feature);
-			}
+				public void SaveAsFixosoftTXT2018(string FileName, TEntitySpatial ES, Encoding encoding)
+				{
+					TPolygonCollection items = new TPolygonCollection();
+					foreach (IGeometry feature in ES)
+					{
+						if (feature.GetType().ToString() == "TMyPolygon")
+							items.Add((TMyPolygon)feature);
+					}
 
-			SaveAsFixosoftTXT2018(FileName, items, encoding);
-		}
+					SaveAsFixosoftTXT2018(FileName, items, encoding);
+				}
 
-		public void SaveAsFixosoftTXT2018(string FileName, TMyPolygon ES, Encoding encoding)
-		{
-			TPolygonCollection items = new TPolygonCollection();
-			items.AddPolygon(ES);
-			SaveAsFixosoftTXT2018(FileName, items, encoding);
-		}
+				public void SaveAsFixosoftTXT2018(string FileName, TMyPolygon ES, Encoding encoding)
+				{
+					TPolygonCollection items = new TPolygonCollection();
+					items.AddPolygon(ES);
+					SaveAsFixosoftTXT2018(FileName, items, encoding);
+				}
+				*/
+
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="FileName"></param>
 		/// <param name="ES"></param>
 		/// <param name="encoding"></param>
-		public void SaveAsFixosoftTXT2018(string FileName, TPolygonCollection ES, Encoding encoding)
+		public void SaveAsFixosoftTXT2018(string FileName, TEntitySpatial ES, Encoding encoding)
 		{
 			if (ES.Count == 0) return;
 			System.IO.TextWriter writer = new StreamWriter(FileName, false, encoding);
@@ -984,40 +990,45 @@ namespace netFteo.IO
 			writer.WriteLine("# Разделители полей tab. Кодировка " + encoding.EncodingName + ".  Поля файла: ");
 			writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
 			writer.WriteLine("# Полигонов " + ES.Count.ToString());
-			for (int ic = 0; ic <= ES.Count - 1; ic++)
+			foreach (IGeometry feature in ES)
 			{
-				writer.WriteLine("Polygon" + "\t" + (ES[ic].Definition));
-				for (int i = 0; i <= ES[ic].PointCount - 1; i++)
+				if (feature.GetType().ToString() == "TMyPolygon")
 				{
+					TMyPolygon Poly = (TMyPolygon)feature;
+					writer.WriteLine("Polygon" + "\t" + (Poly.Definition));
 
-					writer.WriteLine(((ES[ic][i].Status == 0) ? "н" + ES[ic][i].NumGeopointA : ES[ic][i].NumGeopointA) + "\t" +
-									 ES[ic][i].oldX_s + "\t" +
-									 ES[ic][i].oldY_s + "\t" +
-									 ES[ic][i].x_s + "\t" +
-									 ES[ic][i].y_s + "\t" +
-									 ES[ic][i].Mt_s + "\t" +
-									 ES[ic][i].Description + "\t" +
-									 ES[ic][i].OrdIdent);
-				}
-
-				for (int ich = 0; ich <= ES[ic].Childs.Count - 1; ich++)
-				{
-					writer.WriteLine("Child" + (ich + 1).ToString());
-					for (int ici = 0; ici <= ES[ic].Childs[ich].PointCount - 1; ici++)
+					for (int i = 0; i <= Poly.PointCount - 1; i++)
 					{
-						writer.WriteLine(
-							((ES[ic].Childs[ich][ici].Status == 0) ? "н" + ES[ic].Childs[ich][ici].NumGeopointA : ES[ic].Childs[ich][ici].NumGeopointA) + "\t" +
-									 ES[ic].Childs[ich][ici].oldX_s + "\t" +
-									 ES[ic].Childs[ich][ici].oldY_s + "\t" +
-									 ES[ic].Childs[ich][ici].x_s + "\t" +
-									 ES[ic].Childs[ich][ici].y_s + "\t" +
-									 ES[ic].Childs[ich][ici].Mt_s + "\t" +
-									 ES[ic].Childs[ich][ici].Description + "\t" +
-									 ES[ic].Childs[ich][ici].OrdIdent);
+
+						writer.WriteLine(((Poly[i].Status == 0) ? "н" + Poly[i].NumGeopointA : Poly[i].NumGeopointA) + "\t" +
+										 Poly[i].oldX_s + "\t" +
+										 Poly[i].oldY_s + "\t" +
+										 Poly[i].x_s + "\t" +
+										 Poly[i].y_s + "\t" +
+										 Poly[i].Mt_s + "\t" +
+										 Poly[i].Description + "\t" +
+										 Poly[i].OrdIdent);
 					}
-					writer.WriteLine("EndChild");
+
+					for (int ich = 0; ich <= Poly.Childs.Count - 1; ich++)
+					{
+						writer.WriteLine("Child" + (ich + 1).ToString());
+						for (int ici = 0; ici <= Poly.Childs[ich].PointCount - 1; ici++)
+						{
+							writer.WriteLine(
+								((Poly.Childs[ich][ici].Status == 0) ? "н" + Poly.Childs[ich][ici].NumGeopointA : Poly.Childs[ich][ici].NumGeopointA) + "\t" +
+										 Poly.Childs[ich][ici].oldX_s + "\t" +
+										 Poly.Childs[ich][ici].oldY_s + "\t" +
+										 Poly.Childs[ich][ici].x_s + "\t" +
+										 Poly.Childs[ich][ici].y_s + "\t" +
+										 Poly.Childs[ich][ici].Mt_s + "\t" +
+										 Poly.Childs[ich][ici].Description + "\t" +
+										 Poly.Childs[ich][ici].OrdIdent);
+						}
+						writer.WriteLine("EndChild");
+					}
+					writer.WriteLine("EndPolygon");
 				}
-				writer.WriteLine("EndPolygon");
 			}
 			writer.Close();
 		}

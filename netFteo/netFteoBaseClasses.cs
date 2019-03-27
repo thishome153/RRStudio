@@ -2688,7 +2688,6 @@ SCAN:
     public class TMyParcel
     {
         private string FParentCN;
-
         private int Fid;
         private TEntitySpatial fContours;
         private TCompozitionEZ fCompozitionEZ;
@@ -2700,7 +2699,6 @@ SCAN:
         public string CadastralBlock;
         public int CadastralBlock_id;
         public string Name;
-
         public string AreaGKN;
         /// <summary>
         /// Значение, указаное
@@ -2711,13 +2709,11 @@ SCAN:
         public LandUse Landuse;
         public string Category;
         public string SpecialNote;
-
-
         public Rosreestr.TLocation Location;
         public Rosreestr.TMyRights Rights;
         public Rosreestr.TMyRights EGRN;
         public Rosreestr.TMyEncumbrances Encumbrances;
-        public Object EntitySpatial_noType;
+        //public Object EntitySpatial_noType;
         // Взаимоисключающее свойство по отношению к .Contours
         public TMyPolygon EntitySpatial
         {
@@ -2734,7 +2730,7 @@ SCAN:
                 return this.fEntitySpatial;
             }
         }
-
+		public TEntitySpatial EntSpat; //Spatial data. Universal, both for single ES and multi (contours)
         // Взаимоисключающее свойство по отношению к .EntitySpatial
         public TEntitySpatial Contours
         {
@@ -2751,29 +2747,27 @@ SCAN:
             }
         }
 
-        public TFiles XmlBodyList;
-
-
-        public TCompozitionEZ CompozitionEZ
-        {
-            set
-            {
-                if (value != null)
-                    this.fEntitySpatial = null;
-                //this.fContours = new TEntitySpatial(); // на свякий случай, как в Осетии: ЕЗП с контурами 
+		public TCompozitionEZ CompozitionEZ
+		{
+			set
+			{
+				if (value != null)
+					this.fEntitySpatial = null;
+				//this.fContours = new TEntitySpatial(); // на свякий случай, как в Осетии: ЕЗП с контурами 
 				//this.fContours.Add(value);
 				this.fCompozitionEZ = new TCompozitionEZ();
 				this.fCompozitionEZ = value;
 
 
 			}
-            get
-            {
-                return this.fCompozitionEZ;
-            }
-        }
+			get
+			{
+				return this.fCompozitionEZ;
+			}
+		}
 
 
+		public TFiles XmlBodyList;
         public TMySlots SubParcels;
         public List<String> AllOffspringParcel;// Кадастровые номера всех земельных участков, образованных из данного земельного участка
         public List<String> PrevCadastralNumbers; //Кадастровые номера земельных участков, из которых образован
@@ -3473,33 +3467,54 @@ SCAN:
 			return null;
         }
     }
-    public class TMyParcelCollection
-    {
-        public List<TMyParcel> Parcels;
+    public class TMyParcelCollection : List<TMyParcel>
+	{
+     //   public List<TMyParcel> Parcels;
 
         public TMyParcelCollection()
         {
-            this.Parcels = new List<TMyParcel>();
+            //this.Parcels = new List<TMyParcel>();
 
         }
+
         public TMyParcel AddParcel(TMyParcel Parcel)
         {
-            this.Parcels.Add(Parcel);
-            return this.Parcels[this.Parcels.Count - 1];
+            this.Add(Parcel);
+            return this[this.Count - 1];
         }
 
         public int AddParcels(TMyParcelCollection parcels)
         {
-            foreach (TMyParcel inParcel in parcels.Parcels)
+            foreach (TMyParcel inParcel in parcels)
             {
-                this.Parcels.Add(inParcel);
+                this.Add(inParcel);
             }
 
-            return parcels.Parcels.Count;
+            return parcels.Count;
         }
 
+		public IGeometry GetEs(int Layer_id)
+		{
+			for (int i = 0; i <= this.Count() - 1; i++)
+			{
+	
+				if ((this[i].EntitySpatial != null) &&
+					(this[i].EntitySpatial.id == Layer_id))
+					return this[i].EntitySpatial;
+				if (this[i].Contours != null)
+				{
+					foreach(IGeometry Contour in this[i].Contours)
+					{
+						if (Contour.id == Layer_id)
+							return Contour;
+					}
+				}
 
-    }
+
+			}
+			return null;
+		}
+	}
 
     //Oбъекты землеустройства
     public class TCoordSystem
@@ -3870,12 +3885,9 @@ SCAN:
         //ИПД в квартале
         public Object GetEs(int Layer_id)
         {
-            for (int i = 0; i <= this.Parcels.Parcels.Count - 1; i++)
-            {
-                if (this.Parcels.Parcels[i].GetEs(Layer_id) != null)
-                    return this.Parcels.Parcels[i].GetEs(Layer_id);
-            }
-            if (this.GKNBounds.GetEs(Layer_id) != null)
+			if (this.Parcels.GetEs(Layer_id) != null)
+				return this.Parcels.GetEs(Layer_id);
+			if (this.GKNBounds.GetEs(Layer_id) != null)
                 return this.GKNBounds.GetEs(Layer_id);
             if (this.GKNZones.GetEsId(Layer_id) != null)
                 return this.GKNZones.GetEsId(Layer_id);
@@ -3883,17 +3895,19 @@ SCAN:
             if (this.ObjectRealtys.GetEs(Layer_id) != null)
                 return this.ObjectRealtys.GetEs(Layer_id);
 
-            if (this.Entity_Spatial.PointCount > 0)
+            if ((this.Entity_Spatial.PointCount > 0) &&
+				(this.Entity_Spatial.id == Layer_id)
+				)
                 return this.Entity_Spatial;
             return null;
         }
 
         public object GetObject(int id)
         {
-            for (int i = 0; i <= this.Parcels.Parcels.Count - 1; i++)
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
-                if (this.Parcels.Parcels[i].id == id)
-                    return this.Parcels.Parcels[i];
+                if (this.Parcels[i].id == id)
+                    return this.Parcels[i];
             }
 
             for (int i = 0; i <= this.ObjectRealtys.Count - 1; i++)
@@ -3913,28 +3927,28 @@ SCAN:
 
             }
 
-            for (int i = 0; i <= this.Parcels.Parcels.Count - 1; i++)
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
-                if (this.Parcels.Parcels[i].CompozitionEZ != null)
-                    for (int ij = 0; ij <= this.Parcels.Parcels[i].CompozitionEZ.Count - 1; ij++)
-                        if (this.Parcels.Parcels[i].CompozitionEZ[ij].id == id)
-                            return this.Parcels.Parcels[i].CompozitionEZ[ij];
+                if (this.Parcels[i].CompozitionEZ != null)
+                    for (int ij = 0; ij <= this.Parcels[i].CompozitionEZ.Count - 1; ij++)
+                        if (this.Parcels[i].CompozitionEZ[ij].id == id)
+                            return this.Parcels[i].CompozitionEZ[ij];
             }
 
-            for (int i = 0; i <= this.Parcels.Parcels.Count - 1; i++)
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
-                if (this.Parcels.Parcels[i].Contours != null)
-                    if (this.Parcels.Parcels[i].Contours.id == id)
-                        return this.Parcels.Parcels[i].Contours;
+                if (this.Parcels[i].Contours != null)
+                    if (this.Parcels[i].Contours.id == id)
+                        return this.Parcels[i].Contours;
             }
 
             //если ищем чзу:
-            for (int i = 0; i <= this.Parcels.Parcels.Count - 1; i++)
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
 
-                for (int sli = 0; sli <= this.Parcels.Parcels[i].SubParcels.Count - 1; sli++)
+                for (int sli = 0; sli <= this.Parcels[i].SubParcels.Count - 1; sli++)
                 {
-                    if (this.Parcels.Parcels[i].SubParcels[sli].id == id)
-                        return this.Parcels.Parcels[i].SubParcels[sli];
+                    if (this.Parcels[i].SubParcels[sli].id == id)
+                        return this.Parcels[i].SubParcels[sli];
                 }
 
             for (int i = 0; i <= this.ObjectRealtys.Count - 1; i++)
@@ -4115,7 +4129,7 @@ SCAN:
 		{
 			TEntitySpatial Res = new TEntitySpatial();
 			for (int i = 0; i <= this.Blocks.Count - 1; i++)
-				foreach (TMyParcel parcel in this.Blocks[i].Parcels.Parcels)
+				foreach (TMyParcel parcel in this.Blocks[i].Parcels)
 				{
 					if (parcel.EntitySpatial != null)
 						Res.Add(parcel.EntitySpatial);
