@@ -206,11 +206,17 @@ namespace netFteo
 
 		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES)
 		{
-			if (ES == null) return;
-		
-				TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
-				NodeTo.Tag = ES.id;
-				//Show layers of ES
+			if ((ES == null) || (ES.Count == 0)) return;
+
+			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
+			NodeTo.Tag = ES.id;
+			//Show layers of ES
+			if (ES.Layers.Count == 1)
+			{
+				NodeTo.Text = "Границы";
+				ListFeature(ES, NodeTo, ES.Layers[0].LayerHandle);
+			}
+			else
 				foreach (netFteo.Spatial.TLayer layer in ES.Layers)
 				{
 					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);

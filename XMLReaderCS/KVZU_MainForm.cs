@@ -231,32 +231,32 @@ namespace XMLReaderCS
 			xmldoc.Save(stream);
 			stream.Seek(0, 0);
 			RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); //prepare parser
+																						  /*
+																					  if (DocInfo.DocRootName == "TMyPolygon")
+																					  {
+																						  toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+																						  tabPage1.Text = "netfteo::TMyPolygon";
+																						  {
+																							  toolStripStatusLabel3.Text = "netfteo::";
+																							  XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
+																							  TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(stream);
+																							  ParseTMyPolygon(xmlPolygon);
+																						  }
+																					  }
 
-			if (DocInfo.DocRootName == "TMyPolygon")
-			{
-				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-				tabPage1.Text = "netfteo::TMyPolygon";
-				{
-					toolStripStatusLabel3.Text = "netfteo::";
-					XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
-					TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(stream);
-					ParseTMyPolygon(xmlPolygon);
-				}
-			}
-			/*
-			if (DocInfo.DocRootName == "TPolygonCollection")
-			{
-				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-				tabPage1.Text = "PolygonCollection";
-				{
-					toolStripStatusLabel3.Text = "netfteo::";
-					XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
-					TPolygonCollection xmlPolygons = (TPolygonCollection)serializer.Deserialize(stream);
-					ParseTMyPolygon(xmlPolygons);
-				}
-			}
-			*/
-			// EZP hard editing:
+																					  if (DocInfo.DocRootName == "TPolygonCollection")
+																					  {
+																						  toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+																						  tabPage1.Text = "PolygonCollection";
+																						  {
+																							  toolStripStatusLabel3.Text = "netfteo::";
+																							  XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
+																							  TPolygonCollection xmlPolygons = (TPolygonCollection)serializer.Deserialize(stream);
+																							  ParseTMyPolygon(xmlPolygons);
+																						  }
+																					  }
+																					  */
+																						  // EZP hard editing:
 			if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
 			{
 				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
@@ -889,7 +889,7 @@ namespace XMLReaderCS
 				Bl.CN = xmlPolygon.Definition;
 			else Bl.CN = "Polygon";
 			TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
-			MainObj.EntitySpatial = xmlPolygon;
+			MainObj.EntSpat.Add(xmlPolygon);
 			this.DocInfo.MyBlocks.Blocks.Add(Bl);
 			ListMyCoolections(this.DocInfo.MyBlocks);
 		}
@@ -1384,12 +1384,13 @@ namespace XMLReaderCS
 					MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
 					if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
 					{
-						MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
+						MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
 					}
+
 					if (MP.Package.FormParcels.NewParcel[i].Contours != null)
 						for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
 						{
-							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
 																			MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
 						}
 				}
@@ -1418,18 +1419,19 @@ namespace XMLReaderCS
 					{
 						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
 						{
-							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
 																			MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
+
 						}
 						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
 						{
-							TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
 																			MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
 						}
 					}
 
 					if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
-						MainObj.EntitySpatial.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
+						MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
 
 				}
 				// Уточнение ЕЗП
@@ -1684,6 +1686,8 @@ namespace XMLReaderCS
 				PNode.ForeColor = RRTypes.KVZU_v06Utils.State2Color(Parcel.State.ToString());
 			}
 
+			netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntSpat);
+			/*
 			if (Parcel.EntitySpatial != null)
 				if (Parcel.EntitySpatial.Count > 0)
 				{
@@ -1694,6 +1698,16 @@ namespace XMLReaderCS
 													 "SPElem.", "Границы", 6);
 
 				}
+
+			if //(Parcel.Name == "Многоконтурный участок") && 
+						(Parcel.Contours != null)
+				if (Parcel.Contours.Count > 0)
+				{
+					TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
+					ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
+					netFteo.ObjectLister.ListEntSpat(ContNode, Parcel.Contours); // ? 
+				}
+			*/
 
 			if (Parcel.CompozitionEZ != null)
 			{
@@ -1729,14 +1743,7 @@ namespace XMLReaderCS
 
 			}
 
-			if //(Parcel.Name == "Многоконтурный участок") && 
-				(Parcel.Contours != null)
-				if (Parcel.Contours.Count > 0)
-				{
-					TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
-					ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
-					netFteo.ObjectLister.ListEntSpat(ContNode, Parcel.Contours); // ? 
-				}
+		
 
 			if (Parcel.SubParcels != null)
 				if (Parcel.SubParcels.Count > 0)
@@ -2970,19 +2977,8 @@ return res;
 				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
 				{
 					TMyParcel parcel = (TMyParcel)O;
-					if (parcel.Contours != null)
-						//	EZPEntryListToListView(listView1, parcel.Contours.AsList()); 
-						;
-					else
-					{
-
-						IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(parcel.EntitySpatial.id);
-						if (Entity != null)
-						{
-							GeometryToSpatialView(listView1, Entity);
-							Entity.ShowasListItems(listView1, true);
-						}
-					}
+					GeometryToSpatialView(listView1, parcel.EntSpat);
+					parcel.EntSpat.ShowasListItems(listView1, true);
 				}
 
 				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))

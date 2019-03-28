@@ -60,6 +60,15 @@ namespace netFteo.Spatial
 		/// <param name="LV"></param>
 		/// <param name="SetTag"></param>
 		void ShowasListItems(ListView LV, bool SetTag);
+
+		/// <summary>
+		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
+		/// </summary>
+		/// <param name="canvas_width">Ширина полотна</param>
+		/// <param name="canvas_height">Высота полотна</param>
+		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+		/// <returns></returns>
+		double ScaleEntity(double canvas_width, double canvas_height);//, double ViewKoefficient)
 	}
 
     /// <summary>
@@ -113,7 +122,10 @@ namespace netFteo.Spatial
 
 		}
 
-
+		public double ScaleEntity(double canvas_width, double canvas_height)
+		{
+			return -1;
+		}
 		/// <summary>
 		/// Construct base Geometry object
 		/// </summary>
@@ -573,6 +585,26 @@ namespace netFteo.Spatial
 			this.R = Convert.ToDouble(radius);
 		}
 
+		/// <summary>
+		/// Предельные размеры
+		/// </summary>
+		public TMyRect Bounds
+		{
+			get
+			{
+				TMyRect bounds = new TMyRect();
+				// проверим данные
+				if (!this.Empty)
+				{
+					bounds.MaxX = this.x + this.R;
+					bounds.MinX = this.x - this.R;
+					bounds.MaxY = this.y + this.R;
+					bounds.MinY = this.y - this.R;
+				}
+				return bounds;
+			}
+		}
+
 		public new void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Empty) return;
@@ -611,16 +643,29 @@ namespace netFteo.Spatial
 		}
 
 		/// <summary>
-		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
+		/// Расчет масштаба Circle на поверхность (z.B: WPF canvas) 
 		/// </summary>
 		/// <param name="canvas_width">Ширина полотна</param>
 		/// <param name="canvas_height">Высота полотна</param>
 		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
 		/// <returns></returns>
-		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+		public new double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
 		{
 			//TODO need code. like Ring
-			return -1;
+			if (this.Empty) return -1;
+			double scale = 0;
+			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+
+			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
+			if (dx > dy)
+			{
+				scale = (dx / canvas_height); // / ViewKoefficient;
+			}
+			else
+			{
+				scale = (dy / canvas_width); // / ViewKoefficient;
+			}
+			return scale;
 		}
 	}
 
@@ -775,6 +820,34 @@ namespace netFteo.Spatial
 			}
 			LV.EndUpdate();
 			return;
+		}
+		
+		/// <summary>
+		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
+		/// </summary>
+		/// <param name="canvas_width">Ширина полотна</param>
+		/// <param name="canvas_height">Высота полотна</param>
+		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+		/// <returns></returns>
+		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+		{
+			if (this.Bounds == null) return -1;
+			double scale = 0;
+			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
+															   //label1.Content = "dx " + dx.ToString("0.0") + " dy " + dy.ToString("0.0");
+															   //Определим, в какой оси больше размах, в ней и вычислим масштаб:
+
+			if (dx > dy)
+			{
+				scale = (dx / canvas_height); // / ViewKoefficient;
+
+			}
+			else
+			{
+				scale = (dy / canvas_width); // / ViewKoefficient;
+			}
+			return scale;
 		}
 
 		public void Reverse_Points()
@@ -939,85 +1012,7 @@ SCAN:
                 return bounds;
             }
         }
-        /*
-       public void ImportTxtFile(string Fname)
-       {
-           try
-           {
-               string line = null;
-               int StrCounter = 0;
-               System.IO.TextReader readFile = new StreamReader(Fname);
-
-               while (readFile.Peek() != -1)
-               {
-                   line = readFile.ReadLine();
-
-                   if (line != null) //Читаем строку
-                   {      //по строке
-
-                       while (line.Contains ("CO,")) //Комментарий в файлах, пропустим его
-                       {
-                           goto next;
-                       };
-
-                       if (line.Contains("#")) //Комментарий в файлах, пропустим его
-                       {  goto next;
-                       };
-
-                       StrCounter++;
-                       string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-                       Point FilePoint = new Point();
-                       FilePoint.id = StrCounter;
-                       FilePoint.NumGeopointA = SplittedStr[0].ToString();
-                       FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
-                       FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
-                       FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
-                       FilePoint.Description = SplittedStr[4].ToString();
-                       this.AddPoint(FilePoint);
-                   }
-               next:;
-               }
-               readFile.Close();
-               readFile = null;
-           }
-           catch (IOException ex)
-           {
-               //  MessageBox.Show(ex.ToString());
-           }
-
-       } //***Читаем файл формата Num xyz Mt Descr
-       public void WriteTxtFile(string FileName)
-       { 
-         StreamWriter TxtFile = new StreamWriter(FileName);
-
-           TxtFile.WriteLine("#Fixosoft NumXYZD data format V2014");
-           TxtFile.WriteLine("#Producer: netFteoBaseClasses application");
-           TxtFile.WriteLine("# Файл формата FTEO - Разделители полей tab");
-           TxtFile.WriteLine("# Поля файла:");
-           TxtFile.WriteLine("# ИмяТочки,X,Y,Z,Описание-Код.");
-
-         for (int i = 0; i <= this.PointCount - 1; i++)
-             TxtFile.WriteLine(this[i].NumGeopointA+TabDelimiter+
-                               this[i].x_s+TabDelimiter+
-                               this[i].y_s+TabDelimiter+
-                               this[i].z_s+TabDelimiter+
-                               this[i].Mt_s);
-         TxtFile.Close();
-
-       }
-
-       public void ClearItems()
-       {
-
-           while (this.Count != 0)
-           {
-               this.Remove(this[0]);
-           }
-           Point newP = new Point();
-           newP.NumGeopointA = "#++";
-           this.Add(newP);
-       }
-        */
+   
         public void ImportObjects(BindingList<TPoint> Points)
         {
             for (int i = 0; i <= Points.Count - 1; i++)
@@ -1030,13 +1025,7 @@ SCAN:
                 for (int i = 0; i <= src.Count - 1; i++)
                     this.AddPoint(src[i]);
         }
-        /*
-        public void AddPoint(Point point)
-        {
-            if (point.id < 1) point.id = Gen_id.newId;
-            this.Points.Add(point);
-        }
-        */
+   
         public void AddPoint(TPoint point)
         {
             if (point == null) return;
@@ -1283,8 +1272,7 @@ SCAN:
     /// <summary>
 	/// Ring - imperative closed polyline, other words - simple polygon.
 	/// It have area, perymetr
-    /// TODO must stay into RING - YES of coarse,  unsere dear Friend!!!
-    /// </summary>
+      /// </summary>
      public class TRing : PointList
     {
         public string PerymethrFmt(string Format)
@@ -1501,34 +1489,7 @@ SCAN:
         }
 
 
-        /// <summary>
-        /// Расчет масштаба на поверхность (z.B: WPF canvas) 
-        /// </summary>
-        /// <param name="canvas_width">Ширина полотна</param>
-        /// <param name="canvas_height">Высота полотна</param>
-        /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
-        /// <returns></returns>
-        public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
-        {
-			if (this.Bounds == null) return -1;
-            double scale = 0;
-            double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
-            double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
-                                                               //label1.Content = "dx " + dx.ToString("0.0") + " dy " + dy.ToString("0.0");
-                                                               //Определим, в какой оси больше размах, в ней и вычислим масштаб:
-
-            if (dx > dy)
-            {
-                scale = (dx / canvas_height); // / ViewKoefficient;
-
-            }
-            else
-            {
-                scale = (dy / canvas_width); // / ViewKoefficient;
-            }
-            return scale;
-        }
-
+  
         /// <summary>
         /// Средние значения координат полигона
         /// </summary>
@@ -2099,7 +2060,7 @@ SCAN:
     }
     #endregion
 
-    #region TPolygonCollection Коллекция Полигонов
+ 
 
     public class MIFColumn
     {
@@ -2138,7 +2099,8 @@ SCAN:
         public byte[] Data;
     }
 
-    public delegate void ESCheckingHandler(object sender, ESCheckingEventArgs e);
+	#region TPolygonCollection Коллекция Полигонов
+	public delegate void ESCheckingHandler(object sender, ESCheckingEventArgs e);
 
     public class TPolygonCollection : List<TMyPolygon>
     {
@@ -2485,8 +2447,7 @@ SCAN:
 
 	}
 
-    public class TCompozitionEZ : List<EZPEntry>
-
+    public class TCompozitionEZ : List<TMyPolygon>
     {
         public TCadastralNumbers DeleteEntryParcels;
         public TCadastralNumbers TransformationEntryParcel;
@@ -2499,7 +2460,8 @@ SCAN:
         public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
         {
             if (ESs == null) return;
-			EZPEntry entry = new EZPEntry();
+			TMyPolygon entry = new TMyPolygon();
+			entry.ImportPolygon(ESs);
             entry.AreaValue = areaEntry;
 			entry.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
 			entry.Definition = entrynumber;
@@ -2522,7 +2484,6 @@ SCAN:
                 return pery;
             }
         }
-
 
     }
 
@@ -2686,12 +2647,12 @@ SCAN:
         private TCompozitionEZ fCompozitionEZ;
         private TMyPolygon fEntitySpatial;
         public string State;
-        public string DateCreated;
-        public string CN;
-        public string Definition;// Обозначение
+ //       public string DateCreated;
+ //       public string CN;
+ //       public string Definition;// Обозначение
         public string CadastralBlock;
         public int CadastralBlock_id;
-        public string Name;
+ //       public string Name;
         public string AreaGKN;
         /// <summary>
         /// Значение, указаное
@@ -2706,40 +2667,48 @@ SCAN:
         public Rosreestr.TMyRights Rights;
         public Rosreestr.TMyRights EGRN;
         public Rosreestr.TMyEncumbrances Encumbrances;
-        //public Object EntitySpatial_noType;
-        // Взаимоисключающее свойство по отношению к .Contours
-        public TMyPolygon EntitySpatial
-        {
-            set
-            {
-                if (value != null)          // проверим на "эффект волны"
-                    this.fContours = null;   // "обнулим" признаки МК
-                this.fEntitySpatial = new TMyPolygon();
-                this.fEntitySpatial.ImportPolygon(value);
+		//public Object EntitySpatial_noType;
 
-            }
-            get
-            {
-                return this.fEntitySpatial;
-            }
-        }
-		public TEntitySpatial EntSpat; //Spatial data. Universal, both for single ES and multi (contours)
-        // Взаимоисключающее свойство по отношению к .EntitySpatial
-        public TEntitySpatial Contours
-        {
-            set
-            {
-                if (value != null)               // проверим на "эффект волны"
-                    this.fEntitySpatial = null; ; // "обнулим" признаки 
-                this.fContours = new TEntitySpatial();
-				this.fContours = value;
-            }
-            get
-            {
-                return this.fContours;
-            }
-        }
+		/// <summary>
+		///  Spatial data. Universal, both for single ES and multi (contours).
+		///  will replace polygon/contours
+		/// </summary>
+		public TEntitySpatial EntSpat; 
+									   // Взаимоисключающее свойство по отношению к .Contours
+									   /*
+									   public TMyPolygon EntitySpatial
+									   {
+										   set
+										   {
+											   if (value != null)          // проверим на "эффект волны"
+												   this.fContours = null;   // "обнулим" признаки МК
+											   this.fEntitySpatial = new TMyPolygon();
+											   this.fEntitySpatial.ImportPolygon(value);
 
+										   }
+										   get
+										   {
+											   return this.fEntitySpatial;
+										   }
+									   }
+
+									   // Взаимоисключающее свойство по отношению к .EntitySpatial
+
+									   public TEntitySpatial Contours
+									   {
+										   set
+										   {
+											   if (value != null)               // проверим на "эффект волны"
+												   this.fEntitySpatial = null; ; // "обнулим" признаки 
+											   this.fContours = new TEntitySpatial();
+											   this.fContours = value;
+										   }
+										   get
+										   {
+											   return this.fContours;
+										   }
+									   }
+									   */
 		public TCompozitionEZ CompozitionEZ
 		{
 			set
@@ -2759,12 +2728,12 @@ SCAN:
 			}
 		}
 
-
 		public TFiles XmlBodyList;
         public TMySlots SubParcels;
         public List<String> AllOffspringParcel;// Кадастровые номера всех земельных участков, образованных из данного земельного участка
         public List<String> PrevCadastralNumbers; //Кадастровые номера земельных участков, из которых образован
         public List<String> InnerCadastralNumbers;// Кадастровые номера зданий, сооружений, объектов незавершенного строительства, расположенных на земельном участке
+
         public TMyParcel()
         {
             Utilization = new Utilization();
@@ -2777,14 +2746,17 @@ SCAN:
             this.PrevCadastralNumbers = new List<string>();
             this.Location = new netFteo.Rosreestr.TLocation();
             this.Rights = new Rosreestr.TMyRights();
+			this.EntSpat = new TEntitySpatial();
             //this.SpecialNote = "";
             this.Fid = Gen_id.newId;
             this.AreaGKN = "-1";
         }
+
         public TMyParcel(string cn) : this() // Вызов Конструктора по умолчанию
         {
             this.CN = cn;
         }
+
         public TMyParcel(string cn, int parcel_id) : this() // Вызов Конструктора по умолчанию
         {
             this.Fid = parcel_id;
@@ -2793,23 +2765,26 @@ SCAN:
 
         public TMyParcel(string CN, string name) : this(CN, Gen_id.newId) //Вызов конструктора переопределенного
         {
-            switch (netFteo.Rosreestr.dParcelsv01.ItemToName(name))
+			this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name);
+			switch (Name)
             {
+				/*
                 case "Землепользование": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Обособленный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Многоконтурный участок": { this.Contours = new TEntitySpatial(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+					*/
                 case "Единое землепользование":
                     {
                         //this.Contours = new TPolygonCollection(); // на свякий случай, как в Осетии: ЕЗП с контурами 
                         this.CompozitionEZ = new TCompozitionEZ();
-                        this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name);
                         return;
                     }
                 case "Значение отсутствует": return;
-                default: { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                default:  return;
+				//	{ this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
             }
-        }
+		}
 
         public TMyParcel(Rosreestr.dParcelsv01_enum name, string cadastralblock, string definition)
               : this() //Вызов конструктора переопределенного
@@ -2824,6 +2799,7 @@ SCAN:
             get { return this.Fid; }
             set { this.Fid = value; }
         }
+
         public TmySlot AddSubParcel(string SlotNumber)
         {
             TmySlot Sl = new TmySlot();
@@ -2831,6 +2807,7 @@ SCAN:
             this.SubParcels.Add(Sl);
             return this.SubParcels[this.SubParcels.Count - 1];
         }
+
         public string ParentCN
         {
             get
@@ -2852,12 +2829,18 @@ SCAN:
             }
         }
 
-        public object GetEs(int Layer_id)
+        public IGeometry GetEs(int Layer_id)
         {
-            if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
+			foreach(IGeometry Feauture in this.EntSpat)
+			{
+				if (Feauture.id == Layer_id)
+					return Feauture;
+			}
+            //if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
             //if (this.Contours != null) if (this.Contours.ge.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
-            if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
-            if (this.CompozitionEZ != null)  return this.CompozitionEZ;
+            //if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
+
+            //TODO :   if (this.CompozitionEZ != null)  return this.CompozitionEZ;
             if (this.SubParcels != null) if (this.SubParcels.GetEs(Layer_id) != null) return this.SubParcels.GetEs(Layer_id);
             return null;
         }
@@ -2871,12 +2854,15 @@ SCAN:
         {
             switch (this.Name)
             {
+				/* TODO : recode func:
                 case "Землепользование": { return this.EntitySpatial.FindClip(ES); }
                 case "Обособленный участок": { return this.EntitySpatial.FindClip(ES); }
                 case "Условный участок": { return this.EntitySpatial.FindClip(ES); }
                 case "Многоконтурный участок": { return this.Contours.CheckES(ES); }
+					
                 // case "Единое землепользование": { return this.CompozitionEZ.CheckES(ES); }
-                case "Значение отсутствует": { return null; }
+				*/
+				case "Значение отсутствует": { return null; }
                 default: return null;
             }
         }
@@ -2885,11 +2871,13 @@ SCAN:
         {
             switch (this.Name)
             {
+				/*
                 case "Землепользование": { return this.EntitySpatial.FindClip(Contours); }
                 case "Обособленный участок": { return this.EntitySpatial.FindClip(Contours); }
                 case "Условный участок": { return this.EntitySpatial.FindClip(Contours); }
                 //case "Многоконтурный участок": { return this.Contours.CheckESs(Contours); }
                 //  case "Единое землепользование": { return this.CompozitionEZ.CheckES(Contours); }
+				*/
                 case "Значение отсутствует": { return null; }
                 default: return null;
             }
@@ -2899,14 +2887,17 @@ SCAN:
         {
             switch (this.Name)
             {
+				/* TODO kill
                 case "Землепользование": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Обособленный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Условный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Многоконтурный участок": { return this.Contours.AreaSpatialFmt(Format, true); }
+					*/
+
              //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatialFmt(Format, true); }
                 case "Значение отсутствует": { return ""; }
-                default: return "";
-            }
+                default: return this.EntSpat.AreaSpatialFmt(Format, true);
+			}
         }
 
         public double Area_float
@@ -2915,13 +2906,15 @@ SCAN:
             {
                 switch (this.Name)
                 {
+					/*
                     case "Землепользование": { return this.EntitySpatial.AreaSpatial; }
                     case "Обособленный участок": { return this.EntitySpatial.AreaSpatial; }
                     case "Условный участок": { return this.EntitySpatial.AreaSpatial; }
                     case "Многоконтурный участок": { return this.Contours.AreaSpatial; }
                  //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatial; }
+				 */
                     case "Значение отсутствует": { return -1; }
-                    default: return -1;
+                    default: return this.EntSpat.AreaSpatial;
                 }
             }
         }
@@ -3490,20 +3483,8 @@ SCAN:
 		{
 			for (int i = 0; i <= this.Count() - 1; i++)
 			{
-	
-				if ((this[i].EntitySpatial != null) &&
-					(this[i].EntitySpatial.id == Layer_id))
-					return this[i].EntitySpatial;
-				if (this[i].Contours != null)
-				{
-					foreach(IGeometry Contour in this[i].Contours)
-					{
-						if (Contour.id == Layer_id)
-							return Contour;
-					}
-				}
-
-
+				if (this[i].GetEs(Layer_id) != null) 
+					return this[i].GetEs(Layer_id);
 			}
 			return null;
 		}
@@ -3927,14 +3908,14 @@ SCAN:
                         if (this.Parcels[i].CompozitionEZ[ij].id == id)
                             return this.Parcels[i].CompozitionEZ[ij];
             }
-
+			/* TODO KILL
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
                 if (this.Parcels[i].Contours != null)
                     if (this.Parcels[i].Contours.id == id)
                         return this.Parcels[i].Contours;
             }
-
+			*/
             //если ищем чзу:
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
 
@@ -4124,11 +4105,8 @@ SCAN:
 			for (int i = 0; i <= this.Blocks.Count - 1; i++)
 				foreach (TMyParcel parcel in this.Blocks[i].Parcels)
 				{
-					if (parcel.EntitySpatial != null)
-						Res.Add(parcel.EntitySpatial);
-					if (parcel.Contours != null)
-						foreach (IGeometry feature in parcel.Contours)
-							Res.Add(feature);
+					foreach (IGeometry feature in parcel.EntSpat)
+								Res.Add(feature);
 				}
 			return Res;
 		}
@@ -4496,10 +4474,13 @@ SCAN:
 			LV.EndUpdate();
 		}
 
+		public double ScaleEntity(double canvas_width, double canvas_height)
+		{
+			return -1;
+		}
 
-		
 
-			public int ReorderPoints(int Startindex =1)
+		public int ReorderPoints(int Startindex =1)
 		{
 			foreach (IPointList feature in this)
 			{

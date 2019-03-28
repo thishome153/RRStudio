@@ -65,6 +65,7 @@ namespace XMLReaderCS
                 this.fViewKoeffecient = value;
                 if (fSpatial != null)
                 {
+					/*
                     if (fSpatial.TypeName == "netFteo.Spatial.TMyPolygon")
                     {
 
@@ -74,8 +75,10 @@ namespace XMLReaderCS
 					if (fSpatial.TypeName == "netFteo.Spatial.TPolyLine")
 					{
 						Scale = ((TPolyLine)Spatial).ScaleEntity(canvas1.Width, canvas1.Height) / value;
+						
 					}
-
+					*/
+					Scale = Spatial.ScaleEntity(canvas1.Width, canvas1.Height) / value;
 					DrawSpatial();
 				}
                 else
@@ -175,6 +178,15 @@ namespace XMLReaderCS
 					foreach (TextBlock label in labels)
 						canvas1.Children.Add(label);
 				}
+
+				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TCircle")
+				{
+					TCircle Circle = (TCircle)Spatial;
+					label2.Content = Circle.Definition;
+					label1_Canvas_Sizes.Content = "R " + Circle.R.ToString("0.00");
+					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
+					canvas1.Children.Add(CreateCanvasCircle(Circle));
+				}
 			}
         }
 
@@ -213,8 +225,19 @@ namespace XMLReaderCS
             el.Height = pointSignRadius*2; el.Width = pointSignRadius*2;
             return el;
         }
+		private UIElement CreateCanvasCircle(TCircle Cicrcle)
+		{
+			Point Center =  PointsToWindowsPoints(Cicrcle, true);
+			System.Windows.Shapes.Ellipse el = new Ellipse();
+			el.Stroke = System.Windows.Media.Brushes.Red;
+			el.Fill = System.Windows.Media.Brushes.LightGreen;
+			Canvas.SetLeft(el,Center.X - Cicrcle.R/(2*Scale)); 
+			Canvas.SetTop (el,Center.Y - Cicrcle.R/(2*Scale)); 
+			el.Height =   Cicrcle.R  / Scale; el.Width = Cicrcle.R/Scale; 
+			return el;
+		}
 
-        private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TRing polygon)
+		private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TRing polygon)
         {
             List<UIElement> res = new List<UIElement>();
             PointCollection pts =   PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
@@ -282,8 +305,7 @@ namespace XMLReaderCS
 			WPFPolyLine.Points = polygon;
 			return WPFPolyLine;
 		}
-
-        private List<UIElement> CreateCanvasPolygons(TMyPolygon polygon)
+		private List<UIElement> CreateCanvasPolygons(TMyPolygon polygon)
         {
             List<UIElement> res = new List<UIElement>();
             List<PointCollection> polys =   PolygonToWindowsShape(polygon, true);
@@ -296,8 +318,6 @@ namespace XMLReaderCS
                 res.Add(CreateCanvasPolygon(poly, true));
             return res;
         }
-
-
 		private List<UIElement> CreateCanvasPolygons(TPolyLine polygon)
 		{
 			List<UIElement> res = new List<UIElement>();
@@ -312,6 +332,21 @@ namespace XMLReaderCS
 			return res;
 		}
 
+		/*
+		private List<UIElement> CreateCanvasPolygons(TCircle polygon)
+		{
+			List<UIElement> res = new List<UIElement>();
+			List<PointCollection> polys = PolygonToWindowsShape(polygon, true);
+			List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
+
+			foreach (PointCollection poly in polys)
+				res.Add(CreateCanvasPolygon(poly, false));
+
+			foreach (PointCollection poly in polysOld) // старые границы
+				res.Add(CreateCanvasPolygon(poly, false));
+			return res;
+		}
+		*/
 		/* WPF Coordinate System:
          * For 2D graphics, the WPF coordinate system locates the origin in the upper-left corner of the rendering area. 
          * In the 2D space, the positive X-axis points to the right, and the positive Y-axis points to downward
@@ -350,10 +385,33 @@ namespace XMLReaderCS
             }
             return myPointCollection;
         }
+		private Point PointsToWindowsPoints(TCircle Circle, bool newOnly)
+		{
+			double canvasX;
+			double canvasY;
+			if (newOnly)
+			{
+				if (!Double.IsNaN(Circle.x))
+				{
+					canvasX = Math.Round(canvas1.Width /2);
+					canvasY = Math.Round(canvas1.Height/2);
+					 return  new Point(canvasX, canvasY);
+				}
+			}
+			else
+			{
+				if (!Double.IsNaN(Circle.oldX))
+				{
+					canvasX = Math.Round(canvas1.Width / 2 - (2* Circle.R) / Scale);
+					canvasY = Math.Round(canvas1.Height / 2 + (2* Circle.R) / Scale);
+					return new Point(canvasX, canvasY);
+				}
+			}
+			return new Point(0,0);
+		}
 
-
-        //Обратное преобразование с координат canvas в координаты МСК
-        private netFteo.Spatial.TPoint WindowsPointsToPoints(double x, double y, TRing sourcelayer)
+		//Обратное преобразование с координат canvas в координаты МСК
+		private netFteo.Spatial.TPoint WindowsPointsToPoints(double x, double y, TRing sourcelayer)
         {
             netFteo.Spatial.TPoint res = new netFteo.Spatial.TPoint();
 
@@ -389,17 +447,19 @@ namespace XMLReaderCS
 
 			winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
 			res.Add(winPoints);
-			/*
-			foreach (netFteo.Spatial.TRing chld in polygon.Childs)
-			{
-				PointCollection childwinPoints = new PointCollection();
-				childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld, newOnly);
-				res.Add(childwinPoints);
-			}
-			*/
 			return res;
 		}
+		/*
+		private List<PointCollection> PolygonToWindowsShape(TCircle polygon, bool newOnly)
+		{
+			List<PointCollection> res = new List<PointCollection>();
+			PointCollection winPoints = new PointCollection();
 
+			winPoints = PointsToWindowsPoints(polygon.x, polygon.x, polygon, newOnly);
+			res.Add(winPoints);
+			return res;
+		}
+		*/
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             InitCanvas(canvas1);
