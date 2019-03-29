@@ -174,7 +174,7 @@ namespace XMLReaderCS
 						canvas1.Children.Add(pt);
 
 					//Метки
-					List<TextBlock> labels = CreateCanvasPointLabels((TRing)polygon);
+					List<TextBlock> labels = CreateCanvasPointLabels((TPolyLine)polygon);
 					foreach (TextBlock label in labels)
 						canvas1.Children.Add(label);
 				}
@@ -267,10 +267,10 @@ namespace XMLReaderCS
 			return res;
 		}
 
-		private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TRing polygon)
+		private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TPolyLine polyline)
         {
             List<UIElement> res = new List<UIElement>();
-            PointCollection pts =   PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
+            PointCollection pts =   PointsToWindowsPoints(polyline.AverageCenter.x, polyline.AverageCenter.y, polyline, true);
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
@@ -292,7 +292,7 @@ namespace XMLReaderCS
             Canvas.SetTop(textBlock, y);
             return textBlock;
         }
-        private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TRing polygon)
+        private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TPolyLine polygon)
         {
             List<TextBlock> res = new List<TextBlock>();
             PointCollection pts = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);

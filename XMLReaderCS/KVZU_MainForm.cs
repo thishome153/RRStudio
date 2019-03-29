@@ -3930,17 +3930,7 @@ return res;
         }
         #endregion
 
-        private void ChangeXYToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-			/*
-            TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));// Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-            if (Pl != null)
-            {
-                Pl.ExchangeXY();
-                PointListToListView(listView1, Pl);
-            }
-			*/
-        }
+     
 
         private void m11000ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5231,12 +5221,22 @@ return res;
 			}
 		}
 
+		private void ChangeXYToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			if (Feature != null)
+			{
+				Feature.ExchangeOrdinates();
+				Feature.ShowasListItems(listView1, true);
+			}
+		}
+
 		private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
-				Feature.Reverse_Points();
+				Feature.ReversePoints();
 				Feature.ShowasListItems(listView1, true);
 			}
 

@@ -685,12 +685,23 @@ namespace netFteo.Spatial
 
 	public interface IPointList : IGeometry
 	{
-		void Reverse_Points();
+		void ReversePoints();
+		/// <summary>
+		/// Reset old values of ordinates - like tnewContour
+		/// </summary>
+		void ResetOrdinates();
+		void ExchangeOrdinates();
 		int ReorderPoints(int StartNumber);
+
 		/// <summary>
 		/// Close figure - append last point, if not present
 		/// </summary>
 		void Close();
+
+		/// <summary>
+		/// Set precission (delta) for ordinates
+		/// </summary>
+		/// <param name="mt"></param>
 		void SetMt(double mt);
 	}
 
@@ -714,6 +725,17 @@ namespace netFteo.Spatial
 		{
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
+		}
+
+		public void ExchangeOrdinates()
+		{
+			double dx;
+			for (int i = 0; i <= this.Count - 1; i++)
+			{
+				dx = this[i].x;
+				this[i].x = this[i].y;
+				this[i].y = dx;
+			}
 		}
 
 		private string fLayerHandle;
@@ -772,6 +794,16 @@ namespace netFteo.Spatial
 			*/
 			return StartIndex;
 		}
+
+		public void ResetOrdinates()
+		{
+			foreach (TPoint pt in this)
+			{
+				pt.oldX = Coordinate.NullOrdinate;
+				pt.oldY = Coordinate.NullOrdinate;
+			}
+		}
+
 
 		public void SetMt(double mt)
 		{
@@ -850,7 +882,7 @@ namespace netFteo.Spatial
 			return scale;
 		}
 
-		public void Reverse_Points()
+		public void ReversePoints()
 		{
 			PointList tmpList = new PointList();
 
@@ -1266,39 +1298,117 @@ SCAN:
 
         }
     }
-    #endregion
+	#endregion
 
-    #region TRing  - closed polyline
-    /// <summary>
+	public class TPolyLine : PointList, IGeometry
+	{
+		public TPolyLine()
+		{
+			int check = this.id;
+			Name = "Ломаная";
+		}
+
+		/// <summary>
+		/// Length of polyline. Just summ of fragments
+		/// </summary>
+		public double Length
+		{
+			get
+			{
+				if (this.PointCount == 0) return -1;
+				double Peryd = 0;
+				double Test = 0;
+				for (int i = 0; i <= this.Count - 2; i++)
+				{
+					Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+					if (!Double.IsNaN(Test))
+						Peryd += Test;
+				}
+
+				/* Closing figure:
+				Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
+				if (!Double.IsNaN(Test))
+					Peryd += Test;
+				*/
+				return Peryd;
+			}
+		}
+
+
+	
+      /// <summary>
+        /// Средние значения координат полигона
+        /// </summary>
+        public TPoint AverageCenter
+        {
+            get
+            {
+                double Xsumm = 0;
+                double Ysumm = 0; int pointcnt = 0;
+                for (int i = 0; i <= this.PointCount - 1; i++)
+                {
+                    if (! Double.IsNaN(this[i].x))
+                    {
+                        Xsumm = Xsumm + (this[i].x);
+                        Ysumm = Ysumm + (this[i].y);
+                        pointcnt++;
+                    }
+                }
+                TPoint Respoint = new TPoint();
+                Respoint.NumGeopointA = "Center";
+                Respoint.x = Xsumm / pointcnt;
+                Respoint.y = Ysumm / pointcnt;
+                return Respoint;
+            }
+        }
+	}
+
+	public class TPolyLines : BindingList<TPolyLine>
+	{
+		public int ParentID;
+		public TPolyLines(int parentid)
+		{
+			this.ParentID = parentid;
+		}
+	}
+
+
+
+	#region TRing  - closed polyline
+	/// <summary>
 	/// Ring - imperative closed polyline, other words - simple polygon.
-	/// It have area, perymetr
-      /// </summary>
-     public class TRing : PointList
+	/// It have area, perymethr - total length of all border fragments
+	/// </summary>
+	public class TRing : TPolyLine
     {
+		
         public string PerymethrFmt(string Format)
         {
 
             return this.Perymethr().ToString(Format);
         }
-
+		
         public double Perymethr()
         {
             if (this.PointCount == 0) return -1;
             double Peryd = 0;
             double Test = 0;
+			/*
             for (int i = 0; i <= this.Count - 2; i++)
             {
                 Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
                 if (!Double.IsNaN(Test))
                     Peryd += Test;
             }
-
+			*/
+			Peryd = Length;
+			//Add last (closing) fragment.
             Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
             if (!Double.IsNaN(Test))
                 Peryd += Test;
             return Peryd;
         }
-
+		
         /// <summary>
         ///  Проверка вершин, 
         /// </summary>
@@ -1319,7 +1429,7 @@ SCAN:
 
         /// <summary>
         /// Расчет площади по формуле трапеции
-        /// с учетом ликвидированных точек
+        /// с учетом (c исключением) ликвидированных точек
         /// </summary>
         public double Area
         {
@@ -1490,53 +1600,7 @@ SCAN:
 
 
   
-        /// <summary>
-        /// Средние значения координат полигона
-        /// </summary>
-        public TPoint AverageCenter
-        {
-            get
-            {
-                double Xsumm = 0;
-                double Ysumm = 0; int pointcnt = 0;
-                for (int i = 0; i <= this.PointCount - 1; i++)
-                {
-                    if (! Double.IsNaN(this[i].x))
-                    {
-                        Xsumm = Xsumm + (this[i].x);
-                        Ysumm = Ysumm + (this[i].y);
-                        pointcnt++;
-                    }
-                }
-                TPoint Respoint = new TPoint();
-                Respoint.NumGeopointA = "Center";
-                Respoint.x = Xsumm / pointcnt;
-                Respoint.y = Ysumm / pointcnt;
-                return Respoint;
-            }
-        }
-
-        public void Exchange_XY()
-        {
-            double dx;
-            for (int i = 0; i <= this.Count - 1; i++)
-            {
-                dx = this[i].x;
-                this[i].x = this[i].y;
-                this[i].y = dx;
-            }
-        }
-
-        public void Reset_Ordinates()
-        {
-            foreach (TPoint pt in this)
-            {
-                pt.oldX = Coordinate.NullOrdinate;
-                pt.oldY = Coordinate.NullOrdinate;
-            }
-        }
-
-  
+   
 
         /// <summary>
         /// Closed figure - point First and Last are ident (in ordinates, not by name/Number)
@@ -1664,67 +1728,52 @@ SCAN:
             this.Definition = Def;
         }
 
-
-        public void ExchangeXY()
-        {
-            this.Exchange_XY();
+		
+        public new void ExchangeOrdinates()
+		{
+           base.ExchangeOrdinates();
             for (int i = 0; i <= this.Childs.Count - 1; i++)
-                this.Childs[i].Exchange_XY();
-
+                this.Childs[i].ExchangeOrdinates();
         }
+		
+		public new void ReversePoints()
+		{
+			base.ReversePoints();
+			foreach (TRing child in this.Childs)
+				child.ReversePoints();
+		}
 
-        /// <summary>
-        /// Reset old values of ordinates - like tnewContour
-        /// </summary>
-        public void ResetOrdinates()
+		public new int ReorderPoints(int StartIndex = 1)
+		{
+			base.ReorderPoints();
+			foreach (TRing child in this.Childs)
+				StartIndex += child.ReorderPoints(StartIndex);
+			return StartIndex;
+		}
+
+		/// <summary>
+		/// Reset old values of ordinates - like tnewContour
+		/// </summary>
+		public new void ResetOrdinates()
         {
-            this.Reset_Ordinates();
+            base.ResetOrdinates();
             foreach (TRing child in this.Childs)
-                child.Reset_Ordinates();
+                child.ResetOrdinates();
 
         }
 
-        public void SetMt(double mt)
+        public new void SetMt(double mt)
         {
-			foreach (TPoint pt in this)
-				pt.Mt = mt;
+			base.SetMt(mt);
 			foreach (TRing child in this.Childs)
                 child.SetMt(mt);
         }
 
-
-        public  void Fraq(string Format)
+        public new  void Fraq(string Format)
         {
-			foreach (TPoint pt in this)
-			{
-				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
-				{
-
-					pt.x = fraqtedX;
-					pt.oldX = fraqtedX;
-				}
-
-				if (Double.TryParse(pt.y.ToString(Format), out double fraqtedY))
-				{
-					pt.y = fraqtedY;
-					pt.oldY = fraqtedY;
-				}
-			}
+		 base.Fraq(Format);
 			foreach (TRing child in this.Childs)
                 child.Fraq(Format);
-        }
-
-
-        public int  ReorderPoints(int StartIndex =1 )
-        {
-			foreach (TPoint pt in this)
-			{
-				pt.NumGeopointA = StartIndex++.ToString();
-			}
-
-			foreach (TRing child in this.Childs)
-                StartIndex += child.ReorderPoints(StartIndex);
-			return StartIndex;
         }
 
 		private void ShowListPoints(ListView LV, PointList points)
@@ -1750,8 +1799,8 @@ SCAN:
 					LV.Items.Add(LVi);
 			}
 		}
-
-		public void ShowasListItems(ListView LV, bool SetTag)
+		
+		public new void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (PointCount == 0) return;
 			LV.BeginUpdate();
@@ -2047,7 +2096,7 @@ SCAN:
             }
         }
 
-        public TRing GetEs(int Layer_id)
+		public TRing GetEs(int Layer_id)
         {
             if (this.id == Layer_id) return this;
 
@@ -2472,7 +2521,7 @@ SCAN:
         /// <summary>
         /// Периметр всех входящих в ЕЗП. 
         /// Замозговано 11-04-18:
-        /// ДА уж.... такая нужная хуяйня. Росреестр без нее никак 
+        /// ДА уж.... такая нужная //уйня. Росреестр без нее никак 
         /// </summary>
         public double TotalPerimeter
         {
@@ -2480,7 +2529,7 @@ SCAN:
             {
                 double pery = 0;
                 foreach (TMyPolygon poly in this)
-                    pery += poly.Perymethr();
+                    pery += poly.Length;
                 return pery;
             }
         }
@@ -4165,43 +4214,7 @@ SCAN:
     #endregion
 
     #region Полилиния (знает площадь)
-    public class TPolyLine : TRing, IGeometry
-    {
-        public double Length
-        {
-			get
-			{
-				double res = 0;
-
-				for (int i = 0; i <= this.Count - 2; i++)
-				{
-					res += Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
-				}
-				return res;
-			}
-        }
-
-     
-        public TPolyLine()
-        {
-			// this.MainPoint = new netFteoPoints();
-			int check = this.id;
-			Name = "Ломаная";
-        }
-
-    }
-
-
-	public class TPolyLines : BindingList<TPolyLine>
-	{
-		public int ParentID;
-		public TPolyLines(int parentid)
-		{
-			this.ParentID = parentid;
-		}
-	}
-
-
+   
 	public class TLayer : Geometry
 	{
 		public int Parent_id; //? what you think
