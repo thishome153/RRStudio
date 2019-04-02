@@ -301,10 +301,27 @@ namespace netFteo
         /// <returns></returns>
         public static double Mod(double a, double b)
         {
-            return a - b * Math.Round(a / b);
-        }
+            return a - Math.Round(a / b);//b * Math.Round(a / b);
+		}
 
-        public static int ModInt(double a, double b)
+		/// <summary>
+		/// Mod (modulus) divides two numbers and returns only the remainder (остаток)
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public static double ModNative(double a, double b)
+		{
+			return a % b;
+		}
+
+		/// <summary>
+		/// Mod (modulus) divides two numbers and returns only the remainder (остаток)
+		/// </summary>
+		/// <param name="a">a</param>
+		/// <param name="b">b</param>
+		/// <returns></returns>
+		public static int ModInt(double a, double b)
         {
             return (int) Math.Round(Mod(a,b));
         }

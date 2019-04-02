@@ -2078,7 +2078,8 @@ return res;
 				if (ViewWindow != null) ViewWindow.Spatial = null; // сотрем картинку (последнюю)
 				return null;
 			}
-			ListViewItem LVi_Commands = null;
+			/*
+
 			LV.Columns[0].Text = "Имя";
 			LV.Columns[1].Text = "x, м.";
 			LV.Columns[2].Text = "y, м.";
@@ -2098,7 +2099,7 @@ return res;
 				ptlist.ShowasListItems(LV, false);
 				LV.Items.Add(LVi);
 			}
-
+			*/
 			
 			// Visualizer check:
 			if (toolStripMI_ShowES.Checked)
@@ -2114,6 +2115,7 @@ return res;
 			// if (parent_id > 0) // до момента наладки с parent_id будем проверять его наличие
 			if (LV.Items.Count > 3)    // если что-то было отображено
 			{
+				ListViewItem LVi_Commands = null;
 				LinkLabel pkk5Label = new LinkLabel();
 				pkk5Label.Click += new System.EventHandler(OnPKK5LabelActionClick);
 				pkk5Label.Tag = Feature.id; //parent_id; //CN
@@ -2135,8 +2137,9 @@ return res;
 				SaveButt.SetBounds(435, LVi_Commands.Position.Y, 20, 20);
 				tt.SetToolTip(SaveButt, "Сохранить как...");
 				LV.Controls.Add(SaveButt);
+				return LVi_Commands;
 			}
-			return LVi_Commands;
+			return null;
 		}
 
 		/// <summary>
@@ -2946,6 +2949,7 @@ return res;
 			
 			listView_Properties.Items.Clear();
 			listView_Properties.Controls.Clear();
+			GeometryToSpatialView(listView1, null);
 
 			if (STrN.Name.Contains("ES."))
 			{

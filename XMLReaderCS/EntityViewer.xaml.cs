@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using netFteo.Spatial;
 using netFteo.Drawing;
 
@@ -65,19 +66,6 @@ namespace XMLReaderCS
                 this.fViewKoeffecient = value;
                 if (fSpatial != null)
                 {
-					/*
-                    if (fSpatial.TypeName == "netFteo.Spatial.TMyPolygon")
-                    {
-
-                        Scale = ((TMyPolygon)Spatial).ScaleEntity(canvas1.Width, canvas1.Height) / value;
-                    }
-					
-					if (fSpatial.TypeName == "netFteo.Spatial.TPolyLine")
-					{
-						Scale = ((TPolyLine)Spatial).ScaleEntity(canvas1.Width, canvas1.Height) / value;
-						
-					}
-					*/
 					Scale = Spatial.ScaleEntity(canvas1.Width, canvas1.Height) / value;
 					DrawSpatial();
 				}
@@ -128,17 +116,39 @@ namespace XMLReaderCS
             Canvas.SetTop(textBlock2, canvas1.Height / 2);
             canvas.Children.Add(textBlock2);
             CheckWPFTier();
+			StartRotate();
         }
+
+		private void StartRotate()
+		{
+			DoubleAnimation da = new DoubleAnimation
+							(360, 0, new Duration(TimeSpan.FromSeconds(55)));
+			RotateTransform rt = new RotateTransform();
+			image1.RenderTransform = rt;
+			image1.RenderTransformOrigin = new Point(0.5, 0.5);
+			//canvas1.RenderTransform = rt;
+			//canvas1.RenderTransformOrigin = new Point(0.5, 0.5);
+			da.RepeatBehavior = RepeatBehavior.Forever;
+			rt.BeginAnimation(RotateTransform.AngleProperty, da);
+		}
 
         private void DrawSpatial()
         {
             if (this.fSpatial != null)
             {
                 InitCanvas(canvas1);
-                canvas1.Children.Clear();
+                //canvas1.Children.Clear();
                 label_DirectXMode.Content = "";
                 image1.Visibility = System.Windows.Visibility.Hidden; image2.Visibility = System.Windows.Visibility.Hidden;
-                if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
+
+				if (fSpatial.TypeName == "netFteo.Spatial.TEntitySpatial")
+				{
+					//TODO:  drawing all items in TEntitySpatial
+
+
+				}
+
+				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                 {
                     TMyPolygon polygon = (TMyPolygon)Spatial;
                     label2.Content = polygon.Definition;
@@ -528,12 +538,12 @@ namespace XMLReaderCS
 
         private void button_ScaleUp_Click(object sender, RoutedEventArgs e)
         {
-            ViewKoeffecient += 0.1;
+            ViewKoeffecient += 0.05;
         }
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            ViewKoeffecient -= 0.1;
+            ViewKoeffecient -= 0.05;
         }
 
 

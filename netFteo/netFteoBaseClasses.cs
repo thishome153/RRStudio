@@ -1174,8 +1174,10 @@ SCAN:
             {
                 //j =(i+1)  mod (n);     // Вычисление "соседней" вершины
                 j = MathExt.ModInt(n, i + 1);
-                yi = this[i].y; yj = this[j].y;
-                xi = this[i].x; xj = this[j].x;
+                yi = this[i].y;
+				yj = this[j].y;
+                xi = this[i].x;
+				xj = this[j].x;
 
                 if (yi == yj) continue;  // вертикальный отрезок - пропускаем
                                          // над ребром или под ребром
@@ -2064,6 +2066,10 @@ SCAN:
             return res;
         }
 
+		/// <summary>
+		/// Add an empty child
+		/// </summary>
+		/// <returns></returns>
         public TRing AddChild()
         {
             this.Childs.Add(new TRing());
@@ -2071,12 +2077,23 @@ SCAN:
             return this.Childs[this.Childs.Count - 1];
         }
 
-        public TRing AddChild(TRing child)
+		/// <summary>
+		/// Add a child ring with validation of geometry
+		/// </summary>
+		/// <param name="child">Ring of points (closed polyline)</param>
+        public void AddChild(TRing child)
         {
-			if (child == null) return null;
-            this.Childs.Add(child);
-            this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
-            return this.Childs[this.Childs.Count - 1];
+			if (child == null) return ;
+
+			if ((child.Count > 1) &&              //
+				(child.Closed)    &&              //if child is true ring
+				(! this.HasCommonPoints(child)) && 
+			   (this.PointsIn(child) != null)) //if child in parent figure
+			{
+				this.Childs.Add(child);
+				this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
+				//return this.Childs[this.Childs.Count - 1];
+			}
         }
 
         /// <summary>

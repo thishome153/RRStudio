@@ -946,37 +946,23 @@ namespace RRTypes.CommonCast
 						// if next ring incoming in current ???
 						for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
 						{
-							TRing TestRing = new TRing();
-							for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
+							if (ii != i) // not self
 							{
-								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								TestRing.AddPoint(P);
-							}
-
-							if ((ii != i) && (Polygon.PointsIn(TestRing) != null))
-								Polygon.Childs.Add(TestRing);
-						}
-							/*
-							for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-							{
-								TRing ESch = Polygon.AddChild();
-
-								for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+								TRing TestRing = new TRing();
+								for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
 								{
 									netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-									P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-									P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-									P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-									P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-									ESch.AddPoint(P);
+									P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
+									P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
+									P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
+									P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+									TestRing.AddPoint(P);
 								}
+
+								Polygon.AddChild(TestRing);
 							}
-							*/
-							res.Add(Polygon);
+						}
+						res.Add(Polygon);
 					}
 					else
 					{   //unclosed line - polyline
