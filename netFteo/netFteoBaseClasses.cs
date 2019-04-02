@@ -2902,6 +2902,12 @@ SCAN:
 				if (Feauture.id == Layer_id)
 					return Feauture;
 			}
+			if (this.CompozitionEZ != null)
+				foreach (IGeometry entry in this.CompozitionEZ)
+				{
+					if (entry.id == Layer_id)
+						return entry;
+				}
             //if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
             //if (this.Contours != null) if (this.Contours.ge.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
             //if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
@@ -4085,7 +4091,7 @@ SCAN:
 				if (Entity != null)
 					return Entity;
 			}
-
+			
 			//From OKS
 			foreach (IGeometry feature in this.SpatialData)
 			{
@@ -4172,7 +4178,10 @@ SCAN:
 				foreach (TMyParcel parcel in this.Blocks[i].Parcels)
 				{
 					foreach (IGeometry feature in parcel.EntSpat)
-								Res.Add(feature);
+						Res.Add(feature);
+					if (parcel.CompozitionEZ != null)
+						foreach (IGeometry feature in parcel.CompozitionEZ)
+							Res.Add(feature);
 				}
 			return Res;
 		}
