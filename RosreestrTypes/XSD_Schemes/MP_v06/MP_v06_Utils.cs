@@ -154,8 +154,10 @@ namespace RRTypes.MP_V06
         public static tExistEZEntryParcelCollection CastEZP (netFteo.Spatial.TCompozitionEZ EZP)
         {
             tExistEZEntryParcelCollection res = new tExistEZEntryParcelCollection();
-            foreach (netFteo.Spatial.TMyPolygon entry in EZP)
+			/* TODO
+            foreach (netFteo.Spatial.EZPEntry entry in EZP)
                 res.Add(CastEntry(entry));
+			*/
             return res;
         }
 

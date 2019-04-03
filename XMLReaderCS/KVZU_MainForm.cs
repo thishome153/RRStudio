@@ -1686,29 +1686,6 @@ namespace XMLReaderCS
 				PNode.ForeColor = RRTypes.KVZU_v06Utils.State2Color(Parcel.State.ToString());
 			}
 
-			netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntSpat);
-			/*
-			if (Parcel.EntitySpatial != null)
-				if (Parcel.EntitySpatial.Count > 0)
-				{
-					//TreeNode ESNode = PNode.Nodes.Add("SPElem." + .ToString(), );
-
-					netFteo.ObjectLister.ListEntSpat(PNode,
-													 Parcel.EntitySpatial,
-													 "SPElem.", "Границы", 6);
-
-				}
-
-			if //(Parcel.Name == "Многоконтурный участок") && 
-						(Parcel.Contours != null)
-				if (Parcel.Contours.Count > 0)
-				{
-					TreeNode ContNode = PNode.Nodes.Add("Contours" + Parcel.Contours.id.ToString(), Parcel.Name);
-					ContNode.Text = "Контура [" + Parcel.Contours.Count.ToString() + "]";
-					netFteo.ObjectLister.ListEntSpat(ContNode, Parcel.Contours); // ? 
-				}
-			*/
-
 			if (Parcel.CompozitionEZ != null)
 			{
 				if (Parcel.CompozitionEZ.Count() > 0)
@@ -1718,11 +1695,11 @@ namespace XMLReaderCS
 					{
 						// TreeNode EntrSNode = PNode.Nodes.Add("EntryNode." + Parcel.CompozitionEZ[i].Layer_id.ToString(), 
 						//                                                   Parcel.CompozitionEZ[i].Definition); 
-						netFteo.ObjectLister.ListEntSpat(EntrysNode,
-														   Parcel.CompozitionEZ[i],
-														   "SPElem.", Parcel.CompozitionEZ[i].Definition, Parcel.CompozitionEZ[i].State);
+						IGeometry spatialofEntry = Parcel.GetEs(Parcel.CompozitionEZ[i].Spatial_ID);
+						netFteo.ObjectLister.ListEntSpat(EntrysNode, (TMyPolygon)spatialofEntry, "SPElem.", Parcel.CompozitionEZ[i].CN, Parcel.CompozitionEZ[i].State);
 					}
 				}
+
 				if (Parcel.CompozitionEZ.DeleteEntryParcels.Count() > 0)
 				{
 					TreeNode EntrysNode = PNode.Nodes.Add("EntrysNode" + Parcel.id.ToString(), "Исключаемые из ЕЗП (" + Parcel.CompozitionEZ.DeleteEntryParcels.Count().ToString() + ")");
@@ -1743,7 +1720,9 @@ namespace XMLReaderCS
 
 			}
 
-		
+			else
+				netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntSpat);
+
 
 			if (Parcel.SubParcels != null)
 				if (Parcel.SubParcels.Count > 0)
@@ -2850,7 +2829,7 @@ return res;
 					}
 				}
 
-
+				/*
 				if (Obj.ToString() == "netFteo.Spatial.TCompozitionEZ")
 
 				{
@@ -2879,6 +2858,7 @@ return res;
 											LVip3d.SubItems.Add("кв.м");
 											LV.Items.Add(LVip3d);
 											*/
+											/*
 						ListViewItem LVipP = new ListViewItem();
 						LVipP.Text = "Периметр";
 						LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
@@ -2887,7 +2867,7 @@ return res;
 
 					}
 				}
-
+				*/
 				if (Obj.ToString() == "netFteo.Spatial.TZone")
 				{
 					LV.Items.Clear();
@@ -3288,6 +3268,7 @@ return res;
 						{
 							netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
 							saveFileDialog1.FilterIndex = 1; // mif
+							ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 								TR.SaveAsmif(saveFileDialog1.FileName, ES);
 							break; }
@@ -3341,7 +3322,10 @@ return res;
 							netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
 							saveFileDialog1.FilterIndex = 3;
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+							{
+								ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
 								wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, ScaleRaduis);
+							}
 							break;
 						}
 				}
@@ -4271,7 +4255,7 @@ return res;
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     //Заменить в полигонах CN квартала
-                    //netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN(), this.DocInfo.MifPolygons);
+                    netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN, this.DocInfo.MyBlocks.SpatialData);
                     XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
                     TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
                     serializer.Serialize(writer, this.DocInfo.MyBlocks.SpatialData);

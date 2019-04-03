@@ -43,6 +43,7 @@ namespace netFteo.Spatial
 	public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
 	{
 		int id { get; set; }
+		int State { get; set; }
 		string Definition { get; set; }
 		string Name { get; set; }
 		string TypeName { get; }
@@ -77,12 +78,17 @@ namespace netFteo.Spatial
     public  class Geometry : IGeometry
     {
         private int fid;
-        public int id
+		public int id
         {
             get { return this.fid; }
             set { this.fid = value; }
         }
-
+		private int fState;
+		public int State
+		{
+			get { return this.fState; }
+			set { this.fState = value; }
+		}
 		private string fDefinition;
 		public string Definition
 		{
@@ -714,12 +720,20 @@ namespace netFteo.Spatial
         //public PointList Points;
         public int Parent_Id; // ид Участка или чего тоо ттам
         private int fid;
+		private int fState;
 		private string fDefinition;
 		public int id
         {
             get { return this.fid; }
             set { this.fid = value; }
         }
+
+		public int State
+		{
+			get { return this.fState; }
+			set { this.fState = value; }
+		}
+
 
 		public string Definition
 		{
@@ -1834,7 +1848,7 @@ SCAN:
 			LV.EndUpdate();
 		}
 
-		public int State;
+
         /// <summary>
         /// Площадь - значение (указанное). Типа Семантическая в ЕГРН
         /// </summary>
@@ -2508,12 +2522,12 @@ SCAN:
     {
     }
 
-	public class EZPEntry : TMyPolygon
+	public class EZPEntry : TCadasterItem
 	{
-
+		public int Spatial_ID;
 	}
 
-    public class TCompozitionEZ : List<TMyPolygon>
+    public class TCompozitionEZ : List<EZPEntry>// : List<TMyPolygon>
     {
         public TCadastralNumbers DeleteEntryParcels;
         public TCadastralNumbers TransformationEntryParcel;
@@ -2526,13 +2540,15 @@ SCAN:
         public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
         {
             if (ESs == null) return;
-			TMyPolygon entry = new TMyPolygon();
-			entry.ImportPolygon(ESs);
-            entry.AreaValue = areaEntry;
-			entry.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
+			EZPEntry entry = new EZPEntry();
+			entry.Spatial_ID = ESs.id; // links to spatial
+			entry.CN = entrynumber;
 			entry.Definition = entrynumber;
+			//entry.ImportPolygon(ESs);
+			//entry.AreaValue = areaEntry;
+			//entry.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
 			entry.State = state;
-            this.Add(entry);
+			this.Add(entry);
         }
 
         /// <summary>
@@ -2540,6 +2556,7 @@ SCAN:
         /// Замозговано 11-04-18:
         /// ДА уж.... такая нужная //уйня. Росреестр без нее никак 
         /// </summary>
+		/*
         public double TotalPerimeter
         {
             get
@@ -2550,7 +2567,7 @@ SCAN:
                 return pery;
             }
         }
-
+		*/
     }
 
 
@@ -2705,21 +2722,30 @@ SCAN:
 
     public delegate Object ESDelegate();
 
+	/// <summary>
+	/// Земельный участок
+	/// </summary>
     public class TMyParcel : TCadasterItem
     {
         private string FParentCN;
-        private int Fid;
-        private TEntitySpatial fContours;
         private TCompozitionEZ fCompozitionEZ;
-        private TMyPolygon fEntitySpatial;
-        public string State;
- //       public string DateCreated;
- //       public string CN;
- //       public string Definition;// Обозначение
+
+        public new string State
+		{
+			get
+			{
+				return base.State.ToString();
+			}
+			set
+			{
+				int test = -1;
+				if (Int32.TryParse(value, out test))
+				base.State = test;
+			}
+		}
         public string CadastralBlock;
         public int CadastralBlock_id;
- //       public string Name;
-        public string AreaGKN;
+		public string AreaGKN;
         /// <summary>
         /// Значение, указаное
         /// </summary>
@@ -2733,10 +2759,16 @@ SCAN:
         public Rosreestr.TMyRights Rights;
         public Rosreestr.TMyRights EGRN;
         public Rosreestr.TMyEncumbrances Encumbrances;
+		//       public string Name;
+		//       public string DateCreated;
+		//       public string CN;
+		//       public string Definition;// Обозначение
 		//public Object EntitySpatial_noType;
+		//private TMyPolygon fEntitySpatial;
+		//  private TEntitySpatial fContours;
 
 		/// <summary>
-		///  Spatial data. Universal, both for single ES and multi (contours).
+		///  Spatial data. Universal, both for single ES and multi (contours/EZP).
 		///  will replace polygon/contours
 		/// </summary>
 		public TEntitySpatial EntSpat; 
@@ -2779,8 +2811,8 @@ SCAN:
 		{
 			set
 			{
-				if (value != null)
-					this.fEntitySpatial = null;
+				//if (value != null)
+				//	this.fEntitySpatial = null;
 				//this.fContours = new TEntitySpatial(); // на свякий случай, как в Осетии: ЕЗП с контурами 
 				//this.fContours.Add(value);
 				this.fCompozitionEZ = new TCompozitionEZ();
@@ -2814,7 +2846,7 @@ SCAN:
             this.Rights = new Rosreestr.TMyRights();
 			this.EntSpat = new TEntitySpatial();
             //this.SpecialNote = "";
-            this.Fid = Gen_id.newId;
+            this.id = Gen_id.newId;
             this.AreaGKN = "-1";
         }
 
@@ -2823,9 +2855,9 @@ SCAN:
             this.CN = cn;
         }
 
-        public TMyParcel(string cn, int parcel_id) : this() // Вызов Конструктора по умолчанию
+		public TMyParcel(string cn, int parcel_id) : this() // Вызов Конструктора по умолчанию
         {
-            this.Fid = parcel_id;
+            this.id = parcel_id;
             this.CN = cn;
         }
 
@@ -2859,13 +2891,14 @@ SCAN:
             this.Definition = definition;
             this.Name = name.ToString();
         }
-
-        public int id
+		/*
+		private int Fid;
+		public int id
         {
             get { return this.Fid; }
             set { this.Fid = value; }
         }
-
+		*/
         public TmySlot AddSubParcel(string SlotNumber)
         {
             TmySlot Sl = new TmySlot();
@@ -2902,12 +2935,14 @@ SCAN:
 				if (Feauture.id == Layer_id)
 					return Feauture;
 			}
+			/*
 			if (this.CompozitionEZ != null)
 				foreach (IGeometry entry in this.CompozitionEZ)
 				{
 					if (entry.id == Layer_id)
 						return entry;
 				}
+				*/
             //if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
             //if (this.Contours != null) if (this.Contours.ge.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
             //if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
@@ -3973,6 +4008,7 @@ SCAN:
 
             }
 
+			/* TODO KILL
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
                 if (this.Parcels[i].CompozitionEZ != null)
@@ -3980,7 +4016,7 @@ SCAN:
                         if (this.Parcels[i].CompozitionEZ[ij].id == id)
                             return this.Parcels[i].CompozitionEZ[ij];
             }
-			/* TODO KILL
+
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
                 if (this.Parcels[i].Contours != null)
@@ -3988,8 +4024,8 @@ SCAN:
                         return this.Parcels[i].Contours;
             }
 			*/
-            //если ищем чзу:
-            for (int i = 0; i <= this.Parcels.Count - 1; i++)
+			//если ищем чзу:
+			for (int i = 0; i <= this.Parcels.Count - 1; i++)
 
                 for (int sli = 0; sli <= this.Parcels[i].SubParcels.Count - 1; sli++)
                 {
@@ -4074,13 +4110,15 @@ SCAN:
 			this.CSs = new TCoordSystems();
         }
 
-        public string SingleCN() // Если квартал один, вернуть его CN
-        {
-            if (this.Blocks.Count == 1)
-                return this.Blocks[0].CN;
-            else
-                return null;
-        }
+		public string SingleCN // Если квартал один, вернуть его CN
+		{
+			get {
+				if (this.Blocks.Count == 1)
+					return this.Blocks[0].CN;
+				else
+					return null;
+			}
+		}
 
         public Object GetEs(int Item_id)
         {
@@ -4179,9 +4217,11 @@ SCAN:
 				{
 					foreach (IGeometry feature in parcel.EntSpat)
 						Res.Add(feature);
+					/*
 					if (parcel.CompozitionEZ != null)
 						foreach (IGeometry feature in parcel.CompozitionEZ)
 							Res.Add(feature);
+					*/
 				}
 			return Res;
 		}
@@ -4269,6 +4309,13 @@ SCAN:
 		{
 			get { return this.fid; }
 			set { this.fid = value; }
+		}
+
+		private int fState;
+		public int State
+		{
+			get { return this.fState; }
+			set { this.fState = value; }
 		}
 		private string fLayerHandle;
 		public string LayerHandle
@@ -4420,7 +4467,22 @@ SCAN:
 			return res;
 		}
 
-
+		/// <summary>
+		/// Remove parent number part in features numbers
+		/// </summary>
+		/// <param name="ParentCN"></param>
+		public void RemoveParentCN(string ParentCN)
+		{
+			if (ParentCN == null) return;
+			foreach (Spatial.IGeometry poly in this)
+			{
+				if (poly.Definition != null &&
+					poly.Definition.Contains(ParentCN))
+					if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
+						poly.Definition = poly.Definition.Substring(ParentCN.Length);
+			}
+		}
+		
 		public void Fraq(string Format)
 		{
 			foreach (IGeometry feature in this)
@@ -4518,7 +4580,6 @@ SCAN:
 			return -1;
 		}
 
-
 		public int ReorderPoints(int Startindex =1)
 		{
 			foreach (IPointList feature in this)
@@ -4559,6 +4620,9 @@ SCAN:
 			}
 		}
 
+		/// <summary>
+		/// TODO: wrong util code
+		/// </summary>
 		public TMyRect Get_Bounds
 		{
 			get
