@@ -26,8 +26,7 @@ namespace netFteo.IO
 
 		public const string TabDelimiter = "\t";  // tab
 		public const string CommaDelimiter = ";";  // tab
-		public MifOptions MIF_Options;
-		public string FileType = "";  // tab
+//		public string FileType = "";  // tab
 		private String fBody;
 		public string Body
 		{
@@ -41,7 +40,7 @@ namespace netFteo.IO
 				//   this.BodyEncoding = System.Text.Encoding.GetEncoding(fBody).EncodingName;
 			}
 		}
-
+		public string FileName;
 		public string BodyEncoding;
 		/// <summary>
 		/// Чтение файлов  CSV (формата Технокад)
@@ -164,8 +163,9 @@ namespace netFteo.IO
 
 				if (line != null) //Читаем строку
 				{      //по строке
-					FileType = line;
+
 					/* TODO:
+					 FileType = line; 
 					if (line.Contains("#Fixosoft NumXYZD data format V2014"))
 					{
 						TEntitySpatial rets = new TEntitySpatial();
@@ -1326,12 +1326,12 @@ namespace netFteo.IO
 	/// </remarks> 
 	public class MIFReader : TextReader
 	{
+		public MifOptions MIF_Options;
 
 
-
-		public MIFReader(string FileName)
+		public MIFReader(string Filename)
 		{
-			
+			this.FileName = Filename;
 		}
 
 		/// <summary>
@@ -1370,6 +1370,44 @@ namespace netFteo.IO
             return res;
         }
 */
+		private TPolyLine MIF_ParsePLINE(System.IO.TextReader readFile, int ringCount)
+		{
+			string line;
+			TPolyLine res = new TPolyLine();// ("PLINE " + ringCount.ToString());
+			try
+			{
+				while (readFile.Peek() != -1)
+				{
+					line = readFile.ReadLine();
+					if (line != null)
+					{
+						if (line.Length > 0)
+						{
+							//detect vertex count
+							int VertexCount = 0;
+							if (Int32.TryParse(line, out VertexCount))
+							{
+								for (int i = 0; i <= VertexCount - 1; i++)
+								{
+									line = readFile.ReadLine();
+									res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
+								}
+								return res;
+							}
+						}
+					}
+				}
+			}
+
+			catch (IOException ex)
+			{
+				return null;
+				//  MessageBox.Show(ex.ToString());
+			}
+
+			return res;
+		}
+
 		private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
 		{
 			string line;
@@ -1455,7 +1493,7 @@ namespace netFteo.IO
 		/// </summary>
 		/// <param name="Filename"></param>
 		/// <returns></returns>
-		public TEntitySpatial ImportMIF(string FileName)
+		public TEntitySpatial ParseMIF()
 		{
 			TEntitySpatial res = new TEntitySpatial();
 			MIF_Options = new MifOptions();
@@ -1514,8 +1552,7 @@ namespace netFteo.IO
 							}
 							if (line.ToUpper().Substring(0, 5).Equals("PLINE")) //line present mapinfo polyline
 							{
-								//   MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "mif-pt"));
-
+								res.Add(MIF_ParsePLINE(readFile, -1));
 							}
 
 							if (line.ToUpper().Substring(0, 6).Equals("REGION")) //line present mapinfo polygon

@@ -5413,14 +5413,14 @@ namespace RRTypes.CommonParsers
 
 		#region  Разбор MIF
 		/// <summary>
-		/// Разбор dxf
+		/// Разбор mif
 		/// </summary>
 		/// 
 		/// <returns></returns>
 		public netFteo.XML.FileInfo ParseMIF(netFteo.XML.FileInfo fi, netFteo.IO.MIFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
 			netFteo.XML.FileInfo res = InitFileInfo(fi, null);
-			TEntitySpatial Entitys = mifreader.ImportMIF(fi.FileName);
+			TEntitySpatial Entitys = mifreader.ParseMIF();
 
 
 			if (Entitys != null)
