@@ -371,7 +371,7 @@
                     try
                     {
                         netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader();
+                        netFteo.IO.MIFReader TR = new IO.MIFReader(sourceFileName.StringResult);
                         fteofile = TR.ImportMIF(sourceFileName.StringResult);
                         ParseData(dm, ed, sourceFileName, fteofile);
                     }

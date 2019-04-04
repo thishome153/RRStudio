@@ -23,7 +23,7 @@ namespace netFteo.IO
 {
 
 
-    public delegate void DxfParsingHandler(object sender, ESCheckingEventArgs e);
+
 
     /// <summary>
     /// DXF reader for dxf reading.
@@ -34,8 +34,14 @@ namespace netFteo.IO
     /// </remarks> 
     public class  DXFReader : TextReader
     {
-
-        private netDxf.DxfDocument dxfFile;
+		/// <summary>
+		/// An event handler invoked during parsing  of entries in the dxf/mif file.
+		/// </summary>
+		/// <remarks>
+		/// Able to check total progress of file parsing
+		/// </remarks>
+		public event ParsingHandler OnParsing;
+		private netDxf.DxfDocument dxfFile;
         public string FileName
         {
             get
@@ -182,13 +188,7 @@ namespace netFteo.IO
         public int  BlocksCount;
         private int FileParsePosition; // Текущая позиция parser`a
 
-        /// <summary>
-        /// An event handler invoked during parsing  of entries in the dxf file.
-        /// </summary>
-        /// <remarks>
-        /// Able to check total progress of file parsing
-        /// </remarks>
-        public event DxfParsingHandler OnParsing;
+
         private void DxfParsingProc(string sender, int process, byte[] Data)
         {
             if (OnParsing == null) return;

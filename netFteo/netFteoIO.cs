@@ -16,11 +16,14 @@ using netFteo.Spatial;
 
 namespace netFteo.IO
 {
+	public delegate void ParsingHandler(object sender, ESCheckingEventArgs e);
+
 	/// <summary>
 	///Класс для операций с файлами Fteo, mif, dxf
 	/// </summary>
 	public class TextReader
 	{
+
 		public const string TabDelimiter = "\t";  // tab
 		public const string CommaDelimiter = ";";  // tab
 		public MifOptions MIF_Options;
@@ -217,103 +220,6 @@ namespace netFteo.IO
 
 
 
-		private TPoint MIF_ParseOrdinate(string line, string pointName)
-		{
-			TPoint res = new TPoint();
-			res.NumGeopointA = "p" + pointName;
-			double Y = 0; double X = 0;
-			if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
-
-			string ss = line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1);
-			if (Double.TryParse(ss, out X)) res.x = X;
-			return res;
-		}
-		/*
-        private Point MIF_ParsePoint(System.IO.TextReader readFile)
-        {
-            Point res = MIF_ParseOrdinate(readFile.ReadLine(), "pt");
-            return res;
-        }
-*/
-		private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
-		{
-			string line;
-			TMyPolygon res = new TMyPolygon("REGION " + ringCount.ToString());
-			try
-			{
-				while (readFile.Peek() != -1)
-				{
-					line = readFile.ReadLine();
-					if (line != null)
-					{
-						if (line.Length > 0)
-						{
-							//detect vertex count
-							int VertexCount = 0;
-							if (Int32.TryParse(line, out VertexCount))
-							{
-								for (int i = 0; i <= VertexCount - 1; i++)
-								{
-									line = readFile.ReadLine();
-									res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
-								}
-
-
-								//childs - inner rings:
-								for (int r = 1; r < ringCount; r++)
-								{
-
-									line = readFile.ReadLine();
-									//detect vertex count
-									int VertexCount2 = 0;
-									if (Int32.TryParse(line, out VertexCount2))
-									{
-										TRing childRing = res.AddChild();
-										for (int i = 0; i <= VertexCount2 - 1; i++)
-										{
-											line = readFile.ReadLine();
-											childRing.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
-										}
-									}
-								} // ----end for childs
-								return res;
-							}
-						}
-					}
-				}
-			}
-
-			catch (IOException ex)
-			{
-				return null;
-				//  MessageBox.Show(ex.ToString());
-			}
-
-			return res;
-		}
-
-		/// <summary>
-		/// считывание записи из MID-файла Map-info
-		/// </summary>
-		/// <param name="Filename"></param>
-		/// <param name="MIF_Options"></param>
-		private string[] MID_ParseRow(System.IO.TextReader readFile, MifOptions MIF_Options)
-		{
-			string line;
-			string[] mid_row = null;
-			int StrCounter = 0;
-			//while (readFile.Peek() != -1)
-			//{
-			line = readFile.ReadLine(); StrCounter++;
-			if (line != null) //Читаем строку
-			{
-				//use spit for delimiter
-				mid_row = line.Split(MIF_Options.Delimiter.ToCharArray());
-				return mid_row;
-			}
-			else return null;
-			//}
-		}
 
 		/// <summary>
 		///  Detect Encoding name, encoding Body field
@@ -340,104 +246,6 @@ namespace netFteo.IO
 
 
 
-
-		/// <summary>
-		/// Импорт mif-файлов
-		/// </summary>
-		/// <param name="Filename"></param>
-		/// <returns></returns>
-		public TEntitySpatial ImportMIF(string FileName)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			MIF_Options = new MifOptions();
-			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
-
-			System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
-			System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
-
-
-			// TODO Encoding for mif:
-			BodyLoad(baseFileName + ".mif");
-			string line; string midline;
-			int PolygonCount = 0;
-			int StrCounter = 0;
-			string delimiter = "";
-			PointList MIF_Points = new PointList(); // single list for all points in mif-file
-													// первый проход, читаем заголовок 
-			try
-			{
-
-				while (readFile.Peek() != -1)
-				{
-					line = readFile.ReadLine(); StrCounter++;
-					if (line != null) //Читаем строку
-					{
-
-						if (line.Length > 5)
-						{
-							if (line.Length > 12)
-							{
-								if (line.ToUpper().Substring(0, 9).Contains("DELIMITER"))
-								{
-									MIF_Options.Delimiter = line.Substring(11, 1);
-								};
-							};
-
-
-							if (line.ToUpper().Substring(0, 7).Equals("COLUMNS")) //line present mapinfo polygon
-							{
-								Int16 columnsCount = 0;
-								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out columnsCount))
-								{
-									for (int i = 1; i <= columnsCount; i++)
-									{
-										MIF_Options.AddColumn(i.ToString(), readFile.ReadLine());
-									}
-								}
-							};
-
-							//Everyone feature points to record in MID file
-							//and after reading (parsing) feature MID must be readed by line also
-
-							if (line.ToUpper().Substring(0, 5).Equals("POINT")) //line present mapinfo point
-							{
-								MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "POINT"));
-							}
-							if (line.ToUpper().Substring(0, 5).Equals("PLINE")) //line present mapinfo polyline
-							{
-								//   MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "mif-pt"));
-
-							}
-
-							if (line.ToUpper().Substring(0, 6).Equals("REGION")) //line present mapinfo polygon
-							{
-								PolygonCount++;
-								//detect count of ring of polygon "Region 1"
-								Int16 ringCount = 0;
-								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out ringCount))
-									res.Add(MIF_ParseRegion(readFile, ringCount));
-								midline = MID_ParseRow(readMIDFile, MIF_Options).ToString();
-							};
-						}
-						StrCounter++;
-					}
-				}
-				readFile.Close();
-				readFile = null;
-				TMyPolygon MIF_Points_POly = new TMyPolygon("mifPoints");
-				MIF_Points_POly.AppendPoints(MIF_Points);
-				res.Add(MIF_Points_POly);
-			}
-
-			catch (IOException ex)
-			{
-				return null;
-				//  MessageBox.Show(ex.ToString());
-			}
-			res.Definition = FileName;
-			MIF_Options.Delimiter = delimiter;// ' " polygons " + PolygonCount.ToString();
-			return res;
-		}
 
 
 		/// <summary>
@@ -1510,6 +1318,240 @@ namespace netFteo.IO
    "stateText": "Server ok"
 }
 */
+
+	/// <summary>
+	/// MIFF reader for mif reading.
+	/// </summary>
+	/// <remarks>
+	/// </remarks> 
+	public class MIFReader : TextReader
+	{
+
+
+
+		public MIFReader(string FileName)
+		{
+			
+		}
+
+		/// <summary>
+		/// An event handler invoked during parsing  of entries in the dxf/mif file.
+		/// </summary>
+		/// <remarks>
+		/// Able to check total progress of file parsing
+		/// </remarks>
+		public event ParsingHandler OnParsing;
+
+		private void ParsingProc(string sender, int process, byte[] Data)
+		{
+			if (OnParsing == null) return;
+			ESCheckingEventArgs e = new ESCheckingEventArgs();
+			e.Definition = sender;
+			e.Data = Data;
+			e.Process = process;
+			OnParsing(this, e);
+		}
+
+		private TPoint MIF_ParseOrdinate(string line, string pointName)
+		{
+			TPoint res = new TPoint();
+			res.NumGeopointA = "p" + pointName;
+			double Y = 0; double X = 0;
+			if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
+
+			string ss = line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1);
+			if (Double.TryParse(ss, out X)) res.x = X;
+			return res;
+		}
+		/*
+        private Point MIF_ParsePoint(System.IO.TextReader readFile)
+        {
+            Point res = MIF_ParseOrdinate(readFile.ReadLine(), "pt");
+            return res;
+        }
+*/
+		private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
+		{
+			string line;
+			TMyPolygon res = new TMyPolygon("REGION " + ringCount.ToString());
+			try
+			{
+				while (readFile.Peek() != -1)
+				{
+					line = readFile.ReadLine();
+					if (line != null)
+					{
+						if (line.Length > 0)
+						{
+							//detect vertex count
+							int VertexCount = 0;
+							if (Int32.TryParse(line, out VertexCount))
+							{
+								for (int i = 0; i <= VertexCount - 1; i++)
+								{
+									line = readFile.ReadLine();
+									res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
+								}
+
+
+								//childs - inner rings:
+								for (int r = 1; r < ringCount; r++)
+								{
+
+									line = readFile.ReadLine();
+									//detect vertex count
+									int VertexCount2 = 0;
+									if (Int32.TryParse(line, out VertexCount2))
+									{
+										TRing childRing = res.AddChild();
+										for (int i = 0; i <= VertexCount2 - 1; i++)
+										{
+											line = readFile.ReadLine();
+											childRing.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
+										}
+									}
+								} // ----end for childs
+								return res;
+							}
+						}
+					}
+				}
+			}
+
+			catch (IOException ex)
+			{
+				return null;
+				//  MessageBox.Show(ex.ToString());
+			}
+
+			return res;
+		}
+
+		/// <summary>
+		/// считывание записи из MID-файла Map-info
+		/// </summary>
+		/// <param name="Filename"></param>
+		/// <param name="MIF_Options"></param>
+		private string[] MID_ParseRow(System.IO.TextReader readFile, MifOptions MIF_Options)
+		{
+			string line;
+			string[] mid_row = null;
+			int StrCounter = 0;
+			//while (readFile.Peek() != -1)
+			//{
+			line = readFile.ReadLine(); StrCounter++;
+			if (line != null) //Читаем строку
+			{
+				//use spit for delimiter
+				mid_row = line.Split(MIF_Options.Delimiter.ToCharArray());
+				return mid_row;
+			}
+			else return null;
+			//}
+		}
+
+		/// <summary>
+		/// Импорт mif-файлов
+		/// </summary>
+		/// <param name="Filename"></param>
+		/// <returns></returns>
+		public TEntitySpatial ImportMIF(string FileName)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			MIF_Options = new MifOptions();
+			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
+
+			System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
+			System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
+
+
+			// TODO Encoding for mif:
+			BodyLoad(baseFileName + ".mif");
+			string line; string midline;
+			int PolygonCount = 0;
+			int StrCounter = 0;
+			string delimiter = "";
+			PointList MIF_Points = new PointList(); // single list for all points in mif-file
+													// первый проход, читаем заголовок 
+			try
+			{
+
+				while (readFile.Peek() != -1)
+				{
+					line = readFile.ReadLine(); StrCounter++;
+					if (line != null) //Читаем строку
+					{
+
+						if (line.Length > 5)
+						{
+							if (line.Length > 12)
+							{
+								if (line.ToUpper().Substring(0, 9).Contains("DELIMITER"))
+								{
+									MIF_Options.Delimiter = line.Substring(11, 1);
+								};
+							};
+
+
+							if (line.ToUpper().Substring(0, 7).Equals("COLUMNS")) //line present mapinfo polygon
+							{
+								Int16 columnsCount = 0;
+								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out columnsCount))
+								{
+									for (int i = 1; i <= columnsCount; i++)
+									{
+										MIF_Options.AddColumn(i.ToString(), readFile.ReadLine());
+									}
+								}
+							};
+
+							//Everyone feature points to record in MID file
+							//and after reading (parsing) feature MID must be readed by line also
+
+							if (line.ToUpper().Substring(0, 5).Equals("POINT")) //line present mapinfo point
+							{
+								MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "POINT"));
+							}
+							if (line.ToUpper().Substring(0, 5).Equals("PLINE")) //line present mapinfo polyline
+							{
+								//   MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "mif-pt"));
+
+							}
+
+							if (line.ToUpper().Substring(0, 6).Equals("REGION")) //line present mapinfo polygon
+							{
+								PolygonCount++;
+								//detect count of ring of polygon "Region 1"
+								Int16 ringCount = 0;
+								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out ringCount))
+									res.Add(MIF_ParseRegion(readFile, ringCount));
+								midline = MID_ParseRow(readMIDFile, MIF_Options).ToString();
+							};
+						}
+						StrCounter++;
+					}
+				}
+				readFile.Close();
+				readFile = null;
+				TMyPolygon MIF_Points_POly = new TMyPolygon("mifPoints");
+				MIF_Points_POly.AppendPoints(MIF_Points);
+				res.Add(MIF_Points_POly);
+			}
+
+			catch (IOException ex)
+			{
+				return null;
+				//  MessageBox.Show(ex.ToString());
+			}
+			res.Definition = FileName;
+			MIF_Options.Delimiter = delimiter;// ' " polygons " + PolygonCount.ToString();
+			return res;
+		}
+
+
+
+	}
+
 
 	public class LogServer
 	{

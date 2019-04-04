@@ -5411,6 +5411,35 @@ namespace RRTypes.CommonParsers
 		}
 		#endregion
 
+		#region  Разбор MIF
+		/// <summary>
+		/// Разбор dxf
+		/// </summary>
+		/// 
+		/// <returns></returns>
+		public netFteo.XML.FileInfo ParseMIF(netFteo.XML.FileInfo fi, netFteo.IO.MIFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		{
+			netFteo.XML.FileInfo res = InitFileInfo(fi, null);
+			TEntitySpatial Entitys = mifreader.ImportMIF(fi.FileName);
+
+
+			if (Entitys != null)
+			{
+				// TODO where place for results ??? : 
+				res.MyBlocks.ParsedSpatial.Add(Entitys);
+			}
+
+			res.DocTypeNick = "Mapinfo mif";
+			res.CommentsType = "MIF";
+			//res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
+			res.Encoding = mifreader.BodyEncoding;
+			res.Number = "Encoding  " + mifreader.BodyEncoding;
+			res.DocType = "Mapinfo mif";
+			//res.Version = mifreader.Version;
+			return res;
+
+		}
+		#endregion
 
 
 	}

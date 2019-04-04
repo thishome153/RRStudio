@@ -540,19 +540,24 @@ namespace XMLReaderCS
 			toolStripStatusLabel1.Text = Path.GetFileName(FileName);
 			label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
 			// got mif file:
+
 			if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
 			{
-				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+				netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
+				/*
+
 				TEntitySpatial ESfromMIF = mifreader.ImportMIF(FileName);
-
 				this.DocInfo.MyBlocks.ParsedSpatial.Add(ESfromMIF);
-
 				this.DocInfo.DocTypeNick = "Mapinfo mif";
 				this.DocInfo.DocType = "Mapinfo mif";
 				this.DocInfo.CommentsType = "MIF";
 				this.DocInfo.Comments = mifreader.Body;
 				this.DocInfo.Encoding = mifreader.BodyEncoding;
 				this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
+				*/
+				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+				mifreader.OnParsing += DXFStateUpdater; 
+				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
 			}
 
 			// got AutoCad Drawing Exchange Format -  dxf file:
