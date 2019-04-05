@@ -5431,7 +5431,7 @@ namespace RRTypes.CommonParsers
 
 			res.DocTypeNick = "Mapinfo mif";
 			res.CommentsType = "MIF";
-			//res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
+			res.Comments = mifreader.Body;//.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
 			res.Encoding = mifreader.BodyEncoding;
 			res.Number = "Encoding  " + mifreader.BodyEncoding;
 			res.DocType = "Mapinfo mif";

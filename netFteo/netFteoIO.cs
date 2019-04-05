@@ -1327,11 +1327,18 @@ namespace netFteo.IO
 	public class MIFReader : TextReader
 	{
 		public MifOptions MIF_Options;
-
-
+		public bool MID_Present;
+		System.IO.TextReader MIDFile;
 		public MIFReader(string Filename)
 		{
 			this.FileName = Filename;
+			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
+			if (File.Exists(baseFileName))
+			{
+				MID_Present = true;
+				MIDFile = new StreamReader(baseFileName + ".mid");
+			}
+			else MID_Present = false;
 		}
 
 		/// <summary>
@@ -1370,42 +1377,81 @@ namespace netFteo.IO
             return res;
         }
 */
-		private TPolyLine MIF_ParsePLINE(System.IO.TextReader readFile, int ringCount)
+
+		/// <summary>
+		///  			Ellipse 1286942.56 506946.1624 1286945.56 506949.1623
+		/// </summary>
+		/// <param name="readFile"></param>
+		/// <param name="line"></param>
+		/// <returns></returns>
+		private List<IGeometry> MIF_ParseELLIPSE(System.IO.TextReader readFile, string line)
+		{
+			List<IGeometry> resList = new List<IGeometry>();
+			TCircle res = new TCircle();
+			res.NumGeopointA = "El";
+
+			string[] EllipseLine = line.Split(' ');
+
+			double x1 = 0; double x2 = 0; double y1 = 0; double y2 = 0;
+			if (Double.TryParse(EllipseLine[1], out y1)) 
+				if (Double.TryParse(EllipseLine[2], out x1))
+					if (Double.TryParse(EllipseLine[3], out y2))
+						if (Double.TryParse(EllipseLine[4], out x2))
+						{
+							res.x = (x1 + x2) / 2;  //center
+							res.y = (y1 + y2) / 2;  //center
+							if (x1- res.x > 0)
+							res.R = x1- res.x;
+							else
+								res.R = x2 - res.x;
+							resList.Add(res);
+							//System.Drawing.RectangleF rect = new System.Drawing.RectangleF();
+							//System.Drawing.RectangleF rect = new System.Drawing.RectangleF();
+							
+							/* //simple round rectangle - ortogonally orient
+							TMyPolygon CircleBoundRect = new TMyPolygon("CircleRect");
+							CircleBoundRect.AddPoint("1", x1, y1, "V");
+							CircleBoundRect.AddPoint("2", x1, y2, "*");
+							CircleBoundRect.AddPoint("3", x2, y2, "V");
+							CircleBoundRect.AddPoint("4", x2, y1, "*");
+							resList.Add(CircleBoundRect);
+							*/
+						}
+			return resList;
+		}
+
+		private TPolyLine MIF_ParsePLINE(System.IO.TextReader readFile, string StartLine)
 		{
 			string line;
-			TPolyLine res = new TPolyLine();// ("PLINE " + ringCount.ToString());
+
+			Int16 VertexCount = 0;
 			try
 			{
-				while (readFile.Peek() != -1)
+				if (Int16.TryParse(StartLine.Substring(StartLine.IndexOf(' ') + 1, StartLine.Length - StartLine.IndexOf(' ') - 1), out VertexCount))
 				{
-					line = readFile.ReadLine();
-					if (line != null)
-					{
-						if (line.Length > 0)
+					TPolyLine res = new TPolyLine();// ("PLINE " + ringCount.ToString());
+
+					for (int i = 0; i <= VertexCount - 1; i++)
+					{//(readFile.Peek() != -1)
+						line = readFile.ReadLine();
+						if (line != null)
 						{
-							//detect vertex count
-							int VertexCount = 0;
-							if (Int32.TryParse(line, out VertexCount))
+							if (line.Length > 0)
 							{
-								for (int i = 0; i <= VertexCount - 1; i++)
-								{
-									line = readFile.ReadLine();
-									res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
-								}
-								return res;
+								res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
 							}
 						}
 					}
+					return res;
 				}
 			}
-
 			catch (IOException ex)
 			{
 				return null;
 				//  MessageBox.Show(ex.ToString());
 			}
+			return null;
 
-			return res;
 		}
 
 		private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
@@ -1500,7 +1546,8 @@ namespace netFteo.IO
 			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
 
 			System.IO.TextReader readFile = new StreamReader(baseFileName + ".mif");
-			System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
+
+			//System.IO.TextReader readMIDFile = new StreamReader(baseFileName + ".mid");
 
 
 			// TODO Encoding for mif:
@@ -1549,10 +1596,24 @@ namespace netFteo.IO
 							if (line.ToUpper().Substring(0, 5).Equals("POINT")) //line present mapinfo point
 							{
 								MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "POINT"));
+								if (MID_Present)
+									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
 							}
+
+							if (line.ToUpper().Substring(0, 7).Equals("ELLIPSE")) //Ellipse present mapinfo circle
+							{
+								List<IGeometry> CircleF = MIF_ParseELLIPSE(readFile, line);
+								foreach (IGeometry Feature in CircleF)
+									res.Add(Feature);
+								if (MID_Present)
+									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
+							}
+
 							if (line.ToUpper().Substring(0, 5).Equals("PLINE")) //line present mapinfo polyline
 							{
-								res.Add(MIF_ParsePLINE(readFile, -1));
+								res.Add(MIF_ParsePLINE(readFile, line));
+								if (MID_Present)
+									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
 							}
 
 							if (line.ToUpper().Substring(0, 6).Equals("REGION")) //line present mapinfo polygon
@@ -1562,17 +1623,17 @@ namespace netFteo.IO
 								Int16 ringCount = 0;
 								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out ringCount))
 									res.Add(MIF_ParseRegion(readFile, ringCount));
-								midline = MID_ParseRow(readMIDFile, MIF_Options).ToString();
-							};
+								if (MID_Present)
+									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
+							}
 						}
 						StrCounter++;
 					}
 				}
 				readFile.Close();
+				if (MID_Present) MIDFile.Close();
 				readFile = null;
-				TMyPolygon MIF_Points_POly = new TMyPolygon("mifPoints");
-				MIF_Points_POly.AppendPoints(MIF_Points);
-				res.Add(MIF_Points_POly);
+				if (MIF_Points.PointCount > 0 ) 	res.Add(MIF_Points);
 			}
 
 			catch (IOException ex)
