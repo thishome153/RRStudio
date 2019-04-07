@@ -1362,7 +1362,7 @@ namespace netFteo.IO
 		private TPoint MIF_ParseOrdinate(string line, string pointName)
 		{
 			TPoint res = new TPoint();
-			res.NumGeopointA = "p" + pointName;
+			res.NumGeopointA = pointName;
 			double Y = 0; double X = 0;
 			if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
 
@@ -1474,7 +1474,7 @@ namespace netFteo.IO
 								for (int i = 0; i <= VertexCount - 1; i++)
 								{
 									line = readFile.ReadLine();
-									res.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
+									res.AddPoint(MIF_ParseOrdinate(line, i+1.ToString()));
 								}
 
 
@@ -1491,7 +1491,7 @@ namespace netFteo.IO
 										for (int i = 0; i <= VertexCount2 - 1; i++)
 										{
 											line = readFile.ReadLine();
-											childRing.AddPoint(MIF_ParseOrdinate(line, i.ToString()));
+											childRing.AddPoint(MIF_ParseOrdinate(line, i+1.ToString()));
 										}
 									}
 								} // ----end for childs
@@ -1556,7 +1556,7 @@ namespace netFteo.IO
 			int PolygonCount = 0;
 			int StrCounter = 0;
 			string delimiter = "";
-			PointList MIF_Points = new PointList(); // single list for all points in mif-file
+		//	PointList MIF_Points = new PointList(); // single list for all points in mif-file
 													// первый проход, читаем заголовок 
 			try
 			{
@@ -1595,7 +1595,7 @@ namespace netFteo.IO
 
 							if (line.ToUpper().Substring(0, 5).Equals("POINT")) //line present mapinfo point
 							{
-								MIF_Points.AddPoint(MIF_ParseOrdinate(line.Substring(6), "POINT"));
+								res.Add(MIF_ParseOrdinate(line.Substring(6), "POINT"));
 								if (MID_Present)
 									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
 							}
@@ -1633,7 +1633,7 @@ namespace netFteo.IO
 				readFile.Close();
 				if (MID_Present) MIDFile.Close();
 				readFile = null;
-				if (MIF_Points.PointCount > 0 ) 	res.Add(MIF_Points);
+			//	if (MIF_Points.PointCount > 0 ) 	res.Add(MIF_Points);
 			}
 
 			catch (IOException ex)

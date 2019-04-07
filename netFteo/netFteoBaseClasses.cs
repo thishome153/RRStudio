@@ -283,7 +283,33 @@ namespace netFteo.Spatial
             set { this.fDescription = value; }
         }
 
-		public void ShowasListItems(ListView LV, bool SetTag)
+		/// <summary>
+		/// Расчет масштаба Tpoint на поверхность (z.B: WPF canvas) 
+		/// </summary>
+		/// <param name="canvas_width">Ширина полотна</param>
+		/// <param name="canvas_height">Высота полотна</param>
+		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+		/// <returns></returns>
+		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+		{
+			//TODO need code. like Ring
+			if (this.Empty) return -1;
+			double scale = 0;
+			double dx = 4; // размах по вертикали
+
+			double dy = 4; // размах по горизонтали 
+			if (dx > dy)
+			{
+				scale = (dx / canvas_height); // / ViewKoefficient;
+			}
+			else
+			{
+				scale = (dy / canvas_width); // / ViewKoefficient;
+			}
+			return scale;
+		}
+
+	public void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Empty) return;
 			string BName;

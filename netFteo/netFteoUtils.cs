@@ -167,10 +167,10 @@ namespace netFteo
 			Node.Tag = ES.id;
         }
 
-		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string NodeName, string Definition, int Status)
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES,  string Definition, int Status)
 		{
 			if (ES == null) return;
-			TreeNode Node = NodeTo.Nodes.Add("TCircle." + ES.id.ToString(), Definition);
+			TreeNode Node = NodeTo.Nodes.Add("Circle." + ES.id.ToString(), Definition);
 			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
 			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
 			Node.ImageIndex = 11;
@@ -178,6 +178,16 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TPoint ES, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode Node = NodeTo.Nodes.Add("TPoint." + ES.id.ToString(), Definition);
+			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
+			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+			Node.ImageIndex = 10;
+			Node.SelectedImageIndex = 10;
+			Node.Tag = ES.id;
+		}
 		private static void ListFeature(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
 		{
 			foreach (Spatial.IGeometry feature in ES)
@@ -198,8 +208,14 @@ namespace netFteo
 
 					if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, "SPElem.", ((Spatial.TCircle)feature).NumGeopointA, 6);
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature,  ((Spatial.TCircle)feature).NumGeopointA, 6);
 					}
+					
+					if (feature.TypeName == "netFteo.Spatial.TPoint")
+					{
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPoint)feature, ((Spatial.TPoint)feature).NumGeopointA, 6);
+					}
+
 				}
 			}
 		}

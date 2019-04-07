@@ -199,6 +199,19 @@ namespace XMLReaderCS
 					foreach (UIElement pt in Circles)
 						canvas1.Children.Add(pt);
 				}
+
+
+				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TPoint")
+				{
+					TPoint Circle = (TPoint)Spatial;
+					label2.Content = Circle.Definition;
+					label1_Canvas_Sizes.Content = " ";
+					Label_resScale.Content = " " ;
+					List<UIElement> Circles = CreateCanvasPointSign(Circle);
+					foreach (UIElement pt in Circles)
+						canvas1.Children.Add(pt);
+				}
+
 			}
         }
 
@@ -272,6 +285,47 @@ namespace XMLReaderCS
 			ls_v.X2 = Center.X;
 			ls_v.Y1 = Center.Y-25; ls_v.Y2 = Center.Y+25;
 			ls_v.Stroke = System.Windows.Media.Brushes.Black;
+			ls_v.StrokeThickness = 0.5;
+			res.Add(ls_v);
+			return res;
+		}
+
+		private List<UIElement> CreateCanvasPointSign(TPoint Point_)
+		{
+			List<UIElement> res = new List<UIElement>();
+			Point Center = PointsToWindowsPoints(Point_, true);
+			/*
+			System.Windows.Shapes.Ellipse el = new Ellipse();
+			el.Stroke = System.Windows.Media.Brushes.Red;
+			el.Fill = System.Windows.Media.Brushes.Transparent;
+			Canvas.SetLeft(el, Center.X - Cicrcle.R / (2 * Scale));
+			Canvas.SetTop(el, Center.Y - Cicrcle.R / (2 * Scale));
+			el.Height = Cicrcle.R / Scale; el.Width = Cicrcle.R / Scale;
+			res.Add(el);
+			*/
+
+			Ellipse el_root = new Ellipse();
+			el_root.Stroke = System.Windows.Media.Brushes.Black;
+			el_root.Fill = System.Windows.Media.Brushes.Black;
+
+			Canvas.SetLeft(el_root, Center.X - pointSignRadius * 2);
+			Canvas.SetTop(el_root, Center.Y - pointSignRadius * 2);
+
+			el_root.Height = pointSignRadius * 4; el_root.Width = pointSignRadius * 4;
+			res.Add(el_root);
+
+			Line ls_h = new Line();
+			ls_h.X1 = Center.X + 25;
+			ls_h.X2 = Center.X - 25;
+			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
+			ls_h.Stroke = System.Windows.Media.Brushes.Green;
+			ls_h.StrokeThickness = 0.5;
+			res.Add(ls_h);
+			Line ls_v = new Line();
+			ls_v.X1 = Center.X;
+			ls_v.X2 = Center.X;
+			ls_v.Y1 = Center.Y - 25; ls_v.Y2 = Center.Y + 25;
+			ls_v.Stroke = System.Windows.Media.Brushes.Green;
 			ls_v.StrokeThickness = 0.5;
 			res.Add(ls_v);
 			return res;
@@ -449,6 +503,31 @@ namespace XMLReaderCS
 				}
 			}
 			return new Point(0,0);
+		}
+
+		private Point PointsToWindowsPoints(TPoint Circle, bool newOnly)
+		{
+			double canvasX;
+			double canvasY;
+			if (newOnly)
+			{
+				if (!Double.IsNaN(Circle.x))
+				{
+					canvasX = Math.Round(canvas1.Width / 2);
+					canvasY = Math.Round(canvas1.Height / 2);
+					return new Point(canvasX, canvasY);
+				}
+			}
+			else
+			{
+			//if (!Double.IsNaN(Circle.oldX))
+				{
+		//			canvasX = Math.Round(canvas1.Width / 2 - (2 * Circle.R) / Scale);
+					//canvasY = Math.Round(canvas1.Height / 2 + (2 * Circle.R) / Scale);
+//					return new Point(canvasX, canvasY);
+				}
+			}
+			return new Point(0, 0);
 		}
 
 		//Обратное преобразование с координат canvas в координаты МСК

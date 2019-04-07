@@ -2995,10 +2995,9 @@ return res;
 				}
 			}
 
-			if (STrN.Name.Contains("TCircle."))
+			if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
 			{
-				int chek_id = Convert.ToInt32(STrN.Name.Substring(8));
-				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(8)));
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
 				if (Entity != null)
 				{
 					GeometryToSpatialView(listView1, Entity);
