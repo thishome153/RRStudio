@@ -378,8 +378,14 @@ namespace XMLReaderCS
 			{
 				DocInfo.DocTypeNick = "КПТ";
 				DocInfo.DocType = "Кадастровый план территории";
-				//Не КПТ v07 ли это?   
 				if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+						  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+							(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
+				{
+					this.DocInfo = parser.ParseKPT05(this.DocInfo, xmldoc);
+				}
+					//Не КПТ v07 ли это?   
+					if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
 				  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
 					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
 				{

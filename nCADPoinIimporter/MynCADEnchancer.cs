@@ -372,7 +372,7 @@
                     {
                         netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
                         netFteo.IO.MIFReader TR = new IO.MIFReader(sourceFileName.StringResult);
-                        fteofile = TR.ImportMIF(sourceFileName.StringResult);
+                        fteofile = TR.ParseMIF();
                         ParseData(dm, ed, sourceFileName, fteofile);
                     }
 
