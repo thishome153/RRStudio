@@ -217,14 +217,12 @@
     <Compile Include="SchemaKPTForm.designer.cs">
       <DependentUpon>SchemaKPTForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ReaderHelpClasses.cs" />
     <Compile Include="KVZU_MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KVZU_MainForm.Designer.cs">
       <DependentUpon>KVZU_MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiquidTech.cs" />
     <Compile Include="MiApi.cs" />
     <Compile Include="MiWrapper.cs" />
     <Compile Include="Program.cs" />
@@ -580,7 +578,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -489,14 +489,20 @@ namespace netFteo.Rosreestr
            this.Owners = new List<TMyOwner>();
            this.Encumbrances = new List<TMyEncumbrance>();
        }
+
        public string Type
        {
            get { return dRightsv01.ItemToName(this.FType); }
            set { this.FType = value; }
        }
 
-            
+		public TRight(string Name) : this()
+		{
+			this.Name = Name;
+		}
+
    }
+
    public class TMyRights : System.ComponentModel.BindingList<TRight> {
        public List<string> AsList()
        {

@@ -382,6 +382,8 @@ namespace GKNData
 				if (row[9] != DBNull.Value)
 					file.xmlSize_SQL = Math.Round( Convert.ToDouble(row[9]));
 				file.Type = dFileTypes.KPT10; //KPT old than V11
+											  // urn://fake/kpt/5.0.0
+				if (file.xmlns.Equals("urn://fake/kpt/5.0.0")) file.Type = dFileTypes.KPT05;
 				files.Add(file);
 			}
 			data.Reset();

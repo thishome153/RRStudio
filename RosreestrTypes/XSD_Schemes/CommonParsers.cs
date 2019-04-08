@@ -1131,6 +1131,7 @@ namespace RRTypes.CommonCast
 	/// </summary>
 	public static class CasterEGRP
 	{
+
 		public static netFteo.Rosreestr.TMyRights ParseKPSOKSRights(System.Xml.XmlDocument xmldoc)
 		{
 			// Add the namespace.
@@ -1188,6 +1189,8 @@ namespace RRTypes.CommonCast
 			}
 			return rs;
 		}
+
+
 		public static netFteo.Rosreestr.TMyRights ParseEGRNRights(System.Xml.XmlDocument xmldoc)
 		{
 			// Add the namespace.
@@ -3352,10 +3355,21 @@ namespace RRTypes.CommonParsers
 					MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
 					if (parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
 					MainObj.ParentCN = parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
+					//  /Rights/Right/Name/#text
 
-					//Землепользование
+					if (parcel.SelectNodes("Rights/Right") != null)
+					{
+						XmlNodeList rights = parcel.SelectNodes("Rights/Right");
+						TMyRights Rights = new TMyRights();
+						foreach (XmlNode right in rights)
+						{
+							Rights.Add(new TRight(right.SelectSingleNode("Name").FirstChild.Value));
+						}
+						MainObj.Rights = Rights;
+					}
+						//Землепользование
 
-					if (parcel.SelectSingleNode("Entity_Spatial") != null)
+						if (parcel.SelectSingleNode("Entity_Spatial") != null)
 					{
 						TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
 															  parcel.SelectSingleNode("Entity_Spatial"));

@@ -1044,10 +1044,6 @@ namespace XMLReaderCS
 
 		#endregion
 
-
-
-
-
 		#region разбор КВ на ОКС. Сооружение.  KPZU V02
 		// С Наступающим 2016!
 		private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
@@ -1318,7 +1314,6 @@ namespace XMLReaderCS
 
 		#endregion
 
-
 		#region  Разбор Межевого Плана V05
 
 		private void ParseMPV05(RRTypes.MP_V05.MP MP)
@@ -1492,9 +1487,6 @@ namespace XMLReaderCS
 
 
 		#endregion
-
-
-
 
 		#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
 		private void ListFileInfo(netFteo.XML.FileInfo fileinfo)
@@ -3137,7 +3129,9 @@ return res;
 				for (int i = 0; i <= Rights.Count - 1; i++)
 				{
 					TreeNode RNameNode = Rnode.Nodes.Add("RightItemNode", Rights[i].Name);
+					if (Rights[i].Type != null)
 					RNameNode.Nodes.Add(Rights[i].Type);
+					if (Rights[i].RegNumber != null)
 					RNameNode.Nodes.Add(Rights[i].RegNumber + " " + Rights[i].RegDate);
 					if (Rights[i].Owners.Count > 0)
 					{
