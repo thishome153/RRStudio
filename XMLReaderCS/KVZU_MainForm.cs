@@ -1532,12 +1532,11 @@ namespace XMLReaderCS
 			TV_Parcels.BeginUpdate();
 			for (int bc = 0; bc <= BlockList.Blocks.Count - 1; bc++)
 			{
-
+				TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN);
 				if (BlockList.Blocks.Count == 1)
 				{
-
-					TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN);
 					this.Text = BlockList.Blocks[bc].CN;
+
 					if (BlockList.Blocks[bc].Parcels.Count == 1)
 					{
 						this.Text = BlockList.Blocks[bc].Parcels[0].CN;
@@ -1549,7 +1548,7 @@ namespace XMLReaderCS
 					}
 				}// DocInfo.DocRootName);}
 
-				else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName); }
+			//	else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN; }
 
 				if (BlockList.Blocks[bc].Parcels != null)
 				{

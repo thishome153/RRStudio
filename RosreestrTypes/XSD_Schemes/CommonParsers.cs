@@ -3493,8 +3493,6 @@ namespace RRTypes.CommonParsers
 
 				for (int i = 0; i <= Blocksnodes.Count - 1; i++)
 				{
-					//TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
-
 					var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
 					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
 					{
@@ -3513,7 +3511,6 @@ namespace RRTypes.CommonParsers
 				{
 					System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
 					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
-
 					MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
 					MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
 					MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
@@ -3548,18 +3545,16 @@ namespace RRTypes.CommonParsers
 					//Многоконтурный
 					if (parcel.SelectSingleNode("Contours") != null)
 					{
-						//26:04:090203:258
 						System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
 						string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
 						for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
 						{
-							//TODO :Contours recode:
-							/*
-							TMyPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
-																  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
+							/*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
+							// / Contours / Contour[1] / @Number_PP
+							TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
+																  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
 																  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
 							MainObj.EntSpat.Add(NewCont);
-							*/
 						}
 					}
 					XMLParsingProc("xml", ++FileParsePosition, null);

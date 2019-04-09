@@ -43,5 +43,10 @@ namespace GKNData
         {
            // this.ITEM.id = ((TextBox)sender).Text;
         }
-    }
+
+		private void textBox_xmlns_TextChanged(object sender, EventArgs e)
+		{
+			ITEM.xmlns = ((TextBox)sender).Text;
+		}
+	}
 }
