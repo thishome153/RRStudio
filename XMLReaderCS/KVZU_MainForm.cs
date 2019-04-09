@@ -389,7 +389,7 @@ namespace XMLReaderCS
 				  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
 					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
 				{
-					DocInfo.Version = "07..coming soon";
+					this.DocInfo = parser.ParseKPT07(this.DocInfo, xmldoc);
 				}
 
 				//Не КПТ v08 ли это?            

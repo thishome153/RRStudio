@@ -109,6 +109,15 @@ namespace netFteo.IO
 				});
 			}
 
+			foreach (Point pt in dxfFile.Points)
+			{
+				IGeometry Point = new TPoint(pt.Location.Y, pt.Location.X, pt.Location.Z);
+				Point.LayerHandle = pt.Layer.Handle;
+				Point.Definition = pt.CodeName + "." + pt.Handle;
+				Point.Name = pt.CodeName + "." + pt.Handle;
+				res.Add(Point);
+			}
+
 			foreach (Circle dxfCircleS in dxfFile.Circles)
 			{
 				IGeometry Circle = new TCircle(dxfCircleS.Center.Y, dxfCircleS.Center.X, dxfCircleS.Radius);

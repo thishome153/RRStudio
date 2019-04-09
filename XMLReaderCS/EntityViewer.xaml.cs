@@ -240,83 +240,33 @@ namespace XMLReaderCS
         /// <param name="x">the positive X-axis points to the right</param>
         /// <param name="y">the positive Y-axis points to downward</param>
         /// <returns></returns>
-        private UIElement CreateCanvasPoint(double x, double y)
+        private UIElement CreateCanvasPoint(double Canvas_x, double Canvas_y)
         {
             System.Windows.Shapes.Ellipse el = new Ellipse();
             el.Stroke = System.Windows.Media.Brushes.Red;
             el.Fill = System.Windows.Media.Brushes.LightGreen;
-            Canvas.SetLeft(el, x); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).x);
-            Canvas.SetTop(el, y); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).y);
+            Canvas.SetLeft(el, Canvas_x); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).x);
+            Canvas.SetTop(el, Canvas_y); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).y);
             el.Height = pointSignRadius*2; el.Width = pointSignRadius*2;
             return el;
         }
-		private List<UIElement> CreateCanvasCircle(TCircle Cicrcle)
-		{
-			List<UIElement> res = new List<UIElement>();
-			Point Center =  PointsToWindowsPoints(Cicrcle, true);
-			System.Windows.Shapes.Ellipse el = new Ellipse();
-			el.Stroke = System.Windows.Media.Brushes.Red;
-			el.Fill = System.Windows.Media.Brushes.Transparent;
-			Canvas.SetLeft(el,Center.X - Cicrcle.R/(2*Scale)); 
-			Canvas.SetTop (el,Center.Y - Cicrcle.R/(2*Scale)); 
-			el.Height =   Cicrcle.R  / Scale; el.Width = Cicrcle.R/Scale;
-			res.Add(el);
 
 
-			Ellipse el_root = new Ellipse();
-			el_root.Stroke = System.Windows.Media.Brushes.Black;
-			el_root.Fill = System.Windows.Media.Brushes.Black;
-
-			Canvas.SetLeft(el_root,Center.X - pointSignRadius*2);
-			Canvas.SetTop(el_root, Center.Y - pointSignRadius*2);
-
-			el_root.Height = pointSignRadius*4; el_root.Width = pointSignRadius*4;
-			res.Add(el_root);
-
-			Line ls_h = new Line();
-			ls_h.X1 = Center.X + 25;
-			ls_h.X2 = Center.X - 25;
-			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
-			ls_h.Stroke = System.Windows.Media.Brushes.Black;
-			ls_h.StrokeThickness = 0.5;
-			res.Add(ls_h);
-			Line ls_v = new Line();
-			ls_v.X1 = Center.X;
-			ls_v.X2 = Center.X;
-			ls_v.Y1 = Center.Y-25; ls_v.Y2 = Center.Y+25;
-			ls_v.Stroke = System.Windows.Media.Brushes.Black;
-			ls_v.StrokeThickness = 0.5;
-			res.Add(ls_v);
-			return res;
-		}
-
+		/// <summary>
+		/// Create WPF point view
+		/// </summary>
+		/// <param name="Cicrcle"></param>
+		/// <returns></returns>
+		/// </summary>
+		/// <param name="Point_"></param>
+		/// <returns></returns>
 		private List<UIElement> CreateCanvasPointSign(TPoint Point_)
 		{
 			List<UIElement> res = new List<UIElement>();
 			Point Center = PointsToWindowsPoints(Point_, true);
-			/*
-			System.Windows.Shapes.Ellipse el = new Ellipse();
-			el.Stroke = System.Windows.Media.Brushes.Red;
-			el.Fill = System.Windows.Media.Brushes.Transparent;
-			Canvas.SetLeft(el, Center.X - Cicrcle.R / (2 * Scale));
-			Canvas.SetTop(el, Center.Y - Cicrcle.R / (2 * Scale));
-			el.Height = Cicrcle.R / Scale; el.Width = Cicrcle.R / Scale;
-			res.Add(el);
-			*/
-
-			Ellipse el_root = new Ellipse();
-			el_root.Stroke = System.Windows.Media.Brushes.Black;
-			el_root.Fill = System.Windows.Media.Brushes.Black;
-
-			Canvas.SetLeft(el_root, Center.X - pointSignRadius * 2);
-			Canvas.SetTop(el_root, Center.Y - pointSignRadius * 2);
-
-			el_root.Height = pointSignRadius * 4; el_root.Width = pointSignRadius * 4;
-			res.Add(el_root);
-
 			Line ls_h = new Line();
-			ls_h.X1 = Center.X + 25;
-			ls_h.X2 = Center.X - 25;
+			ls_h.X1 = Center.X + 20;
+			ls_h.X2 = Center.X - 20;
 			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
 			ls_h.Stroke = System.Windows.Media.Brushes.Green;
 			ls_h.StrokeThickness = 0.5;
@@ -324,10 +274,21 @@ namespace XMLReaderCS
 			Line ls_v = new Line();
 			ls_v.X1 = Center.X;
 			ls_v.X2 = Center.X;
-			ls_v.Y1 = Center.Y - 25; ls_v.Y2 = Center.Y + 25;
+			ls_v.Y1 = Center.Y - 20; ls_v.Y2 = Center.Y + 20;
 			ls_v.Stroke = System.Windows.Media.Brushes.Green;
 			ls_v.StrokeThickness = 0.5;
 			res.Add(ls_v);
+
+			Ellipse el_root = new Ellipse();
+			el_root.Stroke = System.Windows.Media.Brushes.Black;
+			el_root.Fill = System.Windows.Media.Brushes.Black;
+
+			Canvas.SetLeft(el_root, Center.X - pointSignRadius );
+			Canvas.SetTop(el_root, Center.Y - pointSignRadius );
+
+			el_root.Height = pointSignRadius * 2; el_root.Width = pointSignRadius * 2;
+			res.Add(el_root);
+
 			return res;
 		}
 
@@ -344,7 +305,52 @@ namespace XMLReaderCS
             return res;
         }
 
-        private TextBlock CreateCanvasTextBlock(double x, double y, string label, double fontsize)
+		/// <summary>
+		/// Create WPF circle view
+		/// </summary>
+		/// <param name="Cicrcle"></param>
+		/// <returns></returns>
+		private List<UIElement> CreateCanvasCircle(TCircle Cicrcle)
+		{
+			List<UIElement> res = new List<UIElement>();
+			Point Center = PointsToWindowsPoints(Cicrcle, true);
+			System.Windows.Shapes.Ellipse el = new Ellipse();
+			el.Stroke = System.Windows.Media.Brushes.Red;
+			el.Fill = System.Windows.Media.Brushes.Transparent;
+			Canvas.SetLeft(el, Center.X - Cicrcle.R / (2 * Scale));
+			Canvas.SetTop(el, Center.Y - Cicrcle.R / (2 * Scale));
+			el.Height = Cicrcle.R / Scale; el.Width = Cicrcle.R / Scale;
+			res.Add(el);
+
+			Line ls_h = new Line();
+			ls_h.X1 = Center.X + 35;
+			ls_h.X2 = Center.X - 35;
+			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
+			ls_h.Stroke = System.Windows.Media.Brushes.Black;
+			ls_h.StrokeThickness = 0.5;
+			res.Add(ls_h);
+			Line ls_v = new Line();
+			ls_v.X1 = Center.X;
+			ls_v.X2 = Center.X;
+			ls_v.Y1 = Center.Y - 35; ls_v.Y2 = Center.Y + 35;
+			ls_v.Stroke = System.Windows.Media.Brushes.Black;
+			ls_v.StrokeThickness = 0.5;
+			res.Add(ls_v);
+
+			Ellipse el_root = new Ellipse();
+			el_root.Stroke = System.Windows.Media.Brushes.Black;
+			el_root.Fill = System.Windows.Media.Brushes.Black;
+
+			Canvas.SetLeft(el_root, Center.X - pointSignRadius);
+			Canvas.SetTop(el_root, Center.Y - pointSignRadius);
+
+			el_root.Height = pointSignRadius * 2; el_root.Width = pointSignRadius * 2;
+			res.Add(el_root);
+			return res;
+		}
+
+
+		private TextBlock CreateCanvasTextBlock(double x, double y, string label, double fontsize)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = label;
@@ -356,6 +362,7 @@ namespace XMLReaderCS
             Canvas.SetTop(textBlock, y);
             return textBlock;
         }
+
         private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TPolyLine polygon)
         {
             List<TextBlock> res = new List<TextBlock>();
@@ -399,6 +406,7 @@ namespace XMLReaderCS
 			WPFPolyLine.Points = polygon;
 			return WPFPolyLine;
 		}
+
 		private List<UIElement> CreateCanvasPolygons(TMyPolygon polygon)
         {
             List<UIElement> res = new List<UIElement>();
@@ -412,6 +420,7 @@ namespace XMLReaderCS
                 res.Add(CreateCanvasPolygon(poly, true));
             return res;
         }
+
 		private List<UIElement> CreateCanvasPolygons(TPolyLine polygon)
 		{
 			List<UIElement> res = new List<UIElement>();
@@ -426,21 +435,6 @@ namespace XMLReaderCS
 			return res;
 		}
 
-		/*
-		private List<UIElement> CreateCanvasPolygons(TCircle polygon)
-		{
-			List<UIElement> res = new List<UIElement>();
-			List<PointCollection> polys = PolygonToWindowsShape(polygon, true);
-			List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
-
-			foreach (PointCollection poly in polys)
-				res.Add(CreateCanvasPolygon(poly, false));
-
-			foreach (PointCollection poly in polysOld) // старые границы
-				res.Add(CreateCanvasPolygon(poly, false));
-			return res;
-		}
-		*/
 		/* WPF Coordinate System:
          * For 2D graphics, the WPF coordinate system locates the origin in the upper-left corner of the rendering area. 
          * In the 2D space, the positive X-axis points to the right, and the positive Y-axis points to downward
