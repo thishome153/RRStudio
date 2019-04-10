@@ -8,31 +8,40 @@ using System.Windows.Forms;
 
 namespace netFteo
 {
-    
-    public static class StringUtils
-    {
-      
+
+	public static class StringUtils
+	{
+		public static bool isCadastralNumber(string QueryString, char Delimiter = ':')
+		{
+			//Format ??
+			string[] SplittedString = QueryString.Split(Delimiter);
+			if (SplittedString.Length > 3)
+				return true;
+			else
+				return false;
+		}
 
 
-        
-// -----Функция замены ',' на '.' в случае работы с разделитем Windows Locale ID <> .
- public static string  ReplaceComma(string  Texts)
-    {
 
 
-     string Result = Texts;
-     /* 
-     FindPosition = pos(',',Result);
-    if  (FindPosition != 0) 
-      Result[FindPosition] = '.'; // заменияем там, где нашли запятую
-     */
-     return Result;
-    }
+		// -----Функция замены ',' на '.' в случае работы с разделитем Windows Locale ID <> .
+		public static string ReplaceComma(string Texts)
+		{
 
 
- public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)
- {
-     if (ParentCN == null) return;
+			string Result = Texts;
+			/* 
+			FindPosition = pos(',',Result);
+		   if  (FindPosition != 0) 
+			 Result[FindPosition] = '.'; // заменияем там, где нашли запятую
+			*/
+			return Result;
+		}
+
+
+		public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)
+		{
+			if (ParentCN == null) return;
 			foreach (Spatial.IGeometry poly in Target)
 			{
 				if (poly.Definition != null &&
@@ -40,134 +49,134 @@ namespace netFteo
 					if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
 						poly.Definition = poly.Definition.Substring(ParentCN.Length);
 			}
- }
+		}
 
-//-----------------------------------------------------------------------------
- public static string ReplaceSlash(string  LayerName)
-   {
-       if (LayerName == null) return null;
-    char[] chars = LayerName.ToCharArray();
-     for (int scan = 0; scan <= LayerName.Length-1; scan++)
-       {
+		//-----------------------------------------------------------------------------
+		public static string ReplaceSlash(string LayerName)
+		{
+			if (LayerName == null) return null;
+			char[] chars = LayerName.ToCharArray();
+			for (int scan = 0; scan <= LayerName.Length - 1; scan++)
+			{
 
-           if (LayerName[scan].ToString() == "/" |
-           LayerName[scan].ToString() == "\n\\n" |
-           LayerName[scan].ToString() == "(" |
-           LayerName[scan].ToString() == ")" |
-           LayerName[scan].ToString() == "$" |
-           LayerName[scan].ToString() == "%" |
-           LayerName[scan].ToString() == "^" |
-           LayerName[scan].ToString() == "*" |
-           LayerName[scan].ToString() == "@" |
-           LayerName[scan].ToString() == "#" |
-           LayerName[scan].ToString() == " " |
-           LayerName[scan].ToString() == "-" |
-           LayerName[scan].ToString() == ":")
-               chars[scan] = '_';
-           
-       }
-      
-        return new string(chars);
- } 
-    
-}
-    public static class ObjectLister
-    {
-        public static void ListZone(TreeNode Node, netFteo.Spatial.TZone Zone)
-        {
-            string CN = Zone.Description;
-            TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
-            //PNode.ImageIndex = 6
-            if (Zone.ContentRestrictions != null)
-            
-          //  { TreeNode DescrNode = PNode.Nodes.Add("ZoneconRestrNode", Zone.ContentRestrictions);
-                PNode.ImageIndex = 6;
-                PNode.SelectedImageIndex = 6;            
-          //  
-            if (Zone.PermittedUses != null)
-            {
-                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
-                foreach (string item in Zone.PermittedUses)
-                {
-                    PuNode.Nodes.Add(item);
-                }
-                PNode.ImageIndex = 7;
-                PNode.SelectedImageIndex = 7;
-            }
+				if (LayerName[scan].ToString() == "/" |
+				LayerName[scan].ToString() == "\n\\n" |
+				LayerName[scan].ToString() == "(" |
+				LayerName[scan].ToString() == ")" |
+				LayerName[scan].ToString() == "$" |
+				LayerName[scan].ToString() == "%" |
+				LayerName[scan].ToString() == "^" |
+				LayerName[scan].ToString() == "*" |
+				LayerName[scan].ToString() == "@" |
+				LayerName[scan].ToString() == "#" |
+				LayerName[scan].ToString() == " " |
+				LayerName[scan].ToString() == "-" |
+				LayerName[scan].ToString() == ":")
+					chars[scan] = '_';
 
+			}
 
-            if (Zone.Documents.Count >0 )
-            {
-                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
-                foreach (Spatial.TDocument doc in Zone.Documents)
-                {
+			return new string(chars);
+		}
 
-                    if (doc.Name != null)
-                    {
-                      TreeNode  PutNode = PuNode.Nodes.Add(doc.Name);
+	}
+	public static class ObjectLister
+	{
+		public static void ListZone(TreeNode Node, netFteo.Spatial.TZone Zone)
+		{
+			string CN = Zone.Description;
+			TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
+			//PNode.ImageIndex = 6
+			if (Zone.ContentRestrictions != null)
 
-                        if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
-                        if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
-                        if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
-                        if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
-                    }
-                }
-            }
-             
+				//  { TreeNode DescrNode = PNode.Nodes.Add("ZoneconRestrNode", Zone.ContentRestrictions);
+				PNode.ImageIndex = 6;
+			PNode.SelectedImageIndex = 6;
+			//  
+			if (Zone.PermittedUses != null)
+			{
+				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
+				foreach (string item in Zone.PermittedUses)
+				{
+					PuNode.Nodes.Add(item);
+				}
+				PNode.ImageIndex = 7;
+				PNode.SelectedImageIndex = 7;
+			}
 
 
+			if (Zone.Documents.Count > 0)
+			{
+				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
+				foreach (Spatial.TDocument doc in Zone.Documents)
+				{
 
-            if (Zone.EntitySpatial != null)
-                if (Zone.EntitySpatial.Count > 0)
-                {
-                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
-                    //ListEntSpat(ESNode,  Zone.EntitySpatial);
-                    ListEntSpat(PNode, Zone.EntitySpatial, "SPElem.", "Границы",0);
+					if (doc.Name != null)
+					{
+						TreeNode PutNode = PuNode.Nodes.Add(doc.Name);
 
-                }
-        }
-        
+						if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
+						if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
+						if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
+						if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
+					}
+				}
+			}
 
-        public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName,string Definition, int Status)
-        {
-            if (ES == null) return;
-            TreeNode       Node = NodeTo.Nodes.Add(NodeName+ ES.id.ToString(), Definition);
-            Node.ToolTipText = Spatial.TMyState.StateToString(Status) + ES.HasChanges;
-                           Node.ForeColor   = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
-            //redifine status color, if happend changes:
-            if (ES.HasChangesBool)
-                Node.ForeColor = Spatial.TMyColors.StatusToColor(0);
-                           Node.ImageIndex = 3;
-                           Node.SelectedImageIndex = 3;
-                           Node.Tag = ES.id;//
-        }
 
-        public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
-        {
-            if (ES == null) return;
-            TreeNode Node = NodeTo.Nodes.Add("TPLines." + ES.ParentID.ToString(), Definition);
-            Node.ToolTipText = Spatial.TMyState.StateToString(Status);
-            Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
 
-            for (int i = 0; i <= ES.Count - 1; i++)
-            {
-                ListEntSpat(Node, ES[i], "", "Отрезок "+(i+1).ToString(), Status);
-            }
 
-        }
+			if (Zone.EntitySpatial != null)
+				if (Zone.EntitySpatial.Count > 0)
+				{
+					//TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
+					//ListEntSpat(ESNode,  Zone.EntitySpatial);
+					ListEntSpat(PNode, Zone.EntitySpatial, "SPElem.", "Границы", 0);
 
-        public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
-        {
-            if (ES == null) return;
-            TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.id.ToString(), Definition);
-            Node.ToolTipText = Spatial.TMyState.StateToString(Status);
-            Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+				}
+		}
+
+
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode Node = NodeTo.Nodes.Add(NodeName + ES.id.ToString(), Definition);
+			Node.ToolTipText = Spatial.TMyState.StateToString(Status) + ES.HasChanges;
+			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+																	 //redifine status color, if happend changes:
+			if (ES.HasChangesBool)
+				Node.ForeColor = Spatial.TMyColors.StatusToColor(0);
+			Node.ImageIndex = 3;
+			Node.SelectedImageIndex = 3;
+			Node.Tag = ES.id;//
+		}
+
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode Node = NodeTo.Nodes.Add("TPLines." + ES.ParentID.ToString(), Definition);
+			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
+			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+
+			for (int i = 0; i <= ES.Count - 1; i++)
+			{
+				ListEntSpat(Node, ES[i], "", "Отрезок " + (i + 1).ToString(), Status);
+			}
+
+		}
+
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLine ES, string NodeName, string Definition, int Status)
+		{
+			if (ES == null) return;
+			TreeNode Node = NodeTo.Nodes.Add("TPolyLine." + ES.id.ToString(), Definition);
+			Node.ToolTipText = Spatial.TMyState.StateToString(Status);
+			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
 			Node.ImageIndex = 13;
 			Node.SelectedImageIndex = 13;
 			Node.Tag = ES.id;
-        }
+		}
 
-		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES,  string Definition, int Status)
+		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string Definition, int Status)
 		{
 			if (ES == null) return;
 			TreeNode Node = NodeTo.Nodes.Add("Circle." + ES.id.ToString(), Definition);
@@ -208,9 +217,9 @@ namespace netFteo
 
 					if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature,  ((Spatial.TCircle)feature).NumGeopointA, 6);
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, ((Spatial.TCircle)feature).NumGeopointA, 6);
 					}
-					
+
 					if (feature.TypeName == "netFteo.Spatial.TPoint")
 					{
 						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPoint)feature, ((Spatial.TPoint)feature).NumGeopointA, 6);
@@ -298,33 +307,33 @@ namespace netFteo
 				OutCount = OutCount + ES.Childs[ic].Count - 1;
 			}
 
-				owner.EndUpdate();
+			owner.EndUpdate();
 			return res;
 		}
 
 		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TPolyLine ES)
-        {
-            if (ES == null) return null;
-            ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
-            res.Add("");
-            res.Add("Отрезки границ:");
-            netFteo.Spatial.BrdList Borders = new Spatial.BrdList();
-            Borders.AddItems("", ES);
-            int OutCount = Borders.Count;
-            owner.BeginUpdate();
-            for (int i = 0; i <= Borders.Count - 1; i++)
-            {
-                ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
-                LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
-                LVb.SubItems.Add(Borders[i].Definition);
-                res.Add(LVb);
-            }
+		{
+			if (ES == null) return null;
+			ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
+			res.Add("");
+			res.Add("Отрезки границ:");
+			netFteo.Spatial.BrdList Borders = new Spatial.BrdList();
+			Borders.AddItems("", ES);
+			int OutCount = Borders.Count;
+			owner.BeginUpdate();
+			for (int i = 0; i <= Borders.Count - 1; i++)
+			{
+				ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
+				LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
+				LVb.SubItems.Add(Borders[i].Definition);
+				res.Add(LVb);
+			}
 
-	
+
 			owner.EndUpdate();
-                return res;
-        }
-    }
+			return res;
+		}
+	}
 	public static class MyEncoding
 	{
 		public static string Utf8ToWin1251(string Inpututf8)
@@ -386,28 +395,28 @@ namespace netFteo
 
 	}
 	public static class GUID
-    {
-        /// <summary>
-        /// Create (compile) the value of two GUIDs. 
-        /// </summary>
-        /// <param name="ToUpperCase">UpperCase for literals</param>
-        /// <returns>GUID as string value</returns>
-        public static string CompileGUID(bool ToUpperCase)
-        {
-            Guid g;
-            // Create and display the value of two GUIDs.
-            g = Guid.NewGuid();
-            if (ToUpperCase)
-                return g.ToString().ToUpper(); 
-            else
-                return g.ToString();
-        }
+	{
+		/// <summary>
+		/// Create (compile) the value of two GUIDs. 
+		/// </summary>
+		/// <param name="ToUpperCase">UpperCase for literals</param>
+		/// <returns>GUID as string value</returns>
+		public static string CompileGUID(bool ToUpperCase)
+		{
+			Guid g;
+			// Create and display the value of two GUIDs.
+			g = Guid.NewGuid();
+			if (ToUpperCase)
+				return g.ToString().ToUpper();
+			else
+				return g.ToString();
+		}
 
-        public static bool Valide(string guid)
-        {
-            return false;
-        }
+		public static bool Valide(string guid)
+		{
+			return false;
+		}
 
-    }
-    
+	}
+
 }

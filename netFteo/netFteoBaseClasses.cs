@@ -2693,7 +2693,9 @@ SCAN:
 
         public string CN;
         public string DateCreated;
-        public TCadasterItem()
+		public decimal CadastralCost;
+
+		public TCadasterItem()
         {
             this.CN = "";
             this.id = Gen_id.newId;
@@ -3833,7 +3835,7 @@ SCAN:
         public string ContentRestrictions; // SpecialZone
         public List<string> PermittedUses;
         public List<TDocument> Documents;
-        public TMyPolygon EntitySpatial;
+        public TMyPolygon EntitySpatial; //TODO: Spatials may be multi ?
         public TZone(string accountnumber)
         {
             this.AccountNumber = accountnumber;
@@ -4522,6 +4524,11 @@ SCAN:
 		public int FeaturesCount(string TypeName)
 		{
 			int res = 0;
+			if (TypeName == "*")
+			{
+				return this.Count();
+			}
+
 			foreach (IGeometry feature in this)
 			{
 				if (feature.TypeName == TypeName)

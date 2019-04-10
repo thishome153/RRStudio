@@ -194,8 +194,10 @@ namespace XMLReaderCS
 		/// </summary>
 		private void OpenFile()
 		{
-			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;*.xsd;" +
-				"|Про$транственные данные|*.dxf;*.mif;*.txt";
+			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;" +
+				"|Про$транственные данные|*.dxf;*.mif;*.txt"+
+				"|Технокад|*.csv"+
+				"|XML schema|*.xsd";
 			openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
 			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
 				Read(openFileDialog1.FileName, true);
@@ -550,17 +552,6 @@ namespace XMLReaderCS
 			if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
 			{
 				netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
-				/*
-
-				TEntitySpatial ESfromMIF = mifreader.ImportMIF(FileName);
-				this.DocInfo.MyBlocks.ParsedSpatial.Add(ESfromMIF);
-				this.DocInfo.DocTypeNick = "Mapinfo mif";
-				this.DocInfo.DocType = "Mapinfo mif";
-				this.DocInfo.CommentsType = "MIF";
-				this.DocInfo.Comments = mifreader.Body;
-				this.DocInfo.Encoding = mifreader.BodyEncoding;
-				this.DocInfo.Number = "Mapinfo mif,  " + mifreader.BodyEncoding;
-				*/
 				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
 				mifreader.OnParsing += DXFStateUpdater; 
 				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
@@ -599,24 +590,8 @@ namespace XMLReaderCS
 				TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
 				if (polyfromMIF != null)
 				{
-					this.DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
-					/* TODO kill
-					// Virtual Parcel with contours:
-					TMyCadastralBlock Bl = new TMyCadastralBlock();
-					Bl.CN = "Полигоны txt";
-					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Path.GetFileNameWithoutExtension(FileName), "Item05"));
-
-					if (polyfromMIF.Count == 1)
-					{
-						MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item01");
-						MainObj.EntitySpatial = polyfromMIF[0];
-					}
-					else
-						MainObj.Contours.AddPolygons(polyfromMIF);
-
-					this.DocInfo.MyBlocks.Blocks.Clear();
-					this.DocInfo.MyBlocks.Blocks.Add(Bl);
-					*/
+					DocInfo.MyBlocks.ParsedSpatial.Clear();
+					DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
 				}
 				
 				this.DocInfo.DocTypeNick = "Текстовый файл";
@@ -626,6 +601,22 @@ namespace XMLReaderCS
 				this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
 			}
 
+
+			if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
+			{
+				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+				TEntitySpatial polyfromMIF = mifreader.ImportCSVFile(FileName);
+				if (polyfromMIF != null)
+				{
+					DocInfo.MyBlocks.ParsedSpatial.Clear();
+					DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
+					this.DocInfo.DocTypeNick = "Текстовый файл";
+					this.DocInfo.CommentsType = "CSV";
+					this.DocInfo.Comments = mifreader.Body;
+					this.DocInfo.Encoding = mifreader.BodyEncoding;
+					this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
+				}
+			}
 
 			if (Path.GetExtension(FileName).Equals(".xml"))
 			{
@@ -1550,7 +1541,7 @@ namespace XMLReaderCS
 
 			//	else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN; }
 
-				if (BlockList.Blocks[bc].Parcels != null)
+				if ((BlockList.Blocks[bc].Parcels != null) && (BlockList.Blocks[bc].Parcels.Count > 0))
 				{
 					TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
 					foreach (TMyParcel Parcel in BlockList.Blocks[bc].Parcels)
@@ -1893,7 +1884,7 @@ namespace XMLReaderCS
 			{
 				TreeNode flatsnodes = PNode.Nodes.Add("ParentCadastralNumbers" + oks.id.ToString(), "Земельные участки");
 				foreach (string s in oks.ParentCadastralNumbers)
-					flatsnodes.Nodes.Add("CN" + s, s);
+					flatsnodes.Nodes.Add(s, s);
 			}
 
 			netFteo.ObjectLister.ListEntSpat(PNode, oks.EntSpat);
@@ -2525,6 +2516,14 @@ return res;
 						LViPurp.SubItems.Add(this.dutilizations_v01.Item2Annotation(P.Utilization.Untilization));
 						LV.Items.Add(LViPurp);
 					}
+					if (P.CadastralCost >0)
+					{
+						ListViewItem LViPurp = new ListViewItem();
+						LViPurp.Text = "Кадастровая. стоимость";
+						LViPurp.SubItems.Add(P.CadastralCost.ToString());
+						LV.Items.Add(LViPurp);
+					}
+
 				}
 
 
@@ -2697,6 +2696,13 @@ return res;
 
 					GeometryToSpatialView(listView1, P.EntSpat);
 					KeyParametersToListView(LV, P.KeyParameters);
+					if (P.CadastralCost > 0)
+					{
+						ListViewItem LViPurp = new ListViewItem();
+						LViPurp.Text = "Кадастровая. стоимость";
+						LViPurp.SubItems.Add(P.CadastralCost.ToString());
+						LV.Items.Add(LViPurp);
+					}
 				}
 
 
@@ -4134,8 +4140,7 @@ return res;
               //if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
               //{
                   Int32 id = ConvertToInt32(TV_Parcels.SelectedNode.Name); // PNode CNNode
-
-                  object O = this.DocInfo.MyBlocks.GetObject(id);
+				  object O = this.DocInfo.MyBlocks.GetObject(id);
                   if (O != null)
                   {
                       if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
@@ -4170,14 +4175,13 @@ return res;
                   pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//oks
 
               }
-
+/*
               if (TV_Parcels.SelectedNode.Name.Contains("CN")) // исходные зу
               {
                   cn = TV_Parcels.SelectedNode.Name;
                   pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//Parent
-
               }
-
+*/
               if (TV_Parcels.SelectedNode.Name.Contains("TopNode")) // Квартал
               {
                   //Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
@@ -4188,7 +4192,10 @@ return res;
                   }
               }
 
-              if (cn != null)
+			// otherwise, just string like cadastral numer 
+			if (netFteo.StringUtils.isCadastralNumber(TV_Parcels.SelectedNode.Text))
+				pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);
+			if (cn != null)
               {
                   tabControl1.SelectedIndex = 3;
               }

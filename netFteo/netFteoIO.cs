@@ -53,7 +53,6 @@ namespace netFteo.IO
 			try
 			{
 				string line = null;
-				int StrCounter = 0;
 				System.IO.TextReader readFile = new StreamReader(Fname);
 
 				while (readFile.Peek() != -1)
@@ -72,24 +71,20 @@ namespace netFteo.IO
 
 						if (line.Contains("["))
 						{
-							TMyPolygon resPoly = new TMyPolygon(line.Substring(7));
-							line = readFile.ReadLine();
-							while (!line.Contains(";;;;;;;;;;;"))
+						newPolygon:
+							TMyPolygon resPoly = new TMyPolygon(line.Split(CommaDelimiter.ToCharArray())[0]); // z.B.: [1];;1;-;-;522207.54;1318046.19;;;;0.1;626003000000
+							while (readFile.Peek() != -1)
 							{
-								if (line.Contains("Child")) goto ChildsHere;
-								StrCounter++;
 								string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray()); //Сплпиттер по ";" - default for CSV
 								TPoint FilePoint = new TPoint();
-								FilePoint.id = StrCounter;
-								FilePoint.NumGeopointA = SplittedStr[0].ToString();
-								FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
-								FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
+								FilePoint.NumGeopointA = SplittedStr[2].ToString();
+								FilePoint.x = Convert.ToDouble(SplittedStr[5].ToString());
+								FilePoint.y = Convert.ToDouble(SplittedStr[6].ToString());
+
 								if (!SplittedStr[3].Contains("-"))
 									FilePoint.oldX = Convert.ToDouble(SplittedStr[3].ToString());
 								if (!SplittedStr[4].Contains("-"))
 									FilePoint.oldY = Convert.ToDouble(SplittedStr[4].ToString());
-
-								//FilePoint.z = Convert.ToDouble(SplittedStr[5].ToString()); // here changes flag, * == TRUE
 
 								if (SplittedStr[5].ToString() == "*")
 								{
@@ -101,40 +96,34 @@ namespace netFteo.IO
 									FilePoint.oldY = FilePoint.y;
 									FilePoint.Status = 6; // exist, not changed
 								}
-								FilePoint.Mt = Convert.ToDouble(SplittedStr[4].ToString());
-								FilePoint.Description = SplittedStr[5].ToString();
+								FilePoint.Mt = Convert.ToDouble(SplittedStr[10].ToString());
+								FilePoint.Description = SplittedStr[11].ToString();
 								resPoly.AddPoint(FilePoint);
-								//Внутренние границы
-								goto nextPolygonstring;
 
-								ChildsHere:
-
-								if (line.Contains("Child"))
+								line = readFile.ReadLine();
+								if (line == "")
 								{
-									TRing child = resPoly.AddChild();
 									line = readFile.ReadLine();
-									while (!line.Contains("EndChild"))
+									resPolys.Add(resPoly);
+									goto newPolygon;
+								}
+
+								if (line.Contains("["))
+								{
+									//may be children
+									if (resPoly.Definition != line.Split(CommaDelimiter.ToCharArray())[0])
 									{
-										StrCounter++;
-										string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
-										TPoint ChildPoint = new TPoint();
-										ChildPoint.id = StrCounter;
-										ChildPoint.NumGeopointA = ChildStr[0].ToString();
-										ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
-										ChildPoint.y = Convert.ToDouble(ChildStr[2].ToString());
-										ChildPoint.z = Convert.ToDouble(ChildStr[3].ToString());
-										ChildPoint.Mt = Convert.ToDouble(ChildStr[4].ToString());
-										ChildPoint.Description = ChildStr[5].ToString();
-										child.AddPoint(ChildPoint);
-										line = readFile.ReadLine();
+										resPolys.Add(resPoly);
+										goto newPolygon;
 									}
 								}
-								nextPolygonstring: line = readFile.ReadLine();
+
+
 							}
 							resPolys.Add(resPoly);
 						}
 					}
-					next:;
+				next:;
 				}
 				readFile.Close();
 				readFile = null;
@@ -160,18 +149,15 @@ namespace netFteo.IO
 			while (readFile.Peek() != -1)
 			{
 				line = readFile.ReadLine();
-
 				if (line != null) //Читаем строку
 				{      //по строке
-
-					/* TODO:
-					 FileType = line; 
 					if (line.Contains("#Fixosoft NumXYZD data format V2014"))
 					{
 						TEntitySpatial rets = new TEntitySpatial();
 						rets.Add(ImportNXYZDFile2014(Fname));
 						return rets;
 					}
+
 					if (line.Contains("#Fixosoft NumXYZD data format V2015"))
 						return ImportNXYZDFile2015(Fname);
 
@@ -180,7 +166,6 @@ namespace netFteo.IO
 
 					if (line.Equals("#Fixosoft spatial text file V2018"))
 						return ImportNXYZDFile2018(Fname);
-					*/
 				}
 			}
 			return null;
@@ -351,9 +336,10 @@ namespace netFteo.IO
 			}
 		}
 
-		private TPolygonCollection ImportNXYZDFile2015(string Fname)
+		private TEntitySpatial ImportNXYZDFile2015(string Fname)
 		{
-			TPolygonCollection resPolys = new TPolygonCollection();
+			TEntitySpatial res = new TEntitySpatial();
+
 			try
 			{
 				string line = null;
@@ -419,14 +405,14 @@ namespace netFteo.IO
 								}
 								nextPolygonstring: line = readFile.ReadLine();
 							}
-							resPolys.AddPolygon(resPoly);
+							res.AddPolygon(resPoly);
 						}
 					}
 					next:;
 				}
 				readFile.Close();
 				readFile = null;
-				return resPolys;
+				return res;
 			}
 			catch (IOException ex)
 			{
@@ -434,9 +420,10 @@ namespace netFteo.IO
 				return null;
 			}
 		}
-		private TPolygonCollection ImportNXYZDFile2016(string Fname)
+
+		private TEntitySpatial ImportNXYZDFile2016(string Fname)
 		{
-			TPolygonCollection resPolys = new TPolygonCollection();
+			TEntitySpatial resPolys = new TEntitySpatial();
 			try
 			{
 				string line = null;
@@ -522,9 +509,9 @@ namespace netFteo.IO
 			return null;
 		}
 
-		private TPolygonCollection ImportNXYZDFile2018(string Fname)
+		private TEntitySpatial ImportNXYZDFile2018(string Fname)
 		{
-			TPolygonCollection resPolys = new TPolygonCollection();
+			TEntitySpatial resPolys = new TEntitySpatial();
 			try
 			{
 				string line = null;
@@ -643,7 +630,7 @@ namespace netFteo.IO
 		public const string FixosoftFileSignature2 = "#Fixosoft NumXYZD data format V2015.2";
 		public const string FixosoftFileSignature3 = "#Fixosoft NumXYZD data format V2016";
 		public const string FixosoftFileSignature4 = "#Fixosoft NumXYZD data format V2017";
-		public const string FixosoftFileSign5 = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
+		public const string FixosoftFileSign5      = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
 		/*
 		public void SaveAsFixosoftTXT2015(string FileName, TMyPolygon ES)
 		{
@@ -797,7 +784,7 @@ namespace netFteo.IO
 								String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
 			writer.WriteLine("# Разделители полей tab. Кодировка " + encoding.EncodingName + ".  Поля файла: ");
 			writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
-			writer.WriteLine("# Полигонов " + ES.Count.ToString());
+			writer.WriteLine("# Геометрий " + ES.FeaturesCount("*").ToString());
 			foreach (IGeometry feature in ES)
 			{
 				if (feature.GetType().ToString() == "TMyPolygon")

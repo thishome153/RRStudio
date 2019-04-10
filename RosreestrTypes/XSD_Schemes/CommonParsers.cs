@@ -3355,6 +3355,10 @@ namespace RRTypes.CommonParsers
 					MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
 					if (parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
 					MainObj.ParentCN = parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
+					if (parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value") != null)
+					MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value").Value);
+					
+
 					//  /Rights/Right/Name/#text
 
 					if (parcel.SelectNodes("Rights/Right") != null)
@@ -3514,6 +3518,8 @@ namespace RRTypes.CommonParsers
 					MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
 					MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
 					MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
+					if (parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value") != null)
+						MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value").Value);
 					if (parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc") != null)
 						MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
 					MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
@@ -3682,6 +3688,9 @@ namespace RRTypes.CommonParsers
 					MainObj.AreaGKN = parcel.SelectSingleNode("Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
 					MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
 					MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
+					// CadastralCost/@Value
+					if (parcel.SelectSingleNode("CadastralCost/@Value") != null)
+						MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("CadastralCost/@Value").Value);
 					MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
 					MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
 					MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
@@ -4142,6 +4151,7 @@ namespace RRTypes.CommonParsers
 					MainObj.State = KPT09.CadastralBlocks[i].Parcels[iP].State.ToString();
 					MainObj.Category = KPT09.CadastralBlocks[i].Parcels[iP].Category.ToString(); //netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT09.CadastralBlocks[i].Parcels[iP].Category.ToString());
 					MainObj.DateCreated = KPT09.CadastralBlocks[i].Parcels[iP].DateCreated.ToString("dd.MM.yyyy");
+					MainObj.CadastralCost = KPT09.CadastralBlocks[i].Parcels[iP].CadastralCost.Value;
 					//Землепользование
 					if (KPT09.CadastralBlocks[i].Parcels[iP].ParentCadastralNumbers != null)
 						MainObj.ParentCN = KPT09.CadastralBlocks[i].Parcels[iP].ParentCadastralNumbers.CadastralNumber;
@@ -4256,6 +4266,8 @@ namespace RRTypes.CommonParsers
 							Building.Building.AssignationBuilding = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
 							Building.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
+							if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralCost != null)
+							Building.CadastralCost = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralCost.Value;
 							Building.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
 						}
@@ -4265,6 +4277,8 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Constructions = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
+							if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost !=null)
+							Constructions.CadastralCost = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost.Value;
 							Constructions.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
 
 
@@ -4297,6 +4311,8 @@ namespace RRTypes.CommonParsers
 						{
 							TMyRealty Uncompleted = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
 							Uncompleted.Uncompleted.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
+							if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost != null)
+							Uncompleted.CadastralCost = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost.Value;
 							Uncompleted.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
 							Uncompleted.EntSpat =  CommonCast.CasterOKS.ES_OKS2(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber,
 																							 KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
@@ -4351,6 +4367,7 @@ namespace RRTypes.CommonParsers
 					MainObj.State = KPT10.CadastralBlocks[i].Parcels[iP].State.ToString();
 					MainObj.Category = KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString();//netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString());
 					MainObj.DateCreated = KPT10.CadastralBlocks[i].Parcels[iP].DateCreated.ToString("dd.MM.yyyy");
+					MainObj.CadastralCost = KPT10.CadastralBlocks[i].Parcels[iP].CadastralCost.Value;
 
 					//Землепользование
 					if (KPT10.CadastralBlocks[i].Parcels[iP].ParentCadastralNumbers != null)
@@ -4469,6 +4486,8 @@ namespace RRTypes.CommonParsers
 							Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
 							Building.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
 							Building.Area = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Area;
+							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralCost != null)
+							Building.CadastralCost = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralCost.Value;
 							Building.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.ObjectType);
 							Bl.AddOKS(Building);
 						}
@@ -4479,6 +4498,8 @@ namespace RRTypes.CommonParsers
 							TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 							Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
 							Constructions.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
+							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost !=null)
+							Constructions.CadastralCost = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost.Value;
 							Constructions.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
 							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.KeyParameters.Count > 0)
@@ -4499,6 +4520,8 @@ namespace RRTypes.CommonParsers
 							Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
 							Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
 							Uncompleted.Location= KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
+							if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost != null)
+							Uncompleted.CadastralCost = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost.Value;
 							Uncompleted.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber,
 																							 KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.EntitySpatial);
 
@@ -4588,8 +4611,9 @@ namespace RRTypes.CommonParsers
 						MainObj.Utilization.UtilbyDoc    = parcel.SelectSingleNode("params/permitted_use/permitted_use_established/by_document").FirstChild.Value;
 						MainObj.Utilization.Untilization = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "params/permitted_use/permitted_use_established/land_use/code"); 
 						MainObj.Location = Parse_LocationKPT11(parcel.SelectSingleNode("address_location"));
-
-
+						if (parcel.SelectSingleNode("cost/value") != null)
+						MainObj.CadastralCost= Convert.ToDecimal( parcel.SelectSingleNode("cost/value").FirstChild.Value);
+						
 						//Землепользование
 						if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
 						{
@@ -4630,7 +4654,8 @@ namespace RRTypes.CommonParsers
 						//Также параллельное TmyOKS
 						TMyRealty Building = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
 						Building.Location  = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
-
+						if (build.SelectSingleNode("cost/value") != null)
+							Building.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
 						if (build.SelectSingleNode("contours/contour/entity_spatial") != null)
 						{
 							Building.EntSpat =  KPT11LandEntSpatToES2(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
@@ -4651,6 +4676,9 @@ namespace RRTypes.CommonParsers
 						System.Xml.XmlNode build = construction_records.ChildNodes[iP];
 						//   object/common_data/cad_number
 						TMyRealty Construct = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+						if (build.SelectSingleNode("cost/value") != null)
+							Construct.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
+
 						Construct.Location = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
 						Bl.AddOKS(Construct);
 						XMLParsingProc("xml", ++FileParsePosition, null);
@@ -4662,6 +4690,9 @@ namespace RRTypes.CommonParsers
 						//   object/common_data/cad_number
 						TMyRealty UnderConstruct = new TMyRealty(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
 						UnderConstruct.Location = Parse_LocationKPT11(under.SelectSingleNode("address_location"));
+						if (under.SelectSingleNode("cost/value") != null)
+							UnderConstruct.CadastralCost = Convert.ToDecimal(under.SelectSingleNode("cost/value").FirstChild.Value);
+
 						Bl.AddOKS(UnderConstruct);
 						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
@@ -4744,6 +4775,7 @@ namespace RRTypes.CommonParsers
 			if (kp.Parcel.Utilization.UtilizationSpecified)
 				MainObj.Utilization.Untilization = kp.Parcel.Utilization.Utilization.ToString();
 			MainObj.DateCreated = kp.Parcel.DateCreated.ToString("dd.MM.yyyy");
+			MainObj.CadastralCost = kp.Parcel.CadastralCost.Value;
 			MainObj.Category = kp.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kp.Parcel.Category.ToString());
 			MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kp.Parcel.Location);
 			MainObj.Rights = EGRP_v60Utils.ParseEGRRights(xmldoc);
@@ -4987,7 +5019,7 @@ namespace RRTypes.CommonParsers
 							MainObj.AreaGKN = parcel.Areas[0].Area.ToString();
 							MainObj.State = parcel.State.ToString();
 							MainObj.DateCreated = parcel.DateCreated.ToString("dd.MM.yyyy");
-
+							//MainObj.CadastralCost = parcel. kv.Parcels.Parcel.CadastralCost.Value;
 							//Землепользование
 							if (parcel.Entity_Spatial != null)
 								if (parcel.Entity_Spatial.Spatial_Element.Count > 0)
@@ -5118,6 +5150,8 @@ namespace RRTypes.CommonParsers
 			MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
 			MainObj.AreaGKN = kv.Parcels.Parcel.Area.Area;
 			MainObj.State = kv.Parcels.Parcel.State.ToString();
+			if (kv.Parcels.Parcel.CadastralCost !=null)
+			MainObj.CadastralCost = kv.Parcels.Parcel.CadastralCost.Value;
 			MainObj.DateCreated = kv.Parcels.Parcel.DateCreated.ToString("dd.MM.yyyy");
 
 			Bl.CN = kv.Parcels.Parcel.CadastralBlock;
@@ -5272,12 +5306,14 @@ namespace RRTypes.CommonParsers
 			MainObj.Category = kv.Parcels.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
 
 			MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kv.Parcels.Parcel.Location);
-
+			MainObj.CadastralCost = kv.Parcels.Parcel.CadastralCost.Value;
 			MainObj.Rights = KVZU_v06Utils.KVZURightstoFteorights(kv.Parcels.Parcel.Rights);
 			MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
 			MainObj.AreaGKN = kv.Parcels.Parcel.Area.Area;
 			MainObj.State = kv.Parcels.Parcel.State.ToString();
 			MainObj.DateCreated = kv.Parcels.Parcel.DateCreated.ToString("dd.MM.yyyy");
+			if (kv.Parcels.Parcel.CadastralCost != null)
+				MainObj.CadastralCost = kv.Parcels.Parcel.CadastralCost.Value;
 			//Землепользование
 			if (kv.Parcels.Parcel.EntitySpatial != null)
 				if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
