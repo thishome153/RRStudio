@@ -1197,8 +1197,8 @@ namespace netFteo.IO
 				writer.WriteLine("Charset \"WindowsCyrillic\"");
 				writer.WriteLine("Delimiter \"$\"");
 				writer.WriteLine("CoordSys NonEarth Units \"m\" Bounds (" +
-											ES.Get_Bounds.MinY.ToString() + "," + ES.Get_Bounds.MinX.ToString() + ")  (" +
-											ES.Get_Bounds.MaxY.ToString() + "," + ES.Get_Bounds.MaxX.ToString() + ")");
+											ES.Bounds.MinY.ToString() + "," + ES.Bounds.MinX.ToString() + ")  (" +
+											ES.Bounds.MaxY.ToString() + "," + ES.Bounds.MaxX.ToString() + ")");
 				writer.WriteLine("Columns 5");
 				writer.WriteLine("    Point_Name Char(127)");
 				writer.WriteLine("    Net_Klass  Char(127)");
@@ -1214,8 +1214,8 @@ namespace netFteo.IO
 				writerP.WriteLine("Delimiter \"$\"");
 				writerP.WriteLine("CoordSys NonEarth Units \"m\"");
 
-				writerP.WriteLine("Bounds (" + ES.Get_Bounds.MinY.ToString() + "," + ES.Get_Bounds.MinX.ToString() + ")  (" +
-											  ES.Get_Bounds.MaxY.ToString() + "," + ES.Get_Bounds.MaxX.ToString() + ")");
+				writerP.WriteLine("Bounds (" + ES.Bounds.MinY.ToString() + "," + ES.Bounds.MinX.ToString() + ")  (" +
+											  ES.Bounds.MaxY.ToString() + "," + ES.Bounds.MaxX.ToString() + ")");
 
 				writerP.WriteLine("Columns 3");
 				writerP.WriteLine("CN Char(127)");

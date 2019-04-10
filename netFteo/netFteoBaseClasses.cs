@@ -1327,6 +1327,7 @@ SCAN:
             this.MaxX = 0;
             this.MaxY = 0;
         }
+
         public TMyRect(double minx, double miny, double maxx, double maxy)
         {
 
@@ -4437,6 +4438,8 @@ SCAN:
 			else return AreaSpatial.ToString(format);
 		}
 
+
+
 		private void EsChekerProc(string sender, int process, byte[] Data)
 		{
 			if (OnChecking == null) return;
@@ -4608,12 +4611,28 @@ SCAN:
 			}
 			LV.EndUpdate();
 		}
-
+		
 		public double ScaleEntity(double canvas_width, double canvas_height)
 		{
-			return -1;
-		}
+			if (this.Bounds == null) return -1;
+			double scale = 0;
+			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
+															  
 
+			if (dx > dy)
+			{
+				scale = (dx / canvas_height); // / ViewKoefficient;
+
+			}
+			else
+			{
+				scale = (dy / canvas_width); // / ViewKoefficient;
+			}
+			return scale;
+		
+		}
+		
 		public int ReorderPoints(int Startindex =1)
 		{
 			foreach (IPointList feature in this)
@@ -4657,12 +4676,14 @@ SCAN:
 		/// <summary>
 		/// TODO: wrong util code
 		/// </summary>
-		public TMyRect Get_Bounds
+		/// 
+		public TMyRect Bounds
 		{
 			get
 			{
 				TMyRect Result = new TMyRect();
 				foreach (IGeometry feature in this)
+				{
 					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 					{
 						TMyPolygon poly = (TMyPolygon)feature;
@@ -4672,7 +4693,7 @@ SCAN:
 					Result.MaxY = poly.Bounds.MaxY;
 					Result.MinY = poly.Bounds.MinY;
 						*/
-						for (int i = 1; i <= this.Count; i++)
+						//for (int i = 1; i <= this.Count; i++)
 						{
 							//рассчитаем диапазон карты
 							if (poly.Bounds != null)
@@ -4684,11 +4705,44 @@ SCAN:
 							}
 						}
 					}
+					
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						TPolyLine poly = (TPolyLine)feature;
+						/*
+					Result.MinX = poly.Bounds.MinX;
+					Result.MaxX = poly.Bounds.MaxX;
+					Result.MaxY = poly.Bounds.MaxY;
+					Result.MinY = poly.Bounds.MinY;
+						*/
+						//for (int i = 1; i <= this.Count; i++)
+						{
+							//рассчитаем диапазон карты
+							if (poly.Bounds != null)
+							{
+								if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+								if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+								if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+								if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+							}
+						}
+					}
+				}
 				return Result;
 			}
 		}
-
-		public void Close()
+		
+		/// <summary>
+		/// Medium value of ordinates all features in this
+		/// </summary>
+		public TPoint AverageCenter
+		{
+			get
+			{
+				return new TPoint(500000, 1300000);
+			}
+		}
+				public void Close()
 		{
 			// nothing to
 		}

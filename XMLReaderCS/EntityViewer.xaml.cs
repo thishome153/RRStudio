@@ -28,9 +28,11 @@ namespace XMLReaderCS
         public double Scale;
         double fViewKoeffecient = 0.9;// polygon.AreaSpatial * 0.0003; //200; 
         private IGeometry fSpatial; //Пд для визуализации
+		private TPoint AverageCenter;
         public EntityViewer()
         {
             InitializeComponent();
+			AverageCenter = new TPoint();
         }
 
         public void CreateView(object Entity)
@@ -144,13 +146,40 @@ namespace XMLReaderCS
 				if (fSpatial.TypeName == "netFteo.Spatial.TEntitySpatial")
 				{
 					//TODO:  drawing all items in TEntitySpatial
-
-
+					TEntitySpatial TotalES = (TEntitySpatial)fSpatial;
+					this.AverageCenter = new TPoint(506709, 1286339);
+					foreach(IGeometry feature in TotalES)
+					{
+						if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+						{
+							TMyPolygon polygon = (TMyPolygon)feature;
+							//this.AverageCenter = polygon.AverageCenter;
+							label2.Content = TotalES.Definition;
+							//label1_Canvas_Sizes.Content = "Площадь " + polygon.AreaSpatialFmt("0.00");
+							Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
+							//Полигон
+							foreach (UIElement el in CreateCanvasPolygons(polygon))
+								canvas1.Children.Add(el);
+							//Точки
+							/*
+							List<UIElement> cnspts = CreateCanvasPoints(polygon);
+							foreach (UIElement pt in cnspts)
+								canvas1.Children.Add(pt);
+							*/
+							//Метки
+							/*
+							List<TextBlock> labels = CreateCanvasPointLabels((netFteo.Spatial.TRing)polygon);
+							foreach (TextBlock label in labels)
+								canvas1.Children.Add(label);
+							*/
+						}
+					}
 				}
 
 				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                 {
                     TMyPolygon polygon = (TMyPolygon)Spatial;
+					this.AverageCenter = polygon.AverageCenter;
                     label2.Content = polygon.Definition;
                     label1_Canvas_Sizes.Content = "Площадь " + polygon.AreaSpatialFmt("0.00");
                     Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
@@ -172,6 +201,7 @@ namespace XMLReaderCS
 				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TPolyLine")
 				{
 					TPolyLine polygon = (TPolyLine)Spatial;
+					this.AverageCenter = polygon.AverageCenter;
 					label2.Content = polygon.Definition;
 					label1_Canvas_Sizes.Content = "Длина " + polygon.Length.ToString("0.00");
 					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
@@ -295,7 +325,7 @@ namespace XMLReaderCS
 		private List<UIElement> CreateCanvasPoints(netFteo.Spatial.TPolyLine polyline)
         {
             List<UIElement> res = new List<UIElement>();
-            PointCollection pts =   PointsToWindowsPoints(polyline.AverageCenter.x, polyline.AverageCenter.y, polyline, true);
+            PointCollection pts =   PointsToWindowsPoints(this.AverageCenter.x, this.AverageCenter.y, polyline, true);
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
@@ -366,7 +396,7 @@ namespace XMLReaderCS
         private List<TextBlock> CreateCanvasPointLabels(netFteo.Spatial.TPolyLine polygon)
         {
             List<TextBlock> res = new List<TextBlock>();
-            PointCollection pts = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, true);
+            PointCollection pts = PointsToWindowsPoints(this.AverageCenter.x, this.AverageCenter.y, polygon, true);
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
@@ -542,13 +572,13 @@ namespace XMLReaderCS
         {
             List<PointCollection> res = new List<PointCollection>();
             PointCollection winPoints = new PointCollection();
-
-            winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
+			
+            winPoints = PointsToWindowsPoints(this.AverageCenter.x, this.AverageCenter.y, polygon, newOnly);
             res.Add(winPoints);
             foreach (netFteo.Spatial.TRing chld in polygon.Childs)
             {
                 PointCollection childwinPoints = new PointCollection();
-                childwinPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, chld,newOnly);
+                childwinPoints = PointsToWindowsPoints(this.AverageCenter.x, this.AverageCenter.y, chld,newOnly);
                 res.Add(childwinPoints);
             }
             return res;
@@ -559,7 +589,7 @@ namespace XMLReaderCS
 			List<PointCollection> res = new List<PointCollection>();
 			PointCollection winPoints = new PointCollection();
 
-			winPoints = PointsToWindowsPoints(polygon.AverageCenter.x, polygon.AverageCenter.y, polygon, newOnly);
+			winPoints = PointsToWindowsPoints(this.AverageCenter.x, this.AverageCenter.y, polygon, newOnly);
 			res.Add(winPoints);
 			return res;
 		}
