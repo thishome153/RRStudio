@@ -63,6 +63,11 @@ namespace netFteo.Spatial
 		void ShowasListItems(ListView LV, bool SetTag);
 
 		/// <summary>
+		/// Get center (medium) ordinates of geometry
+		/// </summary>
+		TPoint AverageCenter { get; }
+
+		/// <summary>
 		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
 		/// </summary>
 		/// <param name="canvas_width">Ширина полотна</param>
@@ -128,10 +133,19 @@ namespace netFteo.Spatial
 
 		}
 
+		public TPoint AverageCenter
+		{
+			get
+			{
+				return new TPoint(0, 0);
+			}
+		}
+
 		public double ScaleEntity(double canvas_width, double canvas_height)
 		{
-			return -1;
+			return 1;
 		}
+
 		/// <summary>
 		/// Construct base Geometry object
 		/// </summary>
@@ -140,13 +154,7 @@ namespace netFteo.Spatial
             this.id = Gen_id.newId;
 			this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
 		}
-		/*
-		public void Close()
-		{
-			// nothing to
-		}
-
-		*/
+	
 	}
 
 
@@ -282,6 +290,13 @@ namespace netFteo.Spatial
             get { return this.fDescription; }
             set { this.fDescription = value; }
         }
+		public new TPoint AverageCenter
+		{
+			get
+			{
+				return this;
+			}
+		}
 
 		/// <summary>
 		/// Расчет масштаба Tpoint на поверхность (z.B: WPF canvas) 
@@ -1000,12 +1015,37 @@ namespace netFteo.Spatial
             }
         }
 
+		/// <summary>
+		/// Средние значения координат полигона
+		/// </summary>
+		public TPoint AverageCenter
+		{
+			get
+			{
+				double Xsumm = 0;
+				double Ysumm = 0; int pointcnt = 0;
+				for (int i = 0; i <= this.PointCount - 1; i++)
+				{
+					if (!Double.IsNaN(this[i].x))
+					{
+						Xsumm = Xsumm + (this[i].x);
+						Ysumm = Ysumm + (this[i].y);
+						pointcnt++;
+					}
+				}
+				TPoint Respoint = new TPoint();
+				Respoint.NumGeopointA = "Center";
+				Respoint.x = Xsumm / pointcnt;
+				Respoint.y = Ysumm / pointcnt;
+				return Respoint;
+			}
+		}
 
 
-        /// <summary>
-        /// Предельные размеры
-        /// </summary>
-        public TMyRect Bounds
+		/// <summary>
+		/// Предельные размеры
+		/// </summary>
+		public TMyRect Bounds
         {
             get
             {
@@ -1379,31 +1419,7 @@ SCAN:
 
 
 	
-      /// <summary>
-        /// Средние значения координат полигона
-        /// </summary>
-        public TPoint AverageCenter
-        {
-            get
-            {
-                double Xsumm = 0;
-                double Ysumm = 0; int pointcnt = 0;
-                for (int i = 0; i <= this.PointCount - 1; i++)
-                {
-                    if (! Double.IsNaN(this[i].x))
-                    {
-                        Xsumm = Xsumm + (this[i].x);
-                        Ysumm = Ysumm + (this[i].y);
-                        pointcnt++;
-                    }
-                }
-                TPoint Respoint = new TPoint();
-                Respoint.NumGeopointA = "Center";
-                Respoint.x = Xsumm / pointcnt;
-                Respoint.y = Ysumm / pointcnt;
-                return Respoint;
-            }
-        }
+ 
 	}
 
 	public class TPolyLines : BindingList<TPolyLine>
@@ -4682,20 +4698,59 @@ SCAN:
 			get
 			{
 				TMyRect Result = new TMyRect();
+
+				// init bounds by first polygon/polyline
 				foreach (IGeometry feature in this)
 				{
 					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 					{
 						TMyPolygon poly = (TMyPolygon)feature;
-						/*
-					Result.MinX = poly.Bounds.MinX;
-					Result.MaxX = poly.Bounds.MaxX;
-					Result.MaxY = poly.Bounds.MaxY;
-					Result.MinY = poly.Bounds.MinY;
-						*/
-						//for (int i = 1; i <= this.Count; i++)
+						Result.MinX = poly.Bounds.MinX;
+						Result.MinY = poly.Bounds.MinY;
+						Result.MaxX = poly.Bounds.MaxX;
+						Result.MaxY = poly.Bounds.MaxY;
+						goto SCAN;
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						TPolyLine poly = (TPolyLine)feature;
+						Result.MinX = poly.Bounds.MinX;
+						Result.MinY = poly.Bounds.MinY;
+						Result.MaxX = poly.Bounds.MaxX;
+						Result.MaxY = poly.Bounds.MaxY;
+						goto SCAN;
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TCircle")
+					{
+						TCircle poly = (TCircle)feature;
+						Result.MinX = poly.Bounds.MinX;
+						Result.MinY = poly.Bounds.MinY;
+						Result.MaxX = poly.Bounds.MaxX;
+						Result.MaxY = poly.Bounds.MaxY;
+						goto SCAN;
+					}
+				}
+
+				SCAN:		foreach (IGeometry feature in this)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					{
+						TMyPolygon poly = (TMyPolygon)feature;
+						if (poly.Bounds != null)
 						{
-							//рассчитаем диапазон карты
+							if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+							if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+							if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+							if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+						}
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					{
+						TPolyLine poly = (TPolyLine)feature;
+						{
 							if (poly.Bounds != null)
 							{
 								if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
@@ -4706,24 +4761,16 @@ SCAN:
 						}
 					}
 					
-					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+					if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
-						TPolyLine poly = (TPolyLine)feature;
-						/*
-					Result.MinX = poly.Bounds.MinX;
-					Result.MaxX = poly.Bounds.MaxX;
-					Result.MaxY = poly.Bounds.MaxY;
-					Result.MinY = poly.Bounds.MinY;
-						*/
-						//for (int i = 1; i <= this.Count; i++)
+						TCircle Circle = (TCircle)feature;
 						{
-							//рассчитаем диапазон карты
-							if (poly.Bounds != null)
+							if (Circle.Bounds != null)
 							{
-								if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
-								if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
-								if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
-								if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+								if (Circle.Bounds.MinX < Result.MinX) Result.MinX = Circle.Bounds.MinX;
+								if (Circle.Bounds.MinY < Result.MinY) Result.MinY = Circle.Bounds.MinY;
+								if (Circle.Bounds.MaxX > Result.MaxX) Result.MaxX = Circle.Bounds.MaxX;
+								if (Circle.Bounds.MaxY > Result.MaxY) Result.MaxY = Circle.Bounds.MaxY;
 							}
 						}
 					}
@@ -4735,14 +4782,26 @@ SCAN:
 		/// <summary>
 		/// Medium value of ordinates all features in this
 		/// </summary>
+		/// 
 		public TPoint AverageCenter
 		{
 			get
 			{
-				return new TPoint(500000, 1300000);
+				double Ord_X_Summ = 0;
+				double Ord_Y_Summ = 0;
+				int CenterCount = 0;
+				foreach (IGeometry feature in this)
+				{
+					Ord_X_Summ += feature.AverageCenter.x;
+					Ord_Y_Summ += feature.AverageCenter.y;
+					CenterCount++;
+				}
+
+				return new TPoint(Ord_X_Summ / CenterCount, Ord_Y_Summ / CenterCount);
 			}
 		}
-				public void Close()
+
+		public void Close()
 		{
 			// nothing to
 		}

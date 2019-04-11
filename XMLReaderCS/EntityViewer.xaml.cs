@@ -143,35 +143,35 @@ namespace XMLReaderCS
                 label_DirectXMode.Content = "";
                 image1.Visibility = System.Windows.Visibility.Hidden; image2.Visibility = System.Windows.Visibility.Hidden;
 
-				if (fSpatial.TypeName == "netFteo.Spatial.TEntitySpatial")
+				if (fSpatial.TypeName == "netFteo.Spatial.TEntitySpatial")    //drawing all items in TEntitySpatial
 				{
-					//TODO:  drawing all items in TEntitySpatial
 					TEntitySpatial TotalES = (TEntitySpatial)fSpatial;
-					this.AverageCenter = new TPoint(506709, 1286339);
-					foreach(IGeometry feature in TotalES)
+					this.AverageCenter = TotalES.AverageCenter;
+					label2.Content = TotalES.Definition;
+					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
+					foreach (IGeometry feature in TotalES)
 					{
 						if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 						{
 							TMyPolygon polygon = (TMyPolygon)feature;
-							//this.AverageCenter = polygon.AverageCenter;
-							label2.Content = TotalES.Definition;
-							//label1_Canvas_Sizes.Content = "Площадь " + polygon.AreaSpatialFmt("0.00");
-							Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
-							//Полигон
 							foreach (UIElement el in CreateCanvasPolygons(polygon))
 								canvas1.Children.Add(el);
-							//Точки
-							/*
-							List<UIElement> cnspts = CreateCanvasPoints(polygon);
-							foreach (UIElement pt in cnspts)
+						}
+
+						if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+						{
+							TPolyLine polygon = (TPolyLine)feature;
+
+							foreach (UIElement el in CreateCanvasPolygons(polygon))
+								canvas1.Children.Add(el);
+						}
+
+						if (feature.TypeName == "netFteo.Spatial.TCircle")
+						{
+							TCircle Circle = (TCircle)feature;
+							List<UIElement> Circles = CreateCanvasCircle(Circle);
+							foreach (UIElement pt in Circles)
 								canvas1.Children.Add(pt);
-							*/
-							//Метки
-							/*
-							List<TextBlock> labels = CreateCanvasPointLabels((netFteo.Spatial.TRing)polygon);
-							foreach (TextBlock label in labels)
-								canvas1.Children.Add(label);
-							*/
 						}
 					}
 				}
@@ -496,7 +496,7 @@ namespace XMLReaderCS
                     if (!Double.IsNaN(point.oldX))
                     {
                         canvasX = Math.Round(canvas1.Width / 2 - (originY - point.oldX) / Scale);
-                        canvasY = Math.Round(canvas1.Height / 2 + (originX - point.oldY) / Scale);
+                        canvasY = Math.Round(canvas1.Height / 2 + (originX - point.oldX) / Scale);
                         myPointCollection.Add(new Point(canvasX, canvasY));
                     }
                 }
@@ -512,9 +512,9 @@ namespace XMLReaderCS
 			{
 				if (!Double.IsNaN(Circle.x))
 				{
-					canvasX = Math.Round(canvas1.Width /2);
-					canvasY = Math.Round(canvas1.Height/2);
-					 return  new Point(canvasX, canvasY);
+					canvasX = Math.Round(canvas1.Width /2 - (this.AverageCenter.y - Circle.y) / Scale);
+					canvasY = Math.Round(canvas1.Height/2 + (this.AverageCenter.x - Circle.x) / Scale);
+					return  new Point(canvasX, canvasY);
 				}
 			}
 			else
