@@ -3016,6 +3016,8 @@ return res;
 				{
 					TMyParcel P = (TMyParcel)O;
 					//TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
+					GeometryToSpatialView(listView1, P.EntSpat);
+					P.EntSpat.ShowasListItems(listView1, true);
 					PropertiesToListView(listView_Properties, P.CompozitionEZ);
 				}
 			}

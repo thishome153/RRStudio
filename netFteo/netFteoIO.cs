@@ -1385,6 +1385,10 @@ namespace netFteo.IO
 					if (Double.TryParse(EllipseLine[3], out y2))
 						if (Double.TryParse(EllipseLine[4], out x2))
 						{
+							double LineAB = netFteo.Spatial.Geodethic.lent(x1, y1, x2, y2);
+							double Radius = LineAB / 2;
+							// TODO : 
+
 							res.x = (x1 + x2) / 2;  //center
 							res.y = (y1 + y2) / 2;  //center
 							if (x1- res.x > 0)
@@ -1393,16 +1397,15 @@ namespace netFteo.IO
 								res.R = x2 - res.x;
 							resList.Add(res);
 							//System.Drawing.RectangleF rect = new System.Drawing.RectangleF();
-							//System.Drawing.RectangleF rect = new System.Drawing.RectangleF();
 							
-							/* //simple round rectangle - ortogonally orient
+							 //simple round rectangle - ortogonally orient
 							TMyPolygon CircleBoundRect = new TMyPolygon("CircleRect");
 							CircleBoundRect.AddPoint("1", x1, y1, "V");
 							CircleBoundRect.AddPoint("2", x1, y2, "*");
 							CircleBoundRect.AddPoint("3", x2, y2, "V");
 							CircleBoundRect.AddPoint("4", x2, y1, "*");
 							resList.Add(CircleBoundRect);
-							*/
+							
 						}
 			return resList;
 		}
