@@ -4014,6 +4014,7 @@ SCAN:
         {
 			if (this.Parcels.GetEs(Layer_id) != null)
 				return this.Parcels.GetEs(Layer_id);
+
 			if (this.GKNBounds.GetEs(Layer_id) != null)
                 return this.GKNBounds.GetEs(Layer_id);
             if (this.GKNZones.GetEsId(Layer_id) != null)
