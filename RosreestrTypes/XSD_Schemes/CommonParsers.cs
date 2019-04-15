@@ -392,7 +392,7 @@ namespace RRTypes.CommonCast
 		public static TEntitySpatial ES_OKS2(string Definition, STD_TPV02.Entity_Spatial ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return null;
+			if (ES == null) return res;
 
 			for (int i = 0; i <= ES.Spatial_Element.Count - 1; i++)
 			{
@@ -436,7 +436,7 @@ namespace RRTypes.CommonCast
 		public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return null;
+			if (ES == null) return res;
 
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
@@ -517,7 +517,7 @@ namespace RRTypes.CommonCast
 		public static TEntitySpatial ES_OKS2(string Definition, kpt09.tEntitySpatialOKSOut ES)
 		{
 			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return null;
+			if (ES == null) return res;
 
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
@@ -602,10 +602,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpt10_un.tEntitySpatialOKSOut ES)
 		{
-
-			if (ES == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
-
+			if (ES == null) return res;
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -686,8 +684,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
 		{
-			if (ES == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return res;
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -758,9 +756,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
 		{
-
-			if (ES == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return res;
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -831,9 +828,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
 		{
-	
-			if (ES == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return res;
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -904,10 +900,8 @@ namespace RRTypes.CommonCast
 
 		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
 		{
-		
-	
-			if (ES == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
+			if (ES == null) return res;
 			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
 			{
 
@@ -3691,6 +3685,9 @@ namespace RRTypes.CommonParsers
 					// CadastralCost/@Value
 					if (parcel.SelectSingleNode("CadastralCost/@Value") != null)
 						MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("CadastralCost/@Value").Value);
+					if ((parcel.SelectSingleNode("Utilization") !=null) &&
+						(parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc") != null)
+						)
 					MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
 					MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
 					MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));

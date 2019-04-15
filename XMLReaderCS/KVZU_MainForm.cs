@@ -2976,13 +2976,10 @@ return res;
 				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))
 				{
 					TMyRealty parcel = (TMyRealty)O;
-					IGeometry Entity = (IGeometry)parcel.EntSpat;
-					if (Entity != null)
-					{
-						GeometryToSpatialView(listView1, Entity);
-						Entity.ShowasListItems(listView1, true);
-					}
+						GeometryToSpatialView(listView1, parcel.EntSpat);
+						parcel.EntSpat.ShowasListItems(listView1, true);
 				}
+
 				PropertiesToListView(listView_Properties, O);
 			}
 

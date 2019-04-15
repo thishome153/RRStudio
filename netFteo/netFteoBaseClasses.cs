@@ -2804,62 +2804,18 @@ SCAN:
         public Rosreestr.TMyRights Rights;
         public Rosreestr.TMyRights EGRN;
         public Rosreestr.TMyEncumbrances Encumbrances;
-		//       public string Name;
-		//       public string DateCreated;
-		//       public string CN;
-		//       public string Definition;// Обозначение
-		//public Object EntitySpatial_noType;
-		//private TMyPolygon fEntitySpatial;
-		//  private TEntitySpatial fContours;
-
+	
 		/// <summary>
 		///  Spatial data. Universal, both for single ES and multi (contours/EZP).
 		///  will replace polygon/contours
 		/// </summary>
 		public TEntitySpatial EntSpat; 
-									   // Взаимоисключающее свойство по отношению к .Contours
-									   /*
-									   public TMyPolygon EntitySpatial
-									   {
-										   set
-										   {
-											   if (value != null)          // проверим на "эффект волны"
-												   this.fContours = null;   // "обнулим" признаки МК
-											   this.fEntitySpatial = new TMyPolygon();
-											   this.fEntitySpatial.ImportPolygon(value);
-
-										   }
-										   get
-										   {
-											   return this.fEntitySpatial;
-										   }
-									   }
-
-									   // Взаимоисключающее свойство по отношению к .EntitySpatial
-
-									   public TEntitySpatial Contours
-									   {
-										   set
-										   {
-											   if (value != null)               // проверим на "эффект волны"
-												   this.fEntitySpatial = null; ; // "обнулим" признаки 
-											   this.fContours = new TEntitySpatial();
-											   this.fContours = value;
-										   }
-										   get
-										   {
-											   return this.fContours;
-										   }
-									   }
-									   */
+	
 		public TCompozitionEZ CompozitionEZ
 		{
 			set
 			{
-				//if (value != null)
-				//	this.fEntitySpatial = null;
-				//this.fContours = new TEntitySpatial(); // на свякий случай, как в Осетии: ЕЗП с контурами 
-				//this.fContours.Add(value);
+
 				this.fCompozitionEZ = new TCompozitionEZ();
 				this.fCompozitionEZ = value;
 
@@ -2980,19 +2936,9 @@ SCAN:
 				if (Feauture.id == Layer_id)
 					return Feauture;
 			}
-			/*
-			if (this.CompozitionEZ != null)
-				foreach (IGeometry entry in this.CompozitionEZ)
-				{
-					if (entry.id == Layer_id)
-						return entry;
-				}
-				*/
-            //if (this.EntitySpatial != null) if (this.EntitySpatial.id == Layer_id) return this.EntitySpatial;
-            //if (this.Contours != null) if (this.Contours.ge.GetEs(Layer_id) != null) return this.Contours.GetEs(Layer_id);
-            //if (this.Contours != null) if (this.Contours.id == Layer_id) return this.Contours;
-
-            //TODO :   if (this.CompozitionEZ != null)  return this.CompozitionEZ;
+			if (this.EntSpat.id == Layer_id)
+				return this.EntSpat;
+	
             if (this.SubParcels != null) if (this.SubParcels.GetEs(Layer_id) != null) return this.SubParcels.GetEs(Layer_id);
             return null;
         }
@@ -3422,6 +3368,7 @@ SCAN:
             this.id = Gen_id.newId;
             this.ParentCadastralNumbers = new List<string>();
 			this.Location = new Rosreestr.TLocation();
+			this.EntSpat = new TEntitySpatial();
         }
 
         public TMyRealty(string cn) : this()
@@ -4017,6 +3964,7 @@ SCAN:
 
 			if (this.GKNBounds.GetEs(Layer_id) != null)
                 return this.GKNBounds.GetEs(Layer_id);
+
             if (this.GKNZones.GetEsId(Layer_id) != null)
                 return this.GKNZones.GetEsId(Layer_id);
 
