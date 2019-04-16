@@ -15,8 +15,9 @@ namespace GKNData
             InitializeComponent();
             this.Text = String.Format("О {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
+            this.labelVersion_1.Text = String.Format("Версия {0}", AssemblyVersion);
+			this.label_Version.Text = AssemblyProduct + "  " +String.Format("Версия {0}", AssemblyVersion);
+			this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text += AssemblyDescription;
         }

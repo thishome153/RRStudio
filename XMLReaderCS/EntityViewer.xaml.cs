@@ -146,33 +146,38 @@ namespace XMLReaderCS
 				if (fSpatial.TypeName == "netFteo.Spatial.TEntitySpatial")    //drawing all items in TEntitySpatial
 				{
 					TEntitySpatial TotalES = (TEntitySpatial)fSpatial;
-					this.AverageCenter = TotalES.AverageCenter;
-					label2.Content = TotalES.Definition;
-					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
-					foreach (IGeometry feature in TotalES)
+					if (TotalES.Count() > 0)
 					{
-						if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+						this.AverageCenter = TotalES.AverageCenter;
+						Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
+						foreach (IGeometry feature in TotalES)
 						{
-							TMyPolygon polygon = (TMyPolygon)feature;
-							foreach (UIElement el in CreateCanvasPolygons(polygon))
-								canvas1.Children.Add(el);
-						}
+							label2.Content = feature.Definition;
+							if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+							{
+								TMyPolygon polygon = (TMyPolygon)feature;
+								foreach (UIElement el in CreateCanvasPolygons(polygon))
+									canvas1.Children.Add(el);
+							}
 
-						if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-						{
-							TPolyLine polygon = (TPolyLine)feature;
+							if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+							{
+								TPolyLine polygon = (TPolyLine)feature;
 
-							foreach (UIElement el in CreateCanvasPolygons(polygon))
-								canvas1.Children.Add(el);
-						}
+								foreach (UIElement el in CreateCanvasPolygons(polygon))
+									canvas1.Children.Add(el);
+							}
 
-						if (feature.TypeName == "netFteo.Spatial.TCircle")
-						{
-							TCircle Circle = (TCircle)feature;
-							List<UIElement> Circles = CreateCanvasCircle(Circle);
-							foreach (UIElement pt in Circles)
-								canvas1.Children.Add(pt);
+							if (feature.TypeName == "netFteo.Spatial.TCircle")
+							{
+								TCircle Circle = (TCircle)feature;
+								List<UIElement> Circles = CreateCanvasCircle(Circle);
+								foreach (UIElement pt in Circles)
+									canvas1.Children.Add(pt);
+							}
 						}
+						if (TotalES.Count > 1)
+						label2.Content = TotalES.Definition + " " + TotalES.Count().ToString();
 					}
 				}
 

@@ -30,12 +30,13 @@
 			this.okButton = new System.Windows.Forms.Button();
 			this.textBoxDescription = new System.Windows.Forms.TextBox();
 			this.labelProductName = new System.Windows.Forms.Label();
-			this.labelVersion = new System.Windows.Forms.Label();
+			this.labelVersion_1 = new System.Windows.Forms.Label();
 			this.labelCopyright = new System.Windows.Forms.Label();
 			this.labelCompanyName = new System.Windows.Forms.Label();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
+			this.label_Version = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
@@ -53,6 +54,7 @@
 			// 
 			// textBoxDescription
 			// 
+			this.textBoxDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.textBoxDescription.Location = new System.Drawing.Point(153, 49);
 			this.textBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
 			this.textBoxDescription.Multiline = true;
@@ -76,16 +78,16 @@
 			this.labelProductName.Text = "ГКН Data c# 2018";
 			this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// labelVersion
+			// labelVersion_1
 			// 
-			this.labelVersion.Location = new System.Drawing.Point(121, 45);
-			this.labelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-			this.labelVersion.MaximumSize = new System.Drawing.Size(0, 17);
-			this.labelVersion.Name = "labelVersion";
-			this.labelVersion.Size = new System.Drawing.Size(0, 17);
-			this.labelVersion.TabIndex = 26;
-			this.labelVersion.Text = "Версия 1";
-			this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.labelVersion_1.Location = new System.Drawing.Point(121, 45);
+			this.labelVersion_1.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+			this.labelVersion_1.MaximumSize = new System.Drawing.Size(0, 17);
+			this.labelVersion_1.Name = "labelVersion_1";
+			this.labelVersion_1.Size = new System.Drawing.Size(0, 17);
+			this.labelVersion_1.TabIndex = 26;
+			this.labelVersion_1.Text = "Версия 1";
+			this.labelVersion_1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// labelCopyright
 			// 
@@ -139,6 +141,17 @@
 			this.logoPictureBox.TabIndex = 25;
 			this.logoPictureBox.TabStop = false;
 			// 
+			// label_Version
+			// 
+			this.label_Version.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label_Version.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.label_Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.label_Version.Location = new System.Drawing.Point(153, 10);
+			this.label_Version.Name = "label_Version";
+			this.label_Version.Size = new System.Drawing.Size(271, 33);
+			this.label_Version.TabIndex = 32;
+			this.label_Version.Text = "V";
+			// 
 			// AboutBox1
 			// 
 			this.AcceptButton = this.okButton;
@@ -146,10 +159,11 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.okButton;
 			this.ClientSize = new System.Drawing.Size(436, 239);
+			this.Controls.Add(this.label_Version);
 			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.labelProductName);
-			this.Controls.Add(this.labelVersion);
+			this.Controls.Add(this.labelVersion_1);
 			this.Controls.Add(this.labelCopyright);
 			this.Controls.Add(this.labelCompanyName);
 			this.Controls.Add(this.logoPictureBox);
@@ -178,10 +192,11 @@
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.Label labelProductName;
-        private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.Label labelVersion_1;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelCompanyName;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-    }
+		private System.Windows.Forms.Label label_Version;
+	}
 }
