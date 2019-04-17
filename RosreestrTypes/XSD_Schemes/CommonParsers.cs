@@ -3860,16 +3860,20 @@ namespace RRTypes.CommonParsers
 				}
 
 				//Второй и след. Spatial_Element - Внутренние контура
-				if (ES.ChildNodes.Count > 1)
+				if (ES.ChildNodes.Count > 1) 
+
 				{
 					for (int ring = 1; ring <= ES.ChildNodes.Count - 1; ring++)
 					{
 						System.Xml.XmlNodeList childRing = ES.ChildNodes[ring].ChildNodes;
-						TRing InLayer = EntSpat.AddChild();
-
-						for (int iSpelement = 1; iSpelement <= childRing.Count - 1; iSpelement++)
+						if (ES.ChildNodes[ring].Name == "Spatial_Element") // prevent reading same like "Borders" 
 						{
-							InLayer.AddPoint(KPT08_ES_ParseSpelement_Unit(childRing[iSpelement]));
+							TRing InLayer = EntSpat.AddChild();
+
+							for (int iSpelement = 1; iSpelement <= childRing.Count - 1; iSpelement++)
+							{
+								InLayer.AddPoint(KPT08_ES_ParseSpelement_Unit(childRing[iSpelement]));
+							}
 						}
 					}
 				}
@@ -5110,10 +5114,85 @@ namespace RRTypes.CommonParsers
 		public netFteo.XML.FileInfo ParseKVZU05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
 			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
-			//TODO
+			// Region_Cadastr_Vidimus_KV / @Version
+			if ((xmldoc.DocumentElement.Name == "Region_Cadastr_Vidimus_KV") &&
+				(xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) &&
+				(xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value == "05"))
+			{
+				res.DocTypeNick = "КВЗУ";
+				res.Version = "05";
+			}
 
-			res.DocTypeNick = "КВЗУ";
-			res.Version = "05";
+			//TODO
+			// / Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / CadastralBlock /#text
+			XmlNodeList Parcelnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package /Parcels/Parcel");
+			if (Parcelnodes != null)
+			{
+				this.TotalItems2Process = Parcelnodes.Count;
+				XMLParsingStartProc("start xml", TotalItems2Process, null);
+
+				foreach (XmlNode Parcel in Parcelnodes)
+				{
+					TMyCadastralBlock Bl = new TMyCadastralBlock(Parcel.SelectSingleNode("CadastralBlock").FirstChild.Value);
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Parcel.Attributes.GetNamedItem("CadastralNumber").Value, Parcel.Attributes.GetNamedItem("Name").Value));
+					
+					 // /Region_Cadastr_Vidimus_KV/Package/Parcels/Parcel/Area/Area/#text
+					MainObj.AreaGKN = Parcel.SelectSingleNode("Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
+					MainObj.State = Parcel.Attributes.GetNamedItem("State").Value;
+					MainObj.DateCreated = Parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
+				//  /Region_Cadastr_Vidimus_KV/Package/Parcels/Parcel/CadastralCost/@Value
+				  if (Parcel.SelectSingleNode("CadastralCost/@Value") != null)
+				  MainObj.CadastralCost = Convert.ToDecimal(Parcel.SelectSingleNode("CadastralCost/@Value").Value);
+						  // Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / Utilization / @ByDoc
+						  if (Parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc") != null)
+						MainObj.Utilization.UtilbyDoc = Parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
+					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / Category / @Category
+						MainObj.Category = Parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
+					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / Location / Address / Note
+						MainObj.Location = this.Parse_Location(Parcel.SelectSingleNode("Location"));
+					if (Parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
+					MainObj.ParentCN = Parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
+
+
+					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / SubParcels / SubParcel[1] / @Number_Record
+					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / SubParcels / SubParcel[1] / Object_Entry / @CadastralNumber
+					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / SubParcels / SubParcel[1] / Entity_Spatial
+					XmlNodeList EZPEntrys = Parcel.SelectNodes("SubParcels/SubParcel");
+					if (EZPEntrys != null)
+					{
+						foreach (XmlNode Entry in EZPEntrys)
+						{
+							if (Entry.SelectSingleNode("Object_Entry") != null)
+							{
+
+								string CN = Entry.SelectSingleNode("Object_Entry").Attributes.GetNamedItem("CadastralNumber").Value;
+								// SubParcel[1] / Area / Area /#text
+								// SubParcel[1] / Entity_Spatial
+
+								MainObj.CompozitionEZ.AddEntry(CN, -1, -1,
+									-1, MainObj.EntSpat.AddPolygon(KPT08LandEntSpatToFteo(CN, Entry.SelectSingleNode("Entity_Spatial"))));
+							}
+
+
+
+							if (Parcel.SelectSingleNode("Entity_Spatial") != null)
+							{
+								TMyPolygon ents = KPT08LandEntSpatToFteo(MainObj.CN,
+																	  Parcel.SelectSingleNode("Entity_Spatial"));
+								//ents.AreaValue = (decimal)Convert.ToDouble(Parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
+								ents.Parent_Id = MainObj.id;
+								ents.Definition = MainObj.CN;
+								MainObj.EntSpat.Add(ents);
+							}
+
+
+						}
+					}
+
+					res.MyBlocks.Blocks.Add(Bl);
+				}
+			}
+	
 			CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
 			Parse_ContractorsV04(xmldoc, res);
 			return res;
