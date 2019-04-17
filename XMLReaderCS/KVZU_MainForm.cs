@@ -586,7 +586,7 @@ namespace XMLReaderCS
 
 			if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
 			{
-				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
 				TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
 				if (polyfromMIF != null)
 				{
@@ -604,8 +604,8 @@ namespace XMLReaderCS
 
 			if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
 			{
-				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
-				TEntitySpatial polyfromMIF = mifreader.ImportCSVFile(FileName);
+				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
+				TEntitySpatial polyfromMIF = mifreader.ImportCSVFile();
 				if (polyfromMIF != null)
 				{
 					DocInfo.MyBlocks.ParsedSpatial.Clear();
@@ -2951,6 +2951,20 @@ return res;
 				}
 			}
 
+			/*
+			 * TODO : need show whole layer features
+			if (STrN.Name.Contains("Layer."))
+			{
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.get.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				if (Entity != null)
+				{
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
+				}
+			}
+			*/
+
 			if (STrN.Name.Contains("SPElem."))
 			{
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
@@ -4951,7 +4965,7 @@ return res;
                         //подключим обработчик события
                        //TODO P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 
-                        netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader();
+                        netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(openFileDialog1.FileName);
                        // TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
 
                       //  toolStripProgressBar1.Maximum = P.CompozitionEZ.Count *  polyfromMIF.Count;

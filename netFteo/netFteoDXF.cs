@@ -57,12 +57,10 @@ namespace netFteo.IO
             }
         }
 
-        public  DXFReader(string FileName)
+        public  DXFReader(string FileName) : base(FileName)
         {
             dxfFile = netDxf.DxfDocument.Load(FileName);
-
             this.BlocksCount = dxfFile.Blocks.Count;
-
             this.AddedObjects = dxfFile.AddedObjects.Count;
             BodyLoad(FileName);
         }

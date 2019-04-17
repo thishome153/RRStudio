@@ -5111,6 +5111,7 @@ namespace RRTypes.CommonParsers
 		{
 			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
 			//TODO
+
 			res.DocTypeNick = "КВЗУ";
 			res.Version = "05";
 			CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);

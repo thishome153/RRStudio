@@ -42,18 +42,27 @@ namespace netFteo.IO
 		}
 		public string FileName;
 		public string BodyEncoding;
+
+		public TextReader(string Filename)
+		{
+			// TODO setup encoding:
+			BodyLoad(Filename);
+			FileName = Filename;
+
+		}
+
 		/// <summary>
 		/// Чтение файлов  CSV (формата Технокад)
 		/// </summary>
 		/// <param name="Fname"></param>
 		/// <returns></returns>
-		public TEntitySpatial ImportCSVFile(string Fname)
+		public TEntitySpatial ImportCSVFile()
 		{
 			TEntitySpatial resPolys = new TEntitySpatial();
 			try
 			{
 				string line = null;
-				System.IO.TextReader readFile = new StreamReader(Fname);
+				System.IO.TextReader readFile = new StreamReader(FileName);
 
 				while (readFile.Peek() != -1)
 				{
@@ -61,7 +70,8 @@ namespace netFteo.IO
 
 					if (line != null) //Читаем строку
 					{      //по строке
-
+						   //Read Columns
+						string[] Columns = line.Split(CommaDelimiter.ToCharArray());
 
 
 						if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
@@ -1316,9 +1326,10 @@ namespace netFteo.IO
 		public MifOptions MIF_Options;
 		public bool MID_Present;
 		System.IO.TextReader MIDFile;
-		public MIFReader(string Filename)
+		public MIFReader(string FileName) :base(FileName)
 		{
-			this.FileName = Filename;
+			this.FileName = FileName;
+			//BodyLoad(FileName);
 			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
 			if (File.Exists(baseFileName))
 			{
@@ -1541,7 +1552,7 @@ namespace netFteo.IO
 
 
 			// TODO Encoding for mif:
-			BodyLoad(baseFileName + ".mif");
+			//BodyLoad(baseFileName + ".mif");
 			string line; string midline;
 			int PolygonCount = 0;
 			int StrCounter = 0;

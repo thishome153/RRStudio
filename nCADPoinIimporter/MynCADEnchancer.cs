@@ -240,7 +240,7 @@
                     try
                     {
                         netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader();
+                        netFteo.IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
                         fteofile = TR.ImportTxtFile(sourceFileName.StringResult);
                         ParseData(dm,ed,sourceFileName, fteofile);
                     }
@@ -282,8 +282,8 @@
                     try
                     {
                         netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader();
-                        fteofile = TR.ImportCSVFile(sourceFileName.StringResult);
+                        netFteo.IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
+                        fteofile = TR.ImportCSVFile();
                         ParseData(dm, ed, sourceFileName, fteofile);
                     }
                     catch (PlatformDb.Runtime.Exception ex)
@@ -325,7 +325,7 @@
                     try
                     {
                         netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader();
+                        netFteo.IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
                         fteofile = TR.ImportXML(sourceFileName.StringResult);
                         ParseData(dm, ed, sourceFileName, fteofile);
                     }
