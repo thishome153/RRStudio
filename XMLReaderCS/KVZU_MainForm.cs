@@ -219,9 +219,6 @@ namespace XMLReaderCS
 																	  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
 			if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
 				DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
-			toolStripStatusLabel2.Text = "<" + DocInfo.DocRootName + "> " + label_FileSize.Text;
-			toolStripStatusLabel3.Text = DocInfo.Namespace;
-			linkLabel_tns.Text = DocInfo.Namespace;
 			документToolStripMenuItem.Enabled = true;
 			// Вначале отобразим xml, вдруг далее парсеры слажают... :)
 			cXmlTreeView2.RootName = DocInfo.FileName;
@@ -1489,6 +1486,10 @@ namespace XMLReaderCS
 			textBox_OrgName.Text = fileinfo.Cert_Doc_Organization;
 			textBox_Appointment.Text = fileinfo.Appointment;
 			textBox_FIO.Text = fileinfo.AppointmentFIO;
+			toolStripStatusLabel3.Text = fileinfo.Namespace;
+			toolStripStatusLabel2.Text = "<" + fileinfo.DocRootName + "> " + label_FileSize.Text;
+			linkLabel_tns.Text = DocInfo.Namespace;
+
 			tabPage1.Text = fileinfo.DocTypeNick + " " + fileinfo.Version;// "КПТ + 10";
 			tabPage3.Text = fileinfo.CommentsType;// "Conclusion/Notes";
 			linkLabel_Recipient.Text = fileinfo.ReceivName + " " + fileinfo.ReceivAdress;

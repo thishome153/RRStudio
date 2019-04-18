@@ -18,12 +18,23 @@ namespace netFteo.IO
 {
 	public delegate void ParsingHandler(object sender, ESCheckingEventArgs e);
 
+	public class DataColumn
+	{
+		public string Kind;
+		public string Name;
+		public DataColumn(string kind, string name)
+		{
+			Name = name;
+			Kind = kind;
+		}
+	}
+
 	/// <summary>
-	///Класс для операций с файлами Fteo, mif, dxf
+	///Класс для операций с файлами Fteo, txt, mif, dxf, csv
 	/// </summary>
 	public class TextReader
 	{
-
+		public List<DataColumn> DataColumns;
 		public const string TabDelimiter = "\t";  // tab
 		public const string CommaDelimiter = ";";  // tab
 //		public string FileType = "";  // tab
@@ -45,10 +56,10 @@ namespace netFteo.IO
 
 		public TextReader(string Filename)
 		{
+			DataColumns = new List<DataColumn>();
 			// TODO setup encoding:
 			BodyLoad(Filename);
 			FileName = Filename;
-
 		}
 
 		/// <summary>
@@ -72,7 +83,10 @@ namespace netFteo.IO
 					{      //по строке
 						   //Read Columns
 						string[] Columns = line.Split(CommaDelimiter.ToCharArray());
-
+						foreach (string Column in Columns)
+						{
+							this.DataColumns.Add(new DataColumn("CSVField", Column));
+						}
 
 						if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
 						{

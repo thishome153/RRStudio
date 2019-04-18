@@ -3312,8 +3312,9 @@ namespace RRTypes.CommonParsers
 			res.Version = "05";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
+			res.Namespace = "urn://fake/kpt/5.0.0";
 			//TODO - need deserialization
-			
+
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block");
 			if (Blocksnodes != null)
 
@@ -3484,6 +3485,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "07";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
+			res.Namespace = "urn://fake/kpt/7.0.0";
 			//TODO - need deserialization
 
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block");
@@ -3652,6 +3654,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "08";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
+			res.Namespace = "urn://fake/kpt/8.0.0";
 			//TODO - need deserialization
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
 			if (Blocksnodes != null)

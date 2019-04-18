@@ -228,6 +228,7 @@ namespace XMLReaderCS
 				{
 					TCircle Circle = (TCircle)Spatial;
 					label2.Content = Circle.Definition;
+					this.AverageCenter = Circle.AverageCenter;
 					label1_Canvas_Sizes.Content = "R " + Circle.R.ToString("0.00");
 					Label_resScale.Content = "M 1: " + (Scale).ToString("0.00") + "    Vk = " + ViewKoeffecient.ToString("0.0");
 					List<UIElement> Circles = CreateCanvasCircle(Circle);
@@ -345,21 +346,21 @@ namespace XMLReaderCS
 		/// </summary>
 		/// <param name="Cicrcle"></param>
 		/// <returns></returns>
-		private List<UIElement> CreateCanvasCircle(TCircle Cicrcle)
+		private List<UIElement> CreateCanvasCircle(TCircle Circle)
 		{
 			List<UIElement> res = new List<UIElement>();
-			Point Center = PointsToWindowsPoints(Cicrcle, true);
+			Point Center = PointsToWindowsPoints(Circle, true);
 			System.Windows.Shapes.Ellipse el = new Ellipse();
 			el.Stroke = System.Windows.Media.Brushes.Red;
 			el.Fill = System.Windows.Media.Brushes.Transparent;
-			Canvas.SetLeft(el, Center.X - Cicrcle.R / (2 * Scale));
-			Canvas.SetTop(el, Center.Y - Cicrcle.R / (2 * Scale));
-			el.Height = Cicrcle.R / Scale; el.Width = Cicrcle.R / Scale;
+			Canvas.SetLeft(el, Center.X - Circle.R / (2 * Scale));
+			Canvas.SetTop(el, Center.Y - Circle.R / (2 * Scale));
+			el.Height = Circle.R / Scale; el.Width = Circle.R / Scale;
 			res.Add(el);
 
 			Line ls_h = new Line();
-			ls_h.X1 = Center.X + 35;
-			ls_h.X2 = Center.X - 35;
+			ls_h.X1 = Center.X + Circle.R * 2/Scale;
+			ls_h.X2 = Center.X - Circle.R * 2/ Scale;
 			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
 			ls_h.Stroke = System.Windows.Media.Brushes.Black;
 			ls_h.StrokeThickness = 0.5;
@@ -367,7 +368,7 @@ namespace XMLReaderCS
 			Line ls_v = new Line();
 			ls_v.X1 = Center.X;
 			ls_v.X2 = Center.X;
-			ls_v.Y1 = Center.Y - 35; ls_v.Y2 = Center.Y + 35;
+			ls_v.Y1 = Center.Y - Circle.R*2/ Scale; ls_v.Y2 = Center.Y + Circle.R * 2 / Scale;
 			ls_v.Stroke = System.Windows.Media.Brushes.Black;
 			ls_v.StrokeThickness = 0.5;
 			res.Add(ls_v);
