@@ -349,7 +349,8 @@ namespace XMLReaderCS
 		private List<UIElement> CreateCanvasCircle(TCircle Circle)
 		{
 			List<UIElement> res = new List<UIElement>();
-			Point Center = PointsToWindowsPoints(Circle, true);
+			if (Scale == 0) return res;
+				Point Center = PointsToWindowsPoints(Circle, true);
 			System.Windows.Shapes.Ellipse el = new Ellipse();
 			el.Stroke = System.Windows.Media.Brushes.Red;
 			el.Fill = System.Windows.Media.Brushes.Transparent;
@@ -359,8 +360,8 @@ namespace XMLReaderCS
 			res.Add(el);
 
 			Line ls_h = new Line();
-			ls_h.X1 = Center.X + Circle.R * 2/Scale;
-			ls_h.X2 = Center.X - Circle.R * 2/ Scale;
+			ls_h.X1 = Center.X + Circle.R * 3/Scale;
+			ls_h.X2 = Center.X - Circle.R * 3/ Scale;
 			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
 			ls_h.Stroke = System.Windows.Media.Brushes.Black;
 			ls_h.StrokeThickness = 0.5;
@@ -514,6 +515,7 @@ namespace XMLReaderCS
 		{
 			double canvasX;
 			double canvasY;
+			if (Scale == 0) return new Point(0, 0);
 			if (newOnly)
 			{
 				if (!Double.IsNaN(Circle.x))
