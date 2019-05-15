@@ -1434,6 +1434,7 @@ namespace RRTypes.CommonCast
 			Adr.Region = Address.Region.ToString();
 			return Adr;
 		}
+
 		public static TAddress CastAddress(kvzu.tAddressOut Address)
 		{
 			if (Address == null) return null;
@@ -1998,9 +1999,9 @@ namespace RRTypes.CommonCast
 		}
 
 		//TODO Check for MP6 adding of contours
-		public static TEntitySpatial ES_ZU(MP_V06.tNewContourCollection ESs)
+		public static System.Collections.Generic.List<IGeometry> ES_ZU(MP_V06.tNewContourCollection ESs)
 		{
-			TEntitySpatial res = new TEntitySpatial();
+			System.Collections.Generic.List<IGeometry> res = new System.Collections.Generic.List<IGeometry>();
 			foreach (MP_V06.tNewContour item in ESs)
 			{
 				TMyPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
@@ -2014,6 +2015,8 @@ namespace RRTypes.CommonCast
 			return res;
 		}
 
+		
+	
 
 		/// <summary>
 		/// Разбор юнита (например  - Точки) 
@@ -2714,9 +2717,8 @@ namespace RRTypes.CommonParsers
 							MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
 						if (MP.Package.FormParcels.NewParcel[i].LandUse != null)
 							MainObj.Landuse.Land_Use = MP.Package.FormParcels.NewParcel[i].LandUse.LandUse.ToString();
-
 						if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
-							MainObj.EntSpat.Add(CommonCast.CasterZU.ES_ZU(MP.Package.FormParcels.NewParcel[i].Contours));
+							MainObj.EntSpat.AddRange(CommonCast.CasterZU.ES_ZU(MP.Package.FormParcels.NewParcel[i].Contours));
 						if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
 						{
 							MainObj.EntSpat.Add(CommonCast.CasterZU.ES_ZU(MainObj.CN, MP.Package.FormParcels.NewParcel[i].EntitySpatial));
@@ -2800,8 +2802,10 @@ namespace RRTypes.CommonParsers
 						Bl.Parcels.AddParcel(MainObj);
 						MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.AreaInGKN;
 						MainObj.AreaValue = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.Area.Area;
+
 						if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty != null)
 							MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty.InnerCadastralNumbers);
+
 						Bl.CN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralBlock;
 
 						if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CompositionEZ != null)
@@ -2819,11 +2823,13 @@ namespace RRTypes.CommonParsers
 														   entry.Area.Area,
 														   entry.Area.Inaccuracy,
 														   6, // для межевого плана входящие только учтеные
-														  (RRTypes.CommonCast.CasterZU.ES_ZU(entry.CadastralNumber,
+														   MainObj.EntSpat.AddPolygon(
+														  CommonCast.CasterZU.ES_ZU(entry.CadastralNumber,
 														  entry.EntitySpatial)));
 						}
 					}
 				}
+
 				//Только образование частей 
 				if (MP.Package.SubParcels != null)
 				{
@@ -5157,6 +5163,25 @@ namespace RRTypes.CommonParsers
 					if (Parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
 					MainObj.ParentCN = Parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
 
+					if (Parcel.SelectSingleNode("Entity_Spatial") != null)
+					{
+						TMyPolygon ents = KPT08LandEntSpatToFteo(MainObj.CN,
+															  Parcel.SelectSingleNode("Entity_Spatial"));
+						//ents.AreaValue = (decimal)Convert.ToDouble(Parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
+						ents.Parent_Id = MainObj.id;
+						ents.Definition = MainObj.CN;
+						MainObj.EntSpat.Add(ents);
+					}
+
+					XmlNodeList Contours = Parcel.SelectNodes("Contours/Contour");
+					if (Contours != null)
+					{
+						foreach (XmlNode Contour in Contours)
+						{
+							MainObj.EntSpat.Add(KPT08LandEntSpatToFteo(Contour.SelectSingleNode("@Number_Record").Value, //Attributes.GetNamedItem("Number_Record").Value,
+																	  Contour.SelectSingleNode("Entity_Spatial")));
+						}
+					}
 
 					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / SubParcels / SubParcel[1] / @Number_Record
 					// Region_Cadastr_Vidimus_KV / Package / Parcels / Parcel / SubParcels / SubParcel[1] / Object_Entry / @CadastralNumber
@@ -5176,22 +5201,11 @@ namespace RRTypes.CommonParsers
 								MainObj.CompozitionEZ.AddEntry(CN, -1, -1,
 									-1, MainObj.EntSpat.AddPolygon(KPT08LandEntSpatToFteo(CN, Entry.SelectSingleNode("Entity_Spatial"))));
 							}
-
-
-
-							if (Parcel.SelectSingleNode("Entity_Spatial") != null)
-							{
-								TMyPolygon ents = KPT08LandEntSpatToFteo(MainObj.CN,
-																	  Parcel.SelectSingleNode("Entity_Spatial"));
-								//ents.AreaValue = (decimal)Convert.ToDouble(Parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
-								ents.Parent_Id = MainObj.id;
-								ents.Definition = MainObj.CN;
-								MainObj.EntSpat.Add(ents);
-							}
-
-
+	
 						}
 					}
+
+
 
 					res.MyBlocks.Blocks.Add(Bl);
 				}

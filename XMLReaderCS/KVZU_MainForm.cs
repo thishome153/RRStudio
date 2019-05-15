@@ -1646,15 +1646,19 @@ namespace XMLReaderCS
 			}
 			else tabPage3.Hide();
 
-			TreeNode PNode;
-			if (Parcel.CN != null)
+			TreeNode PNode = new TreeNode();
+
+			if (Parcel.CN != "")
 			{
 				PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.CN);
 			}
 			else
+
+			if (Parcel.Definition != "")
 			{
 				PNode = Node.Nodes.Add("PNode" + Parcel.id.ToString(), Parcel.Definition);
 			}
+
 			PNode.ImageIndex = 1;
 			PNode.SelectedImageIndex = 1;
 			PNode.ForeColor = Color.Green;

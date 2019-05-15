@@ -2936,6 +2936,7 @@ SCAN:
 				if (Feauture.id == Layer_id)
 					return Feauture;
 			}
+
 			if (this.EntSpat.id == Layer_id)
 				return this.EntSpat;
 	
