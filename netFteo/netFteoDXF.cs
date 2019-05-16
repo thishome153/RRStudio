@@ -42,6 +42,8 @@ namespace netFteo.IO
 		/// </remarks>
 		public event ParsingHandler OnParsing;
 		private netDxf.DxfDocument dxfFile;
+
+		/*
         public string FileName
         {
             get
@@ -49,6 +51,7 @@ namespace netFteo.IO
                 return dxfFile.Name;
             }
         }
+		*/
         public string Version
         {
             get

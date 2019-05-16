@@ -4534,14 +4534,16 @@ SCAN:
 			if (Count == 0) return;
 			LV.BeginUpdate();
 			LV.Items.Clear();
+
+			//LV.Tag = PList.Parent_Id;
+			if (SetTag) LV.Tag = id;
+
+#if (DEBUG)
 			LV.Columns[0].Text = "Name";
 			LV.Columns[1].Text = "Type";
 			LV.Columns[2].Text = "id";
 			LV.Columns[3].Text = "layer handle";
 			LV.Columns[4].Text = "-";
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = id;
-#if (DEBUG)
 			foreach (TLayer Layer in this.Layers)
 			{
 
@@ -4553,7 +4555,7 @@ SCAN:
 				LVi.SubItems.Add(Layer.LayerHandle);
 				LV.Items.Add(LVi);
 			}
-
+			/*
 			foreach (IGeometry feature in this)
 			{
 				ListViewItem LVi = new ListViewItem();
@@ -4564,7 +4566,40 @@ SCAN:
 				LVi.SubItems.Add(feature.LayerHandle);
 				LV.Items.Add(LVi);
 			}
+			*/
 #endif
+#if (!DEBUG)
+			LV.Columns[0].Text = "Обозн.";
+			LV.Columns[1].Text = "Имя";
+			LV.Columns[2].Text = "-";
+			LV.Columns[3].Text = "-";
+			LV.Columns[4].Text = "-";
+#endif
+
+			foreach (IGeometry feature in this)
+			{
+				ListViewItem LVi = new ListViewItem();
+				LVi.Text = feature.Definition;
+				LVi.Tag = feature.id;
+				LVi.SubItems.Add(feature.Name);
+				
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+				{
+					LV.Columns[2].Text = "Площадь";
+					LV.Columns[3].Text = "Площ. гр.";
+					LV.Columns[4].Text = "Δ";
+					LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
+					LVi.SubItems.Add(((TMyPolygon)feature).AreaSpatialFmt("0.00"));
+					LVi.SubItems.Add(((TMyPolygon)feature).AreaInaccuracy);
+				}
+
+				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+				{
+					//TODO:
+				}
+					LV.Items.Add(LVi);
+			}
+
 			if (FeaturesCount("netFteo.Spatial.TPolyLine") > 0)
 			{
 				ListViewItem LVTotal = new ListViewItem();
@@ -4577,6 +4612,7 @@ SCAN:
 			}
 			LV.EndUpdate();
 		}
+
 		
 		public double ScaleEntity(double canvas_width, double canvas_height)
 		{
@@ -4757,7 +4793,7 @@ SCAN:
 		}
 	}
 
-    #endregion
+#endregion
 }
 
 

@@ -2055,28 +2055,6 @@ return res;
 				if (ViewWindow != null) ViewWindow.Spatial = null; // сотрем картинку (последнюю)
 				return null;
 			}
-			/*
-
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "-";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
-
-			if (Feature.TypeName == "netFteo.Spatial.TPolygonCollection")
-			{
-				TPolygonCollection Contours = (TPolygonCollection)Feature;
-				if (Contours.Count == 0) return null;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = Contours.Defintion;
-				PointList ptlist = Contours.AsPointList();
-				ptlist.ShowasListItems(LV, false);
-				LV.Items.Add(LVi);
-			}
-			*/
 			
 			// Visualizer check:
 			if (toolStripMI_ShowES.Checked)
