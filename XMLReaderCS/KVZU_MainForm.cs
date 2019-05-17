@@ -2200,7 +2200,7 @@ return res;
 			LV.Columns[2].Text = "х, м.";
 			LV.Columns[3].Text = "y, м.";
 			LV.Columns[4].Text = "Тип";
-			LV.Columns[5].Text = "Описание";
+			LV.Columns[5].Text = "Класс";
 
 
 			List<string> lst = new List<string>();
