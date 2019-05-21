@@ -1182,6 +1182,7 @@ namespace netFteo.IO
 			SaveAsmif(FileName, items);
 		}
 		*/
+
 	/// <summary>
 	/// Mapinfo mif-file export functions
 	/// </summary>
@@ -1242,9 +1243,9 @@ namespace netFteo.IO
 											  ES.Bounds.MaxY.ToString() + "," + ES.Bounds.MaxX.ToString() + ")");
 
 				writerP.WriteLine("Columns 3");
-				writerP.WriteLine("CN Char(127)");
-				writerP.WriteLine("BlockCN  Char(127)");
-				writerP.WriteLine("LOT_ID Char(127)");
+				writerP.WriteLine("Definition Char(127)");
+				writerP.WriteLine("Info Char(127)");
+				writerP.WriteLine("id Char(127)");
 				writerP.WriteLine("Data");
 				writerP.WriteLine("");
 
@@ -1264,6 +1265,7 @@ namespace netFteo.IO
 					{
 						WriteMifPline(writerP, (TPolyLine)feature);
 					}
+					writerMIDP.Write(feature.Definition + "$"+feature.LayerHandle + "$" +feature.id.ToString());
 				}
 
 				writer.Close();
