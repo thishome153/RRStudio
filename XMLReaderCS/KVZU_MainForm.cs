@@ -2419,7 +2419,7 @@ return res;
 					AdressToListView(LV, P.Location.Address);
 					ListViewItem LVNa = new ListViewItem();
 					LVNa.Text = "Тип";
-					LVNa.SubItems.Add(P.Name);
+					LVNa.SubItems.Add(P.ParcelName);
 					LV.Items.Add(LVNa);
 
 					if (P.ParentCN != null)

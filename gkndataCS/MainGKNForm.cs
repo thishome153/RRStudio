@@ -339,7 +339,7 @@ namespace GKNData
 			foreach (DataRow row in data.Rows)
 			{
 				TMyParcel parcel = new TMyParcel(row[1].ToString(), Convert.ToInt32(row[0])); // CN , id
-				parcel.Name = row[3].ToString();
+				//parcel.Name = row[3].ToString(); //Name
 				parcel.CadastralBlock_id = Convert.ToInt32(row[4]); // block_id
 				parcel.SpecialNote = row[5].ToString(); // lot_comment
 				parcel.AreaGKN = row[6].ToString();

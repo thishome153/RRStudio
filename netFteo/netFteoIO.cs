@@ -811,7 +811,7 @@ namespace netFteo.IO
 			writer.WriteLine("# Геометрий " + ES.FeaturesCount("*").ToString());
 			foreach (IGeometry feature in ES)
 			{
-				if (feature.GetType().ToString() == "TMyPolygon")
+				if (feature.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
 				{
 					TMyPolygon Poly = (TMyPolygon)feature;
 					writer.WriteLine("Polygon" + "\t" + (Poly.Definition));
@@ -852,59 +852,6 @@ namespace netFteo.IO
 			writer.Close();
 		}
 
-		/*
-        public void SaveAsFixosoftTXT2016(string FileName, TPolygonCollection ES)
-        {
-            if (ES.Count == 0) return;
-            System.IO.TextWriter writer = new StreamWriter(FileName);
-            writer.WriteLine(FixosoftFileSignature3);
-            writer.WriteLine("# " + DateTime.Now.ToString());  //"Версия {0}", 
-            writer.WriteLine("# Producer: netfteo " +
-                                String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
-            writer.WriteLine("# Разделители полей tab. Кодировка ANSI");
-            writer.WriteLine("# Поля файла " + FileName + " :");
-            writer.WriteLine("# ИмяТочки,x,y,z,Mt,Описание(Код).");
-            writer.WriteLine("# Полигонов " + ES.Count.ToString() + " Parentd_id " + ES.Parent_id.ToString());
-            for (int ic = 0; ic <= ES.Count - 1; ic++)
-            {
-                writer.WriteLine("Polygon " + (ES[ic].Definition));
-                for (int i = 0; i <= ES[ic].PointCount - 1; i++)
-                {
-                    string ptname;
-                    if (ES[ic][i].Status == 0) ptname = "н" + ES[ic][i].NumGeopointA;
-                    else ptname = ES[ic][i].NumGeopointA;
-
-                    writer.WriteLine(ptname + "\t" +
-                                     ES[ic][i].x_s + "\t" +
-                                     ES[ic][i].y_s + "\t" +
-                                     ES[ic][i].z_s + "\t" +
-                                     ES[ic][i].Mt_s + "\t" +
-                                     ES[ic][i].Description);
-                }
-
-                for (int ich = 0; ich <= ES[ic].Childs.Count - 1; ich++)
-                {
-                    writer.WriteLine("Child" + (ich + 1).ToString());
-                    for (int ici = 0; ici <= ES[ic].Childs[ich].PointCount - 1; ici++)
-                    {
-                        string ptname;
-                        if (ES[ic].Childs[ich][ici].Status == 0) ptname = "н" + ES[ic].Childs[ich][ici].NumGeopointA;
-                        else ptname = ES[ic].Childs[ich][ici].NumGeopointA;
-
-                        writer.WriteLine(ptname + "\t" +
-                                     ES[ic].Childs[ich][ici].x_s + "\t" +
-                                     ES[ic].Childs[ich][ici].y_s + "\t" +
-                                     ES[ic].Childs[ich][ici].z_s + "\t" +
-                                     ES[ic].Childs[ich][ici].Mt_s + "\t" +
-                                     ES[ic].Childs[ich][ici].Description);
-                    }
-                    writer.WriteLine("EndChild");
-                }
-                writer.WriteLine("EndPolygon");
-            }
-            writer.Close();
-        }
-*/
 
 		public void SaveAsOMSTXT(string CN, string FileName, PointList ES)
 		{

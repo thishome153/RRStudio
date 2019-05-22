@@ -2773,7 +2773,8 @@ SCAN:
     public class TMyParcel : TCadasterItem
     {
         private string FParentCN;
-        private TCompozitionEZ fCompozitionEZ;
+		private string FParcelName;
+		private TCompozitionEZ fCompozitionEZ;
 
         public new string State
 		{
@@ -2851,6 +2852,31 @@ SCAN:
             this.AreaGKN = "-1";
         }
 
+		/// <summary>
+		/// Override inherited property for customizing behavior
+		/// </summary>
+		public string  ParcelName
+		{
+			get
+			{
+				if ((this.Name != null) &&
+
+					(this.Name != ""))
+					return this.Name;
+
+				if (this.CompozitionEZ != null)
+					return "Единое землепользование";
+
+				if (this.EntSpat.Count > 1)
+					return "Многоконтурный участок";
+				return "Землепользование"; //default
+			}
+			set
+			{
+				this.FParcelName = value;
+			}
+		}
+
         public TMyParcel(string cn) : this() // Вызов Конструктора по умолчанию
         {
             this.CN = cn;
@@ -2873,8 +2899,8 @@ SCAN:
                 case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Многоконтурный участок": { this.Contours = new TEntitySpatial(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
 					*/
-                case "Единое землепользование":
-                    {
+				case "Единое землепользование": // "Item02": //
+					{
                         //this.Contours = new TPolygonCollection(); // на свякий случай, как в Осетии: ЕЗП с контурами 
                         this.CompozitionEZ = new TCompozitionEZ();
                         return;
@@ -2890,9 +2916,10 @@ SCAN:
         {
             this.CadastralBlock = cadastralblock;
             this.Definition = definition;
-            this.Name = name.ToString();
+           // this.Name = name.ToString();
         }
 		/*
+		 * 
 		private int Fid;
 		public int id
         {
