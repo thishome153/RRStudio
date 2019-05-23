@@ -383,6 +383,7 @@ namespace GKNData
 					file.xmlSize_SQL = Math.Round( Convert.ToDouble(row[9]));
 				file.Type = dFileTypes.KPT10; //KPT old than V11
 				if (file.xmlns.Equals("urn://fake/kpt/5.0.0")) file.Type = dFileTypes.KPT05;
+				if (file.xmlns.Equals("urn://fake/kpt/6.0.0")) file.Type = dFileTypes.KPT06;
 				if (file.xmlns.Equals("urn://fake/kpt/7.0.0")) file.Type = dFileTypes.KPT07;
 				if (file.xmlns.Equals("urn://fake/kpt/8.0.0")) file.Type = dFileTypes.KPT08;
 				files.Add(file);

@@ -3651,6 +3651,7 @@ SCAN:
 		KPT09 = 109,
 		KPT08 = 108,
 		KPT07 = 107,
+		KPT06 = 106,
 		KPT05 = 105,
 		Undefined = -1
 	}
