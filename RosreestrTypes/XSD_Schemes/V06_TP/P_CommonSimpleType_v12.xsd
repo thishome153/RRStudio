@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:simpleType name="sName500Format">
+		<xs:annotation>
+			<xs:documentation>Относительный путь к файлу\Имя файла</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+			<xs:pattern value=".+\.[p|P][d|D][f|F]"/>
+			<xs:pattern value=".+\.[x|X][m|M][l|L]"/>
+			<xs:pattern value=".+\.[z|Z][i|I][p|P]"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

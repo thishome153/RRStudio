@@ -717,6 +717,138 @@
       <CustomToolNamespace>RRTypes.STD_KV04</CustomToolNamespace>
     </None>
     <None Include="XSD_Schemes\V04_STD_Region_Cadastr_KV\V037_STD_Address.xsd" />
+    <None Include="XSD_Schemes\V06_TP\dAllDocuments_v04.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dApartment_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dAppliedFiles_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dAssBuilding_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dAssFlatType_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dAssFlat_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dCity_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dDistrict_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dGeopointOpred_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dInhabitedLocalities_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dLocationLevel1_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dLocationLevel2_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dLocationLevel3_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dMethodFormation_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dNetworkPoints_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dOldNumber_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dRealty_v04.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dRegionsRF_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dSovietVillage_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dSpecialTypeFlat_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dStreets_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dTypeParameter_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dTypeStorey_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dUrbanDistrict_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\dWall_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v01.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v04.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v07.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\P_CommonSimpleType_v14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\smev-supplementary-commons-1.0.1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\TP_v06.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_AddressInp_v08.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_AssignationFlat_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_CadastralEngineer_v07.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_CadastralNumbers_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_Document_v08.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_GeneralCadastralWorks_v05.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_NumbersInp_v03.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_ParametersOKS_v02.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XSD_Schemes\V06_TP\_Spatial_v08.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="XSD_Schemes\V08_STD_KPT\dAllDocuments.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -872,7 +1004,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

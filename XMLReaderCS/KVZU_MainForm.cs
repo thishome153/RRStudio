@@ -499,9 +499,12 @@ namespace XMLReaderCS
 			{
 
 				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+				/*
 				XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V05.MP));
 				MPV05 = (RRTypes.MP_V05.MP)serializerMP.Deserialize(stream);
 				ParseMPV05(MPV05);
+				*/
+				this.DocInfo = parser.ParseMPV05(this.DocInfo, xmldoc);
 			}
 
 			// Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
@@ -1306,180 +1309,6 @@ namespace XMLReaderCS
 				}
 			}
 		}
-
-
-		#endregion
-
-		#region  Разбор Межевого Плана V05
-
-		private void ParseMPV05(RRTypes.MP_V05.MP MP)
-		{
-			label_DocType.Text = "Межевой план";
-			richTextBox1.AppendText("\n");
-			richTextBox1.AppendText("\n____________________________________ТИТУЛЬНЫЙ ЛИСТ___________________________________");
-			richTextBox1.AppendText("\nМежевой план подготовлен в результате выполнения кадастровых работ в связи с:");
-			richTextBox1.AppendText("\n");
-			richTextBox1.AppendText(MP.GeneralCadastralWorks.Reason);
-
-			if (MP.Conclusion != null)
-			{
-				richTextBox1.AppendText("\n");
-				richTextBox1.AppendText("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
-				richTextBox1.AppendText("\n");
-				richTextBox1.AppendText(MP.Conclusion);
-				richTextBox1.AppendText("\n");
-			}
-			//this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
-			ListViewItem LVi = new ListViewItem();
-			ListViewItem LViadd = new ListViewItem();
-			ListViewItem LViorg = new ListViewItem();
-			ListViewItem LViTel = new ListViewItem();
-
-			LVi.Text = MP.GeneralCadastralWorks.DateCadastral.ToString();
-			LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.FamilyName + " " + MP.GeneralCadastralWorks.Contractor.FirstName +
-								 " " + MP.GeneralCadastralWorks.Contractor.Patronymic);
-			LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.NCertificate);
-
-			if (MP.GeneralCadastralWorks.Contractor.Organization != null)
-			{
-				LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.Name);
-			}
-
-
-			LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Address);
-			LViadd.SubItems.Add("-");
-			if (MP.GeneralCadastralWorks.Contractor.Organization != null)
-			{
-				LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization);
-			}
-
-			LViorg.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Email);
-			LViTel.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Telephone);
-			listView_Contractors.Items.Add(LVi);
-			listView_Contractors.Items.Add(LViadd);
-			listView_Contractors.Items.Add(LViorg);
-			listView_Contractors.Items.Add(LViTel);
-			textBox_DocNum.Text = MP.GUID;
-			textBox_DocDate.Text = MP.GeneralCadastralWorks.DateCadastral.ToString("dd/MM/yyyy");
-
-			/*
-            textBox_FIO.Text = MP.Title.Contractor.FIO.Surname + " " + MP.Title.Contractor.FIO.First +
-                                 " " + MP.Title.Contractor.FIO.Patronymic + ";  " + MP.Title.Contractor.E_mail; ;
-
-            textBox_OrgName.Text = MP.Title.Contractor.Organization;
-            textBox_Appointment.Text = MP.Title.Contractor.N_Certificate;
-            */
-			TMyCadastralBlock Bl = new TMyCadastralBlock();
-			string ParcelName;
-			if (MP.Package.FormParcels != null)
-			{
-				for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
-				{
-					if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
-						ParcelName = "Item05";
-					else
-						ParcelName = "Item01";
-					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
-					MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
-					MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
-					MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
-					MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
-					if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
-					{
-						MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
-					}
-
-					if (MP.Package.FormParcels.NewParcel[i].Contours != null)
-						for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
-						{
-							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
-																			MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
-						}
-				}
-
-			}
-
-
-			//Если Мп по уточнению:
-			if (MP.Package.SpecifyParcel != null)
-			{
-				//уточнение ЗУ, МКЗУ 
-				if (MP.Package.SpecifyParcel.ExistParcel != null)
-				{
-					ParcelName = "Item01"; // default
-					if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
-						if (MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count > 0 || MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count > 0)
-
-							ParcelName = "Item05";
-						else
-							ParcelName = "Item01";
-
-
-					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
-					MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную??
-					if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
-					{
-						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
-						{
-							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
-																			MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
-
-						}
-						for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
-						{
-							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
-																			MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
-						}
-					}
-
-					if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
-						MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
-
-				}
-				// Уточнение ЕЗП
-				if (MP.Package.SpecifyParcel.ExistEZ != null)
-				{
-					ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
-					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
-				}
-			}
-			//Только образование частей 
-			if (MP.Package.SubParcels != null)
-			{
-				ParcelName = "Item06";  // Значение отсутствует
-				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
-
-				if (MP.Package.SubParcels.NewSubParcel.Count > 0)
-					for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
-					{
-						TmySlot Sl = new TmySlot();
-						Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
-						Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
-						Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
-						if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
-							Sl.EntSpat.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
-						if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
-							Sl.Contours = RRTypes.CommonCast.CasterZU.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].Contours);
-
-
-						MainObj.SubParcels.Add(Sl);
-					}
-
-
-
-			}
-			this.DocInfo.MyBlocks.Blocks.Add(Bl);
-			ListMyCoolections(this.DocInfo.MyBlocks);
-		}
-
-
-
-		// TODO:
-		private void CreateSignature(string filename, string SubjectName)
-		{
-
-		}
-
 
 
 		#endregion

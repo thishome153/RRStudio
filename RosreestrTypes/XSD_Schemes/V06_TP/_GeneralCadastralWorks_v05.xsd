@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Простые типы данных-->
+	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Подсхемы:-->
+	<!--ДОКУМЕНТ-->
+	<xs:include schemaLocation="_Document_v08.xsd"/>
+	<!--АДРЕС-->
+	<xs:include schemaLocation="_AddressInp_v08.xsd"/>
+	<!--КАДАСТРОВЫЙ ИНЖЕНЕР-->
+	<xs:include schemaLocation="_CadastralEngineer_v07.xsd"/>
+	<!--ВЕРСИЯ 4:-->
+	<!--ОБЩИЕ СВЕДЕНИЯ о кадастровых работах-->
+	<xs:complexType name="tGeneralCadastralWorks">
+		<xs:annotation>
+			<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Contractor" type="tEngineer">
+				<xs:annotation>
+					<xs:documentation>Сведения о кадастровом инженере</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reason" type="sNe4000">
+				<xs:annotation>
+					<xs:documentation>Вид кадастровых работ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Clients">
+				<xs:annotation>
+					<xs:documentation>Сведения о заказчиках кадастровых работ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Client" type="tClientIdentify" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="DateCadastral" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата завершения кадастровых работ</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tIdentify">
+		<xs:annotation>
+			<xs:documentation>Реквизиты (наименование, инн, огрн)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="sNameNew500">
+				<xs:annotation>
+					<xs:documentation>Полное наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INN" type="LegalPersonINNType">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OGRN" type="OGRNCompanyType">
+				<xs:annotation>
+					<xs:documentation>ОГРН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tIdentifyForeignOrg">
+		<xs:annotation>
+			<xs:documentation>Реквизиты иностранного юридического лица (наименование, инн, огрн, страна)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="sNameNew500">
+				<xs:annotation>
+					<xs:documentation>Полное наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INN" type="LegalPersonINNType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OGRN" type="OGRNCompanyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ОГРН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Country" type="sNe255">
+				<xs:annotation>
+					<xs:documentation>Наименование страны регистрации (инкорпорации)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tClientIdentify">
+		<xs:annotation>
+			<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Person">
+				<xs:annotation>
+					<xs:documentation>Физическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="PhysicalPersonQualifiedName-ModelGroup">
+							<xs:annotation>
+								<xs:documentation>ФИО физического лица</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+						<xs:choice>
+							<xs:element name="SNILS" type="SNILSType">
+								<xs:annotation>
+									<xs:documentation>Страховой номер индивидуального лицевого счета</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:sequence>
+								<xs:element name="Address" type="tAddress">
+									<xs:annotation>
+										<xs:documentation>Адрес</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="Document" type="tDocumentWithoutAppliedFile">
+									<xs:annotation>
+										<xs:documentation>Реквизиты документа</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Organization" type="tIdentify">
+				<xs:annotation>
+					<xs:documentation>Юридическое лицо</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Governance" type="tIdentify">
+				<xs:annotation>
+					<xs:documentation>Орган государственной власти, орган местного самоуправления</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForeignOrganization" type="tIdentifyForeignOrg">
+				<xs:annotation>
+					<xs:documentation>Иностранное юридическое лицо</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="tGeneralCadastralWorksFull">
+		<xs:annotation>
+			<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Contractor" type="tEngineer">
+				<xs:annotation>
+					<xs:documentation>Сведения о кадастровом инженере</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reason" type="sNe4000">
+				<xs:annotation>
+					<xs:documentation>Вид кадастровых работ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Clients">
+				<xs:annotation>
+					<xs:documentation>Сведения о заказчиках кадастровых работ</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Client" type="tClientIdentifyFull" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="DateCadastral" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата завершения кадастровых работ</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tIdentifyForeignOrgContact">
+		<xs:annotation>
+			<xs:documentation>Сведения об иностранном юридическом лице (контактная информация)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="sNameNew500">
+				<xs:annotation>
+					<xs:documentation>Полное наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INN" type="LegalPersonINNType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OGRN" type="OGRNCompanyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ОГРН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Country" type="sNe255">
+				<xs:annotation>
+					<xs:documentation>Наименование страны регистрации (инкорпорации)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegNumber" type="sNe50">
+				<xs:annotation>
+					<xs:documentation>Регистрационный номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата регистрации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="sNe4000">
+				<xs:annotation>
+					<xs:documentation>Адрес (место нахождения) в стране регистрации (инкорпорации)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email" type="EmailAddressType">
+				<xs:annotation>
+					<xs:documentation>Адрес электронной почты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tClientIdentifyFull">
+		<xs:annotation>
+			<xs:documentation>Сведения о заказчике кадастровых работ</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Person">
+				<xs:annotation>
+					<xs:documentation>Физическое лицо</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="PhysicalPersonQualifiedName-ModelGroup">
+							<xs:annotation>
+								<xs:documentation>ФИО физического лица</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+						<xs:choice>
+							<xs:element name="SNILS" type="SNILSType">
+								<xs:annotation>
+									<xs:documentation>Страховой номер индивидуального лицевого счета</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:sequence>
+								<xs:element name="Address" type="tAddress">
+									<xs:annotation>
+										<xs:documentation>Адрес</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="Document" type="tDocumentWithoutAppliedFile">
+									<xs:annotation>
+										<xs:documentation>Реквизиты документа</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Organization" type="tIdentify">
+				<xs:annotation>
+					<xs:documentation>Юридическое лицо</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Governance" type="tIdentify">
+				<xs:annotation>
+					<xs:documentation>Орган государственной власти, орган местного самоуправления</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForeignOrganization" type="tIdentifyForeignOrgContact">
+				<xs:annotation>
+					<xs:documentation>Иностранное юридическое лицо</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

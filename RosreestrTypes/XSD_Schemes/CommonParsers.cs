@@ -2682,6 +2682,257 @@ namespace RRTypes.CommonParsers
 		//**************************************************************** 
 		#endregion
 
+		#region  Разбор MP 05
+		public netFteo.XML.FileInfo ParseMPV05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		{
+			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			try
+			{
+				res.DocType = "Межевой план";
+				res.DocTypeNick = "MP";
+				MP_V05.MP MP = (MP_V05.MP)Desearialize<MP_V05.MP>(xmldoc);
+				res.Number = MP.GUID;
+
+				/*
+
+				label_DocType.Text = "Межевой план";
+				richTextBox1.AppendText("\n");
+				richTextBox1.AppendText("\n____________________________________ТИТУЛЬНЫЙ ЛИСТ___________________________________");
+				richTextBox1.AppendText("\nМежевой план подготовлен в результате выполнения кадастровых работ в связи с:");
+				richTextBox1.AppendText("\n");
+				richTextBox1.AppendText(MP.GeneralCadastralWorks.Reason);
+				*/
+				/*
+				if (MP.Conclusion != null)
+				{
+					richTextBox1.AppendText("\n");
+					richTextBox1.AppendText("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
+					richTextBox1.AppendText("\n");
+					richTextBox1.AppendText(MP.Conclusion);
+					richTextBox1.AppendText("\n");
+				}
+				*/
+				/*
+				ListViewItem LVi = new ListViewItem();
+				ListViewItem LViadd = new ListViewItem();
+				ListViewItem LViorg = new ListViewItem();
+				ListViewItem LViTel = new ListViewItem();
+				*/
+
+				/*
+				LVi.Text = MP.GeneralCadastralWorks.DateCadastral.ToString();
+				LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.FamilyName + " " + MP.GeneralCadastralWorks.Contractor.FirstName +
+									 " " + MP.GeneralCadastralWorks.Contractor.Patronymic);
+				LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.NCertificate);
+
+				if (MP.GeneralCadastralWorks.Contractor.Organization != null)
+				{
+					LVi.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.Name);
+				}
+
+
+				LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Address);
+				LViadd.SubItems.Add("-");
+				if (MP.GeneralCadastralWorks.Contractor.Organization != null)
+				{
+					LViadd.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization);
+				}
+
+				LViorg.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Email);
+				LViTel.SubItems.Add(MP.GeneralCadastralWorks.Contractor.Telephone);
+				listView_Contractors.Items.Add(LVi);
+				listView_Contractors.Items.Add(LViadd);
+				listView_Contractors.Items.Add(LViorg);
+				listView_Contractors.Items.Add(LViTel);
+				textBox_DocNum.Text = MP.GUID;
+				textBox_DocDate.Text = MP.GeneralCadastralWorks.DateCadastral.ToString("dd/MM/yyyy");
+				*/
+	
+				TMyCadastralBlock Bl = new TMyCadastralBlock();
+				string ParcelName;
+				if (MP.Package.FormParcels != null)
+				{
+					for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
+					{
+						if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
+							ParcelName = "Item05";
+						else
+							ParcelName = "Item01";
+						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
+						MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
+						MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
+						MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
+						MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
+						if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
+						{
+							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
+						}
+
+						if (MP.Package.FormParcels.NewParcel[i].Contours != null)
+							for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
+							{
+								MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+																				MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
+							}
+					}
+
+				}
+
+
+				//Если Мп по уточнению:
+				if (MP.Package.SpecifyParcel != null)
+				{
+					//уточнение ЗУ, МКЗУ 
+					if (MP.Package.SpecifyParcel.ExistParcel != null)
+					{
+						ParcelName = "Item01"; // default
+						if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+							if (MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count > 0 || MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count > 0)
+
+								ParcelName = "Item05";
+							else
+								ParcelName = "Item01";
+
+
+						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
+						MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную??
+						if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+						{
+							for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
+							{
+								MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+																				MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
+
+							}
+							for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
+							{
+								MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+																				MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
+							}
+						}
+
+						if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
+							MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
+
+					}
+					// Уточнение ЕЗП
+					if (MP.Package.SpecifyParcel.ExistEZ != null)
+					{
+						ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
+						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
+					}
+				}
+				//Только образование частей 
+				if (MP.Package.SubParcels != null)
+				{
+					ParcelName = "Item06";  // Значение отсутствует
+					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
+
+					if (MP.Package.SubParcels.NewSubParcel.Count > 0)
+						for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
+						{
+							TmySlot Sl = new TmySlot();
+							Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
+							Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
+							Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
+							if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
+								Sl.EntSpat.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
+							if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
+								Sl.Contours = RRTypes.CommonCast.CasterZU.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].Contours);
+
+
+							MainObj.SubParcels.Add(Sl);
+						}
+
+
+
+				}
+
+				res.Comments += ("\n");
+				res.Comments += ("<br>_______________________________________ТИТУЛЬНЫЙ ЛИСТ ___________________________________");
+				res.Comments += ("<br> Межевой план подготовлен в результате выполнения кадастровых работ в связи с:");
+				res.Comments += ("\n");
+				res.Comments += (MP.GeneralCadastralWorks.Reason);
+
+
+				if (MP.Conclusion != null)
+				{
+					res.Comments += ("<br>");
+					res.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
+					res.Comments += ("\n");
+					res.Comments += (MP.Conclusion);
+					/*
+                    res.Comments += "<br>" +
+                                           MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy") + "<br>" +
+                                           MP.GeneralCadastralWorks.Contractor.FamilyName + " " +
+                                           MP.GeneralCadastralWorks.Contractor.FirstName + " " +
+                                           MP.GeneralCadastralWorks.Contractor.Patronymic + "<br>";
+                    */
+				}
+				res.CommentsType = "Заключение КИ";
+				res.Date = MP.GeneralCadastralWorks.DateCadastral.ToString("dd.MM.yyyy").Replace("0:00:00", "date");
+				if (MP.GeneralCadastralWorks.Contractor.Organization != null)
+				{
+					res.Cert_Doc_Organization = MP.GeneralCadastralWorks.Contractor.Organization.Name +
+									  "  " + MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization;
+				}
+
+				res.Appointment = MP.GeneralCadastralWorks.Contractor.NCertificate + " " +
+								  MP.GeneralCadastralWorks.Contractor.Telephone;
+				res.AppointmentFIO = MP.GeneralCadastralWorks.Contractor.FamilyName + " " +
+								 MP.GeneralCadastralWorks.Contractor.FirstName + " " +
+								 MP.GeneralCadastralWorks.Contractor.Patronymic + "\r" +
+								 MP.GeneralCadastralWorks.Contractor.Email;
+
+
+				res.Contractors.Add(
+						   new TEngineerOut()
+						   {
+							   Date = MP.GeneralCadastralWorks.DateCadastral.ToString().Replace("0:00:00", ""),
+							   FamilyName = MP.GeneralCadastralWorks.Contractor.FamilyName,
+							   FirstName = MP.GeneralCadastralWorks.Contractor.FirstName,
+							   Patronymic = MP.GeneralCadastralWorks.Contractor.Patronymic,
+							   NCertificate = MP.GeneralCadastralWorks.Contractor.NCertificate,
+							   Email = MP.GeneralCadastralWorks.Contractor.Email,
+							   Organization_Name = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.Name : "",
+							   AddressOrganization = MP.GeneralCadastralWorks.Contractor.Organization != null ? MP.GeneralCadastralWorks.Contractor.Organization.AddressOrganization : ""
+
+						   });
+				foreach (MP_V05.tClientIdentify client in MP.GeneralCadastralWorks.Clients)
+				{
+					if (client.Organization != null)
+					{
+						res.ReceivName = client.Organization.Name;
+						res.RequeryNumber = client.Organization.INN + ", " + client.Organization.OGRN;
+					}
+					if (client.Person != null)
+					{
+						res.ReceivName = client.Person.FamilyName + " " + client.Person.FirstName + " " + client.Person.Patronymic;
+						//res.RequeryNumber = client.Person..SNILS + ",  " + client.Person.Address;
+					}
+
+				}
+				if (MP.InputData.GeodesicBases != null)
+					foreach (MP_V05.tSetOfPoint oms in MP.InputData.GeodesicBases)
+					{
+						TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
+						pt.NumGeopointA = oms.PName;
+						pt.Description = oms.PKind; //Type
+						pt.Code = oms.PKlass; // NetWork class
+						Bl.AddOmsPoint(pt);
+					}
+				res.MyBlocks.Blocks.Add(Bl);
+			}
+			catch (Exception ex)
+			{
+				res.CommentsType = "Exception";
+				res.Comments = ex.Message;
+				return res;
+			}
+			return res;
+		}
+		#endregion
+
 		#region  Разбор MP 06
 		public netFteo.XML.FileInfo ParseMPV06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
@@ -3053,6 +3304,20 @@ namespace RRTypes.CommonParsers
 			return res;
 		}
 
+		public netFteo.XML.FileInfo ParseTP_V06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
+		{
+			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			res.DocType = "Технический план";
+			res.DocTypeNick = "ТП";
+			res.Version = "06";
+			//res.Number = TP.GUID;
+			res.CommentsType = "Заключение КИ";
+			//TODO : 
+			/*
+			 * waiting for example of xml instance 
+			 * */
+			return res;
+		}
 
 		public netFteo.XML.FileInfo ParseTP_V03(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
 		{
@@ -4982,9 +5247,11 @@ namespace RRTypes.CommonParsers
 
 				for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
 				{
+					/*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
 														 kp.Parcel.Contours[ic].NumberRecord + ")",
 														 kp.Parcel.Contours[ic].EntitySpatial));
+					*/
 					TMyPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
 														  kp.Parcel.Contours[ic].NumberRecord + ")",
 														  kp.Parcel.Contours[ic].EntitySpatial);
@@ -5001,12 +5268,15 @@ namespace RRTypes.CommonParsers
 						kp.Parcel.CompositionEZ[i].Area.Area,
 						0,
 						6, //для сведений ЕГРН это всегда "учтеный"
+						MainObj.EntSpat.AddPolygon(
+
 						CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
-																	 kp.Parcel.CompositionEZ[i].EntitySpatial));
+																	 kp.Parcel.CompositionEZ[i].EntitySpatial)));
 
-
+					/*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
 														  kp.Parcel.CompositionEZ[i].EntitySpatial));
+					*/
 				}
 			}
 			//Части 

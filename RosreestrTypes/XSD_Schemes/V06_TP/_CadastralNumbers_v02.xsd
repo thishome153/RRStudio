@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleType_v01.xsd"/>
+	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
+	<xs:include schemaLocation="P_CommonSimpleType_v11.xsd"/>
+	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Кадастровые номера-->
+	<xs:complexType name="tCadastralRegions">
+		<xs:annotation>
+			<xs:documentation>Номера кадастровых округов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralRegion" type="nn2" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер кадастрового округа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastralBlocks">
+		<xs:annotation>
+			<xs:documentation>Номера кадастровых кварталов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralBlock" type="CadastralBlockType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер кадастрового квартала</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastralBlocksNull">
+		<xs:annotation>
+			<xs:documentation>Номера кадастровых кварталов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralBlock" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер кадастрового квартала</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{2}:\d{2}:\d{6,7}"/>
+						<xs:pattern value="0:0:0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastralNumberInp">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="CadastralNumber" type="CadastralNumberType" use="required">
+			<xs:annotation>
+				<xs:documentation>Кадастровый номер</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tCadastralNumbersInp">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер (кадастровые номера)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralNumber" type="CadastralNumberType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastralNumberNull">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер объекта недвижимости, в том числе учтенного в КО "Общероссийский"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralNumber" type="CadastralNumberNull">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tCadastralNumbersNull">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер (кадастровые номера) объектов недвижимости, в том числе учтенного (учтенных) в кадастровом округе "Общероссийский"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralNumber" type="CadastralNumberNull" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Кадастровые номера (без ограничений на количество символов)-->
+	<xs:complexType name="tCadastralBlocksOut">
+		<xs:annotation>
+			<xs:documentation>Номера кадастровых кварталов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralBlock" type="s40" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Номер кадастрового квартала</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tParentCadastralNumberFlatOut">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер ОН, в котором расположено помещение</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CadastralNumberOKS" type="s40" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер здания или сооружения, в котором расположено помещение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralNumberFlat" type="s40" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер квартиры, в которой расположена комната (если кадастровый паспорт выдается на комнату в квартире)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
