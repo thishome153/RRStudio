@@ -599,7 +599,7 @@ namespace XMLReaderCS
 				if (polyfromMIF != null)
 				{
 					DocInfo.MyBlocks.ParsedSpatial.Clear();
-					DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
+					DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
 				}
 				
 				this.DocInfo.DocTypeNick = "Текстовый файл";
@@ -1465,7 +1465,7 @@ namespace XMLReaderCS
 			if (BlockList.Blocks.Count == 0)
 			{
 				if (BlockList.ParsedSpatial != null)
-					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial, 6);
+					netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial);
 			}
 
 			if (TopNode_ != null) TopNode_.Expand();
@@ -5041,15 +5041,29 @@ return res;
 			}
         }
 
-
+		/// <summary>
+		/// Only for polyline. Close polyline`ll convert it to polygon
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void замкнутьToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-			if (Feature != null)
+			
+			if ((Feature != null) &&
+				(Feature.TypeName == "netFteo.Spatial.TPolyLine")
+				)
 			{
-				Feature.Close();
-				Feature.ShowasListItems(listView1, true);
+				TMyPolygon NewFeature = new TMyPolygon((TPolyLine)Feature);
+				NewFeature.LayerHandle = Feature.LayerHandle;
+				NewFeature.Definition = Feature.Definition + "*";
+				this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
+				//Insert new node:
+				netFteo.ObjectLister.ListEntSpat(TV_Parcels.SelectedNode.Parent, NewFeature, "SPElem.", NewFeature.Definition, NewFeature.State);
+				//ListMyCoolections(this.DocInfo.MyBlocks);
+				NewFeature.ShowasListItems(listView1, true);
 			}
+
 		}
 
 		private void ChangeXYToolStripMenuItem_Click(object sender, EventArgs e)

@@ -197,6 +197,7 @@ namespace netFteo
 			Node.SelectedImageIndex = 10;
 			Node.Tag = ES.id;
 		}
+
 		private static void ListFeature(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
 		{
 			foreach (Spatial.IGeometry feature in ES)
@@ -250,7 +251,7 @@ namespace netFteo
 					ListFeature(ES, LayerNode, layer.LayerHandle);
 				}
 		}
-
+	
 		public static void ListEntSpat(TreeNode NodeES, List<Spatial.TEntitySpatial> ES, int Status)
 		{
 			if (ES == null) return;
@@ -271,7 +272,7 @@ namespace netFteo
 				*/
 			}
 		}
-
+		
 		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
 		{
 

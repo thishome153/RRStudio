@@ -1778,9 +1778,17 @@ SCAN:
             //this.Childs = new List<TMyOutLayer>();
             //this.Layer_id = Gen_id.newId;
             this.Definition = Def;
-        }
+		}
 
-        public TMyPolygon(int id, string Def):this(id)
+		public TMyPolygon(TPolyLine Ring) : this()
+		{
+			this.ImportRing(Ring);
+		//	this.id = Ring.id;
+		}
+
+
+
+		public TMyPolygon(int id, string Def):this(id)
         {
           //  this.Childs = new List<TMyOutLayer>();
           //  this.Layer_id = id;
@@ -1945,6 +1953,21 @@ SCAN:
             return Res;
 
         }
+
+		/// <summary>
+		/// Set points of ring - main border by importing 
+		/// </summary>
+		/// <param name="Ring"></param>
+		public void ImportRing(TPolyLine Ring)
+		{
+			if (Ring == null) return;
+			this.Clear();
+			this.Childs.Clear();
+//			this.Definition = Ring.Definition;
+			for (int i = 0; i <= Ring.PointCount - 1; i++)
+				this.AddPoint(Ring[i]);
+		}
+
 
         public void ImportPolygon(TMyPolygon Poly)
         {
@@ -4123,14 +4146,17 @@ SCAN:
 		/// DXF, MIF spatial data collection - -results of parsing spatial files 
 		/// Store result of mif, dxf, csv, txt
 		/// </summary>
-		public List<TEntitySpatial> ParsedSpatial;
+		//public List<TEntitySpatial> ParsedSpatial;
+		public TEntitySpatial ParsedSpatial;
 
-        public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
+
+		public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
 
         public TMyBlockCollection()
         {
             this.Blocks = new List<TMyCadastralBlock>();
-			this.ParsedSpatial = new List<TEntitySpatial>();
+			//this.ParsedSpatial = new List<TEntitySpatial>();
+			this.ParsedSpatial = new TEntitySpatial();
 			this.CSs = new TCoordSystems();
         }
 
@@ -4163,14 +4189,21 @@ SCAN:
 			}
 
 			//From dxf, mif
+			foreach (IGeometry feature in this.ParsedSpatial)
+				{
+					if (feature.id == Item_id)
+						return feature;
+				}
+
 			//Full ES
+			/*
 			foreach (TEntitySpatial ES in this.ParsedSpatial)
 				
 				{
 					if (ES.id == Item_id)
 						return ES;
 				}
-
+		
 			//Single feature ES
 			foreach (TEntitySpatial ES in this.ParsedSpatial)
 				foreach (IGeometry feature in ES)
@@ -4178,6 +4211,7 @@ SCAN:
 					if (feature.id == Item_id)
 						return feature;
 				}
+					*/
 			return null;
         }
 

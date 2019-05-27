@@ -6309,7 +6309,7 @@ namespace RRTypes.CommonParsers
 			if (DXfEntitys != null)
 			{
 				// TODO where place for results ??? : 
-				res.MyBlocks.ParsedSpatial.Add(DXfEntitys);
+				res.MyBlocks.ParsedSpatial = DXfEntitys;
 			}
 
 				res.DocTypeNick = "dxf";
@@ -6339,7 +6339,7 @@ namespace RRTypes.CommonParsers
 			if (Entitys != null)
 			{
 				// TODO where place for results ??? : 
-				res.MyBlocks.ParsedSpatial.Add(Entitys);
+				res.MyBlocks.ParsedSpatial = Entitys; // not Add, need assume to update Layers
 			}
 
 			res.DocTypeNick = "Mapinfo mif";
