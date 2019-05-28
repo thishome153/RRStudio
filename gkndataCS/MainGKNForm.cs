@@ -40,7 +40,7 @@ namespace GKNData
 #if DEBUG
 			this.Text = "ГКН Дата. debug version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			Button_Import.Enabled = true;
-			toolStripButton_Exit.Visible = true;
+			Button_Exit.Visible = true;
 #else
             this.Text = "ГКН Дата " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Button_Import.Enabled = false;
@@ -989,5 +989,31 @@ namespace GKNData
 		{
 			Edit(CF.Cfg.CurrentItem);
 		}
+
+		private void panel1_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			SelectDistrict(CF.Cfg);
+		}
+
+		private void Button_Exit_Click(object sender, EventArgs e)
+		{
+			GoDisconnect();
+			this.Close();
+
+		}
+
+		/*
+		 * 
+		 */
 	}
 }
