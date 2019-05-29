@@ -5063,6 +5063,15 @@ return res;
 				//ListMyCoolections(this.DocInfo.MyBlocks);
 				NewFeature.ShowasListItems(listView1, true);
 			}
+			
+			if ((Feature != null) &&
+				(Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+				)
+			{
+				TMyPolygon NewFeature = (TMyPolygon)Feature;
+				NewFeature.Close();
+				NewFeature.ShowasListItems(listView1, true);
+			}
 
 		}
 
