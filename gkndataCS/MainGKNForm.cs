@@ -44,7 +44,7 @@ namespace GKNData
 #else
             this.Text = "ГКН Дата " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Button_Import.Enabled = false;
-            toolStripButton_Exit.Visible = false;
+            //toolStripButton_Exit.Visible = false;
 #endif
 		}
 
@@ -1010,6 +1010,24 @@ namespace GKNData
 			GoDisconnect();
 			this.Close();
 
+		}
+
+		private void button1_Click_1(object sender, EventArgs e)
+		{
+			treeView1.Visible = true;
+			treeView1.Dock = DockStyle.Fill;
+		}
+
+		private void button_History_Click(object sender, EventArgs e)
+		{
+			treeView1.Visible = false;
+			treeView1.Dock = DockStyle.None;
+		}
+
+		private void button_Favorites_Click(object sender, EventArgs e)
+		{
+			treeView1.Visible = false;
+			treeView1.Dock = DockStyle.None;
 		}
 
 		/*

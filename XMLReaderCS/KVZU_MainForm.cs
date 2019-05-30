@@ -2771,11 +2771,12 @@ return res;
 				}
 			}
 
-			/*
-			 * TODO : need show whole layer features
+
+
+			//Show features by whole layer 
 			if (STrN.Name.Contains("Layer."))
 			{
-				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.get.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(STrN.Name.Substring(6));
 				if (Entity != null)
 				{
 					GeometryToSpatialView(listView1, Entity);
@@ -2783,7 +2784,7 @@ return res;
 					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
-			*/
+			
 
 			if (STrN.Name.Contains("SPElem."))
 			{
@@ -2817,6 +2818,40 @@ return res;
 				PropertiesToListView(listView_Properties, O);
 			}
 
+			if (STrN.Name.Contains("ParcelsNode"))
+			{
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetParcelsEs();
+				if (Entity != null)
+				{
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
+				}
+			}
+
+			if (STrN.Name.Contains("OKSsNode"))
+			{
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetRealtyEs();
+				if (Entity != null)
+				{
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
+				}
+			}
+
+			if (STrN.Name.Contains("TopNode"))
+			{
+				TEntitySpatial TopES = new TEntitySpatial();
+				TopES.AddRange(this.DocInfo.MyBlocks.GetRealtyEs());
+				TopES.AddRange(this.DocInfo.MyBlocks.GetParcelsEs());
+				if (TopES != null)
+				{
+					GeometryToSpatialView(listView1, TopES);
+					TopES.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, TopES);
+				}
+			}
 
 			if (STrN.Name.Contains("TPolyLine."))
 			{
@@ -4960,16 +4995,17 @@ return res;
 
 		private void LogStarttoWebServer(string AppTypeName)
 		{
-
-			netFteo.IO.LogServer srv = new netFteo.IO.LogServer("82.119.136.82",
-				new netFteo.IO.LogServer_response()
-				{
-					ApplicationType = AppTypeName + " " + this.AppConfiguration,
-					AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-					state = "ste",
-					Client = netFteo.NetWork.NetWrapper.UserName
-				});
-
+			if (netFteo.NetWork.NetWrapper.HostIP != "10.66.77.150") //main admin/developer machine
+			{
+				netFteo.IO.LogServer srv = new netFteo.IO.LogServer("82.119.136.82",
+					new netFteo.IO.LogServer_response()
+					{
+						ApplicationType = AppTypeName + " " + this.AppConfiguration,
+						AppVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+						state = "ste",
+						Client = netFteo.NetWork.NetWrapper.UserName
+					});
+			}
 			//	srv.Get_WebOnline_th("");
 		}
 

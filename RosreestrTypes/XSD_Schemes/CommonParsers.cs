@@ -3070,13 +3070,13 @@ namespace RRTypes.CommonParsers
 
 						foreach (RRTypes.MP_V06.tExistEZEntryParcel entry in MP.Package.SpecifyParcel.ExistEZ.ExistEZEntryParcels)
 						{
-							MainObj.CompozitionEZ.AddEntry(entry.CadastralNumber,
+							MainObj.AddEntry(entry.CadastralNumber,
 														   entry.Area.Area,
 														   entry.Area.Inaccuracy,
 														   6, // для межевого плана входящие только учтеные
-														   MainObj.EntSpat.AddPolygon(
+														   
 														  CommonCast.CasterZU.ES_ZU(entry.CadastralNumber,
-														  entry.EntitySpatial)));
+														  entry.EntitySpatial));
 						}
 					}
 				}
@@ -4834,7 +4834,6 @@ namespace RRTypes.CommonParsers
 							TMyPolygon NewCont = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
 																  KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
 																  KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial);
-							//NewCont.AreaValue = KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].a
 							MainObj.EntSpat.Add(NewCont);
 						}
 					}
@@ -5264,14 +5263,12 @@ namespace RRTypes.CommonParsers
 			{
 				for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
 				{
-					MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
+					MainObj.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
 						kp.Parcel.CompositionEZ[i].Area.Area,
 						0,
 						6, //для сведений ЕГРН это всегда "учтеный"
-						MainObj.EntSpat.AddPolygon(
-
 						CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
-																	 kp.Parcel.CompositionEZ[i].EntitySpatial)));
+																	 kp.Parcel.CompositionEZ[i].EntitySpatial));
 
 					/*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
@@ -5384,12 +5381,12 @@ namespace RRTypes.CommonParsers
 			{
 				for (int i = 0; i <= kp.Parcel.CompositionEZ.Count - 1; i++)
 				{
-					MainObj.CompozitionEZ.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
+					MainObj.AddEntry(kp.Parcel.CompositionEZ[i].CadastralNumber,
 						kp.Parcel.CompositionEZ[i].Area.Area,
 						0,
 						6, //для сведений ЕГРН это всегда "учтеный"
-						MainObj.EntSpat.AddPolygon(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
-																	 kp.Parcel.CompositionEZ[i].EntitySpatial)));
+						CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
+																	 kp.Parcel.CompositionEZ[i].EntitySpatial));
 
 					/*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
@@ -5504,7 +5501,7 @@ namespace RRTypes.CommonParsers
 
 										if (parcel.SubParcels[i].Object_Entry != null)
 										{
-											MainObj.CompozitionEZ.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, -1, 6, SlEs);
+											MainObj.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, -1, 6, SlEs);
 											res.MyBlocks.SpatialData.Add(SlEs);
 										}
 									}
@@ -5635,8 +5632,8 @@ namespace RRTypes.CommonParsers
 								// SubParcel[1] / Area / Area /#text
 								// SubParcel[1] / Entity_Spatial
 
-								MainObj.CompozitionEZ.AddEntry(CN, -1, -1,
-									-1, MainObj.EntSpat.AddPolygon(KPT08LandEntSpatToFteo(CN, Entry.SelectSingleNode("Entity_Spatial"))));
+								MainObj.AddEntry(CN, -1, -1,
+									-1, KPT08LandEntSpatToFteo(CN, Entry.SelectSingleNode("Entity_Spatial")));
 							}
 	
 						}
@@ -5717,11 +5714,11 @@ namespace RRTypes.CommonParsers
 				for (int i = 0; i <= kv.Parcels.Parcel.CompositionEZ.Count - 1; i++)
 				// if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
 				{
-					MainObj.CompozitionEZ.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1, 
+					MainObj.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1, 
 													KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State),
-													MainObj.EntSpat.AddPolygon(
+													
 					KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
-																					 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial)));
+																					 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
 					/*
 					res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
@@ -5876,11 +5873,11 @@ namespace RRTypes.CommonParsers
 				for (int i = 0; i <= kv.Parcels.Parcel.CompositionEZ.Count - 1; i++)
 				// if ( kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial != null)
 				{
-					MainObj.CompozitionEZ.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+					MainObj.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 												   kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1,
 												  KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State),
-					MainObj.EntSpat.AddPolygon(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
-																						 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial)));
+					CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+																						 kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
 					/*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
 														   kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));

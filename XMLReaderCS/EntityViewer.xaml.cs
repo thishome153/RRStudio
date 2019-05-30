@@ -351,7 +351,12 @@ namespace XMLReaderCS
 			List<UIElement> res = new List<UIElement>();
 			if (Scale == 0) return res;
 				Point Center = PointsToWindowsPoints(Circle, true);
-			System.Windows.Shapes.Ellipse el = new Ellipse();
+			if (Double.IsNaN(Center.X))
+			{
+				return res;// выходим
+			}
+
+				System.Windows.Shapes.Ellipse el = new Ellipse();
 			el.Stroke = System.Windows.Media.Brushes.Red;
 			el.Fill = System.Windows.Media.Brushes.Transparent;
 			Canvas.SetLeft(el, Center.X - Circle.R / (2 * Scale));

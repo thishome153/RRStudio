@@ -1718,22 +1718,38 @@ SCAN:
 
     public class BrdList : BindingList<TBorder>
     {
-        public void AddItem(string definition, TPoint A, TPoint B)
-        {
-            TBorder NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
-            NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
-            this.Add(NewBrd);
-        }
 
-        public void AddItems(string Pref, PointList ES)
+		public void AddItem(string definition, TPoint A, TPoint B)
+		{
+			TBorder NewBrd;
+			if ((!Double.IsNaN(A.x)) && (!Double.IsNaN(A.y)) && (!Double.IsNaN(B.x)) && (!Double.IsNaN(B.y)))
+			{
+				NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
+				NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
+				this.Add(NewBrd);
+
+			}
+		}
+
+		public void AddItems(string Pref, PointList Points)
         {
-            for (int i = 0; i <= ES.Count - 2; i++)
+			PointList NewPoints = new PointList(); 
+			foreach (TPoint point in Points)
+			{
+				if ((!Double.IsNaN(point.x)) && (!Double.IsNaN(point.y)))
+				{
+					NewPoints.AddPoint(point);
+				}
+			}
+
+            for (int i = 0; i <= NewPoints.Count - 2; i++)
             {
-                this.AddItem("-", ES[i], ES[i + 1]);
-            }
+                this.AddItem("-", NewPoints[i], NewPoints[i + 1]);
+			}
+			// this.AddItem("-", Points[Points.Count-1], Points.First());  //Closing border ??
+		}
 
-        }
-		 public double Length
+		public double Length
 		{
 			get
 			{
@@ -2591,6 +2607,7 @@ SCAN:
 	public class EZPEntry : TCadasterItem
 	{
 		public int Spatial_ID;
+		public decimal AreaEntry;
 	}
 
     public class TCompozitionEZ : List<EZPEntry>// : List<TMyPolygon>
@@ -2603,19 +2620,7 @@ SCAN:
             this.TransformationEntryParcel = new TCadastralNumbers();
         }
 
-        public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
-        {
-            if (ESs == null) return;
-			EZPEntry entry = new EZPEntry();
-			entry.Spatial_ID = ESs.id; // links to spatial
-			entry.CN = entrynumber;
-			entry.Definition = entrynumber;
-			//entry.ImportPolygon(ESs);
-			//entry.AreaValue = areaEntry;
-			//entry.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
-			entry.State = state;
-			this.Add(entry);
-        }
+
 
         /// <summary>
         /// Периметр всех входящих в ЕЗП. 
@@ -2950,7 +2955,27 @@ SCAN:
             set { this.Fid = value; }
         }
 		*/
-        public TmySlot AddSubParcel(string SlotNumber)
+
+
+		public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
+		{
+			if (ESs == null) return;
+			EZPEntry entry = new EZPEntry();
+			entry.Spatial_ID = ESs.id; // links to spatial
+			entry.CN = entrynumber;
+			entry.Definition = entrynumber;
+			//entry.ImportPolygon(ESs);
+			entry.AreaEntry = areaEntry;
+			ESs.AreaValue = areaEntry;
+			ESs.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
+			entry.State = state;
+
+			this.EntSpat.AddPolygon(ESs);
+			this.CompozitionEZ.Add(entry);
+		}
+
+
+		public TmySlot AddSubParcel(string SlotNumber)
         {
             TmySlot Sl = new TmySlot();
             Sl.NumberRecord = SlotNumber;
@@ -4189,6 +4214,7 @@ SCAN:
 			}
 
 			//From dxf, mif
+			// Single feature
 			foreach (IGeometry feature in this.ParsedSpatial)
 				{
 					if (feature.id == Item_id)
@@ -4196,22 +4222,9 @@ SCAN:
 				}
 
 			//Full ES
-			/*
-			foreach (TEntitySpatial ES in this.ParsedSpatial)
-				
-				{
-					if (ES.id == Item_id)
-						return ES;
-				}
+			if (this.ParsedSpatial.id == Item_id)
+				return this.ParsedSpatial;
 		
-			//Single feature ES
-			foreach (TEntitySpatial ES in this.ParsedSpatial)
-				foreach (IGeometry feature in ES)
-				{
-					if (feature.id == Item_id)
-						return feature;
-				}
-					*/
 			return null;
         }
 
@@ -4414,6 +4427,7 @@ SCAN:
 
 		public TMyPolygon AddPolygon(object poly_)
 		{
+
 			if (poly_ == null) return null;
 			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
 				(((TMyPolygon)poly_).PointCount > 0))
@@ -4591,6 +4605,25 @@ SCAN:
 			}
 		}
 
+		/// <summary>
+		/// Select features by Layer
+		/// </summary>
+		/// <param name="LayerHandle">Handle of desired layer</param>
+		/// <returns></returns>
+		public TEntitySpatial Select(string LayerHandle)
+		{
+			TEntitySpatial res = new TEntitySpatial();
+			foreach(IGeometry feature in this)
+			{
+				if (feature.LayerHandle == LayerHandle)
+				{
+					res.Add(feature);
+				}
+			}
+			return res;
+		}
+
+
 		public void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Count == 0) return;
@@ -4650,7 +4683,9 @@ SCAN:
 					LV.Columns[2].Text = "Площадь";
 					LV.Columns[3].Text = "Площ. гр.";
 					LV.Columns[4].Text = "Δ";
-					LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
+					if (((TMyPolygon)feature).AreaValue != -1)
+						LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
+					else LVi.SubItems.Add("-");
 					LVi.SubItems.Add(((TMyPolygon)feature).AreaSpatialFmt("0.00"));
 					LVi.SubItems.Add(((TMyPolygon)feature).AreaInaccuracy);
 				}
@@ -4674,8 +4709,7 @@ SCAN:
 			}
 			LV.EndUpdate();
 		}
-
-		
+	
 		public double ScaleEntity(double canvas_width, double canvas_height)
 		{
 			if (this.Bounds == null) return -1;

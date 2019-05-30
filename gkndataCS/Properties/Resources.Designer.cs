@@ -153,6 +153,16 @@ namespace GKNData.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap heart {
+            get {
+                object obj = ResourceManager.GetObject("heart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Image_Parcel {
             get {
                 object obj = ResourceManager.GetObject("Image_Parcel", resourceCulture);
@@ -226,6 +236,16 @@ namespace GKNData.Properties {
         internal static System.Drawing.Bitmap pictures {
             get {
                 object obj = ResourceManager.GetObject("pictures", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap table_refresh {
+            get {
+                object obj = ResourceManager.GetObject("table_refresh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -71,6 +71,8 @@ namespace GKNData
 			this.button2 = new System.Windows.Forms.Button();
 			this.SearchTextBox = new System.Windows.Forms.TextBox();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.button_Favorites = new System.Windows.Forms.Button();
+			this.button_History = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.Button_Exit = new System.Windows.Forms.Button();
@@ -416,6 +418,8 @@ namespace GKNData
 			// panel2
 			// 
 			this.panel2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+			this.panel2.Controls.Add(this.button_Favorites);
+			this.panel2.Controls.Add(this.button_History);
 			this.panel2.Controls.Add(this.button1);
 			this.panel2.Controls.Add(this.button3);
 			this.panel2.Controls.Add(this.Button_Exit);
@@ -424,6 +428,36 @@ namespace GKNData
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(168, 718);
 			this.panel2.TabIndex = 12;
+			// 
+			// button_Favorites
+			// 
+			this.button_Favorites.FlatAppearance.BorderSize = 0;
+			this.button_Favorites.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.button_Favorites.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button_Favorites.Image = global::GKNData.Properties.Resources.heart;
+			this.button_Favorites.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.button_Favorites.Location = new System.Drawing.Point(1, 152);
+			this.button_Favorites.Name = "button_Favorites";
+			this.button_Favorites.Size = new System.Drawing.Size(165, 40);
+			this.button_Favorites.TabIndex = 0;
+			this.button_Favorites.Text = "Избранное";
+			this.button_Favorites.UseVisualStyleBackColor = true;
+			this.button_Favorites.Click += new System.EventHandler(this.button_Favorites_Click);
+			// 
+			// button_History
+			// 
+			this.button_History.FlatAppearance.BorderSize = 0;
+			this.button_History.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.button_History.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button_History.Image = global::GKNData.Properties.Resources.table_refresh;
+			this.button_History.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.button_History.Location = new System.Drawing.Point(1, 106);
+			this.button_History.Name = "button_History";
+			this.button_History.Size = new System.Drawing.Size(165, 40);
+			this.button_History.TabIndex = 0;
+			this.button_History.Text = "История";
+			this.button_History.UseVisualStyleBackColor = true;
+			this.button_History.Click += new System.EventHandler(this.button_History_Click);
 			// 
 			// button1
 			// 
@@ -434,10 +468,11 @@ namespace GKNData
 			this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.button1.Location = new System.Drawing.Point(1, 60);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(167, 40);
+			this.button1.Size = new System.Drawing.Size(165, 40);
 			this.button1.TabIndex = 0;
 			this.button1.Text = "Кварталы";
 			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click_1);
 			// 
 			// button3
 			// 
@@ -448,7 +483,7 @@ namespace GKNData
 			this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.button3.Location = new System.Drawing.Point(1, 14);
 			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(167, 40);
+			this.button3.Size = new System.Drawing.Size(165, 40);
 			this.button3.TabIndex = 0;
 			this.button3.Text = "Субъект";
 			this.button3.UseVisualStyleBackColor = true;
@@ -583,6 +618,8 @@ namespace GKNData
 		private System.Windows.Forms.Button Button_Exit;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button_History;
+		private System.Windows.Forms.Button button_Favorites;
 	}
 }
 

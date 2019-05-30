@@ -269,6 +269,8 @@
     <Content Include="gkndata.ico" />
     <Content Include="gkndataCS_ico.ico" />
     <Content Include="Readme GKN Data.txt" />
+    <None Include="Resources\table_refresh.png" />
+    <None Include="Resources\heart.png" />
     <None Include="Resources\application_form.png" />
     <Content Include="Resources\gkndataCS.bmp" />
     <Content Include="Resources\GKNDATASharp.bmp" />
