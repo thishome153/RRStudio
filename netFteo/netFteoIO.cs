@@ -1294,7 +1294,7 @@ namespace netFteo.IO
 			this.FileName = FileName;
 			//BodyLoad(FileName);
 			string baseFileName = Path.GetDirectoryName(FileName) + "\\" + Path.GetFileNameWithoutExtension(FileName);
-			if (File.Exists(baseFileName))
+			if (File.Exists(baseFileName +  ".mid".ToUpper()))
 			{
 				MID_Present = true;
 				MIDFile = new StreamReader(baseFileName + ".mid");
@@ -1324,13 +1324,26 @@ namespace netFteo.IO
 		{
 			TPoint res = new TPoint();
 			res.NumGeopointA = pointName;
-			double Y = 0; double X = 0;
-			if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
+			double Y = Double.NaN; double X = Double.NaN;
+			//	if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
+			//string ss = line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1);
+			//if (Double.TryParse(ss, out X)) res.x = X;
 
-			string ss = line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1);
-			if (Double.TryParse(ss, out X)) res.x = X;
+			string[] SplString = line.Split(' ');
+			foreach(string Item in SplString)
+			{
+				if (Double.TryParse(Item, out Y))
+				{
+					if (Double.IsNaN(res.y))
+						res.y = Y;
+					else res.x = Y;// y already setuped
+				}
+			}
+
 			return res;
 		}
+
+
 		/*
         private Point MIF_ParsePoint(System.IO.TextReader readFile)
         {
