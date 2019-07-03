@@ -2960,6 +2960,7 @@ namespace RRTypes.CommonParsers
 						MainObj.CadastralBlock = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
 						Bl.CN = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
 						MainObj.Definition = MP.Package.FormParcels.NewParcel[i].Definition;
+						if (MP.Package.FormParcels.NewParcel[i].PrevCadastralNumbers != null)
 						MainObj.PrevCadastralNumbers.AddRange(MP.Package.FormParcels.NewParcel[i].PrevCadastralNumbers);
 						MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
 						MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());

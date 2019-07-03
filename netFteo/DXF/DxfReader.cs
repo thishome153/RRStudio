@@ -6708,6 +6708,7 @@ namespace netDxf
             name = this.DecodeEncodedNonAsciiCharacters(name);
 
             Layer layer;
+
             if (this.doc.Layers.TryGetValue(name, out layer))
                 return layer;
 
@@ -6717,6 +6718,7 @@ namespace netDxf
             this.doc.Layers.Add(layer);
             return layer;
         }
+
 
         private LineType GetLineType(string name)
         {

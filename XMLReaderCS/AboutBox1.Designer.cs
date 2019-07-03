@@ -30,8 +30,8 @@
 			this.textBoxDescription = new System.Windows.Forms.TextBox();
 			this.labelProductName = new System.Windows.Forms.Label();
 			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.okButton = new System.Windows.Forms.Button();
+			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -84,6 +84,17 @@
 			this.tableLayoutPanel.Size = new System.Drawing.Size(688, 374);
 			this.tableLayoutPanel.TabIndex = 0;
 			// 
+			// okButton
+			// 
+			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.okButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.okButton.Location = new System.Drawing.Point(134, 344);
+			this.okButton.Margin = new System.Windows.Forms.Padding(3, 3, 30, 10);
+			this.okButton.Name = "okButton";
+			this.okButton.Size = new System.Drawing.Size(524, 20);
+			this.okButton.TabIndex = 25;
+			this.okButton.Text = "&ОК";
+			// 
 			// logoPictureBox
 			// 
 			this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -95,17 +106,6 @@
 			this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.logoPictureBox.TabIndex = 12;
 			this.logoPictureBox.TabStop = false;
-			// 
-			// okButton
-			// 
-			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point(583, 344);
-			this.okButton.Margin = new System.Windows.Forms.Padding(3, 3, 30, 10);
-			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(75, 20);
-			this.okButton.TabIndex = 25;
-			this.okButton.Text = "&ОК";
 			// 
 			// AboutBox1
 			// 

@@ -738,6 +738,7 @@ namespace netFteo.Spatial
 		/// </summary>
 		void ResetOrdinates();
 		void ExchangeOrdinates();
+		void DetectSpins(IPointList src);
 		int ReorderPoints(int StartNumber);
 
 		/// <summary>
@@ -781,6 +782,29 @@ namespace netFteo.Spatial
 			get { return this.fDefinition; }
 			set { this.fDefinition = value; }
 		}
+
+
+		/// <summary>
+		/// Установка "ГКН" точек
+		/// </summary>
+		public void DetectSpins(IPointList src)
+		{
+			PointList Detectors = (PointList)src;
+
+			foreach(TPoint Point in this)
+				foreach(TPoint srcPoint in Detectors)
+			{
+				if ((Point.x == srcPoint.x) &&
+					(Point.y == srcPoint.y) 
+						)
+				{
+					Point.State = 6;//Rosreestr.dStatesv01_enum.Учтенный;
+					Point.Pref = "";
+				}
+			}
+		}
+
+
 
 		public void ExchangeOrdinates()
 		{
@@ -1872,11 +1896,15 @@ SCAN:
 				LVi.SubItems.Add(points[i].y_s);
 				LVi.SubItems.Add(points[i].Mt_s);
 				LVi.SubItems.Add(points[i].Description);
+
+				LVi.ForeColor =  TMyColors.StatusToColor(points[i].State);
+				/*
 				if (points[i].Pref == "н")
 					LVi.ForeColor = System.Drawing.Color.Red;
 				else LVi.ForeColor = System.Drawing.Color.Black;
 				if (points[i].Status == 6)
 					LVi.ForeColor = System.Drawing.Color.Blue;
+				*/
 				//if (i == 0) res = LV.Items.Add(LVi);
 				//else
 					LV.Items.Add(LVi);
@@ -2145,12 +2173,27 @@ SCAN:
             return ResultClip;
         }
 
-        /// <summary>
-        /// Проверка пересечений полигона с коллекцией полигонов
-        /// </summary>
-        /// <param name="ES">Коллекция полигонов</param>
-        /// <returns></returns>
-        public PointList FindClip(TPolygonCollection ES)
+
+
+		/// <summary>
+		/// Установка "ГКН" точек полигона
+		/// </summary>
+		public new void DetectSpins(IPointList src)
+		{
+			base.DetectSpins(src);
+			foreach (PointList child in this.Childs)
+			{
+				child.DetectSpins(src);
+			}
+		}
+
+
+		/// <summary>
+		/// Проверка пересечений полигона с коллекцией полигонов
+		/// </summary>
+		/// <param name="ES">Коллекция полигонов</param>
+		/// <returns></returns>
+		public PointList FindClip(TPolygonCollection ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -4542,6 +4585,29 @@ SCAN:
 		}
 
 		/// <summary>
+		/// Установка "ГКН" точек
+		/// </summary>
+		public void DetectSpins(TEntitySpatial src)
+		{
+			foreach (IGeometry feature in this)
+			{
+				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+				{
+					TMyPolygon Poly = (TMyPolygon)feature;
+					foreach(IGeometry srcFeature in src)
+					{
+						if (srcFeature.TypeName == "netFteo.Spatial.TMyPolygon")
+						{
+							Poly.DetectSpins((PointList)srcFeature);
+						}
+					}
+
+				}
+			}
+		}
+
+
+		/// <summary>
 		/// Remove parent number part in features numbers
 		/// </summary>
 		/// <param name="ParentCN"></param>
@@ -4599,6 +4665,27 @@ SCAN:
 					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
 					{
 						res += ((TPolyLine)feature).Length;
+					}
+				}
+				return res;
+			}
+		}
+
+		/// <summary>
+		/// Summ of all poly areas
+		/// </summary>
+		/// <param name="TypeName"></param>
+		/// <returns></returns>
+		public double PolyArea
+		{
+			get
+			{
+				double res = -1; // default empty value
+				foreach (IGeometry feature in this)
+				{
+					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					{
+						res += ((TMyPolygon)feature).AreaSpatial;
 					}
 				}
 				return res;

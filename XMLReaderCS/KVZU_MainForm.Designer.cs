@@ -729,7 +729,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
 			this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
+			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
 			this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
 			// 
 			// сохранитьКакToolStripMenuItem
@@ -1031,7 +1031,7 @@
             this.замкнутьToolStripMenuItem,
             this.обратныйПорядокToolStripMenuItem});
 			this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(181, 224);
+			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(181, 202);
 			this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
 			// 
 			// ChangeXYToolStripMenuItem

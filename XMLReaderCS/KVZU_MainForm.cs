@@ -2346,8 +2346,20 @@ return res;
 
 				}
 
+				if (Obj.ToString() == "netFteo.Spatial.TEntitySpatial")
+				{
+					TEntitySpatial ES = (TEntitySpatial)Obj;
+					if (ES.PolyArea != -1)
+					{
+						ListViewItem LVip = new ListViewItem();
+						LVip.Text = "Площадь полигонов";
+						LVip.SubItems.Add(ES.PolyArea.ToString());
+						LVip.SubItems.Add("кв.м.");
+						LV.Items.Add(LVip);
+					}
+				}
 
-				if (Obj.ToString() == "netFteo.Spatial.TBuilding")
+					if (Obj.ToString() == "netFteo.Spatial.TBuilding")
 				{
 					netFteo.Spatial.TBuilding bld = (netFteo.Spatial.TBuilding)Obj;
 					if (bld.Flats != null)
@@ -4872,11 +4884,7 @@ return res;
                     }
                 }
 
-
-
-
-
-                /*
+				/*
                 TMyPolygon Poly1 = new TMyPolygon("One");
             Poly1.AddPoint(new Point(   0, 0, "11"));
             Poly1.AddPoint(new Point(1000, 0, "12"));
@@ -4894,15 +4902,45 @@ return res;
 
             int cchk = res.PointCount;
             */
-
+				TopoCheckSpin(STrN, openFileDialog1.FileName);
             }
         }
 
-        private void проверкаГеометрииToolStripMenuItem_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Проверка Пространственных данных - "Установка ГКН точек"
+		/// </summary>
+		private void TopoCheckSpin(TreeNode STrN, string FileName)
+		{
+			netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
+
+			if (STrN.Name.Contains("ES."))
+			{
+
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				if (Entity != null)
+					if (Entity.TypeName == "netFteo.Spatial.TEntitySpatial")
+					{
+
+						//подключим обработчик события
+						netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
+						mifreader.OnParsing += DXFStateUpdater;
+						TEntitySpatial polyfromMIF = mifreader.ParseMIF();
+						TEntitySpatial SourceES = (TEntitySpatial)Entity;
+						SourceES.DetectSpins(polyfromMIF);
+						PointList res = new PointList();
+
+					}
+
+			}
+		}
+		
+
+
+
+		private void проверкаГеометрииToolStripMenuItem_Click(object sender, EventArgs e)
         {
          
             TopoCheck(TV_Parcels.SelectedNode);
-            
         }
 
         private void toolStripButton2_Click_2(object sender, EventArgs e)

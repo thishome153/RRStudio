@@ -484,6 +484,12 @@ namespace netFteo.IO
 								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
+								if (FilePoint.NumGeopointA.Substring(0, 1) == "н")
+								{
+									FilePoint.Pref = "н";
+									FilePoint.NumGeopointA = FilePoint.NumGeopointA.Substring(1);
+								}
+
 								FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
 								FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
 								FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
@@ -505,6 +511,12 @@ namespace netFteo.IO
 										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
+										if (ChildPoint.NumGeopointA.Substring(0, 1) == "н")
+										{
+											ChildPoint.Pref = "н";
+											ChildPoint.NumGeopointA = ChildPoint.NumGeopointA.Substring(1);
+										}
+
 										ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
 										ChildPoint.y = Convert.ToDouble(ChildStr[2].ToString());
 										ChildPoint.z = Convert.ToDouble(ChildStr[3].ToString());
@@ -568,6 +580,11 @@ namespace netFteo.IO
 								TPoint FilePoint = new TPoint();
 								FilePoint.id = StrCounter;
 								FilePoint.NumGeopointA = SplittedStr[0].ToString();
+								if (FilePoint.NumGeopointA.Substring(0, 1) == "н")
+								{
+									FilePoint.Pref = "н";
+									FilePoint.NumGeopointA = FilePoint.NumGeopointA.Substring(1);
+								}
 
 								if (!SplittedStr[1].Contains("-"))
 								{
@@ -607,6 +624,12 @@ namespace netFteo.IO
 										TPoint ChildPoint = new TPoint();
 										ChildPoint.id = StrCounter;
 										ChildPoint.NumGeopointA = ChildStr[0].ToString();
+										if (ChildPoint.NumGeopointA.Substring(0, 1) == "н")
+										{
+											ChildPoint.Pref = "н";
+											ChildPoint.NumGeopointA = ChildPoint.NumGeopointA.Substring(1);
+										}
+
 										if (!ChildStr[1].Contains("-"))
 										{
 											ChildPoint.oldX = Convert.ToDouble(ChildStr[1].ToString());
@@ -819,7 +842,7 @@ namespace netFteo.IO
 					for (int i = 0; i <= Poly.PointCount - 1; i++)
 					{
 
-						writer.WriteLine(((Poly[i].Status == 0) ? "н" + Poly[i].NumGeopointA : Poly[i].NumGeopointA) + "\t" +
+						writer.WriteLine(((Poly[i].Status == 0) ? Poly[i].Pref + Poly[i].NumGeopointA : Poly[i].NumGeopointA) + "\t" +
 										 Poly[i].oldX_s + "\t" +
 										 Poly[i].oldY_s + "\t" +
 										 Poly[i].x_s + "\t" +
@@ -835,7 +858,7 @@ namespace netFteo.IO
 						for (int ici = 0; ici <= Poly.Childs[ich].PointCount - 1; ici++)
 						{
 							writer.WriteLine(
-								((Poly.Childs[ich][ici].Status == 0) ? "н" + Poly.Childs[ich][ici].NumGeopointA : Poly.Childs[ich][ici].NumGeopointA) + "\t" +
+								((Poly.Childs[ich][ici].Status == 0) ? Poly.Childs[ich][ici].Pref + Poly.Childs[ich][ici].NumGeopointA : Poly.Childs[ich][ici].NumGeopointA) + "\t" +
 										 Poly.Childs[ich][ici].oldX_s + "\t" +
 										 Poly.Childs[ich][ici].oldY_s + "\t" +
 										 Poly.Childs[ich][ici].x_s + "\t" +
