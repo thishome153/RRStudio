@@ -12,7 +12,7 @@ namespace XMLReaderCS
 {
     class RegistryWriter
     {
-        public  void WriteDocInfo(netFteo.XML.FileInfo DocInfo, string RootKey)
+        public  void WriteDocInfo(netFteo.IO.FileInfo DocInfo, string RootKey)
         {
       
           //  Registry MyReestr = 

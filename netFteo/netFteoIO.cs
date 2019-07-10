@@ -29,6 +29,62 @@ namespace netFteo.IO
 		}
 	}
 
+
+	public class FileInfo
+	{
+		private string fComments;
+		public string Encoding;
+		public string Version;
+		public string DocRootName;
+		public string FileName;
+		public string FilePath;
+		public string Namespace;
+		public string DocType;
+		public string DocTypeNick;
+		public string Number;
+		public string RequeryNumber;
+		public string ReceivName;
+		public string ReceivAdress;
+		public string Date;
+		public string Appointment;
+		public string AppointmentFIO;
+		public string Cert_Doc_Organization;
+		//public netDxf.Header.HeaderVariables dxfVAriables;
+		public List<Rosreestr.TEngineerOut> Contractors;// исполнители работ
+		public string Comments // Conclusion, Notes
+		{
+			get
+			{
+				if (this.CommentsType != "-")
+					return this.fComments;
+				else return "-";
+			}
+
+			set
+			{
+				this.fComments = value;//
+				if (value == null) this.CommentsType = "-";
+			}
+		}
+
+		public string CommentsType; // Conclusion, Notes
+
+		public netFteo.Spatial.TMyBlockCollection MyBlocks;
+		//   public Spatial.TEntitySpatial MifOKSSpatialCollection;
+		//    public Spatial.TEntitySpatial MifPolygons;
+		public FileInfo()
+		{
+			//  this.MifPolygons = new netFteo.Spatial.TEntitySpatial();
+			//  this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
+			this.MyBlocks = new Spatial.TMyBlockCollection();
+			this.Contractors = new List<Rosreestr.TEngineerOut>();
+			this.DocType = "-";
+			this.Version = "";
+		}
+	}
+
+
+
 	/// <summary>
 	///Класс для операций с файлами Fteo, txt, mif, dxf, csv
 	/// </summary>

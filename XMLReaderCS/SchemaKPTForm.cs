@@ -20,7 +20,7 @@ namespace XMLReaderCS
         }
 
         public RRTypes.SKPT01.SchemaParcels Schema1;
-        netFteo.XML.FileInfo DocInfo = new netFteo.XML.FileInfo();
+        netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
         XmlDocument XMLDoc;
         private void ‚˚ıÓ‰ToolStripMenuItem_Click(object sender, EventArgs e)
         {

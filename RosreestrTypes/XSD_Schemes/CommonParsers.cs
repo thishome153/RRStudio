@@ -1317,7 +1317,7 @@ namespace RRTypes.CommonCast
 		/// </summary>
 		/// <param name="xmldoc"></param>
 		/// <param name="res"></param>
-		public static void Parse_DocumentProperties(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		public static void Parse_DocumentProperties(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 
 			if (netFteo.XML.XMLWrapper.NodeExist(xmldoc, "ReestrExtract"))
@@ -2417,9 +2417,9 @@ namespace RRTypes.CommonParsers
 			return (T)serializerKPT.Deserialize(stream);
 		}
 
-		protected netFteo.XML.FileInfo InitFileInfo(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		protected netFteo.IO.FileInfo InitFileInfo(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = new netFteo.XML.FileInfo();
+			netFteo.IO.FileInfo res = new netFteo.IO.FileInfo();
 			res.FileName = fi.FileName;
 			res.FilePath = fi.FilePath;
 			if (xmldoc != null)
@@ -2441,7 +2441,7 @@ namespace RRTypes.CommonParsers
 		/// </summary>
 		/// <param name="xmldoc">xml Version=04</param>
 		/// <param name="res"></param>
-		private static void Parse_ContractorsV04(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		private static void Parse_ContractorsV04(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 			System.Xml.XmlNode Contractors = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "Region_Cadastr_Vidimus_KV/Reestr_Contractors");
 			if (Contractors != null)
@@ -2465,7 +2465,7 @@ namespace RRTypes.CommonParsers
 			}
 		}
 
-		private static void Parse_Contractors(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		private static void Parse_Contractors(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 			System.Xml.XmlNode Contractors = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "Contractors");
 
@@ -2492,9 +2492,9 @@ namespace RRTypes.CommonParsers
 		//**************************************************************** 
 		// Разбор Межевого Плана V04/V03
 		//private void ParseSTDMPV04(RRTypes.STD_MPV04.STD_MP MP)
-		public netFteo.XML.FileInfo ParseMPV04(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseMPV04(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			try
 			{
 				res.DocType = "Межевой план";
@@ -2683,9 +2683,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор MP 05
-		public netFteo.XML.FileInfo ParseMPV05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseMPV05(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			try
 			{
 				res.DocType = "Межевой план";
@@ -2934,9 +2934,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор MP 06
-		public netFteo.XML.FileInfo ParseMPV06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseMPV06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			try
 			{
 				res.DocType = "Межевой план";
@@ -3211,7 +3211,7 @@ namespace RRTypes.CommonParsers
 
 		#region  Разбор TP 03
 
-		private void ParseGeneralCadastralWorks(netFteo.XML.FileInfo fi, RRTypes.V03_TP.tGeneralCadastralWorks GW, string Conclusion)
+		private void ParseGeneralCadastralWorks(netFteo.IO.FileInfo fi, RRTypes.V03_TP.tGeneralCadastralWorks GW, string Conclusion)
 		{
 			fi.Date = GW.DateCadastral.ToString("dd.MM.yyyy").Replace("0:00:00", "");
 
@@ -3305,9 +3305,9 @@ namespace RRTypes.CommonParsers
 			return res;
 		}
 
-		public netFteo.XML.FileInfo ParseTP_V06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
+		public netFteo.IO.FileInfo ParseTP_V06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.DocType = "Технический план";
 			res.DocTypeNick = "ТП";
 			res.Version = "06";
@@ -3320,9 +3320,9 @@ namespace RRTypes.CommonParsers
 			return res;
 		}
 
-		public netFteo.XML.FileInfo ParseTP_V03(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
+		public netFteo.IO.FileInfo ParseTP_V03(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			RRTypes.V03_TP.TP TP = (RRTypes.V03_TP.TP)Desearialize<RRTypes.V03_TP.TP>(xmldoc);
 			res.DocType = "Технический план v3";
 			res.DocTypeNick = "ТП";
@@ -3570,9 +3570,9 @@ namespace RRTypes.CommonParsers
 
 		#region  Разбор КПТ 08
 
-		public netFteo.XML.FileInfo ParseKPT05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPT05(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.Version = "05";
 			res.DocType = "Кадастровый план территории";
@@ -3743,9 +3743,9 @@ namespace RRTypes.CommonParsers
 			Parse_KTP05Info(xmldoc, res);
 			return res;
 		}
-		public netFteo.XML.FileInfo ParseKPT06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPT06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.Version = "06";
 			res.DocType = "Кадастровый план территории";
@@ -3916,9 +3916,9 @@ namespace RRTypes.CommonParsers
 			Parse_KTP05Info(xmldoc, res);
 			return res;
 		}
-		public netFteo.XML.FileInfo ParseKPT07(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPT07(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.Version = "07";
 			res.DocType = "Кадастровый план территории";
@@ -4086,9 +4086,9 @@ namespace RRTypes.CommonParsers
 			return res;
 		}
 
-		public netFteo.XML.FileInfo ParseKPT08(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPT08(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.Version = "08";
 			res.DocType = "Кадастровый план территории";
@@ -4524,7 +4524,7 @@ namespace RRTypes.CommonParsers
 
 		}
 
-		private static void Parse_KTP05Info(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		private static void Parse_KTP05Info(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 			res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "/eDocument");
 			res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/Package/Certification_Doc/Date");
@@ -4534,7 +4534,7 @@ namespace RRTypes.CommonParsers
 			res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/eDocument/Sender/@Name");
 		}
 
-		private static void Parse_KTP08Info(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		private static void Parse_KTP08Info(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 			res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "");
 			res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "Package/Certification_Doc/Date");
@@ -4544,7 +4544,7 @@ namespace RRTypes.CommonParsers
 			res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "Package/Certification_Doc/Organization");
 		}
 
-		private static void Parse_KTP11Info(System.Xml.XmlDocument xmldoc, netFteo.XML.FileInfo res)
+		private static void Parse_KTP11Info(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
 		{
 			res.Version = "11"; 
 			res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/date_formation");
@@ -4570,9 +4570,9 @@ namespace RRTypes.CommonParsers
 
 		#region  Разбор КПТ 09
 
-		public netFteo.XML.FileInfo ParseKPT09(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPT09(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.Version = "09";
 			res.DocType = "Кадастровый план территории";
@@ -4788,9 +4788,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор КПТ 10
-		public netFteo.XML.FileInfo ParseKPT10(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+		public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
@@ -4992,9 +4992,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор КПТ 11
-		public netFteo.XML.FileInfo ParseKPT11(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+		public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
@@ -5194,9 +5194,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор KPZU 5.0.8
-		public netFteo.XML.FileInfo ParseKPZU508(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPZU508(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			RRTypes.kpzu.KPZU kp = (RRTypes.kpzu.KPZU)Desearialize<RRTypes.kpzu.KPZU>(xmldoc);
 			TMyCadastralBlock Bl = new TMyCadastralBlock();
 			//----------
@@ -5317,9 +5317,9 @@ namespace RRTypes.CommonParsers
 		/// <param name="fi"></param>
 		/// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1</param>
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseKPZU(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPZU(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			RRTypes.kpzu06.KPZU kp = (RRTypes.kpzu06.KPZU)Desearialize<RRTypes.kpzu06.KPZU>(xmldoc);
 			TMyCadastralBlock Bl = new TMyCadastralBlock();
 
@@ -5431,10 +5431,10 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region разбор КВЗУ04 - Region_Cadastr_Vidimus_KV V04
-		public netFteo.XML.FileInfo ParseKVZU04(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKVZU04(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
 
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV kv = (RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV)Desearialize<RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV>(xmldoc);
 
 
@@ -5556,9 +5556,9 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region разбор КВ KVZU_05
-		public netFteo.XML.FileInfo ParseKVZU05(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKVZU05(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			// Region_Cadastr_Vidimus_KV / @Version
 			if ((xmldoc.DocumentElement.Name == "Region_Cadastr_Vidimus_KV") &&
 				(xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) &&
@@ -5654,11 +5654,11 @@ namespace RRTypes.CommonParsers
 
 		#region разбор КВ KVZU_06
 		/*-----------------------------------------------------------------------------------------------------------*/
-		public netFteo.XML.FileInfo ParseKVZU06(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKVZU06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
 
 
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 
 			RRTypes.kvzu.KVZU kv = (RRTypes.kvzu.KVZU)Desearialize<RRTypes.kvzu.KVZU>(xmldoc);
 
@@ -5805,10 +5805,10 @@ namespace RRTypes.CommonParsers
 		/// <param name="fi"></param>
 		/// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1</param>
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseKVZU07(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//  RRTypes.kvzu07.KVZU kv, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKVZU07(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//  RRTypes.kvzu07.KVZU kv, XmlDocument xmldoc)
 		{
 
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 
 			RRTypes.kvzu07.KVZU kv = (RRTypes.kvzu07.KVZU)Desearialize<RRTypes.kvzu07.KVZU>(xmldoc);
 
@@ -5946,10 +5946,10 @@ namespace RRTypes.CommonParsers
 		/// <param name="fi"></param>
 		/// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1</param>
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseKPOKS(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.kpoks_v04.KPOKS kv, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKPOKS(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.kpoks_v04.KPOKS kv, XmlDocument xmldoc)
 		{
 			if (xmldoc.DocumentElement.NamespaceURI != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1") return null;
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.DocType = "Кадастровый паспорт";
 			res.DocTypeNick = "КПОКС";
@@ -6106,9 +6106,9 @@ namespace RRTypes.CommonParsers
 		/// <param name="fi"></param>
 		/// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1</param>
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseKVOKS07(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)// RRTypes.kvoks_v07.KVOKS kv, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseKVOKS07(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)// RRTypes.kvoks_v07.KVOKS kv, XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 
 			RRTypes.kvoks_v07.KVOKS kv = (RRTypes.kvoks_v07.KVOKS)Desearialize<RRTypes.kvoks_v07.KVOKS>(xmldoc);
@@ -6237,9 +6237,9 @@ namespace RRTypes.CommonParsers
 		/// <param name="fi"></param>
 		/// <param name="xmldoc">файл по схеме V04_EXTRACT_FULL </param>
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseEGRP(netFteo.XML.FileInfo fi, System.Xml.XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseEGRP(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, xmldoc);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			res.CommentsType = "-";
 			res.DocType = "ЕГРП";
 			res.DocTypeNick = "ЕГРП";
@@ -6298,9 +6298,9 @@ namespace RRTypes.CommonParsers
 		/// </summary>
 		/// 
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseDXF(netFteo.XML.FileInfo fi, netFteo.IO.DXFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseDXF(netFteo.IO.FileInfo fi, netFteo.IO.DXFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, null);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, null);
 			TEntitySpatial DXfEntitys = mifreader.ParseDXF();
 
 
@@ -6312,7 +6312,7 @@ namespace RRTypes.CommonParsers
 
 				res.DocTypeNick = "dxf";
 				res.CommentsType = "DXF";
-				res.Comments = mifreader.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
+				res.Comments = mifreader.Body;
 				res.Encoding = mifreader.BodyEncoding;
 				res.Number = "Encoding  " + mifreader.BodyEncoding;
 				res.DocType = "dxf";
@@ -6328,9 +6328,9 @@ namespace RRTypes.CommonParsers
 		/// </summary>
 		/// 
 		/// <returns></returns>
-		public netFteo.XML.FileInfo ParseMIF(netFteo.XML.FileInfo fi, netFteo.IO.MIFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseMIF(netFteo.IO.FileInfo fi, netFteo.IO.MIFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
-			netFteo.XML.FileInfo res = InitFileInfo(fi, null);
+			netFteo.IO.FileInfo res = InitFileInfo(fi, null);
 			TEntitySpatial Entitys = mifreader.ParseMIF();
 
 

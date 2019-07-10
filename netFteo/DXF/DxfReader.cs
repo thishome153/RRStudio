@@ -6703,17 +6703,25 @@ namespace netDxf
             throw new ArgumentException("The block with name " + name + " does not exist.");
         }
 
-        private Layer GetLayer(string name)
+
+		/// <summary>
+		/// May be same dxf`s, where no Layers ??? - an entity references a table object not defined in the tables section or
+		/// table section missed :)
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		private Layer GetLayer(string name)
         {
             name = this.DecodeEncodedNonAsciiCharacters(name);
 
             Layer layer;
 
-            if (this.doc.Layers.TryGetValue(name, out layer))
+            if (this.doc.Layers != null)
+				if (this.doc.Layers.TryGetValue(name, out layer))
                 return layer;
 
             // if an entity references a table object not defined in the tables section a new one will be created
-            layer = new Layer(name);
+            layer = new Layer(name+"*");
             layer.LineType = this.GetLineType(layer.LineType.Name);
             this.doc.Layers.Add(layer);
             return layer;

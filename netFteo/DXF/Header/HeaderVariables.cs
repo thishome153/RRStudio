@@ -38,7 +38,7 @@ namespace netDxf.Header
     {
         #region private fields
 
-        private readonly Dictionary<string, HeaderVariable> variables;
+        public readonly Dictionary<string, HeaderVariable> variables;
 
         #endregion
 

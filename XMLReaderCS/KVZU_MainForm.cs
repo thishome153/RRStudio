@@ -44,7 +44,7 @@ namespace XMLReaderCS
 		/// <summary>
 		/// Current file properies
 		/// </summary>
-		public netFteo.XML.FileInfo DocInfo = new netFteo.XML.FileInfo();
+		public netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
 		ZipFile zip;
 		//netFteo.IO.MRU MRU = new netFteo.IO.MRU(RecentFilesMenuItem, FixosoftKey + "\\MRU", mru);		//public string FileName;
 		//public string FilePath;        
@@ -192,17 +192,22 @@ namespace XMLReaderCS
 		/// <summary>
 		/// Открыть файл xml
 		/// </summary>
-		private void OpenFile()
+		private void OpenFile(int FilterIndex)
 		{
 			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;" +
 				"|Про$транственные данные|*.dxf;*.mif;*.txt"+
 				"|Технокад|*.csv"+
 				"|XML schema|*.xsd";
+			openFileDialog1.FilterIndex = FilterIndex;
 			openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
 			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
 				Read(openFileDialog1.FileName, true);
 
 		}
+
+
+
+
 		/// <summary>
 		///   Читать документ из объекта(instance)
 		/// </summary>
@@ -565,20 +570,24 @@ namespace XMLReaderCS
 				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
 			}
 
+
 			// got AutoCad Drawing Exchange Format -  dxf file:
 			if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
 			{
-
+				string Body = "";
 				try
 				{
 					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
+					Body = dxfreader.Body;
+					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding;
 					toolStripProgressBar1.Maximum = dxfreader.PolygonsCount();  //TODO: number of items ???
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
 					dxfreader.OnParsing += DXFStateUpdater;
 					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
 					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
-
+					//this.DocInfo.dxfVAriables = dxfreader.DXFVariables;
+					netDxf.Header.HeaderVariables dxfVars = dxfreader.DXFVariables;
 				}
 
 				catch (ArgumentException err)
@@ -586,7 +595,8 @@ namespace XMLReaderCS
 					ClearControls();
 					this.DocInfo.DocTypeNick = "dxf";
 					this.DocInfo.CommentsType = "DXF error...";
-					this.DocInfo.Comments = err.Message;
+					this.DocInfo.Comments = "\r"+FileName+" contain errors:\r" + err.Message + "\r DXF file body:\r\r" +    Body;
+					this.DocInfo.DocType = "dxf";
 				}
 
 
@@ -853,7 +863,7 @@ namespace XMLReaderCS
 
 
 		//------------Запись xml-файла-спутника  pinfo_......xml---------------------------------------------------------------
-		private void SaveOpenedFileInfo(netFteo.XML.FileInfo Doc, string FileName)
+		private void SaveOpenedFileInfo(netFteo.IO.FileInfo Doc, string FileName)
 		{
 			/*          Doc.Number = textBox_DocNum.Text;
                     Doc.Date = textBox_DocDate.Text;
@@ -1314,7 +1324,7 @@ namespace XMLReaderCS
 		#endregion
 
 		#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
-		private void ListFileInfo(netFteo.XML.FileInfo fileinfo)
+		private void ListFileInfo(netFteo.IO.FileInfo fileinfo)
 		{
 			label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
 			textBox_DocNum.Text = fileinfo.Number;
@@ -1349,7 +1359,16 @@ namespace XMLReaderCS
 				listView_Contractors.Items.Add(LVi);
 			}
 
-
+			/*
+			if (fileinfo.dxfVAriables != null)
+			{
+				TV_Parcels.BeginUpdate();
+				TreeNode TopNode_ = TV_Parcels.Nodes.Add("dxfVarsNode", "dxf Variables");
+				foreach (var keyValue in fileinfo.dxfVAriables.variables)
+					TopNode_.Nodes.Add("dxfVariable", keyValue.Key + " = " + keyValue.Value);
+				TV_Parcels.EndUpdate();
+			}
+			*/
 		}
 
 		/// </summary>
@@ -3370,7 +3389,7 @@ return res;
             TV_Parcels.Nodes.Clear();
             TV_Parcels.ImageIndex = imList_dStates.Images.Count;
             if (this.DocInfo == null)
-                this.DocInfo = new netFteo.XML.FileInfo();
+                this.DocInfo = new netFteo.IO.FileInfo();
 
             else
             {
@@ -3515,7 +3534,7 @@ return res;
 
         private void открытьКакToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFile();// OpenXML_KVZUTyped();
+            OpenFile(1);// OpenXML_KVZUTyped();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -3530,12 +3549,12 @@ return res;
 
         private void typedClassesXSD2ClassessToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFile();// OpenXML_KVZUTyped();
+            OpenFile(1);// OpenXML_KVZUTyped();
         }
 
         public void toolStripButton1_Click(object sender, EventArgs e)
         {
-            OpenFile();// OpenXML_KVZUTyped();
+            OpenFile(1);// OpenXML_KVZUTyped();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -5205,9 +5224,10 @@ return res;
             frmcertificates.ShowDialog();
         }
 
-
-
-
+		private void toolStripButton4_Click_1(object sender, EventArgs e)
+		{
+			OpenFile(2);// OpenXML_KVZUTyped();
+		}
 	}
 }
 

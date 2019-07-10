@@ -22,9 +22,6 @@ using Image = netDxf.Entities.Image;
 namespace netFteo.IO
 {
 
-
-
-
     /// <summary>
     /// DXF reader for dxf reading.
     /// Fixosoft wrapper for netdxf library code
@@ -60,13 +57,26 @@ namespace netFteo.IO
             }
         }
 
-        public  DXFReader(string FileName) : base(FileName)
+		public HeaderVariables DXFVariables
+		{
+			get
+			{
+				if (this.dxfFile != null)
+				{
+					if (this.dxfFile.DrawingVariables != null)
+						return dxfFile.DrawingVariables;
+					else return null;
+				}
+				else return null;
+			}
+		}
+
+		public  DXFReader(string FileName) : base(FileName)
         {
-            dxfFile = netDxf.DxfDocument.Load(FileName);
-            this.BlocksCount = dxfFile.Blocks.Count;
-            this.AddedObjects = dxfFile.AddedObjects.Count;
-            BodyLoad(FileName);
+			BodyLoad(FileName);
+
         }
+
 
         /// <summary>
         /// Количество геометрий 
@@ -76,23 +86,30 @@ namespace netFteo.IO
         public int PolygonsCount(string codename = "LWPOLYLINE")
         {
                 int res = 0;
-                foreach (netDxf.Blocks.Block block in dxfFile.Blocks)
-                {
-                    foreach (netDxf.Entities.EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
-                    {
-                        if (entity.CodeName.Equals(codename))
-                            res++;
-                    }
-                }
+			if (dxfFile != null)
+			{
+				foreach (netDxf.Blocks.Block block in dxfFile.Blocks)
+				{
+					foreach (netDxf.Entities.EntityObject entity in block.Entities) // in block may be placed inner borders (second, third ring)
+					{
+						if (entity.CodeName.Equals(codename))
+							res++;
+					}
+				}
+			}
                 return res;
         }
 
 		/// <summary>
-		/// Импорт dxf-файлов
+		/// Parse dxf.
 		/// </summary>
 		/// <returns></returns>
 		public TEntitySpatial ParseDXF()
 		{
+			dxfFile = netDxf.DxfDocument.Load(FileName);
+			this.BlocksCount = dxfFile.Blocks.Count;
+			this.AddedObjects = dxfFile.AddedObjects.Count;
+
 			if (dxfFile == null) return null;
 			TEntitySpatial res = new TEntitySpatial();
 			
@@ -412,7 +429,7 @@ namespace netFteo.IO
 			String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
 			dxfDoc.Comments.Add("DxfVersion.AutoCad2004");
 			//DxfVersion dxfVersion = new DxfVersion();
-			dxfDoc.DrawingVariables.AcadVer = netDxf.Header.DxfVersion.AutoCad2004;
+			dxfDoc.DrawingVariables.AcadVer = netDxf.Header.DxfVersion.AutoCad2004; // redefine default variable
 			//netDxf.Matrix3 ucsMatrix = new Matrix3();
 			netDxf.Tables.Layer LayerHatches = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Штриховки");
 			netDxf.Tables.Layer LayerText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " ТочкиНомер");
