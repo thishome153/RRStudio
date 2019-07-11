@@ -1,22 +1,4 @@
-﻿#region netDxf, Copyright(C) 2014 Daniel Carvajal, Licensed under LGPL.
-
-//                        netDxf library
-// Copyright (C) 2014 Daniel Carvajal (haplokuon@gmail.com)
-// 
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+﻿#region netDxf  Reader
 
 #endregion
 
@@ -632,6 +614,18 @@ namespace netDxf
         private void ReadEntities()
         {
             Debug.Assert(this.chunk.ReadString() == StringCode.EntitiesSection);
+			if (this.doc.Layers == null)
+			{
+				//invalid dxf !!
+				DxfDocument FakeDoc = new DxfDocument(new HeaderVariables(), true);
+				this.doc.Layers = FakeDoc.Layers;
+				this.doc.LineTypes = FakeDoc.LineTypes;
+				this.doc.Layouts = FakeDoc.Layouts;
+				this.doc.DimensionStyles = FakeDoc.DimensionStyles;
+				this.doc.MlineStyles = FakeDoc.MlineStyles;
+				this.doc.UCSs = FakeDoc.UCSs;
+				this.doc.TextStyles = FakeDoc.TextStyles;
+			}
 
             this.chunk.Next();
             while (this.chunk.ReadString() != StringCode.EndSection)
@@ -6713,15 +6707,16 @@ namespace netDxf
 		private Layer GetLayer(string name)
         {
             name = this.DecodeEncodedNonAsciiCharacters(name);
+			//if (name == "") name = "0";  // my default
+	            Layer layer;
 
-            Layer layer;
-
-            if (this.doc.Layers != null)
+			if (this.doc.Layers == null)
+				this.doc.Layers = new Layers(this.doc);
 				if (this.doc.Layers.TryGetValue(name, out layer))
                 return layer;
 
             // if an entity references a table object not defined in the tables section a new one will be created
-            layer = new Layer(name+"*");
+            layer = new Layer(name);
             layer.LineType = this.GetLineType(layer.LineType.Name);
             this.doc.Layers.Add(layer);
             return layer;
@@ -6733,7 +6728,10 @@ namespace netDxf
             name = this.DecodeEncodedNonAsciiCharacters(name);
 
             LineType lineType;
-            if (this.doc.LineTypes.TryGetValue(name, out lineType))
+			// if an entity references a table object not defined in the tables section a new one will be created
+			if (this.doc.LineTypes == null)   // may be tables missing
+				this.doc.LineTypes = new LineTypes(this.doc);
+			if	(this.doc.LineTypes.TryGetValue(name, out lineType))
                 return lineType;
 
             // if an entity references a table object not defined in the tables section a new one will be created

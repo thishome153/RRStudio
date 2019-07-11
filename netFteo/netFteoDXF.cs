@@ -429,7 +429,7 @@ namespace netFteo.IO
 			String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
 			dxfDoc.Comments.Add("DxfVersion.AutoCad2004");
 			//DxfVersion dxfVersion = new DxfVersion();
-			dxfDoc.DrawingVariables.AcadVer = netDxf.Header.DxfVersion.AutoCad2004; // redefine default variable
+			dxfDoc.DrawingVariables.AcadVer = netDxf.Header.DxfVersion.AutoCad2013; // redefine default variable
 			//netDxf.Matrix3 ucsMatrix = new Matrix3();
 			netDxf.Tables.Layer LayerHatches = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Штриховки");
 			netDxf.Tables.Layer LayerText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " ТочкиНомер");
