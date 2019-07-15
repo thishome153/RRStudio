@@ -202,9 +202,21 @@ namespace RRTypes
         /// </summary>
         public class pkk5_Rosreestr_ru
         {
-            public const string url_api      = "http://pkk5.rosreestr.ru/api/features/";
-            public string url_arcgis_export  = "http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
-            public string url_arcgis_exportZ ="http://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
+            public const string url_api      = "https://pkk5.rosreestr.ru/api/features/";
+										      //https://pkk5.rosreestr.ru/api/features/1/26:5:43328:15?callback=jQuery19104854040810852076_
+
+			/*
+		 // https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/
+			export?dpi=96&transparent=true&format=png32&layers=show%3A6%2C7&bbox=4142712.248967826%2C7445212.2437684685%2C4219607.899422742%2C7572403.45883505
+			&bboxSR=102100
+			&imageSR=102100
+			&size=503%2C832
+			&layerDefs=%7B%226%22%3A%22ID%20%3D%20%2726%3A5%3A43328%3A15%27%22%2C%227%22%3A%22ID%20%3D%20%2726%3A5%3A43328%3A15%27%22%7D
+			&f=image
+			*/
+											//	https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/
+            public string url_arcgis_export  = "https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
+            public string url_arcgis_exportZ ="https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
             public pkk5_json_response jsonResponse; //Ответ сервера, краткий
             public pkk5_json_Fullresponse jsonFResponse;// Ответ полный, на запрос по id
 			public string TODO_TEst_URL;
