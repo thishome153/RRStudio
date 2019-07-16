@@ -38,7 +38,7 @@ namespace netFteo.IO
 		/// Able to check total progress of file parsing
 		/// </remarks>
 		public event ParsingHandler OnParsing;
-		private netDxf.DxfDocument dxfFile;
+		public netDxf.DxfDocument dxfFile;
 
 		/*
         public string FileName
@@ -161,11 +161,9 @@ namespace netFteo.IO
 
 					catch (ArgumentException error)
 					{
-
 						//return null; // wrong block entities
 					}
 			}
-
 
 			//Blocked Objects
 			if (dxfFile.Blocks.Count > 0)
@@ -182,8 +180,13 @@ namespace netFteo.IO
 								IGeometry DXFBlock = DXF_ParseBlock(block.Entities);
 								if (DXFBlock != null)
 								{
-									if ((block.AttributeDefinitions.Count > 0) && (block.AttributeDefinitions["CN"].Value != null))
-										DXFBlock.Definition = (string)block.AttributeDefinitions["CN"].Value;
+									if (block.AttributeDefinitions.Count > 0)
+									{
+										if (block.AttributeDefinitions.ContainsKey("CN"))
+											DXFBlock.Definition = (string)block.AttributeDefinitions["CN"].Value;
+										if (block.AttributeDefinitions.ContainsKey("Кад_номер"))
+											DXFBlock.Definition = (string)block.AttributeDefinitions["Кад_номер"].Value;
+									}
 									else
 										DXFBlock.Definition = block.CodeName + "." + block.Handle;
 									DXFBlock.LayerHandle = entity.Layer.Handle;

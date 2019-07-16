@@ -38,7 +38,9 @@ namespace netDxf
         #region header
 
         private List<string> comments;
+		private List<string> loadExceptions; // Log of load
         private readonly HeaderVariables drawingVariables;
+		private List<AttributeDefinition> attributeDefinitions;
 
         #endregion
 
@@ -92,20 +94,21 @@ namespace netDxf
         private string activeLayout;
         private RasterVariables rasterVariables;
 
-        #endregion
+		#endregion
 
-        #endregion
+		#endregion
 
-        #region constructor
+		#region constructor
 
-        /// <summary>
-        /// Initalizes a new instance of the <c>DxfDocument</c> class.
-        /// </summary>
-        /// <remarks>The default <see cref="HeaderVariables">drawing variables</see> of the document will be used.</remarks>
-        public DxfDocument()
-            : this(new HeaderVariables())
-        {
-        }
+		/// <summary>
+		/// Initalizes a new instance of the <c>DxfDocument</c> class.
+		/// </summary>
+		/// <remarks>The default <see cref="HeaderVariables">drawing variables</see> of the document will be used.</remarks>
+		public DxfDocument()
+			: this(new HeaderVariables())
+		{
+			this.LoadExceptions = new List<string>();
+		}
 
         /// <summary>
         /// Initalizes a new instance of the <c>DxfDocument</c> class.
@@ -133,8 +136,10 @@ namespace netDxf
             : base("DOCUMENT")
         {
             this.comments = new List<string> {"Dxf file created with netDxf"};
-            this.drawingVariables = drawingVariables;
-            this.NumHandles = base.AsignHandle(0);
+			this.LoadExceptions = new List<string>();
+			this.drawingVariables = drawingVariables;
+			this.attributeDefinitions = new List<AttributeDefinition>();
+			this.NumHandles = base.AsignHandle(0);
             this.DimensionBlocksGenerated = 0;
             this.GroupNamesGenerated = 0;
             this.AddedObjects = new Dictionary<string, DxfObject>
@@ -192,10 +197,34 @@ namespace netDxf
             }
         }
 
-        /// <summary>
-        /// Gets the dxf <see cref="HeaderVariables">drawing variables</see>.
-        /// </summary>
-        public HeaderVariables DrawingVariables
+		public List<string> LoadExceptions
+		{
+			get { return this.loadExceptions; }
+			set
+			{
+				if (value == null)
+					throw new ArgumentNullException("value");
+				this.loadExceptions = value;
+			}
+		}
+
+		public List<AttributeDefinition> AttributeDefinition
+		{
+			get { return this.attributeDefinitions; }
+			set
+			{
+				if (value == null)
+					throw new ArgumentNullException("value");
+				this.attributeDefinitions = value;
+			}
+		}
+
+
+
+		/// <summary>
+		/// Gets the dxf <see cref="HeaderVariables">drawing variables</see>.
+		/// </summary>
+		public HeaderVariables DrawingVariables
         {
             get { return this.drawingVariables; }
         }
@@ -982,13 +1011,21 @@ namespace netDxf
                     if (!isBlockEntity) this.viewports.Add(viewport);
                     this.AddEntity(viewport.ClippingBoundary, isBlockEntity, assignHandle);
                     break;
+
                 case EntityType.AttributeDefinition:
-                    throw new ArgumentException("The entity " + entity.Type + " is only allowed as part of block definition.", "entity");
+					//  throw new ArgumentException("The entity " + entity.Type + " is only allowed as part of block definition.", "entity");
+					this.LoadExceptions.Add("The entity " + entity.Type +"("+ entity.Handle+ ") is only allowed as part of block definition.");
+					this.AttributeDefinition.Add((AttributeDefinition)entity);
+					break;
+
 
                 case EntityType.Attribute:
-                    throw new ArgumentException("The entity " + entity.Type + " is only allowed as part of block definition.", "entity");
+					//throw new ArgumentException("The entity " + entity.Type + " is only allowed as part of block definition.", "entity");
+					this.AttributeDefinition.Add((AttributeDefinition)entity);
+					this.LoadExceptions.Add("The entity " + entity.Type + "(" + entity.Handle + ") is only allowed as part of block definition.");
+					break;
 
-                default:
+				default:
                     throw new ArgumentException("The entity " + entity.Type + " is not implemented or unknown.");
             }
 

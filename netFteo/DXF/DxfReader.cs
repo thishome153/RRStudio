@@ -246,7 +246,13 @@ namespace netDxf
                 else
                 {
                     this.doc.ActiveLayout = layout.Name;
-                    this.doc.AddEntity(pair.Key, false, false);
+					if (pair.Key.CodeName =="ATTDEF")
+					{
+						int stop = 0;
+					}
+
+
+					this.doc.AddEntity(pair.Key, false, false);
 
                     // apply the units scale to the insertion scale (this is for not nested blocks)
                     if (pair.Key is Insert)

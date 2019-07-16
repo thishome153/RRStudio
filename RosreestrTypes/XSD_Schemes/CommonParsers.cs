@@ -6310,14 +6310,20 @@ namespace RRTypes.CommonParsers
 				res.MyBlocks.ParsedSpatial = DXfEntitys;
 			}
 
-				res.DocTypeNick = "dxf";
-				res.CommentsType = "DXF";
-				res.Comments = mifreader.Body;
-				res.Encoding = mifreader.BodyEncoding;
-				res.Number = "Encoding  " + mifreader.BodyEncoding;
-				res.DocType = "dxf";
-				res.Version = mifreader.Version;
-				return res;
+			res.DocTypeNick = "dxf";
+			res.CommentsType = "DXF";
+			res.Comments = "AttributeDefinition:\r";
+			foreach (netDxf.Entities.AttributeDefinition  attr in mifreader.dxfFile.AttributeDefinition)
+				res.Comments += attr.Tag +" = "+ attr.Value +" (Text="+ attr.Text + ")\r";
+			res.Comments += "\r LoadExceptions: \r";
+			foreach (string s in mifreader.dxfFile.LoadExceptions)
+				res.Comments += s + "\r";
+			res.Comments += "\r" + mifreader.Body;
+			res.Encoding = mifreader.BodyEncoding;
+			res.Number = "Encoding  " + mifreader.BodyEncoding;
+			res.DocType = "dxf";
+			res.Version = mifreader.Version;
+			return res;
 
 		}
 		#endregion
