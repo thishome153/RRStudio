@@ -366,10 +366,16 @@ namespace RRTypes
 		#endregion
 
 		#region FIR service classes
+
+		public interface IRESTServer
+		{
+			string Url { get; set; }
+		}
+
 		/// <summary>
 		/// 
 		/// </summary>
-		public class FIR_Server_ru
+		public class FIR_Server_ru :IRESTServer
 		{
 			public const string url_FIR = "http://rosreestr.ru/api/online/fir_object/";
 
@@ -381,8 +387,14 @@ namespace RRTypes
 			{
 				this.Timeout = 8000;// default 8sec
 				this.watch = new System.Diagnostics.Stopwatch();
+				this.fUrl = url_FIR;
 			}
-
+			private string fUrl;
+			public string Url
+			{
+				get { return this.fUrl; }
+				set { this.fUrl = value; }
+			}
 			/// <summary>
 			/// Запрос к /api/online/fir... серверу ФГИС ФИР ЕГРН
 			/// </summary>

@@ -211,11 +211,11 @@ namespace RRTypes
 			/// <summary>
 			/// pkk5.rosreestr.ru/api
 			/// </summary>
-			pkk5 = 1,
+			pkk5,
 			/// <summary>
 			/// rosreestr.ru/api/online/fir...
 			/// </summary>
-			fir = 2
+			fir
 		}
 
         /// <summary>

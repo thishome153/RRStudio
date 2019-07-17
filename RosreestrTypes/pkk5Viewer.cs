@@ -11,9 +11,6 @@ namespace RRTypes
 {
     namespace pkk5
     {
-     
-
- 
         /// <summary>
         /// Viewer картинок , присылаемых pkk5.rosreestr.ru
         /// </summary>
@@ -30,6 +27,8 @@ namespace RRTypes
             BackgroundWorker backgroundWorker1;
             BackgroundWorker backgroundWorkerCounter;
             public pkk5_Rosreestr_ru Server;
+			public FIR.FIR_Server_ru ServerFIR;
+			public FIR.IRESTServer srv;
             public bool NeedRecall;
 
 			private ServiceMode fmode;
@@ -37,7 +36,7 @@ namespace RRTypes
 			/// <summary>
 			/// Mode fir/pkk5
 			/// </summary>
-			[Category("Rosreestr")]
+			[Description("Choice between server"), Category("Rosreestr")]
 			[Browsable(true)]
 			public ServiceMode Mode
 			{
@@ -45,6 +44,7 @@ namespace RRTypes
 				set
 				{
 					this.fmode = value;
+					this.ModeSelector.Text = value.ToString();
 					this.NeedRecall = true; //сбрасываем флаг
 				}
 			}
@@ -53,7 +53,7 @@ namespace RRTypes
 			/// <summary>
 			/// Значение , КН например
 			/// </summary>
-			[Category("Rosreestr")]
+			[Description("Example: cadastral number"), Category("Rosreestr")]
 			[Browsable(true)]/// 
 			public string QueryValue
             {
@@ -135,7 +135,7 @@ namespace RRTypes
                 ComboBox_SizeMode.SelectionChangeCommitted += ComboBox_SizeModeChange;
 
 				ModeSelector = new RadioButton();
-				ModeSelector.Location = new System.Drawing.Point(20, 20);
+				ModeSelector.Location = new System.Drawing.Point(this.Width/2 , 20); 
 				ModeSelector.Text = this.Mode.ToString();
 				ModeSelector.Select();
 
@@ -177,6 +177,7 @@ namespace RRTypes
                 this.Controls.Add(ComboBox_Dpi);
                 this.Controls.Add(ComboBox_SizeMode);
                 this.Controls.Add(progressBar1);
+				this.Controls.Add(ModeSelector);
                 contextMenu_pkk5 = new ContextMenuStrip();
                 this.ContextMenuStrip = contextMenu_pkk5;
                 ToolStripItem pkjpegItem = contextMenu_pkk5.Items.Add("Сохранить снимок как....");
@@ -288,7 +289,7 @@ namespace RRTypes
             {
                 label_MapScale.SetTextInThread("    M 1:" + this.Server.mapScale.ToString() + "        Work finish: {0} sec."+Server.watch.Elapsed.Seconds.ToString());
                 Font myFont = new Font("Arial", 12);
-                Font font2 = new Font("Arial", 8);
+                Font font2 = new Font("Arial", 10);
                 //this.Image = this.Server.Image; // так как-то напрямую
                 this.Image = new Bitmap(this.Server.Image_Width, this.Server.Image_Height); // а так разрешение картинки ???
                 Graphics ge = Graphics.FromImage(this.Image); // this.Image - на чем рисуем
@@ -342,9 +343,12 @@ namespace RRTypes
                     ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
                 ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
                 ge.DrawString("2019@Fixosoft pkk5 Viewer " + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 200, 2);
+				
+				if (Mode == ServiceMode.pkk5)
                 ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);
-                ge.DrawString(DateTime.Now.ToString(), font2, Brushes.Black, this.Image.Width - 120, 18); // this.Image.Width не равен this.Width
-				ge.DrawString(this.Server.TODO_TEst_URL, font2, Brushes.Black, this.Image.Width - 120, 101);
+				else ge.DrawString(FIR.FIR_Server_ru.url_FIR, font2, Brushes.Black, this.Image.Width - 450, 2);
+				//ge.DrawString(DateTime.Now.ToString(), font2, Brushes.Black, this.Image.Width - 120, 18); // this.Image.Width не равен this.Width
+				//ge.DrawString(this.Server.TODO_TEst_URL, font2, Brushes.Black, this.Image.Width - 120, 101);
 
 
 				/*
