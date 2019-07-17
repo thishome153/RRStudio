@@ -4042,11 +4042,13 @@ return res;
 				  object O = this.DocInfo.MyBlocks.GetObject(id);
                   if (O != null)
                   {
-                      if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
-                      {
-                          cn = ((TMyParcel)O).CN;
-                          pkk5Viewer1.Start(cn, pkk5_Types.Parcel);
-                      }
+				if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
+				{
+					cn = ((TMyParcel)O).CN;
+					pkk5Viewer1.Start(cn, pkk5_Types.Parcel);
+					RRTypes.FIR.FIR_Server_ru srvFIR = new RRTypes.FIR.FIR_Server_ru();
+					srvFIR.GET_WebOnline_th(cn);
+				}
 
                       if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
                       {

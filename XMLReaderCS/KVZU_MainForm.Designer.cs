@@ -29,24 +29,24 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("26:06:000000:13546");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Node1");
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Node2");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("TopNode", new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6,
-            treeNode7});
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("26:06:000000:13546");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node1");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Node2");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("TopNode", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3});
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KVZU_Form));
-			System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Итем 1",
-            "Субитем 1-1"}, -1);
-			System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
-			System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("");
 			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Итем 1",
             "Субитем 1-1"}, -1);
 			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
 			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+			System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Итем 1",
+            "Субитем 1-1"}, -1);
+			System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("");
+			System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
 			this.MainMenu = new System.Windows.Forms.MenuStrip();
 			this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.открытьКакToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,6 +168,7 @@
 			this.Button_CloseReader = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton_VisualizerToggle = new System.Windows.Forms.ToolStripButton();
@@ -175,7 +176,6 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-			this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -210,7 +210,7 @@
 			this.MainMenu.Location = new System.Drawing.Point(0, 0);
 			this.MainMenu.Name = "MainMenu";
 			this.MainMenu.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-			this.MainMenu.Size = new System.Drawing.Size(864, 26);
+			this.MainMenu.Size = new System.Drawing.Size(971, 26);
 			this.MainMenu.TabIndex = 0;
 			this.MainMenu.Text = "menuStrip1";
 			// 
@@ -352,7 +352,7 @@
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(864, 464);
+			this.tabControl1.Size = new System.Drawing.Size(971, 544);
 			this.tabControl1.TabIndex = 1;
 			this.tabControl1.TabStop = false;
 			this.tabControl1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tabControl1_KeyPress);
@@ -377,7 +377,7 @@
 			this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-			this.tabPage2.Size = new System.Drawing.Size(856, 436);
+			this.tabPage2.Size = new System.Drawing.Size(963, 516);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Документ";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -576,7 +576,7 @@
 			this.tabPage3.Controls.Add(this.listView_Contractors);
 			this.tabPage3.Location = new System.Drawing.Point(4, 24);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(856, 436);
+			this.tabPage3.Size = new System.Drawing.Size(963, 516);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "..";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -588,7 +588,7 @@
 			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
-			this.richTextBox1.Size = new System.Drawing.Size(856, 238);
+			this.richTextBox1.Size = new System.Drawing.Size(963, 318);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.Text = "----------------------------------------------------------------Технический план " +
     "v3----------------------------------------------------------------";
@@ -606,9 +606,9 @@
 			this.listView_Contractors.GridLines = true;
 			this.listView_Contractors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView_Contractors.HideSelection = false;
-			this.listView_Contractors.Location = new System.Drawing.Point(0, 238);
+			this.listView_Contractors.Location = new System.Drawing.Point(0, 318);
 			this.listView_Contractors.Name = "listView_Contractors";
-			this.listView_Contractors.Size = new System.Drawing.Size(856, 198);
+			this.listView_Contractors.Size = new System.Drawing.Size(963, 198);
 			this.listView_Contractors.TabIndex = 22;
 			this.listView_Contractors.UseCompatibleStateImageBehavior = false;
 			this.listView_Contractors.View = System.Windows.Forms.View.Details;
@@ -643,7 +643,7 @@
 			this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-			this.tabPage1.Size = new System.Drawing.Size(856, 436);
+			this.tabPage1.Size = new System.Drawing.Size(963, 516);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Земельные участки";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -665,8 +665,8 @@
 			this.splitContainer1.Panel2.Controls.Add(this.splitter1);
 			this.splitContainer1.Panel2.Controls.Add(this.listView_Properties);
 			this.splitContainer1.Panel2MinSize = 15;
-			this.splitContainer1.Size = new System.Drawing.Size(848, 428);
-			this.splitContainer1.SplitterDistance = 239;
+			this.splitContainer1.Size = new System.Drawing.Size(955, 508);
+			this.splitContainer1.SplitterDistance = 269;
 			this.splitContainer1.TabIndex = 1;
 			// 
 			// SearchTextBox
@@ -694,23 +694,23 @@
 			this.TV_Parcels.ImageList = this.imList_dStates;
 			this.TV_Parcels.Location = new System.Drawing.Point(0, 0);
 			this.TV_Parcels.Name = "TV_Parcels";
-			treeNode5.ImageIndex = 0;
-			treeNode5.Name = "Child";
-			treeNode5.Text = "26:06:000000:13546";
-			treeNode6.Name = "Node1Name";
-			treeNode6.Text = "Node1";
-			treeNode7.Name = "Node2";
-			treeNode7.Text = "Node2";
-			treeNode8.Checked = true;
-			treeNode8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-			treeNode8.ImageIndex = 1;
-			treeNode8.Name = "Root";
-			treeNode8.Text = "TopNode";
+			treeNode1.ImageIndex = 0;
+			treeNode1.Name = "Child";
+			treeNode1.Text = "26:06:000000:13546";
+			treeNode2.Name = "Node1Name";
+			treeNode2.Text = "Node1";
+			treeNode3.Name = "Node2";
+			treeNode3.Text = "Node2";
+			treeNode4.Checked = true;
+			treeNode4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+			treeNode4.ImageIndex = 1;
+			treeNode4.Name = "Root";
+			treeNode4.Text = "TopNode";
 			this.TV_Parcels.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode8});
+            treeNode4});
 			this.TV_Parcels.SelectedImageIndex = 0;
 			this.TV_Parcels.ShowNodeToolTips = true;
-			this.TV_Parcels.Size = new System.Drawing.Size(239, 428);
+			this.TV_Parcels.Size = new System.Drawing.Size(269, 508);
 			this.TV_Parcels.TabIndex = 2;
 			this.TV_Parcels.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TV_Parcels_AfterSelect);
 			this.TV_Parcels.Click += new System.EventHandler(this.TV_Parcels_Click_1);
@@ -969,16 +969,16 @@
 			this.listView1.FullRowSelect = true;
 			this.listView1.GridLines = true;
 			this.listView1.HideSelection = false;
-			listViewItem7.StateImageIndex = 0;
-			listViewItem8.StateImageIndex = 0;
-			listViewItem9.StateImageIndex = 0;
+			listViewItem1.StateImageIndex = 0;
+			listViewItem2.StateImageIndex = 0;
+			listViewItem3.StateImageIndex = 0;
 			this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem7,
-            listViewItem8,
-            listViewItem9});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3});
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
-			this.listView1.Size = new System.Drawing.Size(605, 210);
+			this.listView1.Size = new System.Drawing.Size(682, 290);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Tile;
@@ -1101,9 +1101,9 @@
 			this.splitter1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.splitter1.Cursor = System.Windows.Forms.Cursors.SizeNS;
 			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitter1.Location = new System.Drawing.Point(0, 210);
+			this.splitter1.Location = new System.Drawing.Point(0, 290);
 			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(605, 10);
+			this.splitter1.Size = new System.Drawing.Size(682, 10);
 			this.splitter1.TabIndex = 2;
 			this.splitter1.TabStop = false;
 			// 
@@ -1122,17 +1122,17 @@
 			this.listView_Properties.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView_Properties.HideSelection = false;
 			this.listView_Properties.ImeMode = System.Windows.Forms.ImeMode.Off;
-			listViewItem1.StateImageIndex = 0;
-			listViewItem2.StateImageIndex = 0;
-			listViewItem3.StateImageIndex = 0;
+			listViewItem4.StateImageIndex = 0;
+			listViewItem5.StateImageIndex = 0;
+			listViewItem6.StateImageIndex = 0;
 			this.listView_Properties.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
-			this.listView_Properties.Location = new System.Drawing.Point(0, 220);
+            listViewItem4,
+            listViewItem5,
+            listViewItem6});
+			this.listView_Properties.Location = new System.Drawing.Point(0, 300);
 			this.listView_Properties.MultiSelect = false;
 			this.listView_Properties.Name = "listView_Properties";
-			this.listView_Properties.Size = new System.Drawing.Size(605, 208);
+			this.listView_Properties.Size = new System.Drawing.Size(682, 208);
 			this.listView_Properties.TabIndex = 1;
 			this.listView_Properties.UseCompatibleStateImageBehavior = false;
 			this.listView_Properties.View = System.Windows.Forms.View.Details;
@@ -1166,7 +1166,7 @@
 			this.tabPage4.Location = new System.Drawing.Point(4, 24);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(856, 436);
+			this.tabPage4.Size = new System.Drawing.Size(963, 516);
 			this.tabPage4.TabIndex = 5;
 			this.tabPage4.Text = "ПКК-Онлайн";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1176,7 +1176,7 @@
 			// 
 			this.fteoImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.fteoImage.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage.Image")));
-			this.fteoImage.Location = new System.Drawing.Point(814, 6);
+			this.fteoImage.Location = new System.Drawing.Point(832, 0);
 			this.fteoImage.Name = "fteoImage";
 			this.fteoImage.Size = new System.Drawing.Size(135, 134);
 			this.fteoImage.TabIndex = 5;
@@ -1187,10 +1187,11 @@
 			this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
 			this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
+			this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
 			this.pkk5Viewer1.Name = "pkk5Viewer1";
-			this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
-			this.pkk5Viewer1.QueryValue = null;
-			this.pkk5Viewer1.Size = new System.Drawing.Size(811, 430);
+			this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
+			this.pkk5Viewer1.QueryValue = "26:05:043433:7";
+			this.pkk5Viewer1.Size = new System.Drawing.Size(944, 510);
 			this.pkk5Viewer1.TabIndex = 4;
 			this.pkk5Viewer1.TabStop = false;
 			this.pkk5Viewer1.Click += new System.EventHandler(this.pkk5Viewer1_Click);
@@ -1200,7 +1201,7 @@
 			this.tabPage5.Controls.Add(this.cXmlTreeView2);
 			this.tabPage5.Location = new System.Drawing.Point(4, 24);
 			this.tabPage5.Name = "tabPage5";
-			this.tabPage5.Size = new System.Drawing.Size(856, 436);
+			this.tabPage5.Size = new System.Drawing.Size(963, 516);
 			this.tabPage5.TabIndex = 4;
 			this.tabPage5.Text = "XML";
 			this.tabPage5.UseVisualStyleBackColor = true;
@@ -1210,7 +1211,7 @@
 			this.cXmlTreeView2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.cXmlTreeView2.Location = new System.Drawing.Point(0, 0);
 			this.cXmlTreeView2.Name = "cXmlTreeView2";
-			this.cXmlTreeView2.Size = new System.Drawing.Size(856, 436);
+			this.cXmlTreeView2.Size = new System.Drawing.Size(963, 516);
 			this.cXmlTreeView2.TabIndex = 0;
 			// 
 			// panel2
@@ -1332,10 +1333,10 @@
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
             this.toolStripProgressBar1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 515);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 595);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 17, 0);
-			this.statusStrip1.Size = new System.Drawing.Size(864, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(971, 22);
 			this.statusStrip1.TabIndex = 2;
 			this.statusStrip1.Text = "statusStrip1";
 			this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
@@ -1408,7 +1409,7 @@
             this.PreloaderMenuItem});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 26);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(864, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(971, 25);
 			this.toolStrip1.TabIndex = 3;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -1437,6 +1438,17 @@
 			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton1.Text = "Открыть файл";
 			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			// 
+			// toolStripButton4
+			// 
+			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton4.Image = global::XMLReaderCS.Properties.Resources.Nanocad_16x16;
+			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton4.Name = "toolStripButton4";
+			this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton4.Text = "toolStripButton4";
+			this.toolStripButton4.ToolTipText = "dxf";
+			this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click_1);
 			// 
 			// toolStripSeparator2
 			// 
@@ -1510,23 +1522,12 @@
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
 			// 
-			// toolStripButton4
-			// 
-			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton4.Image = global::XMLReaderCS.Properties.Resources.Nanocad_16x16;
-			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton4.Name = "toolStripButton4";
-			this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton4.Text = "toolStripButton4";
-			this.toolStripButton4.ToolTipText = "dxf";
-			this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click_1);
-			// 
 			// KVZU_Form
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(864, 537);
+			this.ClientSize = new System.Drawing.Size(971, 617);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.statusStrip1);

@@ -88,10 +88,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataChecker.cs" />
+    <Compile Include="firViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="firViewer.Designer.cs">
+      <DependentUpon>firViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="pkk5Viewer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RRApiFir.cs" />
+    <Compile Include="RRCommonCast.cs" />
     <Compile Include="RRMapServer_JSON.cs" />
     <Compile Include="XSD_Schemes\KPOKS\KPOKS_v03.Generated.cs">
       <AutoGen>True</AutoGen>

@@ -6,6 +6,7 @@ using System.IO;
 
 namespace RRTypes
 {
+
     namespace pkk5
     {
 
@@ -18,10 +19,12 @@ namespace RRTypes
             public int featuresCount { get; set; }
             public JSON_debug debug { get; set; }
         }
+
         public class JSON_feature
         {
             public JSON_atributes attributes { get; set; }
         }
+
         public class JSON_atributes
         {
             public string OBJECTID { get; set; } //	Integer	Внутренний идентификатор
@@ -64,8 +67,15 @@ namespace RRTypes
         }
 
 
-        //Класс, описывающий ответ сервера в виде массива объектов (при поиске типа /1?text=26...)
-        public class pkk5_json_response
+		/// <summary>
+		///  Класс, описывающий ответ сервера api/online/fir_object в виде массива объектов (при поиске типа /1?text=26...)
+		///  url = http://rosreestr.ru/api/online/fir_objects/{number}
+		/// </summary>
+
+	/// <summary>
+	///  Класс, описывающий ответ сервера pkk5 в виде массива объектов (при поиске типа /1?text=26...)
+	/// </summary>
+	public class pkk5_json_response
         {
             public List<pkk5_json_feature> features { get; set; }
         }
@@ -196,26 +206,25 @@ namespace RRTypes
             TerrZone = 6
         }
 
-    
+		public enum ServiceMode
+		{
+			/// <summary>
+			/// pkk5.rosreestr.ru/api
+			/// </summary>
+			pkk5 = 1,
+			/// <summary>
+			/// rosreestr.ru/api/online/fir...
+			/// </summary>
+			fir = 2
+		}
+
         /// <summary>
-        /// Класс сервисов Росреестра (api, arccgis)
+        /// Класс сервисов Росреестра (api, arcgis)
         /// </summary>
         public class pkk5_Rosreestr_ru
         {
-            public const string url_api      = "https://pkk5.rosreestr.ru/api/features/";
-										      //https://pkk5.rosreestr.ru/api/features/1/26:5:43328:15?callback=jQuery19104854040810852076_
-
-			/*
-		 // https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/
-			export?dpi=96&transparent=true&format=png32&layers=show%3A6%2C7&bbox=4142712.248967826%2C7445212.2437684685%2C4219607.899422742%2C7572403.45883505
-			&bboxSR=102100
-			&imageSR=102100
-			&size=503%2C832
-			&layerDefs=%7B%226%22%3A%22ID%20%3D%20%2726%3A5%3A43328%3A15%27%22%2C%227%22%3A%22ID%20%3D%20%2726%3A5%3A43328%3A15%27%22%7D
-			&f=image
-			*/
-											//	https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreSelected/MapServer/
-            public string url_arcgis_export  = "https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
+            public const string url_api     = "https://pkk5.rosreestr.ru/api/features/";
+			public string url_arcgis_export  = "https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
             public string url_arcgis_exportZ ="https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
             public pkk5_json_response jsonResponse; //Ответ сервера, краткий
             public pkk5_json_Fullresponse jsonFResponse;// Ответ полный, на запрос по id
@@ -275,7 +284,9 @@ namespace RRTypes
                     WebRequest wrGETURL = null;
 					//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
 					wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() +"?text="+ CN);
-                    wrGETURL.Proxy = WebProxy.GetDefaultProxy();
+
+
+					wrGETURL.Proxy = WebProxy.GetDefaultProxy();
                     wrGETURL.Timeout = this.Timeout;
                     Stream objStream;
                     WebResponse wr = wrGETURL.GetResponse();
@@ -351,8 +362,8 @@ namespace RRTypes
                                     string sURLpkk5_jpeg = null;
                                     // Запрос изображения в jpeg по bbox:
                                     if (ObjectType == pkk5_Types.TerrZone)
-                                        sURLpkk5_jpeg = this.url_arcgis_exportZ; // Для Зон Другой сервер однако
-                                    else
+                                        sURLpkk5_jpeg = this.url_arcgis_exportZ; // Для Зон Другой сервер однако - pkk5.rosreestr.ru/arcgis/rest/
+										else
                                         sURLpkk5_jpeg = this.url_arcgis_export;
 
                                              sURLpkk5_jpeg += jsonResponse.features[0].extent.xmin + "%2C" +
@@ -420,4 +431,6 @@ namespace RRTypes
              */
 
     }
+
+	
 }

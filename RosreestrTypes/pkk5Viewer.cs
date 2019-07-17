@@ -26,27 +26,52 @@ namespace RRTypes
             ProgressBar progressBar1;
             ComboBox ComboBox_Dpi;
             ComboBox ComboBox_SizeMode;
+			RadioButton ModeSelector;
             BackgroundWorker backgroundWorker1;
             BackgroundWorker backgroundWorkerCounter;
             public pkk5_Rosreestr_ru Server;
             public bool NeedRecall;
-            private string fQueryValue;
-            /// <summary>
-            /// Значение , КН например
-            /// </summary>
-            public string QueryValue
+
+			private ServiceMode fmode;
+
+			/// <summary>
+			/// Mode fir/pkk5
+			/// </summary>
+			[Category("Rosreestr")]
+			[Browsable(true)]
+			public ServiceMode Mode
+			{
+				get { return this.fmode; }
+				set
+				{
+					this.fmode = value;
+					this.NeedRecall = true; //сбрасываем флаг
+				}
+			}
+
+			private string fQueryValue;
+			/// <summary>
+			/// Значение , КН например
+			/// </summary>
+			[Category("Rosreestr")]
+			[Browsable(true)]/// 
+			public string QueryValue
             {
                 get { return this.fQueryValue; }
                 set { this.fQueryValue = value;
                       this.NeedRecall = true; //сбрасываем флаг
                    }
             }
-            //public string Result_Address;
-            //public string CI;
+
             public pkk5_json_Fattrs Result_Full;
 
             private pkk5_Types fQueryObjectType;
-            public pkk5_Types QueryObjectType
+			/// <summary>
+			/// Type of Parcel, OKS, Block..etcS
+			/// </summary>
+			[Category("Rosreestr")]
+			[Browsable(true)]
+			public pkk5_Types QueryObjectType
         {
             get { return this.fQueryObjectType;}
             set { this.fQueryObjectType = value; }
@@ -108,6 +133,11 @@ namespace RRTypes
                 ComboBox_SizeMode.DataSource = Enum.GetValues(typeof(PictureBoxSizeMode));
                 ComboBox_SizeMode.Width = 70;
                 ComboBox_SizeMode.SelectionChangeCommitted += ComboBox_SizeModeChange;
+
+				ModeSelector = new RadioButton();
+				ModeSelector.Location = new System.Drawing.Point(20, 20);
+				ModeSelector.Text = this.Mode.ToString();
+				ModeSelector.Select();
 
                 backgroundWorker1.DoWork += backgroundWorker_DoWork;
                 backgroundWorker1.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
