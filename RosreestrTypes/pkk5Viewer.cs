@@ -342,7 +342,7 @@ namespace RRTypes
                 if (this.Result_Full.util_by_doc != null)
                     ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
                 ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
-                ge.DrawString("2019@Fixosoft pkk5 Viewer " + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 200, 2);
+                ge.DrawString("pkk5 Viewer v" + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 150, 2);
 				
 				if (Mode == ServiceMode.pkk5)
                 ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);

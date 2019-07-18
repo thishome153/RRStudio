@@ -41,12 +41,15 @@ namespace netDxf
 		private List<string> loadExceptions; // Log of load
         private readonly HeaderVariables drawingVariables;
 		private List<AttributeDefinition> attributeDefinitions;
+		public Stream stream;
 
-        #endregion
+		#endregion
 
-        #region tables
 
-        private ApplicationRegistries appRegistries;
+
+		#region tables
+
+		private ApplicationRegistries appRegistries;
         private BlockRecords blocks;
         private DimensionStyles dimStyles;
         private Layers layers;
@@ -686,13 +689,13 @@ namespace netDxf
         /// The Load method will still raise an exception if they are unable to create the FileStream.<br />
         /// On Debug mode it will raise any exception that migh occur during the whole process.
         /// </remarks>
-        public static DxfDocument Load(string file)
+        public  DxfDocument Load(string file)
         {
             FileInfo fileInfo = new FileInfo(file);
             if (!fileInfo.Exists)
                 throw new FileNotFoundException("File " + fileInfo.FullName + " not found.", fileInfo.FullName);
 
-            Stream stream;
+
             try
             {
                 stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -739,7 +742,8 @@ namespace netDxf
         /// </remarks>
         public static DxfDocument Load(Stream stream)
         {
-            DxfReader dxfReader = new DxfReader();
+
+			DxfReader dxfReader = new DxfReader();
 
 #if DEBUG
             DxfDocument document = dxfReader.Read(stream);
@@ -1241,8 +1245,19 @@ namespace netDxf
 
         }
 
-        #endregion
-    }
+
+
+	
+
+		#endregion
+	}
+
+	public class DXFParsingEventArgs : EventArgs
+	{
+		public string Definition;
+		public long Process; // long, Karl !!!
+		public byte[] Data;
+	}
 
 
 }

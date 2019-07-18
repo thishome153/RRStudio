@@ -166,20 +166,24 @@ namespace XMLReaderCS
 		}
 
 		//Обработчик события OnDXFParsing
-		private void DXFStateUpdater(object Sender, ESCheckingEventArgs e)
+		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
 		{
-			int currProc = e.Process;
-			/*
-            if (e.Definition == "26:01:071402:12")
-            {
-                int here100 = 1000;
-            }
-            */
 			if (e.Process < toolStripProgressBar1.Maximum)
-				toolStripProgressBar1.Value = e.Process;
+				toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
 			// toolStripStatusLabel3.Text = e.Definition;
 			this.Update();
 		}
+
+		//Обработчик события On...Parsing
+		private void XMLStateUpdater(object Sender, ESCheckingEventArgs e)
+		{
+			int currProc = e.Process;
+			if (e.Process < toolStripProgressBar1.Maximum)
+				toolStripProgressBar1.Value = e.Process;
+			this.Update();
+		}
+
+
 
 		private void XMLStartUpdater(object Sender, ESCheckingEventArgs e)
 		{
@@ -197,6 +201,7 @@ namespace XMLReaderCS
 			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;" +
 				"|Про$транственные данные|*.dxf;*.mif;*.txt"+
 				"|Технокад|*.csv"+
+				"|Файл подписи|*.sig" +
 				"|XML schema|*.xsd";
 			openFileDialog1.FilterIndex = FilterIndex;
 			openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
@@ -410,7 +415,7 @@ namespace XMLReaderCS
 				{
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
-					parser.OnParsing += DXFStateUpdater;
+					parser.OnParsing += XMLStateUpdater;
 					parser.OnStartParsing += XMLStartUpdater;
 					DocInfo.Version = "08";
 					this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
@@ -566,7 +571,7 @@ namespace XMLReaderCS
 			{
 				netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
 				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
-				mifreader.OnParsing += DXFStateUpdater; 
+				mifreader.OnParsing += XMLStateUpdater; 
 				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
 			}
 
@@ -580,10 +585,10 @@ namespace XMLReaderCS
 					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
 					Body = dxfreader.Body;
 					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding;
-					toolStripProgressBar1.Maximum = dxfreader.PolygonsCount();  //TODO: number of items ???
+					toolStripProgressBar1.Maximum = 948; //dxfreader.PolygonsCount();  //TODO: number of items ???
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
-					dxfreader.OnParsing += DXFStateUpdater;
+					//dxfreader.dxfFile. .dxf.OnParsing += DXFStateUpdater;
 					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
 					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
 					//this.DocInfo.dxfVAriables = dxfreader.DXFVariables;
@@ -675,8 +680,15 @@ namespace XMLReaderCS
 					w1.RunWorkerAsync(FileName);
 				}
 
-			//Если есть парная ЭЦП:
-			if (File.Exists(FileName + ".sig"))
+			// file is signature
+			if (Path.GetExtension(FileName).Equals(".sig"))
+			{
+				cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
+				cwrp.DisplaySig(FileName, this.Handle);
+			}
+
+				//Если есть парная ЭЦП:
+				if (File.Exists(FileName + ".sig"))
 			{
 				frmCertificates certfrm = new frmCertificates();
 				List<string> sigs = certfrm.ParseSignature(FileName + ".sig");
@@ -685,6 +697,7 @@ namespace XMLReaderCS
 						textBox_FIO.Text += "\n ЭЦП= " + sig;
 
 			}
+
 
 			if (NeedListing)
 			{
@@ -4944,7 +4957,7 @@ return res;
 
 						//подключим обработчик события
 						netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
-						mifreader.OnParsing += DXFStateUpdater;
+						mifreader.OnParsing += XMLStateUpdater;
 						TEntitySpatial polyfromMIF = mifreader.ParseMIF();
 						TEntitySpatial SourceES = (TEntitySpatial)Entity;
 						SourceES.DetectSpins(polyfromMIF);

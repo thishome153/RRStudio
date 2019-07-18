@@ -21,8 +21,10 @@ namespace netDxf
     /// <summary>
     /// Low level dxf reader
     /// </summary>
-    internal sealed class DxfReader
-    {
+    //internal sealed class DxfReader
+
+	public class DxfReader
+	{
         #region private fields
 
         private ICodeValueReader chunk;
@@ -67,19 +69,43 @@ namespace netDxf
         private Dictionary<Image, string> imgToImgDefHandles;
         private Dictionary<string, ImageDef> imgDefHandles;
 
-        #endregion
+		#endregion
 
-        #region constructors
+		/// <summary>
+		/// An event handler invoked during parsing  of entries in the dxf file.
+		/// </summary>
+		/// <remarks>
+		/// Able to check total progress of file parsing
+		/// </remarks>
+		public event DXFParsingHandler OnParsing;
+		public long FileParsePosition; // Текущая позиция parser`a
 
-        #endregion
 
-        #region public methods
+		#region constructors
 
-        /// <summary>
-        /// Reads the whole stream.
-        /// </summary>
-        /// <param name="stream">Stream.</param>
-        public DxfDocument Read(Stream stream)
+		#endregion
+
+		#region public methods
+
+		public void DxfParsingProc(string sender, long process, byte[] Data)
+		{
+			if (OnParsing == null) return;
+			DXFParsingEventArgs e = new DXFParsingEventArgs();
+			e.Definition = sender;
+			e.Data = Data;
+			e.Process = process;
+			OnParsing(this, e);
+		}
+
+		public delegate void DXFParsingHandler(object sender, DXFParsingEventArgs e);
+
+
+
+		/// <summary>
+		/// Reads the whole stream.
+		/// </summary>
+		/// <param name="stream">Stream.</param>
+		public DxfDocument Read(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream", "The stream cannot be null");
@@ -113,11 +139,13 @@ namespace netDxf
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 throw (new DxfException("Unknow error opening the reader.", ex));
             }
 
+			//string LinesCount = chunk..Value.ToString();
             this.doc = new DxfDocument(new HeaderVariables(), false);
 
             this.entityList = new Dictionary<EntityObject, string>();
@@ -153,7 +181,9 @@ namespace netDxf
 
             while (this.chunk.ReadString() != StringCode.EndOfFile)
             {
-                if (this.chunk.ReadString() == StringCode.BeginSection)
+				FileParsePosition = chunk.CurrentPosition;
+				DxfParsingProc("dxf", chunk.CurrentPosition, null);
+				if (this.chunk.ReadString() == StringCode.BeginSection)
                 {
                     this.chunk.Next();
                     switch (this.chunk.ReadString())

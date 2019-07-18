@@ -14,6 +14,7 @@ namespace RRTypes.FIR
 		public firViewer()
 		{
 			this.DoubleBuffered = true;
+			IntPtr h = this.Handle;
 		}
 		/*
 		public firViewer(IContainer container)

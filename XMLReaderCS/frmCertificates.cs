@@ -251,6 +251,7 @@ namespace XMLReaderCS
             
         }
 
+
         /// <summary>
         /// Parse detached signature
         /// </summary>

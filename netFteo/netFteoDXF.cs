@@ -37,19 +37,15 @@ namespace netFteo.IO
 		/// <remarks>
 		/// Able to check total progress of file parsing
 		/// </remarks>
-		public event ParsingHandler OnParsing;
-		public netDxf.DxfDocument dxfFile;
+		//public event ParsingHandler OnParsing;
+		//public delegate void DXFParsingHandler(object sender, DXFParsingEventArgs e);
 
-		/*
-        public string FileName
-        {
-            get
-            {
-                return dxfFile.Name;
-            }
-        }
-		*/
-        public string Version
+		public netDxf.DxfDocument dxfFile;
+		public int AddedObjects;
+		public int BlocksCount;
+		//private int FileParsePosition; // Текущая позиция parser`a
+
+		public string Version
         {
             get
             {
@@ -74,9 +70,8 @@ namespace netFteo.IO
 		public  DXFReader(string FileName) : base(FileName)
         {
 			BodyLoad(FileName);
-
+			dxfFile = new DxfDocument();
         }
-
 
         /// <summary>
         /// Количество геометрий 
@@ -106,7 +101,7 @@ namespace netFteo.IO
 		/// <returns></returns>
 		public TEntitySpatial ParseDXF()
 		{
-			dxfFile = netDxf.DxfDocument.Load(FileName);
+			dxfFile = new netDxf.DxfDocument().Load(FileName);
 			this.BlocksCount = dxfFile.Blocks.Count;
 			this.AddedObjects = dxfFile.AddedObjects.Count;
 
@@ -149,7 +144,7 @@ namespace netFteo.IO
 				// Polylines (every - closed & open)
 				foreach (LwPolyline poly in dxfFile.LwPolylines)
 			{
-				DxfParsingProc("dxf", ++FileParsePosition, null);
+				//this.dxfFile.DxfParsingProc("dxf", ++dxfFile.FileParsePosition, null);
 				IGeometry DXFPolyline = DXF_ParseRing(poly);
 				if (DXFPolyline != null)
 					try
@@ -174,7 +169,7 @@ namespace netFteo.IO
 					{
 						if (entity.CodeName.Equals("LWPOLYLINE"))
 						{
-							DxfParsingProc("dxf", ++FileParsePosition, null);
+						//dxfFile.DxfParsingProc("dxf", ++ dxfFile.FileParsePosition, null);
 							try
 							{
 								IGeometry DXFBlock = DXF_ParseBlock(block.Entities);
@@ -213,12 +208,7 @@ namespace netFteo.IO
 			return res;
 		}
 
-
-        public int  AddedObjects;
-        public int  BlocksCount;
-        private int FileParsePosition; // Текущая позиция parser`a
-
-
+/*
         private void DxfParsingProc(string sender, int process, byte[] Data)
         {
             if (OnParsing == null) return;
@@ -228,7 +218,7 @@ namespace netFteo.IO
             e.Process = process;
             OnParsing(this, e);
         }
-
+*/
 		/// <summary>
 		/// Parse dxf LwPolyLine to Polygon or PolyLine
 		/// </summary>
