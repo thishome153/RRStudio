@@ -34,8 +34,9 @@ namespace netDxf
         private short code;
         private string value;
         private long currentPosition;
-
-        public TextCodeValueReader(TextReader reader)
+		public event CodeValueReaderHandler OnNext;
+		
+		public TextCodeValueReader(TextReader reader)
         {
             this.reader = reader;
             this.code = 0;
@@ -62,11 +63,23 @@ namespace netDxf
         {
             string readCode = reader.ReadLine();
             this.currentPosition += 1;
-            if (!short.TryParse(readCode, NumberStyles.Integer, CultureInfo.InvariantCulture, out code))
+
+
+			if (!short.TryParse(readCode, NumberStyles.Integer, CultureInfo.InvariantCulture, out code))
                 throw (new Exception(string.Format("Code {0} not valid at line {1}", this.code, this.currentPosition)));
             this.value = reader.ReadLine();
-            this.currentPosition += 1;
-        }
+			this.currentPosition += 1;
+
+			if (OnNext == null) return;
+			DXFParsingEventArgs e = new DXFParsingEventArgs();
+			e.CurrentLine = readCode;
+			e.CurrentValue= value;
+			e.Process = currentPosition;
+			OnNext(this, e);
+
+			
+
+		}
 
         public byte ReadByte()
         {

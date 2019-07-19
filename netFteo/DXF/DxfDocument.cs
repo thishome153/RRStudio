@@ -41,8 +41,9 @@ namespace netDxf
 		private List<string> loadExceptions; // Log of load
         private readonly HeaderVariables drawingVariables;
 		private List<AttributeDefinition> attributeDefinitions;
-		public Stream stream;
-
+		private Stream stream;
+		public long FileParsingProgress;
+		public event CodeValueReaderHandler OnReaderRead;
 		#endregion
 
 
@@ -740,13 +741,14 @@ namespace netDxf
         /// On Debug mode it will raise any exception that might occur during the whole process.<br />
         /// The caller will be responsible of closing the stream.
         /// </remarks>
-        public static DxfDocument Load(Stream stream)
+        public  DxfDocument Load(Stream stream)
         {
 
 			DxfReader dxfReader = new DxfReader();
+			dxfReader.OnRead += DXFStateUpdater;
 
 #if DEBUG
-            DxfDocument document = dxfReader.Read(stream);
+			DxfDocument document = dxfReader.Read(stream);
 #else
             DxfDocument document;
             try
@@ -762,18 +764,34 @@ namespace netDxf
             return document;
         }
 
-        /// <summary>
-        /// Saves the database of the actual DxfDocument to a dxf file.
-        /// </summary>
-        /// <param name="file">File name.</param>
-        /// <param name="isBinary">Defines if the file will be saved as binary, by default it will be saved as text.</param>
-        /// <returns>Return true if the file has been succesfully save, false otherwise.</returns>
-        /// <remarks>
-        /// If the file already exists it will be overwritten.<br />
-        /// The Save method will still raise an exception if they are unable to create the FileStream.<br />
-        /// On Debug mode they will raise any exception that migh occur during the whole process.
-        /// </remarks>
-        public bool Save(string file, bool isBinary = false)
+		//Обработчик события OnDXFParsing
+		private  void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
+		{
+			//if (e.Process < toolStripProgressBar1.Maximum)
+			//	toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
+			// toolStripStatusLabel3.Text = e.Definition;
+
+			
+			
+			if (OnReaderRead == null) return;
+			DXFParsingEventArgs e = new DXFParsingEventArgs();
+			//e.CurrentLine = item;
+			e.Process = FileParsingProgress ;
+			OnReaderRead(this, e);
+		}
+
+		/// <summary>
+		/// Saves the database of the actual DxfDocument to a dxf file.
+		/// </summary>
+		/// <param name="file">File name.</param>
+		/// <param name="isBinary">Defines if the file will be saved as binary, by default it will be saved as text.</param>
+		/// <returns>Return true if the file has been succesfully save, false otherwise.</returns>
+		/// <remarks>
+		/// If the file already exists it will be overwritten.<br />
+		/// The Save method will still raise an exception if they are unable to create the FileStream.<br />
+		/// On Debug mode they will raise any exception that migh occur during the whole process.
+		/// </remarks>
+		public bool Save(string file, bool isBinary = false)
         {
             FileInfo fileInfo = new FileInfo(file);
             this.name = Path.GetFileNameWithoutExtension(fileInfo.FullName);
@@ -1254,9 +1272,11 @@ namespace netDxf
 
 	public class DXFParsingEventArgs : EventArgs
 	{
-		public string Definition;
+		public string CurrentLine;
+		public string CurrentValue;
 		public long Process; // long, Karl !!!
-		public byte[] Data;
+		public long Max;
+
 	}
 
 

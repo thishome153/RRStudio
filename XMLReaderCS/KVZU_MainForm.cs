@@ -168,6 +168,7 @@ namespace XMLReaderCS
 		//Обработчик события OnDXFParsing
 		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
 		{
+			toolStripProgressBar1.Maximum = e.
 			if (e.Process < toolStripProgressBar1.Maximum)
 				toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
 			// toolStripStatusLabel3.Text = e.Definition;
@@ -589,6 +590,7 @@ namespace XMLReaderCS
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
 					//dxfreader.dxfFile. .dxf.OnParsing += DXFStateUpdater;
+					dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
 					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
 					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
 					//this.DocInfo.dxfVAriables = dxfreader.DXFVariables;

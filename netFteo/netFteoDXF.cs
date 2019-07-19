@@ -102,6 +102,7 @@ namespace netFteo.IO
 		public TEntitySpatial ParseDXF()
 		{
 			dxfFile = new netDxf.DxfDocument().Load(FileName);
+
 			this.BlocksCount = dxfFile.Blocks.Count;
 			this.AddedObjects = dxfFile.AddedObjects.Count;
 

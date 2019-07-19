@@ -77,9 +77,9 @@ namespace netDxf
 		/// <remarks>
 		/// Able to check total progress of file parsing
 		/// </remarks>
-		public event DXFParsingHandler OnParsing;
-		public long FileParsePosition; // Текущая позиция parser`a
-
+		public event DXFParsingHandler OnRead;
+		public long FilePosition; // Текущая позиция stream reader
+		public long DXFFileLength; //Current file size
 
 		#region constructors
 
@@ -87,14 +87,13 @@ namespace netDxf
 
 		#region public methods
 
-		public void DxfParsingProc(string sender, long process, byte[] Data)
+		public void DxfParsingProc(string sender, long process, string item)
 		{
-			if (OnParsing == null) return;
+			if (OnRead == null) return;
 			DXFParsingEventArgs e = new DXFParsingEventArgs();
-			e.Definition = sender;
-			e.Data = Data;
+			e.CurrentLine = item;
 			e.Process = process;
-			OnParsing(this, e);
+			OnRead(this, e);
 		}
 
 		public delegate void DXFParsingHandler(object sender, DXFParsingEventArgs e);
@@ -111,6 +110,7 @@ namespace netDxf
                 throw new ArgumentNullException("stream", "The stream cannot be null");
 
             bool isBinary;
+			this.DXFFileLength = stream.Length;
             string dwgcodepage = CheckHeaderVariable(stream, HeaderVariableCode.DwgCodePage, out isBinary);
 
             try
@@ -146,7 +146,11 @@ namespace netDxf
             }
 
 			//string LinesCount = chunk..Value.ToString();
-            this.doc = new DxfDocument(new HeaderVariables(), false);
+
+
+			chunk.OnNext += DXFStateUpdater;
+
+			this.doc = new DxfDocument(new HeaderVariables(), false);
 
             this.entityList = new Dictionary<EntityObject, string>();
             this.viewports = new Dictionary<Viewport, string>();
@@ -179,10 +183,12 @@ namespace netDxf
                 this.chunk.Next();
             }
 
+
             while (this.chunk.ReadString() != StringCode.EndOfFile)
             {
-				FileParsePosition = chunk.CurrentPosition;
-				DxfParsingProc("dxf", chunk.CurrentPosition, null);
+//				FileParsePosition = chunk.CurrentPosition;
+	//			DxfParsingProc("dxf", chunk.CurrentPosition, null);
+
 				if (this.chunk.ReadString() == StringCode.BeginSection)
                 {
                     this.chunk.Next();
@@ -326,7 +332,17 @@ namespace netDxf
             return this.doc;
         }
 
-        public static bool IsBinary(Stream stream)
+		//Обработчик события OnDXFParsing
+		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
+		{
+			//if (e.Process < toolStripProgressBar1.Maximum)
+			//	toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
+			// toolStripStatusLabel3.Text = e.Definition;
+			this.FilePosition = e.Process;
+			
+		}
+
+		public static bool IsBinary(Stream stream)
         {
             BinaryReader reader = new BinaryReader(stream);
             byte[] sentinel = reader.ReadBytes(22);

@@ -48,6 +48,8 @@ namespace netDxf
         bool ReadBool();
         double ReadDouble();
         string ReadString();
+		event CodeValueReaderHandler OnNext;
 
-    }
+	}
+	public delegate void CodeValueReaderHandler(object sender, DXFParsingEventArgs e);
 }
