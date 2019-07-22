@@ -108,6 +108,7 @@ namespace netFteo.IO
 			}
 		}
 		public string FileName;
+		public int BodyLinesCount;
 		public string BodyEncoding;
 
 		public TextReader(string Filename)
@@ -285,7 +286,7 @@ namespace netFteo.IO
 
 
 
-
+		//TODO : Very heavy work: !!
 		/// <summary>
 		///  Detect Encoding name, encoding Body field
 		/// </summary>
@@ -298,15 +299,17 @@ namespace netFteo.IO
 					reader.Read();
 				this.BodyEncoding = reader.CurrentEncoding.EncodingName;
 			}
-
+			this.BodyLinesCount = File.ReadAllLines(fname).Length;
 			//"Кириллица (Windows)"
 			if (this.BodyEncoding.Equals("Кириллица (Windows)"))
 			{
 				byte[] bodyWithEncode = File.ReadAllBytes(fname);
+			
 				Body = Encoding.Default.GetString(bodyWithEncode);
 			}
 			else
 				Body = File.ReadAllText(fname);
+			
 		}
 
 

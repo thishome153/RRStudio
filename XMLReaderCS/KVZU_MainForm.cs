@@ -168,10 +168,20 @@ namespace XMLReaderCS
 		//Обработчик события OnDXFParsing
 		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
 		{
-			toolStripProgressBar1.Maximum = e.
-			if (e.Process < toolStripProgressBar1.Maximum)
-				toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
-			// toolStripStatusLabel3.Text = e.Definition;
+			if (e.Max < Int32.MaxValue)
+			{
+			//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max);
+				if (e.Process < toolStripProgressBar1.Maximum)
+					toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
+			}
+			else
+			{
+			//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max/1024);
+				if (e.Process < toolStripProgressBar1.Maximum)
+					toolStripProgressBar1.Value = Convert.ToInt32(e.Process/1024);
+			}
+			//toolStripLabel_Counts.Text = toolStripProgressBar1.Value.ToString() + "/" + e.CurrentSection;
+			Application.DoEvents();
 			this.Update();
 		}
 
@@ -586,15 +596,12 @@ namespace XMLReaderCS
 					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
 					Body = dxfreader.Body;
 					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding;
-					toolStripProgressBar1.Maximum = 948; //dxfreader.PolygonsCount();  //TODO: number of items ???
+					toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount; 
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
-					//dxfreader.dxfFile. .dxf.OnParsing += DXFStateUpdater;
 					dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
 					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
 					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
-					//this.DocInfo.dxfVAriables = dxfreader.DXFVariables;
-					netDxf.Header.HeaderVariables dxfVars = dxfreader.DXFVariables;
 				}
 
 				catch (ArgumentException err)

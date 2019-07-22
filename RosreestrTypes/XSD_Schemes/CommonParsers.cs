@@ -5928,10 +5928,10 @@ namespace RRTypes.CommonParsers
 		/// </summary>
 		/// 
 		/// <returns></returns>
-		public netFteo.IO.FileInfo ParseDXF(netFteo.IO.FileInfo fi, netFteo.IO.DXFReader mifreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+		public netFteo.IO.FileInfo ParseDXF(netFteo.IO.FileInfo fi, netFteo.IO.DXFReader dxfreader) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
 			netFteo.IO.FileInfo res = InitFileInfo(fi, null);
-			TEntitySpatial DXfEntitys = mifreader.ParseDXF();
+			TEntitySpatial DXfEntitys = dxfreader.ParseDXF();
 
 
 			if (DXfEntitys != null)
@@ -5943,19 +5943,19 @@ namespace RRTypes.CommonParsers
 			res.DocTypeNick = "dxf";
 			res.CommentsType = "DXF";
 			res.Comments = "AttributeDefinition:\r";
-			foreach (netDxf.Entities.AttributeDefinition  attr in mifreader.dxfFile.AttributeDefinition)
+			foreach (netDxf.Entities.AttributeDefinition  attr in dxfreader.dxfFile.AttributeDefinition)
 				res.Comments += attr.Tag +" = "+ attr.Value +" (Text="+ attr.Text + ")\r";
 			res.Comments += "\r LoadExceptions: \r";
-			foreach (string s in mifreader.dxfFile.LoadExceptions)
+			foreach (string s in dxfreader.dxfFile.LoadExceptions)
 				res.Comments += s + "\r";
-			res.Comments += "\r" + mifreader.Body;
-			res.Encoding = mifreader.BodyEncoding;
-			res.Number = "Encoding  " + mifreader.BodyEncoding;
+			res.Comments += "\r" + dxfreader.Body;
+			res.Encoding = dxfreader.BodyEncoding;
+			res.Number = "Encoding  " + dxfreader.BodyEncoding;
 			res.DocType = "dxf";
-			res.Version = mifreader.Version;
+			res.Version = dxfreader.Version;
 			return res;
-
 		}
+
 		#endregion
 
 		#region  Разбор MIF

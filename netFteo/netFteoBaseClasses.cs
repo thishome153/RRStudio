@@ -4456,7 +4456,7 @@ SCAN:
 				return this.GetType().ToString();
 			}
 		}
-
+		public List<string> LoadExceptions; // Log of load
 		public List<TLayer> Layers;
 
 		public TEntitySpatial()
@@ -4466,6 +4466,7 @@ SCAN:
 			Name = "Границы";
 			this.Layers = new List<TLayer>();
 			this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
+			this.LoadExceptions = new List<string>();
 		}
 
 		public TMyPolygon AddPolygon(object poly_)

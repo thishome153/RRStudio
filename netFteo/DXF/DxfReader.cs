@@ -80,6 +80,7 @@ namespace netDxf
 		public event DXFParsingHandler OnRead;
 		public long FilePosition; // Текущая позиция stream reader
 		public long DXFFileLength; //Current file size
+		public string CurrentSection;
 
 		#region constructors
 
@@ -87,14 +88,18 @@ namespace netDxf
 
 		#region public methods
 
-		public void DxfParsingProc(string sender, long process, string item)
+		//Обработчик события OnDXFReading
+		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs ChunkArgs)
 		{
 			if (OnRead == null) return;
 			DXFParsingEventArgs e = new DXFParsingEventArgs();
-			e.CurrentLine = item;
-			e.Process = process;
-			OnRead(this, e);
+			e.CurrentLine = ChunkArgs.CurrentLine;
+			e.Process = ChunkArgs.Process;
+			e.CurrentSection = this.CurrentSection;
+			e.Max = DXFFileLength;
+			OnRead(Sender, e);
 		}
+
 
 		public delegate void DXFParsingHandler(object sender, DXFParsingEventArgs e);
 
@@ -145,7 +150,6 @@ namespace netDxf
                 throw (new DxfException("Unknow error opening the reader.", ex));
             }
 
-			//string LinesCount = chunk..Value.ToString();
 
 
 			chunk.OnNext += DXFStateUpdater;
@@ -177,6 +181,7 @@ namespace netDxf
             // they sometimes hold information about the program that has generated the dxf
             // binary file do not contain any comments
             this.doc.Comments.Clear();
+			this.CurrentSection = "Comments";
             while (this.chunk.Code == 999)
             {
                 this.doc.Comments.Add(this.chunk.ReadString());
@@ -186,41 +191,46 @@ namespace netDxf
 
             while (this.chunk.ReadString() != StringCode.EndOfFile)
             {
-//				FileParsePosition = chunk.CurrentPosition;
-	//			DxfParsingProc("dxf", chunk.CurrentPosition, null);
-
 				if (this.chunk.ReadString() == StringCode.BeginSection)
                 {
                     this.chunk.Next();
-                    switch (this.chunk.ReadString())
-                    {
-                        case StringCode.HeaderSection:
-                            this.ReadHeader();
-                            break;
-                        case StringCode.ClassesSection:
-                            this.ReadClasses();
-                            break;
-                        case StringCode.TablesSection:
-                            this.ReadTables();
-                            break;
-                        case StringCode.BlocksSection:
-                            this.ReadBlocks();
-                            break;
-                        case StringCode.EntitiesSection:
-                            this.ReadEntities();
-                            break;
-                        case StringCode.ObjectsSection:
-                            this.ReadObjects();
-                            break;
-                        case StringCode.ThumbnailImageSection:
-                            this.ReadThumbnailImage();
-                            break;
-                        case StringCode.AcdsDataSection:
-                            this.ReadAcdsData();
-                            break;
-                        default:
-                            throw new InvalidDxfSectionException(this.chunk.ReadString(), string.Format("Unknown section {0}.", this.chunk.ReadString()));
-                    }
+					try
+					{
+						switch (this.chunk.ReadString())
+						{
+							case StringCode.HeaderSection:
+								this.ReadHeader();
+								break;
+							case StringCode.ClassesSection:
+								this.ReadClasses();
+								break;
+							case StringCode.TablesSection:
+								this.ReadTables();
+								break;
+							case StringCode.BlocksSection:
+								this.ReadBlocks();
+								break;
+							case StringCode.EntitiesSection:
+								this.ReadEntities();
+								break;
+							case StringCode.ObjectsSection:
+								this.ReadObjects();
+								break;
+							case StringCode.ThumbnailImageSection:
+								this.ReadThumbnailImage();
+								break;
+							case StringCode.AcdsDataSection:
+								this.ReadAcdsData();
+								break;
+							default:
+								throw new InvalidDxfSectionException(this.chunk.ReadString(), string.Format("Unknown section {0}.", this.chunk.ReadString()));
+						}
+					}
+					catch (DxfEntityException ex)
+					{
+						this.doc.LoadExceptions.Add(ex.Message);
+					}
+
                 }
                 this.chunk.Next();
             }
@@ -328,19 +338,11 @@ namespace netDxf
             }
 
             this.doc.ActiveLayout = Layout.ModelSpace.Name;
+			this.CurrentSection = "EOF";
 
-            return this.doc;
+			return this.doc;
         }
 
-		//Обработчик события OnDXFParsing
-		private void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
-		{
-			//if (e.Process < toolStripProgressBar1.Maximum)
-			//	toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
-			// toolStripStatusLabel3.Text = e.Definition;
-			this.FilePosition = e.Process;
-			
-		}
 
 		public static bool IsBinary(Stream stream)
         {
@@ -417,7 +419,8 @@ namespace netDxf
 
         private void ReadHeader()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.HeaderSection);
+			this.CurrentSection = "Header";
+			Debug.Assert(this.chunk.ReadString() == StringCode.HeaderSection);
 
             this.chunk.Next();
             while (this.chunk.ReadString() != StringCode.EndSection)
@@ -562,7 +565,8 @@ namespace netDxf
 
         private void ReadClasses()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.ClassesSection);
+			this.CurrentSection = "Classes";
+			Debug.Assert(this.chunk.ReadString() == StringCode.ClassesSection);
 
             this.chunk.Next();
             while (this.chunk.ReadString() != StringCode.EndSection)
@@ -575,7 +579,8 @@ namespace netDxf
 
         private void ReadTables()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.TablesSection);
+			this.CurrentSection = "Tables";
+			Debug.Assert(this.chunk.ReadString() == StringCode.TablesSection);
 
             this.chunk.Next();
             while (this.chunk.ReadString() != StringCode.EndSection)
@@ -606,7 +611,8 @@ namespace netDxf
 
         private void ReadBlocks()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.BlocksSection);
+			this.CurrentSection = "Blocks";
+			Debug.Assert(this.chunk.ReadString() == StringCode.BlocksSection);
 
             // the blocks list will be added to the document after reading the blocks section to handle possible nested insert cases.
             Dictionary<string, Block> blocks = new Dictionary<string, Block>(StringComparer.OrdinalIgnoreCase);
@@ -665,7 +671,8 @@ namespace netDxf
 
         private void ReadEntities()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.EntitiesSection);
+			this.CurrentSection = "Entities";
+			Debug.Assert(this.chunk.ReadString() == StringCode.EntitiesSection);
 			if (this.doc.Layers == null)
 			{
 				//invalid dxf !!
@@ -688,7 +695,8 @@ namespace netDxf
 
         private void ReadObjects()
         {
-            Debug.Assert(this.chunk.ReadString() == StringCode.ObjectsSection);
+			this.CurrentSection = "Objects";
+			Debug.Assert(this.chunk.ReadString() == StringCode.ObjectsSection);
 
             this.chunk.Next();
             while (this.chunk.ReadString() != StringCode.EndSection)
@@ -1999,8 +2007,8 @@ namespace netDxf
                 switch (this.chunk.Code)
                 {
                     case 0:
-                        throw new DxfEntityException(dxfCode, "Premature end of entity definition.");
-                    case 5:
+                        throw new DxfEntityException(dxfCode, "DxfObject common code exception at line " + chunk.CurrentPosition.ToString() + ", Premature end of entity definition.");
+					case 5:
                         handle = this.chunk.ReadString();
                         this.chunk.Next();
                         break;
@@ -2025,7 +2033,7 @@ namespace netDxf
                 switch (this.chunk.Code)
                 {
                     case 0:
-                        throw new DxfEntityException(dxfCode, "Premature end of entity definition.");
+                        throw new DxfEntityException(dxfCode, "AcDbEntity code exception at line " + chunk.CurrentPosition.ToString() + ", Premature end of entity definition.");
                     case 8: //layer code
                         layer = this.GetLayer(this.chunk.ReadString());
                         this.chunk.Next();

@@ -69,7 +69,6 @@ namespace netFteo.IO
 
 		public  DXFReader(string FileName) : base(FileName)
         {
-			BodyLoad(FileName);
 			dxfFile = new DxfDocument();
         }
 
@@ -101,26 +100,39 @@ namespace netFteo.IO
 		/// <returns></returns>
 		public TEntitySpatial ParseDXF()
 		{
-			dxfFile = new netDxf.DxfDocument().Load(FileName);
-
+			if (dxfFile == null)
+				dxfFile = new netDxf.DxfDocument();
+			TEntitySpatial res = new TEntitySpatial();
+			dxfFile = dxfFile.Load(FileName);
+			/*
+			try
+			{
+				dxfFile = dxfFile.Load(FileName);
+			}
+			catch (DxfEntityException ex)
+			{
+				res.LoadExceptions.Add(ex.Message);
+			}
+			*/
+			if (dxfFile.Blocks != null)
 			this.BlocksCount = dxfFile.Blocks.Count;
 			this.AddedObjects = dxfFile.AddedObjects.Count;
 
-			if (dxfFile == null) return null;
-			TEntitySpatial res = new TEntitySpatial();
-			
-			foreach(Layer layer in dxfFile.Layers)
+
+
+
+			foreach (Layer layer in dxfFile.Layers)
 			{
 				if (layer.Name == "0") // update default layer handle
 				{
 					res.Layers[0].LayerHandle = layer.Handle;
 				}
-				else 
-				res.Layers.Add(new TLayer(res.id)
-				{
-					LayerHandle = layer.Handle,
-					Name = layer.Name
-				});
+				else
+					res.Layers.Add(new TLayer(res.id)
+					{
+						LayerHandle = layer.Handle,
+						Name = layer.Name
+					});
 			}
 
 			foreach (Point pt in dxfFile.Points)
@@ -136,14 +148,13 @@ namespace netFteo.IO
 			{
 				IGeometry Circle = new TCircle(dxfCircleS.Center.Y, dxfCircleS.Center.X, dxfCircleS.Radius);
 				Circle.LayerHandle = dxfCircleS.Layer.Handle;
-				Circle.Definition = dxfCircleS.CodeName+"."+dxfCircleS.Handle;
+				Circle.Definition = dxfCircleS.CodeName + "." + dxfCircleS.Handle;
 				res.Add(Circle);
 			}
 
-
-				// Direct objects (not blocked):
-				// Polylines (every - closed & open)
-				foreach (LwPolyline poly in dxfFile.LwPolylines)
+			// Direct objects (not blocked):
+			// Polylines (every - closed & open)
+			foreach (LwPolyline poly in dxfFile.LwPolylines)
 			{
 				//this.dxfFile.DxfParsingProc("dxf", ++dxfFile.FileParsePosition, null);
 				IGeometry DXFPolyline = DXF_ParseRing(poly);
@@ -162,7 +173,8 @@ namespace netFteo.IO
 			}
 
 			//Blocked Objects
-			if (dxfFile.Blocks.Count > 0)
+			if ((dxfFile.Blocks != null) &&
+				 (dxfFile.Blocks.Count > 0))
 			{
 				foreach (Block block in dxfFile.Blocks)
 				{
@@ -170,7 +182,6 @@ namespace netFteo.IO
 					{
 						if (entity.CodeName.Equals("LWPOLYLINE"))
 						{
-						//dxfFile.DxfParsingProc("dxf", ++ dxfFile.FileParsePosition, null);
 							try
 							{
 								IGeometry DXFBlock = DXF_ParseBlock(block.Entities);
@@ -178,6 +189,9 @@ namespace netFteo.IO
 								{
 									if (block.AttributeDefinitions.Count > 0)
 									{
+										if (block.AttributeDefinitions.ContainsKey("КН"))
+											DXFBlock.Definition = (string)block.AttributeDefinitions["КН"].Value;
+
 										if (block.AttributeDefinitions.ContainsKey("CN"))
 											DXFBlock.Definition = (string)block.AttributeDefinitions["CN"].Value;
 										if (block.AttributeDefinitions.ContainsKey("Кад_номер"))
@@ -195,15 +209,10 @@ namespace netFteo.IO
 								goto NEXTBlock;
 								//return null; // wrong block entities
 							}
-
-
 						}
 					}
-					NEXTBlock: int fakeVariable = 0;
+				NEXTBlock: int fakeVariable = 0;
 				}
-
-
-	
 			}
 			res.Definition = this.FileName;
 			return res;

@@ -176,6 +176,7 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+			this.toolStripLabel_Counts = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -1332,7 +1333,8 @@
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
-            this.toolStripProgressBar1});
+            this.toolStripProgressBar1,
+            this.toolStripLabel_Counts});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 595);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 17, 0);
@@ -1521,6 +1523,12 @@
 			this.PreloaderMenuItem.Name = "PreloaderMenuItem";
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
+			// 
+			// toolStripLabel_Counts
+			// 
+			this.toolStripLabel_Counts.Name = "toolStripLabel_Counts";
+			this.toolStripLabel_Counts.Size = new System.Drawing.Size(24, 17);
+			this.toolStripLabel_Counts.Text = "../..";
 			// 
 			// KVZU_Form
 			// 
@@ -1715,6 +1723,7 @@
         private System.Windows.Forms.ToolStripMenuItem замкнутьToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem обратныйПорядокToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripLabel_Counts;
 	}
 }
 

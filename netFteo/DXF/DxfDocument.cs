@@ -42,7 +42,6 @@ namespace netDxf
         private readonly HeaderVariables drawingVariables;
 		private List<AttributeDefinition> attributeDefinitions;
 		private Stream stream;
-		public long FileParsingProgress;
 		public event CodeValueReaderHandler OnReaderRead;
 		#endregion
 
@@ -707,9 +706,10 @@ namespace netDxf
             }
 
             DxfReader dxfReader = new DxfReader();
+			dxfReader.OnRead += DXFStateUpdater;
 
 #if DEBUG
-            DxfDocument document = dxfReader.Read(stream);
+			DxfDocument document = dxfReader.Read(stream);
             stream.Close();
 #else
             DxfDocument document;
@@ -746,7 +746,7 @@ namespace netDxf
 
 			DxfReader dxfReader = new DxfReader();
 			dxfReader.OnRead += DXFStateUpdater;
-
+			var testPtr = OnReaderRead;
 #if DEBUG
 			DxfDocument document = dxfReader.Read(stream);
 #else
@@ -765,18 +765,14 @@ namespace netDxf
         }
 
 		//Обработчик события OnDXFParsing
-		private  void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs e)
+		private  void DXFStateUpdater(object Sender, netDxf.DXFParsingEventArgs ReaderArgs)
 		{
-			//if (e.Process < toolStripProgressBar1.Maximum)
-			//	toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
-			// toolStripStatusLabel3.Text = e.Definition;
-
-			
-			
 			if (OnReaderRead == null) return;
 			DXFParsingEventArgs e = new DXFParsingEventArgs();
-			//e.CurrentLine = item;
-			e.Process = FileParsingProgress ;
+			e.CurrentLine = ReaderArgs.CurrentLine;
+			e.Process = ReaderArgs.Process;
+			e.CurrentSection = ReaderArgs.CurrentSection;
+			e.Max =  ReaderArgs.Max;
 			OnReaderRead(this, e);
 		}
 
@@ -1273,6 +1269,7 @@ namespace netDxf
 	public class DXFParsingEventArgs : EventArgs
 	{
 		public string CurrentLine;
+		public string CurrentSection;
 		public string CurrentValue;
 		public long Process; // long, Karl !!!
 		public long Max;

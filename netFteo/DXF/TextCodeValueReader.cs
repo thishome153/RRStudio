@@ -74,11 +74,8 @@ namespace netDxf
 			DXFParsingEventArgs e = new DXFParsingEventArgs();
 			e.CurrentLine = readCode;
 			e.CurrentValue= value;
-			e.Process = currentPosition;
-			OnNext(this, e);
-
-			
-
+			e.Process = currentPosition; // aply line size
+			OnNext(this, e); // Create event
 		}
 
         public byte ReadByte()

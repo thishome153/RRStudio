@@ -196,6 +196,7 @@ namespace netDxf
             : base(message)
         {
             this.name = name;
+
         }
 
         public string Name
