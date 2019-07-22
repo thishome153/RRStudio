@@ -163,6 +163,7 @@
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+			this.toolStripLabel_Counts = new System.Windows.Forms.ToolStripStatusLabel();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.Button_CloseReader = new System.Windows.Forms.ToolStripButton();
@@ -176,7 +177,7 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-			this.toolStripLabel_Counts = new System.Windows.Forms.ToolStripStatusLabel();
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -731,7 +732,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
 			this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
+			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
 			this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
 			// 
 			// сохранитьКакToolStripMenuItem
@@ -882,7 +883,8 @@
             this.eSlibdllToolStripMenuItem,
             this.eSViewerlibmcvcdllF1ToolStripMenuItem,
             this.mSVCESCheckerFunc2Int1975ToolStripMenuItem,
-            this.проверкаГеометрииToolStripMenuItem});
+            this.проверкаГеометрииToolStripMenuItem,
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.debugToolStripMenuItem.Text = "Debug";
@@ -1390,6 +1392,12 @@
 			this.toolStripProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.toolStripProgressBar1.Value = 50;
 			// 
+			// toolStripLabel_Counts
+			// 
+			this.toolStripLabel_Counts.Name = "toolStripLabel_Counts";
+			this.toolStripLabel_Counts.Size = new System.Drawing.Size(24, 17);
+			this.toolStripLabel_Counts.Text = "../..";
+			// 
 			// saveFileDialog1
 			// 
 			this.saveFileDialog1.Filter = "mif-файлы|*.mif|Текстовый файл|*.txt|Dxf|*.dxf|csv файл|*.csv|xml|*.xml|Снимок ка" +
@@ -1524,11 +1532,12 @@
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
 			// 
-			// toolStripLabel_Counts
+			// writeDXFSingleEntitydxfPointToolStripMenuItem
 			// 
-			this.toolStripLabel_Counts.Name = "toolStripLabel_Counts";
-			this.toolStripLabel_Counts.Size = new System.Drawing.Size(24, 17);
-			this.toolStripLabel_Counts.Text = "../..";
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Name = "writeDXFSingleEntitydxfPointToolStripMenuItem";
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
 			// 
 			// KVZU_Form
 			// 
@@ -1724,6 +1733,7 @@
 		private System.Windows.Forms.ToolStripMenuItem обратныйПорядокToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripLabel_Counts;
+		private System.Windows.Forms.ToolStripMenuItem writeDXFSingleEntitydxfPointToolStripMenuItem;
 	}
 }
 

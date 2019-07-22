@@ -575,7 +575,12 @@ namespace netFteo.IO
 						CreatePoint(dxfDoc, LayerPoints, LayerText, Points[i]);
 					}
 				}
-
+					
+				if (feature.TypeName == "netFteo.Spatial.TPoint" )
+				{
+					TPoint pt = (TPoint)feature;
+						CreatePoint(dxfDoc, LayerPoints, LayerText, pt);
+				}
 
 			}
 			dxfDoc.Save(Filename);// "sample 2004.dxf"); 

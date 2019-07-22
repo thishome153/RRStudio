@@ -5252,6 +5252,20 @@ return res;
 		{
 			OpenFile(2);// OpenXML_KVZUTyped();
 		}
+
+		private void writeDXFSingleEntitydxfPointToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			netFteo.IO.DXFWriter wr = new netFteo.IO.DXFWriter();
+			saveFileDialog1.FilterIndex = 3;
+			if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+			{
+				netFteo.Spatial.TEntitySpatial ES = new TEntitySpatial();
+				TPoint Pt = new TPoint(1000, 1000);
+				ES.Add(Pt);
+				ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
+				wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, 1);
+			}
+		}
 	}
 }
 

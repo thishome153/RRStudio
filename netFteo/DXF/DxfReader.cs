@@ -268,8 +268,16 @@ namespace netDxf
                 }
                 else
                 {
-                    block = this.GetBlock(((BlockRecord) this.doc.GetObjectByHandle(pair.Value)).Name);
-                    layout = block.Record.Layout;
+					if (this.doc.GetObjectByHandle(pair.Value) != null) // may be null or wrong handle ?? :)
+					{
+						block = this.GetBlock(((BlockRecord)this.doc.GetObjectByHandle(pair.Value)).Name);
+						layout = block.Record.Layout;
+					}
+					else
+					{//defaults
+						layout = Layout.ModelSpace;
+						block = layout.AssociatedBlock;
+					}
                 }
 
                 // the viewport with id 1 is stored directly in the layout since it has no graphical representation
