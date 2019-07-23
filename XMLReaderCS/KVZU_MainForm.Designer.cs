@@ -115,6 +115,7 @@
 			this.eSViewerlibmcvcdllF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.проверкаГеометрииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.imList_dStates = new System.Windows.Forms.ImageList(this.components);
 			this.listView1 = new System.Windows.Forms.ListView();
@@ -177,7 +178,6 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-			this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -732,7 +732,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
 			this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
+			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
 			this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
 			// 
 			// сохранитьКакToolStripMenuItem
@@ -924,6 +924,13 @@
 			this.проверкаГеометрииToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
 			this.проверкаГеометрииToolStripMenuItem.Text = "Проверка геометрии";
 			this.проверкаГеометрииToolStripMenuItem.Click += new System.EventHandler(this.проверкаГеометрииToolStripMenuItem_Click);
+			// 
+			// writeDXFSingleEntitydxfPointToolStripMenuItem
+			// 
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Name = "writeDXFSingleEntitydxfPointToolStripMenuItem";
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
+			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
 			// 
 			// поискToolStripMenuItem
 			// 
@@ -1190,7 +1197,7 @@
 			this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
 			this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
-			this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.fir;
+			this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
 			this.pkk5Viewer1.Name = "pkk5Viewer1";
 			this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
 			this.pkk5Viewer1.QueryValue = "26:05:043433:7";
@@ -1531,13 +1538,6 @@
 			this.PreloaderMenuItem.Name = "PreloaderMenuItem";
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
-			// 
-			// writeDXFSingleEntitydxfPointToolStripMenuItem
-			// 
-			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Name = "writeDXFSingleEntitydxfPointToolStripMenuItem";
-			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
-			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
-			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
 			// 
 			// KVZU_Form
 			// 

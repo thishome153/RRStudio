@@ -7,7 +7,14 @@ using System.IO;
 namespace RRTypes
 {
 
-    namespace pkk5
+	public class ServiceEventArgs : EventArgs
+	{
+		public string Message;
+		public string Source;
+		public byte[] Data;
+	}
+
+	namespace pkk5
     {
 
         /// <summary>
@@ -228,8 +235,10 @@ namespace RRTypes
             public string url_arcgis_exportZ ="https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
             public pkk5_json_response jsonResponse; //Ответ сервера, краткий
             public pkk5_json_Fullresponse jsonFResponse;// Ответ полный, на запрос по id
-			public string TODO_TEst_URL;
-            private int fImage_Width;
+			public string Service_Exception;
+			public delegate void ServiceExceptionEventHandler(object sender, ServiceEventArgs e);
+			public event ServiceExceptionEventHandler  OnServiceException;
+			private int fImage_Width;
             private int fImage_Height;
             public int Image_Width {
                 get { return this.fImage_Width; }
@@ -260,15 +269,20 @@ namespace RRTypes
                 this.dpi = "96"; //Default
                 this.watch = new System.Diagnostics.Stopwatch();
             }
-     
-         
-            /// <summary>
-            /// Запрос к pkk5 серверу
-            /// </summary>
-            /// <param name="CN">Кадастровый номер поиска</param>
-            /// <param name="ObjectType">если 2- ОКС, 1-  ЗУ, 0  - в Кварталах</param>
-            /// <returns></returns>
-            public bool Get_WebOnline_th(string CN, pkk5_Types ObjectType)
+
+
+			public bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+			{
+				return true;
+			}
+
+			/// <summary>
+			/// Запрос к pkk5 серверу
+			/// </summary>
+			/// <param name="CN">Кадастровый номер поиска</param>
+			/// <param name="ObjectType">если 2- ОКС, 1-  ЗУ, 0  - в Кварталах</param>
+			/// <returns></returns>
+			public bool Get_WebOnline_th(string CN, pkk5_Types ObjectType)
             {
                 if (CN == null) return false;
                 this.watch.Reset();
@@ -282,13 +296,19 @@ namespace RRTypes
                     this.Nodes.Add(PWebNode);
 
                     WebRequest wrGETURL = null;
+			
 					//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
 					wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() +"?text="+ CN);
+					//SSL tune:
+					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+					ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+					wrGETURL.Credentials = CredentialCache.DefaultCredentials;
+					wrGETURL.Proxy.Credentials = CredentialCache.DefaultCredentials;
+					// obsolete: wrGETURL.Proxy = WebProxy.GetDefaultProxy();
+					wrGETURL.Timeout = this.Timeout;
 
-
-					wrGETURL.Proxy = WebProxy.GetDefaultProxy();
-                    wrGETURL.Timeout = this.Timeout;
-                    Stream objStream;
+					Stream objStream;
+					
                     WebResponse wr = wrGETURL.GetResponse();
                     objStream = wr.GetResponseStream();
                     if (objStream != null)
@@ -398,15 +418,20 @@ namespace RRTypes
                     return false;
                 }
 
-                catch (IOException ex)
+                catch (Exception ex)  // System.  WebException here:
                 {
-                    MessageBox.Show(ex.ToString());
-                    this.watch.Stop();
-                    return false;
-                }
+					Service_Exception = ex.Message;
+					this.watch.Stop();
+					if (OnServiceException != null)
+					{
+						ServiceEventArgs  e = new ServiceEventArgs();
+						e.Message = ex.Message;
+						e.Source = ex.Source;
+						OnServiceException(this, e);
+					}
+					return false;
+				}
             }
-
-
         }
 
 

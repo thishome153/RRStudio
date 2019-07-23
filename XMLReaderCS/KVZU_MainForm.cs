@@ -690,12 +690,13 @@ namespace XMLReaderCS
 				}
 
 			// file is signature
+#if DEBUG
 			if (Path.GetExtension(FileName).Equals(".sig"))
 			{
 				cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
 				cwrp.DisplaySig(FileName, this.Handle);
 			}
-
+#endif
 				//Если есть парная ЭЦП:
 				if (File.Exists(FileName + ".sig"))
 			{
@@ -916,7 +917,7 @@ namespace XMLReaderCS
                     writer.Close();
              * */
 		}
-		#endregion
+#endregion
 
 
 		private void Parse_Polygon(TMyPolygon xmlPolygon)
@@ -952,7 +953,7 @@ namespace XMLReaderCS
 		}
 		*/
 
-		#region разбор Кадастрового паспорта  KPZU V05
+#region разбор Кадастрового паспорта  KPZU V05
 		/*
         private void ParseKPZU(RRTypes.kpzu.KPZU kp)
         {
@@ -1073,9 +1074,9 @@ namespace XMLReaderCS
   */
 
 
-		#endregion
+#endregion
 
-		#region разбор КВ на ОКС. Сооружение.  KPZU V02
+#region разбор КВ на ОКС. Сооружение.  KPZU V02
 		// С Наступающим 2016!
 		private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
 		{
@@ -1232,9 +1233,9 @@ namespace XMLReaderCS
 		}
 
 
-		#endregion
+#endregion
 
-		#region  Разбор STD_TP ТехПлан
+#region  Разбор STD_TP ТехПлан
 
 		private void ParseSTDTPV02(RRTypes.STD_TPV02.STD_TP TP)
 		{
@@ -1343,9 +1344,9 @@ namespace XMLReaderCS
 		}
 
 
-		#endregion
+#endregion
 
-		#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
+#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
 		private void ListFileInfo(netFteo.IO.FileInfo fileinfo)
 		{
 			label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
@@ -3153,7 +3154,7 @@ return res;
 			}
 		}
 
-		#endregion
+#endregion
 
 		private void WriteRights(string FileName, netFteo.Rosreestr.TMyRights Rights)
 		{
@@ -3180,7 +3181,7 @@ return res;
 
 		}
 
-		#region Запись в DXF, MIF, TXT 
+#region Запись в DXF, MIF, TXT 
 	
 		//------------------------------------------------------------------------------------------
 		private void SaveAs(string Format, string ItemName, int scale = 1000)
@@ -3359,11 +3360,11 @@ return res;
 		}
 
 
-        #endregion
+#endregion
 
   
 
-        #region Херня всякая, не каждодневная
+#region Херня всякая, не каждодневная
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -3448,7 +3449,7 @@ return res;
             this.DocInfo.MyBlocks.Blocks.Clear();
             Gen_id.Reset();
            
-#if (DEBUG) 
+#if (DEBUG)
             debugToolStripMenuItem.Enabled = true;
 
 #else
@@ -3718,7 +3719,7 @@ return res;
         }
         
         
-        #region SaveAs Text (FixosoftTXT2018, Rights)
+#region SaveAs Text (FixosoftTXT2018, Rights)
         private void toolStripMenuItem2_Click_1(object sender, EventArgs e)
         {
 			/*
@@ -3840,13 +3841,13 @@ return res;
             }
 
         }
-        #endregion
+#endregion
 
         private void m1500ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs("DXF", TV_Parcels.SelectedNode.Name,500);
         }
-        #endregion
+#endregion
 
      
 
@@ -4068,8 +4069,14 @@ return res;
 				{
 					cn = ((TMyParcel)O).CN;
 					pkk5Viewer1.Start(cn, pkk5_Types.Parcel);
+					//Here instances for debug without threading:
+					pkk5_Rosreestr_ru srvPKK5 = new pkk5_Rosreestr_ru(256, 256);
+					srvPKK5.Get_WebOnline_th("26:5:23409:50", pkk5_Types.Parcel);
+					
 					RRTypes.FIR.FIR_Server_ru srvFIR = new RRTypes.FIR.FIR_Server_ru();
 					srvFIR.GET_WebOnline_th(cn);
+					
+
 				}
 
                       if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
@@ -4991,7 +4998,7 @@ return res;
             TopoCheck(TV_Parcels.SelectedNode);
         }
 
-        #region Пример использования mitab.dll (из mitab)
+#region Пример использования mitab.dll (из mitab)
         public void OpenMif(string FileName)
         {
             toolStripStatusLabel1.Text = FileName;
@@ -5018,7 +5025,7 @@ return res;
             }
 
         }
-        #endregion
+#endregion
 
 
         private void KVZU_Form_Load(object sender, EventArgs e)
@@ -5265,6 +5272,11 @@ return res;
 				ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
 				wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, 1);
 			}
+		}
+
+		private void radioButton1_CheckedChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

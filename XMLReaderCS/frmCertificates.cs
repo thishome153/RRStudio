@@ -241,8 +241,6 @@ namespace XMLReaderCS
             fd.FilterIndex = 1;
             if (fd.ShowDialog(this) == DialogResult.OK)
             {  
-
-
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(fd.FileName, this.Handle);
 

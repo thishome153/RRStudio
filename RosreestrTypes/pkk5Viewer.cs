@@ -24,7 +24,8 @@ namespace RRTypes
             ComboBox ComboBox_Dpi;
             ComboBox ComboBox_SizeMode;
 			RadioButton ModeSelector;
-            BackgroundWorker backgroundWorker1;
+			RadioButton ModeSelectorFIR;
+			BackgroundWorker backgroundWorker1;
             BackgroundWorker backgroundWorkerCounter;
             public pkk5_Rosreestr_ru Server;
 			public FIR.FIR_Server_ru ServerFIR;
@@ -36,7 +37,7 @@ namespace RRTypes
 			/// <summary>
 			/// Mode fir/pkk5
 			/// </summary>
-			[Description("Choice between server"), Category("Rosreestr")]
+			[Description("Choice between servers"), Category("Rosreestr")]
 			[Browsable(true)]
 			public ServiceMode Mode
 			{
@@ -44,8 +45,8 @@ namespace RRTypes
 				set
 				{
 					this.fmode = value;
-					this.ModeSelector.Text = value.ToString();
 					this.NeedRecall = true; //сбрасываем флаг
+					if (this.fmode == ServiceMode.fir) ModeSelectorFIR.Checked = true;
 				}
 			}
 
@@ -82,7 +83,9 @@ namespace RRTypes
             /// </summary>
             public event EventHandler QuerySuccefull; // Событие без данных, просто EventHandler
             public event EventHandler QueryStart; // Событие без данных, просто EventHandler
-            protected virtual void OnQueryStart(EventArgs e)
+
+
+			protected virtual void OnQueryStart(EventArgs e)
             {
                 EventHandler handler = this.QueryStart;
                 if (handler != null)
@@ -108,6 +111,8 @@ namespace RRTypes
                 this.QueryObjectType = pkk5_Types.Block;//default
                 this.NeedRecall = true; // надо перевызыватьи
                 this.Server = new pkk5_Rosreestr_ru(800, 420);//default //this.Width, this.Height);
+				this.Server.OnServiceException += ServerErrorProc;
+				
                 this.backgroundWorker1 = new BackgroundWorker();
                 this.backgroundWorkerCounter = new BackgroundWorker();
                 this.MouseEnter += pictureBox_MouseEnter;
@@ -135,11 +140,17 @@ namespace RRTypes
                 ComboBox_SizeMode.SelectionChangeCommitted += ComboBox_SizeModeChange;
 
 				ModeSelector = new RadioButton();
-				ModeSelector.Location = new System.Drawing.Point(this.Width/2 , 20); 
-				ModeSelector.Text = this.Mode.ToString();
-				ModeSelector.Select();
+				ModeSelector.Location = new System.Drawing.Point(720, 2); 
+				ModeSelector.Text = "pkk5";
+				//ModeSelector.Select();
 
-                backgroundWorker1.DoWork += backgroundWorker_DoWork;
+				ModeSelectorFIR = new RadioButton();
+				ModeSelectorFIR.Location = new System.Drawing.Point(720, 21);
+				ModeSelectorFIR.Text = "FIR";
+				ModeSelectorFIR.CheckedChanged += CheckedChanged;
+				ModeSelectorFIR.Checked = true; //as default
+
+				backgroundWorker1.DoWork += backgroundWorker_DoWork;
                 backgroundWorker1.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
                 backgroundWorker1.WorkerReportsProgress = true;
                 backgroundWorker1.WorkerSupportsCancellation = true;
@@ -178,7 +189,8 @@ namespace RRTypes
                 this.Controls.Add(ComboBox_SizeMode);
                 this.Controls.Add(progressBar1);
 				this.Controls.Add(ModeSelector);
-                contextMenu_pkk5 = new ContextMenuStrip();
+				this.Controls.Add(ModeSelectorFIR);
+				contextMenu_pkk5 = new ContextMenuStrip();
                 this.ContextMenuStrip = contextMenu_pkk5;
                 ToolStripItem pkjpegItem = contextMenu_pkk5.Items.Add("Сохранить снимок как....");
                 pkjpegItem.Click += ScreenShoot_Click;
@@ -267,14 +279,31 @@ namespace RRTypes
                 this.NeedRecall = true; //сбрасываем флаг
                 if (!backgroundWorker1.IsBusy)
                 {
-                    //this.Server.picture_Height = ((System.Windows.Forms.PictureBox)sender).Height;
-                    //this.Server.picture_Width = ((System.Windows.Forms.PictureBox)sender).Width;
-                    //label_MapScale.Text = "    M 1:" + this.Server.mapScale.ToString() + "   <> .... ";
                     backgroundWorker1.RunWorkerAsync();
                 }
             }
-            
-            private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+
+			// switch between pkk5/FIR
+			private void CheckedChanged(object sender, EventArgs e)
+			{
+				if (this.ModeSelectorFIR.Checked)
+					this.Mode = ServiceMode.fir;
+				else
+					this.Mode = ServiceMode.pkk5;
+
+				if (!backgroundWorker1.IsBusy)
+				{
+					backgroundWorker1.RunWorkerAsync();
+				}
+			}
+
+			private void ServerErrorProc(object Sender, ServiceEventArgs args)
+			{
+				label_CI.SetTextInThread(args.Message);
+				label_CI_date.SetTextInThread(args.Source);
+			}
+
+			private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
             {
                if (this.NeedRecall)
                 {
@@ -284,6 +313,8 @@ namespace RRTypes
                     this.Server.Get_WebOnline_th(this.QueryValue, this.QueryObjectType); 
                 }
             }
+
+
 
             private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
             {
@@ -342,8 +373,9 @@ namespace RRTypes
                 if (this.Result_Full.util_by_doc != null)
                     ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
                 ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
-                ge.DrawString("pkk5 Viewer v" + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 150, 2);
-				
+                ge.DrawString("pkk5 Viewer v" + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 150, this.Image.Height - 20);
+				//ge.DrawString("pkk5 srv log:" + this.Server.Service_Exception, font2, Brushes.Black, this.Image.Width - 200, 10);
+
 				if (Mode == ServiceMode.pkk5)
                 ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);
 				else ge.DrawString(FIR.FIR_Server_ru.url_FIR, font2, Brushes.Black, this.Image.Width - 450, 2);
