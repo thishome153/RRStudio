@@ -230,9 +230,10 @@ namespace RRTypes
         /// </summary>
         public class pkk5_Rosreestr_ru
         {
-            public const string url_api     = "https://pkk5.rosreestr.ru/api/features/";
+											   
+            public const string url_api     =  "https://pkk5.rosreestr.ru/api/features/";
 			public string url_arcgis_export  = "https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/CadastreOriginal/MapServer/export?bbox=";
-            public string url_arcgis_exportZ ="https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
+            public string url_arcgis_exportZ = "https://pkk5.rosreestr.ru/arcgis/rest/services/Cadastre/ZONES/MapServer/export?bbox=";
             public pkk5_json_response jsonResponse; //Ответ сервера, краткий
             public pkk5_json_Fullresponse jsonFResponse;// Ответ полный, на запрос по id
 			public string Service_Exception;
@@ -295,22 +296,30 @@ namespace RRTypes
                     TreeNode PWebNode = new TreeNode(CN);
                     this.Nodes.Add(PWebNode);
 
-                    WebRequest wrGETURL = null;
-			
+					//WebRequest wrGETURL = null;
+					Uri pkk5RequestUri = new Uri(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() + "/" + CommonCast.CasterCN.CNToId(CN));
+					ServicePoint myServicePoint = ServicePointManager.FindServicePoint(pkk5RequestUri);
+
+					Stream objStream;
 					//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
-					wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() +"?text="+ CN);
 					//SSL tune:
 					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-					ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+					ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
+					ServicePointManager.Expect100Continue = true;
+					// get GET:
+					HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(pkk5RequestUri); //+"?text="+ CN);
+					wrGETURL.ServicePoint.Expect100Continue = true;
+
 					wrGETURL.Credentials = CredentialCache.DefaultCredentials;
 					wrGETURL.Proxy.Credentials = CredentialCache.DefaultCredentials;
 					// obsolete: wrGETURL.Proxy = WebProxy.GetDefaultProxy();
 					wrGETURL.Timeout = this.Timeout;
 
-					Stream objStream;
 					
-                    WebResponse wr = wrGETURL.GetResponse();
+                    HttpWebResponse wr = (HttpWebResponse)wrGETURL.GetResponse();
                     objStream = wr.GetResponseStream();
+
+
                     if (objStream != null)
                     {
                         StreamReader objReader = new StreamReader(objStream);
@@ -325,9 +334,9 @@ namespace RRTypes
                             {
                                 PWebNode.Nodes.Add(jsonResponse.features[0].attrs.address).Expand();
                                 //Запрос по конкретному id:
-                                wrGETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() + "/" + jsonResponse.features[0].attrs.id);
-                                wrGETURL.Timeout = this.Timeout;
-                                WebResponse wrF = wrGETURL.GetResponse();
+                              WebRequest  wr2GETURL = WebRequest.Create(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() + "/" + jsonResponse.features[0].attrs.id);
+                                wr2GETURL.Timeout = this.Timeout;
+                                WebResponse wrF = wr2GETURL.GetResponse();
                                 objStream = wrF.GetResponseStream();
                                 if (objStream != null)
                                 {
@@ -401,9 +410,9 @@ namespace RRTypes
                                                               "&f=image";
                                     // PWebNode.Nodes.Add("mapScale").Nodes.Add(this.mapScale.ToString());
                                     // PWebNode.Nodes.Add("url jpeg").Nodes.Add(sURLpkk5_jpeg);
-                                    wrGETURL = WebRequest.Create(sURLpkk5_jpeg);
-                                    wrGETURL.Timeout = this.Timeout;
-                                    WebResponse wrJpeg = wrGETURL.GetResponse();
+                                    wr2GETURL = WebRequest.Create(sURLpkk5_jpeg);
+                                    wr2GETURL.Timeout = this.Timeout;
+                                    WebResponse wrJpeg = wr2GETURL.GetResponse();
                                     objStream = wrJpeg.GetResponseStream();
                                     if (objStream != null)
                                         this.Image = System.Drawing.Bitmap.FromStream(objStream);

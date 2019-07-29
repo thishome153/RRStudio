@@ -378,6 +378,8 @@ namespace RRTypes
 		public class FIR_Server_ru :IRESTServer
 		{
 			public const string url_FIR = "http://rosreestr.ru/api/online/fir_object/";
+			public delegate void ServiceExceptionEventHandler(object sender, ServiceEventArgs e);
+			public event ServiceExceptionEventHandler OnServiceException;
 
 			public System.Diagnostics.Stopwatch watch;
 			public int Timeout;
@@ -425,6 +427,13 @@ namespace RRTypes
 				{
 					System.Windows.Forms.MessageBox.Show(ex.ToString());
 					this.watch.Stop();
+					if (OnServiceException != null)
+					{
+						ServiceEventArgs e = new ServiceEventArgs();
+						e.Message = ex.Message;
+						e.Source = ex.Source;
+						OnServiceException(this, e);
+					}
 					return false;
 				}
 

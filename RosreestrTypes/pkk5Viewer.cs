@@ -65,8 +65,9 @@ namespace RRTypes
             }
 
             public pkk5_json_Fattrs Result_Full;
+			public FIR.FIRJsonData Result_FIR_Full;
 
-            private pkk5_Types fQueryObjectType;
+			private pkk5_Types fQueryObjectType;
 			/// <summary>
 			/// Type of Parcel, OKS, Block..etcS
 			/// </summary>
@@ -112,8 +113,11 @@ namespace RRTypes
                 this.NeedRecall = true; // надо перевызыватьи
                 this.Server = new pkk5_Rosreestr_ru(800, 420);//default //this.Width, this.Height);
 				this.Server.OnServiceException += ServerErrorProc;
-				
-                this.backgroundWorker1 = new BackgroundWorker();
+
+				this.ServerFIR = new FIR.FIR_Server_ru();
+				this.ServerFIR.OnServiceException += ServerErrorProc;
+
+				this.backgroundWorker1 = new BackgroundWorker();
                 this.backgroundWorkerCounter = new BackgroundWorker();
                 this.MouseEnter += pictureBox_MouseEnter;
                 this.MouseWheel += pictureBox_OnMouseWheel;
@@ -310,9 +314,13 @@ namespace RRTypes
                     this.OnQueryStart(new EventArgs());
                     label_MapScale.SetTextInThread("    M 1:" + this.Server.mapScale.ToString() + "        Work started: ");
                     if (!backgroundWorkerCounter.IsBusy) { backgroundWorkerCounter.CancelAsync(); backgroundWorkerCounter.RunWorkerAsync(); }
-                    this.Server.Get_WebOnline_th(this.QueryValue, this.QueryObjectType); 
-                }
-            }
+					if (Mode ==ServiceMode.pkk5)
+					this.Server.Get_WebOnline_th(this.QueryValue, this.QueryObjectType);
+					if (Mode == ServiceMode.fir)
+						this.ServerFIR.GET_WebOnline_th(this.QueryValue);
+				}
+
+			}
 
 
 
@@ -324,73 +332,98 @@ namespace RRTypes
                 //this.Image = this.Server.Image; // так как-то напрямую
                 this.Image = new Bitmap(this.Server.Image_Width, this.Server.Image_Height); // а так разрешение картинки ???
                 Graphics ge = Graphics.FromImage(this.Image); // this.Image - на чем рисуем
-
-                if (this.Server.jsonFResponse != null)
-                {
-                    this.Result_Full = this.Server.jsonFResponse.feature.attrs;
-                    if (this.Server.jsonFResponse.feature.attrs.cad_eng_data != null)
-                    {
-                        label_CI.SetTextInThread(this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_surname + " " +
-                                                this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_first + " " +
-                                                this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_patronymic + " " +
-                                                this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_n_certificate);
-                        label_CI_date.SetTextInThread("Дата обновления атрибутов : " + this.Server.jsonFResponse.feature.attrs.cad_eng_data.actual_date + " " +
-                                                                    "lastmodified: " + this.Server.jsonFResponse.feature.attrs.cad_eng_data.lastmodified);
-                    }
-                    else
-                    {
-                        label_CI.SetTextInThread("--");
-                        label_CI_date.SetTextInThread("--");
-                    }
-
-                
-                    
-                if (this.Server.Image != null)
-                {
-                      Rectangle SourceSize = new Rectangle(3, 3, this.Server.Image_Width-3, this.Server.Image_Height-3);
-                      ge.DrawImage(this.Server.Image, SourceSize);//new System.Drawing.Point(0, 0)); // копируем резyльтат pkk5
-                      label_MapScale.SetTextInThread("    M 1: "+ this.Server.mapScale.ToString()+"  :) "+ Server.watch.Elapsed.Seconds.ToString()+ " sec");
-                      this.NeedRecall = false; // картинка получена, больше не спрашиваем
-                }
-                else
-                {
-                    label_MapScale.SetTextInThread("  :(  ");
-                    if (this.Image != null)
-                    {
-                   //     this.Image.Dispose();// = null;
-                    //    this.Image = null;
-                    }
-                 }
-                    // Дадим событие, что ответ получен%
-                  this.OnQuerySuccefull(new EventArgs()); // что же мы в событие отправим то ,,
-                }
-                // А теперь тексты:
-                Rectangle BourderSize = new Rectangle(2, 2, this.Server.Image_Width-2, this.Server.Image_Height-2);
-                ge.DrawRectangle(new Pen(Brushes.Gray,2), BourderSize);
-                ge.DrawString(this.QueryValue+  "  , S= " + this.Result_Full.area_value, myFont, Brushes.Green, new Point(2, this.Image.Height - 80));
-                if (this.Result_Full.address != null)
-                    ge.DrawString(this.Result_Full.address, myFont, Brushes.Green, new Point(2, this.Image.Height - 60));
-                if (this.Result_Full.util_by_doc != null)
-                    ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
-                ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
-                ge.DrawString("pkk5 Viewer v" + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 150, this.Image.Height - 20);
+			  // А теперь тексты:
+				Rectangle BourderSize = new Rectangle(2, 2, this.Server.Image_Width - 2, this.Server.Image_Height - 2);
+				ge.DrawRectangle(new Pen(Brushes.Gray, 2), BourderSize);
+				ge.DrawString("pkk5 Viewer v" + this.ProductVersion, font2, Brushes.Black, this.Image.Width - 150, this.Image.Height - 20);
 				//ge.DrawString("pkk5 srv log:" + this.Server.Service_Exception, font2, Brushes.Black, this.Image.Width - 200, 10);
 
-				if (Mode == ServiceMode.pkk5)
-                ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);
-				else ge.DrawString(FIR.FIR_Server_ru.url_FIR, font2, Brushes.Black, this.Image.Width - 450, 2);
-				//ge.DrawString(DateTime.Now.ToString(), font2, Brushes.Black, this.Image.Width - 120, 18); // this.Image.Width не равен this.Width
-				//ge.DrawString(this.Server.TODO_TEst_URL, font2, Brushes.Black, this.Image.Width - 120, 101);
+				if (this.Mode == ServiceMode.pkk5)
+				{
+					if (this.Server.jsonFResponse != null)
+					{
+						this.Result_Full = this.Server.jsonFResponse.feature.attrs;
+						if (this.Server.jsonFResponse.feature.attrs.cad_eng_data != null)
+						{
+							label_CI.SetTextInThread(this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_surname + " " +
+													this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_first + " " +
+													this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_patronymic + " " +
+													this.Server.jsonFResponse.feature.attrs.cad_eng_data.ci_n_certificate);
+							label_CI_date.SetTextInThread("Дата обновления атрибутов : " + this.Server.jsonFResponse.feature.attrs.cad_eng_data.actual_date + " " +
+																		"lastmodified: " + this.Server.jsonFResponse.feature.attrs.cad_eng_data.lastmodified);
+						}
+						else
+						{
+							label_CI.SetTextInThread("--");
+							label_CI_date.SetTextInThread("--");
+						}
 
 
-				/*
-                if (this.Server.jsonResponse != null)
-                    if (this.Server.jsonResponse.features.Count > 0) // на количество тоже надо проверять - бывают "пустые ответы", но со статусом 200 , т.е. ОК
-                {
-                    this.Result_Address = this.Server.jsonResponse.features[0].attrs.address;
-                }
-               */
-				if (backgroundWorkerCounter.IsBusy)
+
+						if (this.Server.Image != null)
+						{
+							Rectangle SourceSize = new Rectangle(3, 3, this.Server.Image_Width - 3, this.Server.Image_Height - 3);
+							ge.DrawImage(this.Server.Image, SourceSize);//new System.Drawing.Point(0, 0)); // копируем резyльтат pkk5
+							label_MapScale.SetTextInThread("    M 1: " + this.Server.mapScale.ToString() + "  :) " + Server.watch.Elapsed.Seconds.ToString() + " sec");
+							this.NeedRecall = false; // картинка получена, больше не спрашиваем
+						}
+						else
+						{
+							label_MapScale.SetTextInThread("  :(  ");
+							if (this.Image != null)
+							{
+								//     this.Image.Dispose();// = null;
+								//    this.Image = null;
+							}
+						}
+						// Дадим событие, что ответ получен%
+						this.OnQuerySuccefull(new EventArgs()); // что же мы в событие отправим то ,,
+					}
+
+					ge.DrawString(this.QueryValue + "  , S= " + this.Result_Full.area_value, myFont, Brushes.Green, new Point(2, this.Image.Height - 80));
+					if (this.Result_Full.address != null)
+						ge.DrawString(this.Result_Full.address, myFont, Brushes.Green, new Point(2, this.Image.Height - 60));
+					if (this.Result_Full.util_by_doc != null)
+						ge.DrawString(this.Result_Full.util_by_doc, myFont, Brushes.Green, new Point(2, this.Image.Height - 40));
+					ge.DrawString(this.Server.dpi + " dpi M 1:" + this.Server.mapScale.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 20));
+
+					
+					ge.DrawString(pkk5_Rosreestr_ru.url_api, font2, Brushes.Black, this.Image.Width - 450, 2);
+
+					/*
+					if (this.Server.jsonResponse != null)
+						if (this.Server.jsonResponse.features.Count > 0) // на количество тоже надо проверять - бывают "пустые ответы", но со статусом 200 , т.е. ОК
+					{
+						this.Result_Address = this.Server.jsonResponse.features[0].attrs.address;
+					}
+				   */
+				}
+
+				if (this.Mode == ServiceMode.fir)
+				{
+					if (this.ServerFIR.jsonResponse != null)
+					{
+						this.Result_FIR_Full = this.ServerFIR.jsonResponse;
+
+						if (this.ServerFIR.jsonResponse.parcelData.rcType != null)
+						{
+							label_CI.SetTextInThread(this.ServerFIR.jsonResponse.parcelData.ciSurname + " " +
+													this.ServerFIR.jsonResponse.parcelData.ciFirst + " " +
+													this.ServerFIR.jsonResponse.parcelData.ciPatronymic + " " +
+													this.ServerFIR.jsonResponse.parcelData.ciNCertificate);
+							label_CI_date.SetTextInThread("Дата " + this.ServerFIR.jsonResponse.parcelData.rcDate);
+						}
+						else
+						{
+							label_CI.SetTextInThread("--");
+							label_CI_date.SetTextInThread("--");
+						};
+						ge.DrawString(this.ServerFIR.jsonResponse.objectId + "  , FIR Actual Date " + this.ServerFIR.jsonResponse.firActualDate, myFont, Brushes.Green, new Point(2, this.Image.Height - 80));
+
+					}
+					ge.DrawString(FIR.FIR_Server_ru.url_FIR, font2, Brushes.Black, this.Image.Width - 450, 2);
+				}
+						if (backgroundWorkerCounter.IsBusy)
                 {
                   //  backgroundWorkerCounter.CancelAsync();
                     //backgroundWorkerCounter.ReportProgress();
