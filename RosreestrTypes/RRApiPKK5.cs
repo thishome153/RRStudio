@@ -297,16 +297,17 @@ namespace RRTypes
                     this.Nodes.Add(PWebNode);
 
 					//WebRequest wrGETURL = null;
-					Uri pkk5RequestUri = new Uri(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() + "/" + CommonCast.CasterCN.CNToId(CN));
-					ServicePoint myServicePoint = ServicePointManager.FindServicePoint(pkk5RequestUri);
+
 
 					Stream objStream;
 					//Запрос по кадастровому номеру, возвращает массив (сокращенные атрибуты):
 					//SSL tune:
 					ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-					ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
+					ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; //3072 == Tls12 // NET 4.5 have:  SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
 					ServicePointManager.Expect100Continue = true;
 					// get GET:
+					Uri pkk5RequestUri = new Uri(pkk5_Rosreestr_ru.url_api + ((int)ObjectType).ToString() + "/" + CommonCast.CasterCN.CNToId(CN));
+					ServicePoint myServicePoint = ServicePointManager.FindServicePoint(pkk5RequestUri);
 					HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(pkk5RequestUri); //+"?text="+ CN);
 					wrGETURL.ServicePoint.Expect100Continue = true;
 

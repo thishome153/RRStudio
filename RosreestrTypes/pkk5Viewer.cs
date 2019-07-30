@@ -418,8 +418,9 @@ namespace RRTypes
 							label_CI.SetTextInThread("--");
 							label_CI_date.SetTextInThread("--");
 						};
-						ge.DrawString(this.ServerFIR.jsonResponse.objectId + "  , FIR Actual Date " + this.ServerFIR.jsonResponse.firActualDate, myFont, Brushes.Green, new Point(2, this.Image.Height - 80));
-
+						ge.DrawString(this.ServerFIR.jsonResponse.objectData.objectCn + " , actualDate " + this.ServerFIR.jsonResponse.objectData.actualDate, myFont, Brushes.Green, new Point(2, this.Image.Height - 115));
+						ge.DrawString(this.ServerFIR.jsonResponse.objectData.addressNote, myFont, Brushes.Green, new Point(2, this.Image.Height - 100));
+						ge.DrawString(this.ServerFIR.jsonResponse.parcelData.utilCodeDesc +  ", Площадь "+this.ServerFIR.jsonResponse.parcelData.areaValue.ToString(), myFont, Brushes.Green, new Point(2, this.Image.Height - 85));
 					}
 					ge.DrawString(FIR.FIR_Server_ru.url_FIR, font2, Brushes.Black, this.Image.Width - 450, 2);
 				}
