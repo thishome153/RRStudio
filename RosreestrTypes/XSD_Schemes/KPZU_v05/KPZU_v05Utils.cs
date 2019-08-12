@@ -192,7 +192,9 @@ namespace RRTypes
 
                 if (cd.SelectSingleNode("egrp:NoOwner", nsmgr) != null)
                 {
-                    own.OwnerName = cd.SelectSingleNode("egrp:NoOwner", nsmgr).LastChild.Value;
+					System.Xml.XmlNode noOwner = cd.SelectSingleNode("egrp:NoOwner", nsmgr);
+					if (noOwner.LastChild != null)
+					own.OwnerName = noOwner.LastChild.Value;
                 }
 
                 

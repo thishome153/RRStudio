@@ -3562,6 +3562,7 @@ namespace RRTypes.CommonParsers
 				for (int i = 0; i <= Blocksnodes.Count - 1; i++)
 				{
 					var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
+					if (parcels != null) //some cadastral blocks may be without parcels 
 					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
 					{
 						this.TotalItems2Process++;
@@ -3575,60 +3576,61 @@ namespace RRTypes.CommonParsers
 				TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
 
 				var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
-				for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
-				{
-					System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
-					TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
-					MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
-					MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
-					MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
-					if (parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value") != null)
-						MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value").Value);
-					if (parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc") != null)
-						MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
-					MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
-					MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
-					if (parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
-						MainObj.ParentCN = parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
-					//  /Rights/Right/Name/#text
+				if (parcels != null) //some cadastral blocks may be without parcels 
+					for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
+					{
+						System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
+						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+						MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
+						MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
+						MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
+						if (parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value") != null)
+							MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("Ground_Payments/Ground_Payment/@Value").Value);
+						if (parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc") != null)
+							MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("Utilization").Attributes.GetNamedItem("ByDoc").Value;
+						MainObj.Category = parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value;//netFteo.Rosreestr.dCategoriesv01.ItemToName(parcel.SelectSingleNode("Category").Attributes.GetNamedItem("Category").Value);
+						MainObj.Location = this.Parse_Location(parcel.SelectSingleNode("Location"));
+						if (parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit") != null)
+							MainObj.ParentCN = parcel.SelectSingleNode("Unified_Land_Unit/Preceding_Land_Unit").FirstChild.Value;
+						//  /Rights/Right/Name/#text
 
-					if (parcel.SelectNodes("Rights/Right") != null)
-					{
-						XmlNodeList rights = parcel.SelectNodes("Rights/Right");
-						TMyRights Rights = new TMyRights();
-						foreach (XmlNode right in rights)
+						if (parcel.SelectNodes("Rights/Right") != null)
 						{
-							Rights.Add(new TRight(right.SelectSingleNode("Name").FirstChild.Value));
+							XmlNodeList rights = parcel.SelectNodes("Rights/Right");
+							TMyRights Rights = new TMyRights();
+							foreach (XmlNode right in rights)
+							{
+								Rights.Add(new TRight(right.SelectSingleNode("Name").FirstChild.Value));
+							}
+							MainObj.Rights = Rights;
 						}
-						MainObj.Rights = Rights;
-					}
-					//Землепользование
-					if (parcel.SelectSingleNode("Entity_Spatial") != null)
-					{
-						TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
-															  parcel.SelectSingleNode("Entity_Spatial"));
-						ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
-						ents.Parent_Id = MainObj.id;
-						ents.Definition = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
-						MainObj.EntSpat.Add(ents);
-					}
-					//Многоконтурный
-					if (parcel.SelectSingleNode("Contours") != null)
-					{
-						System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
-						string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
-						for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+						//Землепользование
+						if (parcel.SelectSingleNode("Entity_Spatial") != null)
 						{
-							/*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
-							// / Contours / Contour[1] / @Number_PP
-							TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
-																  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
-																  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
-							MainObj.EntSpat.Add(NewCont);
+							TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+																  parcel.SelectSingleNode("Entity_Spatial"));
+							ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
+							ents.Parent_Id = MainObj.id;
+							ents.Definition = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
+							MainObj.EntSpat.Add(ents);
 						}
+						//Многоконтурный
+						if (parcel.SelectSingleNode("Contours") != null)
+						{
+							System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
+							string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
+							for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+							{
+								/*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
+								// / Contours / Contour[1] / @Number_PP
+								TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
+																	  parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
+																	  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
+								MainObj.EntSpat.Add(NewCont);
+							}
+						}
+						XMLParsingProc("xml", ++FileParsePosition, null);
 					}
-					XMLParsingProc("xml", ++FileParsePosition, null);
-				}
 
 
 				//Пункты в Квартале
