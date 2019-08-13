@@ -394,7 +394,8 @@ namespace XMLReaderCS
 
 		private TextBlock CreateCanvasTextBlock(double x, double y, string label, double fontsize)
         {
-            TextBlock textBlock = new TextBlock();
+            netFteo.Windows.TmyTextBlock  textBlock = new netFteo.Windows.TmyTextBlock(x,y);
+			textBlock.Cursor = Cursors.Hand;
             textBlock.Text = label;
             textBlock.FontSize = fontsize;
             System.Windows.Media.Color cl = new Color();
@@ -402,6 +403,7 @@ namespace XMLReaderCS
             textBlock.Foreground = new SolidColorBrush(cl);
             Canvas.SetLeft(textBlock, x);
             Canvas.SetTop(textBlock, y);
+
             return textBlock;
         }
 
@@ -418,6 +420,8 @@ namespace XMLReaderCS
             }
             return res;
         }
+
+
         /// <summary>
         /// WPF Polygon
         /// Add the Polygon Element from System.Windows.Shapes.
@@ -680,17 +684,33 @@ namespace XMLReaderCS
             return false;
         }
 
+		private void button2_Click(object sender, RoutedEventArgs e)
+		{
+			//FlashLabels(Convert.ToByte(textBox1.Text));
+		}
 
-        private void canvas1_MouseMove(object sender, MouseEventArgs e)
-        {
-            /*            
+		private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			Label_resScale.Content = "User Control size changed ";
+		}
+
+
+		bool isPressed = false;
+		/// <summary>
+		/// Starting point of movies while left button down pressed
+		/// </summary>
+		Point startPosition;
+
+		private void canvas1_MouseMove(object sender, MouseEventArgs e)
+		{
+			/*            
            label_DirectXMode.Content = "x " + e.GetPosition(canvas1).X.ToString("0.000") +
                                        " y " + e.GetPosition(canvas1).Y.ToString("0.000");
 
            label_DirectXMode.Content = String.Format("{0} {1}",
                                                            e.GetPosition(canvas1).X, e.GetPosition(canvas1).Y);
                                        */
-            label_DirectXMode.Content = "";
+			label_DirectXMode.Content = "";
 			if (Spatial == null) return;
 			if (Spatial.TypeName == "netFteo.Spatial.TMyPolygon")
 			{
@@ -706,16 +726,96 @@ namespace XMLReaderCS
 					label_DirectXMode.Content = "s! " + label_DirectXMode.Content; // Mouse  got SNAP !!
 				}
 			}
-        }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-            //FlashLabels(Convert.ToByte(textBox1.Text));
-        }
+			if (isPressed)
+			{
+				Point position = e.GetPosition(canvas1); //current position
+				//Point position = new Point(this.AverageCenter.x, this.AverageCenter.y);
+				double deltaY = position.Y - startPosition.Y;
+				double deltaX = position.X - startPosition.X;
 
-        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Label_resScale.Content = "User Control size changed ";
-        }
-    }
+				if (e.OriginalSource is TextBlock)
+				{
+					TextBlock tb = (TextBlock)e.OriginalSource;
+					tb.SetValue(Canvas.TopProperty, (double)tb.GetValue(Canvas.TopProperty) + deltaY);
+					tb.SetValue(Canvas.LeftProperty, (double)tb.GetValue(Canvas.LeftProperty) + deltaX);
+					startPosition = position;
+				}
+
+				if (e.OriginalSource is Canvas)
+				{
+					label2.Content = "canvas moVing  " + position.X.ToString() + ", " + position.Y.ToString();
+
+					foreach (UIElement child in canvas1.Children)
+					{
+						child.SetValue(Canvas.TopProperty, (double)child.GetValue(Canvas.TopProperty) + deltaY);
+						child.SetValue(Canvas.LeftProperty, (double)child.GetValue(Canvas.LeftProperty) + deltaX);
+
+						if (child is System.Windows.Shapes.Polygon)
+						{
+							Polygon poly = (Polygon)child;
+							for (int i = 0; i < poly.Points.Count; i++)
+							{
+								poly.Points[i] = new Point(
+									poly.Points[i].X + deltaX,
+									poly.Points[i].Y + deltaY);
+							}
+						}
+					}
+					startPosition = position;
+				}
+			}
+		}
+
+		private void Canvas1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.OriginalSource is TextBlock)
+			{
+				TextBlock tb = (TextBlock)e.OriginalSource;
+				tb.Opacity = 0.5;
+				if (e.ClickCount == 2) // DoubleClick
+				{
+					canvas1.Children.Remove(tb);
+				}
+				else
+				{
+					startPosition = e.GetPosition(canvas1);
+					//label2.Content = tb.Text  + " on " + startPosition.X.ToString()+ ", " + startPosition.Y.ToString();
+					tb.CaptureMouse();
+				}
+			}
+			if (e.OriginalSource is Canvas)
+			{
+				startPosition = e.GetPosition(canvas1);
+				((Canvas)e.OriginalSource).CaptureMouse();
+			}
+			isPressed = true;
+		}
+
+		private void Canvas1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			if (e.OriginalSource is TextBlock)
+			{
+				TextBlock tb = (TextBlock)e.OriginalSource;
+				//label2.Content = "";
+				tb.ReleaseMouseCapture();
+				tb.Opacity = 1;
+			}
+			if (e.OriginalSource is Canvas)
+			{
+				((Canvas)e.OriginalSource).ReleaseMouseCapture();
+			}
+			isPressed = false;
+		}
+
+		private void Canvas1_MouseEnter(object sender, MouseEventArgs e)
+		{
+			/*
+			if (e.OriginalSource is TextBlock)
+			{
+				label2.Content = "TextBlock";
+			}
+			*/
+		}
+	}
 }

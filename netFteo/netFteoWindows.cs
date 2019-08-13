@@ -215,6 +215,16 @@ namespace netFteo.Windows
 
 	}
 
+	public class TmyTextBlock : System.Windows.Controls.TextBlock
+	{
+		public double BaseX;
+		public double BaseY;
+		public TmyTextBlock(double x, double y)
+		{
+			this.BaseX = x;
+			this.BaseY = y;
+		}
+	}
 }
 
 

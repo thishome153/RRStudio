@@ -17,7 +17,7 @@
             <ColumnDefinition Width="617*" />
             <ColumnDefinition Width="173*" />
         </Grid.ColumnDefinitions>
-        <Canvas Height="400" HorizontalAlignment="Left" Margin="5,76,0,0" Name="canvas1" VerticalAlignment="Top" Width="600" Background="#FF00C8E6" MouseMove="canvas1_MouseMove" Grid.RowSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <Canvas Height="400" HorizontalAlignment="Left" Margin="5,76,0,0" Name="canvas1" VerticalAlignment="Top" Width="600" Background="#FF00C8E6" MouseMove="canvas1_MouseMove" Grid.RowSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" MouseLeftButtonDown="Canvas1_MouseLeftButtonDown" MouseLeftButtonUp="Canvas1_MouseLeftButtonUp" MouseEnter="Canvas1_MouseEnter">
             <Button Height="24" Name="button1" Width="24" ToolTip="Сохранить снимок" Canvas.Left="3" Canvas.Top="373">
                 <StackPanel>
                     <Image Height="16" Width="16" Source="Images/save.bmp" />
