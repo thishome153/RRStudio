@@ -219,10 +219,14 @@ namespace netFteo.Windows
 	{
 		public double BaseX;
 		public double BaseY;
-		public TmyTextBlock(double x, double y)
+		public TmyTextBlock(double x, double y, string TextContent)
 		{
 			this.BaseX = x;
 			this.BaseY = y;
+			this.Text = TextContent;
+			this.ToolTip = this.Text + " (" + BaseX.ToString() + ", " + BaseY.ToString() + ")";
+			this.Cursor = System.Windows.Input.Cursors.Hand;
+
 		}
 	}
 }

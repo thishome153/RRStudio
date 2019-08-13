@@ -276,7 +276,7 @@ namespace XMLReaderCS
         /// <param name="x">the positive X-axis points to the right</param>
         /// <param name="y">the positive Y-axis points to downward</param>
         /// <returns></returns>
-        private UIElement CreateCanvasPoint(double Canvas_x, double Canvas_y)
+        private UIElement CreateCanvasPoint(double Canvas_x, double Canvas_y, string Label)
         {
             System.Windows.Shapes.Ellipse el = new Ellipse();
             el.Stroke = System.Windows.Media.Brushes.Red;
@@ -284,6 +284,7 @@ namespace XMLReaderCS
             Canvas.SetLeft(el, Canvas_x); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).x);
             Canvas.SetTop(el, Canvas_y); //polygon.Centroid(canvas1.Width, canvas1.Height, Scale).y);
             el.Height = pointSignRadius*2; el.Width = pointSignRadius*2;
+			el.ToolTip = Label;
             return el;
         }
 
@@ -335,7 +336,7 @@ namespace XMLReaderCS
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
-                res.Add(CreateCanvasPoint(pt.X-pointSignRadius, pt.Y- pointSignRadius));
+                res.Add(CreateCanvasPoint(pt.X-pointSignRadius, pt.Y- pointSignRadius, polyline[sourcePointsIndex].NumGeopointA));
                 sourcePointsIndex++;
             }
             return res;
@@ -392,12 +393,13 @@ namespace XMLReaderCS
 		}
 
 
-		private TextBlock CreateCanvasTextBlock(double x, double y, string label, double fontsize)
+		private TextBlock CreateCanvasTextBlock(double x, double y, double baseX, double baseY, string label, double fontsize)
         {
-            netFteo.Windows.TmyTextBlock  textBlock = new netFteo.Windows.TmyTextBlock(x,y);
-			textBlock.Cursor = Cursors.Hand;
-            textBlock.Text = label;
+            netFteo.Windows.TmyTextBlock  textBlock = new netFteo.Windows.TmyTextBlock(baseX, baseY, label);
+			//textBlock.Cursor = Cursors.Hand;
+            //textBlock.Text = label;
             textBlock.FontSize = fontsize;
+
             System.Windows.Media.Color cl = new Color();
             cl = Color.FromRgb(100, 25, 30);
             textBlock.Foreground = new SolidColorBrush(cl);
@@ -414,8 +416,8 @@ namespace XMLReaderCS
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
-                res.Add(CreateCanvasTextBlock(pt.X + 3, pt.Y - 9,
-                                              polygon[sourcePointsIndex].NumGeopointA, 10));
+                res.Add(CreateCanvasTextBlock(pt.X + 3, pt.Y - 9, polygon[sourcePointsIndex].x, polygon[sourcePointsIndex].y,
+											  polygon[sourcePointsIndex].NumGeopointA, 10));
                 sourcePointsIndex++;
             }
             return res;
@@ -428,7 +430,7 @@ namespace XMLReaderCS
         /// </summary>
         /// <param name="polygon"></param>
         /// <returns></returns>
-        private UIElement CreateCanvasPolygon(PointCollection polygon, bool Closed)
+        private UIElement CreateCanvasPolygon(PointCollection polygon, string definition, bool Closed)
 
 		{
 			if (Closed)
@@ -440,6 +442,7 @@ namespace XMLReaderCS
 				myPolyElement.HorizontalAlignment = HorizontalAlignment.Left;
 				myPolyElement.VerticalAlignment = VerticalAlignment.Center;
 				myPolyElement.Points = polygon;
+				myPolyElement.ToolTip = definition;
 				return myPolyElement;
 			}
 
@@ -450,6 +453,7 @@ namespace XMLReaderCS
 			WPFPolyLine.HorizontalAlignment = HorizontalAlignment.Left;
 			WPFPolyLine.VerticalAlignment = VerticalAlignment.Center;
 			WPFPolyLine.Points = polygon;
+			WPFPolyLine.ToolTip = definition;
 			return WPFPolyLine;
 		}
 
@@ -460,10 +464,10 @@ namespace XMLReaderCS
             List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
 
             foreach (PointCollection poly in polys)
-                res.Add(CreateCanvasPolygon(poly,true));
+                res.Add(CreateCanvasPolygon(poly, polygon.Definition,true));
 
             foreach (PointCollection poly in polysOld) // старые границы
-                res.Add(CreateCanvasPolygon(poly, true));
+                res.Add(CreateCanvasPolygon(poly, polygon.Definition, true));
             return res;
         }
 
@@ -474,10 +478,10 @@ namespace XMLReaderCS
 			List<PointCollection> polysOld = PolygonToWindowsShape(polygon, false);
 
 			foreach (PointCollection poly in polys)
-				res.Add(CreateCanvasPolygon(poly,false));
+				res.Add(CreateCanvasPolygon(poly, polygon.Definition,false));
 
 			foreach (PointCollection poly in polysOld) // старые границы
-				res.Add(CreateCanvasPolygon(poly,false));
+				res.Add(CreateCanvasPolygon(poly,polygon.Definition,false));
 			return res;
 		}
 
@@ -493,8 +497,8 @@ namespace XMLReaderCS
 		private PointCollection PointsToWindowsPoints(double originX, double originY, PointList layer, bool newOnly)
         {
             PointCollection myPointCollection = new PointCollection();
-            double canvasX;
-            double canvasY;
+            double canvasX = Double.NaN;
+            double canvasY = Double.NaN; ;
 
             foreach (TPoint point in layer)
             {
@@ -504,7 +508,8 @@ namespace XMLReaderCS
                     {
                         canvasX = Math.Round(canvas1.Width / 2 - (originY - point.y) / Scale);
                         canvasY = Math.Round(canvas1.Height/ 2 + (originX - point.x) / Scale);
-                        myPointCollection.Add(new Point(canvasX, canvasY));
+
+                //        myPointCollection.Add(new Point(canvasX, canvasY));
                     }
                 }
                 else
@@ -513,10 +518,12 @@ namespace XMLReaderCS
                     {
                         canvasX = Math.Round(canvas1.Width / 2 - (originY - point.oldX) / Scale);
                         canvasY = Math.Round(canvas1.Height / 2 + (originX - point.oldX) / Scale);
-                        myPointCollection.Add(new Point(canvasX, canvasY));
+
                     }
                 }
-            }
+				Point pt = new Point(canvasX, canvasY);
+				myPointCollection.Add(pt);
+			}
             return myPointCollection;
         }
 
@@ -742,7 +749,7 @@ namespace XMLReaderCS
 					startPosition = position;
 				}
 
-				if (e.OriginalSource is Canvas)
+				if (e.OriginalSource is Canvas) //move full canvas (all children UIElements)
 				{
 					label2.Content = "canvas moVing  " + position.X.ToString() + ", " + position.Y.ToString();
 
@@ -761,6 +768,30 @@ namespace XMLReaderCS
 									poly.Points[i].Y + deltaY);
 							}
 						}
+
+						if (child is System.Windows.Shapes.Polyline)
+						{
+							Polyline poly = (Polyline)child;
+							for (int i = 0; i < poly.Points.Count; i++)
+							{
+								poly.Points[i] = new Point(
+									poly.Points[i].X + deltaX,
+									poly.Points[i].Y + deltaY);
+							}
+						}
+
+						/* TODO: move ellipse
+						if (child is System.Windows.Shapes.Ellipse)
+						{
+							Ellipse poly = (Ellipse)child;
+							for (int i = 0; i < poly..Points.Count; i++)
+							{
+								poly.Points[i] = new Point(
+									poly.Points[i].X + deltaX,
+									poly.Points[i].Y + deltaY);
+							}
+						}
+						*/
 					}
 					startPosition = position;
 				}
