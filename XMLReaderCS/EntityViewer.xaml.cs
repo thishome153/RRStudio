@@ -56,8 +56,10 @@ namespace XMLReaderCS
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
 
-            InitCanvas(canvas1);
-        }
+			//InitCanvas(canvas1);
+			zoom = 1;
+			canvas1.RenderTransform = new ScaleTransform(zoom, zoom);
+		}
 
 
 
@@ -832,6 +834,7 @@ namespace XMLReaderCS
 				tb.ReleaseMouseCapture();
 				tb.Opacity = 1;
 			}
+
 			if (e.OriginalSource is Canvas)
 			{
 				((Canvas)e.OriginalSource).ReleaseMouseCapture();
@@ -847,6 +850,41 @@ namespace XMLReaderCS
 				label2.Content = "TextBlock";
 			}
 			*/
+		}
+
+
+		// Zoom
+		private Double zoomMax = 5;
+		private Double zoomMin = 0.5;
+		private Double zoomSpeed = 0.001;
+		private Double zoom = 1;
+		/// <summary>
+		/// Mouse wheel remain zoom in/out
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Canvas1_MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			zoom += zoomSpeed * e.Delta; // Ajust zooming speed (e.Delta = Mouse spin value )
+			if (zoom < zoomMin) { zoom = zoomMin; } // Limit Min Scale
+			if (zoom > zoomMax) { zoom = zoomMax; } // Limit Max Scale
+
+			Point mousePos = e.GetPosition(canvas1);
+			if (e.Delta > 0)
+			// UP
+			{
+				//ViewKoeffecient += 0.01;
+
+				canvas1.RenderTransform = new ScaleTransform(zoom, zoom, mousePos.X, mousePos.Y);
+			}
+			else
+			//DOWN
+			{
+				//ViewKoeffecient -= 0.01;
+				//scaletransform.ScaleX -= 0.01;
+				canvas1.RenderTransform = new ScaleTransform(zoom, zoom );
+			}
+			
 		}
 	}
 }
