@@ -575,6 +575,7 @@ namespace XMLReaderCS
 			if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
 			linkLabel_FileName.Text = Path.GetFileName(FileName);
 			toolStripStatusLabel1.Text = Path.GetFileName(FileName);
+			this.Text = Path.GetFileName(FileName);
 			label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
 			// got mif file:
 

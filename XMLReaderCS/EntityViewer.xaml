@@ -3,21 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="500" Width="800" Loaded="UserControl_Loaded" Foreground="#FFD45555" SizeChanged="UserControl_SizeChanged" MinHeight="400" MinWidth="696">
+             mc:Ignorable="d" Loaded="UserControl_Loaded" Foreground="#FFD45555" SizeChanged="UserControl_SizeChanged" MinHeight="530" MinWidth="720" d:DesignWidth="727" d:DesignHeight="517">
     <UserControl.ContextMenu>
         <ContextMenu />
     </UserControl.ContextMenu>
-    <Grid Margin="5,5,5,10">
+    <Grid Margin="3,3,0,3" MinHeight="524" MinWidth="720">
         <Grid.RowDefinitions>
-            <RowDefinition Height="110*"/>
-            <RowDefinition Height="29*"/>
-            <RowDefinition Height="338*"/>
+            <RowDefinition Height="320*"/>
+            <RowDefinition Height="135*"/>
+            <RowDefinition Height="64*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="617*" />
-            <ColumnDefinition Width="173*" />
+            <ColumnDefinition Width="303*" />
+            <ColumnDefinition Width="59*" />
         </Grid.ColumnDefinitions>
-        <Canvas Height="400" HorizontalAlignment="Left" Margin="5,76,0,0" Name="canvas1" VerticalAlignment="Top" Width="600" Background="#FF00C8E6" MouseMove="canvas1_MouseMove" Grid.RowSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" MouseLeftButtonDown="Canvas1_MouseLeftButtonDown" MouseLeftButtonUp="Canvas1_MouseLeftButtonUp" MouseEnter="Canvas1_MouseEnter" MouseWheel="Canvas1_MouseWheel">
+        <Canvas HorizontalAlignment="Left" Name="canvas1" VerticalAlignment="Bottom" MouseMove="canvas1_MouseMove" ScrollViewer.HorizontalScrollBarVisibility="Visible" MouseLeftButtonDown="Canvas1_MouseLeftButtonDown" MouseLeftButtonUp="Canvas1_MouseLeftButtonUp" MouseEnter="Canvas1_MouseEnter" MouseWheel="Canvas1_MouseWheel" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" Width="600" Height="400" MinWidth="600" MinHeight="400" Grid.RowSpan="2" Margin="1,0,0,0">
             <Button Height="24" Name="button1" Width="24" ToolTip="Сохранить снимок" Canvas.Left="3" Canvas.Top="373">
                 <StackPanel>
                     <Image Height="16" Width="16" Source="Images/save.bmp" />
@@ -33,14 +34,15 @@
                 </MenuItem.Icon>
                 <MenuItem Header="Настройки" />
             </MenuItem>
+            <Label Content="DirectX mode" Height="30" HorizontalAlignment="Left" x:Name="label_DirectXMode" VerticalAlignment="Top" Width="163" Background="#FFFFAAAA"/>
+            <Button Content="+" Height="30" HorizontalAlignment="Left" x:Name="button_ScaleUp" VerticalAlignment="Top" Width="32" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="button_ScaleUp_Click" />
+            <Button Content="-" FontSize="20" Height="30" HorizontalAlignment="Left" HorizontalContentAlignment="Center" x:Name="button4" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="32" Click="button4_Click" RenderTransformOrigin="0.555,-1.119" />
+            <Button Content="1:1" FontSize="20" Height="30" HorizontalAlignment="Left" HorizontalContentAlignment="Center" x:Name="button4_ZoomAll" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="32" RenderTransformOrigin="0.555,-1.119" Click="Button4_ZoomAll_Click" />
         </Menu>
-        <Label Content="Label_Definition" Height="27" HorizontalAlignment="Left" Margin="5,43,0,0" Name="label2" VerticalAlignment="Top" Width="255" Background="#FF00C8E6" HorizontalContentAlignment="Center" Cursor="Help"></Label>
-        <Label Background="#FFE2A400" Content="Scales Res" Height="27" HorizontalAlignment="Left" Margin="443,43,0,0" x:Name="Label_resScale" VerticalAlignment="Top" Width="162" MouseLeave="label_res_Scale_MouseLeave" />
-        <Button Content="+" Height="32" HorizontalAlignment="Left" Margin="474,3,0,0" Name="button_ScaleUp" VerticalAlignment="Top" Width="32" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="button_ScaleUp_Click" />
-        <Button Content="-" FontSize="20" Height="32" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="511,3,0,0" Name="button4" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="32" Click="button4_Click" RenderTransformOrigin="0.555,-1.119" />
-        <Label Content="DirectX mode" Height="32" HorizontalAlignment="Left" Margin="306,3,0,0" Name="label_DirectXMode" VerticalAlignment="Top" Width="163" Background="#FFFFAAAA"/>
-        <Label Background="#FF00B300" Content="Canvas" Height="27" HorizontalAlignment="Left" x:Name="label1_Canvas_Sizes" VerticalAlignment="Bottom" Width="163" FontSize="11" RenderTransformOrigin="0.465,4.704" Margin="269,0,0,42" />
-        <Image Grid.Column="1" Height="48" Width="48" HorizontalAlignment="Left" Margin="62,177,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Source="Images/FixosoftTM.gif" Grid.Row="2" />
-        <Image Height="119" HorizontalAlignment="Left" Margin="10,23,0,0" Name="image2" Source="Images/WPF_logo.jpg" Stretch="Fill" VerticalAlignment="Top" Width="147" Grid.Column="1" Grid.Row="2" />
+        <Label Content="Label_Definition" Height="27" HorizontalAlignment="Left" Margin="10,0,0,0" Name="label2" VerticalAlignment="Bottom" Width="255" Background="#FF00C8E6" HorizontalContentAlignment="Center" Cursor="Help" Grid.Row="2"/>
+        <Label Background="#FFE2A400" Content="Scales Res" Height="27" HorizontalAlignment="Left" Margin="438,0,0,0" x:Name="Label_resScale" VerticalAlignment="Bottom" Width="162" MouseLeave="label_res_Scale_MouseLeave" Grid.Row="2" />
+        <Label Background="#FF00B300" Content="Canvas" Height="27" HorizontalAlignment="Left" x:Name="label1_Canvas_Sizes" VerticalAlignment="Bottom" Width="163" FontSize="11" RenderTransformOrigin="0.465,4.704" Margin="270,0,0,0" Grid.Row="2" />
+        <Image Grid.Column="1" Height="48" Width="48" HorizontalAlignment="Right" Margin="0,0,35,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Source="Images/FixosoftTM.gif" Grid.Row="2" RenderTransformOrigin="0.125,0.021" />
+        <Image Height="89" HorizontalAlignment="Right" Margin="0,10,3,0" Name="image2" Source="Images/WPF_logo.jpg" Stretch="Fill" VerticalAlignment="Top" Width="108" Grid.Column="1" Grid.Row="1" />
     </Grid>
 </UserControl>

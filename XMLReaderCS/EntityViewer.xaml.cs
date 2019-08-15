@@ -107,19 +107,21 @@ namespace XMLReaderCS
             Label_resScale.Content = "";
             label1_Canvas_Sizes.Content = "";
             i = 0;
-
+			/*
             TextBlock textBlock = new TextBlock();
             Canvas.SetLeft(textBlock, canvas1.Width / 2);
             textBlock.Text = canvas1.Width.ToString();
             Canvas.SetTop(textBlock, canvas1.Height - 20);
             canvas.Children.Add(textBlock);
-
             TextBlock textBlock2 = new TextBlock();
             Canvas.SetLeft(textBlock2, 5);
             textBlock2.Text = canvas1.Height.ToString();
             Canvas.SetTop(textBlock2, canvas1.Height / 2);
             canvas.Children.Add(textBlock2);
-            CheckWPFTier();
+			*/
+			zoom = 1;
+			canvas1.RenderTransform = new ScaleTransform(zoom, zoom);
+			CheckWPFTier();
 			StartRotate();
         }
 
@@ -202,7 +204,6 @@ namespace XMLReaderCS
                     List<TextBlock> labels = CreateCanvasPointLabels((netFteo.Spatial.TRing) polygon);
                     foreach (TextBlock label in labels)
                         canvas1.Children.Add(label);
-
                 }
 				
 				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TPolyLine")
@@ -361,15 +362,16 @@ namespace XMLReaderCS
 
 				System.Windows.Shapes.Ellipse el = new Ellipse();
 			el.Stroke = System.Windows.Media.Brushes.Red;
+			el.StrokeThickness = 0.5;
 			el.Fill = System.Windows.Media.Brushes.Transparent;
 			Canvas.SetLeft(el, Center.X - Circle.R / (2 * Scale));
 			Canvas.SetTop(el, Center.Y - Circle.R / (2 * Scale));
 			el.Height = Circle.R / Scale; el.Width = Circle.R / Scale;
 			res.Add(el);
-
+			// Lines for "Cross target"
 			Line ls_h = new Line();
-			ls_h.X1 = Center.X + Circle.R * 3/Scale;
-			ls_h.X2 = Center.X - Circle.R * 3/ Scale;
+			ls_h.X1 = Center.X + Circle.R*0.75 /Scale;
+			ls_h.X2 = Center.X - Circle.R*0.75 /Scale;
 			ls_h.Y1 = Center.Y; ls_h.Y2 = Center.Y;
 			ls_h.Stroke = System.Windows.Media.Brushes.Black;
 			ls_h.StrokeThickness = 0.5;
@@ -377,13 +379,14 @@ namespace XMLReaderCS
 			Line ls_v = new Line();
 			ls_v.X1 = Center.X;
 			ls_v.X2 = Center.X;
-			ls_v.Y1 = Center.Y - Circle.R*2/ Scale; ls_v.Y2 = Center.Y + Circle.R * 2 / Scale;
+			ls_v.Y1 = Center.Y - Circle.R*0.75/Scale; ls_v.Y2 = Center.Y + Circle.R *0.75/ Scale;
 			ls_v.Stroke = System.Windows.Media.Brushes.Black;
 			ls_v.StrokeThickness = 0.5;
 			res.Add(ls_v);
 
 			Ellipse el_root = new Ellipse();
 			el_root.Stroke = System.Windows.Media.Brushes.Black;
+			el_root.StrokeThickness = 0.2;
 			el_root.Fill = System.Windows.Media.Brushes.Black;
 
 			Canvas.SetLeft(el_root, Center.X - pointSignRadius);
@@ -753,7 +756,7 @@ namespace XMLReaderCS
 
 				if (e.OriginalSource is Canvas) //move full canvas (all children UIElements)
 				{
-					label2.Content = "canvas moVing  " + position.X.ToString() + ", " + position.Y.ToString();
+					//label2.Content = "canvas moVing  " + position.X.ToString() + ", " + position.Y.ToString();
 
 					foreach (UIElement child in canvas1.Children)
 					{
@@ -782,6 +785,17 @@ namespace XMLReaderCS
 							}
 						}
 
+						if (child is System.Windows.Shapes.Line)
+						{
+							Line poly = (Line)child;
+							poly.X1 += deltaX;
+							poly.X2 += deltaX;
+							poly.Y1 += deltaY;
+							poly.Y2 += deltaY;
+
+						}
+					}
+						
 						/* TODO: move ellipse
 						if (child is System.Windows.Shapes.Ellipse)
 						{
@@ -798,7 +812,7 @@ namespace XMLReaderCS
 					startPosition = position;
 				}
 			}
-		}
+		
 
 		private void Canvas1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
@@ -885,6 +899,13 @@ namespace XMLReaderCS
 				canvas1.RenderTransform = new ScaleTransform(zoom, zoom );
 			}
 			
+		}
+
+		private void Button4_ZoomAll_Click(object sender, RoutedEventArgs e)
+		{
+			zoom = 1;
+			canvas1.RenderTransform = new ScaleTransform(zoom, zoom);
+
 		}
 	}
 }
