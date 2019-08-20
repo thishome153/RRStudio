@@ -116,6 +116,8 @@
 			this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.проверкаГеометрииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.добавитьПДКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.удалитьГеометриюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.imList_dStates = new System.Windows.Forms.ImageList(this.components);
 			this.listView1 = new System.Windows.Forms.ListView();
@@ -732,7 +734,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
 			this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
+			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
 			this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
 			// 
 			// сохранитьКакToolStripMenuItem
@@ -884,7 +886,9 @@
             this.eSViewerlibmcvcdllF1ToolStripMenuItem,
             this.mSVCESCheckerFunc2Int1975ToolStripMenuItem,
             this.проверкаГеометрииToolStripMenuItem,
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem});
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem,
+            this.добавитьПДКПТToolStripMenuItem,
+            this.удалитьГеометриюToolStripMenuItem});
 			this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
 			this.debugToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
 			this.debugToolStripMenuItem.Text = "Debug";
@@ -931,6 +935,19 @@
 			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
 			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
 			this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
+			// 
+			// добавитьПДКПТToolStripMenuItem
+			// 
+			this.добавитьПДКПТToolStripMenuItem.Name = "добавитьПДКПТToolStripMenuItem";
+			this.добавитьПДКПТToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+			this.добавитьПДКПТToolStripMenuItem.Text = "Добавить ПД ( КПТ)";
+			// 
+			// удалитьГеометриюToolStripMenuItem
+			// 
+			this.удалитьГеометриюToolStripMenuItem.Name = "удалитьГеометриюToolStripMenuItem";
+			this.удалитьГеометриюToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+			this.удалитьГеометриюToolStripMenuItem.Text = "Удалить геометрию";
+			this.удалитьГеометриюToolStripMenuItem.Click += new System.EventHandler(this.удалитьГеометриюToolStripMenuItem_Click);
 			// 
 			// поискToolStripMenuItem
 			// 
@@ -1734,6 +1751,8 @@
 		private System.Windows.Forms.ToolStripButton toolStripButton4;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripLabel_Counts;
 		private System.Windows.Forms.ToolStripMenuItem writeDXFSingleEntitydxfPointToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem добавитьПДКПТToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem удалитьГеометриюToolStripMenuItem;
 	}
 }
 

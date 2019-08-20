@@ -4443,6 +4443,7 @@ namespace RRTypes.CommonParsers
 					MainObj.State = KPT10.CadastralBlocks[i].Parcels[iP].State.ToString();
 					MainObj.Category = KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString();//netFteo.Rosreestr.dCategoriesv01.ItemToName(KPT10.CadastralBlocks[i].Parcels[iP].Category.ToString());
 					MainObj.DateCreated = KPT10.CadastralBlocks[i].Parcels[iP].DateCreated.ToString("dd.MM.yyyy");
+					if (KPT10.CadastralBlocks[i].Parcels[iP].CadastralCost != null)
 					MainObj.CadastralCost = KPT10.CadastralBlocks[i].Parcels[iP].CadastralCost.Value;
 
 					//Землепользование

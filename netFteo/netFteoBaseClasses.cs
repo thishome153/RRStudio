@@ -4271,6 +4271,28 @@ SCAN:
 			return null;
         }
 
+		public bool RemoveGeometry(int id)
+		{
+			//From dxf, mif
+			// Single feature
+			foreach (IGeometry feature in this.ParsedSpatial)
+			{
+				if (feature.id == id)
+				{
+					this.ParsedSpatial.Remove(feature);
+					return true;
+				}
+			}
+
+			//Full ES
+			if (this.ParsedSpatial.id == id)
+			{
+				this.ParsedSpatial.Clear();
+				return true;
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Select features from ES by handling layer
 		/// </summary>

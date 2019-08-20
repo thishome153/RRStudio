@@ -170,15 +170,15 @@ namespace XMLReaderCS
 		{
 			if (e.Max < Int32.MaxValue)
 			{
-			//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max);
+				//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max);
 				if (e.Process < toolStripProgressBar1.Maximum)
 					toolStripProgressBar1.Value = Convert.ToInt32(e.Process);
 			}
 			else
 			{
-			//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max/1024);
+				//	toolStripProgressBar1.Maximum = Convert.ToInt32(e.Max/1024);
 				if (e.Process < toolStripProgressBar1.Maximum)
-					toolStripProgressBar1.Value = Convert.ToInt32(e.Process/1024);
+					toolStripProgressBar1.Value = Convert.ToInt32(e.Process / 1024);
 			}
 			//toolStripLabel_Counts.Text = toolStripProgressBar1.Value.ToString() + "/" + e.CurrentSection;
 			Application.DoEvents();
@@ -210,8 +210,8 @@ namespace XMLReaderCS
 		private void OpenFile(int FilterIndex)
 		{
 			openFileDialog1.Filter = "Сведения ЕГРН, ТехПлан, Межевой план|*.xml;*.zip;" +
-				"|Про$транственные данные|*.dxf;*.mif;*.txt"+
-				"|Технокад|*.csv"+
+				"|Про$транственные данные|*.dxf;*.mif;*.txt" +
+				"|Технокад|*.csv" +
 				"|Файл подписи|*.sig" +
 				"|XML schema|*.xsd";
 			openFileDialog1.FilterIndex = FilterIndex;
@@ -583,7 +583,7 @@ namespace XMLReaderCS
 			{
 				netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
 				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
-				mifreader.OnParsing += XMLStateUpdater; 
+				mifreader.OnParsing += XMLStateUpdater;
 				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
 			}
 
@@ -597,7 +597,7 @@ namespace XMLReaderCS
 					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
 					Body = dxfreader.Body;
 					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding;
-					toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount; 
+					toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount;
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
 					dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
@@ -610,7 +610,7 @@ namespace XMLReaderCS
 					ClearControls();
 					this.DocInfo.DocTypeNick = "dxf";
 					this.DocInfo.CommentsType = "DXF error...";
-					this.DocInfo.Comments = "\r"+FileName+" contain errors:\r" + err.Message + "\r DXF file body:\r\r" +    Body;
+					this.DocInfo.Comments = "\r" + FileName + " contain errors:\r" + err.Message + "\r DXF file body:\r\r" + Body;
 					this.DocInfo.DocType = "dxf";
 				}
 
@@ -626,7 +626,7 @@ namespace XMLReaderCS
 					DocInfo.MyBlocks.ParsedSpatial.Clear();
 					DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
 				}
-				
+
 				this.DocInfo.DocTypeNick = "Текстовый файл";
 				this.DocInfo.CommentsType = "TXT";
 				this.DocInfo.Comments = mifreader.Body;
@@ -698,8 +698,8 @@ namespace XMLReaderCS
 				cwrp.DisplaySig(FileName, this.Handle);
 			}
 #endif
-				//Если есть парная ЭЦП:
-				if (File.Exists(FileName + ".sig"))
+			//Если есть парная ЭЦП:
+			if (File.Exists(FileName + ".sig"))
 			{
 				frmCertificates certfrm = new frmCertificates();
 				List<string> sigs = certfrm.ParseSignature(FileName + ".sig");
@@ -918,7 +918,7 @@ namespace XMLReaderCS
                     writer.Close();
              * */
 		}
-#endregion
+		#endregion
 
 
 		private void Parse_Polygon(TMyPolygon xmlPolygon)
@@ -954,7 +954,7 @@ namespace XMLReaderCS
 		}
 		*/
 
-#region разбор Кадастрового паспорта  KPZU V05
+		#region разбор Кадастрового паспорта  KPZU V05
 		/*
         private void ParseKPZU(RRTypes.kpzu.KPZU kp)
         {
@@ -1075,9 +1075,9 @@ namespace XMLReaderCS
   */
 
 
-#endregion
+		#endregion
 
-#region разбор КВ на ОКС. Сооружение.  KPZU V02
+		#region разбор КВ на ОКС. Сооружение.  KPZU V02
 		// С Наступающим 2016!
 		private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
 		{
@@ -1234,9 +1234,9 @@ namespace XMLReaderCS
 		}
 
 
-#endregion
+		#endregion
 
-#region  Разбор STD_TP ТехПлан
+		#region  Разбор STD_TP ТехПлан
 
 		private void ParseSTDTPV02(RRTypes.STD_TPV02.STD_TP TP)
 		{
@@ -1345,9 +1345,9 @@ namespace XMLReaderCS
 		}
 
 
-#endregion
+		#endregion
 
-#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
+		#region Отображение в TreeView Коллекций ЗУ и полигонов (из КВЗУ и КПТ)
 		private void ListFileInfo(netFteo.IO.FileInfo fileinfo)
 		{
 			label_DocType.Text = fileinfo.DocType + " " + fileinfo.Version;// "КПТ + 10";;
@@ -1420,7 +1420,7 @@ namespace XMLReaderCS
 					}
 				}// DocInfo.DocRootName);}
 
-			//	else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN; }
+				//	else { TopNode_ = TV_Parcels.Nodes.Add("TopNode", BlockList.Blocks[bc].CN; }
 
 				if ((BlockList.Blocks[bc].Parcels != null) && (BlockList.Blocks[bc].Parcels.Count > 0))
 				{
@@ -1745,7 +1745,7 @@ namespace XMLReaderCS
 			if (oks.Construction != null) //.Type == "Сооружение")
 			{
 				ListOldNumbers(PNode, oks.Construction.OldNumbers);
-	
+
 
 
 			}
@@ -1753,7 +1753,7 @@ namespace XMLReaderCS
 			if (oks.Uncompleted != null) //.Type == "Сооружение")
 			{
 				ListOldNumbers(PNode, oks.Uncompleted.OldNumbers);
-		
+
 			}
 
 			if ((oks.Location != null) &&
@@ -1800,43 +1800,43 @@ namespace XMLReaderCS
 		/*
 	
 		*/
-	
-			/*
-		// Листинг точек окружностней в ListView
-		private ListViewItem CircleToListView(ListView LV, TCircle Circle)
-		{
-			if (Circle == null) return null;
-			LV.Items.Clear();
-			LV.Tag = Circle.id;
-			LV.Items.Clear();
-			LV.Controls.Clear();
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "R";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
 
-			string BName = Circle.Pref + Circle.NumGeopointA + Circle.OrdIdent;
-			ListViewItem LVi = new ListViewItem();
-			LVi.Text = BName;
-			LVi.Tag = Circle.id;
-			LVi.SubItems.Add(Circle.x_s);
-			LVi.SubItems.Add(Circle.y_s);
-			LVi.SubItems.Add(Circle.Mt_s);
-			LVi.SubItems.Add(Circle.R.ToString());
-			LVi.SubItems.Add(Circle.Description);
-			if (Circle.Pref == "н")
-				LVi.ForeColor = Color.Red;
-			else LVi.ForeColor = Color.Black;
-			if (Circle.Status == 6)
-				LVi.ForeColor = Color.Blue;
+		/*
+	// Листинг точек окружностней в ListView
+	private ListViewItem CircleToListView(ListView LV, TCircle Circle)
+	{
+		if (Circle == null) return null;
+		LV.Items.Clear();
+		LV.Tag = Circle.id;
+		LV.Items.Clear();
+		LV.Controls.Clear();
+		LV.Columns[0].Text = "Имя";
+		LV.Columns[1].Text = "x, м.";
+		LV.Columns[2].Text = "y, м.";
+		LV.Columns[3].Text = "Mt, м.";
+		LV.Columns[4].Text = "R";
+		LV.Columns[5].Text = "-";
+		LV.Columns[6].Text = "-";
+		LV.View = View.Details;
 
-			LV.Items.Add(LVi);
-			return LVi;
-		}
+		string BName = Circle.Pref + Circle.NumGeopointA + Circle.OrdIdent;
+		ListViewItem LVi = new ListViewItem();
+		LVi.Text = BName;
+		LVi.Tag = Circle.id;
+		LVi.SubItems.Add(Circle.x_s);
+		LVi.SubItems.Add(Circle.y_s);
+		LVi.SubItems.Add(Circle.Mt_s);
+		LVi.SubItems.Add(Circle.R.ToString());
+		LVi.SubItems.Add(Circle.Description);
+		if (Circle.Pref == "н")
+			LVi.ForeColor = Color.Red;
+		else LVi.ForeColor = Color.Black;
+		if (Circle.Status == 6)
+			LVi.ForeColor = Color.Blue;
+
+		LV.Items.Add(LVi);
+		return LVi;
+	}
 */
 		/*
 		 * 
@@ -1935,7 +1935,7 @@ return res;
 				if (ViewWindow != null) ViewWindow.Spatial = null; // сотрем картинку (последнюю)
 				return null;
 			}
-			
+
 			// Visualizer check:
 			if (toolStripMI_ShowES.Checked)
 			{
@@ -1944,7 +1944,7 @@ return res;
 				ViewWindow.BringIntoView();
 				ViewWindow.CreateView(Feature);
 			}
-		
+
 			ToolTip tt = new ToolTip();
 			// Adding Controls:
 			// if (parent_id > 0) // до момента наладки с parent_id будем проверять его наличие
@@ -1954,7 +1954,7 @@ return res;
 				LinkLabel pkk5Label = new LinkLabel();
 				pkk5Label.Click += new System.EventHandler(OnPKK5LabelActionClick);
 				pkk5Label.Tag = Feature.id; //parent_id; //CN
-										   //pkk5Label.Text = "ПКК5 :)";
+											//pkk5Label.Text = "ПКК5 :)";
 				pkk5Label.Image = XMLReaderCS.Properties.Resources.Rosreestr;
 				pkk5Label.ImageAlign = ContentAlignment.MiddleLeft;
 				pkk5Label.Cursor = Cursors.Hand;
@@ -2253,7 +2253,7 @@ return res;
 			{
 				ListViewItem LViAssgn = new ListViewItem();
 				LViAssgn.Text = "Осн. характеристика/ Параметры";
-				LViAssgn.SubItems.Add(param.Type +" "+ param.Value);
+				LViAssgn.SubItems.Add(param.Type + " " + param.Value);
 				LV.Items.Add(LViAssgn);
 			}
 		}
@@ -2379,7 +2379,7 @@ return res;
 						LViPurp.SubItems.Add(this.dutilizations_v01.Item2Annotation(P.Utilization.Untilization));
 						LV.Items.Add(LViPurp);
 					}
-					if (P.CadastralCost >0)
+					if (P.CadastralCost > 0)
 					{
 						ListViewItem LViPurp = new ListViewItem();
 						LViPurp.Text = "Кадастровая. стоимость";
@@ -2402,7 +2402,7 @@ return res;
 					}
 				}
 
-					if (Obj.ToString() == "netFteo.Spatial.TBuilding")
+				if (Obj.ToString() == "netFteo.Spatial.TBuilding")
 				{
 					netFteo.Spatial.TBuilding bld = (netFteo.Spatial.TBuilding)Obj;
 					if (bld.Flats != null)
@@ -2741,16 +2741,16 @@ return res;
 											LVip3d.SubItems.Add("кв.м");
 											LV.Items.Add(LVip3d);
 											*/
-											/*
-						ListViewItem LVipP = new ListViewItem();
-						LVipP.Text = "Периметр";
-						LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
-						LVipP.SubItems.Add("м.");
-						LV.Items.Add(LVipP);
+				/*
+ListViewItem LVipP = new ListViewItem();
+LVipP.Text = "Периметр";
+LVipP.SubItems.Add(cEZ.TotalPerimeter.ToString("0.00"));
+LVipP.SubItems.Add("м.");
+LV.Items.Add(LVipP);
 
-					}
-				}
-				*/
+}
+}
+*/
 				if (Obj.ToString() == "netFteo.Spatial.TZone")
 				{
 					LV.Items.Clear();
@@ -2809,14 +2809,14 @@ return res;
 			listView1.Items.Clear();
 			listView1.Controls.Clear();
 			listView1.View = View.Details;
-			
+
 			listView_Properties.Items.Clear();
 			listView_Properties.Controls.Clear();
 			GeometryToSpatialView(listView1, null);
 
 			if (STrN.Name.Contains("ES."))
 			{
-	
+
 				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
 				if (Entity != null)
 				{
@@ -2839,7 +2839,7 @@ return res;
 					PropertiesToListView(listView_Properties, Entity);
 				}
 			}
-			
+
 
 			if (STrN.Name.Contains("SPElem."))
 			{
@@ -2849,6 +2849,27 @@ return res;
 					GeometryToSpatialView(listView1, Entity);
 					Entity.ShowasListItems(listView1, true);
 					PropertiesToListView(listView_Properties, Entity);
+				}
+			}
+
+			if (STrN.Name.Contains("TPolyLine."))
+			{
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+				if (Entity != null)
+				{
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
+					PropertiesToListView(listView_Properties, Entity);
+				}
+			}
+
+			if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
+			{
+				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+				if (Entity != null)
+				{
+					GeometryToSpatialView(listView1, Entity);
+					Entity.ShowasListItems(listView1, true);
 				}
 			}
 
@@ -2866,8 +2887,8 @@ return res;
 				if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))
 				{
 					TMyRealty parcel = (TMyRealty)O;
-						GeometryToSpatialView(listView1, parcel.EntSpat);
-						parcel.EntSpat.ShowasListItems(listView1, true);
+					GeometryToSpatialView(listView1, parcel.EntSpat);
+					parcel.EntSpat.ShowasListItems(listView1, true);
 				}
 
 				PropertiesToListView(listView_Properties, O);
@@ -2908,26 +2929,6 @@ return res;
 				}
 			}
 
-			if (STrN.Name.Contains("TPolyLine."))
-			{
-				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
-				if (Entity != null)
-				{
-					GeometryToSpatialView(listView1, Entity);
-					Entity.ShowasListItems(listView1, true);
-					PropertiesToListView(listView_Properties, Entity);
-				}
-			}
-
-			if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
-			{
-				IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
-				if (Entity != null)
-				{
-					GeometryToSpatialView(listView1, Entity);
-					Entity.ShowasListItems(listView1, true);
-				}
-			}
 
 			if (STrN.Name.Contains("EntrysNode"))
 			{
@@ -3046,6 +3047,35 @@ return res;
 			}
 		}
 
+		private bool RemoveGeometryNode(TreeNode STrN)
+		{
+			IGeometry Entity = null;
+			if (STrN.Name.Contains("ES."))
+			{
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+			}
+
+			if (STrN.Name.Contains("Layer."))
+			{
+				Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(STrN.Name.Substring(6));
+			}
+
+			if (STrN.Name.Contains("SPElem."))
+			{
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+			}
+
+			if (STrN.Name.Contains("TPolyLine."))
+			{
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+			}
+
+			if (Entity != null)
+			{
+			  return	this.DocInfo.MyBlocks.RemoveGeometry(Entity.id);
+			}
+			return false;
+		}
 
 		private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
 		{
@@ -3058,9 +3088,9 @@ return res;
 				{
 					TreeNode RNameNode = Rnode.Nodes.Add("RightItemNode", Rights[i].Name);
 					if (Rights[i].Type != null)
-					RNameNode.Nodes.Add(Rights[i].Type);
+						RNameNode.Nodes.Add(Rights[i].Type);
 					if (Rights[i].RegNumber != null)
-					RNameNode.Nodes.Add(Rights[i].RegNumber + " " + Rights[i].RegDate);
+						RNameNode.Nodes.Add(Rights[i].RegNumber + " " + Rights[i].RegDate);
 					if (Rights[i].Owners.Count > 0)
 					{
 						TreeNode ROwnersNode = RNameNode.Nodes.Add("Правообладатели");
@@ -3155,7 +3185,7 @@ return res;
 			}
 		}
 
-#endregion
+		#endregion
 
 		private void WriteRights(string FileName, netFteo.Rosreestr.TMyRights Rights)
 		{
@@ -3182,8 +3212,8 @@ return res;
 
 		}
 
-#region Запись в DXF, MIF, TXT 
-	
+		#region Запись в DXF, MIF, TXT 
+
 		//------------------------------------------------------------------------------------------
 		private void SaveAs(string Format, string ItemName, int scale = 1000)
 		{
@@ -3203,7 +3233,8 @@ return res;
 							ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
 							if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
 								TR.SaveAsmif(saveFileDialog1.FileName, ES);
-							break; }
+							break;
+						}
 
 					case "CSV":
 						{
@@ -3306,7 +3337,7 @@ return res;
 
 			if (NodeName.Contains("TPolyLine."))
 			{
-				TPolyLine Pl = (TPolyLine) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
+				TPolyLine Pl = (TPolyLine)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
 				if (Pl != null)
 				{
 					TEntitySpatial PC = new TEntitySpatial();
@@ -3361,113 +3392,113 @@ return res;
 		}
 
 
-#endregion
-
-  
-
-#region Херня всякая, не каждодневная
-
-        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+		#endregion
 
 
-        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutBox1 AB1 = new AboutBox1();
-            AB1.ShowDialog(this);
-        }
 
-      /// <summary>
-      /// Очистка временных файлов
-      /// </summary>
-        private void ClearFiles()
-        {
-            
-            if (Directory.Exists(this.Folder_Unzip))
-            {
-                Directory.Delete(this.Folder_Unzip, true);
-            }
+		#region Херня всякая, не каждодневная
 
-            if (! Directory.Exists(this.Folder_XSD))
-            {
-                Directory.CreateDirectory(Folder_XSD);
-            }
+		private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
 
-            if (!Directory.Exists(this.Folder_XSD+"\\SchemaCommon"))
-            {
-                Directory.CreateDirectory(Folder_XSD + "\\SchemaCommon");
-            }
 
-        }
+		private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutBox1 AB1 = new AboutBox1();
+			AB1.ShowDialog(this);
+		}
 
-        private void ClearControls()
-        {
-            richTextBox1.Clear();
-            listView1.Controls.Clear();
-            listView1.Items.Clear();
-            listView_Properties.Items.Clear();
-             contextMenuStrip_SaveAs.Enabled = false;
-            listView_Contractors.Items.Clear();
-            TV_Parcels.Nodes.Clear();
-            TV_Parcels.ImageIndex = imList_dStates.Images.Count;
-            if (this.DocInfo == null)
-                this.DocInfo = new netFteo.IO.FileInfo();
+		/// <summary>
+		/// Очистка временных файлов
+		/// </summary>
+		private void ClearFiles()
+		{
 
-            else
-            {
-                this.DocInfo.FileName = null;
-                this.DocInfo.FilePath = null;
-                this.DocInfo.Comments = null;
-                this.DocInfo.Version = null;
-                this.DocInfo.Number = null;
-                this.DocInfo.Date = null;
-            }
-            cXmlTreeView2.Clear();
+			if (Directory.Exists(this.Folder_Unzip))
+			{
+				Directory.Delete(this.Folder_Unzip, true);
+			}
 
-            textBox_Appointment.Text = "";
-            textBox_DocDate.Text = "";
-            textBox_DocNum.Text = ""; linkLabel_Recipient.Text = ""; linkLabel_Request.Text = ""; 
-            textBox_Appointment.Text = "";
-            textBox_FIO.Text = "";
-            textBox_OrgName.Text = "";
-            toolStripStatusLabel1.Text = "";
-            tabPage3.Show();
-            tabPage3.Text = "-";
-            tabPage5.Text = "XML";
-            label_FileSize.Text = "";
-            label2.Text = "Получатель";
-            toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
-            textBox_DocNum.Image = XMLReaderCS.Properties.Resources.calendar_view_day;
-            PreloaderMenuItem.LoadingCircleControl.Active = false;
-            PreloaderMenuItem.Visible = false;
-            PreloaderMenuItem.BackColor = Color.Transparent;
-            документToolStripMenuItem.Enabled = false;
-            pathToHtmlFile = null;
-            this.Text = TextDefault;
-            toolStripProgressBar1.Value = 0;
-            this.DocInfo.MyBlocks.Blocks.Clear();
-            Gen_id.Reset();
-           
+			if (!Directory.Exists(this.Folder_XSD))
+			{
+				Directory.CreateDirectory(Folder_XSD);
+			}
+
+			if (!Directory.Exists(this.Folder_XSD + "\\SchemaCommon"))
+			{
+				Directory.CreateDirectory(Folder_XSD + "\\SchemaCommon");
+			}
+
+		}
+
+		private void ClearControls()
+		{
+			richTextBox1.Clear();
+			listView1.Controls.Clear();
+			listView1.Items.Clear();
+			listView_Properties.Items.Clear();
+			contextMenuStrip_SaveAs.Enabled = false;
+			listView_Contractors.Items.Clear();
+			TV_Parcels.Nodes.Clear();
+			TV_Parcels.ImageIndex = imList_dStates.Images.Count;
+			if (this.DocInfo == null)
+				this.DocInfo = new netFteo.IO.FileInfo();
+
+			else
+			{
+				this.DocInfo.FileName = null;
+				this.DocInfo.FilePath = null;
+				this.DocInfo.Comments = null;
+				this.DocInfo.Version = null;
+				this.DocInfo.Number = null;
+				this.DocInfo.Date = null;
+			}
+			cXmlTreeView2.Clear();
+
+			textBox_Appointment.Text = "";
+			textBox_DocDate.Text = "";
+			textBox_DocNum.Text = ""; linkLabel_Recipient.Text = ""; linkLabel_Request.Text = "";
+			textBox_Appointment.Text = "";
+			textBox_FIO.Text = "";
+			textBox_OrgName.Text = "";
+			toolStripStatusLabel1.Text = "";
+			tabPage3.Show();
+			tabPage3.Text = "-";
+			tabPage5.Text = "XML";
+			label_FileSize.Text = "";
+			label2.Text = "Получатель";
+			toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
+			textBox_DocNum.Image = XMLReaderCS.Properties.Resources.calendar_view_day;
+			PreloaderMenuItem.LoadingCircleControl.Active = false;
+			PreloaderMenuItem.Visible = false;
+			PreloaderMenuItem.BackColor = Color.Transparent;
+			документToolStripMenuItem.Enabled = false;
+			pathToHtmlFile = null;
+			this.Text = TextDefault;
+			toolStripProgressBar1.Value = 0;
+			this.DocInfo.MyBlocks.Blocks.Clear();
+			Gen_id.Reset();
+
 #if (DEBUG)
-            debugToolStripMenuItem.Enabled = true;
+			debugToolStripMenuItem.Enabled = true;
 
 #else
             debugToolStripMenuItem.Enabled = false;
          //   проверкаГеометрииToolStripMenuItem.Enabled = false;
 #endif
-        }
-       
+		}
 
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
 
-        }
+		private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
 
-        // ********************************************** mif ********************************************
-        private void mifКПТToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		}
+
+		// ********************************************** mif ********************************************
+		private void mifКПТToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			SaveAs("MIF", TV_Parcels.SelectedNode.Name, 500);
 			/*
             netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
@@ -3547,114 +3578,114 @@ return res;
 
 
 		private void TV_Parcels_KeyUp(object sender, KeyEventArgs e)
-        {
-            //  ListSelectedNode(TV_Parcels.SelectedNode);
-        }
+		{
+			//  ListSelectedNode(TV_Parcels.SelectedNode);
+		}
 
-        private void бибиотекаKVZUV609ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void бибиотекаKVZUV609ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void открытьКакToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFile(1);// OpenXML_KVZUTyped();
-        }
+		private void открытьКакToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenFile(1);// OpenXML_KVZUTyped();
+		}
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+		private void toolStripMenuItem1_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void typedClassesXSD2ClassessToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFile(1);// OpenXML_KVZUTyped();
-        }
+		private void typedClassesXSD2ClassessToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			OpenFile(1);// OpenXML_KVZUTyped();
+		}
 
-        public void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            OpenFile(1);// OpenXML_KVZUTyped();
-        }
+		public void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			OpenFile(1);// OpenXML_KVZUTyped();
+		}
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            AboutBox1 AB1 = new AboutBox1();
-            AB1.ShowDialog(this);
-        }
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+			AboutBox1 AB1 = new AboutBox1();
+			AB1.ShowDialog(this);
+		}
 
 
 
-        private void TV_Parcels_MouseClick(object sender, MouseEventArgs e)
-        {
-            // ListSelectedNode(TV_Parcels.SelectedNode);
-        }
+		private void TV_Parcels_MouseClick(object sender, MouseEventArgs e)
+		{
+			// ListSelectedNode(TV_Parcels.SelectedNode);
+		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //XMLBodyLoader.XML2TreeView(XMLDoc, treeView_XMLBody);// Загрузим тело в дерево
-        }
+		private void button1_Click(object sender, EventArgs e)
+		{
+			//XMLBodyLoader.XML2TreeView(XMLDoc, treeView_XMLBody);// Загрузим тело в дерево
+		}
 
-        private void TV_Parcels_Click_1(object sender, EventArgs e)
-        {
+		private void TV_Parcels_Click_1(object sender, EventArgs e)
+		{
 			/*
             if (((MouseEventArgs)e).Button == MouseButtons.Left)
               ListSelectedNode(TV_Parcels.SelectedNode);
 			*/
-        }
+		}
 
-        private void TV_Parcels_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        {
+		private void TV_Parcels_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+		{
 
-        }
+		}
 
-        private void TV_Parcels_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            ListSelectedNode(TV_Parcels.SelectedNode);
-        }
+		private void TV_Parcels_AfterSelect(object sender, TreeViewEventArgs e)
+		{
+			ListSelectedNode(TV_Parcels.SelectedNode);
+		}
 
-        private void картапланToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-         /*
-           MapPlanEditor.frmZoneV03Editor MF = new MapPlanEditor.frmZoneV03Editor();
-           if (MPV05 != null) MF.ParseMPV05(MPV05);
-           MF.ShowDialog();
-          * */
-        }
-
-
+		private void картапланToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			/*
+			  MapPlanEditor.frmZoneV03Editor MF = new MapPlanEditor.frmZoneV03Editor();
+			  if (MPV05 != null) MF.ParseMPV05(MPV05);
+			  MF.ShowDialog();
+			 * */
+		}
 
 
 
 
-        private void textBox_DocNum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(textBox_DocNum.Text);
-            Guid  testGUID;
-            bool validGuid =  Guid.TryParse(textBox_DocNum.Text, out testGUID);
-            if (validGuid)
-                textBox_DocNum.Image = XMLReaderCS.Properties.Resources.tick;
-            else
-                textBox_DocNum.Image = XMLReaderCS.Properties.Resources.cross;
-        }
 
-        private void contextMenuStrip_SaveAs_Opening(object sender, CancelEventArgs e)
-        {
 
-        }
+		private void textBox_DocNum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(textBox_DocNum.Text);
+			Guid testGUID;
+			bool validGuid = Guid.TryParse(textBox_DocNum.Text, out testGUID);
+			if (validGuid)
+				textBox_DocNum.Image = XMLReaderCS.Properties.Resources.tick;
+			else
+				textBox_DocNum.Image = XMLReaderCS.Properties.Resources.cross;
+		}
 
-        private void списокПравToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            /*
+		private void contextMenuStrip_SaveAs_Opening(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void списокПравToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			/*
             if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
@@ -3672,57 +3703,57 @@ return res;
             }
             */
 
-        }
+		}
 
 
 
-        private void listView_Properties_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (sender != listView_Properties) return;
+		private void listView_Properties_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (sender != listView_Properties) return;
 
-            if (e.Control && e.KeyCode == Keys.C)
-                CopySelectedValuesToClipboard(listView_Properties);
-        }
+			if (e.Control && e.KeyCode == Keys.C)
+				CopySelectedValuesToClipboard(listView_Properties);
+		}
 
-        private void CopySelectedValuesToClipboard(ListView LV)
-        {
-            var builder = new StringBuilder();
-            foreach (ListViewItem item in LV.SelectedItems)
-                foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
-                 builder.AppendLine(sub.Text+"\t");
+		private void CopySelectedValuesToClipboard(ListView LV)
+		{
+			var builder = new StringBuilder();
+			foreach (ListViewItem item in LV.SelectedItems)
+				foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
+					builder.AppendLine(sub.Text + "\t");
 
-            Clipboard.SetText(builder.ToString());
-        }
+			Clipboard.SetText(builder.ToString());
+		}
 
-        private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 
-            if (TV_Parcels.SelectedNode != null)
-            {
-                Clipboard.SetText(TV_Parcels.SelectedNode.Text);
-            }
+			if (TV_Parcels.SelectedNode != null)
+			{
+				Clipboard.SetText(TV_Parcels.SelectedNode.Text);
+			}
 
-        }
+		}
 
-        private void TV_Parcels_KeyDown(object sender, KeyEventArgs e)
-        {
-            //copy:
-            if (e.KeyData == (Keys.Control | Keys.C))
-            {
-                if (TV_Parcels.SelectedNode != null)
-                {
-                    Clipboard.SetText(TV_Parcels.SelectedNode.Text);
-                }
-                e.SuppressKeyPress = true;
-            }
-   
-            
-        }
-        
-        
-#region SaveAs Text (FixosoftTXT2018, Rights)
-        private void toolStripMenuItem2_Click_1(object sender, EventArgs e)
-        {
+		private void TV_Parcels_KeyDown(object sender, KeyEventArgs e)
+		{
+			//copy:
+			if (e.KeyData == (Keys.Control | Keys.C))
+			{
+				if (TV_Parcels.SelectedNode != null)
+				{
+					Clipboard.SetText(TV_Parcels.SelectedNode.Text);
+				}
+				e.SuppressKeyPress = true;
+			}
+
+
+		}
+
+
+		#region SaveAs Text (FixosoftTXT2018, Rights)
+		private void toolStripMenuItem2_Click_1(object sender, EventArgs e)
+		{
 			/*
             saveFileDialog1.FilterIndex = 2;
             if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
@@ -3811,170 +3842,172 @@ return res;
 			*/
 
 			SaveAs("TXT", TV_Parcels.SelectedNode.Name);
-            if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
-            {
-                Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    saveFileDialog1.FileName = "Права_ГКН_" + netFteo.StringUtils.ReplaceSlash(P.CN);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        WriteRights(saveFileDialog1.FileName, P.Rights);
-                    }
-                }
-            }
+			if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
+			{
+				Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					saveFileDialog1.FileName = "Права_ГКН_" + netFteo.StringUtils.ReplaceSlash(P.CN);
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						WriteRights(saveFileDialog1.FileName, P.Rights);
+					}
+				}
+			}
 
-            if (TV_Parcels.SelectedNode.Name.Contains("EGRNRight"))
-            {
-                Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(9));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    saveFileDialog1.FileName = "Права_ГРП_" + netFteo.StringUtils.ReplaceSlash(P.CN);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        WriteRights(saveFileDialog1.FileName, P.EGRN);
-                    }
-                }
-            }
+			if (TV_Parcels.SelectedNode.Name.Contains("EGRNRight"))
+			{
+				Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(9));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					saveFileDialog1.FileName = "Права_ГРП_" + netFteo.StringUtils.ReplaceSlash(P.CN);
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						WriteRights(saveFileDialog1.FileName, P.EGRN);
+					}
+				}
+			}
 
-        }
-#endregion
+		}
+		#endregion
 
-        private void m1500ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAs("DXF", TV_Parcels.SelectedNode.Name,500);
-        }
-#endregion
-
-     
-
-        private void m11000ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAs("DXF", TV_Parcels.SelectedNode.Name, 1000);
-        }
-
-        private void listView_Properties_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void показатьПДToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void eSlibdllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Function2(1975);
-        }
-
-        private void toolStripMI_ShowES_Click(object sender, EventArgs e)
-        {
-            Toggle_Visualizer();
-        }
-        private void toolStripButton2_Click_1(object sender, EventArgs e)
-        {
-            Toggle_Visualizer();
-        }        
-        private void Toggle_Visualizer()
-        {
-
-            if (toolStripMI_ShowES.Checked) 
-            { ESwindow.Hide(); 
-                toolStripMI_ShowES.Checked = false;
-                toolStripButton_VisualizerToggle.Checked = false;
-                просмотрToolStripMenuItem.Checked = false;
-                return; }
-
-            
-                ESwindow.Title = "Визуализация ПД (WPF)";
-                ViewWindow = new EntityViewer();
-                ViewWindow.Definition = "Viewer Created ok";
-                ESwindow.Content = ViewWindow;
-                ESwindow.MinHeight = 300; ESwindow.MinWidth = 500;
-                ESwindow.Height = this.Height;  //576 ? just added to have a smaller control (Window)
-                ESwindow.Width = 810;
-            
-                ESwindow.Top = this.Top; ESwindow.Left = this.Left + 1 + this.Width;
-                ESwindow.Show();// ShowDialog();
-                                // checkonClick = true тогда не нужно это: 
-                toolStripMI_ShowES.Checked = true;
-                toolStripButton_VisualizerToggle.Checked = true;
-                просмотрToolStripMenuItem.Checked = true;
-
-            if (TV_Parcels.SelectedNode != null)
-                if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
-                {
-                    ListSelectedNode(TV_Parcels.SelectedNode);
-                }
-        }
-
-        private void eSViewerlibmcvcdllF1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Function1(1975);
-        }
+		private void m1500ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 500);
+		}
+		#endregion
 
 
 
-        private void пересеченияMifToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-          
-        }
+		private void m11000ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 1000);
+		}
 
-        private void mSVCESCheckerFunc2Int1975ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            unsafe {  Func2(1975); }
-        }
+		private void listView_Properties_SelectedIndexChanged(object sender, EventArgs e)
+		{
 
-        private void csvStripMenuItem_Click(object sender, EventArgs e)
-        {
+		}
+
+		private void показатьПДToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void eSlibdllToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Function2(1975);
+		}
+
+		private void toolStripMI_ShowES_Click(object sender, EventArgs e)
+		{
+			Toggle_Visualizer();
+		}
+		private void toolStripButton2_Click_1(object sender, EventArgs e)
+		{
+			Toggle_Visualizer();
+		}
+		private void Toggle_Visualizer()
+		{
+
+			if (toolStripMI_ShowES.Checked)
+			{
+				ESwindow.Hide();
+				toolStripMI_ShowES.Checked = false;
+				toolStripButton_VisualizerToggle.Checked = false;
+				просмотрToolStripMenuItem.Checked = false;
+				return;
+			}
+
+
+			ESwindow.Title = "Визуализация ПД (WPF)";
+			ViewWindow = new EntityViewer();
+			ViewWindow.Definition = "Viewer Created ok";
+			ESwindow.Content = ViewWindow;
+			ESwindow.MinHeight = 300; ESwindow.MinWidth = 500;
+			ESwindow.Height = this.Height;  //576 ? just added to have a smaller control (Window)
+			ESwindow.Width = 810;
+
+			ESwindow.Top = this.Top; ESwindow.Left = this.Left + 1 + this.Width;
+			ESwindow.Show();// ShowDialog();
+							// checkonClick = true тогда не нужно это: 
+			toolStripMI_ShowES.Checked = true;
+			toolStripButton_VisualizerToggle.Checked = true;
+			просмотрToolStripMenuItem.Checked = true;
+
+			if (TV_Parcels.SelectedNode != null)
+				if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
+				{
+					ListSelectedNode(TV_Parcels.SelectedNode);
+				}
+		}
+
+		private void eSViewerlibmcvcdllF1ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Function1(1975);
+		}
+
+
+
+		private void пересеченияMifToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void mSVCESCheckerFunc2Int1975ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			unsafe { Func2(1975); }
+		}
+
+		private void csvStripMenuItem_Click(object sender, EventArgs e)
+		{
 			SaveAs("CSV", TV_Parcels.SelectedNode.Name);
-        }
+		}
 
-        private void m110000ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void m110000ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 10000);
-        }
+		}
 
-        private void label_FileSize_Click(object sender, EventArgs e)
-        {
+		private void label_FileSize_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void linkLabel_FileName_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetDataObject(linkLabel_FileName.Text);
-        }
+		private void linkLabel_FileName_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetDataObject(linkLabel_FileName.Text);
+		}
 
-        private void linkLabel1_Click(object sender, EventArgs e)
-        {
-            /*
+		private void linkLabel1_Click(object sender, EventArgs e)
+		{
+			/*
             cXmlTreeView1.BeginUpdate();
             cXmlTreeView1.ExpandAll();
             cXmlTreeView1.EndUpdate();
             */
-        }
+		}
 
-        //Открыть в бровзере человекочитаемый формат xml через xsl
-        private void документToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		//Открыть в бровзере человекочитаемый формат xml через xsl
+		private void документToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 
 
 
-            if (File.Exists( DocInfo.FilePath))
-            {
-                netFteo.XML.XSLWriter XSLwr = new netFteo.XML.XSLWriter();
-                pathToHtmlFile= XSLwr.TransformXMLToHTML(DocInfo.FilePath);
-                hrefToXSLT = XSLwr.hrefToXSLTServer;
-                if ((hrefToXSLT != "") && (pathToHtmlFile != ""))
-                   System.Diagnostics.Process.Start(pathToHtmlFile);
-            }
-            else документToolStripMenuItem.Enabled = false;
-            /*
+			if (File.Exists(DocInfo.FilePath))
+			{
+				netFteo.XML.XSLWriter XSLwr = new netFteo.XML.XSLWriter();
+				pathToHtmlFile = XSLwr.TransformXMLToHTML(DocInfo.FilePath);
+				hrefToXSLT = XSLwr.hrefToXSLTServer;
+				if ((hrefToXSLT != "") && (pathToHtmlFile != ""))
+					System.Diagnostics.Process.Start(pathToHtmlFile);
+			}
+			else документToolStripMenuItem.Enabled = false;
+			/*
             if (File.Exists(ArchiveFolder + DocInfo.FileName))
             {
                 XSLWriter XSLwr = new XSLWriter();
@@ -3985,16 +4018,16 @@ return res;
                 документToolStripMenuItem.Enabled = true;
             }
             */
-            
-        }
+
+		}
 
 
-      
 
-        //Показать в форме 
-        private void tabPage4_Enter(object sender, EventArgs e)
-        {
-            /*
+
+		//Показать в форме 
+		private void tabPage4_Enter(object sender, EventArgs e)
+		{
+			/*
             if (! File.Exists(pathToHtmlFile))
                 if (File.Exists(DocInfo.FileName))
                 {
@@ -4011,61 +4044,61 @@ return res;
                 webBrowser1.Navigate(HtmlPath);
             }
             */
-        }
+		}
 
 
-        private void KVZU_Form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (File.Exists(pathToHtmlFile)) File.Delete(pathToHtmlFile); // если был сеанс
-            XMLReaderCS.Properties.Settings.Default.Recent0 = DocInfo.FilePath;
-            XMLReaderCS.Properties.Settings.Default.Save();
-            ESwindow.Close();
-        }
+		private void KVZU_Form_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (File.Exists(pathToHtmlFile)) File.Delete(pathToHtmlFile); // если был сеанс
+			XMLReaderCS.Properties.Settings.Default.Recent0 = DocInfo.FilePath;
+			XMLReaderCS.Properties.Settings.Default.Save();
+			ESwindow.Close();
+		}
 
-        private void RecentFile0MenuItem_Click(object sender, EventArgs e)
-        {
-            this.Read(XMLReaderCS.Properties.Settings.Default.Recent0, true);
-        }
+		private void RecentFile0MenuItem_Click(object sender, EventArgs e)
+		{
+			this.Read(XMLReaderCS.Properties.Settings.Default.Recent0, true);
+		}
 
-        private void label_DocType_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(label_DocType.Text+" №"+ textBox_DocNum.Text+ " от "+textBox_DocDate.Text);
-        }
+		private void label_DocType_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(label_DocType.Text + " №" + textBox_DocNum.Text + " от " + textBox_DocDate.Text);
+		}
 
 
-        private int ConvertToInt32(string str)
-        {
-            if (str.Length < 5) return -1;
-            if (str.Substring(1,4) == "Node") // PNode, ZNode, 
-                return
-                  Convert.ToInt32( str.Substring(5));
-            if (str.Length > 8)
-            if (str.Substring(0, 8) == "FlatItem") // FlatItem node
-                return
-                  Convert.ToInt32(str.Substring(8));
-            if (str.Substring(0, 5) == "Flats") // Flat node
-                return
-                  Convert.ToInt32(str.Substring(5));
+		private int ConvertToInt32(string str)
+		{
+			if (str.Length < 5) return -1;
+			if (str.Substring(1, 4) == "Node") // PNode, ZNode, 
+				return
+				  Convert.ToInt32(str.Substring(5));
+			if (str.Length > 8)
+				if (str.Substring(0, 8) == "FlatItem") // FlatItem node
+					return
+					  Convert.ToInt32(str.Substring(8));
+			if (str.Substring(0, 5) == "Flats") // Flat node
+				return
+				  Convert.ToInt32(str.Substring(5));
 
-            if (str.Substring(0, 4) == "Flat") // Flat node
-                return
-                  Convert.ToInt32(str.Substring(4));
+			if (str.Substring(0, 4) == "Flat") // Flat node
+				return
+				  Convert.ToInt32(str.Substring(4));
 
-            return -1;
-        }
+			return -1;
+		}
 
-// Найти pkk5 server viewer:
-        private void онлайнЗапросToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (TV_Parcels.SelectedNode == null) return;
+		// Найти pkk5 server viewer:
+		private void онлайнЗапросToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (TV_Parcels.SelectedNode == null) return;
 
-            string cn =null;
-              //if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
-              //{
-                  Int32 id = ConvertToInt32(TV_Parcels.SelectedNode.Name); // PNode CNNode
-				  object O = this.DocInfo.MyBlocks.GetObject(id);
-                  if (O != null)
-                  {
+			string cn = null;
+			//if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
+			//{
+			Int32 id = ConvertToInt32(TV_Parcels.SelectedNode.Name); // PNode CNNode
+			object O = this.DocInfo.MyBlocks.GetObject(id);
+			if (O != null)
+			{
 				if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
 				{
 					cn = ((TMyParcel)O).CN;
@@ -4073,199 +4106,199 @@ return res;
 					//Here instances for debug without threading:
 					pkk5_Rosreestr_ru srvPKK5 = new pkk5_Rosreestr_ru(256, 256);
 					srvPKK5.Get_WebOnline_th("26:5:23409:50", pkk5_Types.Parcel);
-					
+
 					RRTypes.FIR.FIR_Server_ru srvFIR = new RRTypes.FIR.FIR_Server_ru();
 					srvFIR.GET_WebOnline_th(cn);
-					
+
 
 				}
 
-                      if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
-                      {
-                          cn = ((TMyRealty)O).CN;
-                          pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
-                      }
+				if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
+				{
+					cn = ((TMyRealty)O).CN;
+					pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
+				}
 
-                      if (O.ToString() == "netFteo.Spatial.TFlat") //далее - ОКС. 
-                      {
-                          cn = ((TFlat)O).CN;
-                          pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
-                      }
+				if (O.ToString() == "netFteo.Spatial.TFlat") //далее - ОКС. 
+				{
+					cn = ((TFlat)O).CN;
+					pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
+				}
 
-                      if (O.ToString() == "netFteo.Spatial.TZone") //
-                      {
-                          cn = ((TZone)O).AccountNumber;
-                          pkk5Viewer1.Start(cn, pkk5_Types.TerrZone);// Terr Zone!!!
-                      }
-                  }
-        
+				if (O.ToString() == "netFteo.Spatial.TZone") //
+				{
+					cn = ((TZone)O).AccountNumber;
+					pkk5Viewer1.Start(cn, pkk5_Types.TerrZone);// Terr Zone!!!
+				}
+			}
 
-              if (TV_Parcels.SelectedNode.Name.Contains("oNode")) // исходные зу
-              {
-                  cn = TV_Parcels.SelectedNode.Text;
-                  pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//oks
 
-              }
-/*
-              if (TV_Parcels.SelectedNode.Name.Contains("CN")) // исходные зу
-              {
-                  cn = TV_Parcels.SelectedNode.Name;
-                  pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//Parent
-              }
-*/
-              if (TV_Parcels.SelectedNode.Name.Contains("TopNode")) // Квартал
-              {
-                  //Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
-                  if (this.DocInfo.MyBlocks.Blocks.Count == 1)
-                  {
-                      cn = this.DocInfo.MyBlocks.Blocks[0].CN;
-                      pkk5Viewer1.Start(cn, pkk5_Types.Block);
-                  }
-              }
+			if (TV_Parcels.SelectedNode.Name.Contains("oNode")) // исходные зу
+			{
+				cn = TV_Parcels.SelectedNode.Text;
+				pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//oks
+
+			}
+			/*
+						  if (TV_Parcels.SelectedNode.Name.Contains("CN")) // исходные зу
+						  {
+							  cn = TV_Parcels.SelectedNode.Name;
+							  pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);//Parent
+						  }
+			*/
+			if (TV_Parcels.SelectedNode.Name.Contains("TopNode")) // Квартал
+			{
+				//Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
+				if (this.DocInfo.MyBlocks.Blocks.Count == 1)
+				{
+					cn = this.DocInfo.MyBlocks.Blocks[0].CN;
+					pkk5Viewer1.Start(cn, pkk5_Types.Block);
+				}
+			}
 
 			// otherwise, just string like cadastral numer 
 			if (netFteo.StringUtils.isCadastralNumber(TV_Parcels.SelectedNode.Text))
 				pkk5Viewer1.Start(TV_Parcels.SelectedNode.Text, pkk5_Types.Parcel);
 			if (cn != null)
-              {
-                  tabControl1.SelectedIndex = 3;
-              }
-        }
+			{
+				tabControl1.SelectedIndex = 3;
+			}
+		}
 
 
 
-// Обработчик динамической Гиперметки pkk5:)
-        private void OnPKK5LabelActionClick(object sender, EventArgs e) 
-        {
+		// Обработчик динамической Гиперметки pkk5:)
+		private void OnPKK5LabelActionClick(object sender, EventArgs e)
+		{
 
-        }
-
-
-        // Обработчик динамической Кнопки "Сохранить как..."
-        private void OnPKK5ButtonActionClick(object sender, EventArgs e)
-        {
-
-            Button btnSender = (Button)sender;
-            System.Drawing.Point ptLowerLeft = new System.Drawing.Point(0, btnSender.Height);
-            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
-            contextMenuStrip_SaveAs.Show(ptLowerLeft);
-        }
-
-        private void GotoPKK5(string CN)
-        {
-            //http://pkk5.rosreestr.ru/#x=&y=&z=&type=1&zoomTo=1&app=search&opened=1&text=26:6:130701:53
-            // https://rosreestr.ru/wps/portal/p/cc_ib_portal_services/online_request
-
-            string pkk5RequestURL = "http://pkk5.rosreestr.ru/#x=&y=&z=&type=1&zoomTo=1&app=search&opened=1&text=" + CN;
-                System.Diagnostics.Process.Start(pkk5RequestURL);
-        }
+		}
 
 
-        private void найтиНаПККбровзерToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (TV_Parcels.SelectedNode == null) return;
-            if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
-            {
-                Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    GotoPKK5(((TMyParcel)O).CN);
-                }
+		// Обработчик динамической Кнопки "Сохранить как..."
+		private void OnPKK5ButtonActionClick(object sender, EventArgs e)
+		{
 
-                if (O.ToString() == "netFteo.Spatial.TMyOKS") 
-                {
-                    GotoPKK5(((TMyRealty)O).CN);
-                }
+			Button btnSender = (Button)sender;
+			System.Drawing.Point ptLowerLeft = new System.Drawing.Point(0, btnSender.Height);
+			ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+			contextMenuStrip_SaveAs.Show(ptLowerLeft);
+		}
 
-            }
-        }
+		private void GotoPKK5(string CN)
+		{
+			//http://pkk5.rosreestr.ru/#x=&y=&z=&type=1&zoomTo=1&app=search&opened=1&text=26:6:130701:53
+			// https://rosreestr.ru/wps/portal/p/cc_ib_portal_services/online_request
 
-        private void m5000ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+			string pkk5RequestURL = "http://pkk5.rosreestr.ru/#x=&y=&z=&type=1&zoomTo=1&app=search&opened=1&text=" + CN;
+			System.Diagnostics.Process.Start(pkk5RequestURL);
+		}
+
+
+		private void найтиНаПККбровзерToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (TV_Parcels.SelectedNode == null) return;
+			if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
+			{
+				Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					GotoPKK5(((TMyParcel)O).CN);
+				}
+
+				if (O.ToString() == "netFteo.Spatial.TMyOKS")
+				{
+					GotoPKK5(((TMyRealty)O).CN);
+				}
+
+			}
+		}
+
+		private void m5000ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 5000);
-        }
+		}
 
-// Save xml. Точнее сериализовать в XML 
-        private void xmlToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.FilterIndex = 5; // xml
-
-
-            if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.MyBlocks.SpatialData != null))
-                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                {
-                    //Заменить в полигонах CN квартала
-                    netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN, this.DocInfo.MyBlocks.SpatialData);
-                    XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
-                    TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                    serializer.Serialize(writer, this.DocInfo.MyBlocks.SpatialData);
-                    writer.Close();
-                }
-            
+		// Save xml. Точнее сериализовать в XML 
+		private void xmlToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			saveFileDialog1.FilterIndex = 5; // xml
 
 
-            if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
-            {
-                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = "Contours_" + Pl.Defintion;
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
-                        TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                        serializer.Serialize(writer, Pl);
-                        writer.Close();
-                    }
-                }
-            }
+			if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.MyBlocks.SpatialData != null))
+				if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+				{
+					//Заменить в полигонах CN квартала
+					netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN, this.DocInfo.MyBlocks.SpatialData);
+					XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
+					TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
+					serializer.Serialize(writer, this.DocInfo.MyBlocks.SpatialData);
+					writer.Close();
+				}
 
 
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
-            {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
-                        TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                        serializer.Serialize(writer, Pl);
-                        writer.Close();
-                    }
-                }
-            }
+
+			if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
+			{
+				TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
+				if (Pl != null)
+				{
+					saveFileDialog1.FileName = "Contours_" + Pl.Defintion;
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
+						TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
+						serializer.Serialize(writer, Pl);
+						writer.Close();
+					}
+				}
+			}
 
 
-            // Сохраним ЕЗП из кадастровой выписки/Межевого плана как часть МП_V06
-            // Тухлый Technokad Express сожрал чижика на 100 входящих в ЕЗП....
-            if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
-            {
-                Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    TMyParcel P = (TMyParcel)O;
-                    // Выписываем явное проебразование:
-                    // cast from netfteo.CompozitionEZ to MP_V06.tExistEZEntryParcelCollection :
-                    RRTypes.MP_V06.tExistEZEntryParcelCollection compoz = RRTypes.MP_V06.CasterEZPEntrys.CastEZP(P.CompozitionEZ);//new RRTypes.MP_V06.tExistEZEntryParcelCollection();
+			if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
+			{
+				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+				if (Pl != null)
+				{
+					saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
+						TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
+						serializer.Serialize(writer, Pl);
+						writer.Close();
+					}
+				}
+			}
 
-                    saveFileDialog1.FileName = "CompositionEZ_" + netFteo.StringUtils.ReplaceSlash(P.CN);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-                        XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.MP_V06.tExistEZEntryParcelCollection));
-                        TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                        serializer.Serialize(writer, compoz);
-                        writer.Close();
-                    }
-                }
 
-       
-            }
+			// Сохраним ЕЗП из кадастровой выписки/Межевого плана как часть МП_V06
+			// Тухлый Technokad Express сожрал чижика на 100 входящих в ЕЗП....
+			if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
+			{
+				Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10));
+				object O = this.DocInfo.MyBlocks.GetObject(id);
+				if (O.ToString() == "netFteo.Spatial.TMyParcel")
+				{
+					TMyParcel P = (TMyParcel)O;
+					// Выписываем явное проебразование:
+					// cast from netfteo.CompozitionEZ to MP_V06.tExistEZEntryParcelCollection :
+					RRTypes.MP_V06.tExistEZEntryParcelCollection compoz = RRTypes.MP_V06.CasterEZPEntrys.CastEZP(P.CompozitionEZ);//new RRTypes.MP_V06.tExistEZEntryParcelCollection();
 
-        }
+					saveFileDialog1.FileName = "CompositionEZ_" + netFteo.StringUtils.ReplaceSlash(P.CN);
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
+						XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.MP_V06.tExistEZEntryParcelCollection));
+						TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
+						serializer.Serialize(writer, compoz);
+						writer.Close();
+					}
+				}
+
+
+			}
+
+		}
 
 		private void MRU_MenuItem_Click(object obj, EventArgs evt)
 		{
@@ -4290,8 +4323,8 @@ return res;
 				if (MessageBox.Show(string.Format("{0} doesn't exist. Remove from recent " +
 						 "workspaces?", fName), "File not found",
 						 MessageBoxButtons.YesNo) == DialogResult.Yes)
-				//	this.MRU.DeleteUsedFile(fName);
-				return;
+					//	this.MRU.DeleteUsedFile(fName);
+					return;
 			}
 
 			//do something with the file here
@@ -4299,14 +4332,14 @@ return res;
 		}
 
 		private void копироватьToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (TV_Parcels.SelectedNode != null)
-            {
-               // Clipboard.SetText(treeView_OnLine.SelectedNode.Text);
-            }
+		{
+			if (TV_Parcels.SelectedNode != null)
+			{
+				// Clipboard.SetText(treeView_OnLine.SelectedNode.Text);
+			}
 
-        }
-        /*
+		}
+		/*
         private void pkk5ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (treeView_OnLine.SelectedNode.Tag != null)
@@ -4332,86 +4365,86 @@ return res;
         }
 
         */
-      
 
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
 
-        }
+		private void tabPage2_Click(object sender, EventArgs e)
+		{
 
-        private void pkk5Viewer1_Click(object sender, EventArgs e)
-        {
+		}
 
-        }
+		private void pkk5Viewer1_Click(object sender, EventArgs e)
+		{
 
-      // возникает при первом отображении формы
-        private void KVZU_Form_Shown(object sender, EventArgs e)
-        {
-            RecentFilesMenuItem.DropDownItems.Clear();
-            ToolStripItem rc0 =   RecentFilesMenuItem.DropDownItems.Add(XMLReaderCS.Properties.Settings.Default.Recent0);
+		}
 
-            rc0.Click += RecentFile0MenuItem_Click; // handler for sub menu
+		// возникает при первом отображении формы
+		private void KVZU_Form_Shown(object sender, EventArgs e)
+		{
+			RecentFilesMenuItem.DropDownItems.Clear();
+			ToolStripItem rc0 = RecentFilesMenuItem.DropDownItems.Add(XMLReaderCS.Properties.Settings.Default.Recent0);
 
-            openFileDialog1.InitialDirectory = XMLReaderCS.Properties.Settings.Default.LastDir;
-          //  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
-          //  ListFileInfo(DocInfo);
-        }
+			rc0.Click += RecentFile0MenuItem_Click; // handler for sub menu
 
-        private void fteoImage1_Click(object sender, EventArgs e)
-        {
+			openFileDialog1.InitialDirectory = XMLReaderCS.Properties.Settings.Default.LastDir;
+			//  ListMyCoolections(DocInfo.MyBlocks, DocInfo.MifPolygons);
+			//  ListFileInfo(DocInfo);
+		}
 
-        }
+		private void fteoImage1_Click(object sender, EventArgs e)
+		{
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
-        {
-            BugReport_MP06();
-        }
+		}
 
-        
-      private RRTypes.MP_V06.MP BugReport_MP06()
-        {
-               openFileDialog1.Filter = "Межевой план 06|*.zip";
-              openFileDialog1.FilterIndex = 1; openFileDialog1.FileName = "";
-              if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-              {
-                  BugReport_MP06(openFileDialog1.FileName);
-                return null;
-              }
-              else return null;
-        }
+		private void toolStripMenuItem4_Click(object sender, EventArgs e)
+		{
+			BugReport_MP06();
+		}
 
-        //-----------------------------------Проверка пересечений MP06---------------------------
-        // - проверяемый файл - zip межевого плана  с форматом имени GKUZU_.... Рассматриваем версию 6
-        // - данные проверки - данные КПТ/КВ/КП/КВЕГРН (или как там-ее)
-        //  в общем то, что у нас загружено в this.DocInfo.MyBlocks.
 
-        private void BugReport_MP06 (string ArciveFileName)
-        {
-            try
-                {
-                    // using (ZipArchive archive = System.IO.Compression.ZipFile.Open(zipPath, ZipArchiveMode.Update))
-                    var options = new ReadOptions { StatusMessageWriter = System.Console.Out };
-                     ZipFile zip = ZipFile.Read(ArciveFileName, options);
-                /*
+		private RRTypes.MP_V06.MP BugReport_MP06()
+		{
+			openFileDialog1.Filter = "Межевой план 06|*.zip";
+			openFileDialog1.FilterIndex = 1; openFileDialog1.FileName = "";
+			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+			{
+				BugReport_MP06(openFileDialog1.FileName);
+				return null;
+			}
+			else return null;
+		}
+
+		//-----------------------------------Проверка пересечений MP06---------------------------
+		// - проверяемый файл - zip межевого плана  с форматом имени GKUZU_.... Рассматриваем версию 6
+		// - данные проверки - данные КПТ/КВ/КП/КВЕГРН (или как там-ее)
+		//  в общем то, что у нас загружено в this.DocInfo.MyBlocks.
+
+		private void BugReport_MP06(string ArciveFileName)
+		{
+			try
+			{
+				// using (ZipArchive archive = System.IO.Compression.ZipFile.Open(zipPath, ZipArchiveMode.Update))
+				var options = new ReadOptions { StatusMessageWriter = System.Console.Out };
+				ZipFile zip = ZipFile.Read(ArciveFileName, options);
+				/*
                     if (zip.EntryFileNames.Contains("GKUZU"))
                         zip.ExtractAll(Application.StartupPath);
 
                 */
-                    ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
-                    ESChecker_MP06frm.MP06ZiptoCheck = zip;
-                    ESChecker_MP06frm.ShowDialog();
-                }
+				ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
+				ESChecker_MP06frm.MP06ZiptoCheck = zip;
+				ESChecker_MP06frm.ShowDialog();
+			}
 
-                catch (System.Exception ex1)
-                {
+			catch (System.Exception ex1)
+			{
 				//   System.Console.Error.WriteLine("exception: " + ex1);
 				var Exept = ex1;
-                }
-                //Read(openFileDialog1.FileName);            
-            
-          //  netFteo.IO.TextReader TR = new netFteo.IO.TextReader();
-         
-            /*
+			}
+			//Read(openFileDialog1.FileName);            
+
+			//  netFteo.IO.TextReader TR = new netFteo.IO.TextReader();
+
+			/*
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
                 TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
@@ -4455,271 +4488,271 @@ return res;
             */
 
 
-        }
-        private void BugReport_MP06_II(string archiveFolder)
-        {
-            try
-            {
-              
-                ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
-                ESChecker_MP06frm.MP06UnZiptoCheck = archiveFolder;
-                //Read(ESChecker_MP06frm.MP_v06);
-                ESChecker_MP06frm.ShowDialog();
-                //ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
-                //ListFileInfo(DocInfo);
-            }
+		}
+		private void BugReport_MP06_II(string archiveFolder)
+		{
+			try
+			{
 
-            catch (System.Exception ex1)
-            {
-               DocInfo.CommentsType = "Exception";
-               DocInfo.Comments = ex1.Message;
-               ListFileInfo(DocInfo);
-            }
- 
+				ESChecker_MP06Form ESChecker_MP06frm = new ESChecker_MP06Form();
+				ESChecker_MP06frm.MP06UnZiptoCheck = archiveFolder;
+				//Read(ESChecker_MP06frm.MP_v06);
+				ESChecker_MP06frm.ShowDialog();
+				//ListMyCoolections(this.DocInfo.MyBlocks, this.DocInfo.MifPolygons);
+				//ListFileInfo(DocInfo);
+			}
 
-
-        }
-
-
-        private void списокТочекФайлNikonToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Для отдельного ОИПД выгружаем:
-            netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-            saveFileDialog1.FilterIndex = 2; // txt
-
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
-            {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-
-                        TR.SaveAsNikon(saveFileDialog1.FileName, Pl.AsPointList());
-                    }
-
-                }
-            }
-        }
+			catch (System.Exception ex1)
+			{
+				DocInfo.CommentsType = "Exception";
+				DocInfo.Comments = ex1.Message;
+				ListFileInfo(DocInfo);
+			}
 
 
 
-        private void копироватьToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-           List<string> items = new List<string>();
-           Control parent = ((ContextMenuStrip)(((ToolStripMenuItem)sender).Owner)).SourceControl;
-
-            foreach(ListViewItem lvit in ((ListView)parent).Items)
-            {
-              string sub = "";
-             //   if (lvit.Text != "")
-                {
-                    foreach (ListViewItem.ListViewSubItem lv in lvit.SubItems)
-                    {
-                      if (lv.Text != lvit.Text) // бывает что суб повторяет саму ноду
-                         sub += "\t" + lv.Text;
-                    }
+		}
 
 
-                    items.Add(lvit.Text+sub);
-                }
-            }
+		private void списокТочекФайлNikonToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//Для отдельного ОИПД выгружаем:
+			netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+			saveFileDialog1.FilterIndex = 2; // txt
 
-            if (items.Count > 0)
-            {
-                //LINQ:
-                Clipboard.SetText(string.Join(Environment.NewLine, items.Cast<string>().Select(o => o.ToString()).ToArray()));  
-            }
-        }
+			if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
+			{
+				TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+				if (Pl != null)
+				{
+					saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
+					if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+					{
 
-        private void linkLabel_Recipient_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(linkLabel_Recipient .Text);
-        }
 
-        private void linkLabel_Request_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(linkLabel_Request.Text);
-        }
+						TR.SaveAsNikon(saveFileDialog1.FileName, Pl.AsPointList());
+					}
 
-        private void textBox_DocDate_Click(object sender, EventArgs e)
-        {
-            if (textBox_DocDate.Text != "")
-            Clipboard.SetText(textBox_DocDate.Text);
-        }
+				}
+			}
+		}
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
 
-        }
 
-        private void textBox_Appointment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(textBox_Appointment.Text);
-        }
+		private void копироватьToolStripMenuItem2_Click(object sender, EventArgs e)
+		{
+			List<string> items = new List<string>();
+			Control parent = ((ContextMenuStrip)(((ToolStripMenuItem)sender).Owner)).SourceControl;
 
-        private void textBox_OrgName_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(textBox_OrgName.Text);
-        }
+			foreach (ListViewItem lvit in ((ListView)parent).Items)
+			{
+				string sub = "";
+				//   if (lvit.Text != "")
+				{
+					foreach (ListViewItem.ListViewSubItem lv in lvit.SubItems)
+					{
+						if (lv.Text != lvit.Text) // бывает что суб повторяет саму ноду
+							sub += "\t" + lv.Text;
+					}
 
-        private void textBox_FIO_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Clipboard.SetText(textBox_FIO.Text);
-        }
 
-        private void KVZU_Form_InputLanguageChanging(object sender, InputLanguageChangingEventArgs e)
-        {
+					items.Add(lvit.Text + sub);
+				}
+			}
 
-        }
+			if (items.Count > 0)
+			{
+				//LINQ:
+				Clipboard.SetText(string.Join(Environment.NewLine, items.Cast<string>().Select(o => o.ToString()).ToArray()));
+			}
+		}
 
-        private void KVZU_Form_Resize(object sender, EventArgs e)
-        {
-            toolStripStatusLabel1.Width = (int) Math.Round(this.Width / 2.76);
-            toolStripStatusLabel3.Width = (int)Math.Round(this.Width / 2.594);
-        }
+		private void linkLabel_Recipient_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(linkLabel_Recipient.Text);
+		}
 
-        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmOptions frmoptions = new frmOptions();
-            frmoptions.dutilizations_v01 = this.dutilizations_v01;
-            frmoptions.dRegionsRF_v01 = this.dRegionsRF_v01;
-            frmoptions.dCategories_v01 = this.dCategories_v01;
-            frmoptions.dStates_v01 = this.dStates_v01;
-            frmoptions.dLocationLevel1_v01 = this.dLocationLevel1_v01;
-            frmoptions.dLocationLevel2_v01 = this.dLocationLevel2_v01;
-            frmoptions.MP_06_schema = this.MP_06_schema;
-            frmoptions.ShowDialog();
-        }
+		private void linkLabel_Request_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(linkLabel_Request.Text);
+		}
 
-        private void сертификатыToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmCertificates frmcertificates = new frmCertificates();
-            frmcertificates.ShowDialog();
+		private void textBox_DocDate_Click(object sender, EventArgs e)
+		{
+			if (textBox_DocDate.Text != "")
+				Clipboard.SetText(textBox_DocDate.Text);
+		}
 
-        }
+		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
 
-        private void m133333ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		}
+
+		private void textBox_Appointment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(textBox_Appointment.Text);
+		}
+
+		private void textBox_OrgName_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(textBox_OrgName.Text);
+		}
+
+		private void textBox_FIO_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Clipboard.SetText(textBox_FIO.Text);
+		}
+
+		private void KVZU_Form_InputLanguageChanging(object sender, InputLanguageChangingEventArgs e)
+		{
+
+		}
+
+		private void KVZU_Form_Resize(object sender, EventArgs e)
+		{
+			toolStripStatusLabel1.Width = (int)Math.Round(this.Width / 2.76);
+			toolStripStatusLabel3.Width = (int)Math.Round(this.Width / 2.594);
+		}
+
+		private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			frmOptions frmoptions = new frmOptions();
+			frmoptions.dutilizations_v01 = this.dutilizations_v01;
+			frmoptions.dRegionsRF_v01 = this.dRegionsRF_v01;
+			frmoptions.dCategories_v01 = this.dCategories_v01;
+			frmoptions.dStates_v01 = this.dStates_v01;
+			frmoptions.dLocationLevel1_v01 = this.dLocationLevel1_v01;
+			frmoptions.dLocationLevel2_v01 = this.dLocationLevel2_v01;
+			frmoptions.MP_06_schema = this.MP_06_schema;
+			frmoptions.ShowDialog();
+		}
+
+		private void сертификатыToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			frmCertificates frmcertificates = new frmCertificates();
+			frmcertificates.ShowDialog();
+
+		}
+
+		private void m133333ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			SaveAs("DXF", TV_Parcels.SelectedNode.Name, 33333);
-        }
+		}
 
-        private void RecentFilesMenuItem_Click(object sender, EventArgs e)
-        {
+		private void RecentFilesMenuItem_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void contextMenuStrip_OIPD_Opening(object sender, CancelEventArgs e)
-        {
+		private void contextMenuStrip_OIPD_Opening(object sender, CancelEventArgs e)
+		{
 
-        }
+		}
 
-        private void KVZU_Form_LocationChanged(object sender, EventArgs e)
-        {
-            if (ESwindow != null)
-                if (ESwindow.Visibility == System.Windows.Visibility.Visible)
-                {
-                    ESwindow.Top = this.Top; 
-                    ESwindow.Left = this.Left - 13  + this.Width;
-                }
-        }
+		private void KVZU_Form_LocationChanged(object sender, EventArgs e)
+		{
+			if (ESwindow != null)
+				if (ESwindow.Visibility == System.Windows.Visibility.Visible)
+				{
+					ESwindow.Top = this.Top;
+					ESwindow.Left = this.Left - 13 + this.Width;
+				}
+		}
 
-        private void межевойПланToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BugReport_MP06();
-        }
+		private void межевойПланToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			BugReport_MP06();
+		}
 
-        private void генераторGUIDToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GUIDfrm GUIDGenfrm = new GUIDfrm();
-            GUIDGenfrm.ShowDialog();
-        }
+		private void генераторGUIDToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			GUIDfrm GUIDGenfrm = new GUIDfrm();
+			GUIDGenfrm.ShowDialog();
+		}
 
-        private void просмотрToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Toggle_Visualizer();
-        }
+		private void просмотрToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Toggle_Visualizer();
+		}
 
-        private void KVZU_Form_KeyUp(object sender, KeyEventArgs e)
-        {
+		private void KVZU_Form_KeyUp(object sender, KeyEventArgs e)
+		{
 
-        }
+		}
 
-        private void KVZU_Form_KeyPress(object sender, KeyPressEventArgs e)
-        {
- 
-        }
+		private void KVZU_Form_KeyPress(object sender, KeyPressEventArgs e)
+		{
 
-        private void tabControl1_KeyPress(object sender, KeyPressEventArgs e)
-        {
+		}
 
-        }
+		private void tabControl1_KeyPress(object sender, KeyPressEventArgs e)
+		{
 
-
+		}
 
 
 
-    
 
-            private void TV_Parcels_KeyUp_1(object sender, KeyEventArgs e)
-        {
-            //search Ctrl+F  : trough menu item shortcut Ctrl+F;
-            /*
+
+
+
+		private void TV_Parcels_KeyUp_1(object sender, KeyEventArgs e)
+		{
+			//search Ctrl+F  : trough menu item shortcut Ctrl+F;
+			/*
             if ((e.Control) && (e.KeyValue == 70))
             {
               if (SearchTextBoxSwith(SearchTextBox))
                 TV_Parcels.Focus();
                 e.SuppressKeyPress = true;
             }  */
-        }
+		}
 
-        
-        // Случай #1 для поиска  ноды
 
-        /// <summary>
-        /// Поиск по дереву по тексту Node
-        /// </summary>
-        /// <param name="srcNodes"></param>
-        /// <param name="searchstring"></param>
-        /// <param name="foundFirst"></param>
-        private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
-        {
-            if (searchstring == "") return;
-            Boolean selectedfound = foundFirst;
-            foreach (TreeNode tn in srcNodes.Nodes)
-            {
-                if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
-                {
-                    TV_Parcels.SelectedNode = tn;
-                    TV_Parcels.SelectedNode.EnsureVisible();
-                    selectedfound = true;
-                    TV_Parcels.Focus();
-                    TV_Parcels.Select();
-                    return;
-                }
-                //in childs:
-                FindNode(tn, searchstring, selectedfound);
-            }
-        }
+		// Случай #1 для поиска  ноды
 
-        
-                private void SearchTextBox_TextChanged(object sender, EventArgs e)
-                {
-                    TextBox searchtbox = (TextBox)sender;
-                    if (searchtbox.Visible)
-                    {   // начинаем с высшей ноды:
-                        TV_Parcels.BeginUpdate();
-                        FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(),false);
-                        SearchTextBox.Focus();
-                        TV_Parcels.EndUpdate();
-                    }
+		/// <summary>
+		/// Поиск по дереву по тексту Node
+		/// </summary>
+		/// <param name="srcNodes"></param>
+		/// <param name="searchstring"></param>
+		/// <param name="foundFirst"></param>
+		private void FindNode(TreeNode srcNodes, string searchstring, bool foundFirst)
+		{
+			if (searchstring == "") return;
+			Boolean selectedfound = foundFirst;
+			foreach (TreeNode tn in srcNodes.Nodes)
+			{
+				if (tn.Text.ToUpper().Contains(searchstring) && !selectedfound)
+				{
+					TV_Parcels.SelectedNode = tn;
+					TV_Parcels.SelectedNode.EnsureVisible();
+					selectedfound = true;
+					TV_Parcels.Focus();
+					TV_Parcels.Select();
+					return;
+				}
+				//in childs:
+				FindNode(tn, searchstring, selectedfound);
+			}
+		}
 
-                }
-        
-        
-        /*
+
+		private void SearchTextBox_TextChanged(object sender, EventArgs e)
+		{
+			TextBox searchtbox = (TextBox)sender;
+			if (searchtbox.Visible)
+			{   // начинаем с высшей ноды:
+				TV_Parcels.BeginUpdate();
+				FindNode(TV_Parcels.Nodes[0], searchtbox.Text.ToUpper(), false);
+				SearchTextBox.Focus();
+				TV_Parcels.EndUpdate();
+			}
+
+		}
+
+
+		/*
           // Случай #2 для поиска сразу ноды
         private TreeNode FindNode2(TreeNode srcNodes, string searchstring, bool foundFirst)
         {
@@ -4759,8 +4792,8 @@ return res;
         
             */
 
-        // Возникает только если текст не пустой
-        /*
+		// Возникает только если текст не пустой
+		/*
           private void SearchTextBox_TextChanged(object sender, EventArgs e)
           {
               TextBox searchtbox = (TextBox)sender;
@@ -4793,147 +4826,148 @@ return res;
 
           */
 
-        private bool SearchTextBox_Toggle(TextBox sender)
-        {
-            if (!sender.Visible)
-            {
-                sender.Visible = true;
-                sender.Clear();
-                sender.Focus();
-                return true;
-            }
-            else
-            {
-                sender.Visible = false;
-                return false;
-            }
-        }
+		private bool SearchTextBox_Toggle(TextBox sender)
+		{
+			if (!sender.Visible)
+			{
+				sender.Visible = true;
+				sender.Clear();
+				sender.Focus();
+				return true;
+			}
+			else
+			{
+				sender.Visible = false;
+				return false;
+			}
+		}
 
-        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            TextBox searchtbox = (TextBox)sender;
-            //Прячем контрол:
-            /*
+		private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+		{
+			TextBox searchtbox = (TextBox)sender;
+			//Прячем контрол:
+			/*
             if ((e.Control) && (e.KeyValue == 70))
             {
                if (Toggle_SearchTextBox(searchtbox)) TV_Parcels.Focus();
                 e.SuppressKeyPress = true;
             }
             */
-            //Ищем текст:
-            if (searchtbox.Text == "")
-                TV_Parcels.SelectedNode = TV_Parcels.Nodes[0]; // если пусто, возвращаем в начало
-        }
+			//Ищем текст:
+			if (searchtbox.Text == "")
+				TV_Parcels.SelectedNode = TV_Parcels.Nodes[0]; // если пусто, возвращаем в начало
+		}
 
-    
 
-    
 
-        private void поискToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            поискToolStripMenuItem.Checked = SearchTextBox_Toggle(SearchTextBox);
-        }
 
-        private void validateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (DocInfo.FilePath != null)
-            {
-                frmValidator frmvldtr = new frmValidator();
 
-                frmvldtr.xmlToValide = DocInfo.FilePath; //DocInfo.FileName;
-                frmvldtr.ShowDialog(this);
-            }
-        }
+		private void поискToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			поискToolStripMenuItem.Checked = SearchTextBox_Toggle(SearchTextBox);
+		}
 
-        //Обработчик события OnChecking
-        private void ESCheckerStateUpdater(object Sender, ESCheckingEventArgs e)
-        {
-            int currProc = e.Process;
-            /*
+		private void validateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (DocInfo.FilePath != null)
+			{
+				frmValidator frmvldtr = new frmValidator();
+
+				frmvldtr.xmlToValide = DocInfo.FilePath; //DocInfo.FileName;
+				frmvldtr.ShowDialog(this);
+			}
+		}
+
+		//Обработчик события OnChecking
+		private void ESCheckerStateUpdater(object Sender, ESCheckingEventArgs e)
+		{
+			int currProc = e.Process;
+			/*
             if (e.Definition == "26:01:071402:12")
             {
                 int here100 = 1000;
             }
             */
-            if (e.Process < toolStripProgressBar1.Maximum)
-             toolStripProgressBar1.Value = e.Process;
-           // toolStripStatusLabel3.Text = e.Definition;
-            this.Update();
-        }
+			if (e.Process < toolStripProgressBar1.Maximum)
+				toolStripProgressBar1.Value = e.Process;
+			// toolStripStatusLabel3.Text = e.Definition;
+			this.Update();
+		}
 
-        /// <summary>
-        /// Проверка топокорректности Пространственных данных 
-        /// </summary>
-        private void TopoCheck(TreeNode STrN)
-        {
-            netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
+		/// <summary>
+		/// Проверка топокорректности Пространственных данных 
+		/// </summary>
+		private void TopoCheck(TreeNode STrN)
+		{
+			netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
 
-            openFileDialog1.Filter = "Про$транственные данные|*.mif";
-            openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
+			openFileDialog1.Filter = "Про$транственные данные|*.mif";
+			openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
 
-            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                if (STrN.Name.Contains("EntrysNode"))
-                {
-                    Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-                    object O = this.DocInfo.MyBlocks.GetObject(id);
-                    if (O.ToString() == "netFteo.Spatial.TMyParcel")
-                    {
-                        TMyParcel P = (TMyParcel)O;
-                        //подключим обработчик события
-                       //TODO P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
+			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+			{
+				if (STrN.Name.Contains("EntrysNode"))
+				{
+					Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
+					object O = this.DocInfo.MyBlocks.GetObject(id);
+					if (O.ToString() == "netFteo.Spatial.TMyParcel")
+					{
+						TMyParcel P = (TMyParcel)O;
+						//подключим обработчик события
+						//TODO P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 
-                        netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(openFileDialog1.FileName);
-                       // TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
+						netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(openFileDialog1.FileName);
+						// TPolygonCollection polyfromMIF =  mifreader.ImportMIF(openFileDialog1.FileName);
 
-                      //  toolStripProgressBar1.Maximum = P.CompozitionEZ.Count *  polyfromMIF.Count;
-                        toolStripProgressBar1.Minimum = 0;
-                        toolStripProgressBar1.Value = 0;
+						//  toolStripProgressBar1.Maximum = P.CompozitionEZ.Count *  polyfromMIF.Count;
+						toolStripProgressBar1.Minimum = 0;
+						toolStripProgressBar1.Value = 0;
 
-                        PointList res = new PointList();
-                      
-                       // res.AppendPoints(P.CompozitionEZ.CheckESs(polyfromMIF));
+						PointList res = new PointList();
 
-                        //Если пересечения не найдены - то общие точки:
-                        if (res.PointCount == 0)
-                        { PointList resCommon = new PointList();
-                           // resCommon.AppendPoints(P.CompozitionEZ.CheckCommon(polyfromMIF));
-                            //Если есть общие точки - возможны накрытия через узлы ! 
-                        }
+						// res.AppendPoints(P.CompozitionEZ.CheckESs(polyfromMIF));
 
-                        if (res.PointCount > 0)
-                        {
+						//Если пересечения не найдены - то общие точки:
+						if (res.PointCount == 0)
+						{
+							PointList resCommon = new PointList();
+							// resCommon.AppendPoints(P.CompozitionEZ.CheckCommon(polyfromMIF));
+							//Если есть общие точки - возможны накрытия через узлы ! 
+						}
 
-                            TEntitySpatial ES = new TEntitySpatial();
-                            ES.AddRange(res);
+						if (res.PointCount > 0)
+						{
 
-                            netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-                            saveFileDialog1.FilterIndex = 1; // mif
-                            {
-                                if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                                {
-                                    TR.SaveAsmif(saveFileDialog1.FileName, ES);
-                                }
-                            }
+							TEntitySpatial ES = new TEntitySpatial();
+							ES.AddRange(res);
 
-
-                            if (toolStripMI_ShowES.Checked)
-                            {
-                                if (res.PointCount == 0)
-                                    ViewWindow.Spatial = null;
-                                else
-                                    ViewWindow.Spatial = ES;
-
-                                ViewWindow.label2.Content = res.Parent_Id.ToString();
-                                ViewWindow.BringIntoView();
-                                ViewWindow.CreateView(ES);
-                            }
-                        }
-                        
+							netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+							saveFileDialog1.FilterIndex = 1; // mif
+							{
+								if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+								{
+									TR.SaveAsmif(saveFileDialog1.FileName, ES);
+								}
+							}
 
 
-                    }
-                }
+							if (toolStripMI_ShowES.Checked)
+							{
+								if (res.PointCount == 0)
+									ViewWindow.Spatial = null;
+								else
+									ViewWindow.Spatial = ES;
+
+								ViewWindow.label2.Content = res.Parent_Id.ToString();
+								ViewWindow.BringIntoView();
+								ViewWindow.CreateView(ES);
+							}
+						}
+
+
+
+					}
+				}
 
 				/*
                 TMyPolygon Poly1 = new TMyPolygon("One");
@@ -4954,8 +4988,8 @@ return res;
             int cchk = res.PointCount;
             */
 				TopoCheckSpin(STrN, openFileDialog1.FileName);
-            }
-        }
+			}
+		}
 
 		/// <summary>
 		/// Проверка Пространственных данных - "Установка ГКН точек"
@@ -4984,53 +5018,53 @@ return res;
 
 			}
 		}
-		
+
 
 
 
 		private void проверкаГеометрииToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-         
-            TopoCheck(TV_Parcels.SelectedNode);
-        }
+		{
 
-        private void toolStripButton2_Click_2(object sender, EventArgs e)
-        {
-            TopoCheck(TV_Parcels.SelectedNode);
-        }
+			TopoCheck(TV_Parcels.SelectedNode);
+		}
 
-#region Пример использования mitab.dll (из mitab)
-        public void OpenMif(string FileName)
-        {
-            toolStripStatusLabel1.Text = FileName;
-            Ptr = EBop.MapObjects.MapInfo.MiApi.mitab_c_open(FileName);
-            string CorrdsSys = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_mif_coordsys(Ptr);
-            int feature_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr);
-            int field_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_count(Ptr);
+		private void toolStripButton2_Click_2(object sender, EventArgs e)
+		{
+			TopoCheck(TV_Parcels.SelectedNode);
+		}
 
-            richTextBox1.AppendText("\nПоля данных: " + Convert.ToString(field_count) + "\n");
-            for (int i = 0; i <= field_count - 1; i++)
-            {
-                //    richTextBox1.AppendText(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i) + " ");
-                //    comboBox1.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i));
-            }
+		#region Пример использования mitab.dll (из mitab)
+		public void OpenMif(string FileName)
+		{
+			toolStripStatusLabel1.Text = FileName;
+			Ptr = EBop.MapObjects.MapInfo.MiApi.mitab_c_open(FileName);
+			string CorrdsSys = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_mif_coordsys(Ptr);
+			int feature_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr);
+			int field_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_count(Ptr);
 
-
-            richTextBox1.AppendText("\n Feature_count:" + Convert.ToString(feature_count) + "\n");
-
-            for (int i = 1; i <= EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr); i++)
-            {
-                //  IntPtr Feature = EBop.MapObjects.MapInfo.MiApi.mitab_c_read_feature(Ptr, i);
-                //  FeatureslistBox.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_as_string(Feature, 0));
-
-            }
-
-        }
-#endregion
+			richTextBox1.AppendText("\nПоля данных: " + Convert.ToString(field_count) + "\n");
+			for (int i = 0; i <= field_count - 1; i++)
+			{
+				//    richTextBox1.AppendText(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i) + " ");
+				//    comboBox1.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i));
+			}
 
 
-        private void KVZU_Form_Load(object sender, EventArgs e)
-        {
+			richTextBox1.AppendText("\n Feature_count:" + Convert.ToString(feature_count) + "\n");
+
+			for (int i = 1; i <= EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr); i++)
+			{
+				//  IntPtr Feature = EBop.MapObjects.MapInfo.MiApi.mitab_c_read_feature(Ptr, i);
+				//  FeatureslistBox.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_as_string(Feature, 0));
+
+			}
+
+		}
+		#endregion
+
+
+		private void KVZU_Form_Load(object sender, EventArgs e)
+		{
 #if (DEBUG)
 			this.AppConfiguration = "DEBUG";
 			this.Text += "/DEBUG {2019}";
@@ -5050,36 +5084,36 @@ return res;
 #endif
 
 			if ((int)this.Tag == 3) // load from NET application
-            {
-                this.Text = "XMl Reader в составе приложения";
-                this.ShowInTaskbar = true;
+			{
+				this.Text = "XMl Reader в составе приложения";
+				this.ShowInTaskbar = true;
 				LogStarttoWebServer("XMl Reader Slaveform");
 
 			}
-            else
-            {  // load as standalone application with args in cli:
-                this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
+			else
+			{  // load as standalone application with args in cli:
+				this.Text = "XMl Reader для файлов Росреестра @2015 Fixosoft";
 				LogStarttoWebServer("XMl Reader Desktop");
 				this.ShowInTaskbar = true;
-                args = Environment.GetCommandLineArgs();
-                if (args.Length > 1)
-                {
-                    //string Test = Path.GetDirectoryName(args[0]) + "\\" + args[2];
-                    toolStripStatusLabel3.Text = args[1];
-                    string TestFileName = args[1];
-                    //if (args[2] == "open")
-                    if (File.Exists(TestFileName))
-                        Read(TestFileName, false);
-                }
-                //No command line args[]
-                else toolStripStatusLabel3.Text = "Нет аргументов";
-            }
-            //anyway - MyBlocks must be exist at this point:
-            ListMyCoolections(this.DocInfo.MyBlocks);
-            ListFileInfo(DocInfo);
+				args = Environment.GetCommandLineArgs();
+				if (args.Length > 1)
+				{
+					//string Test = Path.GetDirectoryName(args[0]) + "\\" + args[2];
+					toolStripStatusLabel3.Text = args[1];
+					string TestFileName = args[1];
+					//if (args[2] == "open")
+					if (File.Exists(TestFileName))
+						Read(TestFileName, false);
+				}
+				//No command line args[]
+				else toolStripStatusLabel3.Text = "Нет аргументов";
+			}
+			//anyway - MyBlocks must be exist at this point:
+			ListMyCoolections(this.DocInfo.MyBlocks);
+			ListFileInfo(DocInfo);
 			this.TextDefault = this.Text;
-            ClearFiles();
-        }
+			ClearFiles();
+		}
 
 
 		private void LogStarttoWebServer(string AppTypeName)
@@ -5098,73 +5132,73 @@ return res;
 			//	srv.Get_WebOnline_th("");
 		}
 
-        private void TV_Parcels_DoubleClick(object sender, EventArgs e)
-        {
-            if (TV_Parcels.SelectedNode != null &&
+		private void TV_Parcels_DoubleClick(object sender, EventArgs e)
+		{
+			if (TV_Parcels.SelectedNode != null &&
 				TV_Parcels.SelectedNode.Name.Contains("SPElem"))
-            {
-                Toggle_Visualizer();
-            }
-        }
+			{
+				Toggle_Visualizer();
+			}
+		}
 
-        private void KVZU_Form_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
+		private void KVZU_Form_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
 
-        private void KVZU_Form_DragDrop(object sender, DragEventArgs e)
-        {
-            this.DraggedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-            
-            foreach(string filename in DraggedFiles)
-              {
-                try
-                {
-                    Read(filename, true);
-                    Application.DoEvents();
-                }
-                catch (Exception ex)
-                {
-                    ClearControls();
-                   TreeNode errNodePatr=  TV_Parcels.Nodes.Add("Error in " + Path.GetFileName(filename));
-                    errNodePatr.Nodes.Add(ex.Message);
+		private void KVZU_Form_DragDrop(object sender, DragEventArgs e)
+		{
+			this.DraggedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+			foreach (string filename in DraggedFiles)
+			{
+				try
+				{
+					Read(filename, true);
+					Application.DoEvents();
+				}
+				catch (Exception ex)
+				{
+					ClearControls();
+					TreeNode errNodePatr = TV_Parcels.Nodes.Add("Error in " + Path.GetFileName(filename));
+					errNodePatr.Nodes.Add(ex.Message);
 
 					if (TV_Parcels.TopNode != null) TV_Parcels.TopNode.Expand();
 					else
 						errNodePatr.ExpandAll();
-                    return;
-                }
-              }
-        }
+					return;
+				}
+			}
+		}
 
-        private void ававааToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void ававааToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-    
 
-        private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-           IPointList Feature =(IPointList) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+
+		private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
 				Feature.Fraq("0.00");
 				Feature.SetMt(0.1); // Also set Mt= 0.1
 				Feature.ShowasListItems(listView1, true);
 			}
-        }
+		}
 
-        private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+		private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
+		{
 			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Feature != null)
 			{
 				Feature.ReorderPoints(1);
 				Feature.ShowasListItems(listView1, true);
 			}
-        }
+		}
 
 		/// <summary>
 		/// Only for polyline. Close polyline`ll convert it to polygon
@@ -5174,7 +5208,7 @@ return res;
 		private void замкнутьToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-			
+
 			if ((Feature != null) &&
 				(Feature.TypeName == "netFteo.Spatial.TPolyLine")
 				)
@@ -5188,7 +5222,7 @@ return res;
 				//ListMyCoolections(this.DocInfo.MyBlocks);
 				NewFeature.ShowasListItems(listView1, true);
 			}
-			
+
 			if ((Feature != null) &&
 				(Feature.TypeName == "netFteo.Spatial.TMyPolygon")
 				)
@@ -5234,27 +5268,27 @@ return res;
 
 
 		private void listView1_KeyUp(object sender, KeyEventArgs e)
-        {
-            
-        }
+		{
 
-        private void listView1_MouseClick(object sender, MouseEventArgs e)
-        {
-            var test = (ListView)sender;
-            if (test.SelectedItems.Count == 1)
-            {
-                
-                if (test.SelectedItems[0].Tag != null)
-                toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
-            }
+		}
 
-        }
+		private void listView1_MouseClick(object sender, MouseEventArgs e)
+		{
+			var test = (ListView)sender;
+			if (test.SelectedItems.Count == 1)
+			{
 
-        private void toolStripButton4_Click(object sender, EventArgs e)
-        {
-            frmCertificates frmcertificates = new frmCertificates();
-            frmcertificates.ShowDialog();
-        }
+				if (test.SelectedItems[0].Tag != null)
+					toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
+			}
+
+		}
+
+		private void toolStripButton4_Click(object sender, EventArgs e)
+		{
+			frmCertificates frmcertificates = new frmCertificates();
+			frmcertificates.ShowDialog();
+		}
 
 		private void toolStripButton4_Click_1(object sender, EventArgs e)
 		{
@@ -5278,6 +5312,18 @@ return res;
 		private void radioButton1_CheckedChanged(object sender, EventArgs e)
 		{
 
+		}
+
+		private void удалитьГеометриюToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//if (sender is TreeView)
+			{
+			//	TreeView tv = (TreeView)sender;
+				if (RemoveGeometryNode(TV_Parcels.SelectedNode))
+				{
+					TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
+				}
+			}
 		}
 	}
 }
