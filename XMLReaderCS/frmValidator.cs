@@ -15,7 +15,8 @@ namespace XMLReaderCS
     public partial class frmValidator : Form
     {
         public string xmlToValide;
-        public frmValidator()
+		public string xsdToValide;
+		public frmValidator()
         {
             this.DoubleBuffered = true;
             InitializeComponent();
@@ -28,68 +29,80 @@ namespace XMLReaderCS
             if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 richTextBox1.Text = " Open schema " + System.IO.Path.GetFileName(fd.FileName);
-                ValideXML(fd.FileName);
-
+				xsdToValide = fd.FileName;
+                ValideXML(xsdToValide);
+				button2.Enabled = true;
             }
         }
 
 
         public void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
+			var ee = e;
             switch (e.Severity)
             {
                 case XmlSeverityType.Error:
-                    richTextBox1.Text +="Error: "+  e.Message;
+                    richTextBox1.Text +="Error: "+  e.Message + "\r\n";
                     break;
                 case XmlSeverityType.Warning:
-                    richTextBox1.Text += "Warning: " + e.Message;
+                    richTextBox1.Text += "Warning: " + e.Message + "\r\n";
                     break;
             }
 
         }
 
 
-        public void ValideXML(string xsdfilename)
-        {
-        try
-        {
-            XmlReaderSettings settings = new XmlReaderSettings();
-           // settings.Schemas.Add("http://www.w3.org/2001/XMLSchema", xsdfilename);
-            settings.Schemas.Add(null, xsdfilename);
-            settings.ValidationType = ValidationType.Schema;
-            settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.ProcessIdentityConstraints
-                | XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation;
-            XmlReader reader = XmlReader.Create(xmlToValide, settings);
-            XmlDocument document = new XmlDocument();
-            document.Load(reader);
-                reader.Close();
-            ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
+		public void ValideXML(string xsdfilename)
+		{
+			try
+			{
+				richTextBox1.Text = "Validating against schema " + xsdfilename + "\r\n";
+				button2.Enabled = false;
+				ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
+				if (radioButton_XMLValReader.Checked)
+				{
+					richTextBox1.Text += "using obsolete XmlValidationReader\r\n";
+					XmlTextReader tr = new XmlTextReader(xmlToValide);
+					XmlValidatingReader vr = new XmlValidatingReader(tr);
+					vr.ValidationType = ValidationType.Schema;
+					vr.Schemas.Add(null, xsdfilename);
+					vr.ValidationEventHandler += eventHandler;
+					while (vr.Read()) ;
+					vr.Close();
+				}
+				else
 
-            // the following call to Validate succeeds.
-            document.Validate(eventHandler);
-            /*
-            // add a node so that the document is no longer valid
-            XPathNavigator navigator = document.CreateNavigator();
-            navigator.MoveToFollowing("price", "http://www.contoso.com/books");
-            XmlWriter writer = navigator.InsertAfter();
-            writer.WriteStartElement("anotherNode", "http://www.contoso.com/books");
-            writer.WriteEndElement();
-            writer.Close();
-            // the document will now fail to successfully validate
-            document.Validate(eventHandler);
-             *             
-             */
-        }
-        catch (Exception ex)
-        {
-           richTextBox1.Text =ex.Message;
-        }
-        }
+				{
+					richTextBox1.Text += "using Xmlreader /Document \r\n";
+					XmlReaderSettings settings = new XmlReaderSettings();
+					// settings.Schemas.Add("http://www.w3.org/2001/XMLSchema", xsdfilename);
+					settings.Schemas.Add(null, xsdfilename);
+					settings.ValidationType = ValidationType.Schema;
+					settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings | XmlSchemaValidationFlags.ProcessIdentityConstraints
+						| XmlSchemaValidationFlags.ProcessInlineSchema | XmlSchemaValidationFlags.ProcessSchemaLocation;
+					XmlReader reader = XmlReader.Create(xmlToValide, settings);
+					XmlDocument document = new XmlDocument();
+					document.Load(reader);
+					// the following call to Validate succeeds.
+					document.Validate(eventHandler);
+				}
+			}
+			catch (Exception ex)
+			{
+				richTextBox1.Text += ex.Message;
+				button2.Enabled = false;
+			}
+			button2.Enabled = true;
+		}
 
         private void button2_Click(object sender, EventArgs e)
         {
 
         }
 
-    }
+		private void button2_Click_1(object sender, EventArgs e)
+		{
+			ValideXML(xsdToValide);
+		}
+	}
 }
