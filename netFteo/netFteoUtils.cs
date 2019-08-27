@@ -86,12 +86,17 @@ namespace netFteo
 		{
 			string CN = Zone.Description;
 			TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
-			//PNode.ImageIndex = 6
-			if (Zone.ContentRestrictions != null)
+				if (Zone.TypeName == "Территориальная зона")
+				{
+					PNode.ImageIndex = 1;
+					PNode.SelectedImageIndex = 1;
+				}
+				else
+				{
+					Node.ImageIndex = 6;
+					PNode.SelectedImageIndex = 6;
+				}
 
-				//  { TreeNode DescrNode = PNode.Nodes.Add("ZoneconRestrNode", Zone.ContentRestrictions);
-				PNode.ImageIndex = 6;
-			PNode.SelectedImageIndex = 6;
 			//  
 			if (Zone.PermittedUses != null)
 			{
@@ -100,8 +105,8 @@ namespace netFteo
 				{
 					PuNode.Nodes.Add(item);
 				}
-				PNode.ImageIndex = 7;
-				PNode.SelectedImageIndex = 7;
+				//PNode.ImageIndex = 7;
+				//PNode.SelectedImageIndex = 7;
 			}
 
 
@@ -122,8 +127,6 @@ namespace netFteo
 					}
 				}
 			}
-
-
 
 
 			if (Zone.EntitySpatial != null)

@@ -457,39 +457,6 @@ namespace XMLReaderCS
 
 
 
-			/*
-                if (DocInfo.DocRootName == "MapPlan")
-                {
-                    toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                    XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MapPlanV01.MapPlan));
-                    //TextReader readerMP = new StreamReader(FileName);
-                    MapPlanEditor.MapPlanForm MPF = new MapPlanEditor.MapPlanForm();
-                    MPF.Top = this.Top - 5; MPF.Left = this.Left + 5;
-                    MPF.MPv01 = (RRTypes.MapPlanV01.MapPlan)serializerMP.Deserialize(stream);
-                    this.Hide();
-                    MPF.ShowDialog();
-                    //readerMP.Close();
-                    this.Close();
-                }
-
-
-
-                if (DocInfo.DocRootName == "ZoneToGKN")
-                {
-                    toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.arrow_switch;
-                    XmlSerializer serializerZN = new XmlSerializer(typeof(RRTypes.ZoneV03.ZoneToGKN));
-                    //TextReader readerMP = new StreamReader(FileName);
-                    MapPlanEditor.frmZoneV03Editor ZNf = new MapPlanEditor.frmZoneV03Editor();
-                    ZNf.Zone03 = (RRTypes.ZoneV03.ZoneToGKN)serializerZN.Deserialize(stream);
-                    //readerMP.Close();
-                    ZNf.Top = this.Top - 5; ZNf.Left = this.Left + 5;
-                    this.Hide();
-                    ZNf.ShowDialog();
-                    this.Close();
-
-                }
-             * */
-
 			if (DocInfo.DocRootName == "SchemaParcels")
 			{
 				toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
@@ -512,7 +479,6 @@ namespace XMLReaderCS
                 ParseSTDMPV04(MP);
                 */
 				this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
-
 			}
 
 
@@ -1427,17 +1393,14 @@ namespace XMLReaderCS
 					TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
 					foreach (TMyParcel Parcel in BlockList.Blocks[bc].Parcels)
 					{
-
 						TreeNode TnP = ListMyParcel(ParcelsNode_, Parcel);
 						if (BlockList.Blocks[bc].Parcels.Count == 1) TnP.Expand();
-
 
 						if (BlockList.Blocks[bc].Parcels.Count == 1)
 						{
 							pkk5Viewer1.Start(BlockList.Blocks[bc].Parcels[0].CN, pkk5_Types.Parcel);
 							ParcelsNode_.Expand();
 						}
-
 					}
 				}
 
@@ -2579,7 +2542,6 @@ return res;
 						LV.Items.Add(LViPurp);
 					}
 				}
-
 
 				//  Если это часть: 
 				if (Obj.ToString() == "netFteo.Spatial.TmySlot")

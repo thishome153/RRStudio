@@ -1001,6 +1001,8 @@ namespace RRTypes.CommonCast
 					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version") != null))
 					res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version").Value;
 
+
+
 			}
 		}
 
@@ -2131,118 +2133,237 @@ namespace RRTypes.CommonParsers
 				res.DocTypeNick = "STD_MP";
 				res.Version = xmldoc.DocumentElement.SelectSingleNode("eDocument/@Version").Value; // /STD_MP/eDocument/@Version
 				res.Number = xmldoc.DocumentElement.SelectSingleNode("eDocument/@GUID").Value;
-				RRTypes.STD_MPV04.STD_MP MP = (RRTypes.STD_MPV04.STD_MP)Desearialize<RRTypes.STD_MPV04.STD_MP>(xmldoc);
-
-
-
-
-				res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
 
 
 				TMyCadastralBlock Bl = new TMyCadastralBlock();
-				if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item014)
+
+				if (res.Version == "03")
 				{
-					//  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
-					if (MP.Package.FormParcels != null)
-						for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
+					res.Version = "03 in dev.";
+					res.Date = xmldoc.DocumentElement.SelectSingleNode("eDocument/Sender/@Date_Upload").Value;
+					res.Cert_Doc_Organization = xmldoc.DocumentElement.SelectSingleNode("eDocument/Sender/@Name").Value; ;
+
+					if (xmldoc.DocumentElement.SelectSingleNode("eDocument/@CodeType").Value == "014")
+					{
+						System.Xml.XmlNodeList FormParcels = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/FormParcels/NewParcel");
+						for (int iP = 0; iP <= FormParcels.Count - 1; iP++)
 						{
-							string ParcelName;
-							if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
-								ParcelName = "Item05";
-							else
-								ParcelName = "Item01";
-							TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
-							MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную!!
-							MainObj.CadastralBlock = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
-							MainObj.Location.Address.Note = MP.Package.FormParcels.NewParcel[i].Location.District.Type + " " +
-												   MP.Package.FormParcels.NewParcel[i].Location.District.Name + ", " +
-												   MP.Package.FormParcels.NewParcel[i].Location.Locality.Type + " " +
-												   MP.Package.FormParcels.NewParcel[i].Location.Locality.Name;//Что здесь?
-							MainObj.Location.Address.Region = MP.Package.FormParcels.NewParcel[i].Location.Region.ToString();
-							MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
-
-							if (MP.Package.FormParcels.NewParcel[i].Entity_Spatial != null)
-								if (MP.Package.FormParcels.NewParcel[i].Entity_Spatial.Spatial_Element.Count > 0)
-									MainObj.EntSpat.Add(STD_MP_Utils.AddEntSpatSTDMP4("", MP.Package.FormParcels.NewParcel[i].Entity_Spatial));
-							if (MP.Package.FormParcels.NewParcel[i].Contours != null)
-								for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
-								{
-									TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
-																					MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
-									MainObj.EntSpat.Add(NewCont);
-									/*  RRTypes.RetResult Checkresut = RRTypes.STD_MP_Utils.CheckESMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
-                                      if (Checkresut.HasError)
-                                      {
-                                          MessageBox.Show("Незамкнутый контур", "Проверка ОИПД",
-                                                              MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
-                                      }
-                                      */
-
-								}
-
-							//Части в образуемом участке:
-							if (MP.Package.FormParcels.NewParcel[i].SubParcels != null)
-								if (MP.Package.FormParcels.NewParcel[i].SubParcels.Count > 0)
-									for (int ii = 0; ii <= MP.Package.FormParcels.NewParcel[i].SubParcels.Count - 1; ii++)
-									{
-										TmySlot Sl = new TmySlot();
-										Sl.NumberRecord = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Definition;
-										Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Encumbrance.Name });
-										MainObj.SubParcels.Add(Sl);
-									}
+							System.Xml.XmlNode parcel = FormParcels[iP];
+							Bl.CN = parcel.SelectSingleNode("CadastralBlock").FirstChild.Value;
+							TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("Definition").Value, parcel.Attributes.GetNamedItem("Name").Value));
+							if (parcel.SelectSingleNode("Entity_Spatial") != null)
+							{
+								TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("Definition").Value,
+																		  parcel.SelectSingleNode("Entity_Spatial"));
+								ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Area/Area").FirstChild.Value);
+								ents.Parent_Id = MainObj.id;
+								ents.Definition = parcel.Attributes.GetNamedItem("Definition").Value;
+								MainObj.EntSpat.Add(ents);
+							}
 						}
+					}
 
+						if (xmldoc.DocumentElement.SelectSingleNode("eDocument/@CodeType").Value == "015")
+					{
+						System.Xml.XmlNode ExistParcel = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/Package/SpecifyParcels/ExistParcel");
+						if (ExistParcel != null)
+						{
+							Bl.CN = ExistParcel.SelectSingleNode("CadastralBlock").FirstChild.Value;
+							/// /STD_MP/Contractor/Cadastral_Engineer/FIO/Surname
+							/// /STD_MP/Contractor/Cadastral_Engineer/FIO/Surname/#text
+
+						
+
+
+							if (ExistParcel.SelectSingleNode("Entity_Spatial") != null)
+							{
+								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item01"));
+								TMyPolygon ents = KPT08LandEntSpatToFteo(ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value,
+																		  ExistParcel.SelectSingleNode("Entity_Spatial"));
+								ents.AreaValue = (decimal)Convert.ToDouble(ExistParcel.SelectSingleNode("Area/Area").FirstChild.Value);
+								ents.Parent_Id = MainObj.id;
+								ents.Definition = ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value;
+								MainObj.EntSpat.Add(ents);
+							}
+
+							//Многоконтурный
+							if (ExistParcel.SelectSingleNode("Contours") != null)
+							{
+								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item05"));
+								System.Xml.XmlNode contours = ExistParcel.SelectSingleNode("Contours");
+								string cn = ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value;
+								for (int ic = 0; ic <= ExistParcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+								{
+									/*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
+									// / Contours / Contour[1] / @Number_PP
+									TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
+																		  ExistParcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
+																		  contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
+									MainObj.EntSpat.Add(NewCont);
+								}
+							}
+
+
+						}
+					}
 				}
 
-				if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item015)
-				//Учет изменений
+					if (res.Version == "04")
 				{
-					// richTextBox1.AppendText("\n015 - пакет информации с заявлением о внесении изменений: \n");
-
-					if (MP.Package.SpecifyParcel != null)
-						if (MP.Package.SpecifyParcel.ExistParcel != null)
-						{
-
-							if (MP.Package.SpecifyParcel.ExistParcel.Entity_Spatial != null)
+					STD_MPV04.STD_MP MP = (STD_MPV04.STD_MP)Desearialize<STD_MPV04.STD_MP>(xmldoc);
+					res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
+					if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item014)
+					{
+						//  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
+						if (MP.Package.FormParcels != null)
+							for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
 							{
-								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item01"));
+								string ParcelName;
+								if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
+									ParcelName = "Item05";
+								else
+									ParcelName = "Item01";
+								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
+								MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную!!
+								MainObj.CadastralBlock = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
+								MainObj.Location.Address.Note = MP.Package.FormParcels.NewParcel[i].Location.District.Type + " " +
+													   MP.Package.FormParcels.NewParcel[i].Location.District.Name + ", " +
+													   MP.Package.FormParcels.NewParcel[i].Location.Locality.Type + " " +
+													   MP.Package.FormParcels.NewParcel[i].Location.Locality.Name;//Что здесь?
+								MainObj.Location.Address.Region = MP.Package.FormParcels.NewParcel[i].Location.Region.ToString();
+								MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
+
+								if (MP.Package.FormParcels.NewParcel[i].Entity_Spatial != null)
+									if (MP.Package.FormParcels.NewParcel[i].Entity_Spatial.Spatial_Element.Count > 0)
+										MainObj.EntSpat.Add(STD_MP_Utils.AddEntSpatSTDMP4("", MP.Package.FormParcels.NewParcel[i].Entity_Spatial));
+								if (MP.Package.FormParcels.NewParcel[i].Contours != null)
+									for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
+									{
+										TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+																						MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
+										MainObj.EntSpat.Add(NewCont);
+										/*  RRTypes.RetResult Checkresut = RRTypes.STD_MP_Utils.CheckESMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
+										  if (Checkresut.HasError)
+										  {
+											  MessageBox.Show("Незамкнутый контур", "Проверка ОИПД",
+																  MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+										  }
+										  */
+
+									}
+
+								//Части в образуемом участке:
+								if (MP.Package.FormParcels.NewParcel[i].SubParcels != null)
+									if (MP.Package.FormParcels.NewParcel[i].SubParcels.Count > 0)
+										for (int ii = 0; ii <= MP.Package.FormParcels.NewParcel[i].SubParcels.Count - 1; ii++)
+										{
+											TmySlot Sl = new TmySlot();
+											Sl.NumberRecord = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Definition;
+											Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Encumbrance.Name });
+											MainObj.SubParcels.Add(Sl);
+										}
 							}
-							if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+
+					}
+
+					if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item015)
+					//Учет изменений
+					{
+						// richTextBox1.AppendText("\n015 - пакет информации с заявлением о внесении изменений: \n");
+
+						if (MP.Package.SpecifyParcel != null)
+							if (MP.Package.SpecifyParcel.ExistParcel != null)
 							{
-								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item05"));
-								MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную!!
-								MainObj.Location.Address.Note = MP.Package.SpecifyParcel.ExistParcel.Note;//Что здесь?
-																										  //MainObj.SpecialNote  = ;//Что здесь?
-								for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
+
+								if (MP.Package.SpecifyParcel.ExistParcel.Entity_Spatial != null)
 								{
-									TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber + "(" +
-																		  MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition + ")",
-																		  MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Entity_Spatial);
-									MainObj.EntSpat.Add(NewCont);
+									TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item01"));
+								}
+
+								if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
+								{
+									TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item05"));
+									MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную!!
+									MainObj.Location.Address.Note = MP.Package.SpecifyParcel.ExistParcel.Note;//Что здесь?
+																											  //MainObj.SpecialNote  = ;//Что здесь?
+									for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
+									{
+										TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber + "(" +
+																			  MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition + ")",
+																			  MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Entity_Spatial);
+										MainObj.EntSpat.Add(NewCont);
+									}
+
 								}
 
 							}
-
-						}
-					//Если только образование частей:
-					if (MP.Package.NewSubParcel != null)
-						if (MP.Package.NewSubParcel.Count > 0)
-						{
-
-							TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.NewSubParcel[0].CadastralNumber_Parcel, "Item01"));
+						//Если только образование частей:
+						if (MP.Package.NewSubParcel != null)
 							if (MP.Package.NewSubParcel.Count > 0)
-								for (int ii = 0; ii <= MP.Package.NewSubParcel.Count - 1; ii++)
-								{
-									TmySlot Sl = new TmySlot();
-									Sl.NumberRecord = MP.Package.NewSubParcel[ii].Definition;
-									Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.NewSubParcel[ii].Encumbrance.Name });
-									Sl.AreaGKN = MP.Package.NewSubParcel[ii].Area.Area;
-									if (MP.Package.NewSubParcel[ii].Entity_Spatial != null) //Если одноконтурная чзу
-										Sl.EntSpat = RRTypes.STD_MP_Utils.AddSubParcelESTDMP4(MP.Package.NewSubParcel[ii].Definition, MP.Package.NewSubParcel[ii].Entity_Spatial);
-									MainObj.SubParcels.Add(Sl);
-								}
+							{
 
+								TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.NewSubParcel[0].CadastralNumber_Parcel, "Item01"));
+								if (MP.Package.NewSubParcel.Count > 0)
+									for (int ii = 0; ii <= MP.Package.NewSubParcel.Count - 1; ii++)
+									{
+										TmySlot Sl = new TmySlot();
+										Sl.NumberRecord = MP.Package.NewSubParcel[ii].Definition;
+										Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.NewSubParcel[ii].Encumbrance.Name });
+										Sl.AreaGKN = MP.Package.NewSubParcel[ii].Area.Area;
+										if (MP.Package.NewSubParcel[ii].Entity_Spatial != null) //Если одноконтурная чзу
+											Sl.EntSpat = RRTypes.STD_MP_Utils.AddSubParcelESTDMP4(MP.Package.NewSubParcel[ii].Definition, MP.Package.NewSubParcel[ii].Entity_Spatial);
+										MainObj.SubParcels.Add(Sl);
+									}
+
+							}
+
+					}
+
+					if (MP.Conclusion != null)
+					{
+						res.Comments += ("<br>");
+						res.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
+						res.Comments += ("\n");
+						res.Comments += (MP.Conclusion);
+
+						res.CommentsType = "Заключение КИ";
+					}
+
+					if (MP.Title != null)
+					{
+						res.Comments += (MP.Title.Reason);
+						res.Date = MP.Title.Contractor.Date.ToString();
+						if (MP.Title.Contractor.Organization != null)
+						{
+							res.Cert_Doc_Organization = MP.Title.Contractor.Organization +
+											  "  " + MP.Title.Contractor.Address;
 						}
+
+						res.Appointment = MP.Title.Contractor.N_Certificate + " " +
+										  MP.Title.Contractor.Telephone;
+
+						//   / STD_MP / Contractor / Cadastral_Engineer / FIO / Surname
+
+						res.AppointmentFIO = MP.Title.Contractor.FIO.Surname + " " +
+										 MP.Title.Contractor.FIO.First + " " +
+										 MP.Title.Contractor.FIO.Patronymic + "\r" +
+										 MP.Title.Contractor.E_mail;
+
+
+						res.Contractors.Add(
+								   new TEngineerOut()
+								   {
+									   Date = MP.Title.Contractor.Date.ToString().Replace("0:00:00", ""),
+									   FamilyName = MP.Title.Contractor.FIO.Surname,
+									   FirstName = MP.Title.Contractor.FIO.First,
+									   Patronymic = MP.Title.Contractor.FIO.Patronymic,
+									   NCertificate = MP.Title.Contractor.N_Certificate,
+									   Email = MP.Title.Contractor.E_mail,
+									   Organization_Name = MP.Title.Contractor.Organization != null ? MP.Title.Contractor.Organization : "",
+									   AddressOrganization = MP.Title.Contractor.Address != null ? MP.Title.Contractor.Address : ""
+
+								   });
+					}
 
 				}
 
@@ -2253,50 +2374,6 @@ namespace RRTypes.CommonParsers
 				res.Comments += ("\n");
 
 
-				if (MP.Conclusion != null)
-				{
-					res.Comments += ("<br>");
-					res.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
-					res.Comments += ("\n");
-					res.Comments += (MP.Conclusion);
-
-					res.CommentsType = "Заключение КИ";
-				}
-				if (MP.Title != null)
-				{
-					res.Comments += (MP.Title.Reason);
-					res.Date = MP.Title.Contractor.Date.ToString();
-					if (MP.Title.Contractor.Organization != null)
-					{
-						res.Cert_Doc_Organization = MP.Title.Contractor.Organization +
-										  "  " + MP.Title.Contractor.Address;
-					}
-
-					res.Appointment = MP.Title.Contractor.N_Certificate + " " +
-									  MP.Title.Contractor.Telephone;
-
-					//   / STD_MP / Contractor / Cadastral_Engineer / FIO / Surname
-
-					res.AppointmentFIO = MP.Title.Contractor.FIO.Surname + " " +
-									 MP.Title.Contractor.FIO.First + " " +
-									 MP.Title.Contractor.FIO.Patronymic + "\r" +
-									 MP.Title.Contractor.E_mail;
-
-
-					res.Contractors.Add(
-							   new TEngineerOut()
-							   {
-								   Date = MP.Title.Contractor.Date.ToString().Replace("0:00:00", ""),
-								   FamilyName = MP.Title.Contractor.FIO.Surname,
-								   FirstName = MP.Title.Contractor.FIO.First,
-								   Patronymic = MP.Title.Contractor.FIO.Patronymic,
-								   NCertificate = MP.Title.Contractor.N_Certificate,
-								   Email = MP.Title.Contractor.E_mail,
-								   Organization_Name = MP.Title.Contractor.Organization != null ? MP.Title.Contractor.Organization : "",
-								   AddressOrganization = MP.Title.Contractor.Address != null ? MP.Title.Contractor.Address : ""
-
-							   });
-				}
 
 				CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
 			}
@@ -4519,11 +4596,13 @@ namespace RRTypes.CommonParsers
 
 						if (KPT10.CadastralBlocks[i].Zones[iP].SpecialZone != null)
 						{
+							ZoneItem.TypeName = "SpecialZone";
 							ZoneItem.AddContentRestrictions(KPT10.CadastralBlocks[i].Zones[iP].SpecialZone.ContentRestrictions);
 						}
 
 						if (KPT10.CadastralBlocks[i].Zones[iP].TerritorialZone != null)
 						{
+							ZoneItem.TypeName = "Территориальная зона";
 							//  ZoneItem.AddPermittedUses(KPT_v09Utils.PermittedUseCollectionToList(KPT10.CadastralBlocks[i].Zones[iP].TerritorialZone.PermittedUses));
 						}
 						Bl.AddZone(ZoneItem);
