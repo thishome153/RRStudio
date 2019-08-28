@@ -3940,6 +3940,7 @@ SCAN:
             this.PermittedUses.AddRange(permitteduses);
             this.TypeName = "Территориальная зона";
         }
+
         public void AddDocument(string number, string name,
                                 string codedocument, string issueorgan,
                                 string serial, string doc_date)

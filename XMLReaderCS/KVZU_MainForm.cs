@@ -69,7 +69,14 @@ namespace XMLReaderCS
 							  /// </summary>
 		string Folder_AppStart;
 		string Folder_XSD;
+		/// <summary>
+		/// Классификатор видов использования земель
+		/// </summary>
 		netFteo.XML.XSDFile dutilizations_v01;
+		/// <summary>
+		/// Классификатор видов разрешенного использования земельных участков
+		/// </summary>
+		netFteo.XML.XSDFile dAllowedUse_v02;
 		netFteo.XML.XSDFile dRegionsRF_v01;
 		netFteo.XML.XSDFile dCategories_v01;
 		netFteo.XML.XSDFile dStates_v01;
@@ -250,7 +257,7 @@ namespace XMLReaderCS
 			Stream stream = new MemoryStream();
 			xmldoc.Save(stream);
 			stream.Seek(0, 0);
-			RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); //prepare parser
+			RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02); //prepare parser
 																						  /*
 																					  if (DocInfo.DocRootName == "TMyPolygon")
 																					  {
@@ -548,7 +555,7 @@ namespace XMLReaderCS
 			if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
 			{
 				netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
-				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+				RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02);
 				mifreader.OnParsing += XMLStateUpdater;
 				this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
 			}
@@ -567,7 +574,7 @@ namespace XMLReaderCS
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
 					dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
-					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+					RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02);
 					this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
 				}
 
@@ -689,6 +696,7 @@ namespace XMLReaderCS
 		private void InitSchemas(string folder_xsd)
 		{
 			dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
+			dAllowedUse_v02 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dAllowedUse_v02.xsd");
 			dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
 			dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
 			dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
@@ -1997,6 +2005,20 @@ return res;
 			ListToListView(LV, list);
 		}
 
+		private void PermittedUsesToListView(ListView LV, List<string> list, string Caption)
+		{
+			if (list.Count == 0) return;
+			LV.Columns[0].Text = "ВРИ " + Caption;
+			LV.Columns[1].Text = "-";
+			LV.Columns[2].Text = "-";
+			LV.Columns[3].Text = "-";
+			LV.Columns[4].Text = "-";
+			LV.Columns[5].Text = "-";
+			List<string> res = new List<string>();
+			//foreach (string s in list)
+			//	res.Add(this.dutilizations_v01.Item2Annotation(s));
+			ListToListView(LV, list);
+		}
 
 		/// <summary>
 		/// Для установки IconSpacing нагуглил код через SendMessage (как в детстве):
@@ -2924,13 +2946,16 @@ LV.Items.Add(LVipP);
 				OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
 			}
 
-
-
 			if (STrN.Name.Contains("ZNode"))
 			{
 				Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
 				object O = this.DocInfo.MyBlocks.GetObject(id);
-				LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
+				if (((TZone)O).TypeName == "Территориальная зона")
+				{
+					PermittedUsesToListView(listView1, ((TZone)O).PermittedUses, ((TZone)O).AccountNumber);
+				}
+				else
+					LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
 				PropertiesToListView(listView_Properties, O);
 			}
 
@@ -4580,6 +4605,7 @@ LV.Items.Add(LVipP);
 		{
 			frmOptions frmoptions = new frmOptions();
 			frmoptions.dutilizations_v01 = this.dutilizations_v01;
+			frmoptions.dAllowedUse_v02 = this.dAllowedUse_v02;
 			frmoptions.dRegionsRF_v01 = this.dRegionsRF_v01;
 			frmoptions.dCategories_v01 = this.dCategories_v01;
 			frmoptions.dStates_v01 = this.dStates_v01;

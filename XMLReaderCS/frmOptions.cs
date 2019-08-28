@@ -14,6 +14,7 @@ namespace XMLReaderCS
     public partial class frmOptions : Form
     {
      public netFteo.XML.XSDFile dutilizations_v01;
+	 public netFteo.XML.XSDFile dAllowedUse_v02;
      public netFteo.XML.XSDFile dRegionsRF_v01;
      public netFteo.XML.XSDFile dStates_v01;
      public netFteo.XML.XSDFile dCategories_v01;
@@ -41,7 +42,8 @@ namespace XMLReaderCS
             schemas = new netFteo.XML.SchemaSet();
 
             schemas.AddSchema(dutilizations_v01.XSDFileName);
-            schemas.AddSchema(dRegionsRF_v01.XSDFileName);
+			schemas.AddSchema(dAllowedUse_v02.XSDFileName);
+			schemas.AddSchema(dRegionsRF_v01.XSDFileName);
             schemas.AddSchema(dStates_v01.XSDFileName);
             schemas.AddSchema(dLocationLevel1_v01.XSDFileName); // already declared ???  !!!
             schemas.AddSchema(dCategories_v01.XSDFileName); // already declared ???  !!!

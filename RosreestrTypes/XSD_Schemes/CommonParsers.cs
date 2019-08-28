@@ -2068,6 +2068,12 @@ namespace RRTypes.CommonParsers
 
 	public class Doc2Type : Parser
 	{
+		public Doc2Type(netFteo.XML.XSDFile dUtil, netFteo.XML.XSDFile dAllowedUse)
+		{
+			this.dAllowedUse_v02 = dAllowedUse;
+			this.dutilizations_v01 = dUtil;
+		}
+
 		/// <summary>
 		/// Parsing node Reestr_Contractors for xml Version=04
 		/// </summary>
@@ -4495,7 +4501,8 @@ namespace RRTypes.CommonParsers
 			return res;
 		}
 		#endregion
-
+		netFteo.XML.XSDFile dutilizations_v01;
+		netFteo.XML.XSDFile dAllowedUse_v02;
 		#region  Разбор КПТ 10
 		public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
 		{
@@ -4603,7 +4610,7 @@ namespace RRTypes.CommonParsers
 						if (KPT10.CadastralBlocks[i].Zones[iP].TerritorialZone != null)
 						{
 							ZoneItem.TypeName = "Территориальная зона";
-							//  ZoneItem.AddPermittedUses(KPT_v09Utils.PermittedUseCollectionToList(KPT10.CadastralBlocks[i].Zones[iP].TerritorialZone.PermittedUses));
+							ZoneItem.AddPermittedUses(KPT_v10Utils.PermittedUseCollectionToList( this.dAllowedUse_v02, KPT10.CadastralBlocks[i].Zones[iP].TerritorialZone.PermittedUses));
 						}
 						Bl.AddZone(ZoneItem);
 					}
