@@ -822,63 +822,77 @@ namespace RRTypes.CommonCast
 			nsmgr.AddNamespace("docns", xmldoc.DocumentElement.NamespaceURI);
 			string RootName = xmldoc.DocumentElement.Name; //Корни документа могут быть разными - KPZU, KVZU etc. Получим по факту из документа
 
-			System.Xml.XmlNodeList lst = xmldoc.DocumentElement.SelectNodes("/docns:" + RootName + "/docns:ReestrExtract/docns:ExtractObjectRight/docns:ExtractObject/docns:ObjectRight/docns:Right", nsmgr);
+			System.Xml.XmlNodeList Rights = xmldoc.DocumentElement.SelectNodes("/docns:" + RootName + "/docns:ReestrExtract/docns:ExtractObjectRight/docns:ExtractObject/docns:ObjectRight/docns:Right", nsmgr);
 
 
 			netFteo.Rosreestr.TMyRights rs = new netFteo.Rosreestr.TMyRights();
-
-			foreach (System.Xml.XmlNode cd in lst)
+			foreach (System.Xml.XmlNode cd in Rights)
 			{
-
 				netFteo.Rosreestr.TRight rt = new netFteo.Rosreestr.TRight();
-				if (cd.SelectSingleNode("docns:NoOwner", nsmgr) == null)
+
+				foreach (System.Xml.XmlNode child in cd.ChildNodes)
 				{
-					netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
-
-
-					if (cd.SelectSingleNode("docns:Owner/docns:Person", nsmgr) != null)
+					if (child.Name == "Owner")
 					{
-						own.OwnerName += cd.SelectSingleNode("docns:Owner/docns:Person/docns:FIO/docns:Surname", nsmgr).FirstChild.Value + " ";
-						own.OwnerName += cd.SelectSingleNode("docns:Owner/docns:Person/docns:FIO/docns:First", nsmgr).FirstChild.Value + " ";
-						if (cd.SelectSingleNode("docns:Owner/docns:Person/docns:FIO/docns:Patronymic", nsmgr) != null)
-							own.OwnerName += cd.SelectSingleNode("docns:Owner/docns:Person/docns:FIO/docns:Patronymic", nsmgr).FirstChild.Value + " ";
+						netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
+						if (child.SelectSingleNode("docns:Person", nsmgr) != null)
+						{
+							own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Surname", nsmgr).FirstChild.Value + " ";
+							own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:First", nsmgr).FirstChild.Value + " ";
+							if (child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr) != null)
+								own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr).FirstChild.Value + " ";
+						}
+
+						if (child.SelectSingleNode("docns:Organization", nsmgr) != null)
+						{
+							System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Organization/docns:Name", nsmgr);
+							own.OwnerName = ownrOrg.LastChild.Value;
+						}
+
+						if (child.SelectSingleNode("docns:Governance", nsmgr) != null)
+						{
+							System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Governance/docns:Name", nsmgr);
+							own.OwnerName = ownrOrg.LastChild.Value;
+						}
+
+						if (child.SelectSingleNode("docns:ContactOwner", nsmgr) != null)
+							own.ContactOwner = child.SelectSingleNode("docns:ContactOwner/docns:Address", nsmgr).FirstChild.Value;
+
+
+						rt.Owners.Add(own);
 					}
 
-					if (cd.SelectSingleNode("docns:Owner/docns:Organization", nsmgr) != null)
+					if (child.Name == "NoOwner")
 					{
-						System.Xml.XmlNode ownrOrg = cd.SelectSingleNode("docns:Owner/docns:Organization/docns:Name", nsmgr);
-						own.OwnerName = ownrOrg.LastChild.Value;
+						rt.Name = child.FirstChild.Value;
 					}
 
-
-					if (cd.SelectSingleNode("docns:Owner/docns:Governance", nsmgr) != null)
+					if (child.Name == "Registration")
 					{
-						System.Xml.XmlNode ownrOrg = cd.SelectSingleNode("docns:Owner/docns:Governance/docns:Name", nsmgr);
-						own.OwnerName = ownrOrg.LastChild.Value;
-					}
+						if (child.SelectSingleNode("docns:RegNumber", nsmgr) != null)
+						{
+							rt.RegNumber = child.SelectSingleNode("docns:RegNumber", nsmgr).FirstChild.Value;
+							rt.Name = child.SelectSingleNode("docns:Name", nsmgr).FirstChild.Value;
+							if (child.SelectSingleNode("docns:Desc", nsmgr) != null)
+								rt.Name = child.SelectSingleNode("docns:Desc", nsmgr).FirstChild.Value;
+							rt.RegDate = child.SelectSingleNode("docns:RegDate", nsmgr).FirstChild.Value;
+							rt.Type = child.SelectSingleNode("docns:Type", nsmgr).FirstChild.Value;
+						}
 
-					if (cd.SelectSingleNode("docns:Registration/docns:RegNumber", nsmgr) != null)
+						if (child.SelectSingleNode("docns:ShareText", nsmgr) != null)
+							rt.ShareText = child.SelectSingleNode("docns:ShareText", nsmgr).FirstChild.Value;
+
+						if (child.SelectSingleNode("docns:Share", nsmgr) != null) //Здесь дробь в атрибутах:
+							rt.ShareText = child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Numerator").Value +
+								"//" + child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Denominator").Value;
+
+				
+
+					}
+				}
+					//old case: TODO reee
+					if (cd.SelectSingleNode("docns:NoOwner", nsmgr) == null)
 					{
-						rt.RegNumber = cd.SelectSingleNode("docns:Registration/docns:RegNumber", nsmgr).FirstChild.Value;
-						rt.Name = cd.SelectSingleNode("docns:Registration/docns:Name", nsmgr).FirstChild.Value;
-						if (cd.SelectSingleNode("docns:Registration/docns:Desc", nsmgr) != null)
-							rt.Name = cd.SelectSingleNode("docns:Registration/docns:Desc", nsmgr).FirstChild.Value;
-						rt.RegDate = cd.SelectSingleNode("docns:Registration/docns:RegDate", nsmgr).FirstChild.Value;
-						rt.Type = cd.SelectSingleNode("docns:Registration/docns:Type", nsmgr).FirstChild.Value;
-					}
-					if (cd.SelectSingleNode("docns:Registration/docns:ShareText", nsmgr) != null)
-						rt.ShareText = cd.SelectSingleNode("docns:Registration/docns:ShareText", nsmgr).FirstChild.Value;
-
-					if (cd.SelectSingleNode("docns:Registration/docns:Share", nsmgr) != null) //Здесь дробь в атрибутах:
-						rt.ShareText = cd.SelectSingleNode("docns:Registration/docns:Share", nsmgr).Attributes.GetNamedItem("Numerator").Value +
-							"//" + cd.SelectSingleNode("docns:Registration/docns:Share", nsmgr).Attributes.GetNamedItem("Denominator").Value;
-
-					///KVZU/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[1461]/Registration/Share
-					rt.Owners.Add(own);
-					///KVZU/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[413]/Encumbrance[1]
-					/* netFteo.Rosreestr.TMyEncumbrances MyEncs = new netFteo.Rosreestr.TMyEncumbrances();           
-                     * */
-
 					System.Xml.XmlNodeList enclst = cd.SelectNodes("docns:Encumbrance", nsmgr);
 					foreach (System.Xml.XmlNode enc_node in enclst)
 					{
@@ -903,10 +917,17 @@ namespace RRTypes.CommonCast
 
 					}
 
+					/*
+
+			
+						*/
 
 				}
-				else
-					rt.Name = cd.SelectSingleNode("docns:NoOwner", nsmgr).FirstChild.Value;
+					/*
+					else
+						rt.Name = cd.SelectSingleNode("docns:NoOwner", nsmgr).FirstChild.Value;
+					*/
+				
 				rs.Add(rt);
 			}
 			return rs;

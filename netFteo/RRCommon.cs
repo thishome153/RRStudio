@@ -514,26 +514,34 @@ namespace netFteo.Rosreestr
    }
 
    public class TMyRights : System.ComponentModel.BindingList<TRight> {
-       public List<string> AsList()
-       {
-           List<string> aslist = new List<string>();
-           string listedRight = "";
-           for (int i = 0; i <= this.Count - 1; i++)
-           {
-               foreach (TMyOwner own in this[i].Owners)
-                   listedRight =(own.OwnerName + "\t" + this[i].Name + "\t" + this[i].RegNumber + "\t" + this[i].ShareText + "\t" + this[i].Desc);
-               foreach (TMyEncumbrance enc in this[i].Encumbrances)
-               {
-                   listedRight = listedRight + "\t" + enc.Name + ", " + enc.Desc;
-                   foreach (TMyOwner ow in enc.Owners)
-                       listedRight = listedRight + ", " + ow.OwnerName;
-               }
+		public List<string> AsList()
+		{
+			List<string> aslist = new List<string>();
+			string listedRight = "";
+			for (int i = 0; i <= this.Count - 1; i++)
+			{
+				foreach (TMyOwner own in this[i].Owners)
+				{
+					listedRight = (own.OwnerName + "\t" + this[i].Name + "\t" + this[i].RegNumber + "\t" + this[i].ShareText + "\t" + this[i].Desc);
 
-               aslist.Add(listedRight);
-           }
-           return aslist;
 
-       }
+					if (this[i].Encumbrances.Count > 0)
+					{
+					
+						foreach (TMyEncumbrance enc in this[i].Encumbrances)
+						{
+							listedRight = listedRight + "\t" + enc.Name + ", " + enc.Desc;
+							foreach (TMyOwner ow in enc.Owners)
+								listedRight += " "+ ow.OwnerName + ",";
+						}
+					}
+					aslist.Add(listedRight);
+					listedRight = ""; // clear string
+				}
+
+			}
+			return aslist;
+		}
    
    
    }
