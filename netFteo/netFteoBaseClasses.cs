@@ -13,26 +13,26 @@ namespace netFteo.Spatial
 
 {
 
-    #region Общий генератор типа PrimaryKey
-    /// <summary>
-    /// Общий генератор типа PrimaryKey
-    /// </summary>
-    public static class Gen_id
-    {
-        private static int fid;
-        public static int newId
-        {
-            get
-            {
-                fid++;
-                return fid;
-            }
-        }
-        public static void Reset()
-        {
-            fid = 0;
-        }
-    }
+	#region Общий генератор типа PrimaryKey
+	/// <summary>
+	/// Общий генератор типа PrimaryKey
+	/// </summary>
+	public static class Gen_id
+	{
+		private static int fid;
+		public static int newId
+		{
+			get
+			{
+				fid++;
+				return fid;
+			}
+		}
+		public static void Reset()
+		{
+			fid = 0;
+		}
+	}
 	#endregion
 
 	#region Base classes of all base classes 
@@ -77,17 +77,17 @@ namespace netFteo.Spatial
 		double ScaleEntity(double canvas_width, double canvas_height);//, double ViewKoefficient)
 	}
 
-    /// <summary>
-    /// А также его имплементация
-    /// </summary>
-    public  class Geometry : IGeometry
-    {
-        private int fid;
+	/// <summary>
+	/// А также его имплементация
+	/// </summary>
+	public class Geometry : IGeometry
+	{
+		private int fid;
 		public int id
-        {
-            get { return this.fid; }
-            set { this.fid = value; }
-        }
+		{
+			get { return this.fid; }
+			set { this.fid = value; }
+		}
 		private int fState;
 		public int State
 		{
@@ -125,7 +125,7 @@ namespace netFteo.Spatial
 
 		public void Fraq(string Format)
 		{
-		 // nothing to fraq :)
+			// nothing to fraq :)
 		}
 
 		public void ShowasListItems(ListView LV, bool SetTag)
@@ -150,146 +150,146 @@ namespace netFteo.Spatial
 		/// Construct base Geometry object
 		/// </summary>
 		public Geometry()
-        {
-            this.id = Gen_id.newId;
+		{
+			this.id = Gen_id.newId;
 			this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
 		}
-	
+
 	}
 
 
 
-    public interface ICoordinate
-    {
-        //
-        // Summary:
-        //     The x-ordinate value
-        double X { get; set; }
-        //
-        // Summary:
-        //     The y-ordinate value
-        double Y { get; set; }
-        //
-        // Summary:
-        //     The z-ordinate value
-        double Z { get; set; }
-        //
-        // Summary:
-        //     The measure value
-        // double M { get; set; }
-        double Mt { get; set; }
+	public interface ICoordinate
+	{
+		//
+		// Summary:
+		//     The x-ordinate value
+		double X { get; set; }
+		//
+		// Summary:
+		//     The y-ordinate value
+		double Y { get; set; }
+		//
+		// Summary:
+		//     The z-ordinate value
+		double Z { get; set; }
+		//
+		// Summary:
+		//     The measure value
+		// double M { get; set; }
+		double Mt { get; set; }
 
-    }
+	}
 
-    public class Coordinate : ICoordinate
-    {
-        public const double NullOrdinate = double.NaN;
+	public class Coordinate : ICoordinate
+	{
+		public const double NullOrdinate = double.NaN;
 
-        /// <summary>
-        /// Defualt on create: NAN, not zero !!
-        /// </summary>
-        public Coordinate()
-        {
-            this.X = NullOrdinate;
-            this.Y = NullOrdinate;
-            this.Z = NullOrdinate;
-            this.Mt = NullOrdinate;
-        }
-        //
-        // Summary:
-        //     X coordinate.
-        public double X { get; set; }
-        //
-        // Summary:
-        //     Y coordinate.
-        public double Y { get; set; }
-        //
-        // Summary:
-        //     Z coordinate.
-        public double Z { get; set; }
-        public double Mt { get; set; }
-    }
+		/// <summary>
+		/// Defualt on create: NAN, not zero !!
+		/// </summary>
+		public Coordinate()
+		{
+			this.X = NullOrdinate;
+			this.Y = NullOrdinate;
+			this.Z = NullOrdinate;
+			this.Mt = NullOrdinate;
+		}
+		//
+		// Summary:
+		//     X coordinate.
+		public double X { get; set; }
+		//
+		// Summary:
+		//     Y coordinate.
+		public double Y { get; set; }
+		//
+		// Summary:
+		//     Z coordinate.
+		public double Z { get; set; }
+		public double Mt { get; set; }
+	}
 
-    public interface IPoint : IGeometry, ICloneable //IGeometry, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
-    {
-        double x { get; set; }
-        double y { get; set; }
-        double z { get; set; }
-        //double M { get; set; }
-        //ICoordinateSequence CoordinateSequence { get; }
-    }
+	public interface IPoint : IGeometry, ICloneable //IGeometry, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
+	{
+		double x { get; set; }
+		double y { get; set; }
+		double z { get; set; }
+		//double M { get; set; }
+		//ICoordinateSequence CoordinateSequence { get; }
+	}
 
-    public class TPoint : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
-    {
-        //implementation of interface method Clone():
-        public object Clone()
-        {
-            return new TPoint(this.x, this.y, this.NumGeopointA);
-        }
+	public class TPoint : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
+	{
+		//implementation of interface method Clone():
+		public object Clone()
+		{
+			return new TPoint(this.x, this.y, this.NumGeopointA);
+		}
 
-        public int Borderid, fStatus, NumGeopoint;//, Order;
-        string fNumGeopointA,
-                       fPref, fCode, fPlace,
-                       fDescription;
-        //fFormula,
-        //fBorderDef; // ссылка на AREA.OBJDescr;
-        //double fx, fy, fz, fMt, foldX, foldY;
-        private Coordinate newOrd;
-        private Coordinate oldOrd;
-
-
-        /// <summary>
-        /// Default constructor. Inherited from parent, of coarse
-        /// Неявно вызывает родительский конструктор
-        /// </summary>
-        public TPoint()
-        {
-            this.newOrd = new Coordinate();
-            this.oldOrd = new Coordinate();
-        }
-
-        public TPoint(double initx, double inity) : this()
-        {
-            this.x = initx;
-            this.y = inity;
-        }
+		public int Borderid, fStatus, NumGeopoint;//, Order;
+		string fNumGeopointA,
+					   fPref, fCode, fPlace,
+					   fDescription;
+		//fFormula,
+		//fBorderDef; // ссылка на AREA.OBJDescr;
+		//double fx, fy, fz, fMt, foldX, foldY;
+		private Coordinate newOrd;
+		private Coordinate oldOrd;
 
 
-        public TPoint(double initx, double inity, double initz)
-            : this(initx, inity)
-        {
-            this.z = initz;
-        }
-        public TPoint(double initx, double inity, string name) : this(initx, inity)
-        {
-            this.NumGeopointA = name;
-        }
+		/// <summary>
+		/// Default constructor. Inherited from parent, of coarse
+		/// Неявно вызывает родительский конструктор
+		/// </summary>
+		public TPoint()
+		{
+			this.newOrd = new Coordinate();
+			this.oldOrd = new Coordinate();
+		}
 
-        public string NumGeopointA
-        {
-            get { return this.fNumGeopointA; }
-            set { this.fNumGeopointA = value; }
-        }
-        public string Pref
-        {
-            get { return this.fPref; }
-            set { this.fPref = value; }
-        }
-        public string Code
-        {
-            get { return this.fCode; }
-            set { this.fCode = value; }
-        }
-        public string Place
-        {
-            get { return this.fPlace; }
-            set { this.fPlace = value; }
-        }
-        public string Description
-        {
-            get { return this.fDescription; }
-            set { this.fDescription = value; }
-        }
+		public TPoint(double initx, double inity) : this()
+		{
+			this.x = initx;
+			this.y = inity;
+		}
+
+
+		public TPoint(double initx, double inity, double initz)
+			: this(initx, inity)
+		{
+			this.z = initz;
+		}
+		public TPoint(double initx, double inity, string name) : this(initx, inity)
+		{
+			this.NumGeopointA = name;
+		}
+
+		public string NumGeopointA
+		{
+			get { return this.fNumGeopointA; }
+			set { this.fNumGeopointA = value; }
+		}
+		public string Pref
+		{
+			get { return this.fPref; }
+			set { this.fPref = value; }
+		}
+		public string Code
+		{
+			get { return this.fCode; }
+			set { this.fCode = value; }
+		}
+		public string Place
+		{
+			get { return this.fPlace; }
+			set { this.fPlace = value; }
+		}
+		public string Description
+		{
+			get { return this.fDescription; }
+			set { this.fDescription = value; }
+		}
 		public new TPoint AverageCenter
 		{
 			get
@@ -324,7 +324,7 @@ namespace netFteo.Spatial
 			return scale;
 		}
 
-	public void ShowasListItems(ListView LV, bool SetTag)
+		public void ShowasListItems(ListView LV, bool SetTag)
 		{
 			if (Empty) return;
 			string BName;
@@ -344,221 +344,221 @@ namespace netFteo.Spatial
 			//LV.Tag = PList.Parent_Id;
 			if (SetTag) LV.Tag = id;
 			ListViewItem res = null; ;
-				BName = this.Pref + this.NumGeopointA + this.OrdIdent;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = BName;
-				LVi.Tag = id;
-				LVi.SubItems.Add(x_s);
-				LVi.SubItems.Add(y_s);
-				LVi.SubItems.Add(Mt_s);
-				LVi.SubItems.Add(Description);
-				if (Pref == "н")
-					LVi.ForeColor = System.Drawing.Color.Red;
-				else LVi.ForeColor = System.Drawing.Color.Black;
-				if (Status == 6)
-					LVi.ForeColor = System.Drawing.Color.Blue;
-				LV.Items.Add(LVi);
+			BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+			ListViewItem LVi = new ListViewItem();
+			LVi.Text = BName;
+			LVi.Tag = id;
+			LVi.SubItems.Add(x_s);
+			LVi.SubItems.Add(y_s);
+			LVi.SubItems.Add(Mt_s);
+			LVi.SubItems.Add(Description);
+			if (Pref == "н")
+				LVi.ForeColor = System.Drawing.Color.Red;
+			else LVi.ForeColor = System.Drawing.Color.Black;
+			if (Status == 6)
+				LVi.ForeColor = System.Drawing.Color.Blue;
+			LV.Items.Add(LVi);
 			LV.EndUpdate();
 			return;
 		}
 
 		public double x
-        {
-            /*
+		{
+			/*
             get { return this.fx; }
             set { this.fx = value; }
             */
-            get { return this.newOrd.X; }
-            set { this.newOrd.X = value; }
-        }
+			get { return this.newOrd.X; }
+			set { this.newOrd.X = value; }
+		}
 
-        public double y
-        {
-            /*
+		public double y
+		{
+			/*
             get { return this.fy; }
             set { this.fy = value; }
             */
-            get { return this.newOrd.Y; }
-            set { this.newOrd.Y = value; }
-        }
+			get { return this.newOrd.Y; }
+			set { this.newOrd.Y = value; }
+		}
 
-        public double z
-        {
-            /*
+		public double z
+		{
+			/*
             get { return this.fz; }
             set { this.fz = value; }
             */
-            get { return this.newOrd.Z; }
-            set { this.newOrd.Z = value; }
-        }
+			get { return this.newOrd.Z; }
+			set { this.newOrd.Z = value; }
+		}
 
-        public double oldX
-        {
-            get { return this.oldOrd.X; }
-            set
-            {
-                this.oldOrd.X = value;
-            }
-        }
+		public double oldX
+		{
+			get { return this.oldOrd.X; }
+			set
+			{
+				this.oldOrd.X = value;
+			}
+		}
 
-        public double oldY
-        {
-            /*
+		public double oldY
+		{
+			/*
             get { return this.foldY; }
             set { this.foldY = value; }
             */
-            get { return this.oldOrd.Y; }
-            set { this.oldOrd.Y = value; }
-        }
+			get { return this.oldOrd.Y; }
+			set { this.oldOrd.Y = value; }
+		}
 
-        public double Mt
-        {
-            get { return this.newOrd.Mt; }
-            set { this.newOrd.Mt = value; }
-        }
+		public double Mt
+		{
+			get { return this.newOrd.Mt; }
+			set { this.newOrd.Mt = value; }
+		}
 
-        /// <summary>
-        /// Признак изменений в точке. Если * - есть изменения
-        /// </summary>
-        public string OrdIdent
-        {
-            get
-            {
-                if ((Double.IsNaN(this.oldX)) ||
-                    (Double.IsNaN(this.oldY))
-                    ) return ""; 
+		/// <summary>
+		/// Признак изменений в точке. Если * - есть изменения
+		/// </summary>
+		public string OrdIdent
+		{
+			get
+			{
+				if ((Double.IsNaN(this.oldX)) ||
+					(Double.IsNaN(this.oldY))
+					) return "";
 
-                if ((this.x == this.oldX) && (this.y == this.oldY))
-                    return "";
-                else return "*"; //признак изменений в точек
-            }
-        }
+				if ((this.x == this.oldX) && (this.y == this.oldY))
+					return "";
+				else return "*"; //признак изменений в точек
+			}
+		}
 
-        /// <summary>
-        /// Ордината Х как строка
-        /// </summary>
-        public string x_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.x)) return this.x.ToString();
-                else
-                    return "-";
-            }
-        }
+		/// <summary>
+		/// Ордината Х как строка
+		/// </summary>
+		public string x_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.x)) return this.x.ToString();
+				else
+					return "-";
+			}
+		}
 
-        /// <summary>
-        /// Ордината Y как строка
-        /// </summary>
-        public string y_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.y)) return this.y.ToString();
-                else
-                    return "-";
-            }
-        }
-
-
-
-        public string z_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.z)) return Convert.ToString(this.z);
-                else return "0.00"; // ??
-            }
-
-        }
+		/// <summary>
+		/// Ордината Y как строка
+		/// </summary>
+		public string y_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.y)) return this.y.ToString();
+				else
+					return "-";
+			}
+		}
 
 
-        public string Mt_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.Mt)) return this.Mt.ToString();
-                else
-                    return "-";
-            }
-        }
 
-        public string oldX_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.oldX)) return this.oldX.ToString();
-                else
-                    return "-";
-            }
-        }
+		public string z_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.z)) return Convert.ToString(this.z);
+				else return "0.00"; // ??
+			}
 
-        public string oldY_s
-        {
-            get
-            {
-                if (!Double.IsNaN(this.oldY)) return this.oldY.ToString();
-                else
-                    return "-";
-            }
-        }
-
-        public int Status
-        {
-            get { return this.fStatus; }
-            set { this.fStatus = value; }
-        }
+		}
 
 
-        public bool Zero
-        {
-            get
-            {
-                if ((this.x == 0) && (this.y == 0)) return true;
-                else return false;
-            }
-        }
+		public string Mt_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.Mt)) return this.Mt.ToString();
+				else
+					return "-";
+			}
+		}
 
-        /// <summary>
-        /// Проверка точки на установленость значений
-        /// </summary>
-        public bool Empty
-        {
-            get
-            {
-                if ((Double.IsNaN(this.newOrd.X))
-                //The IEEE 754 floating point standard states that comparing NaN with NaN will 
-                // always return false.If you must do this, use Double.isNaN().
-                && (Double.IsNaN(this.newOrd.Y)))
-                    return true;
-                else
-                    return false;
-            }
-        }
+		public string oldX_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.oldX)) return this.oldX.ToString();
+				else
+					return "-";
+			}
+		}
 
-        public void RenamePoint()
-        {
-            throw new System.NotImplementedException();
-        }
+		public string oldY_s
+		{
+			get
+			{
+				if (!Double.IsNaN(this.oldY)) return this.oldY.ToString();
+				else
+					return "-";
+			}
+		}
 
-        /// <summary>
-        /// Сложение точек....
-        /// </summary>
-        /// <param name="A"></param>
-        /// <param name="B"></param>
-        /// <returns></returns>
-        public static TPoint operator +(TPoint A, TPoint B)
-        {
-            TPoint res = new TPoint();
-            res.id = Gen_id.newId;
-            res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
-            res.x = A.x + B.x;
-            res.y = A.y + B.y;
-            res.z = A.z + B.z;
-            return res;
-        }
-        //Что же будет равенством точки:
-        /*
+		public int Status
+		{
+			get { return this.fStatus; }
+			set { this.fStatus = value; }
+		}
+
+
+		public bool Zero
+		{
+			get
+			{
+				if ((this.x == 0) && (this.y == 0)) return true;
+				else return false;
+			}
+		}
+
+		/// <summary>
+		/// Проверка точки на установленость значений
+		/// </summary>
+		public bool Empty
+		{
+			get
+			{
+				if ((Double.IsNaN(this.newOrd.X))
+				//The IEEE 754 floating point standard states that comparing NaN with NaN will 
+				// always return false.If you must do this, use Double.isNaN().
+				&& (Double.IsNaN(this.newOrd.Y)))
+					return true;
+				else
+					return false;
+			}
+		}
+
+		public void RenamePoint()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		/// <summary>
+		/// Сложение точек....
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="B"></param>
+		/// <returns></returns>
+		public static TPoint operator +(TPoint A, TPoint B)
+		{
+			TPoint res = new TPoint();
+			res.id = Gen_id.newId;
+			res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
+			res.x = A.x + B.x;
+			res.y = A.y + B.y;
+			res.z = A.z + B.z;
+			return res;
+		}
+		//Что же будет равенством точки:
+		/*
         static public bool operator ==(Point A, Point B)
         {
 
@@ -569,20 +569,20 @@ namespace netFteo.Spatial
             return !(A == B);
         }
         */
-        public bool Equals(TPoint B)//Точки одинаковые ?
-        {
-            //return (this == TestPoint); //применим оператор
-            if ((this.id == B.id) &&                                 // один перв. ключ  
-                (this.x == B.x) && (this.y == B.y) && (this.z == B.z) // идентичные координаты
-                )
-                return true;
-            else
-                return false;
-        }
+		public bool Equals(TPoint B)//Точки одинаковые ?
+		{
+			//return (this == TestPoint); //применим оператор
+			if ((this.id == B.id) &&                                 // один перв. ключ  
+				(this.x == B.x) && (this.y == B.y) && (this.z == B.z) // идентичные координаты
+				)
+				return true;
+			else
+				return false;
+		}
 
-        public void Draw()//System.Windows.Controls.Canvas canvas, Member cursor, System.Windows.Media.SolidColorBrush color, SolidColorBrush bckclr)
-        {
-            /*
+		public void Draw()//System.Windows.Controls.Canvas canvas, Member cursor, System.Windows.Media.SolidColorBrush color, SolidColorBrush bckclr)
+		{
+			/*
             System.Windows.Shapes.Rectangle rct = new Rectangle();
             rct.Stroke = Brushes.LightSlateGray; rct.Width = 25; rct.Height = 25;
             rct.Fill = bckclr;
@@ -596,9 +596,9 @@ namespace netFteo.Spatial
             Canvas.SetLeft(CursorText, cursor.j * 28+9); Canvas.SetTop(CursorText, cursor.i * 28+9);
             canvas.Children.Add(CursorText);
         */
-        }
+		}
 
-    };
+	};
 
 
 	#endregion
@@ -751,24 +751,26 @@ namespace netFteo.Spatial
 		/// </summary>
 		/// <param name="mt"></param>
 		void SetMt(double mt);
+		bool RemovePoint(int PointID);
+		TPoint GetPoint(int PointID);
 	}
 
 	/// <summary>
 	/// Список точек на базе BindingList
 	/// </summary>
 	public class PointList : BindingList<TPoint>, IPointList
-    {
-        public const string TabDelimiter = "\t";  // tab
-        //public PointList Points;
-        public int Parent_Id; // ид Участка или чего тоо ттам
-        private int fid;
+	{
+		public const string TabDelimiter = "\t";  // tab
+												  //public PointList Points;
+		public int Parent_Id; // ид Участка или чего тоо ттам
+		private int fid;
 		private int fState;
 		private string fDefinition;
 		public int id
-        {
-            get { return this.fid; }
-            set { this.fid = value; }
-        }
+		{
+			get { return this.fid; }
+			set { this.fid = value; }
+		}
 
 		public int State
 		{
@@ -791,20 +793,18 @@ namespace netFteo.Spatial
 		{
 			PointList Detectors = (PointList)src;
 
-			foreach(TPoint Point in this)
-				foreach(TPoint srcPoint in Detectors)
-			{
-				if ((Point.x == srcPoint.x) &&
-					(Point.y == srcPoint.y) 
-						)
+			foreach (TPoint Point in this)
+				foreach (TPoint srcPoint in Detectors)
 				{
-					Point.State = 6;//Rosreestr.dStatesv01_enum.Учтенный;
-					Point.Pref = "";
+					if ((Point.x == srcPoint.x) &&
+						(Point.y == srcPoint.y)
+							)
+					{
+						Point.State = 6;//Rosreestr.dStatesv01_enum.Учтенный;
+						Point.Pref = "";
+					}
 				}
-			}
 		}
-
-
 
 		public void ExchangeOrdinates()
 		{
@@ -859,6 +859,32 @@ namespace netFteo.Spatial
 					pt.oldY = fraqtedY;
 				}
 			}
+		}
+
+		public bool RemovePoint(int PointID)
+		{
+			foreach (TPoint pt in this)
+			{
+				if (pt.id == PointID)
+				{
+					this.Remove(pt);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public TPoint GetPoint(int PointID)
+		{
+			foreach (TPoint pt in this)
+			{
+				if (pt.id == PointID)
+				{
+					return pt;
+
+				}
+			}
+			return null;
 		}
 
 		public int ReorderPoints(int StartIndex =1 )
@@ -1876,7 +1902,16 @@ SCAN:
                 child.SetMt(mt);
         }
 
-        public new  void Fraq(string Format)
+		public new bool RemovePoint(int PointID)
+		{
+		  bool Flag =	base.RemovePoint(PointID);
+
+			foreach (TRing child in this.Childs)
+				Flag = child.RemovePoint(PointID);
+			return Flag;
+		}
+
+		public new  void Fraq(string Format)
         {
 		 base.Fraq(Format);
 			foreach (TRing child in this.Childs)
@@ -1891,7 +1926,7 @@ SCAN:
 				BName = points[i].Pref + points[i].NumGeopointA + points[i].OrdIdent;
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = BName;
-				LVi.Tag = points[i].id;
+				LVi.Tag = "TPoint." + points[i].id;
 				LVi.SubItems.Add(points[i].x_s);
 				LVi.SubItems.Add(points[i].y_s);
 				LVi.SubItems.Add(points[i].Mt_s);
@@ -4265,6 +4300,12 @@ SCAN:
 						return feature;
 				}
 
+			foreach(IPointList item in this.ParsedSpatial)
+			{
+				TPoint pt = 	item.GetPoint(Item_id);
+				if (pt != null) return pt;
+			}
+
 			//Full ES
 			if (this.ParsedSpatial.id == Item_id)
 				return this.ParsedSpatial;
@@ -4283,6 +4324,12 @@ SCAN:
 					this.ParsedSpatial.Remove(feature);
 					return true;
 				}
+			}
+
+			foreach (IPointList feature in this.ParsedSpatial)
+			{
+
+				 return feature.RemovePoint(id);
 			}
 
 			//Full ES

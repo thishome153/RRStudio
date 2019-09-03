@@ -3034,28 +3034,34 @@ LV.Items.Add(LVipP);
 			}
 		}
 
-		private bool RemoveGeometryNode(TreeNode STrN)
+		private bool RemoveGeometryNode(string GeometryTagID)
 		{
 			IGeometry Entity = null;
-			if (STrN.Name.Contains("ES."))
+			if (GeometryTagID.Contains("ES."))
 			{
-				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(3)));
 			}
 
-			if (STrN.Name.Contains("Layer."))
+			if (GeometryTagID.Contains("Layer."))
 			{
-				Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(STrN.Name.Substring(6));
+				Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(GeometryTagID.Substring(6));
 			}
 
-			if (STrN.Name.Contains("SPElem."))
+			if (GeometryTagID.Contains("SPElem."))
 			{
-				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
 			}
 
-			if (STrN.Name.Contains("TPolyLine."))
+			if (GeometryTagID.Contains("TPolyLine."))
 			{
-				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(10)));
 			}
+
+			if (GeometryTagID.Contains("TPoint."))
+			{
+				Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
+			}
+
 
 			if (Entity != null)
 			{
@@ -5307,9 +5313,28 @@ LV.Items.Add(LVipP);
 			//if (sender is TreeView)
 			{
 			//	TreeView tv = (TreeView)sender;
-				if (RemoveGeometryNode(TV_Parcels.SelectedNode))
+				if (RemoveGeometryNode(TV_Parcels.SelectedNode.Name))
 				{
 					TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
+				}
+			}
+		}
+
+
+		//Удалить точку
+		private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			//var test = (ListView)sender;
+
+			if (listView1.SelectedItems.Count == 1)
+			{
+
+				if (listView1.SelectedItems[0].Tag != null)
+					toolStripStatusLabel2.Text = listView1.SelectedItems[0].Tag.ToString();
+				if (RemoveGeometryNode(listView1.SelectedItems[0].Tag.ToString()))
+				{
+					listView1.Items.Remove(listView1.SelectedItems[0]);
 				}
 			}
 		}

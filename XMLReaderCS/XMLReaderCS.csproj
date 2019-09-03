@@ -171,7 +171,7 @@
     <Compile Include="Controls\LoadingCircleToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="EntityViewer.xaml.cs">
+    <Compile Include="MVVM\EntityViewer.xaml.cs">
       <DependentUpon>EntityViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="ESChecker_MP06Form.cs">
@@ -480,7 +480,6 @@
     <None Include="Resources\ЧерныеГлаза.bmp" />
     <None Include="Resources\misc28.bmp" />
     <None Include="Resources\chrome.bmp" />
-    <Content Include="Images\add.png" />
     <None Include="Resources\Rosreestr.gif" />
     <None Include="Resources\XML.bmp" />
     <None Include="Resources\house.png" />
@@ -497,16 +496,6 @@
     <None Include="Resources\thatch.bmp" />
     <None Include="Resources\crypt_sign_USB_16x16.png" />
     <None Include="Resources\NC_ПоказатьПолностью.bmp" />
-    <Content Include="Images\FixosoftTM.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\save.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\save1.bmp" />
-    <Content Include="Images\WPF_logo.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\Refresh.bmp" />
     <None Include="Resources\ЗУ.bmp" />
     <None Include="Resources\ЗУ_1.bmp" />
@@ -541,10 +530,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="MVVM\Images\" />
     <Folder Include="Properties\InspectionAct\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="EntityViewer.xaml">
+    <Page Include="MVVM\EntityViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -577,7 +567,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

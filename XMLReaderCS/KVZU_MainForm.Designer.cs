@@ -180,6 +180,7 @@
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+			this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -734,7 +735,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
 			this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
+			this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
 			this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
 			// 
 			// сохранитьКакToolStripMenuItem
@@ -1057,9 +1058,10 @@
             this.фиксироватьToolStripMenuItem,
             this.изменитьToolStripMenuItem,
             this.замкнутьToolStripMenuItem,
-            this.обратныйПорядокToolStripMenuItem});
+            this.обратныйПорядокToolStripMenuItem,
+            this.удалитьToolStripMenuItem});
 			this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(181, 202);
+			this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(181, 246);
 			this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
 			// 
 			// ChangeXYToolStripMenuItem
@@ -1556,6 +1558,13 @@
 			this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
 			this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
 			// 
+			// удалитьToolStripMenuItem
+			// 
+			this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+			this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.удалитьToolStripMenuItem.Text = "Удалить";
+			this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+			// 
 			// KVZU_Form
 			// 
 			this.AllowDrop = true;
@@ -1753,6 +1762,7 @@
 		private System.Windows.Forms.ToolStripMenuItem writeDXFSingleEntitydxfPointToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem добавитьПДКПТToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem удалитьГеометриюToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
 	}
 }
 
