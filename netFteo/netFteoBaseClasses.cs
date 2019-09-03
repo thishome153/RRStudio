@@ -941,7 +941,8 @@ namespace netFteo.Spatial
 				BName = this[i].Pref + this[i].NumGeopointA + this[i].OrdIdent;
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = BName;
-				LVi.Tag = this[i].id;
+				//LVi.Tag = this[i].id;
+				LVi.Tag = "TPoint." + this[i].id;
 				LVi.SubItems.Add(this[i].x_s);
 				LVi.SubItems.Add(this[i].y_s);
 				LVi.SubItems.Add(this[i].Mt_s);
@@ -4300,10 +4301,15 @@ SCAN:
 						return feature;
 				}
 
-			foreach(IPointList item in this.ParsedSpatial)
+			foreach(IGeometry item in this.ParsedSpatial)
 			{
-				TPoint pt = 	item.GetPoint(Item_id);
-				if (pt != null) return pt;
+				
+				if (item is IPointList)
+				{
+					TPoint pt = ((IPointList)item).GetPoint(Item_id);
+					if (pt != null) return pt;
+				}
+				
 			}
 
 			//Full ES
@@ -4321,16 +4327,26 @@ SCAN:
 			{
 				if (feature.id == id)
 				{
-					this.ParsedSpatial.Remove(feature);
-					return true;
+					if (this.ParsedSpatial.Remove(feature))
+						return true;
+				}
+
+				if (feature is IPointList)
+				{
+					if (((IPointList)feature).RemovePoint(id))
+
+						return true;
+
 				}
 			}
 
+			/*
 			foreach (IPointList feature in this.ParsedSpatial)
 			{
 
 				 return feature.RemovePoint(id);
 			}
+			*/
 
 			//Full ES
 			if (this.ParsedSpatial.id == id)
@@ -4834,6 +4850,8 @@ SCAN:
 				ListViewItem LVi = new ListViewItem();
 				LVi.Text = feature.Definition;
 				LVi.Tag = feature.id;
+				if (feature is IPoint)
+					LVi.Tag = "TPoint."+feature.id;
 				LVi.SubItems.Add(feature.Name);
 				
 				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")

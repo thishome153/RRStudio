@@ -1683,7 +1683,8 @@ namespace netFteo.IO
 								if (Int16.TryParse(line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1), out ringCount))
 									res.Add(MIF_ParseRegion(readFile, ringCount));
 								if (MID_Present)
-									midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
+									//TODO: bug fixof null resultof MID_ParseRow	midline = MID_ParseRow(MIDFile, MIF_Options).ToString();
+									;
 							}
 						}
 						StrCounter++;

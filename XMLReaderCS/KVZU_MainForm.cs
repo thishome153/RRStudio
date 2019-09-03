@@ -4548,7 +4548,6 @@ LV.Items.Add(LVipP);
 							sub += "\t" + lv.Text;
 					}
 
-
 					items.Add(lvit.Text + sub);
 				}
 			}
@@ -5266,17 +5265,7 @@ LV.Items.Add(LVipP);
 
 		}
 
-		private void listView1_MouseClick(object sender, MouseEventArgs e)
-		{
-			var test = (ListView)sender;
-			if (test.SelectedItems.Count == 1)
-			{
-
-				if (test.SelectedItems[0].Tag != null)
-					toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
-			}
-
-		}
+	
 
 		private void toolStripButton4_Click(object sender, EventArgs e)
 		{
@@ -5321,20 +5310,30 @@ LV.Items.Add(LVipP);
 		}
 
 
+		private void listView1_MouseClick(object sender, MouseEventArgs e)
+		{
+			var test = (ListView)sender;
+			if (test.SelectedItems.Count == 1)
+			{
+
+				if (test.SelectedItems[0].Tag != null)
+					toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
+			}
+
+		}
+
 		//Удалить точку
 		private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-
-			//var test = (ListView)sender;
-
-			if (listView1.SelectedItems.Count == 1)
+			Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
+			ListView.SelectedListViewItemCollection items = ((ListView)parent).SelectedItems;
+			if (items.Count == 1)
 			{
-
-				if (listView1.SelectedItems[0].Tag != null)
-					toolStripStatusLabel2.Text = listView1.SelectedItems[0].Tag.ToString();
-				if (RemoveGeometryNode(listView1.SelectedItems[0].Tag.ToString()))
+				if (items[0].Tag != null)
+					toolStripStatusLabel2.Text = items[0].Tag.ToString();
+				if (RemoveGeometryNode(items[0].Tag.ToString()))
 				{
-					listView1.Items.Remove(listView1.SelectedItems[0]);
+					((ListView)parent).Items.Remove(items[0]);
 				}
 			}
 		}
