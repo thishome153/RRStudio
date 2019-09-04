@@ -25,7 +25,7 @@ namespace XMLReaderCS
 				"\r\n" + AssemblyCompany + " " + AssemblyCopyright;
             this.textBoxDescription.Text = "IDE :";
             this.textBoxDescription.AppendText("\r\n Begin design:   MSVC 2010.Express Edition");
-            this.textBoxDescription.AppendText("\r\n Current time (: Visual Studio 2017 Community");
+            this.textBoxDescription.AppendText("\r\n Current time (: Visual Studio 2019 Community");
             this.textBoxDescription.AppendText("\r\n Assemblys:");
             foreach (string ass in Assemblys)
             {
