@@ -863,15 +863,44 @@ namespace netFteo.Spatial
 
 		public bool RemovePoint(int PointID)
 		{
-			foreach (TPoint pt in this)
+			//linq:
+			// case 1
+			try
 			{
-				if (pt.id == PointID)
-				{
-					this.Remove(pt);
-					return true;
-				}
+				return this.Remove(this.Single<TPoint>(point => point.id == PointID));
 			}
+			catch (InvalidOperationException ex)
+			{
+
+				return false;
+			}
+			//
+			//case 2 - wont working ....
+			/*
+			if (this.Select(point => point.id == PointID).Count() == 1)
+			{
+				return this.Remove(this.Single<TPoint>(point => point.id == PointID));
+			}
+			*/
+
+			/*
+		 // foreach:
+		foreach (TPoint pt in this)
+		{
+			if (pt.id == PointID)
+			{
+				this.Remove(pt);
+				return true;
+			}
+		}
+		
+	*/
 			return false;
+		}
+
+		public bool RemovePoint(TPoint pt)
+		{
+				return	this.Remove(pt);
 		}
 
 		public TPoint GetPoint(int PointID)
@@ -4340,13 +4369,6 @@ SCAN:
 				}
 			}
 
-			/*
-			foreach (IPointList feature in this.ParsedSpatial)
-			{
-
-				 return feature.RemovePoint(id);
-			}
-			*/
 
 			//Full ES
 			if (this.ParsedSpatial.id == id)

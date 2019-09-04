@@ -5260,11 +5260,6 @@ LV.Items.Add(LVipP);
 
 
 
-		private void listView1_KeyUp(object sender, KeyEventArgs e)
-		{
-
-		}
-
 	
 
 		private void toolStripButton4_Click(object sender, EventArgs e)
@@ -5309,32 +5304,58 @@ LV.Items.Add(LVipP);
 			}
 		}
 
-
 		private void listView1_MouseClick(object sender, MouseEventArgs e)
 		{
-			var test = (ListView)sender;
-			if (test.SelectedItems.Count == 1)
+			if (ListView_KeyUpMouseClick((ListView)sender, out string tag))
 			{
-
-				if (test.SelectedItems[0].Tag != null)
-					toolStripStatusLabel2.Text = test.SelectedItems[0].Tag.ToString();
+				toolStripStatusLabel2.Text = tag;
 			}
+		}
 
+
+		private void listView1_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (ListView_KeyUpMouseClick((ListView)sender, out string tag))
+			{
+				toolStripStatusLabel2.Text = tag;
+			}
+		}
+
+
+
+		private bool ListView_KeyUpMouseClick(ListView lv, out string ItemTag)
+		{
+			if (lv.SelectedItems.Count == 1)
+			{
+				if (lv.SelectedItems[0].Tag != null)
+				{
+					ItemTag = lv.SelectedItems[0].Tag.ToString();
+					return true;
+				}
+			}
+			ItemTag = null;
+			return false;
 		}
 
 		//Удалить точку
 		private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
-			ListView.SelectedListViewItemCollection items = ((ListView)parent).SelectedItems;
-			if (items.Count == 1)
+			if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
 			{
-				if (items[0].Tag != null)
-					toolStripStatusLabel2.Text = items[0].Tag.ToString();
-				if (RemoveGeometryNode(items[0].Tag.ToString()))
+				if (RemoveGeometryNode(tag))
 				{
-					((ListView)parent).Items.Remove(items[0]);
+					((ListView)parent).Items.Remove(((ListView)parent).SelectedItems[0]);
 				}
+			}
+		}
+
+		//Удалить току/геометрию
+		private void удалитьToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			if (RemoveGeometryNode(TV_Parcels.SelectedNode.Name))
+			{
+				TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
 			}
 		}
 	}
