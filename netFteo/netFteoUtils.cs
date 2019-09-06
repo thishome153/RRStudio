@@ -36,8 +36,15 @@ namespace netFteo
 			 Result[FindPosition] = '.'; // заменияем там, где нашли запятую
 			*/
 			return Result;
-		}
+        }
 
+
+        public static double TryDouble(string src)
+        {
+            if ((src.Length > 0) && (!src.Contains("-")))
+                return Convert.ToDouble(src.Replace(',', '.'));
+            else throw new FormatException("Invalid input string to Double convert");
+        }
 
 		public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)
 		{

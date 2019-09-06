@@ -119,8 +119,13 @@ namespace netFteo.IO
 			FileName = Filename;
 		}
 
+        private TPoint CSV_Parse_point(string[] src)
+        {
+
+        }
+
 		/// <summary>
-		/// Чтение файлов  CSV (формата Технокад)
+		/// Reading CSV file (формата Технокад)
 		/// </summary>
 		/// <param name="Fname"></param>
 		/// <returns></returns>
@@ -150,59 +155,88 @@ namespace netFteo.IO
 							goto next;
 						};
 
-						if (line.Contains("["))
-						{
-						newPolygon:
-							TMyPolygon resPoly = new TMyPolygon(line.Split(CommaDelimiter.ToCharArray())[0]); // z.B.: [1];;1;-;-;522207.54;1318046.19;;;;0.1;626003000000
-							while (readFile.Peek() != -1)
-							{
-								string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray()); //Сплпиттер по ";" - default for CSV
-								TPoint FilePoint = new TPoint();
-								FilePoint.NumGeopointA = SplittedStr[2].ToString();
-								FilePoint.x = Convert.ToDouble(SplittedStr[5].ToString());
-								FilePoint.y = Convert.ToDouble(SplittedStr[6].ToString());
+                        if (line.Contains("["))
+                        {
+                        newPolygon:
+                            string ContourNumber = line.Split(CommaDelimiter.ToCharArray())[0];
+                            TMyPolygon resPoly = new TMyPolygon(ContourNumber); // z.B.: [1];;1;-;-;522207.54;1318046.19;;;;0.1;626003000000
+                            PointList points = new PointList();
+                            while (readFile.Peek() != -1)
+                            {
+                                string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray()); //Сплпиттер по ";" - default for CSV
+                                TPoint FilePoint = new TPoint();
+                                FilePoint.NumGeopointA = SplittedStr[2].ToString();
+                                FilePoint.Description = SplittedStr[11].ToString();
 
-								if (!SplittedStr[3].Contains("-"))
-									FilePoint.oldX = Convert.ToDouble(SplittedStr[3].ToString());
-								if (!SplittedStr[4].Contains("-"))
-									FilePoint.oldY = Convert.ToDouble(SplittedStr[4].ToString());
+                                try
+                                {
+                                    FilePoint.x    = StringUtils.TryDouble(SplittedStr[5]);
+                                    FilePoint.y    = StringUtils.TryDouble(SplittedStr[6]);
+                                    FilePoint.Mt   = StringUtils.TryDouble(SplittedStr[10]);
+                                }
+                                catch (FormatException ex)
+                                {
+                                    FilePoint.Description = ex.Message;
+                                    FilePoint.x = Double.NaN;
+                                    FilePoint.y = Double.NaN;
+                                    FilePoint.Mt   = Double.NaN;
+                                }
 
-								if (SplittedStr[5].ToString() == "*")
-								{
-									FilePoint.Status = 0; // new, changed
-								}
-								else // ident old and new: just copy
-								{
-									FilePoint.oldX = FilePoint.x;
-									FilePoint.oldY = FilePoint.y;
-									FilePoint.Status = 6; // exist, not changed
-								}
-								FilePoint.Mt = Convert.ToDouble(SplittedStr[10].ToString());
-								FilePoint.Description = SplittedStr[11].ToString();
-								resPoly.AddPoint(FilePoint);
+                                try
+                                {
+                                    FilePoint.oldX = StringUtils.TryDouble(SplittedStr[3]);
+                                    FilePoint.oldY = StringUtils.TryDouble(SplittedStr[4]);
+                                }
+                                catch (FormatException ex)
+                                {
+                                    //FilePoint.Description = ex.Message;
+                                    FilePoint.oldX = Double.NaN;
+                                    FilePoint.oldY = Double.NaN;
+                                }
 
-								line = readFile.ReadLine();
-								if (line == "")
-								{
-									line = readFile.ReadLine();
-									resPolys.Add(resPoly);
-									goto newPolygon;
-								}
-
-								if (line.Contains("["))
-								{
-									//may be children
-									if (resPoly.Definition != line.Split(CommaDelimiter.ToCharArray())[0])
-									{
-										resPolys.Add(resPoly);
-										goto newPolygon;
-									}
-								}
+                                if (SplittedStr[5].ToString() == "*")
+                                {
+                                    FilePoint.Status = 0; // new, changed
+                                }
+                                else // ident old and new: just copy
+                                {
+                                    FilePoint.oldX = FilePoint.x;
+                                    FilePoint.oldY = FilePoint.y;
+                                    FilePoint.Status = 6; // exist, not changed
+                                }
 
 
-							}
-							resPolys.Add(resPoly);
-						}
+                                resPoly.AddPoint(FilePoint);
+                                points.AddPoint(FilePoint);
+                                line = readFile.ReadLine();
+
+                                if (line == "")
+                                {
+                                    line = readFile.ReadLine();
+                                    resPolys.Add(resPoly);
+                                    goto newPolygon;
+                                }
+
+                                if (line.Contains("["))
+                                {
+                                    string ContourNumber2 = line.Split(CommaDelimiter.ToCharArray())[0];
+                                    //may be children
+                                    if (ContourNumber != ContourNumber2)
+                                    {
+                                        resPolys.Add(resPoly);
+                                        resPolys.Add(points);
+                                        goto newPolygon;
+                                    }
+                                    else
+                                    {
+                                        //last point:
+                                        CSV_Parse_point(line);
+                                    }
+                                }
+                            }
+                            resPolys.Add(resPoly);
+                            resPolys.Add(points);
+                        }
 					}
 				next:;
 				}

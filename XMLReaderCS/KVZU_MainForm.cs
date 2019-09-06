@@ -610,17 +610,17 @@ namespace XMLReaderCS
 
 			if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
 			{
-				netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
-				TEntitySpatial polyfromMIF = mifreader.ImportCSVFile();
-				if (polyfromMIF != null)
+				netFteo.IO.TextReader CSVReader = new netFteo.IO.TextReader(FileName);
+				TEntitySpatial ES_from_CSV = CSVReader.ImportCSVFile();
+				if (ES_from_CSV != null)
 				{
 					DocInfo.MyBlocks.ParsedSpatial.Clear();
-					DocInfo.MyBlocks.ParsedSpatial.Add(polyfromMIF);
+					DocInfo.MyBlocks.ParsedSpatial = ES_from_CSV;
 					this.DocInfo.DocTypeNick = "Текстовый файл";
 					this.DocInfo.CommentsType = "CSV";
-					this.DocInfo.Comments = mifreader.Body;
-					this.DocInfo.Encoding = mifreader.BodyEncoding;
-					this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
+					this.DocInfo.Comments = CSVReader.Body;
+					this.DocInfo.Encoding = CSVReader.BodyEncoding;
+					this.DocInfo.Number = "Текстовый файл CSV ,  " + CSVReader.BodyEncoding;
 				}
 			}
 
