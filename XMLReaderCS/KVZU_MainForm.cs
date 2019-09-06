@@ -5358,6 +5358,11 @@ LV.Items.Add(LVipP);
 				TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
 			}
 		}
-	}
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            OpenFile(3);// OpenXML_KVZUTyped();
+        }
+    }
 }
 

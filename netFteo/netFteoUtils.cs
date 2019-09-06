@@ -43,7 +43,7 @@ namespace netFteo
         {
             if ((src.Length > 0) && (!src.Contains("-")))
                 return Convert.ToDouble(src.Replace(',', '.'));
-            else throw new FormatException("Invalid input string to Double convert");
+            else throw new FormatException("Invalid input string while ToDouble convert");
         }
 
 		public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)

@@ -333,6 +333,16 @@ namespace XMLReaderCS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap technoCAD_Express {
+            get {
+                object obj = ResourceManager.GetObject("technoCAD-Express", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap thatch {
             get {
                 object obj = ResourceManager.GetObject("thatch", resourceCulture);
