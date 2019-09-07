@@ -164,37 +164,140 @@ namespace netFteo.IO
             return FilePoint;
         }
 
-		/// <summary>
-		/// Reading CSV file (формата Технокад)
-		/// </summary>
-		/// <param name="Fname"></param>
-		/// <returns></returns>
-		public TEntitySpatial ImportCSVFile()
-		{
-			TEntitySpatial resPolys = new TEntitySpatial();
-			try
+        /// <summary>
+        /// Reading CSV file (формата Технокад)
+        /// </summary>
+        /// <param name="Fname"></param>
+        /// <returns></returns>
+        public TEntitySpatial ImportCSVFile()
+        {
+            TEntitySpatial resES = new TEntitySpatial();
+            try
+            {
+                string line = null;
+                List<string[]> items = new List<string[]>();
+                System.IO.TextReader readFile = new StreamReader(FileName);
+
+                while (readFile.Peek() != -1)
+                {
+                    line = readFile.ReadLine();
+
+                    if (line != null) //Читаем строку
+                    {      //по строке
+                           //Read Columns
+                        string[] Columns = line.Split(CommaDelimiter.ToCharArray());
+                        foreach (string Column in Columns)
+                        {
+                            this.DataColumns.Add(new DataColumn("CSVField", Column));
+                        }
+
+                        if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
+                        {
+                            goto next;
+                        };
+
+                        if (line.Contains("[")) //feature arrived
+                        {
+                            items.Add(line.Split(CommaDelimiter.ToCharArray()));
+                        }
+                    }
+                next:;
+                }
+
+                readFile.Close();
+                readFile = null;
+                //now parse strings[]
+                string CurrentFeature = null;
+                List<string> Features = new List<string>();
+                foreach (string[] splittedstr in items)
+                {
+                    CurrentFeature = splittedstr[0];
+
+                    if (! Features.Any(plist => plist == CurrentFeature)) //check if already present
+                    {
+                        var items_of_current = items.Where(pos => pos[0] == CurrentFeature);// filter List by [1]
+                        PointList points_of_current = CSV_ParseRing(CurrentFeature, items_of_current);
+                        if (points_of_current.First().NumGeopointA == points_of_current.Last().NumGeopointA)
+                        {
+                            TMyPolygon poly = new TMyPolygon(points_of_current.Definition);
+                                poly.ImportObjects(points_of_current);
+                            var child_items_of_current = items.Where(pos => pos[0].Contains(CurrentFeature.Replace(']', '.')));// filter List by parent [1.
+                            foreach (string[] childString in child_items_of_current)
+                            {
+                                if (!Features.Any(plist => plist == childString[0])) //check if already present
+                                {
+                                    TRing childRing = new TRing();
+                                    childRing.Definition = childString[0];
+                                    PointList points_of_current_ch = CSV_ParseRing(childRing.Definition, child_items_of_current);
+                                    childRing.ImportObjects(points_of_current_ch);
+                                    poly.Childs.Add(childRing);
+                                    Features.Add(childRing.Definition);
+                                }
+                            }
+
+                            resES.Add(poly);
+                        }
+                        else
+                        {
+                            TPolyLine poly = new TPolyLine();
+                            poly.Definition = points_of_current.Definition;
+                            foreach (TPoint pt in points_of_current)
+                                poly.AddPoint(pt);
+                            resES.Add(poly);
+                        }
+
+                        Features.Add(CurrentFeature);
+                    }
+                }
+
+                return resES;
+			}
+			catch (IOException ex)
 			{
-				string line = null;
+				//  MessageBox.Show(ex.ToString());
+				return null;
+			}
+		}
+
+        private PointList CSV_ParseRing(string defintition, IEnumerable <string[]> items_of_current)
+        {
+            PointList points_of_current = new PointList();
+            points_of_current.Definition = defintition;
+
+            foreach (string[] item_of_current in items_of_current)
+            {
+                points_of_current.AddPoint(CSV_Parse_point(item_of_current));
+            }
+            return points_of_current;
+        }
+
+        [Obsolete]
+        public TEntitySpatial ImportCSVFile_bck()
+        {
+            TEntitySpatial resPolys = new TEntitySpatial();
+            try
+            {
+                string line = null;
                 string[] SplittedStr = null;
                 System.IO.TextReader readFile = new StreamReader(FileName);
 
-				while (readFile.Peek() != -1)
-				{
-					line = readFile.ReadLine();
+                while (readFile.Peek() != -1)
+                {
+                    line = readFile.ReadLine();
 
-					if (line != null) //Читаем строку
-					{      //по строке
-						   //Read Columns
-						string[] Columns = line.Split(CommaDelimiter.ToCharArray());
-						foreach (string Column in Columns)
-						{
-							this.DataColumns.Add(new DataColumn("CSVField", Column));
-						}
+                    if (line != null) //Читаем строку
+                    {      //по строке
+                           //Read Columns
+                        string[] Columns = line.Split(CommaDelimiter.ToCharArray());
+                        foreach (string Column in Columns)
+                        {
+                            this.DataColumns.Add(new DataColumn("CSVField", Column));
+                        }
 
-						if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
-						{
-							goto next;
-						};
+                        if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
+                        {
+                            goto next;
+                        };
 
                         if (line.Contains("["))
                         {
@@ -212,15 +315,33 @@ namespace netFteo.IO
                                 if ((line == "") || line.Contains(";;;;;;")) //here need skip to next 
                                 {
                                     line = readFile.ReadLine(); // here child or next contour
-                                                                //   resPolys.Add(resPoly);
-                                                                //   goto newPolygon;
                                     if (line.Contains("["))
                                     {
-                                        string ContourNumber2 = line.Split(CommaDelimiter.ToCharArray())[0];
+                                        string NextContour = line.Split(CommaDelimiter.ToCharArray())[0];
 
                                         //may be children     [1] <> [1.x]
+                                        string ContourNumCrop = ContourNumber.Replace(']', '.');
+                                        if (NextContour.Contains(ContourNumCrop)) // [1] ==  [1.xxx] - it child of currentContour
+                                        {
+                                            TRing child = new TRing();
+                                            child.Definition = NextContour;
+                                            while (NextContour == line.Split(CommaDelimiter.ToCharArray())[0])
+                                            {
+                                                child.AddPoint(CSV_Parse_point(line.Split(CommaDelimiter.ToCharArray())));
+                                                line = readFile.ReadLine();
+                                                if (line == null)
+                                                {
+                                                    resPoly.AddChild(child);
+                                                    resPolys.Add(resPoly); // finit current Feature
+                                                    resPolys.Add(points);
+                                                    goto next;
+                                                }
+                                            }
+                                            resPoly.AddChild(child);
+                                        }
+
                                         //may be next feature [1] <> [2]
-                                        if (ContourNumber != ContourNumber2)
+                                        if (ContourNumber != NextContour)
                                         {
                                             resPolys.Add(resPoly); // finit current Feature
                                             resPolys.Add(points);
@@ -229,7 +350,7 @@ namespace netFteo.IO
                                     }
                                 }
                             }
-                            //last point: peek == 0
+                            //last point: peek == -1
                             if (line.Contains("["))
                             {
                                 SplittedStr = line.Split(CommaDelimiter.ToCharArray());
@@ -239,26 +360,26 @@ namespace netFteo.IO
                             resPolys.Add(resPoly);
                             resPolys.Add(points);
                         }
-					}
-				next:;
-				}
-				readFile.Close();
-				readFile = null;
-				return resPolys;
-			}
-			catch (IOException ex)
-			{
-				//  MessageBox.Show(ex.ToString());
-				return null;
-			}
-		}
+                    }
+                next:;
+                }
+                readFile.Close();
+                readFile = null;
+                return resPolys;
+            }
+            catch (IOException ex)
+            {
+                //  MessageBox.Show(ex.ToString());
+                return null;
+            }
+        }
 
-		/// <summary>
-		/// Чтение текстовых файлов разных форматов (2014, 2015, 2016, pkzo)
-		/// </summary>
-		/// <param name="Fname"></param>
-		/// <returns></returns>
-		public TEntitySpatial ImportTxtFile(string Fname)
+        /// <summary>
+        /// Чтение текстовых файлов разных форматов (2014, 2015, 2016, pkzo)
+        /// </summary>
+        /// <param name="Fname"></param>
+        /// <returns></returns>
+        public TEntitySpatial ImportTxtFile(string Fname)
 		{
 			string line = null;
 			System.IO.TextReader readFile = new StreamReader(Fname);

@@ -2289,10 +2289,13 @@ SCAN:
         {
 			if (child == null) return ;
 
-			if ((child.Count > 1) &&              //
+            var test = this.HasCommonPoints(child);
+            var inn = this.PointsIn(child);
+
+            if ((child.Count > 1) &&              //
 				(child.Closed)    &&              //if child is true ring
 				(! this.HasCommonPoints(child)) && 
-			   (this.PointsIn(child) != null)) //if child in parent figure
+			   (this.PointsIn(child) != null)) //if child in parent figure TODO !!! Pointsin got fake results
 			{
 				this.Childs.Add(child);
 				this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
