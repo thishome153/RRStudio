@@ -163,6 +163,17 @@ namespace netFteo.IO
             }
             return FilePoint;
         }
+        private PointList CSV_ParseRing(string defintition, IEnumerable<string[]> items_of_current)
+        {
+            PointList points_of_current = new PointList();
+            points_of_current.Definition = defintition;
+
+            foreach (string[] item_of_current in items_of_current)
+            {
+                points_of_current.AddPoint(CSV_Parse_point(item_of_current));
+            }
+            return points_of_current;
+        }
 
         /// <summary>
         /// Reading CSV file (формата Технокад)
@@ -177,7 +188,6 @@ namespace netFteo.IO
                 string line = null;
                 List<string[]> items = new List<string[]>();
                 System.IO.TextReader readFile = new StreamReader(FileName);
-
                 while (readFile.Peek() != -1)
                 {
                     line = readFile.ReadLine();
@@ -218,7 +228,7 @@ namespace netFteo.IO
                         var items_of_current = items.Where(pos => pos[0] == CurrentFeature);// filter List by [1]
                         PointList points_of_current = CSV_ParseRing(CurrentFeature, items_of_current);
                         if (points_of_current.First().NumGeopointA == points_of_current.Last().NumGeopointA)
-                        {
+                        {  //closed - here polygon
                             TMyPolygon poly = new TMyPolygon(points_of_current.Definition);
                                 poly.ImportObjects(points_of_current);
                             var child_items_of_current = items.Where(pos => pos[0].Contains(CurrentFeature.Replace(']', '.')));// filter List by parent [1.
@@ -238,7 +248,7 @@ namespace netFteo.IO
                             resES.Add(poly);
                         }
                         else
-                        {
+                        { //unclosed feature - polyline
                             TPolyLine poly = new TPolyLine();
                             poly.Definition = points_of_current.Definition;
                             foreach (TPoint pt in points_of_current)
@@ -259,18 +269,9 @@ namespace netFteo.IO
 			}
 		}
 
-        private PointList CSV_ParseRing(string defintition, IEnumerable <string[]> items_of_current)
-        {
-            PointList points_of_current = new PointList();
-            points_of_current.Definition = defintition;
-
-            foreach (string[] item_of_current in items_of_current)
-            {
-                points_of_current.AddPoint(CSV_Parse_point(item_of_current));
-            }
-            return points_of_current;
-        }
-
+ 
+        
+        /*
         [Obsolete]
         public TEntitySpatial ImportCSVFile_bck()
         {
@@ -373,7 +374,7 @@ namespace netFteo.IO
                 return null;
             }
         }
-
+*/
         /// <summary>
         /// Чтение текстовых файлов разных форматов (2014, 2015, 2016, pkzo)
         /// </summary>
@@ -1211,8 +1212,8 @@ namespace netFteo.IO
 		/// <param name="ES"></param>
 		public void SaveAsCSV(string FileName, TEntitySpatial ES)
 		{
-			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
-			System.IO.TextWriter writer = new System.IO.StreamWriter(file, Encoding.Unicode);
+			System.IO.Stream file = new FileStream(FileName, FileMode.Create);
+            System.IO.TextWriter writer = new StreamWriter(file, Encoding.Default);//.Unicode  - not correct in MS Excel
 			writer.WriteLine("Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание;закрепления;Глубина;Высота;Кадастровый номер");
 
 			int EsNumber = 0;
