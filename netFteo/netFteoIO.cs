@@ -123,6 +123,7 @@ namespace netFteo.IO
         {
             TPoint FilePoint = new TPoint();
             FilePoint.NumGeopointA = src[2].ToString();
+            if (src.Length >11)
             FilePoint.Description = src[11].ToString();
 
             try
@@ -218,12 +219,12 @@ namespace netFteo.IO
                 readFile = null;
                 //now parse strings[]
                 string CurrentFeature = null;
-                List<string> Features = new List<string>();
+                List<string> FeaturesMemoList = new List<string>(); //store of parsed features, for avoid dublicates
                 foreach (string[] splittedstr in items)
                 {
                     CurrentFeature = splittedstr[0];
 
-                    if (! Features.Any(plist => plist == CurrentFeature)) //check if already present
+                    if (! FeaturesMemoList.Any(plist => plist == CurrentFeature)) //check if already present
                     {
                         var items_of_current = items.Where(pos => pos[0] == CurrentFeature);// filter List by [1]
                         PointList points_of_current = CSV_ParseRing(CurrentFeature, items_of_current);
@@ -234,14 +235,14 @@ namespace netFteo.IO
                             var child_items_of_current = items.Where(pos => pos[0].Contains(CurrentFeature.Replace(']', '.')));// filter List by parent [1.
                             foreach (string[] childString in child_items_of_current)
                             {
-                                if (!Features.Any(plist => plist == childString[0])) //check if already present
+                                if (!FeaturesMemoList.Any(plist => plist == childString[0])) //check if already present
                                 {
                                     TRing childRing = new TRing();
                                     childRing.Definition = childString[0];
                                     PointList points_of_current_ch = CSV_ParseRing(childRing.Definition, child_items_of_current);
                                     childRing.ImportObjects(points_of_current_ch);
                                     poly.Childs.Add(childRing);
-                                    Features.Add(childRing.Definition);
+                                    FeaturesMemoList.Add(childRing.Definition);
                                 }
                             }
 
@@ -256,7 +257,7 @@ namespace netFteo.IO
                             resES.Add(poly);
                         }
 
-                        Features.Add(CurrentFeature);
+                        FeaturesMemoList.Add(CurrentFeature);
                     }
                 }
 
