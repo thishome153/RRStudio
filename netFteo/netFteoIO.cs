@@ -109,7 +109,7 @@ namespace netFteo.IO
 		}
 		public string FileName;
 		public int BodyLinesCount;
-		public string BodyEncoding;
+		public Encoding BodyEncoding;
 
 		public TextReader(string Filename)
 		{
@@ -152,18 +152,20 @@ namespace netFteo.IO
                 FilePoint.oldY = Double.NaN;
             }
 
-            if (src[5].ToString() == "*")
+            if (src[1].Length > 0)
             {
                 FilePoint.Status = 0; // new, changed
+                FilePoint.Pref = src[1];
             }
             else // ident old and new: just copy
             {
-                FilePoint.oldX = FilePoint.x;
-                FilePoint.oldY = FilePoint.y;
+                //FilePoint.oldX = FilePoint.x;
+                //FilePoint.oldY = FilePoint.y;
                 FilePoint.Status = 6; // exist, not changed
             }
             return FilePoint;
         }
+
         private PointList CSV_ParseRing(string defintition, IEnumerable<string[]> items_of_current)
         {
             PointList points_of_current = new PointList();
@@ -188,7 +190,7 @@ namespace netFteo.IO
             {
                 string line = null;
                 List<string[]> items = new List<string[]>();
-                System.IO.TextReader readFile = new StreamReader(FileName);
+                System.IO.TextReader readFile = new StreamReader(FileName, this.BodyEncoding);
                 while (readFile.Peek() != -1)
                 {
                     line = readFile.ReadLine();
@@ -456,14 +458,15 @@ namespace netFteo.IO
 			{
 				if (reader.Peek() >= 0) // you need this!
 					reader.Read();
-				this.BodyEncoding = reader.CurrentEncoding.EncodingName;
+				this.BodyEncoding = reader.CurrentEncoding;
 			}
 			this.BodyLinesCount = File.ReadAllLines(fname).Length;
 			//"Кириллица (Windows)"
-			if (this.BodyEncoding.Equals("Кириллица (Windows)"))
-			{
+			if ( this.BodyEncoding.EncodingName.Equals("Кириллица (Windows)") ||
+                this.BodyEncoding.EncodingName.Equals("Cyrillic (Windows)")   
+                )
+            {
 				byte[] bodyWithEncode = File.ReadAllBytes(fname);
-			
 				Body = Encoding.Default.GetString(bodyWithEncode);
 			}
 			else
@@ -1583,15 +1586,6 @@ namespace netFteo.IO
 
 			return res;
 		}
-
-
-		/*
-        private Point MIF_ParsePoint(System.IO.TextReader readFile)
-        {
-            Point res = MIF_ParseOrdinate(readFile.ReadLine(), "pt");
-            return res;
-        }
-*/
 
 		/// <summary>
 		///  			Ellipse 1286942.56 506946.1624 1286945.56 506949.1623

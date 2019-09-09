@@ -569,7 +569,7 @@ namespace XMLReaderCS
 				{
 					netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
 					Body = dxfreader.Body;
-					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding;
+					this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding.EncodingName;
 					toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount;
 					toolStripProgressBar1.Minimum = 0;
 					toolStripProgressBar1.Value = 0;
@@ -603,8 +603,8 @@ namespace XMLReaderCS
 				this.DocInfo.DocTypeNick = "Текстовый файл";
 				this.DocInfo.CommentsType = "TXT";
 				this.DocInfo.Comments = mifreader.Body;
-				this.DocInfo.Encoding = mifreader.BodyEncoding;
-				this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding;
+				this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
+				this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding.EncodingName;
 			}
 
 
@@ -619,8 +619,8 @@ namespace XMLReaderCS
 					this.DocInfo.DocTypeNick = "Текстовый файл";
 					this.DocInfo.CommentsType = "CSV";
 					this.DocInfo.Comments = CSVReader.Body;
-					this.DocInfo.Encoding = CSVReader.BodyEncoding;
-					this.DocInfo.Number = "Текстовый файл CSV ,  " + CSVReader.BodyEncoding;
+					this.DocInfo.Encoding = CSVReader.BodyEncoding.EncodingName;
+					this.DocInfo.Number = "Текстовый файл CSV ,  " + CSVReader.BodyEncoding.EncodingName;
 				}
 			}
 

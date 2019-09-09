@@ -6059,7 +6059,7 @@ namespace RRTypes.CommonParsers
 			foreach (string s in dxfreader.dxfFile.LoadExceptions)
 				res.Comments += s + "\r";
 			res.Comments += "\r" + dxfreader.Body;
-			res.Encoding = dxfreader.BodyEncoding;
+			res.Encoding = dxfreader.BodyEncoding.ToString();
 			res.Number = "Encoding  " + dxfreader.BodyEncoding;
 			res.DocType = "dxf";
 			res.Version = dxfreader.Version;
@@ -6089,7 +6089,7 @@ namespace RRTypes.CommonParsers
 			res.DocTypeNick = "Mapinfo mif";
 			res.CommentsType = "MIF";
 			res.Comments = mifreader.Body;//.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
-			res.Encoding = mifreader.BodyEncoding;
+			res.Encoding = mifreader.BodyEncoding.ToString();
 			res.Number = "Encoding  " + mifreader.BodyEncoding;
 			res.DocType = "Mapinfo mif";
 			//res.Version = mifreader.Version;

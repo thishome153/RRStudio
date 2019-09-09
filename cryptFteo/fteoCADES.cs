@@ -266,7 +266,7 @@ namespace netFteo.Crypt.CADESCOM
             try
             {
                 CAdESCOM.CPHashedData Hash = new CAdESCOM.CPHashedData();
-                Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_SHA_512;//.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
+                Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256;//.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
                 Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // нет в примерах cdn.crypto
                 Hash.Hash(cadesSignedData.Content); // Создать хэш строки. Есть расширение - SetHashValue() - инициализация готовым хэш-значением
                                                     /* CADESCOM_CADES_X_LONG_TYPE_1 : got errror 
