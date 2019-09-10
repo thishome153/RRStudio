@@ -123,9 +123,6 @@ namespace XMLReaderCS
         {
             if (netFteo.Crypt.Wrapper.TestCAPICOM())
             {
-
-
-                
                 if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM())
                 {
                     OpenFileDialog fd = new OpenFileDialog();
@@ -136,15 +133,35 @@ namespace XMLReaderCS
                         {
                             netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
                             wr.ByteArrayToFile(fd.FileName + ".sig", sig);
+                            //Verify signature
+                            string testres;
+                            if (netFteo.Crypt.Wrapper.VerifyDetached(fd.FileName, fd.FileName + ".sig",out testres))
+                            {
+                                listView_Details.Items.Clear();
+                                ListViewItem it =listView_Details.Items.Add(Path.GetFileName(fd.FileName));
+                                it.SubItems.Add("Подпись действительна");
+                            }
+                            else
+                            {
+                                listView_Details.Items.Clear();
+                                ListViewItem it = listView_Details.Items.Add(Path.GetFileName(fd.FileName));
+                                it.SubItems.Add(testres);
+                            }
+                            List<string> sigs = ParseSignature(fd.FileName + ".sig");
+                            if (sigs != null)
+                                foreach (string Subect in sigs)
+                                    listView_Details.Items.Add("Сертификат").SubItems.Add(Subect);
+
                         }
+
                     }
                 }
-                else 
+                else
                 {
-                  listView_Details.Items.Clear();
-                ListViewItem it = new ListViewItem("CADESCOM");
-                it.SubItems.Add("не найден");
-                listView_Details.Items.Add(it);
+                    listView_Details.Items.Clear();
+                    ListViewItem it = new ListViewItem("CADESCOM");
+                    it.SubItems.Add("не найден");
+                    listView_Details.Items.Add(it);
                 }
                 
             }
@@ -240,13 +257,34 @@ namespace XMLReaderCS
             fd.Filter = "signatures|*.sig";
             fd.FilterIndex = 1;
             if (fd.ShowDialog(this) == DialogResult.OK)
-            {  
+            {
+                if (File.Exists(fd.FileName.Replace(".sig", "")))
+                {
+                    string res;
+                    if (netFteo.Crypt.Wrapper.VerifyDetached(fd.FileName.Replace(".sig", ""), fd.FileName, out res))
+                    {
+                        listView_Details.View = View.List;
+                        listView_Details.Items.Clear();
+                        ListViewItem it = new ListViewItem("CADESCOM");
+                        it.SubItems.Add(Path.GetFileName(fd.FileName));
+                        listView_Details.Items.Add(fd.FileName.Replace(".sig", ""));
+                        listView_Details.Items.Add("Подпись действительна");
+                    }
+                    else
+                    {
+                        listView_Details.View = View.List;
+                        listView_Details.Items.Clear();
+                        listView_Details.Items.Clear();
+                        ListViewItem it = new ListViewItem("CADESCOM");
+                        it.SubItems.Add(Path.GetFileName(fd.FileName));
+                        listView_Details.Items.Add("Подпись неверна");
+                        listView_Details.Items.Add(res);
+                    }
+                }
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(fd.FileName, this.Handle);
-
-            //    netFteo.Crypt.CADESCOM.CadesWrapper.ReadSign(fd.FileName);
             }
-            
+
         }
 
 

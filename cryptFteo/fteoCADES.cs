@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using CAPICOM;
 
@@ -33,7 +35,7 @@ namespace netFteo.Crypt.CADESCOM
            if (! CadesWrapper.TestCADESCOM())
             {
           ////TODO  
-                throw new System.Runtime.InteropServices.COMException("CADESCOM not present");
+                throw new COMException("CADESCOM not present");
             }
         }
 
@@ -113,6 +115,162 @@ namespace netFteo.Crypt.CADESCOM
             CAdESCOMCert res = new CAdESCOMCert();
             res.api = FindBySerial(serial);
             return res;
+        }
+
+        
+        /*
+        public static bool GettimeStamp(System.Security.Cryptography.Pkcs.SignedCms  signedCms)
+        {
+            foreach (var signerInfo in signedCms.SignerInfos)
+            {
+                foreach (var unsignedAttribute in signerInfo.UnsignedAttributes)
+                {
+                    if (unsignedAttribute.Oid.Value == cryptFteo.WinCrypt.szOID_RSA_counterSign)
+                    {
+                        foreach (var counterSignInfo in signerInfo.CounterSignerInfos)
+                        {
+                            foreach (var signedAttribute in counterSignInfo.SignedAttributes)
+                            {
+                                if (signedAttribute.Oid.Value == cryptFteo.WinCrypt.szOID_RSA_signingTime)
+                                {
+                                    System.Runtime.InteropServices.ComTypes.FILETIME fileTime = new System.Runtime.InteropServices.ComTypes.FILETIME();
+                                    int fileTimeSize = Marshal.SizeOf(fileTime);
+                                    IntPtr fileTimePtr = Marshal.AllocCoTaskMem(fileTimeSize);
+                                    Marshal.StructureToPtr(fileTime, fileTimePtr, true);
+
+                                    byte[] buffdata = new byte[fileTimeSize];
+                                    Marshal.Copy(fileTimePtr, buffdata, 0, fileTimeSize);
+
+                                    uint buffSize = (uint)buffdata.Length;
+
+                                    uint encoding = cryptFteo.WinCrypt.X509_ASN_ENCODING | cryptFteo.WinCrypt.PKCS_7_ASN_ENCODING;
+
+                                    UIntPtr rsaSigningTime = (UIntPtr)(uint)Marshal.StringToHGlobalAnsi(cryptFteo.WinCrypt.szOID_RSA_signingTime);
+
+                                    byte[] pbData = signedAttribute.Values[0].RawData;
+                                    uint ucbData = (uint)pbData.Length;
+
+                                    bool workie = cryptFteo.WinCrypt.CryptDecodeObject(encoding, RsaSigningTime.ToUInt32(), pbData, ucbData, 0, buffdata, ref buffSize);
+
+                                    if (workie)
+                                    {
+                                        IntPtr fileTimePtr2 = Marshal.AllocCoTaskMem(buffdata.Length);
+                                        Marshal.Copy(buffdata, 0, fileTimePtr2, buffdata.Length);
+                                        System.Runtime.InteropServices.ComTypes.FILETIME fileTime2 = (System.Runtime.InteropServices.ComTypes.FILETIME)Marshal.PtrToStructure(fileTimePtr2, typeof(System.Runtime.InteropServices.ComTypes.FILETIME));
+
+                                        long hFT2 = (((long)fileTime2.dwHighDateTime) << 32) + ((uint)fileTime2.dwLowDateTime);
+
+                                        DateTime dte = DateTime.FromFileTime(hFT2);
+                                        Console.WriteLine(dte.ToString());
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(Marshal.GetLastWin32Error());
+                                    }
+
+                                }
+                            }
+
+                        }
+
+                        return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+        */
+
+
+        public static bool IsTimestamped(string filename)
+        {
+            try
+            {
+                int encodingType;
+                int contentType;
+                int formatType;
+                IntPtr certStore = IntPtr.Zero;
+                IntPtr cryptMsg = IntPtr.Zero;
+                IntPtr context = IntPtr.Zero;
+
+                if (! WinCrypt.CryptQueryObject(
+                    WinCrypt.CERT_QUERY_OBJECT_FILE,
+                    Marshal.StringToHGlobalUni(filename),
+                    WinCrypt.CERT_QUERY_CONTENT_FLAG_ALL,
+                    WinCrypt.CERT_QUERY_FORMAT_FLAG_ALL,
+                    0,
+                    out encodingType,
+                    out contentType,
+                    out formatType,
+                    ref certStore,
+                    ref cryptMsg,
+                    ref context))
+                {
+                    throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+                }
+
+                //expecting contentType=10; CERT_QUERY_CONTENT_PKCS7_SIGNED_EMBED 
+                //Logger.LogInfo(string.Format("Querying file '{0}':", filename));
+                //Logger.LogInfo(string.Format("  Encoding Type: {0}", encodingType));
+                //Logger.LogInfo(string.Format("  Content Type: {0}", contentType));
+                //Logger.LogInfo(string.Format("  Format Type: {0}", formatType));
+                //Logger.LogInfo(string.Format("  Cert Store: {0}", certStore.ToInt32()));
+                //Logger.LogInfo(string.Format("  Crypt Msg: {0}", cryptMsg.ToInt32()));
+                //Logger.LogInfo(string.Format("  Context: {0}", context.ToInt32()));
+
+
+                // Get size of the encoded message.
+                int cbData = 0;
+                if (! WinCrypt.CryptMsgGetParam(
+                    cryptMsg,
+                    WinCrypt.CMSG_ENCODED_MESSAGE,//Crypt32.CMSG_SIGNER_INFO_PARAM,
+                    0,
+                    IntPtr.Zero,
+                    ref cbData))
+                {
+                    throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+                }
+
+                var vData = new byte[cbData];
+
+                // Get the encoded message.
+                if (! WinCrypt.CryptMsgGetParam(
+                    cryptMsg,
+                    WinCrypt.CMSG_ENCODED_MESSAGE,//Crypt32.CMSG_SIGNER_INFO_PARAM,
+                    0,
+                    vData,
+                    ref cbData))
+                {
+                    throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+                }
+
+                var signedCms = new SignedCms();
+                signedCms.Decode(vData);
+
+                foreach (var signerInfo in signedCms.SignerInfos)
+                {
+                    foreach (var unsignedAttribute in signerInfo.UnsignedAttributes)
+                    {
+                        if (unsignedAttribute.Oid.Value == WinCrypt.szOID_RSA_counterSign)
+                        {
+                            //Note at this point we assume this counter signature is the timestamp
+                            //refer to http://support.microsoft.com/kb/323809 for the origins
+
+                            //TODO: extract timestamp value, if required
+
+                            return true;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // no logging
+            }
+
+            return false;
         }
 
         public static CAdESCOM.CPCertificate FindBySerial(string serial)
@@ -237,6 +395,17 @@ namespace netFteo.Crypt.CADESCOM
         }
         // * /
 
+
+
+        // 1.2.643.100.111  -- software
+        // 1.2.643.100.112  -- software
+
+        //  1.2.643.7.1.1.3.2 - GOST signature
+        //  1.2.840.113549.1.9.5 - signtime PKc9
+
+        // 1.2.643.2.51.1.1.1 = TExpress v. 2.7.40828.4 @ CPCryptoNet v. 3.30.40628.0, [80] - Crypto-Pro GOST R
+
+
         /// <summary>
         /// Sign file with GOST CSP 34.11-94 (CADESCOM - COM of CryptoPro), OID = 1.2.643.2.2.3
         /// return detached message
@@ -248,23 +417,55 @@ namespace netFteo.Crypt.CADESCOM
         {
             byte[] filebody = System.IO.File.ReadAllBytes(filename);
             CAdESCOM.CPCertificate cert = Find(subject);
+
+            OID oid = new OID();
+            oid.Value = "1.2.643.2.51.1.1.1";
+            oid.Name = CAPICOM_OID.CAPICOM_OID_OTHER;
+
+            CAdESCOM.CPAttribute SignTimeAttr = new CAdESCOM.CPAttribute();
+            SignTimeAttr.Name = CAdESCOM.CADESCOM_ATTRIBUTE.CADESCOM_AUTHENTICATED_ATTRIBUTE_SIGNING_TIME;
+            SignTimeAttr.Value = DateTime.UtcNow;
+
+            CAdESCOM.CPAttribute Attr = new CAdESCOM.CPAttribute();
+            Attr.Name = CAdESCOM.CADESCOM_ATTRIBUTE.CADESCOM_AUTHENTICATED_ATTRIBUTE_DOCUMENT_NAME;
+            Attr.Value = "XML Reader signature";
+
+            CAdESCOM.CPAttribute AttrDesc = new CAdESCOM.CPAttribute();
+            AttrDesc.Name = CAdESCOM.CADESCOM_ATTRIBUTE.CADESCOM_AUTHENTICATED_ATTRIBUTE_DOCUMENT_DESCRIPTION;
+            AttrDesc.Value = "Signed document";
+
+            //Pkcs9SigningTime stime = new Pkcs9SigningTime(DateTime.UtcNow);
+            Pkcs9AttributeObject p9 = new Pkcs9SigningTime(DateTime.UtcNow);
+            Pkcs9AttributeObject ao = new Pkcs9AttributeObject();
+            AsnEncodedData dt = new AsnEncodedData(p9.Oid, p9.RawData);
+           // ao.CopyFrom(dt);
+            
             if (cert == null) return null;
             CAdESCOM.CadesSignedData cadesSignedData = new CAdESCOM.CadesSignedData();
 
             cadesSignedData.ContentEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // Первым строкой - кодировку
-            cadesSignedData.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!
-                                                                                    //Хэш-значение данных
-
+            cadesSignedData.Content = Convert.ToBase64String(filebody);             // иначе перекодирует дважды !!!!        //Хэш-значение данных
+            cadesSignedData.DisplayData = CAdESCOM.CADESCOM_DISPLAY_DATA.CADESCOM_DISPLAY_DATA_CONTENT;
 
             CAdESCOM.CPSigner CSPSigner = new CAdESCOM.CPSigner();
             CSPSigner.Certificate = cert;
             //TSA не нужен только для CADESCOM_CADES_BES
             CSPSigner.TSAAddress = "http://www.cryptopro.ru/tsp/tsp.srf"; //  адрес службы штампов времени.
-                                                                          //"http://testca.cryptopro.ru/tsp/";
+
+//            CAdESCOM.About ab = new CAdESCOM.About();
+
+
+            CSPSigner.UnauthenticatedAttributes.Add(SignTimeAttr);            //"http://testca.cryptopro.ru/tsp/";
+            CSPSigner.UnauthenticatedAttributes.Add(Attr);
+            CSPSigner.UnauthenticatedAttributes.Add(AttrDesc);
+
+            //CSPSigner.UnauthenticatedAttributes.Add(p9);
+
             CSPSigner.Options = CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION.CAPICOM_CERTIFICATE_INCLUDE_WHOLE_CHAIN;
 
             try
             {
+                
                 CAdESCOM.CPHashedData Hash = new CAdESCOM.CPHashedData();
                 Hash.Algorithm = (CAPICOM.CAPICOM_HASH_ALGORITHM)CAdESCOM.CADESCOM_HASH_ALGORITHM.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256;//.CADESCOM_HASH_ALGORITHM_CP_GOST_3411;
                 Hash.DataEncoding = CAdESCOM.CADESCOM_CONTENT_ENCODING_TYPE.CADESCOM_BASE64_TO_BINARY; // нет в примерах cdn.crypto
@@ -272,17 +473,31 @@ namespace netFteo.Crypt.CADESCOM
                                                     /* CADESCOM_CADES_X_LONG_TYPE_1 : got errror 
                                                      * OID = 1.2.643.2.2.3 SCP Error:  Лицензия на КриптоПро TSP Client истекла или не была введена
                                                      * ErrorCode - 1039138496
-                                                     * source CAdESCOM.CadesSignedData.1
-                                                                                   */
+                                                     * source CAdESCOM.CadesSignedData.1 */
+
+
                 string resHashCades = cadesSignedData.SignHash((CAPICOM.HashedData)Hash,
                                                        CSPSigner,
                                                        CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_BES,//  for  HASH_ALGORITHM_CP_GOST_3411 must be CADESCOM_CADES_BES,//CADESCOM_CADES_DEFAULT,
                                                        CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
+
+                /*
+                //Working, but long sig arrived:
+                string resHashCades = cadesSignedData.SignCades(        CSPSigner,
+                                                       CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_BES//  for  HASH_ALGORITHM_CP_GOST_3411 must be CADESCOM_CADES_BES,//CADESCOM_CADES_DEFAULT,
+                                                       );
+                                                       */
+
                 //Здесь требуется лицензия на КриптоПро TSP Client:
                 //' Создание параллельной подписи CAdES X Long Type 1
                 //resHashCades = cadesSignedData.CoSignCades(CSPSigner, CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_DEFAULT, CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
                 //дополнение подписи CAdES BES до подписи CAdES X Long Type 1:
-                //   resHashCades = cadesSignedData.EnhanceCades(CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_DEFAULT, CSPSigner.TSAAddress, CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
+                 //resHashCades = cadesSignedData.EnhanceCades(CAdESCOM.CADESCOM_CADES_TYPE.CADESCOM_CADES_T, CSPSigner.TSAAddress, CAdESCOM.CAPICOM_ENCODING_TYPE.CAPICOM_ENCODE_BASE64);
+                // Got
+                /*
+                 OID = 1.2.643.2.2.3 SCP Error: Лицензия на КриптоПро TSP Client истекла или не была введена. ErrorCode -1039138496
+                 */
+
 
                 // this'll return BASE64 coded message:
                 // Encoding.Default.GetBytes(resHashCades);
@@ -302,6 +517,8 @@ namespace netFteo.Crypt.CADESCOM
                     " source " + ex.Source);
             }
         } //Sign_GOST
+
+
 
         public static void ReadSign(string filename)
         {
@@ -323,6 +540,9 @@ namespace netFteo.Crypt.CADESCOM
             sig.Verify(convString, true);
 
         }
+
+
+
 
     } 
  }

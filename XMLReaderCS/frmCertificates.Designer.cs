@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Флгритм",
             "ГОСТ ,,,,,,,,"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "Сертификат ООО \"Заебудька\" 262100xxxx",
             "ГОСТ ,,,,,,,,"}, -1);
             this.listView_Details = new System.Windows.Forms.ListView();
@@ -41,9 +41,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.listView_certs = new System.Windows.Forms.ListView();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,9 +59,10 @@
             this.listView_Details.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listView_Details.FullRowSelect = true;
             this.listView_Details.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listView_Details.HideSelection = false;
             this.listView_Details.HoverSelection = true;
             this.listView_Details.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem7});
+            listViewItem1});
             this.listView_Details.Location = new System.Drawing.Point(215, 30);
             this.listView_Details.Margin = new System.Windows.Forms.Padding(4);
             this.listView_Details.Name = "listView_Details";
@@ -128,6 +129,11 @@
             this.toolStripButton1.ToolTipText = "Подписать файл ";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -148,7 +154,7 @@
             this.listView_certs.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listView_certs.HideSelection = false;
             this.listView_certs.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem8});
+            listViewItem2});
             this.listView_certs.Location = new System.Drawing.Point(6, 29);
             this.listView_certs.Margin = new System.Windows.Forms.Padding(4);
             this.listView_certs.MultiSelect = false;
@@ -160,11 +166,6 @@
             this.listView_certs.DoubleClick += new System.EventHandler(this.listView_certs_DoubleClick);
             this.listView_certs.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listView_certs_KeyUp);
             this.listView_certs.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_certs_MouseClick);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // frmCertificates
             // 

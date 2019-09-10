@@ -26,7 +26,7 @@ namespace netFteo.Crypt
     */
 
     /// <summary>
-    /// Класс-обертка для Cryptography
+    /// Класс-обертка для System.Security.Cryptography
     /// </summary>
     public static class Wrapper
     {
@@ -208,7 +208,7 @@ namespace netFteo.Crypt
             return csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA1"));
         }
 
-        public static bool Verify(string text, byte[] signature, string certPath)
+        public static bool VerifyHashes(string text, byte[] signature, string certPath)
 
         {
 
@@ -278,6 +278,35 @@ namespace netFteo.Crypt
             }
         }
           */
+
+
+        public static bool VerifyDetached(string fileName, string signatureFileName, out string message)
+        {
+            byte[] filebody = System.IO.File.ReadAllBytes(fileName);
+            byte[] filebodySig = System.IO.File.ReadAllBytes(signatureFileName);
+            return VerifyDetached(filebody, filebodySig, out message);
+        }
+
+        public static bool VerifyDetached(byte[] data, byte[] signature, out string message)
+        {
+            System.Security.Cryptography.Pkcs.ContentInfo content = new System.Security.Cryptography.Pkcs.ContentInfo(data);
+
+            System.Security.Cryptography.Pkcs.SignedCms signedMessage = new System.Security.Cryptography.Pkcs.SignedCms(content, true);
+            try
+            {
+                signedMessage.Decode(signature);
+                signedMessage.CheckSignature(false);
+                message = "";
+                return true;
+            }
+            catch (CryptographicException ex)
+
+            {
+                message = ex.Message;
+                return false;
+            }
+        }
+
         public static List<string> DisplayCerts(byte[] signature)
         {
             if (signature == null)

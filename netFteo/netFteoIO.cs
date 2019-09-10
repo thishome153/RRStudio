@@ -181,44 +181,35 @@ namespace netFteo.IO
         /// <summary>
         /// Reading CSV file (формата Технокад)
         /// </summary>
-        /// <param name="Fname"></param>
-        /// <returns></returns>
+        /// <returns>Entity Spatial </returns>
         public TEntitySpatial ImportCSVFile()
         {
             TEntitySpatial resES = new TEntitySpatial();
             try
             {
-                string line = null;
                 List<string[]> items = new List<string[]>();
-                System.IO.TextReader readFile = new StreamReader(FileName, this.BodyEncoding);
-                while (readFile.Peek() != -1)
+                  //* Read from body instead dublicate stream: split string into lines
+                string[] LinesRN= this.Body.Split("\r\n".ToCharArray(),   StringSplitOptions.RemoveEmptyEntries);
+
+                foreach(string line in LinesRN)
                 {
-                    line = readFile.ReadLine();
-
-                    if (line != null) //Читаем строку
-                    {      //по строке
-                           //Read Columns
-                        string[] Columns = line.Split(CommaDelimiter.ToCharArray());
-                        foreach (string Column in Columns)
-                        {
-                            this.DataColumns.Add(new DataColumn("CSVField", Column));
-                        }
-
-                        if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
-                        {
-                            goto next;
-                        };
-
-                        if (line.Contains("[")) //feature arrived
-                        {
-                            items.Add(line.Split(CommaDelimiter.ToCharArray()));
-                        }
+                    string[] Columns = line.Split(CommaDelimiter.ToCharArray());
+                    foreach (string Column in Columns)
+                    {
+                        this.DataColumns.Add(new DataColumn("CSVField", Column));
                     }
-                next:;
+
+                    if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
+                    {
+                        //goto next;
+                    };
+
+                    if (line.Contains("[")) //feature arrived
+                    {
+                        items.Add(line.Split(CommaDelimiter.ToCharArray()));
+                    }
                 }
 
-                readFile.Close();
-                readFile = null;
                 //now parse strings[]
                 string CurrentFeature = null;
                 List<string> FeaturesMemoList = new List<string>(); //store of parsed features, for avoid dublicates
@@ -230,6 +221,7 @@ namespace netFteo.IO
                     {
                         var items_of_current = items.Where(pos => pos[0] == CurrentFeature);// filter List by [1]
                         PointList points_of_current = CSV_ParseRing(CurrentFeature, items_of_current);
+
                         if (points_of_current.First().NumGeopointA == points_of_current.Last().NumGeopointA)
                         {  //closed - here polygon
                             TMyPolygon poly = new TMyPolygon(points_of_current.Definition);
@@ -272,112 +264,8 @@ namespace netFteo.IO
 			}
 		}
 
- 
-        
-        /*
-        [Obsolete]
-        public TEntitySpatial ImportCSVFile_bck()
-        {
-            TEntitySpatial resPolys = new TEntitySpatial();
-            try
-            {
-                string line = null;
-                string[] SplittedStr = null;
-                System.IO.TextReader readFile = new StreamReader(FileName);
-
-                while (readFile.Peek() != -1)
-                {
-                    line = readFile.ReadLine();
-
-                    if (line != null) //Читаем строку
-                    {      //по строке
-                           //Read Columns
-                        string[] Columns = line.Split(CommaDelimiter.ToCharArray());
-                        foreach (string Column in Columns)
-                        {
-                            this.DataColumns.Add(new DataColumn("CSVField", Column));
-                        }
-
-                        if (line.Contains(";;;;;;;;;;;")) //Комментарий в файлах, пропустим его
-                        {
-                            goto next;
-                        };
-
-                        if (line.Contains("["))
-                        {
-                        newPolygon:
-                            string ContourNumber = line.Split(CommaDelimiter.ToCharArray())[0];
-                            TMyPolygon resPoly = new TMyPolygon(ContourNumber); // z.B.: [1];;1;-;-;522207.54;1318046.19;;;;0.1;626003000000
-                            PointList points = new PointList();
-                            while (readFile.Peek() != -1)
-                            {
-                                SplittedStr = line.Split(CommaDelimiter.ToCharArray()); //Сплпиттер по ";" - default for CSV
-                                resPoly.AddPoint(CSV_Parse_point(SplittedStr));
-                                points.AddPoint(CSV_Parse_point(SplittedStr));
-                                line = readFile.ReadLine();
-
-                                if ((line == "") || line.Contains(";;;;;;")) //here need skip to next 
-                                {
-                                    line = readFile.ReadLine(); // here child or next contour
-                                    if (line.Contains("["))
-                                    {
-                                        string NextContour = line.Split(CommaDelimiter.ToCharArray())[0];
-
-                                        //may be children     [1] <> [1.x]
-                                        string ContourNumCrop = ContourNumber.Replace(']', '.');
-                                        if (NextContour.Contains(ContourNumCrop)) // [1] ==  [1.xxx] - it child of currentContour
-                                        {
-                                            TRing child = new TRing();
-                                            child.Definition = NextContour;
-                                            while (NextContour == line.Split(CommaDelimiter.ToCharArray())[0])
-                                            {
-                                                child.AddPoint(CSV_Parse_point(line.Split(CommaDelimiter.ToCharArray())));
-                                                line = readFile.ReadLine();
-                                                if (line == null)
-                                                {
-                                                    resPoly.AddChild(child);
-                                                    resPolys.Add(resPoly); // finit current Feature
-                                                    resPolys.Add(points);
-                                                    goto next;
-                                                }
-                                            }
-                                            resPoly.AddChild(child);
-                                        }
-
-                                        //may be next feature [1] <> [2]
-                                        if (ContourNumber != NextContour)
-                                        {
-                                            resPolys.Add(resPoly); // finit current Feature
-                                            resPolys.Add(points);
-                                            goto newPolygon;        // goto next
-                                        }
-                                    }
-                                }
-                            }
-                            //last point: peek == -1
-                            if (line.Contains("["))
-                            {
-                                SplittedStr = line.Split(CommaDelimiter.ToCharArray());
-                                resPoly.AddPoint(CSV_Parse_point(SplittedStr));
-                                points.AddPoint(CSV_Parse_point(SplittedStr));
-                            }
-                            resPolys.Add(resPoly);
-                            resPolys.Add(points);
-                        }
-                    }
-                next:;
-                }
-                readFile.Close();
-                readFile = null;
-                return resPolys;
-            }
-            catch (IOException ex)
-            {
-                //  MessageBox.Show(ex.ToString());
-                return null;
-            }
-        }
-*/
+     
+  
         /// <summary>
         /// Чтение текстовых файлов разных форматов (2014, 2015, 2016, pkzo)
         /// </summary>
@@ -899,6 +787,7 @@ namespace netFteo.IO
 		public const string FixosoftFileSignature3 = "#Fixosoft NumXYZD data format V2016";
 		public const string FixosoftFileSignature4 = "#Fixosoft NumXYZD data format V2017";
 		public const string FixosoftFileSign5      = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
+
 		/*
 		public void SaveAsFixosoftTXT2015(string FileName, TMyPolygon ES)
 		{
