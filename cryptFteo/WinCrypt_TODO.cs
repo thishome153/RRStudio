@@ -163,9 +163,9 @@ namespace netFteo.Crypt
         public static UIntPtr PKCS7_SIGNER_INFO = new UIntPtr(500);
         public static UIntPtr CMS_SIGNER_INFO = new UIntPtr(501);
 
-        public static string szOID_RSA_signingTime = "1.2.840.113549.1.9.5";
-        public static string szOID_RSA_counterSign = "1.2.840.113549.1.9.6";
-
+        public static string szOID_RSA_signingTime    = "1.2.840.113549.1.9.5"; //signingTime, st, time-of-sign
+        public static string szOID_RSA_counterSign    = "1.2.840.113549.1.9.6"; //countersignature
+        public static string szOID_RSA_timeStampToken = "1.2.840.113549.1.9.16.2.14";// =  id - aa - timeStampToken(14)
         //+-------------------------------------------------------------------------
         //  Get parameter types and their corresponding data structure definitions.
         //--------------------------------------------------------------------------

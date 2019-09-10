@@ -269,6 +269,13 @@ namespace XMLReaderCS
                         it.SubItems.Add(Path.GetFileName(fd.FileName));
                         listView_Details.Items.Add(fd.FileName.Replace(".sig", ""));
                         listView_Details.Items.Add("Подпись действительна");
+
+                       if ( netFteo.Crypt.Wrapper.IsTimestamped(fd.FileName))
+                        {
+                            listView_Details.Items.Add("Штамп времени найден");
+                        }
+                       else
+                            listView_Details.Items.Add("Штамп времени отсутствует");
                     }
                     else
                     {
