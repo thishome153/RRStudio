@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InspectorAct", "InspectorAct\InspectorAct.csproj", "{D0920738-EECA-40F1-A74E-E9A2A875152A}"
 EndProject
@@ -225,11 +225,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
-		BuildVersion_UpdateAssemblyVersion = False
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_StartDate = 2014/1/25
-		BuildVersion_UseGlobalSettings = False
 		BuildVersion_BuildAction = ReBuild
+		BuildVersion_UseGlobalSettings = False
+		BuildVersion_StartDate = 2014/1/25
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
 	EndGlobalSection
 EndGlobal
