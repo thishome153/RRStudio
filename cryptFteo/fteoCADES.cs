@@ -30,7 +30,7 @@ namespace netFteo.Crypt.CADESCOM
 
         public CAdESCOMCert()
         {
-           if (! CadesWrapper.TestCADESCOM())
+           if (! CadesCOMWrapper.TestCADESCOM())
             {
           ////TODO  
                 throw new COMException("CADESCOM not present");
@@ -64,7 +64,7 @@ namespace netFteo.Crypt.CADESCOM
     /// GOST CSP Provider wrapper class. Требует установленнoго CADESCOM (cadescom.dll)
     /// </summary>
 
-    public static class CadesWrapper
+    public static class CadesCOMWrapper
     {
 
         public static bool TestCADESCOM()

@@ -86,10 +86,10 @@ namespace XMLReaderCS
 
 					try
                     {
-                        if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM()) //check COM
+                        if (netFteo.Crypt.CADESCOM.CadesCOMWrapper.TestCADESCOM()) //check COM
                         {
                             netFteo.Crypt.CADESCOM.CAdESCOMCert GOST_Cert = new netFteo.Crypt.CADESCOM.CAdESCOMCert();
-                            GOST_Cert = netFteo.Crypt.CADESCOM.CadesWrapper.FindBySerialwr(serial);
+                            GOST_Cert = netFteo.Crypt.CADESCOM.CadesCOMWrapper.FindBySerialwr(serial);
                             if (GOST_Cert != null)
                                 if (GOST_Cert.HasPrivateKey())
                                 {
@@ -123,12 +123,12 @@ namespace XMLReaderCS
         {
             if (netFteo.Crypt.Wrapper.TestCAPICOM())
             {
-                if (netFteo.Crypt.CADESCOM.CadesWrapper.TestCADESCOM())
+                if (netFteo.Crypt.CADESCOM.CadesCOMWrapper.TestCADESCOM())
                 {
                     OpenFileDialog fd = new OpenFileDialog();
                     if (fd.ShowDialog(this) == DialogResult.OK)
                     {
-                        byte[] sig = netFteo.Crypt.CADESCOM.CadesWrapper.Sign_GOST(fd.FileName, SubjectCNName);
+                        byte[] sig = netFteo.Crypt.CADESCOM.CadesCOMWrapper.Sign_GOST(fd.FileName, SubjectCNName);
                         if (sig != null)
                         {
                             netFteo.IO.TextWriter wr = new netFteo.IO.TextWriter();
