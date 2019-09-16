@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TNumTxtFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Points>
+    <TmyPoint>
+      <id>1</id>
+      <Order>0</Order>
+      <Name>0231</Name>
+      <Descr>��� 2-500</Descr>
+      <x>523824.8</x>
+      <y>1318078.13</y>
+      <z>-4.68</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>2</id>
+      <Order>0</Order>
+      <Name>0232</Name>
+      <Descr>��� 2-500</Descr>
+      <x>523874.3</x>
+      <y>1318051.63</y>
+      <z>-4.71</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>1</id>
+      <Order>0</Order>
+      <Name>550</Name>
+      <Descr> ���������                      </Descr>
+      <x>513579.031</x>
+      <y>1373736.38</y>
+      <z>300.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>2</id>
+      <Order>0</Order>
+      <Name>559</Name>
+      <Descr> ����������                     </Descr>
+      <x>515728.625</x>
+      <y>1364192.25</y>
+      <z>230.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>3</id>
+      <Order>0</Order>
+      <Name>568</Name>
+      <Descr> ��������                       </Descr>
+      <x>518923.8</x>
+      <y>1371412.25</y>
+      <z>233.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>4</id>
+      <Order>0</Order>
+      <Name>576</Name>
+      <Descr> �������                        </Descr>
+      <x>520465.563</x>
+      <y>1360187</y>
+      <z>160</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>5</id>
+      <Order>0</Order>
+      <Name>581</Name>
+      <Descr> �������                        </Descr>
+      <x>522468.656</x>
+      <y>1366162.88</y>
+      <z>153.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>6</id>
+      <Order>0</Order>
+      <Name>589</Name>
+      <Descr> �����                          </Descr>
+      <x>524749.563</x>
+      <y>1375389.25</y>
+      <z>184.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>7</id>
+      <Order>0</Order>
+      <Name>551</Name>
+      <Descr> �����������                    </Descr>
+      <x>513359.844</x>
+      <y>1391144.88</y>
+      <z>297</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>8</id>
+      <Order>0</Order>
+      <Name>560</Name>
+      <Descr> �������                        </Descr>
+      <x>514496.6</x>
+      <y>1382678.13</y>
+      <z>292.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>9</id>
+      <Order>0</Order>
+      <Name>563</Name>
+      <Descr> �������                        </Descr>
+      <x>516691.344</x>
+      <y>1399086.25</y>
+      <z>295.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>10</id>
+      <Order>0</Order>
+      <Name>569</Name>
+      <Descr> ������                         </Descr>
+      <x>519657.375</x>
+      <y>1385452.88</y>
+      <z>260</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>11</id>
+      <Order>0</Order>
+      <Name>570</Name>
+      <Descr> ��������                       </Descr>
+      <x>518549.6</x>
+      <y>1406275.63</y>
+      <z>285.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>12</id>
+      <Order>0</Order>
+      <Name>571</Name>
+      <Descr> ����������                     </Descr>
+      <x>518468.1</x>
+      <y>1411528.75</y>
+      <z>272.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>13</id>
+      <Order>0</Order>
+      <Name>577</Name>
+      <Descr> �������                        </Descr>
+      <x>520103.3</x>
+      <y>1378406.25</y>
+      <z>203.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>14</id>
+      <Order>0</Order>
+      <Name>582</Name>
+      <Descr> ������ 236                     </Descr>
+      <x>523505.781</x>
+      <y>1390311.88</y>
+      <z>234.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>15</id>
+      <Order>0</Order>
+      <Name>583</Name>
+      <Descr> ��������� N 4    ��������</Descr>
+      <x>523345.25</x>
+      <y>1399770.25</y>
+      <z>254.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>16</id>
+      <Order>0</Order>
+      <Name>590</Name>
+      <Descr> �������                        </Descr>
+      <x>524624.8</x>
+      <y>1381882.38</y>
+      <z>207.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>17</id>
+      <Order>0</Order>
+      <Name>591</Name>
+      <Descr> ���                            </Descr>
+      <x>524715.5</x>
+      <y>1407935.38</y>
+      <z>256.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>18</id>
+      <Order>0</Order>
+      <Name>598</Name>
+      <Descr> ������ �������                 </Descr>
+      <x>527302.3</x>
+      <y>1395730.5</y>
+      <z>228.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>19</id>
+      <Order>0</Order>
+      <Name>599</Name>
+      <Descr> �����   ������                       </Descr>
+      <x>527144.6</x>
+      <y>1404027</y>
+      <z>251.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>20</id>
+      <Order>0</Order>
+      <Name>600</Name>
+      <Descr> ���������                      </Descr>
+      <x>526105.1</x>
+      <y>1413850.75</y>
+      <z>240.5</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>21</id>
+      <Order>0</Order>
+      <Name>2363</Name>
+      <Descr> ������������                   </Descr>
+      <x>519056.875</x>
+      <y>1418022.25</y>
+      <z>251.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>22</id>
+      <Order>0</Order>
+      <Name>605</Name>
+      <Descr> ���                            </Descr>
+      <x>528945.6</x>
+      <y>1367145</y>
+      <z>138.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>23</id>
+      <Order>0</Order>
+      <Name>623</Name>
+      <Descr> ��������                       </Descr>
+      <x>532622.063</x>
+      <y>1341008.25</y>
+      <z>151.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>24</id>
+      <Order>0</Order>
+      <Name>624</Name>
+      <Descr> ����������                     </Descr>
+      <x>533493.938</x>
+      <y>1347963.88</y>
+      <z>138.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>25</id>
+      <Order>0</Order>
+      <Name>625</Name>
+      <Descr> ������                         </Descr>
+      <x>533993.3</x>
+      <y>1355952.88</y>
+      <z>122</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>26</id>
+      <Order>0</Order>
+      <Name>626</Name>
+      <Descr> ��������                       </Descr>
+      <x>533183.8</x>
+      <y>1369261.25</y>
+      <z>131.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>27</id>
+      <Order>0</Order>
+      <Name>630</Name>
+      <Descr> ������                         </Descr>
+      <x>534390.9</x>
+      <y>1363997.38</y>
+      <z>98.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>28</id>
+      <Order>0</Order>
+      <Name>646</Name>
+      <Descr> �������                        </Descr>
+      <x>539406.4</x>
+      <y>1349062.88</y>
+      <z>147.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>29</id>
+      <Order>0</Order>
+      <Name>649</Name>
+      <Descr> �������                        </Descr>
+      <x>541604.563</x>
+      <y>1343287</y>
+      <z>128.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>30</id>
+      <Order>0</Order>
+      <Name>650</Name>
+      <Descr> ��������                       </Descr>
+      <x>540475.7</x>
+      <y>1363962</y>
+      <z>128.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>31</id>
+      <Order>0</Order>
+      <Name>651</Name>
+      <Descr> ����������                     </Descr>
+      <x>541451.4</x>
+      <y>1372285.75</y>
+      <z>94</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>32</id>
+      <Order>0</Order>
+      <Name>659</Name>
+      <Descr> ���������                      </Descr>
+      <x>543398.438</x>
+      <y>1359517.75</y>
+      <z>120.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>33</id>
+      <Order>0</Order>
+      <Name>662</Name>
+      <Descr> ���������                      </Descr>
+      <x>545674</x>
+      <y>1354136.25</y>
+      <z>119</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>34</id>
+      <Order>0</Order>
+      <Name>663</Name>
+      <Descr> ��������                       </Descr>
+      <x>545299.3</x>
+      <y>1376455</y>
+      <z>116.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>35</id>
+      <Order>0</Order>
+      <Name>668</Name>
+      <Descr> ���������                      </Descr>
+      <x>546981.938</x>
+      <y>1341060.88</y>
+      <z>113.8</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>36</id>
+      <Order>0</Order>
+      <Name>669</Name>
+      <Descr> ���� �������                   </Descr>
+      <x>547898.4</x>
+      <y>1363422.88</y>
+      <z>113.5</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>37</id>
+      <Order>0</Order>
+      <Name>678</Name>
+      <Descr> �������                        </Descr>
+      <x>549287.3</x>
+      <y>1344971.25</y>
+      <z>126.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>38</id>
+      <Order>0</Order>
+      <Name>683</Name>
+      <Descr> ������                         </Descr>
+      <x>551075.4</x>
+      <y>1372317.63</y>
+      <z>97.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>39</id>
+      <Order>0</Order>
+      <Name>692</Name>
+      <Descr> ������                         </Descr>
+      <x>553200.1</x>
+      <y>1349024.13</y>
+      <z>129.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>40</id>
+      <Order>0</Order>
+      <Name>693</Name>
+      <Descr> ����������                     </Descr>
+      <x>552265.7</x>
+      <y>1358765.63</y>
+      <z>120.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>41</id>
+      <Order>0</Order>
+      <Name>702</Name>
+      <Descr> �����������                    </Descr>
+      <x>554952.9</x>
+      <y>1366706.5</y>
+      <z>116.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>42</id>
+      <Order>0</Order>
+      <Name>717</Name>
+      <Descr> �������                        </Descr>
+      <x>559198.7</x>
+      <y>1351545.25</y>
+      <z>118.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>43</id>
+      <Order>0</Order>
+      <Name>718</Name>
+      <Descr> ���������                      </Descr>
+      <x>559832.1</x>
+      <y>1363829.13</y>
+      <z>109.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>44</id>
+      <Order>0</Order>
+      <Name>719</Name>
+      <Descr> ���������                      </Descr>
+      <x>558029</x>
+      <y>1374309.5</y>
+      <z>91</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>45</id>
+      <Order>0</Order>
+      <Name>724</Name>
+      <Descr> ���������������                </Descr>
+      <x>560920.6</x>
+      <y>1341409.13</y>
+      <z>95.5</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>46</id>
+      <Order>0</Order>
+      <Name>732</Name>
+      <Descr> ����������                     </Descr>
+      <x>563307.1</x>
+      <y>1375679.75</y>
+      <z>142.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>47</id>
+      <Order>0</Order>
+      <Name>606</Name>
+      <Descr> �����                          </Descr>
+      <x>529097.2</x>
+      <y>1378641.75</y>
+      <z>151.5</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>48</id>
+      <Order>0</Order>
+      <Name>607</Name>
+      <Descr> ��������                       </Descr>
+      <x>529301.9</x>
+      <y>1387113.88</y>
+      <z>199.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>49</id>
+      <Order>0</Order>
+      <Name>608</Name>
+      <Descr> ��������� N 3                  </Descr>
+      <x>529500.938</x>
+      <y>1409689.5</y>
+      <z>225.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>50</id>
+      <Order>0</Order>
+      <Name>616</Name>
+      <Descr> �����   ���.��������</Descr>
+      <x>530677.4</x>
+      <y>1400943.5</y>
+      <z>220.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>51</id>
+      <Order>0</Order>
+      <Name>627</Name>
+      <Descr> ����������                     </Descr>
+      <x>533625.063</x>
+      <y>1404833.5</y>
+      <z>203.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>52</id>
+      <Order>0</Order>
+      <Name>631</Name>
+      <Descr> �������                        </Descr>
+      <x>534814.1</x>
+      <y>1381908.5</y>
+      <z>147.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>53</id>
+      <Order>0</Order>
+      <Name>632</Name>
+      <Descr> ���������                      </Descr>
+      <x>534866.8</x>
+      <y>1391354</y>
+      <z>175.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>54</id>
+      <Order>0</Order>
+      <Name>633</Name>
+      <Descr> ���. �������                   </Descr>
+      <x>535476.438</x>
+      <y>1395851.13</y>
+      <z>179.5</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>55</id>
+      <Order>0</Order>
+      <Name>639</Name>
+      <Descr> ��������                       </Descr>
+      <x>537275.9</x>
+      <y>1386391.25</y>
+      <z>147.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>56</id>
+      <Order>0</Order>
+      <Name>640</Name>
+      <Descr> ������ 173                     </Descr>
+      <x>537969.563</x>
+      <y>1411269.5</y>
+      <z>171.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>57</id>
+      <Order>0</Order>
+      <Name>652</Name>
+      <Descr> �������                        </Descr>
+      <x>541664.9</x>
+      <y>1381471</y>
+      <z>123.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>58</id>
+      <Order>0</Order>
+      <Name>653</Name>
+      <Descr> ���������                      </Descr>
+      <x>540784.563</x>
+      <y>1390486.5</y>
+      <z>154.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>59</id>
+      <Order>0</Order>
+      <Name>654</Name>
+      <Descr> ������ 153                     </Descr>
+      <x>541519.4</x>
+      <y>1402581.13</y>
+      <z>142.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>60</id>
+      <Order>0</Order>
+      <Name>655</Name>
+      <Descr> ������ 179                     </Descr>
+      <x>540517.7</x>
+      <y>1416029.13</y>
+      <z>178.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>61</id>
+      <Order>0</Order>
+      <Name>664</Name>
+      <Descr> �������                        </Descr>
+      <x>544623.938</x>
+      <y>1385004.13</y>
+      <z>111.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>62</id>
+      <Order>0</Order>
+      <Name>665</Name>
+      <Descr> ��������                       </Descr>
+      <x>544244.25</x>
+      <y>1408660</y>
+      <z>167.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>63</id>
+      <Order>0</Order>
+      <Name>670</Name>
+      <Descr> �����                          </Descr>
+      <x>547461.6</x>
+      <y>1398519.5</y>
+      <z>136.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>64</id>
+      <Order>0</Order>
+      <Name>684</Name>
+      <Descr> ���������                      </Descr>
+      <x>551499.75</x>
+      <y>1387046.5</y>
+      <z>120.4</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>65</id>
+      <Order>0</Order>
+      <Name>685</Name>
+      <Descr> �������                        </Descr>
+      <x>550777.938</x>
+      <y>1392725.13</y>
+      <z>127.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>66</id>
+      <Order>0</Order>
+      <Name>694</Name>
+      <Descr> �������                        </Descr>
+      <x>553166</x>
+      <y>1380077.75</y>
+      <z>116.3</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>67</id>
+      <Order>0</Order>
+      <Name>708</Name>
+      <Descr> ������� ��������               </Descr>
+      <x>557042</x>
+      <y>1397218.75</y>
+      <z>146.2</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>68</id>
+      <Order>0</Order>
+      <Name>725</Name>
+      <Descr> ������                         </Descr>
+      <x>560593.75</x>
+      <y>1382341.75</y>
+      <z>143.7</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>69</id>
+      <Order>0</Order>
+      <Name>733</Name>
+      <Descr> ������� ������                 </Descr>
+      <x>563792.4</x>
+      <y>1384702.13</y>
+      <z>171.1</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>70</id>
+      <Order>0</Order>
+      <Name>734</Name>
+      <Descr> ������������                   </Descr>
+      <x>562317.6</x>
+      <y>1392095.13</y>
+      <z>184.6</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+    <TmyPoint>
+      <id>71</id>
+      <Order>0</Order>
+      <Name>2436</Name>
+      <Descr> � ������                       </Descr>
+      <x>531265.2</x>
+      <y>1417229.25</y>
+      <z>197.9</z>
+      <Mt>0</Mt>
+    </TmyPoint>
+  </Points>
+  <FileStrings>
+    <string>0231	523824.81	1318078.185	-4.68	��� 2-500</string>
+    <string>0232	523874.305	1318051.685	-4.71	��� 2-500</string>
+    <string>550	513579.02	1373736.39	300.9	 ���������                      </string>
+    <string>559	515728.64	1364192.25	230.8	 ����������                     </string>
+    <string>568	518923.80	1371412.22	233.2	 ��������                       </string>
+    <string>576	520465.55	1360187.00	160	 �������                        </string>
+    <string>581	522468.66	1366162.86	153.1	 �������                        </string>
+    <string>589	524749.55	1375389.31	184.1	 �����                          </string>
+    <string>551	513359.85	1391144.90	297	 �����������                    </string>
+    <string>560	514496.58	1382678.11	292.7	 �������                        </string>
+    <string>563	516691.33	1399086.31	295.4	 �������                        </string>
+    <string>569	519657.38	1385452.84	260	 ������                         </string>
+    <string>570	518549.59	1406275.65	285.6	 ��������                       </string>
+    <string>571	518468.08	1411528.71	272.9	 ����������                     </string>
+    <string>577	520103.30	1378406.20	203.2	 �������                        </string>
+    <string>582	523505.79	1390311.93	234.8	 ������ 236                     </string>
+    <string>583	523345.25	1399770.22	254.3	 ��������� N 4    ��������</string>
+    <string>590	524624.82	1381882.39	207.8	 �������                        </string>
+    <string>591	524715.48	1407935.32	256.8	 ���                            </string>
+    <string>598	527302.33	1395730.49	228.6	 ������ �������                 </string>
+    <string>599	527144.62	1404027.05	251.4	 �����   ������                       </string>
+    <string>600	526105.13	1413850.70	240.5	 ���������                      </string>
+    <string>2363	519056.89	1418022.24	251.4	 ������������                   </string>
+    <string>605	528945.65	1367144.95	138.1	 ���                            </string>
+    <string>623	532622.07	1341008.20	151.2	 ��������                       </string>
+    <string>624	533493.93	1347963.82	138.3	 ����������                     </string>
+    <string>625	533993.32	1355952.83	122	 ������                         </string>
+    <string>626	533183.80	1369261.29	131.3	 ��������                       </string>
+    <string>630	534390.85	1363997.32	98.8	 ������                         </string>
+    <string>646	539406.38	1349062.86	147.6	 �������                        </string>
+    <string>649	541604.58	1343287.01	128.4	 �������                        </string>
+    <string>650	540475.69	1363962.04	128.1	 ��������                       </string>
+    <string>651	541451.39	1372285.71	94	 ����������                     </string>
+    <string>659	543398.41	1359517.73	120.6	 ���������                      </string>
+    <string>662	545674.01	1354136.30	119	 ���������                      </string>
+    <string>663	545299.33	1376455.02	116.8	 ��������                       </string>
+    <string>668	546981.95	1341060.87	113.8	 ���������                      </string>
+    <string>669	547898.40	1363422.85	113.5	 ���� �������                   </string>
+    <string>678	549287.32	1344971.24	126.1	 �������                        </string>
+    <string>683	551075.37	1372317.58	97.9	 ������                         </string>
+    <string>692	553200.11	1349024.15	129.3	 ������                         </string>
+    <string>693	552265.68	1358765.67	120.7	 ����������                     </string>
+    <string>702	554952.87	1366706.56	116.3	 �����������                    </string>
+    <string>717	559198.67	1351545.21	118.1	 �������                        </string>
+    <string>718	559832.10	1363829.07	109.7	 ���������                      </string>
+    <string>719	558029.02	1374309.53	91	 ���������                      </string>
+    <string>724	560920.60	1341409.12	95.5	 ���������������                </string>
+    <string>732	563307.13	1375679.76	142.6	 ����������                     </string>
+    <string>606	529097.17	1378641.79	151.5	 �����                          </string>
+    <string>607	529301.88	1387113.90	199.6	 ��������                       </string>
+    <string>608	529500.95	1409689.52	225.1	 ��������� N 3                  </string>
+    <string>616	530677.35	1400943.45	220.9	 �����   ���.��������</string>
+    <string>627	533625.05	1404833.54	203.6	 ����������                     </string>
+    <string>631	534814.15	1381908.53	147.6	 �������                        </string>
+    <string>632	534866.82	1391353.97	175.2	 ���������                      </string>
+    <string>633	535476.41	1395851.07	179.5	 ���. �������                   </string>
+    <string>639	537275.88	1386391.30	147.9	 ��������                       </string>
+    <string>640	537969.57	1411269.46	171.7	 ������ 173                     </string>
+    <string>652	541664.85	1381471.04	123.9	 �������                        </string>
+    <string>653	540784.56	1390486.49	154.7	 ���������                      </string>
+    <string>654	541519.39	1402581.07	142.3	 ������ 153                     </string>
+    <string>655	540517.69	1416029.10	178.3	 ������ 179                     </string>
+    <string>664	544623.92	1385004.09	111.4	 �������                        </string>
+    <string>665	544244.24	1408659.95	167.6	 ��������                       </string>
+    <string>670	547461.60	1398519.54	136.7	 �����                          </string>
+    <string>684	551499.78	1387046.51	120.4	 ���������                      </string>
+    <string>685	550777.93	1392725.15	127.2	 �������                        </string>
+    <string>694	553166.01	1380077.75	116.3	 �������                        </string>
+    <string>708	557042.03	1397218.72	146.2	 ������� ��������               </string>
+    <string>725	560593.77	1382341.78	143.7	 ������                         </string>
+    <string>733	563792.39	1384702.13	171.1	 ������� ������                 </string>
+    <string>734	562317.63	1392095.08	184.6	 ������������                   </string>
+    <string>2436	531265.19	1417229.22	197.9	 � ������                       </string>
+  </FileStrings>
+  <FileName>C:\Users\w8sel_000\Documents\Visual Studio 2010\Projects\Traverser\Traverser\bin\Debug\ПунтыМСК26(Num_X_Y_Z_Описание).txt</FileName>
+</TNumTxtFile>

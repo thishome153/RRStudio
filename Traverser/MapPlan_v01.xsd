@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn://x-artefacts-rosreestr-ru/incoming/map-plan/1.0.1" xmlns:Spa1="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/1.0.2" xmlns:Simple2="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" xmlns:Simple1="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" xmlns:Off1="urn://x-artefacts-rosreestr-ru/commons/complex-types/official/1.0.1" xmlns:Doc2="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/2.0.1" xmlns:CadEng1="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/1.0.2" xmlns:dUn1="urn://x-artefacts-rosreestr-ru/commons/directories/unit/1.0.1" xmlns:dZo1="urn://x-artefacts-rosreestr-ru/commons/directories/zone/1.0.1" xmlns:gBound1="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/1.0.1" xmlns:Zon1="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/1.0.1" xmlns:Doc1="urn://x-artefacts-rosreestr-ru/commons/complex-types/document/1.0.1" xmlns:dAl1="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/1.0.1" targetNamespace="urn://x-artefacts-rosreestr-ru/incoming/map-plan/1.0.1" elementFormDefault="qualified">
+	<!--Все простые типы данных-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/1.0" schemaLocation="../SchemaCommon/P_CommonSimpleType_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/simple-types/2.0.1" schemaLocation="../SchemaCommon/P_CommonSimpleType_v02.xsd"/>
+	<xs:import namespace="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" schemaLocation="../SchemaCommonSMEV/smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Общая подсхема "Кадастровый инженер"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/1.0.2" schemaLocation="../SchemaCommon/_CadastralEngineer_v01.xsd"/>
+	<!--Повторно используемая подсхема "Документ"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/all-documents/1.0.1" schemaLocation="../SchemaCommon/dAllDocuments_v01.xsd"/>
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document/1.0.1" schemaLocation="../SchemaCommon/_Document_v01.xsd"/>
+	<!--Повторно используемая подсхема "Документ для информационного взаимодействия"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/2.0.1" schemaLocation="../SchemaCommon/_DocumentInfo_v02.xsd"/>
+	<!--Повторно используемая подсхема "Должностное лицо"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/official/1.0.1" schemaLocation="../SchemaCommon/_Official_v01.xsd"/>
+	<!--Повторно используемая подсхема "Границы объекта землеустройства"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/boundary/1.0.1" schemaLocation="../SchemaCommon/_Boundary_v01.xsd"/>
+	<!--Повторно используемая подсхема "Территориальная зона и специальная зона"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/1.0.1" schemaLocation="../SchemaCommon/_Zone_v01.xsd"/>
+	<!--Справочник "Единицы измерений"-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/directories/unit/1.0.1" schemaLocation="../SchemaCommon/dUnit_v01.xsd"/>
+	<!--Описание пространственной составляющей-->
+	<xs:import namespace="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/1.0.2" schemaLocation="../SchemaCommon/_Spatial_v01.xsd"/>
+	<xs:element name="MapPlan">
+		<xs:annotation>
+			<xs:documentation>Карта (план) объекта землеустройства</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title">
+					<xs:annotation>
+						<xs:documentation>Титульный лист</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Clients">
+								<xs:annotation>
+									<xs:documentation>Сведения о заказчиках землеустроительных работ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Client" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения о заказчике землеустроительных работ</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="Person">
+														<xs:annotation>
+															<xs:documentation>Физическое лицо</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:group ref="tns:PhysicalPersonQualifiedName-ModelGroup"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Organization" type="tOrganization">
+														<xs:annotation>
+															<xs:documentation>Российское юридическое лицо</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ForeignOrganization">
+														<xs:annotation>
+															<xs:documentation>Иностранное юридическое лицо</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:complexContent>
+																<xs:extension base="tOrganization">
+																	<xs:sequence>
+																		<xs:element name="Country" type="Simple1:s255">
+																			<xs:annotation>
+																				<xs:documentation>Наименование страны регистрации (инкорпорации)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:extension>
+															</xs:complexContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Governance" type="tOrganization">
+														<xs:annotation>
+															<xs:documentation>Орган государственной власти, орган местного самоуправления</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:choice>
+												<xs:attribute name="Date" type="xs:date" use="required">
+													<xs:annotation>
+														<xs:documentation>Дата подписания</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Contractor">
+								<xs:annotation>
+									<xs:documentation>Сведения об исполнителе кадастровых работ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="CadastralEngineer" type="tEngineer">
+											<xs:annotation>
+												<xs:documentation>Кадастровый инженер</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="PersonContractor">
+											<xs:annotation>
+												<xs:documentation>Индивидуальный предприниматель</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:group ref="tns:PhysicalPersonQualifiedName-ModelGroup"/>
+													<xs:element name="INN" type="tns:PhysicalPersonINNType">
+														<xs:annotation>
+															<xs:documentation>Идентификационный номер налогоплательщика</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Telephone" type="Simple1:s50">
+														<xs:annotation>
+															<xs:documentation>Контактный телефон</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Address" type="Simple1:s4000">
+														<xs:annotation>
+															<xs:documentation>Почтовый адрес</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="OrganisationContractor">
+											<xs:annotation>
+												<xs:documentation>Юридическое лицо</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Name" type="Simple2:sName500">
+														<xs:annotation>
+															<xs:documentation>Наименование юридического лица</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="CodeOGRN" type="tns:OGRNCompanyType">
+														<xs:annotation>
+															<xs:documentation>Код ОГРН</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Telephone" type="Simple1:s50">
+														<xs:annotation>
+															<xs:documentation>Контактный телефон</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Address" type="Simple1:s4000">
+														<xs:annotation>
+															<xs:documentation>Почтовый адрес</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Agent" type="tAgent">
+														<xs:annotation>
+															<xs:documentation>Представитель</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Coordinations">
+								<xs:annotation>
+									<xs:documentation>Сведения о согласованиях карты(плана) объекта землеустройства</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Coordination" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения о согласовании карты(плана) объекта землеустройства</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:choice>
+													<xs:sequence>
+														<xs:element name="Name" type="Simple2:sName500">
+															<xs:annotation>
+																<xs:documentation>Наименование органа (организации)</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="Official" type="Off1:OfficialType">
+															<xs:annotation>
+																<xs:documentation>Полномочный представитель</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>
+													<xs:element name="Document">
+														<xs:annotation>
+															<xs:documentation>Реквизиты письма</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:group ref="DocumentGroup"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Information">
+								<xs:annotation>
+									<xs:documentation>Информация о передаче карты (плана) объекта землеустройства в государственный фонд данных, полученных в результате проведения землеустройства</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NumberReg" type="Simple1:s45">
+											<xs:annotation>
+												<xs:documentation>Регистрационный номер</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DateReg" type="xs:date">
+											<xs:annotation>
+												<xs:documentation>Дата передачи</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="NameArchive" type="Simple2:sName500">
+											<xs:annotation>
+												<xs:documentation>Наименование органа (организации), осуществляющего хранение землеустроительной документации</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Documents">
+					<xs:annotation>
+						<xs:documentation>Основания для проведения землеустроительных работ и исходные данные</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Document" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Документ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:group ref="DocumentGroup"/>
+										<xs:element name="AdditionalMap" type="tAdditionalMap" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Дополнительная информация к картографическому материалу</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Object">
+					<xs:annotation>
+						<xs:documentation>Сведения об объекте землеустройства</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="Bound">
+									<xs:annotation>
+										<xs:documentation>Граница</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:annotation>
+												<xs:documentation>Границы объекта землеустройства</xs:documentation>
+											</xs:annotation>
+											<xs:group ref="gBound1:gBoundary"/>
+											<xs:element name="EntitySpatial" type="Spa1:tEntitySpatialBordersLand">
+												<xs:annotation>
+													<xs:documentation>Графическое представление</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Zone">
+									<xs:annotation>
+										<xs:documentation>Описание зоны</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="Zon1:tZone">
+												<xs:sequence>
+													<xs:element name="EntitySpatial" type="Spa1:tEntitySpatialBordersLand">
+														<xs:annotation>
+															<xs:documentation>Графическое представление</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:element name="Area" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Площадь объекта землеустройства</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="AreaMeter">
+											<xs:annotation>
+												<xs:documentation>Площадь в квадратных метрах</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Area" type="Simple2:p20">
+														<xs:annotation>
+															<xs:documentation>Значение площади</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Unit" fixed="055">
+														<xs:annotation>
+															<xs:documentation>Единица измерения</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="dUn1:dUnit"/>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Inaccuracy" type="Simple1:p10">
+														<xs:annotation>
+															<xs:documentation>Погрешность вычисления</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="AreaHectare">
+											<xs:annotation>
+												<xs:documentation>Площадь в гектарах</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Area" type="Simple1:d10_2">
+														<xs:annotation>
+															<xs:documentation>Значение площади</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Unit" fixed="059">
+														<xs:annotation>
+															<xs:documentation>Единица измерения</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="dUn1:dUnit"/>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Inaccuracy" type="Simple1:d10_2">
+														<xs:annotation>
+															<xs:documentation>Погрешность вычисления</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CoordSystems" type="Spa1:tCoordSystems">
+					<xs:annotation>
+						<xs:documentation>Системы координат</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Diagram">
+					<xs:annotation>
+						<xs:documentation>План границ объекта землеустройства</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AppliedFile" type="Doc1:tAppliedFile" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Приложенные файлы с образами</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="Simple2:agSoftware"/>
+			<xs:attribute name="GUID" type="Simple1:sGUID" use="required">
+				<xs:annotation>
+					<xs:documentation>Глобальный уникальный идентификатор пакета</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="tAdditionalMap">
+		<xs:annotation>
+			<xs:documentation>Дополнительная информация к картографическому материалу</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Scale" type="Simple1:s255">
+				<xs:annotation>
+					<xs:documentation>Масштаб соответствующего картографического произведения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateCreate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата создания картографического произведения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateUpdate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата последнего обновления картографического произведения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tAgent">
+		<xs:annotation>
+			<xs:documentation>Представитель</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Off1:OfficialType">
+				<xs:sequence>
+					<xs:element name="AttorneyDocument" type="Doc2:tDocumentInfo" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Доверенность</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tEngineer">
+		<xs:annotation>
+			<xs:documentation>Кадастровый инженер как ИП и как работник организации</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CadEng1:tCadastralEngineer">
+				<xs:sequence>
+					<xs:element name="INN" type="tns:PhysicalPersonINNType">
+						<xs:annotation>
+							<xs:documentation>Идентификационный номер налогоплательщика</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Organization" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Юридическое лицо, если кадастровый инженер является работником юридического лица</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="CadEng1:tOrganization">
+									<xs:sequence>
+										<xs:element name="CodeOGRN" type="tns:OGRNCompanyType">
+											<xs:annotation>
+												<xs:documentation>Код ОГРН</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="tOrganization">
+		<xs:annotation>
+			<xs:documentation>Юридическое лицо</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="Simple2:sName500">
+				<xs:annotation>
+					<xs:documentation>Полное наименование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Agent" type="tAgent">
+				<xs:annotation>
+					<xs:documentation>Представитель</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="DocumentGroup">
+		<xs:sequence>
+			<xs:element name="CodeDocument" type="dAl1:dAllDocuments">
+				<xs:annotation>
+					<xs:documentation>Код документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="Simple1:s500" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="Simple1:s45" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="Simple1:s45">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueOrgan" type="Simple1:s500">
+				<xs:annotation>
+					<xs:documentation>Организация, выдавшая документ. Автор документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Desc" type="Simple1:s1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Особые отметки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppliedFile" type="Doc1:tAppliedFile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Приложенный файл</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>
