@@ -52,14 +52,14 @@ namespace Traverser
 
         private void опрограммеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm AbForm = new AboutForm();
-            AbForm.ShowDialog(this);
+            //AboutForm AbForm = new AboutForm();
+            //AbForm.ShowDialog(this);
         }
 
         private void helpToolStripButton_Click(object sender, EventArgs e)
         {
-            AboutForm AbForm = new AboutForm();
-            AbForm.ShowDialog(this);
+            //AboutForm AbForm = new AboutForm();
+            //AbForm.ShowDialog(this);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)

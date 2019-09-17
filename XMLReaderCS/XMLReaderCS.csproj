@@ -133,7 +133,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="cadesNETWrapper">
-      <HintPath>..\..\..\..\..\..\TEMP\CSP\Debug\cadesNETWrapper.dll</HintPath>
+      <HintPath>C:\Temp\CSP\Debug\cadesNETWrapper.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\DotNetZipLib\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
@@ -567,7 +567,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
