@@ -39,11 +39,11 @@ using Image = netDxf.Entities.Image;
 
 namespace Traverser
 {
-    public partial class MainForm : Form
+    public partial class TraverserMainForm : Form
     {        
         TraverserProject Project = new TraverserProject();
        
-        public MainForm()
+        public TraverserMainForm()
         {
             InitializeComponent();
           
@@ -835,8 +835,15 @@ namespace Traverser
         {
 
         }
-     
 
-      
+        private void НастройкиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ПараметрыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

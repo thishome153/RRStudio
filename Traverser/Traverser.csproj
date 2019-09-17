@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{930BCD50-4F0B-42E9-A472-366948D35D01}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Traverser</RootNamespace>
     <AssemblyName>Traverser</AssemblyName>
@@ -56,7 +56,31 @@
     <ApplicationIcon>Resources\Copy of FIXOSOft 2002  вариант 2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Traverser.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\..\..\Program Files\Fixosoft\gkndataCS\x64-Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -72,11 +96,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Editors\frmPointEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Editors\frmPointEditor.designer.cs">
+      <DependentUpon>frmPointEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TraverserMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TraverserMainForm.Designer.cs">
+      <DependentUpon>TraverserMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="myDataGridView.cs">
       <SubType>Component</SubType>
@@ -91,14 +121,11 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="TraverserProject.cs" />
-    <Compile Include="wzPointEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="wzPointEditorForm.Designer.cs">
-      <DependentUpon>wzPointEditorForm.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Editors\frmPointEditor.resx">
+      <DependentUpon>frmPointEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraverserMainForm.resx">
+      <DependentUpon>TraverserMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -114,16 +141,11 @@
       <DependentUpon>Quests_PointOnLine.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report1.rdlc" />
-    <EmbeddedResource Include="wzPointEditorForm.resx">
-      <DependentUpon>wzPointEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <DesignData Include="netFteo.NikonRaw.TNikonRaw.datasource" />
-    <None Include="netFteo.BaseClasess.TMyPoints.datasource" />
     <None Include="netFteo.NikonRaw.TRawObservation.datasource" />
-    <None Include="netFteo.NikonRaw.TRawObserwation.datasource" />
     <None Include="netFteo.NikonRaw.TStation.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

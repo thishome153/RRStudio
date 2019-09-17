@@ -3069,8 +3069,38 @@ LV.Items.Add(LVipP);
 			}
 			return false;
 		}
+        private IGeometry EditGeometryNode(string GeometryTagID)
+        {
+            IGeometry Entity = null;
+            if (GeometryTagID.Contains("ES."))
+            {
+                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(3)));
+            }
 
-		private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
+            if (GeometryTagID.Contains("Layer."))
+            {
+                Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(GeometryTagID.Substring(6));
+            }
+
+            if (GeometryTagID.Contains("SPElem."))
+            {
+                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
+            }
+
+            if (GeometryTagID.Contains("TPolyLine."))
+            {
+                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(10)));
+            }
+
+            if (GeometryTagID.Contains("TPoint."))
+            {
+                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
+            }
+            
+            return Entity;
+        }
+
+        private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
 		{
 			if (Rights == null) return;
 			if (Rights.Count > 0)
@@ -5362,6 +5392,33 @@ LV.Items.Add(LVipP);
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             OpenFile(3);// OpenXML_KVZUTyped();
+        }
+
+        private void TraverserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            {
+                //TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
+             //   frmPointEditor frmPointEdit = new frmPointEditor();
+             //   frmPointEdit.ShowDialog(this);
+            }
+
+        }
+
+        private void ИзменитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
+            if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
+            {
+                frmPointEditor Editor = new frmPointEditor(EditGeometryNode(tag));
+                if (((ListView)parent).SelectedItems[0].Tag.ToString() == tag)
+
+                {
+
+                    Editor.StartPosition = FormStartPosition.CenterParent;
+                    Editor.ShowDialog(this);
+                }
+            }
         }
     }
 }

@@ -89,7 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\Program Files\Fixosoft\gkndataCS\x64-Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files\Fixosoft\gkndataCS\x64-Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
@@ -135,8 +135,9 @@
     <Reference Include="cadesNETWrapper">
       <HintPath>C:\Temp\CSP\Debug\cadesNETWrapper.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\DotNetZipLib\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\zip-v1.9\Debug\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -192,12 +193,6 @@
     <Compile Include="frmOptions.Designer.cs">
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmPointEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmPointEditor.Designer.cs">
-      <DependentUpon>frmPointEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmValidator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,9 +238,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmOptions.resx">
       <DependentUpon>frmOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmPointEditor.resx">
-      <DependentUpon>frmPointEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmValidator.resx">
       <DependentUpon>frmValidator.cs</DependentUpon>
@@ -555,6 +547,10 @@
       <Project>{96de829d-fef9-41af-a9e6-3be517088b64}</Project>
       <Name>RRTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Traverser\Traverser.csproj">
+      <Project>{930bcd50-4f0b-42e9-a472-366948d35d01}</Project>
+      <Name>Traverser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -567,7 +563,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿namespace Traverser
 {
-    partial class MainForm
+    partial class TraverserMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraverserMainForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -49,7 +49,6 @@
             this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.PointsdataGridView = new Traverser.myDataGridView();
@@ -180,8 +179,7 @@
             this.cutToolStripButton,
             this.copyToolStripButton,
             this.pasteToolStripButton,
-            this.toolStripSeparator1,
-            this.helpToolStripButton});
+            this.toolStripSeparator1});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -326,16 +324,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
             // 
-            // helpToolStripButton
-            // 
-            this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
-            this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.helpToolStripButton.Name = "helpToolStripButton";
-            this.helpToolStripButton.Size = new System.Drawing.Size(23, 20);
-            this.helpToolStripButton.Text = "He&lp";
-            this.helpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -381,7 +369,7 @@
             this.contextMenu_SaveAS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сохранитьКакToolStripMenuItem1});
             this.contextMenu_SaveAS.Name = "contextMenuStrip1";
-            this.contextMenu_SaveAS.Size = new System.Drawing.Size(166, 26);
+            this.contextMenu_SaveAS.Size = new System.Drawing.Size(167, 26);
             // 
             // сохранитьКакToolStripMenuItem1
             // 
@@ -392,41 +380,41 @@
             this.txtToolStripMenuItem,
             this.текстовыйФайлNXYZD2015ToolStripMenuItem});
             this.сохранитьКакToolStripMenuItem1.Name = "сохранитьКакToolStripMenuItem1";
-            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(165, 22);
+            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.сохранитьКакToolStripMenuItem1.Text = "Сохранить как....";
             // 
             // mifToolStripMenuItem
             // 
             this.mifToolStripMenuItem.Name = "mifToolStripMenuItem";
-            this.mifToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.mifToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.mifToolStripMenuItem.Text = "mif";
             this.mifToolStripMenuItem.Click += new System.EventHandler(this.mifToolStripMenuItem_Click);
             // 
             // dxfToolStripMenuItem
             // 
             this.dxfToolStripMenuItem.Name = "dxfToolStripMenuItem";
-            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.dxfToolStripMenuItem.Text = "dxf";
             this.dxfToolStripMenuItem.Click += new System.EventHandler(this.dxfToolStripMenuItem_Click);
             // 
             // xmlToolStripMenuItem
             // 
             this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
-            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.xmlToolStripMenuItem.Text = "xml";
             this.xmlToolStripMenuItem.Click += new System.EventHandler(this.xmlToolStripMenuItem_Click);
             // 
             // txtToolStripMenuItem
             // 
             this.txtToolStripMenuItem.Name = "txtToolStripMenuItem";
-            this.txtToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.txtToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.txtToolStripMenuItem.Text = "Текстовый файл NXYZD 2014";
             this.txtToolStripMenuItem.Click += new System.EventHandler(this.txtToolStripMenuItem_Click);
             // 
             // текстовыйФайлNXYZD2015ToolStripMenuItem
             // 
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Name = "текстовыйФайлNXYZD2015ToolStripMenuItem";
-            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Text = "Текстовый файл NXYZD 2015";
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Click += new System.EventHandler(this.текстовыйФайлNXYZD2015ToolStripMenuItem_Click);
             // 
@@ -821,15 +809,19 @@
             // 
             // настройкиToolStripMenuItem
             // 
+            this.настройкиToolStripMenuItem.Enabled = false;
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
             this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.настройкиToolStripMenuItem.Text = "&Настройки";
+            this.настройкиToolStripMenuItem.Click += new System.EventHandler(this.НастройкиToolStripMenuItem_Click);
             // 
             // параметрыToolStripMenuItem
             // 
+            this.параметрыToolStripMenuItem.Enabled = false;
             this.параметрыToolStripMenuItem.Name = "параметрыToolStripMenuItem";
             this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.параметрыToolStripMenuItem.Text = "&Параметры";
+            this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.ПараметрыToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -860,7 +852,7 @@
             // 
             this.tMyPointsBindingSource.DataSource = typeof(netFteo.Spatial.PointList);
             // 
-            // MainForm
+            // TraverserMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -872,8 +864,8 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "MainForm";
-            this.Text = "Fixosoft Nikon Traverser";
+            this.Name = "TraverserMainForm";
+            this.Text = " Nikon Traverser";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -914,7 +906,6 @@
         private System.Windows.Forms.ToolStripButton copyToolStripButton;
         private System.Windows.Forms.ToolStripButton pasteToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton helpToolStripButton;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
