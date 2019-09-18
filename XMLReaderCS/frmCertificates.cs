@@ -38,7 +38,8 @@ namespace XMLReaderCS
         {
             listView_Details.Items.Clear();
             datatable.Rows.Clear();
-            toolStripButton1.Enabled = false; 
+            toolStripButton1.Enabled = false;
+            toolStripButton3.Enabled = false;
             X509Certificate2 x509 = netFteo.Crypt.Wrapper.GetCertBySerial(serial);
             if (x509 != null)
             {
@@ -112,6 +113,7 @@ namespace XMLReaderCS
                     }
                 
                 toolStripButton1.Enabled = true;
+                toolStripButton3.Enabled = true;
                 return x509;
             }
             else return null;   
@@ -350,6 +352,22 @@ namespace XMLReaderCS
                     X509Certificate2UI.DisplayCertificate(x509);
 
                 }
+            }
+        }
+
+        private void ToolStripButton3_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog fd = new OpenFileDialog();
+            if (fd.ShowDialog(this) == DialogResult.OK)
+            {
+                GostCryptography.Gost_R3411.Gost_R3411_2012_256_HashAlgorithm ha = new GostCryptography.Gost_R3411.Gost_R3411_2012_256_HashAlgorithm(GostCryptography.Base.ProviderType.CryptoPro_2012_512);
+                byte[] filebody = System.IO.File.ReadAllBytes(fd.FileName);
+                ha.ComputeHash(filebody);
+                byte[] reshash = ha.Hash;
+                //GostCryptography.Config.GostCryptoConfig.ProviderType_2012_512
+                GostCryptography.Native.SafeHashHandleImpl Handle = new GostCryptography.Native.SafeHashHandleImpl();
+                //GostCryptography.Native.CryptoApi.CryptSignHash(Handle,1,)
+
             }
         }
     }

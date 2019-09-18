@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "Флгритм",
             "ГОСТ ,,,,,,,,"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
             "Сертификат ООО \"Заебудька\" 262100xxxx",
             "ГОСТ ,,,,,,,,"}, -1);
             this.listView_Details = new System.Windows.Forms.ListView();
@@ -44,6 +44,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.listView_certs = new System.Windows.Forms.ListView();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +63,7 @@
             this.listView_Details.HideSelection = false;
             this.listView_Details.HoverSelection = true;
             this.listView_Details.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem5});
             this.listView_Details.Location = new System.Drawing.Point(215, 30);
             this.listView_Details.Margin = new System.Windows.Forms.Padding(4);
             this.listView_Details.Name = "listView_Details";
@@ -109,6 +110,7 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
+            this.toolStripButton3,
             this.toolStripSeparator1,
             this.toolStripButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -154,7 +156,7 @@
             this.listView_certs.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listView_certs.HideSelection = false;
             this.listView_certs.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem6});
             this.listView_certs.Location = new System.Drawing.Point(6, 29);
             this.listView_certs.Margin = new System.Windows.Forms.Padding(4);
             this.listView_certs.MultiSelect = false;
@@ -166,6 +168,18 @@
             this.listView_certs.DoubleClick += new System.EventHandler(this.listView_certs_DoubleClick);
             this.listView_certs.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listView_certs_KeyUp);
             this.listView_certs.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_certs_MouseClick);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Enabled = false;
+            this.toolStripButton3.Image = global::XMLReaderCS.Properties.Resources.crypt_sign_USB_16x16;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.ToolTipText = "Подписать файл (GOST Crypo...nuget Package";
+            this.toolStripButton3.Click += new System.EventHandler(this.ToolStripButton3_Click_1);
             // 
             // frmCertificates
             // 
@@ -206,5 +220,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ListView listView_certs;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
     }
 }

@@ -13,552 +13,552 @@ namespace netFteo.Spatial
 
 {
 
-	#region Общий генератор типа PrimaryKey
-	/// <summary>
-	/// Общий генератор типа PrimaryKey
-	/// </summary>
-	public static class Gen_id
-	{
-		private static int fid;
-		public static int newId
-		{
-			get
-			{
-				fid++;
-				return fid;
-			}
-		}
-		public static void Reset()
-		{
-			fid = 0;
-		}
-	}
-	#endregion
+    #region Общий генератор типа PrimaryKey
+    /// <summary>
+    /// Общий генератор типа PrimaryKey
+    /// </summary>
+    public static class Gen_id
+    {
+        private static int fid;
+        public static int newId
+        {
+            get
+            {
+                fid++;
+                return fid;
+            }
+        }
+        public static void Reset()
+        {
+            fid = 0;
+        }
+    }
+    #endregion
 
-	#region Base classes of all base classes 
+    #region Base classes of all base classes 
 
-	/// <summary>
-	/// Мать всех матерей
-	/// </summary>
-	public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
-	{
-		int id { get; set; }
-		int State { get; set; }
-		string Definition { get; set; }
-		string Name { get; set; }
-		string TypeName { get; }
-		string LayerHandle { get; set; } // handle of the layer (dxf ecosystem)
+    /// <summary>
+    /// Мать всех матерей
+    /// </summary>
+    public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
+    {
+        int id { get; set; }
+        int State { get; set; }
+        string Definition { get; set; }
+        string Name { get; set; }
+        string TypeName { get; }
+        string LayerHandle { get; set; } // handle of the layer (dxf ecosystem)
 
-		/// <summary>
-		/// Fraq ordinates values to format
-		/// </summary>
-		/// <param name="Format"></param>
-		void Fraq(string Format);
+        /// <summary>
+        /// Fraq ordinates values to format
+        /// </summary>
+        /// <param name="Format"></param>
+        void Fraq(string Format);
 
-		/// <summary>
-		/// Listing geometry as ListView items (columns, rows)
-		/// </summary>
-		/// <param name="LV"></param>
-		/// <param name="SetTag"></param>
-		void ShowasListItems(ListView LV, bool SetTag);
+        /// <summary>
+        /// Listing geometry as ListView items (columns, rows)
+        /// </summary>
+        /// <param name="LV"></param>
+        /// <param name="SetTag"></param>
+        void ShowasListItems(ListView LV, bool SetTag);
 
-		/// <summary>
-		/// Get center (medium) ordinates of geometry
-		/// </summary>
-		TPoint AverageCenter { get; }
+        /// <summary>
+        /// Get center (medium) ordinates of geometry
+        /// </summary>
+        TPoint AverageCenter { get; }
 
-		/// <summary>
-		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
-		/// </summary>
-		/// <param name="canvas_width">Ширина полотна</param>
-		/// <param name="canvas_height">Высота полотна</param>
-		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
-		/// <returns></returns>
-		double ScaleEntity(double canvas_width, double canvas_height);//, double ViewKoefficient)
-	}
+        /// <summary>
+        /// Расчет масштаба на поверхность (z.B: WPF canvas) 
+        /// </summary>
+        /// <param name="canvas_width">Ширина полотна</param>
+        /// <param name="canvas_height">Высота полотна</param>
+        /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+        /// <returns></returns>
+        double ScaleEntity(double canvas_width, double canvas_height);//, double ViewKoefficient)
+    }
 
-	/// <summary>
-	/// А также его имплементация
-	/// </summary>
-	public class Geometry : IGeometry
-	{
-		private int fid;
-		public int id
-		{
-			get { return this.fid; }
-			set { this.fid = value; }
-		}
-		private int fState;
-		public int State
-		{
-			get { return this.fState; }
-			set { this.fState = value; }
-		}
-		private string fDefinition;
-		public string Definition
-		{
-			get { return this.fDefinition; }
-			set { this.fDefinition = value; }
-		}
+    /// <summary>
+    /// А также его имплементация
+    /// </summary>
+    public class Geometry : IGeometry
+    {
+        private int fid;
+        public int id
+        {
+            get { return this.fid; }
+            set { this.fid = value; }
+        }
+        private int fState;
+        public int State
+        {
+            get { return this.fState; }
+            set { this.fState = value; }
+        }
+        private string fDefinition;
+        public string Definition
+        {
+            get { return this.fDefinition; }
+            set { this.fDefinition = value; }
+        }
 
-		private string fName;
-		public string Name
-		{
-			get { return this.fName; }
-			set { this.fName = value; }
-		}
+        private string fName;
+        public string Name
+        {
+            get { return this.fName; }
+            set { this.fName = value; }
+        }
 
-		private string fLayerHandle;
-		public string LayerHandle
-		{
-			get { return this.fLayerHandle; }
-			set { this.fLayerHandle = value; }
-		}
+        private string fLayerHandle;
+        public string LayerHandle
+        {
+            get { return this.fLayerHandle; }
+            set { this.fLayerHandle = value; }
+        }
 
-		public string TypeName
-		{
-			get
-			{
-				return this.GetType().ToString();
-			}
-		}
+        public string TypeName
+        {
+            get
+            {
+                return this.GetType().ToString();
+            }
+        }
 
-		public void Fraq(string Format)
-		{
-			// nothing to fraq :)
-		}
+        public void Fraq(string Format)
+        {
+            // nothing to fraq :)
+        }
 
-		public void ShowasListItems(ListView LV, bool SetTag)
-		{
+        public void ShowasListItems(ListView LV, bool SetTag)
+        {
 
-		}
+        }
 
-		public TPoint AverageCenter
-		{
-			get
-			{
-				return new TPoint(0, 0);
-			}
-		}
+        public TPoint AverageCenter
+        {
+            get
+            {
+                return new TPoint(0, 0);
+            }
+        }
 
-		public double ScaleEntity(double canvas_width, double canvas_height)
-		{
-			return 1;
-		}
+        public double ScaleEntity(double canvas_width, double canvas_height)
+        {
+            return 1;
+        }
 
-		/// <summary>
-		/// Construct base Geometry object
-		/// </summary>
-		public Geometry()
-		{
-			this.id = Gen_id.newId;
-			this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
-		}
+        /// <summary>
+        /// Construct base Geometry object
+        /// </summary>
+        public Geometry()
+        {
+            this.id = Gen_id.newId;
+            this.fLayerHandle = "F"; //Default. Autocad layer "0" has handle "F" by default
+        }
 
-	}
-
-
-
-	public interface ICoordinate
-	{
-		//
-		// Summary:
-		//     The x-ordinate value
-		double X { get; set; }
-		//
-		// Summary:
-		//     The y-ordinate value
-		double Y { get; set; }
-		//
-		// Summary:
-		//     The z-ordinate value
-		double Z { get; set; }
-		//
-		// Summary:
-		//     The measure value
-		// double M { get; set; }
-		double Mt { get; set; }
-
-	}
-
-	public class Coordinate : ICoordinate
-	{
-		public const double NullOrdinate = double.NaN;
-
-		/// <summary>
-		/// Defualt on create: NAN, not zero !!
-		/// </summary>
-		public Coordinate()
-		{
-			this.X = NullOrdinate;
-			this.Y = NullOrdinate;
-			this.Z = NullOrdinate;
-			this.Mt = NullOrdinate;
-		}
-		//
-		// Summary:
-		//     X coordinate.
-		public double X { get; set; }
-		//
-		// Summary:
-		//     Y coordinate.
-		public double Y { get; set; }
-		//
-		// Summary:
-		//     Z coordinate.
-		public double Z { get; set; }
-		public double Mt { get; set; }
-	}
-
-	public interface IPoint : IGeometry, ICloneable //IGeometry, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
-	{
-		double x { get; set; }
-		double y { get; set; }
-		double z { get; set; }
-		//double M { get; set; }
-		//ICoordinateSequence CoordinateSequence { get; }
-	}
-
-	public class TPoint : Geometry, IPoint, IGeometry//port из  FteoClasses.pas
-	{
-		//implementation of interface method Clone():
-		public object Clone()
-		{
-			return new TPoint(this.x, this.y, this.NumGeopointA);
-		}
-
-		public int Borderid, fStatus, NumGeopoint;//, Order;
-		string fNumGeopointA,
-					   fPref, fCode, fPlace,
-					   fDescription;
-		//fFormula,
-		//fBorderDef; // ссылка на AREA.OBJDescr;
-		//double fx, fy, fz, fMt, foldX, foldY;
-		private Coordinate newOrd;
-		private Coordinate oldOrd;
+    }
 
 
-		/// <summary>
-		/// Default constructor. Inherited from parent, of coarse
-		/// Неявно вызывает родительский конструктор
-		/// </summary>
-		public TPoint()
-		{
-			this.newOrd = new Coordinate();
-			this.oldOrd = new Coordinate();
-		}
 
-		public TPoint(double initx, double inity) : this()
-		{
-			this.x = initx;
-			this.y = inity;
-		}
+    public interface ICoordinate
+    {
+        //
+        // Summary:
+        //     The x-ordinate value
+        double X { get; set; }
+        //
+        // Summary:
+        //     The y-ordinate value
+        double Y { get; set; }
+        //
+        // Summary:
+        //     The z-ordinate value
+        double Z { get; set; }
+        //
+        // Summary:
+        //     The measure value
+        // double M { get; set; }
+        double Mt { get; set; }
 
+    }
 
-		public TPoint(double initx, double inity, double initz)
-			: this(initx, inity)
-		{
-			this.z = initz;
-		}
-		public TPoint(double initx, double inity, string name) : this(initx, inity)
-		{
-			this.NumGeopointA = name;
-		}
+    public class Coordinate : ICoordinate
+    {
+        public const double NullOrdinate = double.NaN;
 
-		public string NumGeopointA
-		{
-			get { return this.fNumGeopointA; }
-			set { this.fNumGeopointA = value; }
-		}
-		public string Pref
-		{
-			get { return this.fPref; }
-			set { this.fPref = value; }
-		}
-		public string Code
-		{
-			get { return this.fCode; }
-			set { this.fCode = value; }
-		}
-		public string Place
-		{
-			get { return this.fPlace; }
-			set { this.fPlace = value; }
-		}
-		public string Description
-		{
-			get { return this.fDescription; }
-			set { this.fDescription = value; }
-		}
-		public new TPoint AverageCenter
-		{
-			get
-			{
-				return this;
-			}
-		}
+        /// <summary>
+        /// Defualt on create: NAN, not zero !!
+        /// </summary>
+        public Coordinate()
+        {
+            this.X = NullOrdinate;
+            this.Y = NullOrdinate;
+            this.Z = NullOrdinate;
+            this.Mt = NullOrdinate;
+        }
+        //
+        // Summary:
+        //     X coordinate.
+        public double X { get; set; }
+        //
+        // Summary:
+        //     Y coordinate.
+        public double Y { get; set; }
+        //
+        // Summary:
+        //     Z coordinate.
+        public double Z { get; set; }
+        public double Mt { get; set; }
+    }
 
-		/// <summary>
-		/// Расчет масштаба Tpoint на поверхность (z.B: WPF canvas) 
-		/// </summary>
-		/// <param name="canvas_width">Ширина полотна</param>
-		/// <param name="canvas_height">Высота полотна</param>
-		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
-		/// <returns></returns>
-		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
-		{
-			//TODO need code. like Ring
-			if (this.Empty) return -1;
-			double scale = 0;
-			double dx = 4; // размах по вертикали
+    public interface IPoint : IGeometry, ICloneable //IGeometry, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
+    {
+        double x { get; set; }
+        double y { get; set; }
+        double z { get; set; }
+        //double M { get; set; }
+        //ICoordinateSequence CoordinateSequence { get; }
+    }
 
-			double dy = 4; // размах по горизонтали 
-			if (dx > dy)
-			{
-				scale = (dx / canvas_height); // / ViewKoefficient;
-			}
-			else
-			{
-				scale = (dy / canvas_width); // / ViewKoefficient;
-			}
-			return scale;
-		}
+    public class TPoint : Geometry, IPoint, IGeometry, IEditableObject  //port из  FteoClasses.pas
+    {
+        //implementation of interface method Clone():
+        public object Clone()
+        {
+            return new TPoint(this.x, this.y, this.NumGeopointA);
+        }
 
-		public void ShowasListItems(ListView LV, bool SetTag)
-		{
-			if (Empty) return;
-			string BName;
-			LV.BeginUpdate();
-			LV.Items.Clear();
-			LV.Controls.Clear();
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "Описание";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
+        public int Borderid, fStatus, NumGeopoint;//, Order;
+        string fNumGeopointA,
+                       fPref, fCode, fPlace,
+                       fDescription;
+        //fFormula,
+        //fBorderDef; // ссылка на AREA.OBJDescr;
+        //double fx, fy, fz, fMt, foldX, foldY;
+        private Coordinate newOrd;
+        private Coordinate oldOrd;
 
 
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = id;
-			ListViewItem res = null; ;
-			BName = this.Pref + this.NumGeopointA + this.OrdIdent;
-			ListViewItem LVi = new ListViewItem();
-			LVi.Text = BName;
-			LVi.Tag = id;
-			LVi.SubItems.Add(x_s);
-			LVi.SubItems.Add(y_s);
-			LVi.SubItems.Add(Mt_s);
-			LVi.SubItems.Add(Description);
-			if (Pref == "н")
-				LVi.ForeColor = System.Drawing.Color.Red;
-			else LVi.ForeColor = System.Drawing.Color.Black;
-			if (Status == 6)
-				LVi.ForeColor = System.Drawing.Color.Blue;
-			LV.Items.Add(LVi);
-			LV.EndUpdate();
-			return;
-		}
+        /// <summary>
+        /// Default constructor. Inherited from parent, of coarse
+        /// Неявно вызывает родительский конструктор
+        /// </summary>
+        public TPoint()
+        {
+            this.newOrd = new Coordinate();
+            this.oldOrd = new Coordinate();
+        }
 
-		public double x
-		{
-			/*
+        public TPoint(double initx, double inity) : this()
+        {
+            this.x = initx;
+            this.y = inity;
+        }
+
+
+        public TPoint(double initx, double inity, double initz)
+            : this(initx, inity)
+        {
+            this.z = initz;
+        }
+        public TPoint(double initx, double inity, string name) : this(initx, inity)
+        {
+            this.NumGeopointA = name;
+        }
+
+        public string NumGeopointA
+        {
+            get { return this.fNumGeopointA; }
+            set { this.fNumGeopointA = value; }
+        }
+        public string Pref
+        {
+            get { return this.fPref; }
+            set { this.fPref = value; }
+        }
+        public string Code
+        {
+            get { return this.fCode; }
+            set { this.fCode = value; }
+        }
+        public string Place
+        {
+            get { return this.fPlace; }
+            set { this.fPlace = value; }
+        }
+        public string Description
+        {
+            get { return this.fDescription; }
+            set { this.fDescription = value; }
+        }
+        public new TPoint AverageCenter
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        /// <summary>
+        /// Расчет масштаба Tpoint на поверхность (z.B: WPF canvas) 
+        /// </summary>
+        /// <param name="canvas_width">Ширина полотна</param>
+        /// <param name="canvas_height">Высота полотна</param>
+        /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+        /// <returns></returns>
+        public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+        {
+            //TODO need code. like Ring
+            if (this.Empty) return -1;
+            double scale = 0;
+            double dx = 4; // размах по вертикали
+
+            double dy = 4; // размах по горизонтали 
+            if (dx > dy)
+            {
+                scale = (dx / canvas_height); // / ViewKoefficient;
+            }
+            else
+            {
+                scale = (dy / canvas_width); // / ViewKoefficient;
+            }
+            return scale;
+        }
+
+        public void ShowasListItems(ListView LV, bool SetTag)
+        {
+            if (Empty) return;
+            string BName;
+            LV.BeginUpdate();
+            LV.Items.Clear();
+            LV.Controls.Clear();
+            LV.Columns[0].Text = "Имя";
+            LV.Columns[1].Text = "x, м.";
+            LV.Columns[2].Text = "y, м.";
+            LV.Columns[3].Text = "Mt, м.";
+            LV.Columns[4].Text = "Описание";
+            LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
+            LV.View = View.Details;
+
+
+            //LV.Tag = PList.Parent_Id;
+            if (SetTag) LV.Tag = id;
+            ListViewItem res = null; ;
+            BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+            ListViewItem LVi = new ListViewItem();
+            LVi.Text = BName;
+            LVi.Tag = id;
+            LVi.SubItems.Add(x_s);
+            LVi.SubItems.Add(y_s);
+            LVi.SubItems.Add(Mt_s);
+            LVi.SubItems.Add(Description);
+            if (Pref == "н")
+                LVi.ForeColor = System.Drawing.Color.Red;
+            else LVi.ForeColor = System.Drawing.Color.Black;
+            if (Status == 6)
+                LVi.ForeColor = System.Drawing.Color.Blue;
+            LV.Items.Add(LVi);
+            LV.EndUpdate();
+            return;
+        }
+
+        public double x
+        {
+            /*
             get { return this.fx; }
             set { this.fx = value; }
             */
-			get { return this.newOrd.X; }
-			set { this.newOrd.X = value; }
-		}
+            get { return this.newOrd.X; }
+            set { this.newOrd.X = value; }
+        }
 
-		public double y
-		{
-			/*
+        public double y
+        {
+            /*
             get { return this.fy; }
             set { this.fy = value; }
             */
-			get { return this.newOrd.Y; }
-			set { this.newOrd.Y = value; }
-		}
+            get { return this.newOrd.Y; }
+            set { this.newOrd.Y = value; }
+        }
 
-		public double z
-		{
-			/*
+        public double z
+        {
+            /*
             get { return this.fz; }
             set { this.fz = value; }
             */
-			get { return this.newOrd.Z; }
-			set { this.newOrd.Z = value; }
-		}
+            get { return this.newOrd.Z; }
+            set { this.newOrd.Z = value; }
+        }
 
-		public double oldX
-		{
-			get { return this.oldOrd.X; }
-			set
-			{
-				this.oldOrd.X = value;
-			}
-		}
+        public double oldX
+        {
+            get { return this.oldOrd.X; }
+            set
+            {
+                this.oldOrd.X = value;
+            }
+        }
 
-		public double oldY
-		{
-			/*
+        public double oldY
+        {
+            /*
             get { return this.foldY; }
             set { this.foldY = value; }
             */
-			get { return this.oldOrd.Y; }
-			set { this.oldOrd.Y = value; }
-		}
+            get { return this.oldOrd.Y; }
+            set { this.oldOrd.Y = value; }
+        }
 
-		public double Mt
-		{
-			get { return this.newOrd.Mt; }
-			set { this.newOrd.Mt = value; }
-		}
+        public double Mt
+        {
+            get { return this.newOrd.Mt; }
+            set { this.newOrd.Mt = value; }
+        }
 
-		/// <summary>
-		/// Признак изменений в точке. Если * - есть изменения
-		/// </summary>
-		public string OrdIdent
-		{
-			get
-			{
-				if ((Double.IsNaN(this.oldX)) ||
-					(Double.IsNaN(this.oldY))
-					) return "";
+        /// <summary>
+        /// Признак изменений в точке. Если * - есть изменения
+        /// </summary>
+        public string OrdIdent
+        {
+            get
+            {
+                if ((Double.IsNaN(this.oldX)) ||
+                    (Double.IsNaN(this.oldY))
+                    ) return "";
 
-				if ((this.x == this.oldX) && (this.y == this.oldY))
-					return "";
-				else return "*"; //признак изменений в точек
-			}
-		}
+                if ((this.x == this.oldX) && (this.y == this.oldY))
+                    return "";
+                else return "*"; //признак изменений в точек
+            }
+        }
 
-		/// <summary>
-		/// Ордината Х как строка
-		/// </summary>
-		public string x_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.x)) return this.x.ToString();
-				else
-					return "-";
-			}
-		}
+        /// <summary>
+        /// Ордината Х как строка
+        /// </summary>
+        public string x_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.x)) return this.x.ToString();
+                else
+                    return "-";
+            }
+        }
 
-		/// <summary>
-		/// Ордината Y как строка
-		/// </summary>
-		public string y_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.y)) return this.y.ToString();
-				else
-					return "-";
-			}
-		}
-
-
-
-		public string z_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.z)) return Convert.ToString(this.z);
-				else return "0.00"; // ??
-			}
-
-		}
+        /// <summary>
+        /// Ордината Y как строка
+        /// </summary>
+        public string y_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.y)) return this.y.ToString();
+                else
+                    return "-";
+            }
+        }
 
 
-		public string Mt_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.Mt)) return this.Mt.ToString();
-				else
-					return "-";
-			}
-		}
 
-		public string oldX_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.oldX)) return this.oldX.ToString();
-				else
-					return "-";
-			}
-		}
+        public string z_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.z)) return Convert.ToString(this.z);
+                else return "0.00"; // ??
+            }
 
-		public string oldY_s
-		{
-			get
-			{
-				if (!Double.IsNaN(this.oldY)) return this.oldY.ToString();
-				else
-					return "-";
-			}
-		}
-
-		public int Status
-		{
-			get { return this.fStatus; }
-			set { this.fStatus = value; }
-		}
+        }
 
 
-		public bool Zero
-		{
-			get
-			{
-				if ((this.x == 0) && (this.y == 0)) return true;
-				else return false;
-			}
-		}
+        public string Mt_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.Mt)) return this.Mt.ToString();
+                else
+                    return "-";
+            }
+        }
 
-		/// <summary>
-		/// Проверка точки на установленость значений
-		/// </summary>
-		public bool Empty
-		{
-			get
-			{
-				if ((Double.IsNaN(this.newOrd.X))
-				//The IEEE 754 floating point standard states that comparing NaN with NaN will 
-				// always return false.If you must do this, use Double.isNaN().
-				&& (Double.IsNaN(this.newOrd.Y)))
-					return true;
-				else
-					return false;
-			}
-		}
+        public string oldX_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.oldX)) return this.oldX.ToString();
+                else
+                    return "-";
+            }
+        }
 
-		public void RenamePoint()
-		{
-			throw new System.NotImplementedException();
-		}
+        public string oldY_s
+        {
+            get
+            {
+                if (!Double.IsNaN(this.oldY)) return this.oldY.ToString();
+                else
+                    return "-";
+            }
+        }
 
-		/// <summary>
-		/// Сложение точек....
-		/// </summary>
-		/// <param name="A"></param>
-		/// <param name="B"></param>
-		/// <returns></returns>
-		public static TPoint operator +(TPoint A, TPoint B)
-		{
-			TPoint res = new TPoint();
-			res.id = Gen_id.newId;
-			res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
-			res.x = A.x + B.x;
-			res.y = A.y + B.y;
-			res.z = A.z + B.z;
-			return res;
-		}
-		//Что же будет равенством точки:
-		/*
+        public int Status
+        {
+            get { return this.fStatus; }
+            set { this.fStatus = value; }
+        }
+
+
+        public bool Zero
+        {
+            get
+            {
+                if ((this.x == 0) && (this.y == 0)) return true;
+                else return false;
+            }
+        }
+
+        /// <summary>
+        /// Проверка точки на установленость значений
+        /// </summary>
+        public bool Empty
+        {
+            get
+            {
+                if ((Double.IsNaN(this.newOrd.X))
+                //The IEEE 754 floating point standard states that comparing NaN with NaN will 
+                // always return false.If you must do this, use Double.isNaN().
+                && (Double.IsNaN(this.newOrd.Y)))
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public void RenamePoint()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Сложение точек....
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public static TPoint operator +(TPoint A, TPoint B)
+        {
+            TPoint res = new TPoint();
+            res.id = Gen_id.newId;
+            res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
+            res.x = A.x + B.x;
+            res.y = A.y + B.y;
+            res.z = A.z + B.z;
+            return res;
+        }
+        //Что же будет равенством точки:
+        /*
         static public bool operator ==(Point A, Point B)
         {
 
@@ -569,20 +569,20 @@ namespace netFteo.Spatial
             return !(A == B);
         }
         */
-		public bool Equals(TPoint B)//Точки одинаковые ?
-		{
-			//return (this == TestPoint); //применим оператор
-			if ((this.id == B.id) &&                                 // один перв. ключ  
-				(this.x == B.x) && (this.y == B.y) && (this.z == B.z) // идентичные координаты
-				)
-				return true;
-			else
-				return false;
-		}
+        public bool Equals(TPoint B)//Точки одинаковые ?
+        {
+            //return (this == TestPoint); //применим оператор
+            if ((this.id == B.id) &&                                 // один перв. ключ  
+                (this.x == B.x) && (this.y == B.y) && (this.z == B.z) // идентичные координаты
+                )
+                return true;
+            else
+                return false;
+        }
 
-		public void Draw()//System.Windows.Controls.Canvas canvas, Member cursor, System.Windows.Media.SolidColorBrush color, SolidColorBrush bckclr)
-		{
-			/*
+        public void Draw()//System.Windows.Controls.Canvas canvas, Member cursor, System.Windows.Media.SolidColorBrush color, SolidColorBrush bckclr)
+        {
+            /*
             System.Windows.Shapes.Rectangle rct = new Rectangle();
             rct.Stroke = Brushes.LightSlateGray; rct.Width = 25; rct.Height = 25;
             rct.Fill = bckclr;
@@ -596,294 +596,322 @@ namespace netFteo.Spatial
             Canvas.SetLeft(CursorText, cursor.j * 28+9); Canvas.SetTop(CursorText, cursor.i * 28+9);
             canvas.Children.Add(CursorText);
         */
-		}
+        }
 
-	};
+        TPoint UndoPoint;
+        //     Начинает процедуру изменения объекта.
+        public void BeginEdit()
+        {
+            UndoPoint = new TPoint(this.x, this.y);
+            UndoPoint.NumGeopointA = this.NumGeopointA;
+            UndoPoint.Mt = this.Mt;
+        }
 
+        //     Отменяет изменения с момента последнего System.ComponentModel.IEditableObject.BeginEdit
+        //     вызова.
+        public void CancelEdit()
+        {
+            this.x = UndoPoint.x;
+            this.y = UndoPoint.y;
+            this.Mt = UndoPoint.Mt;
+            this.NumGeopointA = UndoPoint.NumGeopointA;
+        }
+        //
+        // Сводка:
+        //     Передает изменения с момента последнего System.ComponentModel.IEditableObject.BeginEdit
+        //     или System.ComponentModel.IBindingList.AddNew вызов базового объекта.
+        public void EndEdit()
+        {
 
-	#endregion
-
-	/// <summary>
-	/// Circle. Just circle
-	/// </summary>
-	public class TCircle : TPoint, IGeometry
-	{
-		/// <summary>
-		/// Radius
-		/// </summary>
-		public double R;
-		//public Point Center;
-
-		public TCircle()
-		{
-			Name = "Окружность";
-		}
-		public TCircle(double x, double y, double radius) : this()
-		{
-			this.x = x;
-			this.y = y;
-			this.R = radius;
-		}
-
-		public TCircle(decimal x, decimal y, decimal radius) : this()
-		{
-			this.x = Convert.ToDouble(x);
-			this.y = Convert.ToDouble(y);
-			this.R = Convert.ToDouble(radius);
-		}
-
-		/// <summary>
-		/// Предельные размеры
-		/// </summary>
-		public TMyRect Bounds
-		{
-			get
-			{
-				TMyRect bounds = new TMyRect();
-				// проверим данные
-				if (!this.Empty)
-				{
-					bounds.MaxX = this.x + this.R;
-					bounds.MinX = this.x - this.R;
-					bounds.MaxY = this.y + this.R;
-					bounds.MinY = this.y - this.R;
-				}
-				return bounds;
-			}
-		}
-
-		public new void ShowasListItems(ListView LV, bool SetTag)
-		{
-			if (Empty) return;
-			string BName;
-			LV.BeginUpdate();
-			LV.Items.Clear();
-			LV.Controls.Clear();
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "радиус";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
+        }
 
 
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = id;
-			BName = this.Pref + this.NumGeopointA + this.OrdIdent;
-			ListViewItem LVi = new ListViewItem();
-			LVi.Text = BName;
-			LVi.Tag = id;
-			LVi.SubItems.Add(x_s);
-			LVi.SubItems.Add(y_s);
-			LVi.SubItems.Add(Mt_s);
-			LVi.SubItems.Add(R.ToString());
-			if (Pref == "н")
-				LVi.ForeColor = System.Drawing.Color.Red;
-			else LVi.ForeColor = System.Drawing.Color.Black;
-			if (Status == 6)
-				LVi.ForeColor = System.Drawing.Color.Blue;
-			LV.Items.Add(LVi);
-			LV.EndUpdate();
-			return;
-		}
-
-		/// <summary>
-		/// Расчет масштаба Circle на поверхность (z.B: WPF canvas) 
-		/// </summary>
-		/// <param name="canvas_width">Ширина полотна</param>
-		/// <param name="canvas_height">Высота полотна</param>
-		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
-		/// <returns></returns>
-		public new double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
-		{
-			//TODO need code. like Ring
-			if (this.Empty) return -1;
-			double scale = 0;
-			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
-
-			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
-			if (dx > dy)
-			{
-				scale = (dx / canvas_height); // / ViewKoefficient;
-			}
-			else
-			{
-				scale = (dy / canvas_width); // / ViewKoefficient;
-			}
-			return scale;
-		}
-	}
-
-	#region  Список точек. Его будем сериализовать в XML для обменов
-	/// <summary>
-	/// Список точек на базе Dictionary
-	/// </summary>
-	//public class PointList : Dictionary<int, Point>  // есть мнение, что словарь работает быстрее.....
-	//  {
-	//     public void AddPoint(Point point)
-	//   {
-	//       if (point.id < 1) point.id = Gen_id.newId;
-	//       this.Add(point.id, point);
-	// }
-	//} 
+    }
 
 
-	public interface IPointList : IGeometry
-	{
-		void ReversePoints();
-		/// <summary>
-		/// Reset old values of ordinates - like tnewContour
-		/// </summary>
-		void ResetOrdinates();
-		void ExchangeOrdinates();
-		void DetectSpins(IPointList src);
-		int ReorderPoints(int StartNumber);
+    #endregion
 
-		/// <summary>
-		/// Close figure - append last point, if not present
-		/// </summary>
-		void Close();
+    /// <summary>
+    /// Circle. Just circle
+    /// </summary>
+    public class TCircle : TPoint, IGeometry
+    {
+        /// <summary>
+        /// Radius
+        /// </summary>
+        public double R;
+        //public Point Center;
 
-		/// <summary>
-		/// Set precission (delta) for ordinates
-		/// </summary>
-		/// <param name="mt"></param>
-		void SetMt(double mt);
-		bool RemovePoint(int PointID);
-		TPoint GetPoint(int PointID);
-	}
+        public TCircle()
+        {
+            Name = "Окружность";
+        }
+        public TCircle(double x, double y, double radius) : this()
+        {
+            this.x = x;
+            this.y = y;
+            this.R = radius;
+        }
 
-	/// <summary>
-	/// Список точек на базе BindingList
-	/// </summary>
-	public class PointList : BindingList<TPoint>, IPointList
-	{
-		public const string TabDelimiter = "\t";  // tab
-												  //public PointList Points;
-		public int Parent_Id; // ид Участка или чего тоо ттам
-		private int fid;
-		private int fState;
-		private string fDefinition;
-		public int id
-		{
-			get { return this.fid; }
-			set { this.fid = value; }
-		}
+        public TCircle(decimal x, decimal y, decimal radius) : this()
+        {
+            this.x = Convert.ToDouble(x);
+            this.y = Convert.ToDouble(y);
+            this.R = Convert.ToDouble(radius);
+        }
 
-		public int State
-		{
-			get { return this.fState; }
-			set { this.fState = value; }
-		}
+        /// <summary>
+        /// Предельные размеры
+        /// </summary>
+        public TMyRect Bounds
+        {
+            get
+            {
+                TMyRect bounds = new TMyRect();
+                // проверим данные
+                if (!this.Empty)
+                {
+                    bounds.MaxX = this.x + this.R;
+                    bounds.MinX = this.x - this.R;
+                    bounds.MaxY = this.y + this.R;
+                    bounds.MinY = this.y - this.R;
+                }
+                return bounds;
+            }
+        }
+
+        public new void ShowasListItems(ListView LV, bool SetTag)
+        {
+            if (Empty) return;
+            string BName;
+            LV.BeginUpdate();
+            LV.Items.Clear();
+            LV.Controls.Clear();
+            LV.Columns[0].Text = "Имя";
+            LV.Columns[1].Text = "x, м.";
+            LV.Columns[2].Text = "y, м.";
+            LV.Columns[3].Text = "Mt, м.";
+            LV.Columns[4].Text = "радиус";
+            LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
+            LV.View = View.Details;
 
 
-		public string Definition
-		{
-			get { return this.fDefinition; }
-			set { this.fDefinition = value; }
-		}
+            //LV.Tag = PList.Parent_Id;
+            if (SetTag) LV.Tag = id;
+            BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+            ListViewItem LVi = new ListViewItem();
+            LVi.Text = BName;
+            LVi.Tag = id;
+            LVi.SubItems.Add(x_s);
+            LVi.SubItems.Add(y_s);
+            LVi.SubItems.Add(Mt_s);
+            LVi.SubItems.Add(R.ToString());
+            if (Pref == "н")
+                LVi.ForeColor = System.Drawing.Color.Red;
+            else LVi.ForeColor = System.Drawing.Color.Black;
+            if (Status == 6)
+                LVi.ForeColor = System.Drawing.Color.Blue;
+            LV.Items.Add(LVi);
+            LV.EndUpdate();
+            return;
+        }
+
+        /// <summary>
+        /// Расчет масштаба Circle на поверхность (z.B: WPF canvas) 
+        /// </summary>
+        /// <param name="canvas_width">Ширина полотна</param>
+        /// <param name="canvas_height">Высота полотна</param>
+        /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+        /// <returns></returns>
+        public new double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+        {
+            //TODO need code. like Ring
+            if (this.Empty) return -1;
+            double scale = 0;
+            double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+
+            double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
+            if (dx > dy)
+            {
+                scale = (dx / canvas_height); // / ViewKoefficient;
+            }
+            else
+            {
+                scale = (dy / canvas_width); // / ViewKoefficient;
+            }
+            return scale;
+        }
+    }
+
+    #region  Список точек. Его будем сериализовать в XML для обменов
+    /// <summary>
+    /// Список точек на базе Dictionary
+    /// </summary>
+    //public class PointList : Dictionary<int, Point>  // есть мнение, что словарь работает быстрее.....
+    //  {
+    //     public void AddPoint(Point point)
+    //   {
+    //       if (point.id < 1) point.id = Gen_id.newId;
+    //       this.Add(point.id, point);
+    // }
+    //} 
 
 
-		/// <summary>
-		/// Установка "ГКН" точек
-		/// </summary>
-		public void DetectSpins(IPointList src)
-		{
-			PointList Detectors = (PointList)src;
+    public interface IPointList : IGeometry
+    {
+        void ReversePoints();
+        /// <summary>
+        /// Reset old values of ordinates - like tnewContour
+        /// </summary>
+        void ResetOrdinates();
+        void ExchangeOrdinates();
+        void DetectSpins(IPointList src);
+        int ReorderPoints(int StartNumber);
 
-			foreach (TPoint Point in this)
-				foreach (TPoint srcPoint in Detectors)
-				{
-					if ((Point.x == srcPoint.x) &&
-						(Point.y == srcPoint.y)
-							)
-					{
-						Point.State = 6;//Rosreestr.dStatesv01_enum.Учтенный;
-						Point.Pref = "";
-					}
-				}
-		}
+        /// <summary>
+        /// Close figure - append last point, if not present
+        /// </summary>
+        void Close();
 
-		public void ExchangeOrdinates()
-		{
-			double dx;
-			for (int i = 0; i <= this.Count - 1; i++)
-			{
-				dx = this[i].x;
-				this[i].x = this[i].y;
-				this[i].y = dx;
-			}
-		}
+        /// <summary>
+        /// Set precission (delta) for ordinates
+        /// </summary>
+        /// <param name="mt"></param>
+        void SetMt(double mt);
+        bool RemovePoint(int PointID);
+        TPoint GetPoint(int PointID);
+    }
 
-		private string fLayerHandle;
-		public string LayerHandle
-		{
-			get { return this.fLayerHandle; }
-			set { this.fLayerHandle = value; }
-		}
-		private string fName;
-		public string Name
-		{
-			get { return this.fName; }
-			set { this.fName = value; }
-		}
-		public string TypeName
-		{
-			get
-			{
-				return this.GetType().ToString();
-			}
-		}
+    /// <summary>
+    /// Список точек на базе BindingList
+    /// </summary>
+    public class PointList : BindingList<TPoint>, IPointList
+    {
+        public const string TabDelimiter = "\t";  // tab
+                                                  //public PointList Points;
+        public int Parent_Id; // ид Участка или чего тоо ттам
+        private int fid;
+        private int fState;
+        private string fDefinition;
+        public int id
+        {
+            get { return this.fid; }
+            set { this.fid = value; }
+        }
 
-		public void Close()
-		{
-			// nothing to
-		}
+        public int State
+        {
+            get { return this.fState; }
+            set { this.fState = value; }
+        }
 
-		public void Fraq(string Format)
-		{
-			foreach (TPoint pt in this)
-			{
-				if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
-				{
 
-					pt.x = fraqtedX;
-					pt.oldX = fraqtedX;
-				}
+        public string Definition
+        {
+            get { return this.fDefinition; }
+            set { this.fDefinition = value; }
+        }
 
-				if (Double.TryParse(pt.y.ToString(Format), out double fraqtedY))
-				{
-					pt.y = fraqtedY;
-					pt.oldY = fraqtedY;
-				}
-			}
-		}
 
-		public bool RemovePoint(int PointID)
-		{
-			//linq:
-			// case 1
-			try
-			{
-				return this.Remove(this.Single<TPoint>(point => point.id == PointID));
-			}
-			catch (InvalidOperationException ex)
-			{
+        /// <summary>
+        /// Установка "ГКН" точек
+        /// </summary>
+        public void DetectSpins(IPointList src)
+        {
+            PointList Detectors = (PointList)src;
 
-				return false;
-			}
-			//
-			//case 2 - wont working ....
-			/*
+            foreach (TPoint Point in this)
+                foreach (TPoint srcPoint in Detectors)
+                {
+                    if ((Point.x == srcPoint.x) &&
+                        (Point.y == srcPoint.y)
+                            )
+                    {
+                        Point.State = 6;//Rosreestr.dStatesv01_enum.Учтенный;
+                        Point.Pref = "";
+                    }
+                }
+        }
+
+        public void ExchangeOrdinates()
+        {
+            double dx;
+            for (int i = 0; i <= this.Count - 1; i++)
+            {
+                dx = this[i].x;
+                this[i].x = this[i].y;
+                this[i].y = dx;
+            }
+        }
+
+        private string fLayerHandle;
+        public string LayerHandle
+        {
+            get { return this.fLayerHandle; }
+            set { this.fLayerHandle = value; }
+        }
+        private string fName;
+        public string Name
+        {
+            get { return this.fName; }
+            set { this.fName = value; }
+        }
+        public string TypeName
+        {
+            get
+            {
+                return this.GetType().ToString();
+            }
+        }
+
+        public void Close()
+        {
+            // nothing to
+        }
+
+        public void Fraq(string Format)
+        {
+            foreach (TPoint pt in this)
+            {
+                if (Double.TryParse(pt.x.ToString(Format), out double fraqtedX))
+                {
+
+                    pt.x = fraqtedX;
+                    pt.oldX = fraqtedX;
+                }
+
+                if (Double.TryParse(pt.y.ToString(Format), out double fraqtedY))
+                {
+                    pt.y = fraqtedY;
+                    pt.oldY = fraqtedY;
+                }
+            }
+        }
+
+        public bool RemovePoint(int PointID)
+        {
+            //linq:
+            // case 1
+            try
+            {
+                return this.Remove(this.Single<TPoint>(point => point.id == PointID));
+            }
+            catch (InvalidOperationException ex)
+            {
+
+                return false;
+            }
+            //
+            //case 2 - wont working ....
+            /*
 			if (this.Select(point => point.id == PointID).Count() == 1)
 			{
 				return this.Remove(this.Single<TPoint>(point => point.id == PointID));
 			}
 			*/
 
-			/*
+            /*
 		 // foreach:
 		foreach (TPoint pt in this)
 		{
@@ -895,150 +923,150 @@ namespace netFteo.Spatial
 		}
 		
 	*/
-			return false;
-		}
+            return false;
+        }
 
-		public bool RemovePoint(TPoint pt)
-		{
-				return	this.Remove(pt);
-		}
+        public bool RemovePoint(TPoint pt)
+        {
+            return this.Remove(pt);
+        }
 
-		public TPoint GetPoint(int PointID)
-		{
-			foreach (TPoint pt in this)
-			{
-				if (pt.id == PointID)
-				{
-					return pt;
+        public TPoint GetPoint(int PointID)
+        {
+            foreach (TPoint pt in this)
+            {
+                if (pt.id == PointID)
+                {
+                    return pt;
 
-				}
-			}
-			return null;
-		}
+                }
+            }
+            return null;
+        }
 
-		public int ReorderPoints(int StartIndex =1 )
-		{
-			foreach (TPoint pt in this)
-			{
-				pt.NumGeopointA = StartIndex++.ToString();
-			}
-			/*
+        public int ReorderPoints(int StartIndex = 1)
+        {
+            foreach (TPoint pt in this)
+            {
+                pt.NumGeopointA = StartIndex++.ToString();
+            }
+            /*
 			if (this.Closed)
 				this.Last().NumGeopointA = this.First().NumGeopointA;// closing point are ident
 			*/
-			return StartIndex;
-		}
+            return StartIndex;
+        }
 
-		public void ResetOrdinates()
-		{
-			foreach (TPoint pt in this)
-			{
-				pt.oldX = Coordinate.NullOrdinate;
-				pt.oldY = Coordinate.NullOrdinate;
-			}
-		}
-
-
-		public void SetMt(double mt)
-		{
-			foreach (TPoint pt in this)
-			pt.Mt = mt;
-		}
-
-		public void ShowasListItems(ListView LV, bool SetTag)
-		{
-			if (Count == 0) return;
-			string BName;
-			LV.BeginUpdate();
-			LV.Items.Clear();
-			LV.Controls.Clear();
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "Описание";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			LV.View = View.Details;
+        public void ResetOrdinates()
+        {
+            foreach (TPoint pt in this)
+            {
+                pt.oldX = Coordinate.NullOrdinate;
+                pt.oldY = Coordinate.NullOrdinate;
+            }
+        }
 
 
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = id;
-			ListViewItem res = null; ;
-			for (int i = 0; i <= Count - 1; i++)
-			{
-				BName = this[i].Pref + this[i].NumGeopointA + this[i].OrdIdent;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = BName;
-				//LVi.Tag = this[i].id;
-				LVi.Tag = "TPoint." + this[i].id;
-				LVi.SubItems.Add(this[i].x_s);
-				LVi.SubItems.Add(this[i].y_s);
-				LVi.SubItems.Add(this[i].Mt_s);
-				LVi.SubItems.Add(this[i].Description);
-				if (this[i].Pref == "н")
-					LVi.ForeColor = System.Drawing.Color.Red;
-				else LVi.ForeColor = System.Drawing.Color.Black;
-				if (this[i].Status == 6)
-					LVi.ForeColor = System.Drawing.Color.Blue;
-				if (i == 0) res = LV.Items.Add(LVi);
-				else
-					LV.Items.Add(LVi);
-			}
-			LV.EndUpdate();
-			return;
-		}
-		
-		/// <summary>
-		/// Расчет масштаба на поверхность (z.B: WPF canvas) 
-		/// </summary>
-		/// <param name="canvas_width">Ширина полотна</param>
-		/// <param name="canvas_height">Высота полотна</param>
-		/// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
-		/// <returns></returns>
-		public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
-		{
-			if (this.Bounds == null) return -1;
-			double scale = 0;
-			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
-			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
-															   //label1.Content = "dx " + dx.ToString("0.0") + " dy " + dy.ToString("0.0");
-															   //Определим, в какой оси больше размах, в ней и вычислим масштаб:
+        public void SetMt(double mt)
+        {
+            foreach (TPoint pt in this)
+                pt.Mt = mt;
+        }
 
-			if (dx > dy)
-			{
-				scale = (dx / canvas_height); // / ViewKoefficient;
+        public void ShowasListItems(ListView LV, bool SetTag)
+        {
+            if (Count == 0) return;
+            string BName;
+            LV.BeginUpdate();
+            LV.Items.Clear();
+            LV.Controls.Clear();
+            LV.Columns[0].Text = "Имя";
+            LV.Columns[1].Text = "x, м.";
+            LV.Columns[2].Text = "y, м.";
+            LV.Columns[3].Text = "Mt, м.";
+            LV.Columns[4].Text = "Описание";
+            LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
+            LV.View = View.Details;
 
-			}
-			else
-			{
-				scale = (dy / canvas_width); // / ViewKoefficient;
-			}
-			return scale;
-		}
 
-		public void ReversePoints()
-		{
-			PointList tmpList = new PointList();
+            //LV.Tag = PList.Parent_Id;
+            if (SetTag) LV.Tag = id;
+            ListViewItem res = null; ;
+            for (int i = 0; i <= Count - 1; i++)
+            {
+                BName = this[i].Pref + this[i].NumGeopointA + this[i].OrdIdent;
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = BName;
+                //LVi.Tag = this[i].id;
+                LVi.Tag = "TPoint." + this[i].id;
+                LVi.SubItems.Add(this[i].x_s);
+                LVi.SubItems.Add(this[i].y_s);
+                LVi.SubItems.Add(this[i].Mt_s);
+                LVi.SubItems.Add(this[i].Description);
+                if (this[i].Pref == "н")
+                    LVi.ForeColor = System.Drawing.Color.Red;
+                else LVi.ForeColor = System.Drawing.Color.Black;
+                if (this[i].Status == 6)
+                    LVi.ForeColor = System.Drawing.Color.Blue;
+                if (i == 0) res = LV.Items.Add(LVi);
+                else
+                    LV.Items.Add(LVi);
+            }
+            LV.EndUpdate();
+            return;
+        }
 
-			int count = this.Count;
-			foreach (TPoint pt in this)
-			{
-				tmpList.AddPoint(this[count-- -1]); //countdown  index
-			}
-			this.Clear();
-			this.ImportObjects(tmpList);
-		}
+        /// <summary>
+        /// Расчет масштаба на поверхность (z.B: WPF canvas) 
+        /// </summary>
+        /// <param name="canvas_width">Ширина полотна</param>
+        /// <param name="canvas_height">Высота полотна</param>
+        /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
+        /// <returns></returns>
+        public double ScaleEntity(double canvas_width, double canvas_height)//, double ViewKoefficient)
+        {
+            if (this.Bounds == null) return -1;
+            double scale = 0;
+            double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+            double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
+                                                               //label1.Content = "dx " + dx.ToString("0.0") + " dy " + dy.ToString("0.0");
+                                                               //Определим, в какой оси больше размах, в ней и вычислим масштаб:
 
-		/// <summary>
-		/// Конструктор base Geometry object,
-		/// Для сериализаций в Xml конструктор должен быть без параметров
-		/// </summary>
-		public PointList()
+            if (dx > dy)
+            {
+                scale = (dx / canvas_height); // / ViewKoefficient;
+
+            }
+            else
+            {
+                scale = (dy / canvas_width); // / ViewKoefficient;
+            }
+            return scale;
+        }
+
+        public void ReversePoints()
+        {
+            PointList tmpList = new PointList();
+
+            int count = this.Count;
+            foreach (TPoint pt in this)
+            {
+                tmpList.AddPoint(this[count-- - 1]); //countdown  index
+            }
+            this.Clear();
+            this.ImportObjects(tmpList);
+        }
+
+        /// <summary>
+        /// Конструктор base Geometry object,
+        /// Для сериализаций в Xml конструктор должен быть без параметров
+        /// </summary>
+        public PointList()
         {
             this.id = Gen_id.newId;
-			this.fLayerHandle = "F"; //Default
-		}
+            this.fLayerHandle = "F"; //Default
+        }
 
 
         public bool HasChangesBool
@@ -1054,10 +1082,10 @@ namespace netFteo.Spatial
             }
         }
 
-        public int Index (int item_id)
+        public int Index(int item_id)
         {
-            int res=-1; 
-            foreach(TPoint pt in this)
+            int res = -1;
+            foreach (TPoint pt in this)
             {
                 res++;
                 if (pt.id == item_id)
@@ -1072,7 +1100,7 @@ namespace netFteo.Spatial
         /// Move point in point list up or down
         /// </summary>
         /// <param name="newPosition"></param>
-        public void Move (int index, int newPosition)
+        public void Move(int index, int newPosition)
 
         {
             TPoint Swap = this[newPosition]; // save object
@@ -1080,7 +1108,7 @@ namespace netFteo.Spatial
             this.Insert(newPosition, this[index]);
             this.RemoveAt(index);
             this.Insert(index, Swap);
-            
+
             //  this.[0].
         }
 
@@ -1095,37 +1123,37 @@ namespace netFteo.Spatial
             }
         }
 
-		/// <summary>
-		/// Средние значения координат полигона
-		/// </summary>
-		public TPoint AverageCenter
-		{
-			get
-			{
-				double Xsumm = 0;
-				double Ysumm = 0; int pointcnt = 0;
-				for (int i = 0; i <= this.PointCount - 1; i++)
-				{
-					if (!Double.IsNaN(this[i].x))
-					{
-						Xsumm = Xsumm + (this[i].x);
-						Ysumm = Ysumm + (this[i].y);
-						pointcnt++;
-					}
-				}
-				TPoint Respoint = new TPoint();
-				Respoint.NumGeopointA = "Center";
-				Respoint.x = Xsumm / pointcnt;
-				Respoint.y = Ysumm / pointcnt;
-				return Respoint;
-			}
-		}
+        /// <summary>
+        /// Средние значения координат полигона
+        /// </summary>
+        public TPoint AverageCenter
+        {
+            get
+            {
+                double Xsumm = 0;
+                double Ysumm = 0; int pointcnt = 0;
+                for (int i = 0; i <= this.PointCount - 1; i++)
+                {
+                    if (!Double.IsNaN(this[i].x))
+                    {
+                        Xsumm = Xsumm + (this[i].x);
+                        Ysumm = Ysumm + (this[i].y);
+                        pointcnt++;
+                    }
+                }
+                TPoint Respoint = new TPoint();
+                Respoint.NumGeopointA = "Center";
+                Respoint.x = Xsumm / pointcnt;
+                Respoint.y = Ysumm / pointcnt;
+                return Respoint;
+            }
+        }
 
 
-		/// <summary>
-		/// Предельные размеры
-		/// </summary>
-		public TMyRect Bounds
+        /// <summary>
+        /// Предельные размеры
+        /// </summary>
+        public TMyRect Bounds
         {
             get
             {
@@ -1155,7 +1183,7 @@ namespace netFteo.Spatial
                     }
                 }
 
-SCAN:
+            SCAN:
                 // найдем макс координаты
                 for (int MapIter = 0; MapIter <= this.Count - 1; MapIter++)
                 {
@@ -1204,7 +1232,7 @@ SCAN:
                 return bounds;
             }
         }
-   
+
         public void ImportObjects(BindingList<TPoint> Points)
         {
             for (int i = 0; i <= Points.Count - 1; i++)
@@ -1217,7 +1245,7 @@ SCAN:
                 for (int i = 0; i <= src.Count - 1; i++)
                     this.AddPoint(src[i]);
         }
-   
+
         public void AddPoint(TPoint point)
         {
             if (point == null) return;
@@ -1335,9 +1363,9 @@ SCAN:
                 //j =(i+1)  mod (n);     // Вычисление "соседней" вершины
                 j = MathExt.ModInt(n, i + 1);
                 yi = this[i].y;
-				yj = this[j].y;
+                yj = this[j].y;
                 xi = this[i].x;
-				xj = this[j].x;
+                xj = this[j].x;
 
                 if (yi == yj) continue;  // вертикальный отрезок - пропускаем
                                          // над ребром или под ребром
@@ -1461,78 +1489,78 @@ SCAN:
 
         }
     }
-	#endregion
+    #endregion
 
-	public class TPolyLine : PointList, IGeometry
-	{
-		public TPolyLine()
-		{
-			int check = this.id;
-			Name = "Ломаная";
-		}
+    public class TPolyLine : PointList, IGeometry
+    {
+        public TPolyLine()
+        {
+            int check = this.id;
+            Name = "Ломаная";
+        }
 
-		/// <summary>
-		/// Length of polyline. Just summ of fragments
-		/// </summary>
-		public double Length
-		{
-			get
-			{
-				if (this.PointCount == 0) return -1;
-				double Peryd = 0;
-				double Test = 0;
-				for (int i = 0; i <= this.Count - 2; i++)
-				{
-					Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
-					if (!Double.IsNaN(Test))
-						Peryd += Test;
-				}
+        /// <summary>
+        /// Length of polyline. Just summ of fragments
+        /// </summary>
+        public double Length
+        {
+            get
+            {
+                if (this.PointCount == 0) return -1;
+                double Peryd = 0;
+                double Test = 0;
+                for (int i = 0; i <= this.Count - 2; i++)
+                {
+                    Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+                    if (!Double.IsNaN(Test))
+                        Peryd += Test;
+                }
 
-				/* Closing figure:
+                /* Closing figure:
 				Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
 				if (!Double.IsNaN(Test))
 					Peryd += Test;
 				*/
-				return Peryd;
-			}
-		}
-
-
-	
- 
-	}
-
-	public class TPolyLines : BindingList<TPolyLine>
-	{
-		public int ParentID;
-		public TPolyLines(int parentid)
-		{
-			this.ParentID = parentid;
-		}
-	}
+                return Peryd;
+            }
+        }
 
 
 
-	#region TRing  - closed polyline
-	/// <summary>
-	/// Ring - imperative closed polyline, other words - simple polygon.
-	/// It have area, perymethr - total length of all border fragments
-	/// </summary>
-	public class TRing : TPolyLine
+
+    }
+
+    public class TPolyLines : BindingList<TPolyLine>
     {
-		
+        public int ParentID;
+        public TPolyLines(int parentid)
+        {
+            this.ParentID = parentid;
+        }
+    }
+
+
+
+    #region TRing  - closed polyline
+    /// <summary>
+    /// Ring - imperative closed polyline, other words - simple polygon.
+    /// It have area, perymethr - total length of all border fragments
+    /// </summary>
+    public class TRing : TPolyLine
+    {
+
         public string PerymethrFmt(string Format)
         {
 
             return this.Perymethr().ToString(Format);
         }
-		
+
         public double Perymethr()
         {
             if (this.PointCount == 0) return -1;
             double Peryd = 0;
             double Test = 0;
-			/*
+            /*
             for (int i = 0; i <= this.Count - 2; i++)
             {
                 Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
@@ -1540,14 +1568,14 @@ SCAN:
                     Peryd += Test;
             }
 			*/
-			Peryd = Length;
-			//Add last (closing) fragment.
+            Peryd = Length;
+            //Add last (closing) fragment.
             Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
             if (!Double.IsNaN(Test))
                 Peryd += Test;
             return Peryd;
         }
-		
+
         /// <summary>
         ///  Проверка вершин, 
         /// </summary>
@@ -1575,12 +1603,12 @@ SCAN:
             get
             {
                 PointList ring = new PointList();
-  
+
                 foreach (TPoint pt in this)
 
                 {
                     //выбираем только точки с существующими ординатами .newOrd :
-                    if (! Double.IsNaN(pt.x))
+                    if (!Double.IsNaN(pt.x))
                     {
                         ring.AddPoint(pt);
                     }
@@ -1646,53 +1674,53 @@ SCAN:
                 //
             }
         }
-    
-    /*
-      private double Area(PointList ring)
-        {
-            
-                if (this.Valide)
-                {
-                    double rr = 0;
-                    double x1_, y3_, y1_, y2_;
-                    int PtsCnt = this.Count;
-                    int CurPts = 0;
-                    if (PtsCnt > 2)
+
+        /*
+          private double Area(PointList ring)
+            {
+
+                    if (this.Valide)
                     {
-                        PtsCnt--; // декремент сразу чтобы не возиться в массиве с выражениями типа array_[PtsCnt-1].x;
-                        y3_ = this[CurPts].y; // Вначало !!!
-                        CurPts++; // Вперёд !!!
-                        y2_ = this[CurPts].y;
-                        x1_ = this[PtsCnt].x; // В конец
-                        y1_ = this[PtsCnt].y; // В конец
-
-                        rr = x1_ * (y2_ - y1_);
-                        y2_ = this[PtsCnt - 1].y; // Назад !!!
-                        rr = rr + x1_ * (y3_ - y2_);
-                        CurPts = 0;
-
-                        for (int i = 2; i <= PtsCnt; i++)
+                        double rr = 0;
+                        double x1_, y3_, y1_, y2_;
+                        int PtsCnt = this.Count;
+                        int CurPts = 0;
+                        if (PtsCnt > 2)
                         {
-                            y1_ = this[CurPts].y;
-                            CurPts++; // Вперёд !!!
-                            x1_ = this[CurPts].x;
+                            PtsCnt--; // декремент сразу чтобы не возиться в массиве с выражениями типа array_[PtsCnt-1].x;
+                            y3_ = this[CurPts].y; // Вначало !!!
                             CurPts++; // Вперёд !!!
                             y2_ = this[CurPts].y;
-                            rr = rr + x1_ * (y2_ - y1_);
-                            CurPts--;
+                            x1_ = this[PtsCnt].x; // В конец
+                            y1_ = this[PtsCnt].y; // В конец
+
+                            rr = x1_ * (y2_ - y1_);
+                            y2_ = this[PtsCnt - 1].y; // Назад !!!
+                            rr = rr + x1_ * (y3_ - y2_);
+                            CurPts = 0;
+
+                            for (int i = 2; i <= PtsCnt; i++)
+                            {
+                                y1_ = this[CurPts].y;
+                                CurPts++; // Вперёд !!!
+                                x1_ = this[CurPts].x;
+                                CurPts++; // Вперёд !!!
+                                y2_ = this[CurPts].y;
+                                rr = rr + x1_ * (y2_ - y1_);
+                                CurPts--;
+                            }
+                            rr = Math.Abs(rr / 2);
+                            // if  not inmeters then rr:=rr/10000;
+                            // SendControlMessage(FHdnle,3,'Рассчитана площадь '+FormatFloat(PrecFrmt,rr),0,0,0);
+                            return rr;
+                            //break;
                         }
-                        rr = Math.Abs(rr / 2);
-                        // if  not inmeters then rr:=rr/10000;
-                        // SendControlMessage(FHdnle,3,'Рассчитана площадь '+FormatFloat(PrecFrmt,rr),0,0,0);
+
                         return rr;
-                        //break;
                     }
-                    
-                    return rr;
+                    else return -1;
                 }
-                else return -1;
-            }
-    */
+        */
         /// <summary>
         ///  Центр масс полигона: 
         ///  возвращает точку центра масс
@@ -1738,8 +1766,8 @@ SCAN:
         }
 
 
-  
-   
+
+
 
         /// <summary>
         /// Closed figure - point First and Last are ident (in ordinates, not by name/Number)
@@ -1758,14 +1786,14 @@ SCAN:
         /// </summary>
         public new void Close()
         {
-            if (! Closed)
+            if (!Closed)
             {
                 this.Add(this.First());
             }
         }
 
 
-    
+
 
 
 
@@ -1799,48 +1827,48 @@ SCAN:
     public class BrdList : BindingList<TBorder>
     {
 
-		public void AddItem(string definition, TPoint A, TPoint B)
-		{
-			TBorder NewBrd;
-			if ((!Double.IsNaN(A.x)) && (!Double.IsNaN(A.y)) && (!Double.IsNaN(B.x)) && (!Double.IsNaN(B.y)))
-			{
-				NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
-				NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
-				this.Add(NewBrd);
-
-			}
-		}
-
-		public void AddItems(string Pref, PointList Points)
+        public void AddItem(string definition, TPoint A, TPoint B)
         {
-			PointList NewPoints = new PointList(); 
-			foreach (TPoint point in Points)
-			{
-				if ((!Double.IsNaN(point.x)) && (!Double.IsNaN(point.y)))
-				{
-					NewPoints.AddPoint(point);
-				}
-			}
+            TBorder NewBrd;
+            if ((!Double.IsNaN(A.x)) && (!Double.IsNaN(A.y)) && (!Double.IsNaN(B.x)) && (!Double.IsNaN(B.y)))
+            {
+                NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
+                NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
+                this.Add(NewBrd);
+
+            }
+        }
+
+        public void AddItems(string Pref, PointList Points)
+        {
+            PointList NewPoints = new PointList();
+            foreach (TPoint point in Points)
+            {
+                if ((!Double.IsNaN(point.x)) && (!Double.IsNaN(point.y)))
+                {
+                    NewPoints.AddPoint(point);
+                }
+            }
 
             for (int i = 0; i <= NewPoints.Count - 2; i++)
             {
                 this.AddItem("-", NewPoints[i], NewPoints[i + 1]);
-			}
-			// this.AddItem("-", Points[Points.Count-1], Points.First());  //Closing border ??
-		}
+            }
+            // this.AddItem("-", Points[Points.Count-1], Points.First());  //Closing border ??
+        }
 
-		public double Length
-		{
-			get
-			{
-				double res = 0;
-				foreach(TBorder border in this)
-				{
-					res += border.Length;
-				}
-				return res;
-			}
-		}
+        public double Length
+        {
+            get
+            {
+                double res = 0;
+                foreach (TBorder border in this)
+                {
+                    res += border.Length;
+                }
+                return res;
+            }
+        }
     }
 
     #endregion
@@ -1859,65 +1887,65 @@ SCAN:
             this.Childs = new List<TRing>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
             this.AreaValue = -1; // default, 'not specified'
-			Name = "Полигон";
-//			this.LayerHandle = "FFFF"; // default
-		}
+            Name = "Полигон";
+            //			this.LayerHandle = "FFFF"; // default
+        }
 
-        public TMyPolygon(int id):this()
+        public TMyPolygon(int id) : this()
         {
-          //  this.Childs = new List<TMyOutLayer>();
+            //  this.Childs = new List<TMyOutLayer>();
             this.id = id;
         }
 
-        public TMyPolygon(string Def):this()
+        public TMyPolygon(string Def) : this()
         {
             //this.Childs = new List<TMyOutLayer>();
             //this.Layer_id = Gen_id.newId;
             this.Definition = Def;
-		}
+        }
 
-		public TMyPolygon(TPolyLine Ring) : this()
-		{
-			this.ImportRing(Ring);
-		//	this.id = Ring.id;
-		}
-
-
-
-		public TMyPolygon(int id, string Def):this(id)
+        public TMyPolygon(TPolyLine Ring) : this()
         {
-          //  this.Childs = new List<TMyOutLayer>();
-          //  this.Layer_id = id;
+            this.ImportRing(Ring);
+            //	this.id = Ring.id;
+        }
+
+
+
+        public TMyPolygon(int id, string Def) : this(id)
+        {
+            //  this.Childs = new List<TMyOutLayer>();
+            //  this.Layer_id = id;
             this.Definition = Def;
         }
 
-		
+
         public new void ExchangeOrdinates()
-		{
-           base.ExchangeOrdinates();
+        {
+            base.ExchangeOrdinates();
             for (int i = 0; i <= this.Childs.Count - 1; i++)
                 this.Childs[i].ExchangeOrdinates();
         }
-		
-		public new void ReversePoints()
-		{
-			base.ReversePoints();
-			foreach (TRing child in this.Childs)
-				child.ReversePoints();
-		}
 
-		public new int ReorderPoints(int StartIndex = 1)
-		{
-			base.ReorderPoints();
-			foreach (TRing child in this.Childs)
-				StartIndex += child.ReorderPoints(StartIndex);
-			return StartIndex;
-		}
+        public new void ReversePoints()
+        {
+            base.ReversePoints();
+            foreach (TRing child in this.Childs)
+                child.ReversePoints();
+        }
 
-		/// <summary>
-		/// Reset old values of ordinates - like tnewContour
-		/// </summary>
-		public new void ResetOrdinates()
+        public new int ReorderPoints(int StartIndex = 1)
+        {
+            base.ReorderPoints();
+            foreach (TRing child in this.Childs)
+                StartIndex += child.ReorderPoints(StartIndex);
+            return StartIndex;
+        }
+
+        /// <summary>
+        /// Reset old values of ordinates - like tnewContour
+        /// </summary>
+        public new void ResetOrdinates()
         {
             base.ResetOrdinates();
             foreach (TRing child in this.Childs)
@@ -1927,86 +1955,86 @@ SCAN:
 
         public new void SetMt(double mt)
         {
-			base.SetMt(mt);
-			foreach (TRing child in this.Childs)
+            base.SetMt(mt);
+            foreach (TRing child in this.Childs)
                 child.SetMt(mt);
         }
 
-		public new bool RemovePoint(int PointID)
-		{
-		  bool Flag =	base.RemovePoint(PointID);
-
-			foreach (TRing child in this.Childs)
-				Flag = child.RemovePoint(PointID);
-			return Flag;
-		}
-
-		public new  void Fraq(string Format)
+        public new bool RemovePoint(int PointID)
         {
-		 base.Fraq(Format);
-			foreach (TRing child in this.Childs)
+            bool Flag = base.RemovePoint(PointID);
+
+            foreach (TRing child in this.Childs)
+                Flag = child.RemovePoint(PointID);
+            return Flag;
+        }
+
+        public new void Fraq(string Format)
+        {
+            base.Fraq(Format);
+            foreach (TRing child in this.Childs)
                 child.Fraq(Format);
         }
 
-		private void ShowListPoints(ListView LV, PointList points)
-		{
-			string BName;
-			for (int i = 0; i <= points.Count - 1; i++)
-			{
-				BName = points[i].Pref + points[i].NumGeopointA + points[i].OrdIdent;
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = BName;
-				LVi.Tag = "TPoint." + points[i].id;
-				LVi.SubItems.Add(points[i].x_s);
-				LVi.SubItems.Add(points[i].y_s);
-				LVi.SubItems.Add(points[i].Mt_s);
-				LVi.SubItems.Add(points[i].Description);
+        private void ShowListPoints(ListView LV, PointList points)
+        {
+            string BName;
+            for (int i = 0; i <= points.Count - 1; i++)
+            {
+                BName = points[i].Pref + points[i].NumGeopointA + points[i].OrdIdent;
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = BName;
+                LVi.Tag = "TPoint." + points[i].id;
+                LVi.SubItems.Add(points[i].x_s);
+                LVi.SubItems.Add(points[i].y_s);
+                LVi.SubItems.Add(points[i].Mt_s);
+                LVi.SubItems.Add(points[i].Description);
 
-				LVi.ForeColor =  TMyColors.StatusToColor(points[i].State);
-				/*
+                LVi.ForeColor = TMyColors.StatusToColor(points[i].State);
+                /*
 				if (points[i].Pref == "н")
 					LVi.ForeColor = System.Drawing.Color.Red;
 				else LVi.ForeColor = System.Drawing.Color.Black;
 				if (points[i].Status == 6)
 					LVi.ForeColor = System.Drawing.Color.Blue;
 				*/
-				//if (i == 0) res = LV.Items.Add(LVi);
-				//else
-					LV.Items.Add(LVi);
-			}
-		}
-		
-		public new void ShowasListItems(ListView LV, bool SetTag)
-		{
-			if (PointCount == 0) return;
-			LV.BeginUpdate();
-			LV.Items.Clear();
-			LV.Controls.Clear();
-			LV.View = View.Details;
-			LV.Columns[0].Text = "Имя";
-			LV.Columns[1].Text = "x, м.";
-			LV.Columns[2].Text = "y, м.";
-			LV.Columns[3].Text = "Mt, м.";
-			LV.Columns[4].Text = "Описание";
-			LV.Columns[5].Text = "-";
-			LV.Columns[6].Text = "-";
-			if (SetTag) LV.Tag = id;
+                //if (i == 0) res = LV.Items.Add(LVi);
+                //else
+                LV.Items.Add(LVi);
+            }
+        }
 
-			ShowListPoints(LV, (PointList)this);
+        public new void ShowasListItems(ListView LV, bool SetTag)
+        {
+            if (PointCount == 0) return;
+            LV.BeginUpdate();
+            LV.Items.Clear();
+            LV.Controls.Clear();
+            LV.View = View.Details;
+            LV.Columns[0].Text = "Имя";
+            LV.Columns[1].Text = "x, м.";
+            LV.Columns[2].Text = "y, м.";
+            LV.Columns[3].Text = "Mt, м.";
+            LV.Columns[4].Text = "Описание";
+            LV.Columns[5].Text = "-";
+            LV.Columns[6].Text = "-";
+            if (SetTag) LV.Tag = id;
 
-			for (int ic = 0; ic <= this.Childs.Count - 1; ic++)
-			{  //Пустая строчка - разделитель
-				ListViewItem LViEmpty_ch = new ListViewItem();
-				LViEmpty_ch.Text = "";
-				LV.Items.Add(LViEmpty_ch);
-				ShowListPoints(LV, this.Childs[ic]);
-			}
+            ShowListPoints(LV, (PointList)this);
 
-			ListViewItem LViEmpty = new ListViewItem();
-			LViEmpty.Text = "";
-			LV.Items.Add(LViEmpty);
-			LV.EndUpdate();
-		}
+            for (int ic = 0; ic <= this.Childs.Count - 1; ic++)
+            {  //Пустая строчка - разделитель
+                ListViewItem LViEmpty_ch = new ListViewItem();
+                LViEmpty_ch.Text = "";
+                LV.Items.Add(LViEmpty_ch);
+                ShowListPoints(LV, this.Childs[ic]);
+            }
+
+            ListViewItem LViEmpty = new ListViewItem();
+            LViEmpty.Text = "";
+            LV.Items.Add(LViEmpty);
+            LV.EndUpdate();
+        }
 
 
         /// <summary>
@@ -2063,19 +2091,19 @@ SCAN:
 
         }
 
-		/// <summary>
-		/// Set points of ring - main border by importing 
-		/// </summary>
-		/// <param name="Ring"></param>
-		public void ImportRing(TPolyLine Ring)
-		{
-			if (Ring == null) return;
-			this.Clear();
-			this.Childs.Clear();
-//			this.Definition = Ring.Definition;
-			for (int i = 0; i <= Ring.PointCount - 1; i++)
-				this.AddPoint(Ring[i]);
-		}
+        /// <summary>
+        /// Set points of ring - main border by importing 
+        /// </summary>
+        /// <param name="Ring"></param>
+        public void ImportRing(TPolyLine Ring)
+        {
+            if (Ring == null) return;
+            this.Clear();
+            this.Childs.Clear();
+            //			this.Definition = Ring.Definition;
+            for (int i = 0; i <= Ring.PointCount - 1; i++)
+                this.AddPoint(Ring[i]);
+        }
 
 
         public void ImportPolygon(TMyPolygon Poly)
@@ -2240,25 +2268,25 @@ SCAN:
 
 
 
-		/// <summary>
-		/// Установка "ГКН" точек полигона
-		/// </summary>
-		public new void DetectSpins(IPointList src)
-		{
-			base.DetectSpins(src);
-			foreach (PointList child in this.Childs)
-			{
-				child.DetectSpins(src);
-			}
-		}
+        /// <summary>
+        /// Установка "ГКН" точек полигона
+        /// </summary>
+        public new void DetectSpins(IPointList src)
+        {
+            base.DetectSpins(src);
+            foreach (PointList child in this.Childs)
+            {
+                child.DetectSpins(src);
+            }
+        }
 
 
-		/// <summary>
-		/// Проверка пересечений полигона с коллекцией полигонов
-		/// </summary>
-		/// <param name="ES">Коллекция полигонов</param>
-		/// <returns></returns>
-		public PointList FindClip(TPolygonCollection ES)
+        /// <summary>
+        /// Проверка пересечений полигона с коллекцией полигонов
+        /// </summary>
+        /// <param name="ES">Коллекция полигонов</param>
+        /// <returns></returns>
+        public PointList FindClip(TPolygonCollection ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -2270,10 +2298,10 @@ SCAN:
             return res;
         }
 
-		/// <summary>
-		/// Add an empty child
-		/// </summary>
-		/// <returns></returns>
+        /// <summary>
+        /// Add an empty child
+        /// </summary>
+        /// <returns></returns>
         public TRing AddChild()
         {
             this.Childs.Add(new TRing());
@@ -2281,26 +2309,26 @@ SCAN:
             return this.Childs[this.Childs.Count - 1];
         }
 
-		/// <summary>
-		/// Add a child ring with validation of geometry
-		/// </summary>
-		/// <param name="child">Ring of points (closed polyline)</param>
+        /// <summary>
+        /// Add a child ring with validation of geometry
+        /// </summary>
+        /// <param name="child">Ring of points (closed polyline)</param>
         public void AddChild(TRing child)
         {
-			if (child == null) return ;
+            if (child == null) return;
 
             var test = this.HasCommonPoints(child);
             var inn = this.PointsIn(child);
 
             if ((child.Count > 1) &&              //
-				(child.Closed)    &&              //if child is true ring
-				(! this.HasCommonPoints(child)) && 
-			   (this.PointsIn(child) != null)) //if child in parent figure TODO !!! Pointsin got fake results
-			{
-				this.Childs.Add(child);
-				this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
-				//return this.Childs[this.Childs.Count - 1];
-			}
+                (child.Closed) &&              //if child is true ring
+                (!this.HasCommonPoints(child)) &&
+               (this.PointsIn(child) != null)) //if child in parent figure TODO !!! Pointsin got fake results
+            {
+                this.Childs.Add(child);
+                this.Childs[this.Childs.Count - 1].id = Gen_id.newId;
+                //return this.Childs[this.Childs.Count - 1];
+            }
         }
 
         /// <summary>
@@ -2320,7 +2348,7 @@ SCAN:
             }
         }
 
-		public TRing GetEs(int Layer_id)
+        public TRing GetEs(int Layer_id)
         {
             if (this.id == Layer_id) return this;
 
@@ -2333,7 +2361,7 @@ SCAN:
     }
     #endregion
 
- 
+
 
     public class MIFColumn
     {
@@ -2372,8 +2400,8 @@ SCAN:
         public byte[] Data;
     }
 
-	#region TPolygonCollection Коллекция Полигонов
-	public delegate void ESCheckingHandler(object sender, ESCheckingEventArgs e);
+    #region TPolygonCollection Коллекция Полигонов
+    public delegate void ESCheckingHandler(object sender, ESCheckingEventArgs e);
 
     public class TPolygonCollection : List<TMyPolygon>
     {
@@ -2405,7 +2433,7 @@ SCAN:
 
         public int Parent_id
         { get { return this.fParent_id; } }
-		/*
+        /*
         public int TotalPointCount
         {
             get
@@ -2451,24 +2479,24 @@ SCAN:
         {
             if (poly_ == null) return null;
             if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
-				(((TMyPolygon)poly_).PointCount >0))
+                (((TMyPolygon)poly_).PointCount > 0))
             {
                 this.Add((TMyPolygon)poly_);
                 return (TMyPolygon)poly_;
             }
-			
-			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
-		 (((TRing)poly_).PointCount > 0))
-			{
-				TMyPolygon Vpoly = new TMyPolygon();
-				Vpoly.AppendPoints((TRing)poly_);
-				Vpoly.Definition = ((TRing)poly_).Definition;
-				 this.AddPolygon(Vpoly);
-				return Vpoly;
-			}
 
-			//"netFteo.Spatial.TPolyLine" ????
-			return null;
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
+         (((TRing)poly_).PointCount > 0))
+            {
+                TMyPolygon Vpoly = new TMyPolygon();
+                Vpoly.AppendPoints((TRing)poly_);
+                Vpoly.Definition = ((TRing)poly_).Definition;
+                this.AddPolygon(Vpoly);
+                return Vpoly;
+            }
+
+            //"netFteo.Spatial.TPolyLine" ????
+            return null;
         }
 
         public TPolygonCollection AddPolygons(TPolygonCollection polys_)
@@ -2696,14 +2724,14 @@ SCAN:
         {
             List<string> aslist = new List<string>();
             for (int i = 0; i <= this.Count - 1; i++)
-                aslist.Add(this[i].Definition +    "\t" + 
+                aslist.Add(this[i].Definition + "\t" +
                     this[i].AreaSpatialFmt("0.00") + "\t" +
-                                                       (this[i].AreaValue > 0 ? this[i].AreaValue.ToString():"-")  + "\t" +
-                                                       ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00") +"\t"+
+                                                       (this[i].AreaValue > 0 ? this[i].AreaValue.ToString() : "-") + "\t" +
+                                                       ((decimal)this[i].AreaSpatial - this[i].AreaValue).ToString("0.00") + "\t" +
                                                        (this[i].AreaInaccuracy != "" ? this[i].AreaInaccuracy : "-") + "\t" +
-                                                       this[i].Has_Changes 
+                                                       this[i].Has_Changes
                     );
-            
+
             return aslist;
 
         }
@@ -2715,11 +2743,11 @@ SCAN:
     {
     }
 
-	public class EZPEntry : TCadasterItem
-	{
-		public int Spatial_ID;
-		public decimal AreaEntry;
-	}
+    public class EZPEntry : TCadasterItem
+    {
+        public int Spatial_ID;
+        public decimal AreaEntry;
+    }
 
     public class TCompozitionEZ : List<EZPEntry>// : List<TMyPolygon>
     {
@@ -2794,8 +2822,8 @@ SCAN:
                     return this.Items[i].EntSpat;
 
                 for (int ic = 0; ic <= this.Items[i].Contours.Count - 1; ic++)
-					if (this.Items[i].Contours[ic].id == Layer_id)
-                    return (TMyPolygon)this.Items[i].Contours[ic];
+                    if (this.Items[i].Contours[ic].id == Layer_id)
+                        return (TMyPolygon)this.Items[i].Contours[ic];
             }
 
 
@@ -2849,9 +2877,9 @@ SCAN:
 
         public string CN;
         public string DateCreated;
-		public decimal CadastralCost;
+        public decimal CadastralCost;
 
-		public TCadasterItem()
+        public TCadasterItem()
         {
             this.CN = "";
             this.id = Gen_id.newId;
@@ -2906,31 +2934,31 @@ SCAN:
 
     public delegate Object ESDelegate();
 
-	/// <summary>
-	/// Земельный участок
-	/// </summary>
+    /// <summary>
+    /// Земельный участок
+    /// </summary>
     public class TMyParcel : TCadasterItem
     {
         private string FParentCN;
-		private string FParcelName;
-		private TCompozitionEZ fCompozitionEZ;
+        private string FParcelName;
+        private TCompozitionEZ fCompozitionEZ;
 
         public new string State
-		{
-			get
-			{
-				return base.State.ToString();
-			}
-			set
-			{
-				int test = -1;
-				if (Int32.TryParse(value, out test))
-				base.State = test;
-			}
-		}
+        {
+            get
+            {
+                return base.State.ToString();
+            }
+            set
+            {
+                int test = -1;
+                if (Int32.TryParse(value, out test))
+                    base.State = test;
+            }
+        }
         public string CadastralBlock;
         public int CadastralBlock_id;
-		public string AreaGKN;
+        public string AreaGKN;
         /// <summary>
         /// Значение, указаное
         /// </summary>
@@ -2944,30 +2972,30 @@ SCAN:
         public Rosreestr.TMyRights Rights;
         public Rosreestr.TMyRights EGRN;
         public Rosreestr.TMyEncumbrances Encumbrances;
-	
-		/// <summary>
-		///  Spatial data. Universal, both for single ES and multi (contours/EZP).
-		///  will replace polygon/contours
-		/// </summary>
-		public TEntitySpatial EntSpat; 
-	
-		public TCompozitionEZ CompozitionEZ
-		{
-			set
-			{
 
-				this.fCompozitionEZ = new TCompozitionEZ();
-				this.fCompozitionEZ = value;
+        /// <summary>
+        ///  Spatial data. Universal, both for single ES and multi (contours/EZP).
+        ///  will replace polygon/contours
+        /// </summary>
+        public TEntitySpatial EntSpat;
+
+        public TCompozitionEZ CompozitionEZ
+        {
+            set
+            {
+
+                this.fCompozitionEZ = new TCompozitionEZ();
+                this.fCompozitionEZ = value;
 
 
-			}
-			get
-			{
-				return this.fCompozitionEZ;
-			}
-		}
+            }
+            get
+            {
+                return this.fCompozitionEZ;
+            }
+        }
 
-		public TFiles XmlBodyList;
+        public TFiles XmlBodyList;
         public TMySlots SubParcels;
         public List<String> AllOffspringParcel;// Кадастровые номера всех земельных участков, образованных из данного земельного участка
         public List<String> PrevCadastralNumbers; //Кадастровые номера земельных участков, из которых образован
@@ -2985,43 +3013,43 @@ SCAN:
             this.PrevCadastralNumbers = new List<string>();
             this.Location = new netFteo.Rosreestr.TLocation();
             this.Rights = new Rosreestr.TMyRights();
-			this.EntSpat = new TEntitySpatial();
+            this.EntSpat = new TEntitySpatial();
             //this.SpecialNote = "";
             this.id = Gen_id.newId;
             this.AreaGKN = "-1";
         }
 
-		/// <summary>
-		/// Override inherited property for customizing behavior
-		/// </summary>
-		public string  ParcelName
-		{
-			get
-			{
-				if ((this.Name != null) &&
+        /// <summary>
+        /// Override inherited property for customizing behavior
+        /// </summary>
+        public string ParcelName
+        {
+            get
+            {
+                if ((this.Name != null) &&
 
-					(this.Name != ""))
-					return this.Name;
+                    (this.Name != ""))
+                    return this.Name;
 
-				if (this.CompozitionEZ != null)
-					return "Единое землепользование";
+                if (this.CompozitionEZ != null)
+                    return "Единое землепользование";
 
-				if (this.EntSpat.Count > 1)
-					return "Многоконтурный участок";
-				return "Землепользование"; //default
-			}
-			set
-			{
-				this.FParcelName = value;
-			}
-		}
+                if (this.EntSpat.Count > 1)
+                    return "Многоконтурный участок";
+                return "Землепользование"; //default
+            }
+            set
+            {
+                this.FParcelName = value;
+            }
+        }
 
         public TMyParcel(string cn) : this() // Вызов Конструктора по умолчанию
         {
             this.CN = cn;
         }
 
-		public TMyParcel(string cn, int parcel_id) : this() // Вызов Конструктора по умолчанию
+        public TMyParcel(string cn, int parcel_id) : this() // Вызов Конструктора по умолчанию
         {
             this.id = parcel_id;
             this.CN = cn;
@@ -3029,35 +3057,35 @@ SCAN:
 
         public TMyParcel(string CN, string name) : this(CN, Gen_id.newId) //Вызов конструктора переопределенного
         {
-			this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name);
-			switch (Name)
+            this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name);
+            switch (Name)
             {
-				/*
+                /*
                 case "Землепользование": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Обособленный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 case "Многоконтурный участок": { this.Contours = new TEntitySpatial(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
 					*/
-				case "Единое землепользование": // "Item02": //
-					{
+                case "Единое землепользование": // "Item02": //
+                    {
                         //this.Contours = new TPolygonCollection(); // на свякий случай, как в Осетии: ЕЗП с контурами 
                         this.CompozitionEZ = new TCompozitionEZ();
                         return;
                     }
                 case "Значение отсутствует": return;
-                default:  return;
-				//	{ this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                default: return;
+                    //	{ this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
             }
-		}
+        }
 
         public TMyParcel(Rosreestr.dParcelsv01_enum name, string cadastralblock, string definition)
               : this() //Вызов конструктора переопределенного
         {
             this.CadastralBlock = cadastralblock;
             this.Definition = definition;
-           // this.Name = name.ToString();
+            // this.Name = name.ToString();
         }
-		/*
+        /*
 		 * 
 		private int Fid;
 		public int id
@@ -3068,25 +3096,25 @@ SCAN:
 		*/
 
 
-		public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
-		{
-			if (ESs == null) return;
-			EZPEntry entry = new EZPEntry();
-			entry.Spatial_ID = ESs.id; // links to spatial
-			entry.CN = entrynumber;
-			entry.Definition = entrynumber;
-			//entry.ImportPolygon(ESs);
-			entry.AreaEntry = areaEntry;
-			ESs.AreaValue = areaEntry;
-			ESs.AreaInaccuracy = Inaccuracy != 0 ?  Inaccuracy.ToString(): "";
-			entry.State = state;
+        public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
+        {
+            if (ESs == null) return;
+            EZPEntry entry = new EZPEntry();
+            entry.Spatial_ID = ESs.id; // links to spatial
+            entry.CN = entrynumber;
+            entry.Definition = entrynumber;
+            //entry.ImportPolygon(ESs);
+            entry.AreaEntry = areaEntry;
+            ESs.AreaValue = areaEntry;
+            ESs.AreaInaccuracy = Inaccuracy != 0 ? Inaccuracy.ToString() : "";
+            entry.State = state;
 
-			this.EntSpat.AddPolygon(ESs);
-			this.CompozitionEZ.Add(entry);
-		}
+            this.EntSpat.AddPolygon(ESs);
+            this.CompozitionEZ.Add(entry);
+        }
 
 
-		public TmySlot AddSubParcel(string SlotNumber)
+        public TmySlot AddSubParcel(string SlotNumber)
         {
             TmySlot Sl = new TmySlot();
             Sl.NumberRecord = SlotNumber;
@@ -3117,15 +3145,15 @@ SCAN:
 
         public IGeometry GetEs(int Layer_id)
         {
-			foreach(IGeometry Feauture in this.EntSpat)
-			{
-				if (Feauture.id == Layer_id)
-					return Feauture;
-			}
+            foreach (IGeometry Feauture in this.EntSpat)
+            {
+                if (Feauture.id == Layer_id)
+                    return Feauture;
+            }
 
-			if (this.EntSpat.id == Layer_id)
-				return this.EntSpat;
-	
+            if (this.EntSpat.id == Layer_id)
+                return this.EntSpat;
+
             if (this.SubParcels != null) if (this.SubParcels.GetEs(Layer_id) != null) return this.SubParcels.GetEs(Layer_id);
             return null;
         }
@@ -3139,7 +3167,7 @@ SCAN:
         {
             switch (this.Name)
             {
-				/* TODO : recode func:
+                /* TODO : recode func:
                 case "Землепользование": { return this.EntitySpatial.FindClip(ES); }
                 case "Обособленный участок": { return this.EntitySpatial.FindClip(ES); }
                 case "Условный участок": { return this.EntitySpatial.FindClip(ES); }
@@ -3147,7 +3175,7 @@ SCAN:
 					
                 // case "Единое землепользование": { return this.CompozitionEZ.CheckES(ES); }
 				*/
-				case "Значение отсутствует": { return null; }
+                case "Значение отсутствует": { return null; }
                 default: return null;
             }
         }
@@ -3156,7 +3184,7 @@ SCAN:
         {
             switch (this.Name)
             {
-				/*
+                /*
                 case "Землепользование": { return this.EntitySpatial.FindClip(Contours); }
                 case "Обособленный участок": { return this.EntitySpatial.FindClip(Contours); }
                 case "Условный участок": { return this.EntitySpatial.FindClip(Contours); }
@@ -3172,17 +3200,17 @@ SCAN:
         {
             switch (this.Name)
             {
-				/* TODO kill
+                /* TODO kill
                 case "Землепользование": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Обособленный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Условный участок": { return this.EntitySpatial.AreaSpatialFmt(Format); }
                 case "Многоконтурный участок": { return this.Contours.AreaSpatialFmt(Format, true); }
 					*/
 
-             //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatialFmt(Format, true); }
+                //   case "Единое землепользование": { return this.CompozitionEZ.AreaSpatialFmt(Format, true); }
                 case "Значение отсутствует": { return ""; }
                 default: return this.EntSpat.AreaSpatialFmt(Format, true);
-			}
+            }
         }
 
         public double Area_float
@@ -3191,7 +3219,7 @@ SCAN:
             {
                 switch (this.Name)
                 {
-					/*
+                    /*
                     case "Землепользование": { return this.EntitySpatial.AreaSpatial; }
                     case "Обособленный участок": { return this.EntitySpatial.AreaSpatial; }
                     case "Условный участок": { return this.EntitySpatial.AreaSpatial; }
@@ -3301,12 +3329,12 @@ SCAN:
     public class TCadasterItem2 : TCadasterItem
     {
         public TKeyParameters OldNumbers; //Кадастровые номера земельных участков, из которых образован
-                                        //    public TKeyParameters KeyParameters; // для всех оКСОв, и для зданий  -в них этажность будем вносить И разную хуйню
+                                          //    public TKeyParameters KeyParameters; // для всех оКСОв, и для зданий  -в них этажность будем вносить И разную хуйню
         public decimal Area;
         public string Notes; // Особые отметки
-  //      public Rosreestr.TAddress Address;
-		public Rosreestr.TLocation Location;
-		public TCadasterItem2()
+                             //      public Rosreestr.TAddress Address;
+        public Rosreestr.TLocation Location;
+        public TCadasterItem2()
         {
             this.OldNumbers = new TKeyParameters();
         }
@@ -3364,7 +3392,7 @@ SCAN:
         {
             this.PositionInObject = new TPositionInObject();
             this.CN = cn;
-			this.Location = new Rosreestr.TLocation();
+            this.Location = new Rosreestr.TLocation();
             this.KeyParameters = new TKeyParameters();
         }
     }
@@ -3440,27 +3468,27 @@ SCAN:
         public string AssignationName;  // Назначение сооружения; 
         //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
         public TKeyParameters KeyParameters; // 
-		/*
-		public Object ES
-        {
-            get { return this.fEntitySpatial; }
-            set
-            {
-                if (value == null) return;
-                string test = value.GetType().Name;
+                                             /*
+                                             public Object ES
+                                             {
+                                                 get { return this.fEntitySpatial; }
+                                                 set
+                                                 {
+                                                     if (value == null) return;
+                                                     string test = value.GetType().Name;
 
-                if (value.GetType().Name == "TMyPolygon")
-                    this.fEntitySpatial = (TMyPolygon)value;
+                                                     if (value.GetType().Name == "TMyPolygon")
+                                                         this.fEntitySpatial = (TMyPolygon)value;
 
-                if (value.GetType().Name == "TPolyLines")
-                    this.fEntitySpatial = (TPolyLines)value;
-				
-				if (value.GetType().Name == "TCircle")
-					this.fEntitySpatial = (TCircle)value;
-			}
-        }
-		*/
-		public TConstruction()
+                                                     if (value.GetType().Name == "TPolyLines")
+                                                         this.fEntitySpatial = (TPolyLines)value;
+
+                                                     if (value.GetType().Name == "TCircle")
+                                                         this.fEntitySpatial = (TCircle)value;
+                                                 }
+                                             }
+                                             */
+        public TConstruction()
         {
             this.KeyParameters = new TKeyParameters();
         }
@@ -3474,24 +3502,24 @@ SCAN:
         public TKeyParameters KeyParameters; // 
         public string DegreeReadiness; //Степень готовности в процентах
 
-/*
-		private Object fEntitySpatial; //Может быть многоконтурным???
-		public Object ES
-        {
-            get { return this.fEntitySpatial; }
-            set
-            {
-                if (value == null) return;
-                string test = value.GetType().Name;
+        /*
+                private Object fEntitySpatial; //Может быть многоконтурным???
+                public Object ES
+                {
+                    get { return this.fEntitySpatial; }
+                    set
+                    {
+                        if (value == null) return;
+                        string test = value.GetType().Name;
 
-                if (value.GetType().Name == "TMyPolygon")
-                    this.fEntitySpatial = (TMyPolygon)value;
+                        if (value.GetType().Name == "TMyPolygon")
+                            this.fEntitySpatial = (TMyPolygon)value;
 
-                if (value.GetType().Name == "TPolyLines")
-                    this.fEntitySpatial = (TPolyLines)value;
-            }
-        }
-*/
+                        if (value.GetType().Name == "TPolyLines")
+                            this.fEntitySpatial = (TPolyLines)value;
+                    }
+                }
+        */
         public TUncompleted()
         {
             this.KeyParameters = new TKeyParameters();
@@ -3504,10 +3532,10 @@ SCAN:
 
         //public List<TFlat> Flats;//Кадастровые номера помещений, расположенных в объекте недвижимости
         public TKeyParameters KeyParameters; // 
-		public TFlats Flats; // Помещения, расположенных в объекте недвижимости
-							 /// <summary>
-							 /// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
-							 /// </summary>
+        public TFlats Flats; // Помещения, расположенных в объекте недвижимости
+                             /// <summary>
+                             /// Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен данный объект недвижимости (сведения ГКН)
+                             /// </summary>
 
         public TBuilding()
         {
@@ -3532,30 +3560,30 @@ SCAN:
         public List<string> ParentCadastralNumbers; //
         //public decimal Area;
         public string Type;
-		public string Floors;
-		public string UndergroundFloors;
-		public Rosreestr.TMyRights Rights; // как бы ГКН-Права
+        public string Floors;
+        public string UndergroundFloors;
+        public Rosreestr.TMyRights Rights; // как бы ГКН-Права
         public Rosreestr.TMyRights EGRN;
-		public TEntitySpatial EntSpat; //Spatial data
-		//SubTypes:
-		public TBuilding Building;
-		public TFlat Flat;
-		public TConstruction Construction;
-		public TUncompleted Uncompleted;
+        public TEntitySpatial EntSpat; //Spatial data
+                                       //SubTypes:
+        public TBuilding Building;
+        public TFlat Flat;
+        public TConstruction Construction;
+        public TUncompleted Uncompleted;
 
-		public string ObjectType
+        public string ObjectType
         {
             set { this.fObjectType = value; }
             get { return this.fObjectType; }
         }
 
-       // public Rosreestr.TAddress Address;
+        // public Rosreestr.TAddress Address;
         public TMyRealty()
         {
             this.id = Gen_id.newId;
             this.ParentCadastralNumbers = new List<string>();
-			this.Location = new Rosreestr.TLocation();
-			this.EntSpat = new TEntitySpatial();
+            this.Location = new Rosreestr.TLocation();
+            this.EntSpat = new TEntitySpatial();
         }
 
         public TMyRealty(string cn) : this()
@@ -3576,29 +3604,31 @@ SCAN:
             }
         }
 
-		/// <summary>
-		/// Contructor for KPT11 realty`s
-		/// </summary>
-		/// <param name="cn"></param>
-		/// <param name="type_code"></param>
-		public TMyRealty(string cn, string type_code) : this(cn)
-		{
-			this.ObjectType = type_code;
-			switch (type_code)
-			{
-				case "002001002000":
-					{ this.Building = new TBuilding();
-						break; }
-				case "002001004000" :
-				 { this.Construction = new TConstruction(); break; }
-				case "002001005000":
-				{ this.Uncompleted = new TUncompleted(); break; }
+        /// <summary>
+        /// Contructor for KPT11 realty`s
+        /// </summary>
+        /// <param name="cn"></param>
+        /// <param name="type_code"></param>
+        public TMyRealty(string cn, string type_code) : this(cn)
+        {
+            this.ObjectType = type_code;
+            switch (type_code)
+            {
+                case "002001002000":
+                    {
+                        this.Building = new TBuilding();
+                        break;
+                    }
+                case "002001004000":
+                    { this.Construction = new TConstruction(); break; }
+                case "002001005000":
+                    { this.Uncompleted = new TUncompleted(); break; }
 
-				default: this.Building = new TBuilding(); break;
-			}
-		}
+                default: this.Building = new TBuilding(); break;
+            }
+        }
 
-		public TKeyParameters KeyParameters
+        public TKeyParameters KeyParameters
         {
             get
             {
@@ -3609,7 +3639,7 @@ SCAN:
                 return null;
             }
         }
- 
+
     }
 
 
@@ -3629,7 +3659,7 @@ SCAN:
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
-				/* TODO kill, goes to ES2
+                /* TODO kill, goes to ES2
                 if (this[i].Building != null)
 
                     if ((this[i]).Building.ES != null)
@@ -3706,42 +3736,42 @@ SCAN:
 								return (TMyPolygon)this[i].Uncompleted.ES;
 									*/
 
-				//again for ES2 (common spatial data collection)
-				if ((this[i].EntSpat != null) &&
-					(this[i].EntSpat.id == Layer_id))
-					return this[i].EntSpat;
+                //again for ES2 (common spatial data collection)
+                if ((this[i].EntSpat != null) &&
+                    (this[i].EntSpat.id == Layer_id))
+                    return this[i].EntSpat;
 
-				if (this[i].EntSpat != null) 
-				{
-					foreach (IGeometry feature in (this[i]).EntSpat)
-					{
-						//string test = feature.GetType().Name;
-						if (feature.GetType().Name == "TCircle")
-						{
-							if (((TCircle)feature).id == Layer_id)
-								return (TCircle)feature;
-						}
+                if (this[i].EntSpat != null)
+                {
+                    foreach (IGeometry feature in (this[i]).EntSpat)
+                    {
+                        //string test = feature.GetType().Name;
+                        if (feature.GetType().Name == "TCircle")
+                        {
+                            if (((TCircle)feature).id == Layer_id)
+                                return (TCircle)feature;
+                        }
 
-						if (feature.GetType().Name == "TPolyLine")
-						{
-							if (((TPolyLine)feature).id == Layer_id)
-								return (TPolyLine)feature;
-						}
+                        if (feature.GetType().Name == "TPolyLine")
+                        {
+                            if (((TPolyLine)feature).id == Layer_id)
+                                return (TPolyLine)feature;
+                        }
 
-						if (feature.GetType().Name == "TMyPolygon")
-							if (((TMyPolygon)feature).id == Layer_id)
-								return (TMyPolygon)feature;
-					}
-					
-				}
+                        if (feature.GetType().Name == "TMyPolygon")
+                            if (((TMyPolygon)feature).id == Layer_id)
+                                return (TMyPolygon)feature;
+                    }
 
-			}
-			return null;
+                }
+
+            }
+            return null;
         }
     }
     public class TMyParcelCollection : List<TMyParcel>
-	{
-     //   public List<TMyParcel> Parcels;
+    {
+        //   public List<TMyParcel> Parcels;
 
         public TMyParcelCollection()
         {
@@ -3765,16 +3795,16 @@ SCAN:
             return parcels.Count;
         }
 
-		public IGeometry GetEs(int Layer_id)
-		{
-			for (int i = 0; i <= this.Count() - 1; i++)
-			{
-				if (this[i].GetEs(Layer_id) != null) 
-					return this[i].GetEs(Layer_id);
-			}
-			return null;
-		}
-	}
+        public IGeometry GetEs(int Layer_id)
+        {
+            for (int i = 0; i <= this.Count() - 1; i++)
+            {
+                if (this[i].GetEs(Layer_id) != null)
+                    return this[i].GetEs(Layer_id);
+            }
+            return null;
+        }
+    }
 
     //Oбъекты землеустройства
     public class TCoordSystem
@@ -3803,25 +3833,25 @@ SCAN:
     }
 
 
-	public enum dFileTypes
-	{
-		KPT11 = 111,
-		KPT10 = 110,
-		KPT09 = 109,
-		KPT08 = 108,
-		KPT07 = 107,
-		KPT06 = 106,
-		KPT05 = 105,
-		Undefined = -1
-	}
+    public enum dFileTypes
+    {
+        KPT11 = 111,
+        KPT10 = 110,
+        KPT09 = 109,
+        KPT08 = 108,
+        KPT07 = 107,
+        KPT06 = 106,
+        KPT05 = 105,
+        Undefined = -1
+    }
 
-	/// <summary>
-	/// класс Файл. Представляет xml-файл всех видов
-	/// </summary>
-	public class TFile : TDocument
+    /// <summary>
+    /// класс Файл. Представляет xml-файл всех видов
+    /// </summary>
+    public class TFile : TDocument
     {
         public int id;
-		public dFileTypes Type;
+        public dFileTypes Type;
         public string AccessCode;
         public string FileName;
         public string RequestNum;
@@ -3887,19 +3917,19 @@ SCAN:
             return false;
         }
 
-		public dFileTypes GetFileType(int file_id)
-		{
-			foreach (TFile file in this)
-			{
-				if (file.id == file_id)
-				{
-					return file.Type;
-				}
-			}
-			return dFileTypes.Undefined;
-		}
+        public dFileTypes GetFileType(int file_id)
+        {
+            foreach (TFile file in this)
+            {
+                if (file.id == file_id)
+                {
+                    return file.Type;
+                }
+            }
+            return dFileTypes.Undefined;
+        }
 
-		public System.Xml.XmlDocument GetFileBody(int file_id)
+        public System.Xml.XmlDocument GetFileBody(int file_id)
         {
             foreach (TFile file in this)
             {
@@ -3911,7 +3941,7 @@ SCAN:
             return null;
         }
 
-		public TFile GetFile(int file_id)
+        public TFile GetFile(int file_id)
         {
             foreach (TFile file in this)
             {
@@ -3923,18 +3953,18 @@ SCAN:
             return null;
         }
 
-		public string GetFileName(int file_id)
-		{
-			foreach (TFile file in this)
-			{
-				if (file.id == file_id)
-				{
-					return file.FileName;
-				}
-			}
-			return null;
-		}
-	}
+        public string GetFileName(int file_id)
+        {
+            foreach (TFile file in this)
+            {
+                if (file.id == file_id)
+                {
+                    return file.FileName;
+                }
+            }
+            return null;
+        }
+    }
 
     public class TFileHistoryItem
     {
@@ -4116,7 +4146,7 @@ SCAN:
         {
             OMSPoints res = new OMSPoints();
             foreach (TPoint pt in oms)
-               res.AddPoint( AddOmsPoint(pt));
+                res.AddPoint(AddOmsPoint(pt));
             return res;
         }
 
@@ -4148,10 +4178,10 @@ SCAN:
         //ИПД в квартале
         public Object GetEs(int Layer_id)
         {
-			if (this.Parcels.GetEs(Layer_id) != null)
-				return this.Parcels.GetEs(Layer_id);
+            if (this.Parcels.GetEs(Layer_id) != null)
+                return this.Parcels.GetEs(Layer_id);
 
-			if (this.GKNBounds.GetEs(Layer_id) != null)
+            if (this.GKNBounds.GetEs(Layer_id) != null)
                 return this.GKNBounds.GetEs(Layer_id);
 
             if (this.GKNZones.GetEsId(Layer_id) != null)
@@ -4161,8 +4191,8 @@ SCAN:
                 return this.ObjectRealtys.GetEs(Layer_id);
 
             if ((this.Entity_Spatial.PointCount > 0) &&
-				(this.Entity_Spatial.id == Layer_id)
-				)
+                (this.Entity_Spatial.id == Layer_id)
+                )
                 return this.Entity_Spatial;
             return null;
         }
@@ -4192,7 +4222,7 @@ SCAN:
 
             }
 
-			/* TODO KILL
+            /* TODO KILL
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
                 if (this.Parcels[i].CompozitionEZ != null)
@@ -4208,8 +4238,8 @@ SCAN:
                         return this.Parcels[i].Contours;
             }
 			*/
-			//если ищем чзу:
-			for (int i = 0; i <= this.Parcels.Count - 1; i++)
+            //если ищем чзу:
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
 
                 for (int sli = 0; sli <= this.Parcels[i].SubParcels.Count - 1; sli++)
                 {
@@ -4260,160 +4290,161 @@ SCAN:
             }
         }
 
-		/// <summary>
-		/// Common spatial data collection -results of parsing xml 
-		/// Store result of xml only ( with Cadastral Blocks)
-		/// </summary>
-		public TEntitySpatial SpatialData
-		{
-			get
-			{
-				TEntitySpatial res = new TEntitySpatial();
-				//Realtys
-				res.Add(this.GetRealtyEs());
-				//Parcels
-				res.Add(this.GetParcelsEs());
-				//Zones
-				//Bound
-				return res;
-			}
-		}
+        /// <summary>
+        /// Common spatial data collection -results of parsing xml 
+        /// Store result of xml only ( with Cadastral Blocks)
+        /// </summary>
+        public TEntitySpatial SpatialData
+        {
+            get
+            {
+                TEntitySpatial res = new TEntitySpatial();
+                //Realtys
+                res.Add(this.GetRealtyEs());
+                //Parcels
+                res.Add(this.GetParcelsEs());
+                //Zones
+                //Bound
+                return res;
+            }
+        }
 
-		/// <summary>
-		/// DXF, MIF spatial data collection - -results of parsing spatial files 
-		/// Store result of mif, dxf, csv, txt
-		/// </summary>
-		//public List<TEntitySpatial> ParsedSpatial;
-		public TEntitySpatial ParsedSpatial;
+        /// <summary>
+        /// DXF, MIF spatial data collection - -results of parsing spatial files 
+        /// Store result of mif, dxf, csv, txt
+        /// </summary>
+        //public List<TEntitySpatial> ParsedSpatial;
+        public TEntitySpatial ParsedSpatial;
 
 
-		public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
+        public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
 
         public TMyBlockCollection()
         {
             this.Blocks = new List<TMyCadastralBlock>();
-			//this.ParsedSpatial = new List<TEntitySpatial>();
-			this.ParsedSpatial = new TEntitySpatial();
-			this.CSs = new TCoordSystems();
+            //this.ParsedSpatial = new List<TEntitySpatial>();
+            this.ParsedSpatial = new TEntitySpatial();
+            this.CSs = new TCoordSystems();
         }
 
-		public string SingleCN // Если квартал один, вернуть его CN
-		{
-			get {
-				if (this.Blocks.Count == 1)
-					return this.Blocks[0].CN;
-				else
-					return null;
-			}
-		}
+        public string SingleCN // Если квартал один, вернуть его CN
+        {
+            get
+            {
+                if (this.Blocks.Count == 1)
+                    return this.Blocks[0].CN;
+                else
+                    return null;
+            }
+        }
 
         public Object GetEs(int Item_id)
         {
-			//From Parcels
-			for (int i = 0; i <= this.Blocks.Count - 1; i++)
-			{
-				Object Entity = this.Blocks[i].GetEs(Item_id);
-				if (Entity != null)
-					return Entity;
-			}
-			
-			//From OKS
-			foreach (IGeometry feature in this.SpatialData)
-			{
-				if (feature.id == Item_id)
-					return feature;
+            //From Parcels
+            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+            {
+                Object Entity = this.Blocks[i].GetEs(Item_id);
+                if (Entity != null)
+                    return Entity;
+            }
 
-			}
+            //From OKS
+            foreach (IGeometry feature in this.SpatialData)
+            {
+                if (feature.id == Item_id)
+                    return feature;
 
-			//From dxf, mif
-			// Single feature
-			foreach (IGeometry feature in this.ParsedSpatial)
-				{
-					if (feature.id == Item_id)
-						return feature;
-				}
+            }
 
-			foreach(IGeometry item in this.ParsedSpatial)
-			{
-				
-				if (item is IPointList)
-				{
-					TPoint pt = ((IPointList)item).GetPoint(Item_id);
-					if (pt != null) return pt;
-				}
-				
-			}
+            //From dxf, mif
+            // Single feature
+            foreach (IGeometry feature in this.ParsedSpatial)
+            {
+                if (feature.id == Item_id)
+                    return feature;
+            }
 
-			//Full ES
-			if (this.ParsedSpatial.id == Item_id)
-				return this.ParsedSpatial;
-		
-			return null;
+            foreach (IGeometry item in this.ParsedSpatial)
+            {
+
+                if (item is IPointList)
+                {
+                    TPoint pt = ((IPointList)item).GetPoint(Item_id);
+                    if (pt != null) return pt;
+                }
+
+            }
+
+            //Full ES
+            if (this.ParsedSpatial.id == Item_id)
+                return this.ParsedSpatial;
+
+            return null;
         }
 
-		public bool RemoveGeometry(int id)
-		{
-			//From dxf, mif
-			// Single feature
-			foreach (IGeometry feature in this.ParsedSpatial)
-			{
-				if (feature.id == id)
-				{
-					if (this.ParsedSpatial.Remove(feature))
-						return true;
-				}
+        public bool RemoveGeometry(int id)
+        {
+            //From dxf, mif
+            // Single feature
+            foreach (IGeometry feature in this.ParsedSpatial)
+            {
+                if (feature.id == id)
+                {
+                    if (this.ParsedSpatial.Remove(feature))
+                        return true;
+                }
 
-				if (feature is IPointList)
-				{
-					if (((IPointList)feature).RemovePoint(id))
+                if (feature is IPointList)
+                {
+                    if (((IPointList)feature).RemovePoint(id))
 
-						return true;
+                        return true;
 
-				}
-			}
+                }
+            }
 
 
-			//Full ES
-			if (this.ParsedSpatial.id == id)
-			{
-				this.ParsedSpatial.Clear();
-				return true;
-			}
-			return false;
-		}
+            //Full ES
+            if (this.ParsedSpatial.id == id)
+            {
+                this.ParsedSpatial.Clear();
+                return true;
+            }
+            return false;
+        }
 
-		/// <summary>
-		/// Select features from ES by handling layer
-		/// </summary>
-		/// <param name="Layer_Handle">Owner layer</param>
-		/// <returns>ES</returns>
-		public IGeometry GetEs(string  Layer_Handle)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			res.Definition = this.SpatialData.Definition;
-			foreach (IGeometry feature in this.SpatialData)
-			{
-				if (feature.LayerHandle == Layer_Handle)
-					res.Add(feature);
-			}
+        /// <summary>
+        /// Select features from ES by handling layer
+        /// </summary>
+        /// <param name="Layer_Handle">Owner layer</param>
+        /// <returns>ES</returns>
+        public IGeometry GetEs(string Layer_Handle)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            res.Definition = this.SpatialData.Definition;
+            foreach (IGeometry feature in this.SpatialData)
+            {
+                if (feature.LayerHandle == Layer_Handle)
+                    res.Add(feature);
+            }
 
-			foreach (IGeometry feature in this.ParsedSpatial)
-			{
-				if (feature.LayerHandle == Layer_Handle)
-					res.Add(feature);
-			}
+            foreach (IGeometry feature in this.ParsedSpatial)
+            {
+                if (feature.LayerHandle == Layer_Handle)
+                    res.Add(feature);
+            }
 
-			if (res.Count == 0) return null;
-			else
-				return res;
-		}
+            if (res.Count == 0) return null;
+            else
+                return res;
+        }
 
-		/// <summary>
-		/// Выборка ОИПД из коллекции зон
-		/// </summary>
-		/// <param name="ZoneType">"1 - тер. зоны"</param>
-		/// <returns></returns>
-		public TPolygonCollection GetZonesEs(int ZoneType)
+        /// <summary>
+        /// Выборка ОИПД из коллекции зон
+        /// </summary>
+        /// <param name="ZoneType">"1 - тер. зоны"</param>
+        /// <returns></returns>
+        public TPolygonCollection GetZonesEs(int ZoneType)
         {
             TPolygonCollection Res = new TPolygonCollection();
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
@@ -4434,35 +4465,35 @@ SCAN:
             return Res;
         }
 
-		public TEntitySpatial GetParcelsEs()
-		{
-			TEntitySpatial Res = new TEntitySpatial();
-			for (int i = 0; i <= this.Blocks.Count - 1; i++)
-				foreach (TMyParcel parcel in this.Blocks[i].Parcels)
-				{
-					foreach (IGeometry feature in parcel.EntSpat)
-						Res.Add(feature);
-					/*
+        public TEntitySpatial GetParcelsEs()
+        {
+            TEntitySpatial Res = new TEntitySpatial();
+            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+                foreach (TMyParcel parcel in this.Blocks[i].Parcels)
+                {
+                    foreach (IGeometry feature in parcel.EntSpat)
+                        Res.Add(feature);
+                    /*
 					if (parcel.CompozitionEZ != null)
 						foreach (IGeometry feature in parcel.CompozitionEZ)
 							Res.Add(feature);
 					*/
-				}
-			return Res;
-		}
+                }
+            return Res;
+        }
 
-		public TEntitySpatial GetRealtyEs()
+        public TEntitySpatial GetRealtyEs()
         {
             TEntitySpatial Res = new TEntitySpatial();
-			for (int i = 0; i <= this.Blocks.Count - 1; i++)
-				for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
-				{
-					if (
-				   (this.Blocks[i].ObjectRealtys[iz].EntSpat != null))
-						foreach(IGeometry feature in this.Blocks[i].ObjectRealtys[iz].EntSpat)
-						Res.Add(feature);
-					//TODO ES to ES2 migrate 
-					/*
+            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+                for (int iz = 0; iz <= this.Blocks[i].ObjectRealtys.Count - 1; iz++)
+                {
+                    if (
+                   (this.Blocks[i].ObjectRealtys[iz].EntSpat != null))
+                        foreach (IGeometry feature in this.Blocks[i].ObjectRealtys[iz].EntSpat)
+                            Res.Add(feature);
+                    //TODO ES to ES2 migrate 
+                    /*
 				
 
 					if (
@@ -4471,7 +4502,7 @@ SCAN:
 						)
 						Res.Add(this.Blocks[i].ObjectRealtys[iz].Uncompleted.ES);
 					*/
-				}
+                }
             return Res;
         }
 
@@ -4505,351 +4536,351 @@ SCAN:
     #endregion
 
     #region Полилиния (знает площадь)
-   
-	public class TLayer : Geometry
-	{
-		public int Parent_id; //? what you think
-		public TLayer()
-		{
-			this.Name = "0";
-		}
 
-		public TLayer(int Parent_id) : this()
-		{
-			this.Parent_id = Parent_id;
-		}
-	}
+    public class TLayer : Geometry
+    {
+        public int Parent_id; //? what you think
+        public TLayer()
+        {
+            this.Name = "0";
+        }
 
-
-	/// <summary>
-	/// Getero spatial data collection -lines, polygons, points, circles 
-	/// </summary>
-	public class TEntitySpatial : List<IGeometry>, IGeometry  , IEnumerable
-	{
-		private int fid;
-		private string fDefinition;
-		private int totalItems;
-		public event ESCheckingHandler OnChecking;
-		public int id
-		{
-			get { return this.fid; }
-			set { this.fid = value; }
-		}
-
-		private int fState;
-		public int State
-		{
-			get { return this.fState; }
-			set { this.fState = value; }
-		}
-		private string fLayerHandle;
-		public string LayerHandle
-		{
-			get { return this.fLayerHandle; }
-			set { this.fLayerHandle = value; }
-		}
-		private string fName;
-		public string Name
-		{
-			get { return this.fName; }
-			set { this.fName = value; }
-		}
-		public string Definition
-		{
-			get { return this.fDefinition; }
-			set { this.fDefinition = value; }
-		}
-
-		public string TypeName
-		{
-			get
-			{
-				return this.GetType().ToString();
-			}
-		}
-		public List<string> LoadExceptions; // Log of load
-		public List<TLayer> Layers;
-
-		public TEntitySpatial()
-		{
-			this.id = Gen_id.newId;
-			this.Definition = "Границы";
-			Name = "Границы";
-			this.Layers = new List<TLayer>();
-			this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
-			this.LoadExceptions = new List<string>();
-		}
-
-		public TMyPolygon AddPolygon(object poly_)
-		{
-
-			if (poly_ == null) return null;
-			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
-				(((TMyPolygon)poly_).PointCount > 0))
-			{
-				this.Add((TMyPolygon)poly_);
-				return (TMyPolygon)poly_;
-			}
-
-			if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
-		 (((TRing)poly_).PointCount > 0))
-			{
-				TMyPolygon Vpoly = new TMyPolygon();
-				Vpoly.AppendPoints((TRing)poly_);
-				Vpoly.Definition = ((TRing)poly_).Definition;
-				this.AddPolygon(Vpoly);
-				return Vpoly;
-			}
-
-			//"netFteo.Spatial.TPolyLine" ????
-			return null;
-		}
-
-		/// <summary>
-		/// Summ of polygons areas
-		/// </summary>
-		public double AreaSpatial
-		{
-			get
-			{
-				double AreaC = 0;
-				foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-
-						AreaC += ((TMyPolygon)feature).AreaSpatial;
-				}
-				return AreaC;
-			}
-		}
-
-		/// <summary>
-		/// Общая сумма геометрических площадей
-		/// </summary>
-		/// <param name="format"></param>
-		/// <param name="ReturnCount"></param>
-		/// <returns></returns>
-		public string AreaSpatialFmt(string format, bool ReturnCount)
-		{
-			if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
-			else return AreaSpatial.ToString(format);
-		}
+        public TLayer(int Parent_id) : this()
+        {
+            this.Parent_id = Parent_id;
+        }
+    }
 
 
+    /// <summary>
+    /// Getero spatial data collection -lines, polygons, points, circles 
+    /// </summary>
+    public class TEntitySpatial : List<IGeometry>, IGeometry, IEnumerable
+    {
+        private int fid;
+        private string fDefinition;
+        private int totalItems;
+        public event ESCheckingHandler OnChecking;
+        public int id
+        {
+            get { return this.fid; }
+            set { this.fid = value; }
+        }
 
-		private void EsChekerProc(string sender, int process, byte[] Data)
-		{
-			if (OnChecking == null) return;
-			ESCheckingEventArgs e = new ESCheckingEventArgs();
-			e.Definition = sender;
-			e.Data = Data;
-			e.Process = totalItems;
-			OnChecking(this, e);
-		}
+        private int fState;
+        public int State
+        {
+            get { return this.fState; }
+            set { this.fState = value; }
+        }
+        private string fLayerHandle;
+        public string LayerHandle
+        {
+            get { return this.fLayerHandle; }
+            set { this.fLayerHandle = value; }
+        }
+        private string fName;
+        public string Name
+        {
+            get { return this.fName; }
+            set { this.fName = value; }
+        }
+        public string Definition
+        {
+            get { return this.fDefinition; }
+            set { this.fDefinition = value; }
+        }
 
+        public string TypeName
+        {
+            get
+            {
+                return this.GetType().ToString();
+            }
+        }
+        public List<string> LoadExceptions; // Log of load
+        public List<TLayer> Layers;
 
-		/// <summary>
-		/// Проверка на пересечения с полигоном ES
-		/// </summary>
-		/// <param name="ESs">Полигон для проверки</param>
-		/// <returns></returns>
-		public PointList CheckES(TMyPolygon ES)
-		{
-			PointList res = new PointList();
-			PointList PlREs;
-			totalItems++;// += ES.PolygonPointCount;
+        public TEntitySpatial()
+        {
+            this.id = Gen_id.newId;
+            this.Definition = "Границы";
+            Name = "Границы";
+            this.Layers = new List<TLayer>();
+            this.Layers.Add(new TLayer(this.id)); // default layer 0, handle = FFFF
+            this.LoadExceptions = new List<string>();
+        }
 
-			foreach (IGeometry feature in this)
-			{
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-				{
-					totalItems++;
-					PlREs = ((TMyPolygon)feature).FindClip(ES);
-					EsChekerProc(((TMyPolygon)feature).Definition, totalItems, null);
-					if (PlREs != null)
-					{
-						res.AppendPoints(PlREs);
-					}
-				}
-			}
-			return res;
-		}
+        public TMyPolygon AddPolygon(object poly_)
+        {
 
+            if (poly_ == null) return null;
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
+                (((TMyPolygon)poly_).PointCount > 0))
+            {
+                this.Add((TMyPolygon)poly_);
+                return (TMyPolygon)poly_;
+            }
 
-		/// <summary>
-		/// Проверка на пересечения с коллекцией полигонов ESs
-		/// </summary>
-		/// <param name="ESs">Коллекция полигонов</param>
-		/// <returns></returns>
-		public PointList CheckESs(TPolygonCollection ESs)
-		{
-			PointList res = new PointList();
-			PointList PlREs;
-			totalItems = 0;// this.Count + ESs.Count;
-			for (int i = 0; i <= ESs.Count - 1; i++)
-			{
-				PlREs = this.CheckES(ESs[i]);
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
+         (((TRing)poly_).PointCount > 0))
+            {
+                TMyPolygon Vpoly = new TMyPolygon();
+                Vpoly.AppendPoints((TRing)poly_);
+                Vpoly.Definition = ((TRing)poly_).Definition;
+                this.AddPolygon(Vpoly);
+                return Vpoly;
+            }
 
-				if (PlREs != null)
-				{ res.AppendPoints(PlREs); }
-			}
-			return res;
-		}
+            //"netFteo.Spatial.TPolyLine" ????
+            return null;
+        }
 
-		/// <summary>
-		/// Установка "ГКН" точек
-		/// </summary>
-		public void DetectSpins(TEntitySpatial src)
-		{
-			foreach (IGeometry feature in this)
-			{
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-				{
-					TMyPolygon Poly = (TMyPolygon)feature;
-					foreach(IGeometry srcFeature in src)
-					{
-						if (srcFeature.TypeName == "netFteo.Spatial.TMyPolygon")
-						{
-							Poly.DetectSpins((PointList)srcFeature);
-						}
-					}
+        /// <summary>
+        /// Summ of polygons areas
+        /// </summary>
+        public double AreaSpatial
+        {
+            get
+            {
+                double AreaC = 0;
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
 
-				}
-			}
-		}
+                        AreaC += ((TMyPolygon)feature).AreaSpatial;
+                }
+                return AreaC;
+            }
+        }
 
-
-		/// <summary>
-		/// Remove parent number part in features numbers
-		/// </summary>
-		/// <param name="ParentCN"></param>
-		public void RemoveParentCN(string ParentCN)
-		{
-			if (ParentCN == null) return;
-			foreach (Spatial.IGeometry poly in this)
-			{
-				if (poly.Definition != null &&
-					poly.Definition.Contains(ParentCN))
-					if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
-						poly.Definition = poly.Definition.Substring(ParentCN.Length);
-			}
-		}
-		
-		public void Fraq(string Format)
-		{
-			foreach (IGeometry feature in this)
-			{
-				feature.Fraq(Format);
-			}
-
-		}
-
-		public int FeaturesCount(string TypeName)
-		{
-			int res = 0;
-			if (TypeName == "*")
-			{
-				return this.Count();
-			}
-
-			foreach (IGeometry feature in this)
-			{
-				if (feature.TypeName == TypeName)
-				{
-					res++;
-				}
-			}
-			return res;
-		}
-
-		/// <summary>
-		/// Summ of all polylines length
-		/// </summary>
-		/// <param name="TypeName"></param>
-		/// <returns></returns>
-		public double PolylinesLength
-		{
-			get
-			{
-				double res = 0;
-				foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-					{
-						res += ((TPolyLine)feature).Length;
-					}
-				}
-				return res;
-			}
-		}
-
-		/// <summary>
-		/// Summ of all poly areas
-		/// </summary>
-		/// <param name="TypeName"></param>
-		/// <returns></returns>
-		public double PolyArea
-		{
-			get
-			{
-				double res = -1; // default empty value
-				foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					{
-						res += ((TMyPolygon)feature).AreaSpatial;
-					}
-				}
-				return res;
-			}
-		}
-
-		/// <summary>
-		/// Select features by Layer
-		/// </summary>
-		/// <param name="LayerHandle">Handle of desired layer</param>
-		/// <returns></returns>
-		public TEntitySpatial Select(string LayerHandle)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			foreach(IGeometry feature in this)
-			{
-				if (feature.LayerHandle == LayerHandle)
-				{
-					res.Add(feature);
-				}
-			}
-			return res;
-		}
+        /// <summary>
+        /// Общая сумма геометрических площадей
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="ReturnCount"></param>
+        /// <returns></returns>
+        public string AreaSpatialFmt(string format, bool ReturnCount)
+        {
+            if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
+            else return AreaSpatial.ToString(format);
+        }
 
 
-		public void ShowasListItems(ListView LV, bool SetTag)
-		{
-			if (Count == 0) return;
-			LV.BeginUpdate();
-			LV.Items.Clear();
 
-			//LV.Tag = PList.Parent_Id;
-			if (SetTag) LV.Tag = id;
+        private void EsChekerProc(string sender, int process, byte[] Data)
+        {
+            if (OnChecking == null) return;
+            ESCheckingEventArgs e = new ESCheckingEventArgs();
+            e.Definition = sender;
+            e.Data = Data;
+            e.Process = totalItems;
+            OnChecking(this, e);
+        }
+
+
+        /// <summary>
+        /// Проверка на пересечения с полигоном ES
+        /// </summary>
+        /// <param name="ESs">Полигон для проверки</param>
+        /// <returns></returns>
+        public PointList CheckES(TMyPolygon ES)
+        {
+            PointList res = new PointList();
+            PointList PlREs;
+            totalItems++;// += ES.PolygonPointCount;
+
+            foreach (IGeometry feature in this)
+            {
+                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                {
+                    totalItems++;
+                    PlREs = ((TMyPolygon)feature).FindClip(ES);
+                    EsChekerProc(((TMyPolygon)feature).Definition, totalItems, null);
+                    if (PlREs != null)
+                    {
+                        res.AppendPoints(PlREs);
+                    }
+                }
+            }
+            return res;
+        }
+
+
+        /// <summary>
+        /// Проверка на пересечения с коллекцией полигонов ESs
+        /// </summary>
+        /// <param name="ESs">Коллекция полигонов</param>
+        /// <returns></returns>
+        public PointList CheckESs(TPolygonCollection ESs)
+        {
+            PointList res = new PointList();
+            PointList PlREs;
+            totalItems = 0;// this.Count + ESs.Count;
+            for (int i = 0; i <= ESs.Count - 1; i++)
+            {
+                PlREs = this.CheckES(ESs[i]);
+
+                if (PlREs != null)
+                { res.AppendPoints(PlREs); }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Установка "ГКН" точек
+        /// </summary>
+        public void DetectSpins(TEntitySpatial src)
+        {
+            foreach (IGeometry feature in this)
+            {
+                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                {
+                    TMyPolygon Poly = (TMyPolygon)feature;
+                    foreach (IGeometry srcFeature in src)
+                    {
+                        if (srcFeature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        {
+                            Poly.DetectSpins((PointList)srcFeature);
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Remove parent number part in features numbers
+        /// </summary>
+        /// <param name="ParentCN"></param>
+        public void RemoveParentCN(string ParentCN)
+        {
+            if (ParentCN == null) return;
+            foreach (Spatial.IGeometry poly in this)
+            {
+                if (poly.Definition != null &&
+                    poly.Definition.Contains(ParentCN))
+                    if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
+                        poly.Definition = poly.Definition.Substring(ParentCN.Length);
+            }
+        }
+
+        public void Fraq(string Format)
+        {
+            foreach (IGeometry feature in this)
+            {
+                feature.Fraq(Format);
+            }
+
+        }
+
+        public int FeaturesCount(string TypeName)
+        {
+            int res = 0;
+            if (TypeName == "*")
+            {
+                return this.Count();
+            }
+
+            foreach (IGeometry feature in this)
+            {
+                if (feature.TypeName == TypeName)
+                {
+                    res++;
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Summ of all polylines length
+        /// </summary>
+        /// <param name="TypeName"></param>
+        /// <returns></returns>
+        public double PolylinesLength
+        {
+            get
+            {
+                double res = 0;
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+                    {
+                        res += ((TPolyLine)feature).Length;
+                    }
+                }
+                return res;
+            }
+        }
+
+        /// <summary>
+        /// Summ of all poly areas
+        /// </summary>
+        /// <param name="TypeName"></param>
+        /// <returns></returns>
+        public double PolyArea
+        {
+            get
+            {
+                double res = -1; // default empty value
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    {
+                        res += ((TMyPolygon)feature).AreaSpatial;
+                    }
+                }
+                return res;
+            }
+        }
+
+        /// <summary>
+        /// Select features by Layer
+        /// </summary>
+        /// <param name="LayerHandle">Handle of desired layer</param>
+        /// <returns></returns>
+        public TEntitySpatial Select(string LayerHandle)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            foreach (IGeometry feature in this)
+            {
+                if (feature.LayerHandle == LayerHandle)
+                {
+                    res.Add(feature);
+                }
+            }
+            return res;
+        }
+
+
+        public void ShowasListItems(ListView LV, bool SetTag)
+        {
+            if (Count == 0) return;
+            LV.BeginUpdate();
+            LV.Items.Clear();
+
+            //LV.Tag = PList.Parent_Id;
+            if (SetTag) LV.Tag = id;
 
 #if (DEBUG)
-			LV.Columns[0].Text = "Name";
-			LV.Columns[1].Text = "Type";
-			LV.Columns[2].Text = "id";
-			LV.Columns[3].Text = "layer handle";
-			LV.Columns[4].Text = "-";
-			foreach (TLayer Layer in this.Layers)
-			{
+            LV.Columns[0].Text = "Name";
+            LV.Columns[1].Text = "Type";
+            LV.Columns[2].Text = "id";
+            LV.Columns[3].Text = "layer handle";
+            LV.Columns[4].Text = "-";
+            foreach (TLayer Layer in this.Layers)
+            {
 
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = Layer.Name;
-				LVi.Tag = Layer.id;
-				LVi.SubItems.Add(Layer.TypeName);
-				LVi.SubItems.Add(Layer.id.ToString());
-				LVi.SubItems.Add(Layer.LayerHandle);
-				LV.Items.Add(LVi);
-			}
-			/*
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = Layer.Name;
+                LVi.Tag = Layer.id;
+                LVi.SubItems.Add(Layer.TypeName);
+                LVi.SubItems.Add(Layer.id.ToString());
+                LVi.SubItems.Add(Layer.LayerHandle);
+                LV.Items.Add(LVi);
+            }
+            /*
 			foreach (IGeometry feature in this)
 			{
 				ListViewItem LVi = new ListViewItem();
@@ -4870,227 +4901,227 @@ SCAN:
 			LV.Columns[4].Text = "-";
 #endif
 
-			foreach (IGeometry feature in this)
-			{
-				ListViewItem LVi = new ListViewItem();
-				LVi.Text = feature.Definition;
-				LVi.Tag = feature.id;
-				if (feature is IPoint)
-					LVi.Tag = "TPoint."+feature.id;
-				LVi.SubItems.Add(feature.Name);
-				
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-				{
-					LV.Columns[2].Text = "Площадь";
-					LV.Columns[3].Text = "Площ. гр.";
-					LV.Columns[4].Text = "Δ";
-					if (((TMyPolygon)feature).AreaValue != -1)
-						LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
-					else LVi.SubItems.Add("-");
-					LVi.SubItems.Add(((TMyPolygon)feature).AreaSpatialFmt("0.00"));
-					LVi.SubItems.Add(((TMyPolygon)feature).AreaInaccuracy);
-				}
+            foreach (IGeometry feature in this)
+            {
+                ListViewItem LVi = new ListViewItem();
+                LVi.Text = feature.Definition;
+                LVi.Tag = feature.id;
+                if (feature is IPoint)
+                    LVi.Tag = "TPoint." + feature.id;
+                LVi.SubItems.Add(feature.Name);
 
-				if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-				{
-					//TODO:
-				}
-					LV.Items.Add(LVi);
-			}
+                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                {
+                    LV.Columns[2].Text = "Площадь";
+                    LV.Columns[3].Text = "Площ. гр.";
+                    LV.Columns[4].Text = "Δ";
+                    if (((TMyPolygon)feature).AreaValue != -1)
+                        LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
+                    else LVi.SubItems.Add("-");
+                    LVi.SubItems.Add(((TMyPolygon)feature).AreaSpatialFmt("0.00"));
+                    LVi.SubItems.Add(((TMyPolygon)feature).AreaInaccuracy);
+                }
 
-			if (FeaturesCount("netFteo.Spatial.TPolyLine") > 0)
-			{
-				ListViewItem LVTotal = new ListViewItem();
-				LVTotal.Text = "Полилиний";
-				//LVTotal.Tag = feature.id;
-				LVTotal.SubItems.Add(FeaturesCount("netFteo.Spatial.TPolyLine").ToString());
-				LVTotal.SubItems.Add("Общая длина");
-				LVTotal.SubItems.Add(PolylinesLength.ToString("0.00"));
-				LV.Items.Add(LVTotal);
-			}
-			LV.EndUpdate();
-		}
-	
-		public double ScaleEntity(double canvas_width, double canvas_height)
-		{
-			if (this.Bounds == null) return -1;
-			double scale = 0;
-			double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
-			double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
-															  
+                if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+                {
+                    //TODO:
+                }
+                LV.Items.Add(LVi);
+            }
 
-			if (dx > dy)
-			{
-				scale = (dx / canvas_height); // / ViewKoefficient;
+            if (FeaturesCount("netFteo.Spatial.TPolyLine") > 0)
+            {
+                ListViewItem LVTotal = new ListViewItem();
+                LVTotal.Text = "Полилиний";
+                //LVTotal.Tag = feature.id;
+                LVTotal.SubItems.Add(FeaturesCount("netFteo.Spatial.TPolyLine").ToString());
+                LVTotal.SubItems.Add("Общая длина");
+                LVTotal.SubItems.Add(PolylinesLength.ToString("0.00"));
+                LV.Items.Add(LVTotal);
+            }
+            LV.EndUpdate();
+        }
 
-			}
-			else
-			{
-				scale = (dy / canvas_width); // / ViewKoefficient;
-			}
-			return scale;
-		
-		}
-		
-		public int ReorderPoints(int Startindex =1)
-		{
-			foreach (IPointList feature in this)
-			{
-			 Startindex += 	feature.ReorderPoints(Startindex);
-			}
-			return Startindex;
-		}
-
-		public void SetMt(double mt)
-		{
-			foreach (IPointList feature in this)
-			{
-				feature.SetMt(mt);
-			}
-		}
-
-		public PointList AsPointList
-		{
-			get
-			{
-				PointList res = new PointList();
-
-				foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-						res.AppendPoints(((TMyPolygon)feature).AsPointList());
-
-					if (feature.TypeName == "netFteo.Spatial.PointList")
-						res.AppendPoints(((PointList)feature));
-
-					if (feature.TypeName == "netFteo.Spatial.OMSPoints")
-						res.AppendPoints(((PointList)feature));
-				}
+        public double ScaleEntity(double canvas_width, double canvas_height)
+        {
+            if (this.Bounds == null) return -1;
+            double scale = 0;
+            double dx = (this.Bounds.MaxX - this.Bounds.MinX); // размах по вертикали
+            double dy = (this.Bounds.MaxY - this.Bounds.MinY); // размах по горизонтали 
 
 
-				return res;
-			}
-		}
+            if (dx > dy)
+            {
+                scale = (dx / canvas_height); // / ViewKoefficient;
 
-		/// <summary>
-		/// TODO: wrong util code
-		/// </summary>
-		/// 
-		public TMyRect Bounds
-		{
-			get
-			{
-				TMyRect Result = new TMyRect();
+            }
+            else
+            {
+                scale = (dy / canvas_width); // / ViewKoefficient;
+            }
+            return scale;
 
-				// init bounds by first polygon/polyline
-				foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					{
-						TMyPolygon poly = (TMyPolygon)feature;
-						Result.MinX = poly.Bounds.MinX;
-						Result.MinY = poly.Bounds.MinY;
-						Result.MaxX = poly.Bounds.MaxX;
-						Result.MaxY = poly.Bounds.MaxY;
-						goto SCAN;
-					}
+        }
 
-					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-					{
-						TPolyLine poly = (TPolyLine)feature;
-						Result.MinX = poly.Bounds.MinX;
-						Result.MinY = poly.Bounds.MinY;
-						Result.MaxX = poly.Bounds.MaxX;
-						Result.MaxY = poly.Bounds.MaxY;
-						goto SCAN;
-					}
+        public int ReorderPoints(int Startindex = 1)
+        {
+            foreach (IPointList feature in this)
+            {
+                Startindex += feature.ReorderPoints(Startindex);
+            }
+            return Startindex;
+        }
 
-					if (feature.TypeName == "netFteo.Spatial.TCircle")
-					{
-						TCircle poly = (TCircle)feature;
-						Result.MinX = poly.Bounds.MinX;
-						Result.MinY = poly.Bounds.MinY;
-						Result.MaxX = poly.Bounds.MaxX;
-						Result.MaxY = poly.Bounds.MaxY;
-						goto SCAN;
-					}
-				}
+        public void SetMt(double mt)
+        {
+            foreach (IPointList feature in this)
+            {
+                feature.SetMt(mt);
+            }
+        }
 
-				SCAN:		foreach (IGeometry feature in this)
-				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					{
-						TMyPolygon poly = (TMyPolygon)feature;
-						if (poly.Bounds != null)
-						{
-							if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
-							if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
-							if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
-							if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
-						}
-					}
+        public PointList AsPointList
+        {
+            get
+            {
+                PointList res = new PointList();
 
-					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-					{
-						TPolyLine poly = (TPolyLine)feature;
-						{
-							if (poly.Bounds != null)
-							{
-								if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
-								if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
-								if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
-								if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
-							}
-						}
-					}
-					
-					if (feature.TypeName == "netFteo.Spatial.TCircle")
-					{
-						TCircle Circle = (TCircle)feature;
-						{
-							if (Circle.Bounds != null)
-							{
-								if (Circle.Bounds.MinX < Result.MinX) Result.MinX = Circle.Bounds.MinX;
-								if (Circle.Bounds.MinY < Result.MinY) Result.MinY = Circle.Bounds.MinY;
-								if (Circle.Bounds.MaxX > Result.MaxX) Result.MaxX = Circle.Bounds.MaxX;
-								if (Circle.Bounds.MaxY > Result.MaxY) Result.MaxY = Circle.Bounds.MaxY;
-							}
-						}
-					}
-				}
-				return Result;
-			}
-		}
-		
-		/// <summary>
-		/// Medium value of ordinates all features in this
-		/// </summary>
-		/// 
-		public TPoint AverageCenter
-		{
-			get
-			{
-				double Ord_X_Summ = 0;
-				double Ord_Y_Summ = 0;
-				int CenterCount = 0;
-				foreach (IGeometry feature in this)
-				{
-					Ord_X_Summ += feature.AverageCenter.x;
-					Ord_Y_Summ += feature.AverageCenter.y;
-					CenterCount++;
-				}
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        res.AppendPoints(((TMyPolygon)feature).AsPointList());
 
-				return new TPoint(Ord_X_Summ / CenterCount, Ord_Y_Summ / CenterCount);
-			}
-		}
+                    if (feature.TypeName == "netFteo.Spatial.PointList")
+                        res.AppendPoints(((PointList)feature));
 
-		public void Close()
-		{
-			// nothing to
-		}
-	}
+                    if (feature.TypeName == "netFteo.Spatial.OMSPoints")
+                        res.AppendPoints(((PointList)feature));
+                }
 
-#endregion
+
+                return res;
+            }
+        }
+
+        /// <summary>
+        /// TODO: wrong util code
+        /// </summary>
+        /// 
+        public TMyRect Bounds
+        {
+            get
+            {
+                TMyRect Result = new TMyRect();
+
+                // init bounds by first polygon/polyline
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    {
+                        TMyPolygon poly = (TMyPolygon)feature;
+                        Result.MinX = poly.Bounds.MinX;
+                        Result.MinY = poly.Bounds.MinY;
+                        Result.MaxX = poly.Bounds.MaxX;
+                        Result.MaxY = poly.Bounds.MaxY;
+                        goto SCAN;
+                    }
+
+                    if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+                    {
+                        TPolyLine poly = (TPolyLine)feature;
+                        Result.MinX = poly.Bounds.MinX;
+                        Result.MinY = poly.Bounds.MinY;
+                        Result.MaxX = poly.Bounds.MaxX;
+                        Result.MaxY = poly.Bounds.MaxY;
+                        goto SCAN;
+                    }
+
+                    if (feature.TypeName == "netFteo.Spatial.TCircle")
+                    {
+                        TCircle poly = (TCircle)feature;
+                        Result.MinX = poly.Bounds.MinX;
+                        Result.MinY = poly.Bounds.MinY;
+                        Result.MaxX = poly.Bounds.MaxX;
+                        Result.MaxY = poly.Bounds.MaxY;
+                        goto SCAN;
+                    }
+                }
+
+            SCAN: foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    {
+                        TMyPolygon poly = (TMyPolygon)feature;
+                        if (poly.Bounds != null)
+                        {
+                            if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+                            if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+                            if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+                            if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+                        }
+                    }
+
+                    if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+                    {
+                        TPolyLine poly = (TPolyLine)feature;
+                        {
+                            if (poly.Bounds != null)
+                            {
+                                if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+                                if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+                                if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+                                if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+                            }
+                        }
+                    }
+
+                    if (feature.TypeName == "netFteo.Spatial.TCircle")
+                    {
+                        TCircle Circle = (TCircle)feature;
+                        {
+                            if (Circle.Bounds != null)
+                            {
+                                if (Circle.Bounds.MinX < Result.MinX) Result.MinX = Circle.Bounds.MinX;
+                                if (Circle.Bounds.MinY < Result.MinY) Result.MinY = Circle.Bounds.MinY;
+                                if (Circle.Bounds.MaxX > Result.MaxX) Result.MaxX = Circle.Bounds.MaxX;
+                                if (Circle.Bounds.MaxY > Result.MaxY) Result.MaxY = Circle.Bounds.MaxY;
+                            }
+                        }
+                    }
+                }
+                return Result;
+            }
+        }
+
+        /// <summary>
+        /// Medium value of ordinates all features in this
+        /// </summary>
+        /// 
+        public TPoint AverageCenter
+        {
+            get
+            {
+                double Ord_X_Summ = 0;
+                double Ord_Y_Summ = 0;
+                int CenterCount = 0;
+                foreach (IGeometry feature in this)
+                {
+                    Ord_X_Summ += feature.AverageCenter.x;
+                    Ord_Y_Summ += feature.AverageCenter.y;
+                    CenterCount++;
+                }
+
+                return new TPoint(Ord_X_Summ / CenterCount, Ord_Y_Summ / CenterCount);
+            }
+        }
+
+        public void Close()
+        {
+            // nothing to
+        }
+    }
+
+    #endregion
 }
 
 

@@ -14,32 +14,26 @@ namespace XMLReaderCS
         /// <summary>
         /// Editing item
         /// </summary>
-        netFteo.Spatial.TPoint Point;
+        public netFteo.Spatial.TPoint Point;
         public frmPointEditor(netFteo.Spatial.IGeometry point)
         {
             InitializeComponent();
             if (point.TypeName == "netFteo.Spatial.TPoint")
             {
-                Point = (netFteo.Spatial.TPoint) point;
-              //  textBox_Name.Text = Point.NumGeopointA;
-                textBox_x.Text = Point.x_s;
-                //textBox_y.Text = Point.y_s;
-                textBox_z.Text = Point.z_s;
-                textBox_Mt.Text = Point.Mt_s;
-                string test1 = tPointBindingSource1.ToString();
-                 test1 = tPointBindingSource.ToString();
+                tPointBindingSource.Add(point);
             }
         }
 
 
         private void Button2_Click(object sender, EventArgs e)
         {
-
+            tPointBindingSource.CancelEdit();
             this.Close();
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            tPointBindingSource.EndEdit();
             this.Close();
         }
     }
