@@ -339,7 +339,7 @@ namespace XMLReaderCS
             int sourcePointsIndex = 0;
             foreach (Point pt in pts)
             {
-                res.Add(CreateCanvasPoint(pt.X-pointSignRadius, pt.Y- pointSignRadius, polyline[sourcePointsIndex].NumGeopointA));
+                res.Add(CreateCanvasPoint(pt.X-pointSignRadius, pt.Y- pointSignRadius, polyline[sourcePointsIndex].Definition));
                 sourcePointsIndex++;
             }
             return res;
@@ -422,7 +422,7 @@ namespace XMLReaderCS
             foreach (Point pt in pts)
             {
                 res.Add(CreateCanvasTextBlock(pt.X + 3, pt.Y - 9, polygon[sourcePointsIndex].x, polygon[sourcePointsIndex].y,
-											  polygon[sourcePointsIndex].NumGeopointA, 10));
+											  polygon[sourcePointsIndex].Definition, 10));
                 sourcePointsIndex++;
             }
             return res;

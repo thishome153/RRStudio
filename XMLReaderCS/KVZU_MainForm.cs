@@ -36,12 +36,7 @@ namespace XMLReaderCS
 
         RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
         RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
-        RRTypes.MP_V05.MP MPV05;
 
-        //TPoint Binding_Point = new TPoint();
-
-
-        //System.Windows.Window ESwindow;
         MyWindowEx ESwindow;
         EntityViewer ViewWindow; // xaml WPF control
 
@@ -130,7 +125,6 @@ namespace XMLReaderCS
             string test_LastDir = (string)Microsoft.Win32.Registry.GetValue(keyName_LastDir, "LastDir", 0);
             //if (Microsoft.Win32.Registry.GetValue(keyName, "LastDir", 0) == )
             ESwindow = new MyWindowEx(); //System.Windows.Window();// Окно визуализации ПД
-            //Binding_Point.NumGeopointA = "Point name";
         }
 
         private void SaveRegistry(string lastdir)
@@ -201,7 +195,8 @@ namespace XMLReaderCS
         private void XMLStateUpdater(object Sender, ESCheckingEventArgs e)
         {
             int currProc = e.Process;
-            if (e.Process < toolStripProgressBar1.Maximum)
+            toolStripProgressBar1.Maximum = e.Max;
+            if (e.Process < e.Max)
                 toolStripProgressBar1.Value = e.Process;
             this.Update();
         }
@@ -210,7 +205,7 @@ namespace XMLReaderCS
 
         private void XMLStartUpdater(object Sender, ESCheckingEventArgs e)
         {
-            toolStripProgressBar1.Maximum = e.Process;
+            toolStripProgressBar1.Maximum = e.Max;
             this.Update();
         }
 
@@ -616,7 +611,9 @@ namespace XMLReaderCS
             if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
             {
                 netFteo.IO.TextReader CSVReader = new netFteo.IO.TextReader(FileName);
+                CSVReader.OnParsing += XMLStateUpdater;
                 TEntitySpatial ES_from_CSV = CSVReader.ImportCSVFile();
+
                 if (ES_from_CSV != null)
                 {
                     DocInfo.MyBlocks.ParsedSpatial.Clear();
@@ -2077,7 +2074,7 @@ return res;
             for (int i = 0; i <= list.PointCount - 1; i++)
             {
                 string flat_string = (i + 1).ToString();
-                flat_string += "\t" + list[i].NumGeopointA + "\t" +
+                flat_string += "\t" + list[i].Definition + "\t" +
                                       list[i].x_s + "\t" +
                                       list[i].y_s + "\t" +
                                       list[i].Description + "\t" +
@@ -2773,9 +2770,9 @@ LV.Items.Add(LVipP);
             {
                 if (InternalNumber == 0)
                 {
-                    BName = PList[i].NumGeopointA;
+                    BName = PList[i].Definition;
                 }
-                else BName = PList[i].NumGeopointA + "." + Convert.ToString(InternalNumber);
+                else BName = PList[i].Definition + "." + Convert.ToString(InternalNumber);
                 TreeNode PNode = Node.Nodes.Add("PointNode", BName);
                 PNode.ToolTipText = "Номер пункта опорной межевой сети на плане";
                 PNode.Nodes.Add("Ordinate", PList[i].x_s);
@@ -3039,42 +3036,8 @@ LV.Items.Add(LVipP);
             }
         }
 
-        private bool RemoveGeometryNode(string GeometryTagID)
-        {
-            IGeometry Entity = null;
-            if (GeometryTagID.Contains("ES."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(3)));
-            }
-
-            if (GeometryTagID.Contains("Layer."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(GeometryTagID.Substring(6));
-            }
-
-            if (GeometryTagID.Contains("SPElem."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
-            }
-
-            if (GeometryTagID.Contains("TPolyLine."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(10)));
-            }
-
-            if (GeometryTagID.Contains("TPoint."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
-            }
-
-
-            if (Entity != null)
-            {
-                return this.DocInfo.MyBlocks.RemoveGeometry(Entity.id);
-            }
-            return false;
-        }
-        private IGeometry EditGeometryNode(string GeometryTagID)
+ 
+        private IGeometry GetNodeGeometry(string GeometryTagID)
         {
             IGeometry Entity = null;
             if (GeometryTagID.Contains("ES."))
@@ -3103,6 +3066,17 @@ LV.Items.Add(LVipP);
             }
 
             return Entity;
+        }
+
+        private bool RemoveGeometryNode(string GeometryTagID)
+        {
+            IGeometry Entity = GetNodeGeometry(GeometryTagID);
+
+            if (Entity != null)
+            {
+                return this.DocInfo.MyBlocks.RemoveGeometry(Entity.id);
+            }
+            return false;
         }
 
         private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
@@ -5402,12 +5376,8 @@ LV.Items.Add(LVipP);
         private void TraverserToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            {
-                //TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
-                //   frmPointEditor frmPointEdit = new frmPointEditor();
-                //   frmPointEdit.ShowDialog(this);
-            }
-
+            Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
+            frmTraverser.ShowDialog(this);
         }
 
         private void ИзменитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5415,19 +5385,23 @@ LV.Items.Add(LVipP);
             Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
             if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
             {
-                TPoint pt = (TPoint)EditGeometryNode(tag);
-                if (pt != null)
+                IGeometry Feature = GetNodeGeometry(tag);
+                if (Feature != null)
                 {
-                    frmPointEditor Editor = new frmPointEditor(pt);
-                    Editor.StartPosition = FormStartPosition.CenterParent;
-                   if (Editor.ShowDialog(this) == DialogResult.OK)
+                    if (Feature.TypeName == "netFteo.Spatial.TPoint")
                     {
-                        ((ListView)parent).SelectedItems[0].Text = pt.NumGeopointA;
-                        ((ListView)parent).SelectedItems[0].SubItems[1].Text = pt.x_s;
-                        ((ListView)parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
-                        ((ListView)parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
-                    }
+                        TPoint pt = (TPoint)Feature;
+                        frmPointEditor Editor = new frmPointEditor(pt);
+                        Editor.StartPosition = FormStartPosition.CenterParent;
+                        if (Editor.ShowDialog(this) == DialogResult.OK)
+                        {
+                            ((ListView)parent).SelectedItems[0].Text = pt.Pref + pt.Definition;
+                            ((ListView)parent).SelectedItems[0].SubItems[1].Text = pt.x_s;
+                            ((ListView)parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
+                            ((ListView)parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
+                        }
 
+                    }
                 }
             }
         }

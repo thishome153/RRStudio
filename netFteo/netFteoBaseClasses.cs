@@ -224,11 +224,13 @@ namespace netFteo.Spatial
         //implementation of interface method Clone():
         public object Clone()
         {
-            return new TPoint(this.x, this.y, this.NumGeopointA);
+            return new TPoint(this.x, this.y, this.Definition);
         }
 
-        public int Borderid, fStatus, NumGeopoint;//, Order;
-        string fNumGeopointA,
+        public int Borderid, fStatus;
+
+        public int NumGeopoint;//, Order;
+        string //fNumGeopointA,
                        fPref, fCode, fPlace,
                        fDescription;
         //fFormula,
@@ -260,16 +262,22 @@ namespace netFteo.Spatial
         {
             this.z = initz;
         }
-        public TPoint(double initx, double inity, string name) : this(initx, inity)
+        public TPoint(double initx, double inity, string definition) : this(initx, inity)
         {
-            this.NumGeopointA = name;
+            this.Definition = definition;
         }
 
+        /// <summary>
+        /// NumGeopointA - obsolete field. Instead use Definition
+        /// </summary>
+        [Obsolete]
         public string NumGeopointA
         {
-            get { return this.fNumGeopointA; }
-            set { this.fNumGeopointA = value; }
+            get { return this.Definition; }
+            set { this.Definition = value; }
         }
+
+
         public string Pref
         {
             get { return this.fPref; }
@@ -551,7 +559,7 @@ namespace netFteo.Spatial
         {
             TPoint res = new TPoint();
             res.id = Gen_id.newId;
-            res.NumGeopointA = A.NumGeopointA + B.NumGeopointA;
+            res.Definition = A.Definition + B.Definition;
             res.x = A.x + B.x;
             res.y = A.y + B.y;
             res.z = A.z + B.z;
@@ -603,7 +611,7 @@ namespace netFteo.Spatial
         public void BeginEdit()
         {
             UndoPoint = new TPoint(this.x, this.y);
-            UndoPoint.NumGeopointA = this.NumGeopointA;
+            UndoPoint.Definition = this.Definition;
             UndoPoint.Mt = this.Mt;
         }
 
@@ -614,7 +622,7 @@ namespace netFteo.Spatial
             this.x = UndoPoint.x;
             this.y = UndoPoint.y;
             this.Mt = UndoPoint.Mt;
-            this.NumGeopointA = UndoPoint.NumGeopointA;
+            this.Definition = UndoPoint.Definition;
         }
         //
         // Сводка:
@@ -2397,6 +2405,7 @@ namespace netFteo.Spatial
     {
         public string Definition;
         public int Process;
+        public int Max;
         public byte[] Data;
     }
 
