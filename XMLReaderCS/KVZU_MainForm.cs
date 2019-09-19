@@ -93,9 +93,11 @@ namespace XMLReaderCS
         [DllImport("ESChecker.dll")]
         unsafe public static extern void* Func2(int id);
 
+        /*
         // c++ CodeBlocks library
         [DllImport("ESlib.dll")]
         public static extern void Function2(int id);
+        */
 
         //Конструктор:
         public KVZU_Form()
@@ -220,6 +222,7 @@ namespace XMLReaderCS
                 "|Про$транственные данные|*.dxf;*.mif;*.txt" +
                 "|Технокад|*.csv" +
                 "|Файл подписи|*.sig" +
+                "|Mapinfo table file|*.tab" +
                 "|XML schema|*.xsd";
             openFileDialog1.FilterIndex = FilterIndex;
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
@@ -552,6 +555,7 @@ namespace XMLReaderCS
             label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
             // got mif file:
 
+
             if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
             {
                 netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
@@ -560,6 +564,10 @@ namespace XMLReaderCS
                 this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
             }
 
+            if (Path.GetExtension(FileName).ToUpper().Equals(".TAB"))
+            {
+                OpenMiTab(FileName);
+            }
 
             // got AutoCad Drawing Exchange Format -  dxf file:
             if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
@@ -3036,36 +3044,37 @@ LV.Items.Add(LVipP);
             }
         }
 
- 
+
+        private enum NodeGeometryTypes
+        {
+            ES = 0,
+            Layer = 1
+        }
+
+
+        public static int GetNodeGeometryID(string GeometryTagID)
+        {
+            try
+            {
+                string[] Node = GeometryTagID.Split('.');
+                return Convert.ToInt32(Node[1]);
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
         private IGeometry GetNodeGeometry(string GeometryTagID)
         {
             IGeometry Entity = null;
-            if (GeometryTagID.Contains("ES."))
+            int id = GetNodeGeometryID(GeometryTagID);
+            if (id != -1)
             {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(3)));
+                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(id);
+                return Entity;
             }
-
-            if (GeometryTagID.Contains("Layer."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(GeometryTagID.Substring(6));
-            }
-
-            if (GeometryTagID.Contains("SPElem."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
-            }
-
-            if (GeometryTagID.Contains("TPolyLine."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(10)));
-            }
-
-            if (GeometryTagID.Contains("TPoint."))
-            {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(GeometryTagID.Substring(7)));
-            }
-
-            return Entity;
+            else return null;
         }
 
         private bool RemoveGeometryNode(string GeometryTagID)
@@ -3898,11 +3907,6 @@ LV.Items.Add(LVipP);
         private void показатьПДToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void eSlibdllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Function2(1975);
         }
 
         private void toolStripMI_ShowES_Click(object sender, EventArgs e)
@@ -5036,31 +5040,62 @@ LV.Items.Add(LVipP);
         }
 
         #region Пример использования mitab.dll (из mitab)
-        public void OpenMif(string FileName)
+        public void OpenMiTab(string FileName)
         {
+            TEntitySpatial ES = new TEntitySpatial();
             toolStripStatusLabel1.Text = FileName;
-            Ptr = EBop.MapObjects.MapInfo.MiApi.mitab_c_open(FileName);
+            Ptr = MiApi.mitab_c_open(FileName);
             string CorrdsSys = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_mif_coordsys(Ptr);
-            int feature_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr);
-            int field_count = EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_count(Ptr);
+            int feature_count = MiApi.mitab_c_get_feature_count(Ptr);
+            int field_count = MiApi.mitab_c_get_field_count(Ptr);
 
             richTextBox1.AppendText("\nПоля данных: " + Convert.ToString(field_count) + "\n");
             for (int i = 0; i <= field_count - 1; i++)
             {
-                //    richTextBox1.AppendText(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i) + " ");
-                //    comboBox1.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i));
+                richTextBox1.AppendText(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_name(Ptr, i) + " ");
             }
 
 
-            richTextBox1.AppendText("\n Feature_count:" + Convert.ToString(feature_count) + "\n");
+            richTextBox1.AppendText("\n deature_count:" + Convert.ToString(feature_count) + "\r\n");
 
             for (int i = 1; i <= EBop.MapObjects.MapInfo.MiApi.mitab_c_get_feature_count(Ptr); i++)
             {
-                //  IntPtr Feature = EBop.MapObjects.MapInfo.MiApi.mitab_c_read_feature(Ptr, i);
-                //  FeatureslistBox.Items.Add(EBop.MapObjects.MapInfo.MiApi.mitab_c_get_field_as_string(Feature, 0));
+                IntPtr FeaturePtr = EBop.MapObjects.MapInfo.MiApi.mitab_c_read_feature(Ptr, i);
+                FeatureType Featuretype = MiApi.mitab_c_get_type(FeaturePtr);
+                if (Featuretype == FeatureType.TABFC_Region)
+                {
+                    TMyPolygon Poly = new TMyPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
+                    ES.Add(Poly);
 
+                }
+
+                if (Featuretype == FeatureType.TABFC_Polyline)
+                {
+
+                }
+
+
+                if (Featuretype == FeatureType.TABFC_Point)
+                {
+
+                }
+
+                richTextBox1.AppendText("Feature " + FeaturePtr.ToString() + "\t");
+                for (int ifd = 0; ifd <= field_count - 1; ifd++)
+                    richTextBox1.AppendText(MiApi.mitab_c_get_field_as_string(FeaturePtr, ifd) + "\t");
+                richTextBox1.AppendText("\r\n");
             }
 
+            this.DocInfo.MyBlocks.ParsedSpatial = ES;
+            this.DocInfo.DocTypeNick = "Mapinfo tab";
+            this.DocInfo.CommentsType = "TAB";
+            //res.Comments = mifreader.Body;//.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
+            //res.Encoding = mifreader.BodyEncoding.ToString();
+            //res.Number = "Encoding  " + mifreader.BodyEncoding;
+            this.DocInfo.DocType = "Mapinfo tab";
+            //res.Version = mifreader.Version;
+            ListMyCoolections(this.DocInfo.MyBlocks);
+            ListFileInfo(DocInfo);
         }
         #endregion
 
@@ -5380,11 +5415,35 @@ LV.Items.Add(LVipP);
             frmTraverser.ShowDialog(this);
         }
 
+
+        private void EditGeometryNode(ListView parent, string Tag)
+        {
+            IGeometry Feature = GetNodeGeometry(Tag);
+            if (Feature != null)
+            {
+                if (Feature.TypeName == "netFteo.Spatial.TPoint")
+                {
+                    TPoint pt = (TPoint)Feature;
+                    frmPointEditor Editor = new frmPointEditor(pt);
+                    Editor.StartPosition = FormStartPosition.CenterParent;
+                    if (Editor.ShowDialog(this) == DialogResult.OK)
+                    {
+                        (parent).SelectedItems[0].Text = pt.Pref + pt.Definition;
+                        (parent).SelectedItems[0].SubItems[1].Text = pt.x_s;
+                        (parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
+                        (parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
+                    }
+                }
+            }
+        }
+
         private void ИзменитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
             if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
             {
+                EditGeometryNode((ListView)parent, tag);
+                /*
                 IGeometry Feature = GetNodeGeometry(tag);
                 if (Feature != null)
                 {
@@ -5400,9 +5459,38 @@ LV.Items.Add(LVipP);
                             ((ListView)parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
                             ((ListView)parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
                         }
-
                     }
                 }
+                */
+            }
+        }
+    
+        
+
+        private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (((ListView)sender).SelectedItems.Count == 1)
+            {
+                EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
+                /*
+                IGeometry Feature = GetNodeGeometry((string)((ListView)sender).SelectedItems[0].Tag);
+                if (Feature != null)
+                {
+                    if (Feature.TypeName == "netFteo.Spatial.TPoint")
+                    {
+                        TPoint pt = (TPoint)Feature;
+                        frmPointEditor Editor = new frmPointEditor(pt);
+                        Editor.StartPosition = FormStartPosition.CenterParent;
+                        if (Editor.ShowDialog(this) == DialogResult.OK)
+                        {
+                            ((ListView)sender).SelectedItems[0].Text = pt.Pref + pt.Definition;
+                            ((ListView)sender).SelectedItems[0].SubItems[1].Text = pt.x_s;
+                            ((ListView)sender).SelectedItems[0].SubItems[2].Text = pt.y_s;
+                            ((ListView)sender).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
+                        }
+                    }
+                }
+                */
             }
         }
     }
