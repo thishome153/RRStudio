@@ -75,6 +75,7 @@ namespace netFteo.Spatial
         /// <param name="ViewKoefficient">Масштаб (1 = 100 %)</param>
         /// <returns></returns>
         double ScaleEntity(double canvas_width, double canvas_height);//, double ViewKoefficient)
+        bool EmptySpatial { get; }
     }
 
     /// <summary>
@@ -120,6 +121,14 @@ namespace netFteo.Spatial
             get
             {
                 return this.GetType().ToString();
+            }
+        }
+
+        public bool EmptySpatial
+        {
+            get
+            {
+                return true;
             }
         }
 
@@ -541,6 +550,14 @@ namespace netFteo.Spatial
                     return true;
                 else
                     return false;
+            }
+        }
+
+        public bool EmptySpatial
+        {
+            get
+            {
+                return Empty;
             }
         }
 
@@ -1118,6 +1135,16 @@ namespace netFteo.Spatial
             this.Insert(index, Swap);
 
             //  this.[0].
+        }
+
+
+
+        public bool EmptySpatial
+        {
+            get
+            {
+                return (this.PointCount < 1);
+            }
         }
 
         public string HasChanges
@@ -4373,21 +4400,34 @@ namespace netFteo.Spatial
                     return feature;
             }
 
+            //next, point in features:
             foreach (IGeometry item in this.ParsedSpatial)
             {
+
+                if (item is TMyPolygon)
+                {
+                    TPoint pt = ((TMyPolygon)item).GetPoint(Item_id);
+                    if (pt != null) return pt;
+
+                    foreach (TRing child in ((TMyPolygon)item).Childs)
+                    {
+                        TPoint pt1 = child.GetPoint(Item_id);
+                        if (pt1 != null) return pt1;
+                    }
+                }
 
                 if (item is IPointList)
                 {
                     TPoint pt = ((IPointList)item).GetPoint(Item_id);
                     if (pt != null) return pt;
                 }
-
             }
 
             //Full ES
             if (this.ParsedSpatial.id == Item_id)
                 return this.ParsedSpatial;
 
+            //Anyway - nothing found. Return null
             return null;
         }
 
@@ -4675,6 +4715,19 @@ namespace netFteo.Spatial
             else return AreaSpatial.ToString(format);
         }
 
+        public bool EmptySpatial
+        {
+            get
+            {
+                
+                foreach(IGeometry feature in this)
+                {
+                    if (feature.EmptySpatial)
+                        return true;
+                }
+                return false;
+            }
+        }
 
 
         private void EsChekerProc(string sender, int process, byte[] Data)
@@ -4883,7 +4936,7 @@ namespace netFteo.Spatial
 
                 ListViewItem LVi = new ListViewItem();
                 LVi.Text = Layer.Name;
-                LVi.Tag = Layer.id;
+                LVi.Tag = "Layer." + Layer.id;
                 LVi.SubItems.Add(Layer.TypeName);
                 LVi.SubItems.Add(Layer.id.ToString());
                 LVi.SubItems.Add(Layer.LayerHandle);
@@ -4921,6 +4974,7 @@ namespace netFteo.Spatial
 
                 if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
                 {
+                    LVi.Tag = "Polygon." + feature.id;
                     LV.Columns[2].Text = "Площадь";
                     LV.Columns[3].Text = "Площ. гр.";
                     LV.Columns[4].Text = "Δ";
@@ -5025,55 +5079,47 @@ namespace netFteo.Spatial
                 // init bounds by first polygon/polyline
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (!feature.EmptySpatial)
                     {
-                        TMyPolygon poly = (TMyPolygon)feature;
-                        Result.MinX = poly.Bounds.MinX;
-                        Result.MinY = poly.Bounds.MinY;
-                        Result.MaxX = poly.Bounds.MaxX;
-                        Result.MaxY = poly.Bounds.MaxY;
-                        goto SCAN;
-                    }
+                        if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        {
+                            TMyPolygon poly = (TMyPolygon)feature;
+                            Result.MinX = poly.Bounds.MinX;
+                            Result.MinY = poly.Bounds.MinY;
+                            Result.MaxX = poly.Bounds.MaxX;
+                            Result.MaxY = poly.Bounds.MaxY;
+                            goto SCAN;
+                        }
 
-                    if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-                    {
-                        TPolyLine poly = (TPolyLine)feature;
-                        Result.MinX = poly.Bounds.MinX;
-                        Result.MinY = poly.Bounds.MinY;
-                        Result.MaxX = poly.Bounds.MaxX;
-                        Result.MaxY = poly.Bounds.MaxY;
-                        goto SCAN;
-                    }
+                        if (feature.TypeName == "netFteo.Spatial.TPolyLine")
+                        {
+                            TPolyLine poly = (TPolyLine)feature;
+                            Result.MinX = poly.Bounds.MinX;
+                            Result.MinY = poly.Bounds.MinY;
+                            Result.MaxX = poly.Bounds.MaxX;
+                            Result.MaxY = poly.Bounds.MaxY;
+                            goto SCAN;
+                        }
 
-                    if (feature.TypeName == "netFteo.Spatial.TCircle")
-                    {
-                        TCircle poly = (TCircle)feature;
-                        Result.MinX = poly.Bounds.MinX;
-                        Result.MinY = poly.Bounds.MinY;
-                        Result.MaxX = poly.Bounds.MaxX;
-                        Result.MaxY = poly.Bounds.MaxY;
-                        goto SCAN;
+                        if (feature.TypeName == "netFteo.Spatial.TCircle")
+                        {
+                            TCircle poly = (TCircle)feature;
+                            Result.MinX = poly.Bounds.MinX;
+                            Result.MinY = poly.Bounds.MinY;
+                            Result.MaxX = poly.Bounds.MaxX;
+                            Result.MaxY = poly.Bounds.MaxY;
+                            goto SCAN;
+                        }
                     }
                 }
 
             SCAN: foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (!feature.EmptySpatial)
                     {
-                        TMyPolygon poly = (TMyPolygon)feature;
-                        if (poly.Bounds != null)
+                        if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
                         {
-                            if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
-                            if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
-                            if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
-                            if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
-                        }
-                    }
-
-                    if (feature.TypeName == "netFteo.Spatial.TPolyLine")
-                    {
-                        TPolyLine poly = (TPolyLine)feature;
-                        {
+                            TMyPolygon poly = (TMyPolygon)feature;
                             if (poly.Bounds != null)
                             {
                                 if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
@@ -5082,18 +5128,32 @@ namespace netFteo.Spatial
                                 if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
                             }
                         }
-                    }
 
-                    if (feature.TypeName == "netFteo.Spatial.TCircle")
-                    {
-                        TCircle Circle = (TCircle)feature;
+                        if (feature.TypeName == "netFteo.Spatial.TPolyLine")
                         {
-                            if (Circle.Bounds != null)
+                            TPolyLine poly = (TPolyLine)feature;
                             {
-                                if (Circle.Bounds.MinX < Result.MinX) Result.MinX = Circle.Bounds.MinX;
-                                if (Circle.Bounds.MinY < Result.MinY) Result.MinY = Circle.Bounds.MinY;
-                                if (Circle.Bounds.MaxX > Result.MaxX) Result.MaxX = Circle.Bounds.MaxX;
-                                if (Circle.Bounds.MaxY > Result.MaxY) Result.MaxY = Circle.Bounds.MaxY;
+                                if (poly.Bounds != null)
+                                {
+                                    if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;
+                                    if (poly.Bounds.MinY < Result.MinY) Result.MinY = poly.Bounds.MinY;
+                                    if (poly.Bounds.MaxX > Result.MaxX) Result.MaxX = poly.Bounds.MaxX;
+                                    if (poly.Bounds.MaxY > Result.MaxY) Result.MaxY = poly.Bounds.MaxY;
+                                }
+                            }
+                        }
+
+                        if (feature.TypeName == "netFteo.Spatial.TCircle")
+                        {
+                            TCircle Circle = (TCircle)feature;
+                            {
+                                if (Circle.Bounds != null)
+                                {
+                                    if (Circle.Bounds.MinX < Result.MinX) Result.MinX = Circle.Bounds.MinX;
+                                    if (Circle.Bounds.MinY < Result.MinY) Result.MinY = Circle.Bounds.MinY;
+                                    if (Circle.Bounds.MaxX > Result.MaxX) Result.MaxX = Circle.Bounds.MaxX;
+                                    if (Circle.Bounds.MaxY > Result.MaxY) Result.MaxY = Circle.Bounds.MaxY;
+                                }
                             }
                         }
                     }

@@ -5065,13 +5065,60 @@ LV.Items.Add(LVipP);
                 if (Featuretype == FeatureType.TABFC_Region)
                 {
                     TMyPolygon Poly = new TMyPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
-                    ES.Add(Poly);
 
+                    int RingCount = MiApi.mitab_c_get_parts(FeaturePtr);
+
+                    for (int iRing = 0; iRing <= RingCount - 1; iRing++)
+                    {
+                        int vertexCount = MiApi.mitab_c_get_vertex_count(FeaturePtr, iRing);
+                        if (iRing == 0)
+                            for (int iVertex = 0; iVertex <= vertexCount - 1; iVertex++)
+                            {
+                                TPoint MIF_Point = new TPoint(MiApi.mitab_c_get_vertex_y(FeaturePtr, iRing, iVertex), MiApi.mitab_c_get_vertex_x(FeaturePtr, iRing, iVertex));
+                                Poly.AddPoint(MIF_Point);
+                            }
+                        else
+                        {
+                            TRing child = new TRing();
+                            for (int iVertex = 0; iVertex <= vertexCount - 1; iVertex++)
+                            {
+                                TPoint MIF_Point = new TPoint(MiApi.mitab_c_get_vertex_y(FeaturePtr, iRing, iVertex), MiApi.mitab_c_get_vertex_x(FeaturePtr, iRing, iVertex));
+                                child.AddPoint(MIF_Point);
+                            }
+                            Poly.Childs.Add(child);
+                        }
+                    }
+                    ES.Add(Poly);
                 }
 
                 if (Featuretype == FeatureType.TABFC_Polyline)
                 {
+                    TPolyLine poly = new TPolyLine();
+                    poly.Definition = MiApi.mitab_c_get_field_as_string(FeaturePtr, 0);
+                    int RingCount = MiApi.mitab_c_get_parts(FeaturePtr);
+                    int vertexCount = MiApi.mitab_c_get_vertex_count(FeaturePtr, 0);
 
+
+                    for (int iVertex = 0; iVertex <= vertexCount - 1; iVertex++)
+                    {
+                        TPoint MIF_Point = new TPoint(MiApi.mitab_c_get_vertex_y(FeaturePtr, 0, iVertex),
+                                                      MiApi.mitab_c_get_vertex_x(FeaturePtr, 0, iVertex));
+                        poly.AddPoint(MIF_Point);
+                    }
+                    ES.Add(poly);
+                }
+
+                if (Featuretype == FeatureType.TABFC_Ellipse)
+                {
+                    TMyPolygon Poly = new TMyPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
+                    Poly.Name = "TABFC_Ellipse";
+                    int vertexCount = MiApi.mitab_c_get_vertex_count(FeaturePtr, 0);
+                    for (int iVertex = 0; iVertex <= vertexCount - 1; iVertex++)
+                    {
+                        TPoint MIF_Point = new TPoint(MiApi.mitab_c_get_vertex_y(FeaturePtr, 0, iVertex), MiApi.mitab_c_get_vertex_x(FeaturePtr, 0, iVertex));
+                        Poly.AddPoint(MIF_Point);
+                    }
+                    ES.Add(Poly);
                 }
 
 
@@ -5350,7 +5397,7 @@ LV.Items.Add(LVipP);
 
         private void listView1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (ListView_KeyUpMouseClick((ListView)sender, out string tag))
+            if (ListView_ItemSelected((ListView)sender, out string tag))
             {
                 toolStripStatusLabel2.Text = tag;
             }
@@ -5359,7 +5406,7 @@ LV.Items.Add(LVipP);
 
         private void listView1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (ListView_KeyUpMouseClick((ListView)sender, out string tag))
+            if (ListView_ItemSelected((ListView)sender, out string tag))
             {
                 toolStripStatusLabel2.Text = tag;
             }
@@ -5367,7 +5414,7 @@ LV.Items.Add(LVipP);
 
 
 
-        private bool ListView_KeyUpMouseClick(ListView lv, out string ItemTag)
+        private bool ListView_ItemSelected(ListView lv, out string ItemTag)
         {
             if (lv.SelectedItems.Count == 1)
             {
@@ -5385,7 +5432,7 @@ LV.Items.Add(LVipP);
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
-            if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
+            if (ListView_ItemSelected((ListView)parent, out string tag))
             {
                 if (RemoveGeometryNode(tag))
                 {
@@ -5413,6 +5460,7 @@ LV.Items.Add(LVipP);
 
             Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
             frmTraverser.ShowDialog(this);
+
         }
 
 
@@ -5440,28 +5488,9 @@ LV.Items.Add(LVipP);
         private void ИзменитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
-            if (ListView_KeyUpMouseClick((ListView)parent, out string tag))
+            if (ListView_ItemSelected((ListView)parent, out string tag))
             {
                 EditGeometryNode((ListView)parent, tag);
-                /*
-                IGeometry Feature = GetNodeGeometry(tag);
-                if (Feature != null)
-                {
-                    if (Feature.TypeName == "netFteo.Spatial.TPoint")
-                    {
-                        TPoint pt = (TPoint)Feature;
-                        frmPointEditor Editor = new frmPointEditor(pt);
-                        Editor.StartPosition = FormStartPosition.CenterParent;
-                        if (Editor.ShowDialog(this) == DialogResult.OK)
-                        {
-                            ((ListView)parent).SelectedItems[0].Text = pt.Pref + pt.Definition;
-                            ((ListView)parent).SelectedItems[0].SubItems[1].Text = pt.x_s;
-                            ((ListView)parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
-                            ((ListView)parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
-                        }
-                    }
-                }
-                */
             }
         }
     
@@ -5472,25 +5501,6 @@ LV.Items.Add(LVipP);
             if (((ListView)sender).SelectedItems.Count == 1)
             {
                 EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
-                /*
-                IGeometry Feature = GetNodeGeometry((string)((ListView)sender).SelectedItems[0].Tag);
-                if (Feature != null)
-                {
-                    if (Feature.TypeName == "netFteo.Spatial.TPoint")
-                    {
-                        TPoint pt = (TPoint)Feature;
-                        frmPointEditor Editor = new frmPointEditor(pt);
-                        Editor.StartPosition = FormStartPosition.CenterParent;
-                        if (Editor.ShowDialog(this) == DialogResult.OK)
-                        {
-                            ((ListView)sender).SelectedItems[0].Text = pt.Pref + pt.Definition;
-                            ((ListView)sender).SelectedItems[0].SubItems[1].Text = pt.x_s;
-                            ((ListView)sender).SelectedItems[0].SubItems[2].Text = pt.y_s;
-                            ((ListView)sender).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
-                        }
-                    }
-                }
-                */
             }
         }
     }
