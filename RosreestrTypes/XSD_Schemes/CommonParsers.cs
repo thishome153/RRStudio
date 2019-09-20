@@ -2709,7 +2709,12 @@ namespace RRTypes.CommonParsers
 						{
 							MainObj.EntSpat.Add(CommonCast.CasterZU.ES_ZU(MainObj.CN, MP.Package.FormParcels.NewParcel[i].EntitySpatial));
 						}
-					}
+
+                        if (MP.Package.FormParcels.NewParcel[i].ObjectRealty != null)
+
+                            MainObj.InnerCadastralNumbers.AddRange(MP.Package.FormParcels.NewParcel[i].ObjectRealty.InnerCadastralNumbers);
+
+                    }
 					//измененный зу
 					if (MP.Package.FormParcels.ChangeParcel != null)
 					{
@@ -2751,7 +2756,9 @@ namespace RRTypes.CommonParsers
 
 						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
 						Bl.CN = MP.Package.SpecifyParcel.ExistParcel.CadastralBlock;
-						MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.AreaInGKN;
+                        if (MP.Package.SpecifyParcel.ExistParcel.ObjectRealty != null)
+                            MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistParcel.ObjectRealty.InnerCadastralNumbers);
+                        MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.AreaInGKN;
 						MainObj.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Area.Area; //Указанная площадь??
 						if (MP.Package.SpecifyParcel.ExistParcel.ObjectRealty != null)
 							MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistParcel.ObjectRealty.InnerCadastralNumbers);
@@ -2788,8 +2795,12 @@ namespace RRTypes.CommonParsers
 						Bl.Parcels.AddParcel(MainObj);
 						MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.AreaInGKN;
 						MainObj.AreaValue = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.Area.Area;
+                        if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty != null)
+                        {
+                            MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty.InnerCadastralNumbers);
+                        }
 
-						if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty != null)
+                        if (MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty != null)
 							MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.ObjectRealty.InnerCadastralNumbers);
 
 						Bl.CN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralBlock;

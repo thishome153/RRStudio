@@ -4881,7 +4881,7 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="TypeName"></param>
         /// <returns></returns>
-        public double PolyArea
+        public double PolyArea 
         {
             get
             {
@@ -4891,11 +4891,52 @@ namespace netFteo.Spatial
                     if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
                     {
                         res += ((TMyPolygon)feature).AreaSpatial;
+
                     }
                 }
                 return res;
             }
         }
+
+        /// <summary>
+        ///Count of all polygons
+        /// </summary>
+        /// <param name="TypeName"></param>
+        /// <returns></returns>
+        public int PolyCount
+        {
+            get
+            {
+                int res = 0; // default empty value
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    {
+                        res++;
+                    }
+                }
+                return res;
+            }
+        }
+
+        public string PolyAreaString
+        {
+            get
+            {
+                double res = -1; // default empty value
+                int resCount = 0;
+                foreach (IGeometry feature in this)
+                {
+                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    {
+                        res += ((TMyPolygon)feature).AreaSpatial;
+                        resCount++;
+                    }
+                }
+                return res + " [" + resCount.ToString() + "]";
+            }
+        }
+
 
         /// <summary>
         /// Select features by Layer

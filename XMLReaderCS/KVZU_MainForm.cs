@@ -93,6 +93,9 @@ namespace XMLReaderCS
         [DllImport("ESChecker.dll")]
         unsafe public static extern void* Func2(int id);
 
+        [DllImport("ESChecker.dll")]
+        unsafe public static extern int TestLibrary();
+
         /*
         // c++ CodeBlocks library
         [DllImport("ESlib.dll")]
@@ -2390,7 +2393,7 @@ return res;
                     if (ES.PolyArea != -1)
                     {
                         ListViewItem LVip = new ListViewItem();
-                        LVip.Text = "Площадь полигонов";
+                        LVip.Text = "Площадь полигонов [" + ES.PolyCount + "]";
                         LVip.SubItems.Add(ES.PolyArea.ToString());
                         LVip.SubItems.Add("кв.м.");
                         LV.Items.Add(LVip);
@@ -3954,7 +3957,13 @@ LV.Items.Add(LVipP);
 
         private void eSViewerlibmcvcdllF1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Function1(1975);
+            unsafe
+            {
+                int resTest = TestLibrary();
+
+                //Example for send string
+                //[MarshalAs(UnmanagedType.LPStr)]     string filename,
+            }
         }
 
 

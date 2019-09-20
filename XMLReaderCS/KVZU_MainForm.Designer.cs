@@ -54,6 +54,7 @@
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.вставитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.картапланToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +71,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox_OrgName = new System.Windows.Forms.LinkLabel();
             this.textBox_Appointment = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
@@ -137,8 +140,10 @@
             this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.фиксироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.замкнутьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listView_Properties = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -146,6 +151,8 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.fteoImage = new netFteo.Drawing.FteoImage();
+            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.cXmlTreeView2 = new XMLReaderCS.CXmlTreeView();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -167,29 +174,24 @@
             this.toolStripLabel_Counts = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fteoImage = new netFteo.Drawing.FteoImage();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.Button_CloseReader = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_VisualizerToggle = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -199,15 +201,13 @@
             this.contextMenuStrip_SaveAs.SuspendLayout();
             this.contextMenuStrip_OIPD.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenu_pkk5Tree.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -274,6 +274,14 @@
             this.копироватьToolStripMenuItem3.Name = "копироватьToolStripMenuItem3";
             this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(157, 22);
             this.копироватьToolStripMenuItem3.Text = "Копировать";
+            // 
+            // удалитьToolStripMenuItem1
+            // 
+            this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
+            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
+            this.удалитьToolStripMenuItem1.Text = "Удалить";
+            this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
             // 
             // вставитьToolStripMenuItem
             // 
@@ -426,6 +434,24 @@
             this.tabPage2.Text = "Документ";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 113);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(700, 1);
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 290);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(700, 1);
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
             // 
             // textBox_OrgName
             // 
@@ -750,7 +776,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -908,7 +934,7 @@
             // 
             this.eSViewerlibmcvcdllF1ToolStripMenuItem.Name = "eSViewerlibmcvcdllF1ToolStripMenuItem";
             this.eSViewerlibmcvcdllF1ToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Text = "MSVC::ESViewer_lib -F1";
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Text = "MSVC::ESChecker Testlibrary";
             this.eSViewerlibmcvcdllF1ToolStripMenuItem.Click += new System.EventHandler(this.eSViewerlibmcvcdllF1ToolStripMenuItem_Click);
             // 
             // mSVCESCheckerFunc2Int1975ToolStripMenuItem
@@ -1100,6 +1126,14 @@
             this.фиксироватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.фиксироватьToolStripMenuItem.Text = "Фиксировать";
             // 
+            // изменитьToolStripMenuItem
+            // 
+            this.изменитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.application_edit;
+            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.изменитьToolStripMenuItem.Text = "Изменить";
+            this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.ИзменитьToolStripMenuItem_Click);
+            // 
             // замкнутьToolStripMenuItem
             // 
             this.замкнутьToolStripMenuItem.Name = "замкнутьToolStripMenuItem";
@@ -1113,6 +1147,14 @@
             this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
             this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
+            // 
+            // удалитьToolStripMenuItem
+            // 
+            this.удалитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.удалитьToolStripMenuItem.Text = "Удалить";
+            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
             // splitter1
             // 
@@ -1189,6 +1231,30 @@
             this.tabPage4.Text = "ПКК-Онлайн";
             this.tabPage4.UseVisualStyleBackColor = true;
             this.tabPage4.Enter += new System.EventHandler(this.tabPage4_Enter);
+            // 
+            // fteoImage
+            // 
+            this.fteoImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.fteoImage.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage.Image")));
+            this.fteoImage.Location = new System.Drawing.Point(832, 0);
+            this.fteoImage.Name = "fteoImage";
+            this.fteoImage.Size = new System.Drawing.Size(135, 134);
+            this.fteoImage.TabIndex = 5;
+            this.fteoImage.TabStop = false;
+            // 
+            // pkk5Viewer1
+            // 
+            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
+            this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
+            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
+            this.pkk5Viewer1.Name = "pkk5Viewer1";
+            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
+            this.pkk5Viewer1.QueryValue = "26:05:043433:7";
+            this.pkk5Viewer1.Size = new System.Drawing.Size(944, 510);
+            this.pkk5Viewer1.TabIndex = 4;
+            this.pkk5Viewer1.TabStop = false;
+            this.pkk5Viewer1.Click += new System.EventHandler(this.pkk5Viewer1_Click);
             // 
             // tabPage5
             // 
@@ -1410,110 +1476,6 @@
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.AutoSize = false;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(15, 25);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.AutoSize = false;
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(25, 25);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // PreloaderMenuItem
-            // 
-            this.PreloaderMenuItem.AutoSize = false;
-            // 
-            // PreloaderMenuItem
-            // 
-            this.PreloaderMenuItem.LoadingCircleControl.AccessibleName = "PreloaderMenuItem";
-            this.PreloaderMenuItem.LoadingCircleControl.Active = false;
-            this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
-            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(222, 1);
-            this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
-            this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
-            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
-            this.PreloaderMenuItem.LoadingCircleControl.RotationSpeed = 100;
-            this.PreloaderMenuItem.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
-            this.PreloaderMenuItem.LoadingCircleControl.SpokeThickness = 2;
-            this.PreloaderMenuItem.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
-            this.PreloaderMenuItem.LoadingCircleControl.TabIndex = 1;
-            this.PreloaderMenuItem.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
-            this.PreloaderMenuItem.Name = "PreloaderMenuItem";
-            this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
-            this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 113);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(700, 1);
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 290);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(700, 1);
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            // 
-            // изменитьToolStripMenuItem
-            // 
-            this.изменитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.application_edit;
-            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.изменитьToolStripMenuItem.Text = "Изменить";
-            this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.ИзменитьToolStripMenuItem_Click);
-            // 
-            // удалитьToolStripMenuItem
-            // 
-            this.удалитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
-            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
-            // 
-            // fteoImage
-            // 
-            this.fteoImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.fteoImage.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage.Image")));
-            this.fteoImage.Location = new System.Drawing.Point(832, 0);
-            this.fteoImage.Name = "fteoImage";
-            this.fteoImage.Size = new System.Drawing.Size(135, 134);
-            this.fteoImage.TabIndex = 5;
-            this.fteoImage.TabStop = false;
-            // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
-            this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
-            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
-            this.pkk5Viewer1.QueryValue = "26:05:043433:7";
-            this.pkk5Viewer1.Size = new System.Drawing.Size(944, 510);
-            this.pkk5Viewer1.TabIndex = 4;
-            this.pkk5Viewer1.TabStop = false;
-            this.pkk5Viewer1.Click += new System.EventHandler(this.pkk5Viewer1_Click);
-            // 
             // Button_CloseReader
             // 
             this.Button_CloseReader.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1523,6 +1485,12 @@
             this.Button_CloseReader.Size = new System.Drawing.Size(23, 22);
             this.Button_CloseReader.Text = "Выход";
             this.Button_CloseReader.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.AutoSize = false;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(15, 25);
             // 
             // toolStripButton1
             // 
@@ -1556,6 +1524,12 @@
             this.toolStripButton5.ToolTipText = "CSV TechnoKAD";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.AutoSize = false;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(25, 25);
+            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1578,6 +1552,11 @@
             this.toolStripButton_VisualizerToggle.ToolTipText = "Визуализация";
             this.toolStripButton_VisualizerToggle.Click += new System.EventHandler(this.toolStripButton2_Click_1);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripButton3
             // 
             this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1588,13 +1567,34 @@
             this.toolStripButton3.Text = "О про";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
-            // удалитьToolStripMenuItem1
+            // toolStripSeparator4
             // 
-            this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
-            this.удалитьToolStripMenuItem1.Text = "Удалить";
-            this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // PreloaderMenuItem
+            // 
+            this.PreloaderMenuItem.AutoSize = false;
+            // 
+            // PreloaderMenuItem
+            // 
+            this.PreloaderMenuItem.LoadingCircleControl.AccessibleName = "PreloaderMenuItem";
+            this.PreloaderMenuItem.LoadingCircleControl.Active = false;
+            this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
+            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
+            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(222, 1);
+            this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
+            this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
+            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
+            this.PreloaderMenuItem.LoadingCircleControl.RotationSpeed = 100;
+            this.PreloaderMenuItem.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
+            this.PreloaderMenuItem.LoadingCircleControl.SpokeThickness = 2;
+            this.PreloaderMenuItem.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.PreloaderMenuItem.LoadingCircleControl.TabIndex = 1;
+            this.PreloaderMenuItem.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
+            this.PreloaderMenuItem.Name = "PreloaderMenuItem";
+            this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
+            this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
             // 
             // tPointBindingSource
             // 
@@ -1632,6 +1632,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1642,6 +1644,8 @@
             this.contextMenuStrip_SaveAs.ResumeLayout(false);
             this.contextMenuStrip_OIPD.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -1650,10 +1654,6 @@
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
