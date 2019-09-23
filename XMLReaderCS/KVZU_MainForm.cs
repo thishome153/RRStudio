@@ -5149,9 +5149,9 @@ LV.Items.Add(LVipP);
             //res.Encoding = mifreader.BodyEncoding.ToString();
             //res.Number = "Encoding  " + mifreader.BodyEncoding;
             this.DocInfo.DocType = "Mapinfo tab";
-            //res.Version = mifreader.Version;
-            ListMyCoolections(this.DocInfo.MyBlocks);
-            ListFileInfo(DocInfo);
+            this.DocInfo.Version = MiApi.mitab_c_getlibversion().ToString();
+            //ListMyCoolections(this.DocInfo.MyBlocks);
+            //ListFileInfo(DocInfo);
         }
         #endregion
 
@@ -5502,8 +5502,8 @@ LV.Items.Add(LVipP);
                 EditGeometryNode((ListView)parent, tag);
             }
         }
-    
-        
+
+
 
         private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -5511,6 +5511,12 @@ LV.Items.Add(LVipP);
             {
                 EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
             }
+        }
+
+        private void ОткрытьДополнительноеОкноToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            KVZU_Form frm2 = new KVZU_Form();
+            frm2.Show(this);
         }
     }
 }

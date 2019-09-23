@@ -5884,7 +5884,8 @@ namespace RRTypes.CommonParsers
 				Bld.Building.Area = kv.Realty.Building.Area;
 				Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
 				Bld.Floors = kv.Realty.Building.Floors.Floors;
-				Bld.UndergroundFloors = kv.Realty.Building.Floors.UndergroundFloors;
+                Bld.Notes = kv.Realty.Building.Notes;
+                Bld.UndergroundFloors = kv.Realty.Building.Floors.UndergroundFloors;
 				foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Building.OldNumbers)
 					Bld.Building.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
@@ -5932,8 +5933,9 @@ namespace RRTypes.CommonParsers
 				Unc.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Uncompleted.ObjectType);
 				Unc.Uncompleted.DegreeReadiness  = kv.Realty.Uncompleted.DegreeReadiness.ToString();
 				Unc.Rights = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
+                Unc.Notes = kv.Realty.Uncompleted.Notes;
 
-				foreach (kvoks_v07.tOldNumber n in kv.Realty.Uncompleted.OldNumbers)
+                foreach (kvoks_v07.tOldNumber n in kv.Realty.Uncompleted.OldNumbers)
 					Unc.Building.OldNumbers.Add(new TKeyParameter() { Type = dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
 				res.CommentsType = " Особые отметки";
