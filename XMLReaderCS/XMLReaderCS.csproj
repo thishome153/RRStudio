@@ -132,9 +132,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cadesNETWrapper">
-      <HintPath>C:\Temp\CSP\Debug\cadesNETWrapper.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetZip, Version=1.13.4.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.13.4\lib\net40\DotNetZip.dll</HintPath>
     </Reference>
@@ -542,6 +539,10 @@
       <Project>{bff2c2f7-e131-4f04-9351-bc30b964b7aa}</Project>
       <Name>cryptFteo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cspUtils\cspUtils.vcxproj">
+      <Project>{511a6a09-97ce-4feb-b672-06151eb78fee}</Project>
+      <Name>cadesNETWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\netFteo\netFteo.csproj">
       <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
       <Name>netFteo</Name>
@@ -566,7 +567,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
