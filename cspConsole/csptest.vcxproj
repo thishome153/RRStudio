@@ -54,8 +54,8 @@
     <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>c:\TEMP\CSP\$(Configuration)\</OutDir>
-    <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)</IntDir>
+    <OutDir>..\Builds\x86\$(Configuration)\</OutDir>
+    <IntDir>c:\TEMP\Intermediates\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />

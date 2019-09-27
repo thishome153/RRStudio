@@ -28,7 +28,7 @@ using namespace System; // типы .NET
 namespace SignerUtils {
 	namespace wincrypt {
 
-		int    SignFile2(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign);
+		int    SignFileWinCrypt(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign);
 		PCCERT_CONTEXT GetCertificat(System::String ^ SubjectName);
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);

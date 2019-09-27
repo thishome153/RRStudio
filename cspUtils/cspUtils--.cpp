@@ -5,7 +5,7 @@
 
 // This is the main DLL file.
 #include "Stdafx.h"
-#include "cspUtils.h"
+#include "cspWrapper.h"
 
 #include "cades.h" //CryptoPro
 #include "WinCryptEx.h" // Windows Crypto distribute with Crypto Pro SDK 
@@ -26,7 +26,7 @@ namespace cspUtils {
 
 
 	//Отображение подписи через CADES UI 
-	int CadesWrapper::DisplaySig(System::String ^ FileSign, System::IntPtr  Parent)
+	int CadesWrapper::DisplaySig(System::String^ FileSign, System::IntPtr  Parent)
 	{
 		LPVOID	    mem_tbs = NULL;
 		size_t	    mem_len = 0;
@@ -35,7 +35,7 @@ namespace cspUtils {
 		int retFile = IO::read_file(FileName, &mem_len, &mem_tbs);
 		if (retFile = 0) goto err;
 
-		const BYTE		*SignBlob;
+		const BYTE* SignBlob;
 		SignBlob = (BYTE*)mem_tbs;
 
 
@@ -51,7 +51,7 @@ namespace cspUtils {
 	}
 
 	// Разбор полей спертификата в строку
-	System::String ^  CadesWrapper::DisplayCertInfo(System::String ^  SubjectName)
+	System::String^ CadesWrapper::DisplayCertInfo(System::String^ SubjectName)
 	{
 		if (!SubjectName) return "-";
 		PCCERT_CONTEXT	ret = SignerUtils::wincrypt::GetCertificat(SubjectName);
@@ -59,7 +59,7 @@ namespace cspUtils {
 		{
 			DWORD sz = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData;
 			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
-			LPSTR *algOID = &ret->pCertInfo->SignatureAlgorithm.pszObjId;
+			LPSTR* algOID = &ret->pCertInfo->SignatureAlgorithm.pszObjId;
 			return  "Издатель: " + LPTSTRToString(SignerUtils::wincrypt::GetCertIssuerName(ret)) +
 				"\r\n" + " e-mail:" + LPTSTRToString(SignerUtils::wincrypt::GetCertEmail(ret)) +
 				"\r\n" + " серийный номер: " + PBYTEToStr(serial, sz) +
@@ -73,7 +73,7 @@ namespace cspUtils {
 
 	List<System::String^>^ CadesWrapper::GetCertificates()
 	{
-		List<System::String^> ^ res = gcnew List<System::String^>();
+		List<System::String^>^ res = gcnew List<System::String^>();
 
 		// Список сертификатов:
 		HANDLE	    hCertStore = 0;
@@ -131,8 +131,12 @@ namespace cspUtils {
 		return res;
 	}
 
+	PCCERT_CONTEXT CadesWrapper::GetCert(System::String^ SubjectName)
+	{
+		return SignerUtils::wincrypt::GetCertificat(SubjectName);
+	}
 
-	System::String ^ CadesWrapper::GetCertificatSerialNumber(System::String ^ SubjectName)
+	System::String^ CadesWrapper::GetCertificatSerialNumber(System::String^ SubjectName)
 	{
 		//throw gcnew System::NotImplementedException();
 		PCCERT_CONTEXT	ret = SignerUtils::wincrypt::GetCertificat(SubjectName);
@@ -147,7 +151,7 @@ namespace cspUtils {
 
 
 	//Подпись получается без хэша
-	System::Int16  CadesWrapper::SignFile(System::String ^ filename, System::String ^ SubjectName)
+	System::Int16  CadesWrapper::SignFile(System::String^ filename, System::String^ SubjectName)
 	{
 		PCCERT_CONTEXT	CertToSign = SignerUtils::wincrypt::GetCertificat(SubjectName);
 		if (CertToSign)
@@ -157,7 +161,7 @@ namespace cspUtils {
 			LPVOID	    mem_tbs = NULL;
 			size_t	    mem_len = 0;
 			DWORD		signed_len = 0;
-			BYTE		*signed_mem = NULL;  // Буффер с подписью
+			BYTE* signed_mem = NULL;  // Буффер с подписью
 
 			LPCSTR FileName = (LPCSTR)StringtoChar(filename);
 			char* OutFileName = StringtoChar(filename + ".sig");
@@ -191,7 +195,7 @@ namespace cspUtils {
 			param.dwFlags = 0; //
 
 			DWORD		MessageSizeArray[1];
-			const BYTE		*MessageArray[1];
+			const BYTE* MessageArray[1];
 
 			MessageArray[0] = (BYTE*)mem_tbs;
 			MessageSizeArray[0] = mem_len;
@@ -236,7 +240,7 @@ namespace cspUtils {
 				return 26;//HandleErrorFL("Signature creation error");
 			}
 
-			if ( IO::write_file(OutFileName, signed_len, signed_mem)) {
+			if (IO::write_file(OutFileName, signed_len, signed_mem)) {
 				// printf ("Output file (%s) has been saved\n", outfile);
 			}
 			return 0;
@@ -249,15 +253,15 @@ namespace cspUtils {
 		//return nullptr;
 	}
 
-	System::Int16 CadesWrapper::Sign_Example1(System::String ^ filename, System::String ^ SubjectName)
+	System::Int16 CadesWrapper::Sign_Example1(System::String^ filename, System::String^ SubjectName)
 	{
 		//Certificat
 		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
-		int ret = 	SignerUtils::examples::SignCAdES_Example_01(filename, SignerUtils::wincrypt::GetCertificat(SubjectName));
+		int ret = SignerUtils::examples::SignCAdES_Example_01(filename, SignerUtils::wincrypt::GetCertificat(SubjectName));
 		return -1;
 	}
 
-	System::Int16 CadesWrapper::Sign_Examples(System::String ^ filename, System::String ^ SubjectName)
+	System::Int16 CadesWrapper::Sign_Examples(System::String^ filename, System::String^ SubjectName)
 	{
 		//Certificat
 		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
@@ -358,30 +362,30 @@ namespace cspUtils {
 		return System::Int16();
 	}
 
-	System::Int16 CadesWrapper::Sign_GOST(System::String ^ filename, System::String ^ SubjectName)
+	System::Int16 CadesWrapper::Sign_GOST(System::String^ filename, System::String^ SubjectName)
 	{
 		const int detached = 1;
 		//char  OID[64] = "1.2.643.2.2.9";  //szOID_CP_GOST_R3411;  :  WinCryptEx.h
 		LPVOID	    mem_tbs = NULL;
 		size_t	    mem_len = 0;
 		DWORD		signed_len = 0;
-		BYTE		*signed_mem = NULL;  // Буффер с подписью
+		BYTE* signed_mem = NULL;  // Буффер с подписью
 		//Certificat
 		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
-		
+
 		//Source file
 		LPCSTR FileName = (LPCSTR)StringtoChar(filename);
 		char* OutFileName = StringtoChar(filename + ".sig");
 		int retFile = IO::read_file(FileName, &mem_len, &mem_tbs);
 		if (retFile = 0) goto err;
 		DWORD		MessageSizeArray[1];
-		const BYTE	   *MessageArray[1];
+		const BYTE* MessageArray[1];
 		MessageArray[0] = (BYTE*)mem_tbs; //pbToBeSigned, инициализируем содержимым файла
 		MessageSizeArray[0] = mem_len;    //cbToBeSigned
 
 		//Params for cades api, Установим параметры
 		CRYPT_SIGN_MESSAGE_PARA signPara = { sizeof(signPara) };
-		
+
 		/* Обязательно нужно обнулить все поля структуры. */
 		/* Иначе это может привести к access violation в функциях CryptoAPI*/
 		/* В примере из MSDN это отсутствует*/
@@ -411,14 +415,14 @@ namespace cspUtils {
 		cadesSignPara.szHashAlgorithm = szOID_CP_GOST_R3411;
 		cadesSignPara.pSignerCert = pContext;
 		cadesSignPara.dwCadesType = CADES_BES;
-		
-		CADES_SIGN_MESSAGE_PARA para = { sizeof(para) }; 	
+
+		CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
 		memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	/* Обязательно нужно обнулить все поля структуры. */
 		para.pSignMessagePara = &signPara;
-		para.pCadesSignPara   = &cadesSignPara;
+		para.pCadesSignPara = &cadesSignPara;
 		para.dwSize = para.pSignMessagePara->cbSize + para.pCadesSignPara->dwSize;
-	
-	
+
+
 		PCRYPT_DATA_BLOB pSignedMessage = 0;
 
 		/* Определение длины подписанного сообщения*/
@@ -428,7 +432,7 @@ namespace cspUtils {
 		//Count of the number of array elements in rgpbToBeSigned and rgpbToBeSigned.
 		// This parameter must be set to one unless fDetachedSignature is set to TRUE
 		int cToBeSigned = 1; //
-		if (!CadesSignMessage(&para, true, cToBeSigned , MessageArray, MessageSizeArray,	&pSignedMessage))
+		if (!CadesSignMessage(&para, true, cToBeSigned, MessageArray, MessageSizeArray, &pSignedMessage))
 		{
 			//std::cout << "CadesSignMessage() failed" << std::endl;
 			int err = GetLastError();
@@ -445,9 +449,9 @@ namespace cspUtils {
 		}
 
 		return 0;
-		
-		
-err:		
+
+
+	err:
 		return System::Int16();
 	}
 

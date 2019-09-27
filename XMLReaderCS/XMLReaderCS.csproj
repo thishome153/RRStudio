@@ -37,7 +37,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files\Fixosoft\gkndataCS\Win32-Debug\</OutputPath>
+    <OutputPath>..\Builds\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -535,13 +535,13 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cryptFteo\cryptFteo.csproj">
+    <ProjectReference Include="..\cryptFteo\netFteoCrypt.csproj">
       <Project>{bff2c2f7-e131-4f04-9351-bc30b964b7aa}</Project>
-      <Name>cryptFteo</Name>
+      <Name>netFteoCrypt</Name>
     </ProjectReference>
     <ProjectReference Include="..\cspUtils\cspUtils.vcxproj">
       <Project>{511a6a09-97ce-4feb-b672-06151eb78fee}</Project>
-      <Name>cadesNETWrapper</Name>
+      <Name>cspWrapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\netFteo\netFteo.csproj">
       <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
@@ -567,7 +567,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,19 +14,13 @@ namespace SignerUtils {
 
 	namespace wincrypt {
 		//Подпись файла через Wincrypt
-		int  SignFile2(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
+		int  SignFileWinCrypt(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
 		{
-
-			//	char* infile = StringtoChar(Path::GetFileName(FileToSign));         
-
-
 			const int detached = 1;
-			char  OID[64] = "1.2.643.2.2.9";  //szOID_CP_GOST_R3411;  :  WinCryptEx.h
 			LPVOID	    mem_tbs = NULL;
 			size_t	    mem_len = 0;
 			DWORD		signed_len = 0;
 			BYTE* signed_mem = NULL;  // Буффер с подписью
-			//LPCWSTR FileName =L"c:\\TEMP\\work.txt";// *StringtoChar(FileToSign);
 			LPCSTR FileName = (LPCSTR)StringtoChar(FileToSign);
 			char* OutFileName = StringtoChar(Path::GetFileName(FileToSign) + ".sig");
 			CRYPT_SIGN_MESSAGE_PARA param;
@@ -40,14 +34,8 @@ namespace SignerUtils {
 			memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
 			param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
 			param.dwMsgEncodingType = TYPE_DER; //X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
-			param.pSigningCert = CertToSign;// Выберем сертификат!! //pUserCert;
-			//char *OID;
-			char    AlgOID[64] = szOID_CP_GOST_R3411; //CRYPT_HASH_ALG_OID_ Алгоритм функции хэширования по ГОСТ Р 34.11-94 установлен по умоланию
-			//char    AlgOID[64] = szOID_RSA_SHA512RSA; //CRYPT_HASH_ALG_OID_ Алгоритм функции хэширования по ГОСТ Р 34.11-94 установлен по умоланию
-					 //#define szOID_RSA_SHA512RSA     "1.2.840.113549.1.1.13"
-			 //ALSO  AlgOID: szOID_CP_GOST_R3410_12_256
-
-			param.HashAlgorithm.pszObjId = szOID_CP_DH_12_256;
+			param.pSigningCert = CertToSign;//
+			param.HashAlgorithm.pszObjId = szOID_CP_GOST_R3410_12_256;// works fine - szOID_CP_DH_12_256;
 			param.HashAlgorithm.Parameters.cbData = 0;
 			param.HashAlgorithm.Parameters.pbData = NULL;
 			param.pvHashAuxInfo = NULL;	/* не используется*/
@@ -63,23 +51,15 @@ namespace SignerUtils {
 			DWORD		MessageSizeArray[1];
 			const BYTE* MessageArray[1];
 
-			MessageArray[0] = (BYTE*)mem_tbs;
+			MessageArray[0] = (BYTE*)mem_tbs;// file body here in [0]
 			MessageSizeArray[0] = mem_len;
 
 			CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
 			para.pSignMessagePara = &param;
 
 			PCRYPT_DATA_BLOB pSignedMessage = 0;
-			/* Определение длины подписанного сообщения*/
+			/* First call - just calculate size CMS */
 			int ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray, NULL, &signed_len);
-			//if(CadesSignMessage(&para, detached, 1,  MessageArray,  MessageSizeArray,  &pSignedMessage))
-		 /*
-			__in BOOL fDetachedSignature,
-			__in DWORD cToBeSigned,
-			__in const BYTE* rgpbToBeSigned[],
-			__in DWORD rgcbToBeSigned[],
-			__out PCRYPT_DATA_BLOB *ppSignedBlob);
-		*/
 
 			if (ret)
 			{
@@ -93,8 +73,7 @@ namespace SignerUtils {
 				return 25;//HandleErrorFL("Signature creation error");
 			}
 			/*--------------------------------------------------------------------*/
-			/* Формирование подписанного сообщения*/
-			/* Длина оказалась 1024 */
+			/* Second call - build CMS*/
 			ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray,
 				signed_mem,
 				&signed_len);
@@ -109,13 +88,16 @@ namespace SignerUtils {
 			if (cspUtils::IO::write_file(OutFileName, signed_len, signed_mem)) {
 				// printf ("Output file (%s) has been saved\n", outfile);
 			}
-			return 1;
+			return 1; // norm. all ok
 		err:
 			if (signed_mem) free(signed_mem);
 			//    release_file_data_pointer (mem_tbs);
 		}
-		/*  Функция чтения сертификата из системного справочника сертификатов пользователя'MY'*/
-//  Результат - сертификат типа PCCERT_CONTEXT
+
+
+		
+		//  Результат - сертификат типа PCCERT_CONTEXT
+		//  Функция чтения сертификата из системного справочника пользователя'MY'
 		PCCERT_CONTEXT GetCertificat(System::String^ SubjectName)
 		{
 			if (!SubjectName) return NULL;

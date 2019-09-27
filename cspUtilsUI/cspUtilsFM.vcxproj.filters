@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\cspUtils\cspUtilsIO.cpp" />
-    <ClCompile Include="..\cspUtils\SignerUtils.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="cspUtilsFM.cpp" />
     <ClCompile Include="FS2_About.cpp" />
@@ -10,15 +8,22 @@
     <ClCompile Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
       <Filter>Fixosoft SDK</Filter>
     </ClCompile>
+    <ClCompile Include="..\cspUtils\SignerUtils.cpp" />
+    <ClCompile Include="..\cspUtils\cspUtilsIO.cpp" />
+    <ClCompile Include="..\cspUtils\cspWrapper.cpp">
+      <Filter>cspWrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\cspUtils\SignerUtils.h" />
     <ClInclude Include="FS2_About.h" />
     <ClInclude Include="FSignerMainForm.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
       <Filter>Fixosoft SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cspUtils\cspWrapper.h">
+      <Filter>cspWrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +38,9 @@
   <ItemGroup>
     <Filter Include="Fixosoft SDK">
       <UniqueIdentifier>{8a6140c4-21ea-4328-b0ed-469f0bd9dd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cspWrapper">
+      <UniqueIdentifier>{8eb06ee6-eb85-452b-9577-d90840444ea2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

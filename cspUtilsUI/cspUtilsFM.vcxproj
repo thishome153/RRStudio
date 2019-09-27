@@ -47,8 +47,8 @@
     <_ProjectFileVersion>15.0.26919.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>c:\TEMP\CSP\$(Configuration)\</OutDir>
-    <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)</IntDir>
+    <OutDir>..\Builds\x86\$(Configuration)\</OutDir>
+    <IntDir>c:\TEMP\Intermediates\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;C:\Program Files\Crypto Pro\SDK\include;C:\Program Files %28x86%29\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
@@ -84,6 +84,7 @@
       <Version>
       </Version>
       <AllowIsolation>true</AllowIsolation>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
     <ClCompile Include="..\cspUtils\cspUtilsIO.cpp" />
+    <ClCompile Include="..\cspUtils\cspWrapper.cpp" />
     <ClCompile Include="..\cspUtils\SignerUtils.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="cspUtilsFM.cpp" />
@@ -127,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h" />
-    <ClInclude Include="..\cspUtils\SignerUtils.h" />
+    <ClInclude Include="..\cspUtils\cspWrapper.h" />
     <ClInclude Include="FS2_About.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -155,11 +157,6 @@
       <DependentUpon>FSignerMainForm.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\cspUtils\cspUtils.vcxproj">
-      <Project>{511a6a09-97ce-4feb-b672-06151eb78fee}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netFteo3.5", "netFteo3.5\ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gkndataCS", "gkndataCS\gkndataCS.csproj", "{94326139-3FB8-47B4-AEEA-610EFE6C4491}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cryptFteo", "cryptFteo\cryptFteo.csproj", "{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netFteoCrypt", "cryptFteo\netFteoCrypt.csproj", "{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7C2BFE78-4C60-47EA-8EAC-46F30AAF4DBE}"
 	ProjectSection(SolutionItems) = preProject
@@ -34,9 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zip", "zip", "{1C7EDDF4-FDD
 		zip-v1.9\README.MD = zip-v1.9\README.MD
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cadesNETWrapper", "cspUtils\cspUtils.vcxproj", "{511A6A09-97CE-4FEB-B672-06151EB78FEE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspWrapper", "cspUtils\cspUtils.vcxproj", "{511A6A09-97CE-4FEB-B672-06151EB78FEE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspUtilsFM", "cspUtilsUI\cspUtilsFM.vcxproj", "{4B8B7125-669C-4D10-9609-FB89E7A67A9F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspUI", "cspUtilsUI\cspUtilsFM.vcxproj", "{4B8B7125-669C-4D10-9609-FB89E7A67A9F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspConsole", "cspConsole\csptest.vcxproj", "{77416ECC-C7C8-4345-8611-776B62CFAA7E}"
 EndProject
@@ -164,7 +164,6 @@ Global
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x64.ActiveCfg = Debug|x64
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x64.Build.0 = Debug|x64
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x86.ActiveCfg = Debug|x86
-		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x86.Build.0 = Debug|x86
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Release|Any CPU.ActiveCfg = Release|x86
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Release|Mixed Platforms.Build.0 = Release|x86
@@ -243,11 +242,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildAction = ReBuild
-		BuildVersion_UseGlobalSettings = False
-		BuildVersion_StartDate = 2014/1/25
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_UpdateAssemblyVersion = False
 		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_StartDate = 2014/1/25
+		BuildVersion_UseGlobalSettings = False
+		BuildVersion_BuildAction = ReBuild
 	EndGlobalSection
 EndGlobal

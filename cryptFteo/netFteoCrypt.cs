@@ -214,7 +214,7 @@ namespace netFteo.Crypt
             return false;
         }
 
-            public static bool IsTimestamped(string filename)
+        public static bool IsTimestamped(string filename)
         {
             try
             {
@@ -314,7 +314,7 @@ namespace netFteo.Crypt
                                             foreach (AsnEncodedData itemD in signing_certificate)
                                             {
                                                 string test = item.Format(true);
-                                                
+
                                             }
                                             return true; //TODO : message valid ?
                                         }
@@ -440,27 +440,27 @@ namespace netFteo.Crypt
             if (signature == null)
                 throw new ArgumentNullException("signature");
             List<string> res = new List<string>();
-			try
-			{
-				// decode the signature
+            try
+            {
+                // decode the signature
 
-				System.Security.Cryptography.Pkcs.SignedCms verifyCms = new System.Security.Cryptography.Pkcs.SignedCms();
-				verifyCms.Decode(signature);
-				var test = verifyCms.ContentInfo;
-				X509Certificate2Collection cmsCerts = verifyCms.Certificates;
-				foreach (X509Certificate2 c in cmsCerts)
-				{
-					//TODO : how to distinct cadeng cert?:
-				//	if (c.Subject.Contains("OID.1.2.840.113549.1.9.8")) // OID - certNumber
-					{
-						res.Add(c.GetNameInfo(X509NameType.SimpleName, false));
-					}
-				}
-			}
-			catch (CryptographicException)
-			{
-				return null;
-			}
+                System.Security.Cryptography.Pkcs.SignedCms verifyCms = new System.Security.Cryptography.Pkcs.SignedCms();
+                verifyCms.Decode(signature);
+                var test = verifyCms.ContentInfo;
+                X509Certificate2Collection cmsCerts = verifyCms.Certificates;
+                foreach (X509Certificate2 c in cmsCerts)
+                {
+                    //TODO : how to distinct cadeng cert?:
+                    //	if (c.Subject.Contains("OID.1.2.840.113549.1.9.8")) // OID - certNumber
+                    {
+                        res.Add(c.GetNameInfo(X509NameType.SimpleName, false));
+                    }
+                }
+            }
+            catch (CryptographicException)
+            {
+                return null;
+            }
             return res;
         }
 
@@ -568,7 +568,7 @@ namespace netFteo.Crypt
         {
             try
             {
-               CAPICOM.Signer sig = new CAPICOM.Signer();
+                CAPICOM.Signer sig = new CAPICOM.Signer();
                 return true;
             }
             catch (System.Runtime.InteropServices.COMException fuckingCOMNotFoundException)

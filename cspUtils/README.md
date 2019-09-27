@@ -1,33 +1,17 @@
 
 
 ========================================================================
-##    CSP .NET LIBRARY : 
+#    cspWrapper 
 ========================================================================
 
-CLR class library, provided acccess for NET applictions to CSP Crypto Pro.
+CLR class library, provided acccess for NET applications to CSP Crypto Pro.
+
+	## Items:
+
+	#### cspWrapper - NET wrapper class for Crypto Pro CSP api.
+		Depends libraries:
+		crypt32.lib - Windows SDK
+		cades.lib	- CryptoPro SDK
 
 
-	#### CadesNETWrapper - wrapper class for GOST CSP Provider  .NET. of CADES CSP.
-
-	- Инкапсулирует методы работы с api криптопровайдера CryptoPro CSP.
-	
-
-
-	
-Depends:
-Develop:
-/////////////////////////////////////////////////////////////////////////////
-Include: 
-..\..\Cades SDK\2.0\include
-
-
-Lib:
-..\..\Cades SDK\2.0\lib
-Linker\Input 
-crypt32.lib
-cades.lib
-
-Work:
-- Требует установленнoго CSP (cades.dll) Runtime
------------------------------------------------------------------------------
-
+	#### read/write routines for manipulating with files

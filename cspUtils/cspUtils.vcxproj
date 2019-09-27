@@ -15,7 +15,9 @@
     <RootNamespace>cspUtils</RootNamespace>
     <Keyword>ManagedCProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>cadesNETWrapper</ProjectName>
+    <ProjectName>cspWrapper</ProjectName>
+    <TargetFrameworkVersion>
+    </TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -46,14 +48,15 @@
     <_ProjectFileVersion>15.0.27924.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>c:\TEMP\CSP\$(Configuration)\</OutDir>
-    <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\Builds\x86\$(Configuration)\</OutDir>
+    <IntDir>c:\TEMP\Intermediates\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
     <IncludePath>$(SolutionDir)..\..\c++\CryptoProSDK\include;$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\..\c++\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
+    <ExtensionsToDeleteOnClean>*.metagen;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -71,7 +74,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
@@ -79,6 +82,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,7 +116,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="cspUtils.cpp">
+    <ClCompile Include="cspWrapper.cpp">
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
     </ClCompile>
     <ClCompile Include="cspUtilsIO.cpp" />
@@ -124,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CryptoProSDK\include\cades.h" />
-    <ClInclude Include="cspUtils.h" />
+    <ClInclude Include="cspWrapper.h" />
     <ClInclude Include="cspUtilsIO.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SignerUtils.h" />

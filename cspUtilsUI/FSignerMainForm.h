@@ -3,14 +3,16 @@
 #include "MyStrMarshal.h" // fixosoft String Collection Utils
 #include "MyNETWrappers.h"
 #include "SignerUtils.h"
+#include "cspWrapper.h"
 #include <stdio.h>
 #include <vector>
 #include "FS2_About.h"
 
+
 namespace FormSigner2 {
 
 	using namespace System;
-    using namespace System::IO;
+	using namespace System::IO;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
@@ -37,7 +39,9 @@ namespace FormSigner2 {
 			//
 			//TODO: Add the constructor code here
 			//
-		//>	this->cw = gcnew cspUtils::CadesWrapper();
+			this->cw = gcnew cspUtils::CadesWrapper();
+						// TODO - remove link to cadesSharp assembly:	
+
 		}
 
 	protected:
@@ -52,34 +56,32 @@ namespace FormSigner2 {
 			}
 		}
 
+	public:	cspUtils::CadesWrapper^ cw;
+	private: System::Windows::Forms::ListBox^ Certs_listBox;
+	private: System::Windows::Forms::MenuStrip^ menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^ Ù‡ÈÎToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ ‚˚ıÓ‰ToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ toolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ ÔÓÏÓ˘¸ToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ ÓœÓ„‡ÏÏÂToolStripMenuItem;
+	private: System::String^ FileName;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::Button^ button2;
 
-	private: System::Windows::Forms::ListBox^  Certs_listBox;
-	private: System::Windows::Forms::MenuStrip^  menuStrip1;
-	private: System::Windows::Forms::ToolStripMenuItem^  Ù‡ÈÎToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  ‚˚ıÓ‰ToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItem1;
-	private: System::Windows::Forms::ToolStripMenuItem^  ÔÓÏÓ˘¸ToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  ÓœÓ„‡ÏÏÂToolStripMenuItem;
-	private: System::String ^ FileName;
-// TODO - remove link to cadesSharp assembly:	
-	private: cspUtils::CadesWrapper^ cw;
-	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
-	private: System::Windows::Forms::TextBox^  textBox1;
-	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::StatusStrip^ statusStrip1;
+	private: System::Windows::Forms::ToolStripStatusLabel^ toolStripStatusLabel1;
+	private: System::Windows::Forms::ToolStripStatusLabel^ toolStripStatusLabel2;
 
-	private: System::Windows::Forms::StatusStrip^  statusStrip1;
-	private: System::Windows::Forms::ToolStripStatusLabel^  toolStripStatusLabel1;
-	private: System::Windows::Forms::ToolStripStatusLabel^  toolStripStatusLabel2;
-	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Button^  button4;
-	private: System::Windows::Forms::Button^  button3;
+
+	private: System::Windows::Forms::Button^ button3;
 	protected:
 
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -101,8 +103,6 @@ namespace FormSigner2 {
 			this->statusStrip1 = (gcnew System::Windows::Forms::StatusStrip());
 			this->toolStripStatusLabel1 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->toolStripStatusLabel2 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			this->statusStrip1->SuspendLayout();
@@ -238,41 +238,13 @@ namespace FormSigner2 {
 			this->toolStripStatusLabel2->Size = System::Drawing::Size(320, 17);
 			this->toolStripStatusLabel2->Text = L"toolStripStatusLabel1";
 			// 
-			// button1
-			// 
-			this->button1->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
-			this->button1->FlatAppearance->BorderSize = 2;
-			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button1->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button1->Location = System::Drawing::Point(601, 76);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(126, 42);
-			this->button1->TabIndex = 7;
-			this->button1->Text = L"œÓ‰ÔËÒ‡Ú¸ cspUtils";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &Form1::button1_Click_1);
-			// 
-			// button4
-			// 
-			this->button4->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
-			this->button4->FlatAppearance->BorderSize = 2;
-			this->button4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button4->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button4->Location = System::Drawing::Point(601, 124);
-			this->button4->Name = L"button4";
-			this->button4->Size = System::Drawing::Size(126, 42);
-			this->button4->TabIndex = 8;
-			this->button4->Text = L"œÓ‰ÔËÒ‡Ú¸ 34.11-94";
-			this->button4->UseVisualStyleBackColor = true;
-			this->button4->Click += gcnew System::EventHandler(this, &Form1::button4_Click);
-			// 
 			// button3
 			// 
 			this->button3->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
 			this->button3->FlatAppearance->BorderSize = 2;
 			this->button3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->button3->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button3->Location = System::Drawing::Point(601, 172);
+			this->button3->Location = System::Drawing::Point(601, 257);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(126, 42);
 			this->button3->TabIndex = 9;
@@ -286,8 +258,6 @@ namespace FormSigner2 {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(739, 504);
 			this->Controls->Add(this->button3);
-			this->Controls->Add(this->button4);
-			this->Controls->Add(this->button1);
 			this->Controls->Add(this->statusStrip1);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->textBox1);
@@ -307,82 +277,75 @@ namespace FormSigner2 {
 		}
 #pragma endregion
 
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-				 
-				
-			 }
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 
-			 
+	}
+
+
+
 	private: System::Void ListCertificates() {
 
+		cspUtils::CadesWrapper^ cw;
 		this->Certs_listBox->Items->Clear();
 		for each (string var in cw->GetCertificates())
 		{
 			this->Certs_listBox->Items->Add(var);
 		}
-		
-	}
-	
 
-	private: System::Void ‚˚ıÓ‰ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-				 this->Close();
-			 }
-    private: System::Void toolStripMenuItem1_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+
+
+	private: System::Void ‚˚ıÓ‰ToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Close();
+	}
+	private: System::Void toolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 		ViewCMSInfo("*.sig");
-		 }
-private: System::Void Form1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
-			 
-		 }
-private: System::Void ÓœÓ„‡ÏÏÂToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-			 FS2_About ^ FormAbout = (gcnew FS2_About());
-			 FormAbout->ShowDialog();
-			 //FormAbout->freeDispose();
-		 }
-
-		 // œÓ‰ÔËÒ‡Ú¸ Ù‡ÈÎ  direct in signerUtils.h
-public: System::Void My_UI_SignFile()
-{
-	if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
-	{
-		this->FileName = openFileDialog1->FileName;
-
-		PCCERT_CONTEXT ret = SignerUtils::wincrypt::GetCertificat((string)Certs_listBox->SelectedItem);
-		if (ret)
-		{
-		 int funcRes =	SignerUtils::wincrypt::SignFile2(this->FileName, ret);
-		 if (funcRes > 0)
-		 {
-			 toolStripStatusLabel2->Text = "Wincrypt Error " + funcRes.ToString();
-			 int err = GetLastError();
-			 LPTSTR errMeesage = SignerUtils::cades::Error2Message(err);
-			 textBox1->Text = "Error " + err.ToString() + ":\r\n"+ LPTSTRToString(errMeesage);
-		 }
-		 else
-		 {
-			 toolStripStatusLabel2->Text = "Signed success ";
-			 textBox1->Text = "file "+this->FileName+"\r\n    signed ok";
-		 }
-		}
 	}
-}
+	private: System::Void Form1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 
+	}
+	private: System::Void ÓœÓ„‡ÏÏÂToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		FS2_About^ FormAbout = (gcnew FS2_About());
+		FormAbout->ShowDialog();
+		//FormAbout->freeDispose();
+	}
 
-		// œÓ‰ÔËÒ‡Ú¸ Ù‡ÈÎ
-	public: System::Void My_UI_SignFile_CSP_Utils()
+     // œÓ‰ÔËÒ‡Ú¸ Ù‡ÈÎ  direct in signerUtils.h
+	public: System::Void My_UI_SignFile()
 	{
-
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			this->FileName = openFileDialog1->FileName;
-			int check_res = cw->SignFile(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
-			toolStripStatusLabel2->Text = this->FileName;
-		}
+			String^ Subject = (string)Certs_listBox->SelectedItem;
 
+			PCCERT_CONTEXT ret = cw->GetCertificat(Subject);
+
+			//PCCERT_CONTEXT ret = SignerUtils::wincrypt::GetCertificat((string)Certs_listBox->SelectedItem);  // direct call from api
+			if (ret)
+			{
+				int funcRes = SignerUtils::wincrypt::SignFileWinCrypt(this->FileName, ret);
+				if (funcRes > 1)
+				{
+					toolStripStatusLabel2->Text = "Wincrypt Error " + funcRes.ToString();
+					int err = GetLastError(); // system error stack
+					LPTSTR errMeesage = SignerUtils::cades::Error2Message(err);
+					textBox1->Text = "Error " + err.ToString() + ":\r\n" + LPTSTRToString(errMeesage);
+				}
+				else
+				{
+					toolStripStatusLabel2->Text = "Signed success ";
+					textBox1->Text = "file " + this->FileName + "\r\n    signed ok";
+				}
+			}
+		}
 	}
 
 
-		// œÓ‰ÔËÒ‡Ú¸ Ù‡ÈÎ
+			
+
+
+			// œÓ‰ÔËÒ‡Ú¸ Ù‡ÈÎ
 	public: System::Void My_UI_SignFile_CSP_Utils_GOST()
 	{
 
@@ -409,17 +372,17 @@ public: System::Void My_UI_SignFile()
 
 
 
-private: System::Void Certs_listBox_Click(System::Object^  sender, System::EventArgs^  e) {
-			UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
+	private: System::Void Certs_listBox_Click(System::Object^ sender, System::EventArgs^ e) {
+		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
 
-		 }
+	}
 
-		 /// ŒÚÓ·Ó‡ÁËÏ UI signature
+			 /// ŒÚÓ·Ó‡ÁËÏ UI signature
 	private: System::Void ViewCMSInfo(string signatureName) {
 		this->openFileDialog1->DefaultExt = "*.sig";
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
-		  cw->DisplaySig(this->openFileDialog1->FileName, Handle);
+			cw->DisplaySig(this->openFileDialog1->FileName, Handle);
 		}
 	}
 
@@ -433,43 +396,43 @@ private: System::Void Certs_listBox_Click(System::Object^  sender, System::Event
 	}
 
 
-private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-				 this->ListCertificates();
-		 }
-		 
-	private: System::Void Certs_listBox_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) 
+	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+		this->ListCertificates();
+	}
+
+	private: System::Void Certs_listBox_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 	{
 
 		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
 	}
-		 
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-   
-		 }
-		 
 
-private: System::Void Certs_listBox_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-	UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
-}
+	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	}
 
 
-		 //
-private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
-	My_UI_SignFile_CSP_Utils_GOST();
-}
+	private: System::Void Certs_listBox_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
+	}
 
-// sign wincrypt
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-	My_UI_SignFile();
-}
 
-private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
-			 My_UI_SignFile_CSP_Utils();
-		 }
+			 //
+	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+		My_UI_SignFile_CSP_Utils_GOST();
+	}
 
-private: System::Void button3_Click_1(System::Object^  sender, System::EventArgs^  e) {
-	My_UI_SignFile_CSP_Utils_GOST2012();
-}
-};
+			 // sign wincrypt
+	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+		My_UI_SignFile();
+	}
+
+	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+		
+	}
+
+	private: System::Void button3_Click_1(System::Object^ sender, System::EventArgs^ e) {
+		My_UI_SignFile_CSP_Utils_GOST2012();
+	}
+	};
 }
 

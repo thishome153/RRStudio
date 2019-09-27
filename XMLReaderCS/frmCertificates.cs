@@ -41,6 +41,7 @@ namespace XMLReaderCS
             toolStripButton1.Enabled = false;
             toolStripButton3.Enabled = false;
             X509Certificate2 x509 = netFteo.Crypt.Wrapper.GetCertBySerial(serial);
+            
             if (x509 != null)
             {
                 /*
