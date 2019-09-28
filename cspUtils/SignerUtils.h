@@ -24,15 +24,15 @@
 #include "cades.h" //CryptoPro
 
 using namespace System; // типы .NET
-	
+
 namespace SignerUtils {
 	namespace wincrypt {
-
-		int    SignFileWinCrypt(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign);
-		PCCERT_CONTEXT GetCertificat(System::String ^ SubjectName);
+		int    SignFileWinCrypt(System::String^ FileToSign, PCCERT_CONTEXT  SignerCert);
+		PCCERT_CONTEXT GetCertificat(System::String^ SubjectName);
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);
-		CHAR * GetLastErrorText(CHAR *pBuf, ULONG bufSize);
+		//LPTSTR GetCertDateExp(PCCERT_CONTEXT Certificat);
+		CHAR* GetLastErrorText(CHAR* pBuf, ULONG bufSize);
 	}
 	namespace cades {
 		LPTSTR Error2Message(DWORD dwErr);
@@ -43,9 +43,9 @@ namespace SignerUtils {
 		// Всяко разно define для работы API утилит
 #define TYPE_DER (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING)
 
-		int    SignCadesFile(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign);
+		int    SignCadesFile(System::String^ FileToSign, PCCERT_CONTEXT CertToSign);
 		int    SignCadesExample(PCCERT_CONTEXT CertToSign);
-		DWORD  SignCAdES_Example_01(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign);
+		DWORD  SignCAdES_Example_01(System::String^ FileToSign, PCCERT_CONTEXT CertToSign);
 
 
 

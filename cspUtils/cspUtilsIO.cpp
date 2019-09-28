@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "cspUtilsIO.h"
 #include <vector>
+//#include <ctime>
 
 namespace cspUtils {
 
@@ -77,6 +78,27 @@ namespace cspUtils {
 		err:
 			if (f) fclose(f);
 			return ret;
+		}
+
+		LPWSTR StrTime(FILETIME ft)
+		{
+			SYSTEMTIME st;
+			LPWSTR szLocalDate = new WCHAR  [255];
+			WCHAR  szLocalTime[255];
+
+			FileTimeToLocalFileTime(&ft, &ft);
+			FileTimeToSystemTime(&ft, &st);
+			/*  Parameters:
+			    _In_ LCID Locale,
+				_In_ DWORD dwFlags,
+				_In_opt_ CONST SYSTEMTIME* lpTime,
+				_In_opt_ LPCWSTR lpFormat,
+				_Out_writes_opt_(cchTime) LPWSTR lpTimeStr,
+				_In_ int cchTime
+				*/
+			GetDateFormat(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL, szLocalDate, 255);
+			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, NULL, szLocalTime, 255);
+			return szLocalDate;
 		}
 
 	}

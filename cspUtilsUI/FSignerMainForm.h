@@ -40,7 +40,7 @@ namespace FormSigner2 {
 			//TODO: Add the constructor code here
 			//
 			this->cw = gcnew cspUtils::CadesWrapper();
-						// TODO - remove link to cadesSharp assembly:	
+			// TODO - remove link to cadesSharp assembly:	
 
 		}
 
@@ -311,7 +311,7 @@ namespace FormSigner2 {
 		//FormAbout->freeDispose();
 	}
 
-     // Подписать файл  direct in signerUtils.h
+			 // Подписать файл  direct in signerUtils.h
 	public: System::Void My_UI_SignFile()
 	{
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
@@ -342,7 +342,7 @@ namespace FormSigner2 {
 	}
 
 
-			
+
 
 
 			// Подписать файл
@@ -386,13 +386,13 @@ namespace FormSigner2 {
 		}
 	}
 
+
+
 	private: System::Void UpdateViewCertInfo(string SubjectName)
 	{
-
 		textBox1->Text = cw->DisplayCertInfo(SubjectName);
-		toolStripStatusLabel1->Text = SubjectName;
-		toolStripStatusLabel2->Text = this->FileName;
-
+		toolStripStatusLabel1->Text ="Serial Number " +  cw->GetCertificatSerialNumber(SubjectName);
+		toolStripStatusLabel2->Text = SubjectName;
 	}
 
 
@@ -427,7 +427,7 @@ namespace FormSigner2 {
 	}
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
-		
+
 	}
 
 	private: System::Void button3_Click_1(System::Object^ sender, System::EventArgs^ e) {

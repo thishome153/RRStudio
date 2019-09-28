@@ -4,6 +4,7 @@
 #include "FSignerMainForm.h"
 
 using namespace FormSigner2;
+
 char *inFileName= "empty"; //Глобальная строка?
 int iscmdLine=0;
 

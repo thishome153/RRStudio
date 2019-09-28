@@ -6,6 +6,8 @@
 // This is the main DLL file.
 #include "Stdafx.h"
 #include "cspWrapper.h"
+//#include <string>
+//#include <atlstr.h> // CW2A
 
 #include "cades.h" //CryptoPro
 #include "WinCryptEx.h" // Windows Crypto distribute with Crypto Pro SDK 
@@ -50,97 +52,46 @@ namespace cspUtils {
 		return  GetLastError();
 	}
 
-	// Разбор полей спертификата в строку
-	System::String^ CadesWrapper::DisplayCertInfo(System::String^ SubjectName)
+
+
+	/*
+	System::String^ CadesWrapper::GetCertDateExp(PCCERT_CONTEXT CertContext)
 	{
-		if (!SubjectName) return "-";
-		PCCERT_CONTEXT	ret = SignerUtils::wincrypt::GetCertificat(SubjectName);
-		if (ret)
+		//throw gcnew System::NotImplementedException();
+		// TODO: insert return statement here
+		return LPTSTRToString(SignerUtils::wincrypt::GetCertDateExp(CertContext));
+	}
+	*/
+	/*
+	System::String^ CadesWrapper::GetCertDateExpirate(PCCERT_CONTEXT Certificat)
+	{
+		DWORD cbSize;
+		LPTSTR pszName;
+		FILETIME timeAfter = Certificat->pCertInfo->NotAfter;
+		switch (CertVerifyTimeValidity(
+			NULL,               // Use current time.
+			Certificat->pCertInfo))   // Pointer to CERT_INFO.
 		{
-			DWORD sz = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData;
-			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
-			LPSTR* algOID = &ret->pCertInfo->SignatureAlgorithm.pszObjId;
-			return  "Издатель: " + LPTSTRToString(SignerUtils::wincrypt::GetCertIssuerName(ret)) +
-				"\r\n" + " e-mail:" + LPTSTRToString(SignerUtils::wincrypt::GetCertEmail(ret)) +
-				"\r\n" + " серийный номер: " + PBYTEToStr(serial, sz) +
-				"\r\n\ Срок действия " +
-				"\r\n\ Алгоритм " + LPSTRToString(*algOID);
-		}
-		else return  "-";// L"\nИздатель:"; //CharToString(SubjectName)+
-
-	}
-
-
-	List<System::String^>^ CadesWrapper::GetCertificates()
-	{
-		List<System::String^>^ res = gcnew List<System::String^>();
-
-		// Список сертификатов:
-		HANDLE	    hCertStore = 0;
-		PCCERT_CONTEXT CrlCertificat = NULL;
-		// Открыть хранилище
-		hCertStore = CertOpenStore(CERT_STORE_PROV_SYSTEM, // LPCSTR lpszStoreProvider
-			0,			   // DWORD dwMsgAndCertEncodingType
-			0,			   //  HCRYPTPROV hCryptProv
-			CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG |
-			CERT_SYSTEM_STORE_CURRENT_USER, // DWORD dwFlags
-			L"MY");    //  const void *pvPara
-
-					   // перечисляем:
-		while (CrlCertificat = CertEnumCertificatesInStore(hCertStore, CrlCertificat))
+		case -1:
 		{
-			LPTSTR pszString;
-			LPTSTR pszName;
-			DWORD cbSize;
-			CERT_BLOB blobEncodedName;
-			//        Get and display 
-			//        the name of subject of the certificate.
-
-			if (!(cbSize = CertGetNameString(CrlCertificat, CERT_NAME_SIMPLE_DISPLAY_TYPE,
-				0,
-				NULL,
-				NULL,
-				0)))
-			{
-				//richTextBox1->AppendText("\nCertGetName 1 failed.");
-			}
-
-			if (!(pszName = (LPTSTR)malloc(cbSize * sizeof(TCHAR))))
-			{
-				// richTextBox1->AppendText("\nMemory allocation failed.");
-			}
-
-			if (CertGetNameString(CrlCertificat, CERT_NAME_SIMPLE_DISPLAY_TYPE,
-				0,
-				NULL,
-				pszName,
-				cbSize))
-
-			{
-				res->Add(LPTSTRToString(pszName));
-				//-------------------------------------------------------
-				//       Free the memory allocated for the string.
-				free(pszName);
-			}
-			else
-			{
-				// "\nCertGetName failed."
-			}
-
+			return L"Certificate is not valid yet. \n";
+			break;
 		}
-		return res;
+		case 1:
+		{
+			return L"Certificate is expired. \n";
+			break;
+		}
+		case 0:
+		{
+			return L"Certificate's time is valid. \n";
+			break;
+		}
+		};
 	}
+	*/
 
-	/// <summary>
-			/// Select subject certificate by his name:
-			///<para>Subject name </para>
-			/// </summary>
-	// here definition
-	PCCERT_CONTEXT CadesWrapper::GetCertificat(System::String^ SubjectName)
-	{
-		PCCERT_CONTEXT res = SignerUtils::wincrypt::GetCertificat(SubjectName);
-		return res;
-	}
+
 
 	PCCERT_CONTEXT_CLR^ CadesWrapper::GetCertificatCLR(System::String^ SubjectName)
 	{
@@ -158,30 +109,7 @@ namespace cspUtils {
 		return res;
 	}
 
-	System::String^ CadesWrapper::GetCertificatSerialNumber(System::String^ SubjectName)
-	{
-		//throw gcnew System::NotImplementedException();
-		// TODO: insert return statement here
-		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
-		if (ret)
-		{
-			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
-			return PBYTEToStr(serial, ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
 
-		}
-		else return "";
-	}
-
-	System::Int16 CadesWrapper::SignFileWinCrypt(System::String^ filename, System::String^ SubjectName)
-	{
-		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
-		if (ret)
-		{
-			return SignerUtils::wincrypt::SignFileWinCrypt(filename, ret);
-		}
-		else
-			return 21;
-	}
 
 	/*
 	System::String^ CadesWrapper::GetCertificatSerialNumber(System::String^ SubjectName)
@@ -255,7 +183,7 @@ namespace cspUtils {
 			PCRYPT_DATA_BLOB pSignedMessage = 0;
 			//* Определение длины подписанного сообщения
 			int ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray, NULL, &signed_len);
-			
+
 
 			if (ret)
 			{
@@ -270,7 +198,7 @@ namespace cspUtils {
 			}
 			/*--------------------------------------------------------------------*/
 			/* Формирование подписанного сообщения
-			// Длина оказалась 1024 
+			// Длина оказалась 1024
 			ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray,
 				signed_mem,
 				&signed_len);
@@ -322,7 +250,7 @@ namespace cspUtils {
 		DWORD		signed_len = 0;
 		BYTE* signed_mem = NULL;  // Буффер с подписью
 		//Certificat
-		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
+		PCCERT_CONTEXT pContext = GetCertificat(SubjectName);
 
 		//Source file
 		LPCSTR FileName = (LPCSTR)StringtoChar(filename);
@@ -509,5 +437,200 @@ namespace cspUtils {
 		//throw gcnew System::NotImplementedException();
 		this->id = 1975;// watch value
 	}
+
+	System::String^ WinCryptWrapper::GetCertDateExpirate(PCCERT_CONTEXT Certificat)
+	{
+		switch (CertVerifyTimeValidity(
+			NULL,               // Use current time.
+			Certificat->pCertInfo))   // Pointer to CERT_INFO.
+		{
+		case -1:
+		{
+			return "Certificate is not valid yet. \n";
+			break;
+		}
+		case 1:
+		{
+			return "Certificate is expired. \n";
+			break;
+		}
+		case 0:
+		{
+			return LPWSTRToString(cspUtils::IO::StrTime(Certificat->pCertInfo->NotAfter)) +
+				".  Certificate's time is valid. ";
+			break;
+		}
+		};
+	}
+
+	PCCERT_CONTEXT WinCryptWrapper::GetCertificat(System::String^ SubjectName)
+	{
+
+		if (!SubjectName) return NULL;
+
+		PCCERT_CONTEXT  ret = NULL;
+		HANDLE	    hCertStore = 0;
+
+		/*   //для случая поиска CERT_FIND_SUBJECT_NAME:
+		PCERT_NAME_BLOB FindName =(PCERT_NAME_BLOB) malloc(sizeof(CERT_NAME_BLOB));
+		FindName->cbData =sizeof(StringtoChar(CertName));
+		FindName->pbData =(BYTE *) (StringtoChar(CertName));
+		*/
+		LPCSTR lpszCertSubject = (LPCSTR)StringtoChar(SubjectName); //для случая поиска CERT_FIND_SUBJECT_STR
+
+		hCertStore = CertOpenStore(
+			CERT_STORE_PROV_SYSTEM, /* LPCSTR lpszStoreProvider*/
+			0,			    /* DWORD dwMsgAndCertEncodingType*/
+			0,			    /* HCRYPTPROV hCryptProv*/
+			CERT_SYSTEM_STORE_CURRENT_USER, /* DWORD dwFlags*/
+			L"MY"		    /* const void *pvPara*/
+		);
+
+		ret = CertFindCertificateInStore(hCertStore,
+			TYPE_DER,
+			0,
+			CERT_FIND_SUBJECT_STR_A, // Искать как Unicode?
+			lpszCertSubject,
+			NULL);
+		return ret;
+	}
+
+	PCCERT_CONTEXT WinCryptWrapper::GetCertificatbySN(CRYPT_INTEGER_BLOB SerialNumber)
+	{
+		String^ Serial = PBYTEToStr(SerialNumber.pbData, SerialNumber.cbData);
+
+
+		PCCERT_CONTEXT  ret = NULL;
+		HANDLE	    hCertStore = 0;
+
+		hCertStore = CertOpenStore(
+			CERT_STORE_PROV_SYSTEM, /* LPCSTR lpszStoreProvider*/
+			0,			    /* DWORD dwMsgAndCertEncodingType*/
+			0,			    /* HCRYPTPROV hCryptProv*/
+			CERT_SYSTEM_STORE_CURRENT_USER, /* DWORD dwFlags*/
+			L"MY"		    /* const void *pvPara*/
+		);
+
+		while (ret = CertEnumCertificatesInStore(hCertStore, ret))
+		{
+			if (ret->pCertInfo->SerialNumber.pbData == SerialNumber.pbData)
+				return ret;
+		}
+
+		return PCCERT_CONTEXT();
+	}
+
+	System::String^ WinCryptWrapper::GetCertificatSerialNumber(System::String^ SubjectName)
+	{
+		//throw gcnew System::NotImplementedException();
+		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
+		if (ret)
+		{
+			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
+			return PBYTEToStr(serial, ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
+
+		}
+		else return "";
+	}
+
+
+	System::String^ WinCryptWrapper::DisplayCertInfo(System::String^ SubjectName)
+	{
+		//throw gcnew System::NotImplementedException();
+		if (!SubjectName) return "-";
+		String^ res;
+		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
+		if (ret)
+		{
+			DWORD sz = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData;
+			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
+			res = "Издатель: " + LPTSTRToString(SignerUtils::wincrypt::GetCertIssuerName(ret)) +
+				"\r\n" + " e-mail:" + LPTSTRToString(SignerUtils::wincrypt::GetCertEmail(ret)) +
+				"\r\n" + " серийный номер: " + PBYTEToStr(serial, sz) +
+				"\r\n\ Срок действия " + GetCertDateExpirate(ret); //LPTSTRToString(SignerUtils::wincrypt::GetCertDateExp(ret)) +
+			if (strcmp(ret->pCertInfo->SignatureAlgorithm.pszObjId, szOID_CP_GOST_R3411_12_256_R3410) == 0)
+			{
+				res += "\r\n CSP  - GOST Crypto Provider";
+			}
+			return res;
+		}
+
+		else return  "-";// L"\nИздатель:"; //CharToString(SubjectName)+
+	}
+
+	List<System::String^>^ WinCryptWrapper::GetCertificates()
+	{
+		//throw gcnew System::NotImplementedException();
+
+		List<System::String^>^ res = gcnew List<System::String^>();
+
+		// Список сертификатов:
+		HANDLE	    hCertStore = 0;
+		PCCERT_CONTEXT CrlCertificat = NULL;
+		// Открыть хранилище
+		hCertStore = CertOpenStore(CERT_STORE_PROV_SYSTEM, // LPCSTR lpszStoreProvider
+			0,			   // DWORD dwMsgAndCertEncodingType
+			0,			   //  HCRYPTPROV hCryptProv
+			CERT_STORE_OPEN_EXISTING_FLAG | CERT_STORE_READONLY_FLAG |
+			CERT_SYSTEM_STORE_CURRENT_USER, // DWORD dwFlags
+			L"MY");    //  const void *pvPara
+
+					   // перечисляем:
+		while (CrlCertificat = CertEnumCertificatesInStore(hCertStore, CrlCertificat))
+		{
+			LPTSTR pszString;
+			LPTSTR pszName;
+			DWORD cbSize;
+			CERT_BLOB blobEncodedName;
+			//        Get and display 
+			//        the name of subject of the certificate.
+
+			if (!(cbSize = CertGetNameString(CrlCertificat, CERT_NAME_SIMPLE_DISPLAY_TYPE,
+				0,
+				NULL,
+				NULL,
+				0)))
+			{
+				//richTextBox1->AppendText("\nCertGetName 1 failed.");
+			}
+
+			if (!(pszName = (LPTSTR)malloc(cbSize * sizeof(TCHAR))))
+			{
+				// richTextBox1->AppendText("\nMemory allocation failed.");
+			}
+
+			if (CertGetNameString(CrlCertificat, CERT_NAME_SIMPLE_DISPLAY_TYPE,
+				0,
+				NULL,
+				pszName,
+				cbSize))
+
+			{
+				res->Add(LPTSTRToString(pszName));
+				//-------------------------------------------------------
+				//       Free the memory allocated for the string.
+				free(pszName);
+			}
+			else
+			{
+				// "\nCertGetName failed."
+			}
+
+		}
+		return res;
+	}
+
+	System::Int16 WinCryptWrapper::SignFileWinCrypt(System::String^ filename, System::String^ SubjectName)
+	{
+		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
+		if (ret)
+		{
+			return SignerUtils::wincrypt::SignFileWinCrypt(filename, ret);
+		}
+		else
+			return 21; //certificate error
+	}
+
+
 
 };

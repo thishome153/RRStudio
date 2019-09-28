@@ -1,9 +1,12 @@
+//*********************************************
+// CLR Wrapper for Cryptorgaphy (i.e. wincrypt)
 //2019 Fixosoft CSP Wrapper
-// Выстраданая хуйня
+
 #ifndef _csp_Wrapper_h_INCLUDED // типа защита от множественного включения
 #define _csp_Wrapper_h_INCLUDED
 
 #include <windows.h>  //типы основные
+//#include <string.h>
 
 #pragma once
 
@@ -11,6 +14,15 @@ using namespace System;
 using namespace System::Collections::Generic;
 
 namespace cspUtils {
+	
+	/* CRYPT_SIGN_ALG_OID_GROUP_ID */
+constexpr auto szOID_CP_GOST_R3411_12_256_R3410 = "1.2.643.7.1.1.3.2";
+    /* CRYPT_SIGN_ALG_OID_GROUP_ID */
+constexpr auto szOID_CP_GOST_R3411_R3410EL = "1.2.643.2.2.3";
+// Cryptography portal
+constexpr auto microsoft_doc_portal_URL =  "https://docs.microsoft.com/en-us/windows/win32/seccrypto/cryptography-portal";
+
+
 
 #pragma managed
 	//  Certificate context struct CLR wrapper:
@@ -41,45 +53,48 @@ namespace cspUtils {
 	public: PCCERT_CONTEXT_WR();
 	};
 
-
-
-	/// <summary>
-	/// CadesWrapper - GOST CSP Provider wrapper class for .NET. of CADES CSP
-	/// Инкапсулирует методы работы с API криптопровайдера CryptoPro.
-	/// Требует установленнoго CSP (cades.dll) Runtime
-	/// </summary>
-	public ref class CadesWrapper
+	public ref struct CertInfo
 	{
+		String^ SubjectName;
+		String^ Serial;
+	};
 
 
+	// Windows 'wincrypt' wrapper class. Simplify usage of system cryptography
+	public ref class WinCryptWrapper
+	{
+		public:
+		System::String^ GetCertDateExpirate(PCCERT_CONTEXT Certificat);
+		PCCERT_CONTEXT  GetCertificat(System::String^ SubjectName);
+		PCCERT_CONTEXT  GetCertificatbySN(CRYPT_INTEGER_BLOB SerialNumber);
+		public: System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
+		public:	System::String^ DisplayCertInfo(System::String^ SubjectName);	// Разбор полей спертификата в строку
+		public:	List<System::String^>^ GetCertificates();
+		public:	System::Int16	SignFileWinCrypt(System::String^ filename, System::String^ SubjectName); // подпись чисто по WinCrypt
+	};
+
+
+	// CadesWrapper - GOST CSP Provider wrapper class for .NET. of CADES CSP
+	// Инкапсулирует методы работы с API криптопровайдера CryptoPro.
+	// Требует установленнoго CSP (cades.dll) Runtime
+	public ref class CadesWrapper :WinCryptWrapper
+	{
 
 	public:
 		CadesWrapper();
-		//PCCERT_CONTEXT_WR GetCert_Context();
 
-		// Отображение системного окна свойств подписи
+	// Отображение системного окна свойств подписи
 	public:	 int  DisplaySig(System::String^ FileSign, System::IntPtr Parent);
-			 //
-	public:	System::String^ DisplayCertInfo(System::String^ SubjectName);
-	public: List<System::String^>^ GetCertificates();
-
-			/// <summary>
-			/// Select subject certificate by his name:
-			///<para>Subject name </para>
-			/// </summary>
-			// Get cert
-	public:	PCCERT_CONTEXT       GetCertificat(System::String^ SubjectName);
 	public:	PCCERT_CONTEXT_CLR^  GetCertificatCLR(System::String^ SubjectName);
 	public:	PCCERT_CONTEXT_WR^   GetCertificatWrapped(System::String^ SubjectName);
 
-	public: System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
-	public:	System::Int16			SignFileWinCrypt(System::String^ filename, System::String^ SubjectName); // подпись чисто по WinCrypt
-	//public:	System::Int16			SignFile(System::String^ filename, System::String^ SubjectName); // подпись чисто по WinCrypt
+
+
 	public:	System::Int16			Sign_GOST(System::String^ filename, System::String^ SubjectName); // подпись по CADES, с расчетом hash
 	public:	System::Int16			Sign_GOST_2012(System::String^ filename, System::String^ SubjectName); // подпись по CADES, с расчетом hash
 	public: System::Int16			Sign_Example1(System::String^ filename, System::String^ SubjectName);
 	public: System::Int16			Sign_Examples(System::String^ filename, System::String^ SubjectName);
-			//private:PCCERT_CONTEXT			GetCertificat(System::String ^ SubjectName); //Чтение сертификата из сист, справочника сертификатов пользователя'MY'
+
 	};
 
 

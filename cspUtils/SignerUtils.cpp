@@ -14,7 +14,8 @@ namespace SignerUtils {
 
 	namespace wincrypt {
 		//Подпись файла через Wincrypt
-		int  SignFileWinCrypt(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
+		// doc : https://docs.microsoft.com/en-us/windows/win32/seccrypto/example-c-program-signing-a-message-and-verifying-a-message-signature
+		int  SignFileWinCrypt(System::String^ FileToSign, PCCERT_CONTEXT SignerCert)
 		{
 			const int detached = 1;
 			LPVOID	    mem_tbs = NULL;
@@ -34,19 +35,19 @@ namespace SignerUtils {
 			memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
 			param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
 			param.dwMsgEncodingType = TYPE_DER; //X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
-			param.pSigningCert = CertToSign;//
+			param.pSigningCert = SignerCert;//
 			param.HashAlgorithm.pszObjId = szOID_CP_GOST_R3410_12_256;// works fine - szOID_CP_DH_12_256;
-			param.HashAlgorithm.Parameters.cbData = 0;
+			param.HashAlgorithm.Parameters.cbData = 0; // NULL by docs
 			param.HashAlgorithm.Parameters.pbData = NULL;
-			param.pvHashAuxInfo = NULL;	/* не используется*/
-			param.cMsgCert = 1;		/* 0 -не включаем сертификат отправителя*/ /*If set to zero no certificates are included in the signed message*/
-			param.rgpMsgCert = &CertToSign; // NULL;
+			param.cMsgCert = 1;		// 0 - no certificates are included in the signed message
+			param.rgpMsgCert = &SignerCert; // NULL;
 			param.cAuthAttr = 0;
 			param.dwInnerContentType = 0;
 			param.cMsgCrl = 0;  // Cписки отзыва
 			param.cUnauthAttr = 0;
-
 			param.dwFlags = 0; //
+			param.pvHashAuxInfo = NULL;	/* не используется*/
+			param.rgAuthAttr = NULL;
 
 			DWORD		MessageSizeArray[1];
 			const BYTE* MessageArray[1];
@@ -88,7 +89,16 @@ namespace SignerUtils {
 			if (cspUtils::IO::write_file(OutFileName, signed_len, signed_mem)) {
 				// printf ("Output file (%s) has been saved\n", outfile);
 			}
+			
+			//Cleanup memory ? :
+			/*
+			if (SignerCert)
+			{
+				CertFreeCertificateContext(SignerCert);
+			}
+			*/
 			return 1; // norm. all ok
+
 		err:
 			if (signed_mem) free(signed_mem);
 			//    release_file_data_pointer (mem_tbs);
@@ -212,12 +222,39 @@ namespace SignerUtils {
 				return (LPTSTR)"CertGetName failed.";
 			}
 		}
-
+		/*
 		// GetCertEmail - Get and display the e-mail of Issuer of the certificate.
-		LPTSTR GetSubjectInfo(PCCERT_CONTEXT Certificat) {
-			return (LPTSTR)".";
-		}
+		LPTSTR GetCertDateExp(PCCERT_CONTEXT Certificat)
+		{
+			DWORD cbSize;
+			LPTSTR pszName;
+			 LONG testTimeValiduty = CertVerifyTimeValidity(NULL, Certificat->pCertInfo);
+			
+			FILETIME timeAfter = Certificat->pCertInfo->NotAfter;
+			switch (CertVerifyTimeValidity(
+				NULL,               // Use current time.
+				Certificat->pCertInfo))   // Pointer to CERT_INFO.
+			{
+			case -1:
+			{
+				return L"Certificate is not valid yet. \n";
+				break;
+			}
+			case 1:
+			{
+				return L"Certificate is expired. \n";
+				break;
+			}
+			case 0:
+			{
+				return L"Certificate's time is valid. \n";
+				break;
+			}
+			};
 
+
+		}
+*/
 
 		// usage
 		//     CHAR msgText[256];
