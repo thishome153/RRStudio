@@ -198,7 +198,7 @@ namespace FormSigner2 {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(126, 42);
 			this->button2->TabIndex = 4;
-			this->button2->Text = L"Подписать\r\nWincrypt";
+			this->button2->Text = L"Подписать\r\n";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
@@ -244,11 +244,11 @@ namespace FormSigner2 {
 			this->button3->FlatAppearance->BorderSize = 2;
 			this->button3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->button3->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button3->Location = System::Drawing::Point(601, 257);
+			this->button3->Location = System::Drawing::Point(601, 140);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(126, 42);
 			this->button3->TabIndex = 9;
-			this->button3->Text = L"Подписать 34.11-94 2012";
+			this->button3->Text = L"Подписать  ГОСТ 34.11-94 2012";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &Form1::button3_Click_1);
 			// 
@@ -320,11 +320,11 @@ namespace FormSigner2 {
 			String^ Subject = (string)Certs_listBox->SelectedItem;
 
 			PCCERT_CONTEXT ret = cw->GetCertificat(Subject);
-
 			//PCCERT_CONTEXT ret = SignerUtils::wincrypt::GetCertificat((string)Certs_listBox->SelectedItem);  // direct call from api
 			if (ret)
 			{
-				int funcRes = SignerUtils::wincrypt::SignFileWinCrypt(this->FileName, ret);
+				int funcRes = cw->SignFileWinCrypt(this->FileName, Subject);
+				//SignerUtils::wincrypt::SignFileWinCrypt(this->FileName, ret);
 				if (funcRes > 1)
 				{
 					toolStripStatusLabel2->Text = "Wincrypt Error " + funcRes.ToString();
@@ -364,7 +364,7 @@ namespace FormSigner2 {
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			this->FileName = openFileDialog1->FileName;
-			//int check_res = cw->Sign_2012(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
+			int check_res = cw->Sign_GOST_2012(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
 			//int check_res = cw->Sign_GOST(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
 			toolStripStatusLabel2->Text = this->FileName;
 		}

@@ -28,6 +28,13 @@ namespace SignerUtils {
 			int retFile = cspUtils::IO::read_file(FileName, &mem_len, &mem_tbs);
 			if (retFile = 0) goto err;
 
+			DWORD		MessageSizeArray[1];
+			const BYTE* MessageArray[1];
+
+			MessageArray[0] = (BYTE*)mem_tbs;// file body here in [0]
+			MessageSizeArray[0] = mem_len;
+
+
 			/* Установим параметры*/
 			/* Обязательно нужно обнулить все поля структуры. */
 			/* Иначе это может привести к access violation в функциях CryptoAPI*/
@@ -49,14 +56,10 @@ namespace SignerUtils {
 			param.pvHashAuxInfo = NULL;	/* не используется*/
 			param.rgAuthAttr = NULL;
 
-			DWORD		MessageSizeArray[1];
-			const BYTE* MessageArray[1];
-
-			MessageArray[0] = (BYTE*)mem_tbs;// file body here in [0]
-			MessageSizeArray[0] = mem_len;
-
+			/*  cades here :) ?!
 			CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
 			para.pSignMessagePara = &param;
+			*/
 
 			PCRYPT_DATA_BLOB pSignedMessage = 0;
 			/* First call - just calculate size CMS */

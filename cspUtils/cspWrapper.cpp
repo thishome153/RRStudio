@@ -241,25 +241,26 @@ namespace cspUtils {
 		return -1;
 	}
 
+
 	System::Int16 CadesWrapper::Sign_GOST_2012(System::String^ filename, System::String^ SubjectName)
 	{
 		const int detached = 1;
-		//char  OID[64] = "1.2.643.2.2.9";  //szOID_CP_GOST_R3411;  :  WinCryptEx.h
+
 		LPVOID	    mem_tbs = NULL;
 		size_t	    mem_len = 0;
 		DWORD		signed_len = 0;
-		BYTE* signed_mem = NULL;  // Буффер с подписью
-		//Certificat
-		PCCERT_CONTEXT pContext = GetCertificat(SubjectName);
+		PCCERT_CONTEXT SignerCert = GetCertificat(SubjectName); 		//Certificat
 
 		//Source file
 		LPCSTR FileName = (LPCSTR)StringtoChar(filename);
 		char* OutFileName = StringtoChar(filename + ".sig");
 		int retFile = IO::read_file(FileName, &mem_len, &mem_tbs);
 		if (retFile = 0) goto err;
+		
+		//Source message
 		DWORD		MessageSizeArray[1];
-		const BYTE* MessageArray[1];
-		MessageArray[0] = (BYTE*)mem_tbs; //pbToBeSigned, инициализируем содержимым файла
+		const BYTE* MessageBody[1];
+		MessageBody[0] = (BYTE*)mem_tbs; //pbToBeSigned, инициализируем содержимым файла
 		MessageSizeArray[0] = mem_len;    //cbToBeSigned
 
 		//Params for cades api, Установим параметры
@@ -268,38 +269,46 @@ namespace cspUtils {
 		/* Обязательно нужно обнулить все поля структуры. */
 		/* Иначе это может привести к access violation в функциях CryptoAPI*/
 		/* В примере из MSDN это отсутствует*/
+		/*
 		memset(&signPara, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
-
 		signPara.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
-		signPara.dwMsgEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
-		signPara.pSigningCert = pContext; // 0 for window
-		signPara.HashAlgorithm.pszObjId = szOID_CP_GOST_R3411;// szOID_OIWSEC_sha1; //При работе с сертификатами с алгоритмом ключа ГОСТ Р 34.10-2001 
-															 //или ГОСТ Р 34.10-94 поле HashAlgorithm.pszObjId в структуре CRYPT_SIGN_MESSAGE_PARA  
-															 //должно иметь значение szOID_CP_GOST_R3411 (алгоритм хэширования ГОСТ Р 34.11-94). Определение szOID_CP_GOST_R3411 содержится в файле wincryptex.h.
+		*/
+		signPara.dwMsgEncodingType = TYPE_DER;// X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
+		signPara.pSigningCert = SignerCert; // 0 for window
+		signPara.HashAlgorithm.pszObjId = (LPSTR)szOID_CP_GOST_R3411_12_256; //For obsolete CP_GOST_R3411 "1.2.643.2.2.9" got error -2146885628
+
+		
 		signPara.HashAlgorithm.Parameters.cbData = 0;
 		signPara.HashAlgorithm.Parameters.pbData = NULL;
-		signPara.pvHashAuxInfo = NULL;	/* не используется*/
-		signPara.cMsgCert = 1;		/* 0 -не включаем сертификат отправителя*/ /*If set to zero no certificates are included in the signed message*/
-		signPara.rgpMsgCert = NULL; //&pContext; 
+		signPara.cMsgCert = 1;		// 0 -If set to zero no certificates are included in the signed message
+		signPara.rgpMsgCert = &SignerCert; //not NULL if cMSgCert = 1
 		signPara.cAuthAttr = 0;
 		signPara.dwInnerContentType = 0;
 		signPara.cMsgCrl = 0;  // Cписки отзыва
 		signPara.cUnauthAttr = 0;
 		signPara.dwFlags = 0; //
-
+		signPara.pvHashAuxInfo = NULL;	
+		signPara.rgAuthAttr = NULL; //NULL in WinCrypt
+		
 
 		CADES_SIGN_PARA cadesSignPara = { sizeof(cadesSignPara) };
+		cadesSignPara.dwCadesType = CADES_BES;
+		/*
 		memset(&cadesSignPara, 0, sizeof(CADES_SIGN_PARA));
 		cadesSignPara.dwSize = sizeof(CADES_SIGN_PARA);
-		cadesSignPara.szHashAlgorithm = szOID_CP_GOST_R3411;
-		cadesSignPara.pSignerCert = pContext;
-		cadesSignPara.dwCadesType = CADES_BES;
+		cadesSignPara.szHashAlgorithm = szOID_CP_GOST_R3411_12_256; // CRYPT_HASH_ALG_OID_GROUP_ID = "1.2.643.7.1.1.2.2"
+		cadesSignPara.pSignerCert = SignerCert;
+		*/
+		
+
+		
 
 		CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
-		memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	/* Обязательно нужно обнулить все поля структуры. */
+		//memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	/* Обязательно нужно обнулить все поля структуры. */
 		para.pSignMessagePara = &signPara;
 		para.pCadesSignPara = &cadesSignPara;
-		para.dwSize = para.pSignMessagePara->cbSize + para.pCadesSignPara->dwSize;
+
+		//para.dwSize = para.pSignMessagePara->cbSize + para.pCadesSignPara->dwSize;
 
 
 		PCRYPT_DATA_BLOB pSignedMessage = 0;
@@ -311,7 +320,7 @@ namespace cspUtils {
 		//Count of the number of array elements in rgpbToBeSigned and rgpbToBeSigned.
 		// This parameter must be set to one unless fDetachedSignature is set to TRUE
 		int cToBeSigned = 1; //
-		if (!CadesSignMessage(&para, true, cToBeSigned, MessageArray, MessageSizeArray, &pSignedMessage))
+		if (!CadesSignMessage(&para, detached, cToBeSigned, MessageBody, MessageSizeArray, &pSignedMessage))
 		{
 			//std::cout << "CadesSignMessage() failed" << std::endl;
 			int err = GetLastError();
@@ -319,9 +328,21 @@ namespace cspUtils {
 			return -1;
 		}
 
+				if (cspUtils::IO::write_file(OutFileName, pSignedMessage->cbData, pSignedMessage->pbData)) {
+				// printf ("Output file (%s) has been saved\n", outfile);
+			}
+			
+			//Cleanup memory ? :
+			/*
+			if (SignerCert)
+			{
+				CertFreeCertificateContext(SignerCert);
+			}
+			*/
+			return 1; // norm. all ok
 
 
-		if (!CadesFreeBlob(pSignedMessage))
+			if (!CadesFreeBlob(pSignedMessage))
 		{
 			//std::cout << "CadesFreeBlob() failed" << std::endl;
 			return -2;
@@ -526,8 +547,9 @@ namespace cspUtils {
 		PCCERT_CONTEXT	ret = GetCertificat(SubjectName);
 		if (ret)
 		{
-			PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
-			return PBYTEToStr(serial, ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
+			//PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
+			return PBYTEToStr(((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData,
+							  ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
 
 		}
 		else return "";

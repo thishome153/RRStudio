@@ -9,6 +9,10 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="WinXP Release|Win32">
+      <Configuration>WinXP Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4B8B7125-669C-4D10-9609-FB89E7A67A9F}</ProjectGuid>
@@ -17,10 +21,17 @@
     <TargetFrameworkVersion>
     </TargetFrameworkVersion>
     <ProjectName>cspUI</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -37,6 +48,9 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
@@ -58,8 +72,17 @@
     <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\MSVC++\Cades_app\</OutDir>
     <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\..\Fixosoft SDK\fteoNET;..\MyCSPWrappers;..\..\Cades SDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;C:\Program Files %28x86%29\Crypto Pro\SDK\include;C:\Program Files\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
     <GenerateManifest>false</GenerateManifest>
+    <LibraryPath>C:\Program Files %28x86%29\Crypto Pro\SDK\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'">
+    <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography\WinXP</OutDir>
+    <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;C:\Program Files %28x86%29\Crypto Pro\SDK\include;C:\Program Files\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
+    <GenerateManifest>false</GenerateManifest>
+    <LibraryPath>C:\Program Files %28x86%29\Crypto Pro\SDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,7 +121,27 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>crypt32.lib;cades.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\Cades SDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+      <Version>
+      </Version>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>R:\Docs.srv\design\C++_2008\Fixosoft SDK;R:\Docs.srv\design\C++_2008\Cades_app\MyCSPWrappers;R:\Docs.srv\design\C++_2008\Cades_app\SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>crypt32.lib;cades.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
@@ -125,6 +168,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
