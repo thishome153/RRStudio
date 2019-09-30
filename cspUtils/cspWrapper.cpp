@@ -256,7 +256,7 @@ namespace cspUtils {
 		char* OutFileName = StringtoChar(filename + ".sig");
 		int retFile = IO::read_file(FileName, &mem_len, &mem_tbs);
 		if (retFile = 0) goto err;
-		
+
 		//Source message
 		DWORD		MessageSizeArray[1];
 		const BYTE* MessageBody[1];
@@ -277,7 +277,7 @@ namespace cspUtils {
 		signPara.pSigningCert = SignerCert; // 0 for window
 		signPara.HashAlgorithm.pszObjId = (LPSTR)szOID_CP_GOST_R3411_12_256; //For obsolete CP_GOST_R3411 "1.2.643.2.2.9" got error -2146885628
 
-		
+
 		signPara.HashAlgorithm.Parameters.cbData = 0;
 		signPara.HashAlgorithm.Parameters.pbData = NULL;
 		signPara.cMsgCert = 1;		// 0 -If set to zero no certificates are included in the signed message
@@ -287,9 +287,9 @@ namespace cspUtils {
 		signPara.cMsgCrl = 0;  // Cписки отзыва
 		signPara.cUnauthAttr = 0;
 		signPara.dwFlags = 0; //
-		signPara.pvHashAuxInfo = NULL;	
+		signPara.pvHashAuxInfo = NULL;
 		signPara.rgAuthAttr = NULL; //NULL in WinCrypt
-		
+
 
 		CADES_SIGN_PARA cadesSignPara = { sizeof(cadesSignPara) };
 		cadesSignPara.dwCadesType = CADES_BES;
@@ -299,9 +299,9 @@ namespace cspUtils {
 		cadesSignPara.szHashAlgorithm = szOID_CP_GOST_R3411_12_256; // CRYPT_HASH_ALG_OID_GROUP_ID = "1.2.643.7.1.1.2.2"
 		cadesSignPara.pSignerCert = SignerCert;
 		*/
-		
 
-		
+
+
 
 		CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
 		//memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	/* Обязательно нужно обнулить все поля структуры. */
@@ -328,21 +328,21 @@ namespace cspUtils {
 			return -1;
 		}
 
-				if (cspUtils::IO::write_file(OutFileName, pSignedMessage->cbData, pSignedMessage->pbData)) {
-				// printf ("Output file (%s) has been saved\n", outfile);
-			}
-			
-			//Cleanup memory ? :
-			/*
-			if (SignerCert)
-			{
-				CertFreeCertificateContext(SignerCert);
-			}
-			*/
-			return 1; // norm. all ok
+		if (cspUtils::IO::write_file(OutFileName, pSignedMessage->cbData, pSignedMessage->pbData)) {
+			// printf ("Output file (%s) has been saved\n", outfile);
+		}
+
+		//Cleanup memory ? :
+		/*
+		if (SignerCert)
+		{
+			CertFreeCertificateContext(SignerCert);
+		}
+		*/
+		return 1; // norm. all ok
 
 
-			if (!CadesFreeBlob(pSignedMessage))
+		if (!CadesFreeBlob(pSignedMessage))
 		{
 			//std::cout << "CadesFreeBlob() failed" << std::endl;
 			return -2;
@@ -354,7 +354,7 @@ namespace cspUtils {
 	err:
 		return System::Int16();
 	}
-
+	/*
 	System::Int16 CadesWrapper::Sign_GOST(System::String^ filename, System::String^ SubjectName)
 	{
 		const int detached = 1;
@@ -379,22 +379,22 @@ namespace cspUtils {
 		//Params for cades api, Установим параметры
 		CRYPT_SIGN_MESSAGE_PARA signPara = { sizeof(signPara) };
 
-		/* Обязательно нужно обнулить все поля структуры. */
-		/* Иначе это может привести к access violation в функциях CryptoAPI*/
-		/* В примере из MSDN это отсутствует*/
+		// Обязательно нужно обнулить все поля структуры.
+		// Иначе это может привести к access violation в функциях CryptoAPI
+		// В примере из MSDN это отсутствует
 		memset(&signPara, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
 
 		signPara.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
 		signPara.dwMsgEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
 		signPara.pSigningCert = pContext; // 0 for window
-		signPara.HashAlgorithm.pszObjId = szOID_CP_GOST_R3411;// szOID_OIWSEC_sha1; //При работе с сертификатами с алгоритмом ключа ГОСТ Р 34.10-2001 
-															 //или ГОСТ Р 34.10-94 поле HashAlgorithm.pszObjId в структуре CRYPT_SIGN_MESSAGE_PARA  
+		signPara.HashAlgorithm.pszObjId = szOID_CP_GOST_R3411;// szOID_OIWSEC_sha1; //При работе с сертификатами с алгоритмом ключа ГОСТ Р 34.10-2001
+															 //или ГОСТ Р 34.10-94 поле HashAlgorithm.pszObjId в структуре CRYPT_SIGN_MESSAGE_PARA
 															 //должно иметь значение szOID_CP_GOST_R3411 (алгоритм хэширования ГОСТ Р 34.11-94). Определение szOID_CP_GOST_R3411 содержится в файле wincryptex.h.
 		signPara.HashAlgorithm.Parameters.cbData = 0;
 		signPara.HashAlgorithm.Parameters.pbData = NULL;
-		signPara.pvHashAuxInfo = NULL;	/* не используется*/
-		signPara.cMsgCert = 1;		/* 0 -не включаем сертификат отправителя*/ /*If set to zero no certificates are included in the signed message*/
-		signPara.rgpMsgCert = NULL; //&pContext; 
+		signPara.pvHashAuxInfo = NULL;	// не используется
+		signPara.cMsgCert = 1;		// 0 -не включаем сертификат отправителя f set to zero no certificates are included in the signed message
+		signPara.rgpMsgCert = NULL; //&pContext;
 		signPara.cAuthAttr = 0;
 		signPara.dwInnerContentType = 0;
 		signPara.cMsgCrl = 0;  // Cписки отзыва
@@ -410,7 +410,7 @@ namespace cspUtils {
 		cadesSignPara.dwCadesType = CADES_BES;
 
 		CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
-		memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	/* Обязательно нужно обнулить все поля структуры. */
+		memset(&para, 0, sizeof(CADES_SIGN_MESSAGE_PARA)); 	// Обязательно нужно обнулить все поля структуры.
 		para.pSignMessagePara = &signPara;
 		para.pCadesSignPara = &cadesSignPara;
 		para.dwSize = para.pSignMessagePara->cbSize + para.pCadesSignPara->dwSize;
@@ -418,7 +418,7 @@ namespace cspUtils {
 
 		PCRYPT_DATA_BLOB pSignedMessage = 0;
 
-		/* Определение длины подписанного сообщения*/
+		// Определение длины подписанного сообщения
 		//??
 		//
 
@@ -447,8 +447,137 @@ namespace cspUtils {
 	err:
 		return System::Int16();
 	}
+	*/
 
+	int CadesWrapper::ReadTimeStamp(const char* Filename)
+	{
+		std::vector<unsigned char> message;
+		// Читаем подпись из файла
+		if (cspUtils::IO::read_file_to_vector(Filename, message))
+		{
+			//cout << "Reading signature from file \"sign.dat\" failed" << endl;
+			return -1;
+		}
 
+		if (message.empty())
+		{
+			//cout << "File \"sign.dat\" is empty" << endl;
+			return -1;
+		}
+
+		// Открываем дескриптор сообщения для декодирования
+		HCRYPTMSG hMsg = CryptMsgOpenToDecode(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 0, 0, 0, 0, 0);
+		if (!hMsg)
+		{
+			//cout << "CryptMsgOpenToDecode() failed" << endl;
+			return -1;
+		}
+
+		// Заполняем прочитанной подписью криптографическое сообщение
+		if (!CryptMsgUpdate(hMsg, &message[0], (unsigned long)message.size(), 1))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CryptMsgUpdate() failed" << endl;
+			return -1;
+		}
+
+		// Возвращаем алгоритм хэширования сертификата
+		ALG_ID hashAlgId = CadesMsgGetSigningCertIdHashAlg(hMsg, 0);
+		if (!hashAlgId)
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesMsgGetSigningCertIdHashAlg() failed" << endl;
+			return -1;
+		}
+
+		// Возвращаем закодированные штампы времени на подпись, вложенные в сообщение в виде массива
+		PCADES_BLOB_ARRAY pTimestamps = 0;
+		if (!CadesMsgGetSignatureTimestamps(hMsg, 0, &pTimestamps))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesGetSignatureTimestamps() failed" << endl;
+			return -1;
+		}
+
+		// Освобождаем ресурсы
+		if (!CadesFreeBlobArray(pTimestamps))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesFreeBlobArray() failed" << endl;
+			return -1;
+		}
+
+		PCADES_BLOB_ARRAY pCerts = 0;
+		// Возвращаем закодированные сертификаты из доказательств подлинности подписи, вложенных в сообщение, в виде массива
+		if (!CadesMsgGetCertificateValues(hMsg, 0, &pCerts))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesGetCertificateValues() failed" << endl;
+			return -1;
+		}
+
+		// Освобождаем ресурсы
+		if (!CadesFreeBlobArray(pCerts))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesFreeBlobArray() failed" << endl;
+			return -1;
+		}
+
+		PCADES_BLOB_ARRAY pCRLs = 0;
+		PCADES_BLOB_ARRAY pOCSPs = 0;
+		// Возвращаем вложенные в сообщение доказательства проверки на отзыв (закодированные списки отозванных сертификатов и закодированные ответы службы OCSP) в виде массивов
+		if (!CadesMsgGetRevocationValues(hMsg, 0, &pCRLs, &pOCSPs))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesGetRevocationValues() failed" << endl;
+			return -1;
+		}
+
+		PCADES_BLOB_ARRAY pCadesCTimestamps = 0;
+		// Возвращаем закодированные штампы времени на доказательства подлинности подписи, вложенные в сообщение, в виде массива
+		if (!CadesMsgGetCadesCTimestamps(hMsg, 0, &pCadesCTimestamps))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesMsgGetCadesCTimestamps() failed" << endl;
+			return -1;
+		}
+
+		// Освобождаем ресурсы
+		if (!CadesFreeBlobArray(pCadesCTimestamps))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesFreeBlobArray() failed" << endl;
+			return -1;
+		}
+
+		// Освобождаем ресурсы
+		if (!CadesFreeBlobArray(pCRLs))
+		{
+			CryptMsgClose(hMsg);
+			CadesFreeBlobArray(pOCSPs);
+			//cout << "CadesFreeBlobArray() failed" << endl;
+			return -1;
+		}
+
+		// Освобождаем ресурсы
+		if (!CadesFreeBlobArray(pOCSPs))
+		{
+			CryptMsgClose(hMsg);
+			//cout << "CadesFreeBlobArray() failed" << endl;
+			return -1;
+		}
+
+		// Закрываем дескриптор сообщения
+		if (!CryptMsgClose(hMsg))
+		{
+			//cout << "CryptMsgClose() failed" << endl;
+			return -1;
+		}
+
+		//cout << "All CAdES attributes obtained successfully." << endl;
+
+	}
 
 
 
@@ -549,12 +678,11 @@ namespace cspUtils {
 		{
 			//PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
 			return PBYTEToStr(((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData,
-							  ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
+				((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
 
 		}
 		else return "";
 	}
-
 
 	System::String^ WinCryptWrapper::DisplayCertInfo(System::String^ SubjectName)
 	{

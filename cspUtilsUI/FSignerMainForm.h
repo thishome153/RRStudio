@@ -383,6 +383,7 @@ namespace FormSigner2 {
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			cw->DisplaySig(this->openFileDialog1->FileName, Handle);
+			cw->ReadTimeStamp(StringtoChar( this->openFileDialog1->FileName));
 		}
 	}
 

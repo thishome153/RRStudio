@@ -48,6 +48,36 @@ namespace cspUtils {
 			*buffer = pStart;
 			return 1;
 		}
+		// чтения в vector. Вычитывается весь файл целиком.
+		int read_file_to_vector(const char* filename, std::vector<unsigned char>& buffer)
+		{
+			enum { bytesSize = 512 };
+
+			unsigned long bytesRead(1);
+			char buf[bytesSize];
+
+			FILE* f = fopen(filename, "r+b");
+
+			if (!f)
+			{
+				//cout << "Opening file " << filename << " failed" << endl;
+				return -1;
+			}
+
+			while (!feof(f))
+			{
+				bytesRead = (unsigned long)fread(buf, 1, bytesSize, f);
+
+				if (bytesSize != bytesRead && ferror(f))
+					return -1;
+
+				std::copy(buf, buf + bytesRead, back_inserter(buffer));
+			}
+			fclose(f);
+
+			return 0;
+		}
+
 
 		/*----------------------------------------------------------------------*/
 		/* Запись в файл*/

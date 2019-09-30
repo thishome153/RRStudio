@@ -6,6 +6,7 @@
 #define _csp_Wrapper_h_INCLUDED
 
 #include <windows.h>  //типы основные
+
 //#include <string.h>
 
 #pragma once
@@ -93,7 +94,9 @@ namespace cspUtils {
 
 
 
-	public:	System::Int16			Sign_GOST(System::String^ filename, System::String^ SubjectName); // подпись по CADES, с расчетом hash
+	//public:	System::Int16			Sign_GOST(System::String^ filename, System::String^ SubjectName); // подпись по CADES, с расчетом hash
+	//Read atributes - timestamp
+			int ReadTimeStamp(const char* Filename);
 	// Sign file with GOST_R3411_12_256 using cades (CSP Crypto Pro)
 	public:	System::Int16			Sign_GOST_2012(System::String^ filename, System::String^ SubjectName); 
 	public: System::Int16			Sign_Example1(System::String^ filename, System::String^ SubjectName);
