@@ -26,7 +26,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -73,12 +73,14 @@
     <ExtensionsToDeleteOnClean>*.metagen;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography</OutDir>
+    <IntDir>c:\TEMP\Intermediates\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
+    <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)..\..\c++\CryptoProSDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\c++\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'">
     <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography\WinXP</OutDir>
@@ -119,7 +121,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>cades.lib;crypt32.lib</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -133,7 +135,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>cades.lib;crypt32.lib</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>

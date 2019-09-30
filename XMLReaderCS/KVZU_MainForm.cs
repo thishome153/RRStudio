@@ -680,8 +680,10 @@ namespace XMLReaderCS
 #if DEBUG
             if (Path.GetExtension(FileName).Equals(".sig"))
             {
+                /*
                 cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
                 cwrp.DisplaySig(FileName, this.Handle);
+                */
             }
 #endif
             //Если есть парная ЭЦП:

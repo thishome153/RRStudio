@@ -17,7 +17,6 @@
   <ItemGroup>
     <ClInclude Include="FS2_About.h" />
     <ClInclude Include="FSignerMainForm.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
       <Filter>Fixosoft SDK</Filter>
@@ -25,12 +24,23 @@
     <ClInclude Include="..\cspUtils\cspWrapper.h">
       <Filter>cspWrapper</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="app.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Fixosoft2002.ico" />
+    <Image Include="Fixosoft2002.ico">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\XMLReaderCS\Resources\crypt_sign_USB_16x16.png">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="Resources\CryptApp.ico">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="Resources\crypt_sign_USB_32x32.png">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -42,5 +52,13 @@
     <Filter Include="cspWrapper">
       <UniqueIdentifier>{8eb06ee6-eb85-452b-9577-d90840444ea2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{36568856-99c8-48c2-ac8f-26cc120b2a7d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

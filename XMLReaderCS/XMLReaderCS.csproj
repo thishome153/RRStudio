@@ -563,10 +563,6 @@
       <Project>{bff2c2f7-e131-4f04-9351-bc30b964b7aa}</Project>
       <Name>netFteoCrypt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cspUtils\cspUtils.vcxproj">
-      <Project>{511a6a09-97ce-4feb-b672-06151eb78fee}</Project>
-      <Name>cspWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\netFteo\netFteo.csproj">
       <Project>{84103eb6-3282-4374-b296-33188b1a436e}</Project>
       <Name>netFteo</Name>
@@ -591,7 +587,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

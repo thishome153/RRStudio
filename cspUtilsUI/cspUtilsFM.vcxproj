@@ -69,7 +69,7 @@
     <LibraryPath>C:\Program Files\Crypto Pro\SDK\lib;C:\Program Files %28x86%29\Crypto Pro\SDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\MSVC++\Cades_app\</OutDir>
+    <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography</OutDir>
     <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;C:\Program Files %28x86%29\Crypto Pro\SDK\include;C:\Program Files\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
@@ -184,7 +184,10 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\XMLReaderCS\Resources\crypt_sign_USB_16x16.png" />
     <Image Include="Fixosoft2002.ico" />
+    <Image Include="Resources\CryptApp.ico" />
+    <Image Include="Resources\crypt_sign_USB_32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />

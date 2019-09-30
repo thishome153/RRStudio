@@ -291,8 +291,8 @@ namespace XMLReaderCS
                         listView_Details.Items.Add(res);
                     }
                 }
-                cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
-                cwrp.DisplaySig(fd.FileName, this.Handle);
+                //cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
+               // cwrp.DisplaySig(fd.FileName, this.Handle);
             }
 
         }
