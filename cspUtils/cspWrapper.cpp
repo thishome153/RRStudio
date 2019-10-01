@@ -496,7 +496,7 @@ namespace cspUtils {
 		{
 			CryptMsgClose(hMsg);
 			//cout << "CadesGetSignatureTimestamps() failed" << endl;
-			return -1;
+			return 2; //no timestamps
 		}
 
 		// Освобождаем ресурсы
@@ -531,7 +531,7 @@ namespace cspUtils {
 		{
 			CryptMsgClose(hMsg);
 			//cout << "CadesGetRevocationValues() failed" << endl;
-			return -1;
+			return 31;
 		}
 
 		PCADES_BLOB_ARRAY pCadesCTimestamps = 0;

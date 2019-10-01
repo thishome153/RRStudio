@@ -636,8 +636,8 @@ namespace Traverser
         {
               if (this.Project.Travers.BeginPoint != null)
                 {
-                 textBoxAA.Text = this.Project.Travers.BeginPoint.NumGeopointA;
-                 if (this.Project.Points.GetPointbyName(this.Project.Travers.BeginPoint.NumGeopointA) != null)
+                 textBoxAA.Text = this.Project.Travers.BeginPoint.Definition;
+                 if (this.Project.Points.GetPointbyName(this.Project.Travers.BeginPoint.Definition) != null)
                      checkBox1.Checked = true;
                  else checkBox1.Checked = false;
                  }

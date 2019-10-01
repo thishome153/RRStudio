@@ -138,9 +138,13 @@ namespace GKNData
             if (data.Rows.Count == 1)
             {
                 DataRow row = data.Rows[0];
-                byte[] outbyte = (byte[])row[1];
-                MemoryStream res = new MemoryStream(outbyte);
-                return res;
+                if (row[1].ToString().Length > 0)
+                {
+                    byte[] outbyte = (byte[])row[1];
+                    MemoryStream res = new MemoryStream(outbyte);
+                    return res;
+                }
+                else return null;
             }
             else return null;
         }
@@ -201,15 +205,20 @@ namespace GKNData
             {
                 if (ITEM.XmlBodyList.BodyEmpty(item_id))
                     ITEM.XmlBodyList.DownLoadFileBody(item_id, GetVidimusBody(CF.conn, item_id));
-                XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
-                frmReader.StartPosition = FormStartPosition.Manual;
-                frmReader.Tag = 3; // XMl Reader в составе приложения
-                frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFile(item_id).FileName;
-                frmReader.Read(ITEM.XmlBodyList.GetFileBody(item_id));
-                frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
-                frmReader.ShowDialog();
+                System.Xml.XmlDocument body = ITEM.XmlBodyList.GetFileBody(item_id);
+                if (body != null)
+                {
+                    XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
+                    frmReader.StartPosition = FormStartPosition.Manual;
+                    frmReader.Tag = 3; // XMl Reader as application part
+                    frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFileName(item_id);
+                    frmReader.Read(body);
+                    frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
+                    frmReader.ShowDialog();
+                }
             }
         }
+
         private void toolButton_ReadXML_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)

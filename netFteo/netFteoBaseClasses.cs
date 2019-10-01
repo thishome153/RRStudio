@@ -3909,10 +3909,13 @@ namespace netFteo.Spatial
         }
         public void DownLoadFileBody(MemoryStream filebody)
         {
-            filebody.Seek(0, 0);
-            if (this.fFileBody == null)
-                this.fFileBody = new System.Xml.XmlDocument();
-            this.fFileBody.Load(filebody);
+            if (filebody != null)
+            {
+                filebody.Seek(0, 0);
+                if (this.fFileBody == null)
+                    this.fFileBody = new System.Xml.XmlDocument();
+                this.fFileBody.Load(filebody);
+            }
         }
 
         public TFile()
@@ -3977,6 +3980,30 @@ namespace netFteo.Spatial
             return null;
         }
 
+        public String GetFileName(int file_id)
+        {
+            foreach (TFile file in this)
+            {
+                if (file.id == file_id)
+                {
+                    return file.FileName;
+                }
+            }
+            return null;
+        }
+
+        public bool FileBodyExist(int file_id)
+        {
+            foreach (TFile file in this)
+            {
+                if (file.id == file_id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public TFile GetFile(int file_id)
         {
             foreach (TFile file in this)
@@ -3989,17 +4016,7 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public string GetFileName(int file_id)
-        {
-            foreach (TFile file in this)
-            {
-                if (file.id == file_id)
-                {
-                    return file.FileName;
-                }
-            }
-            return null;
-        }
+
     }
 
     public class TFileHistoryItem

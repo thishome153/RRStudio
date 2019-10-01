@@ -418,7 +418,7 @@
                 point.SetLayerId(ltPId, true);
 
                 DBText PointName = new DBText();
-                PointName.TextString = Layer[i].NumGeopointA + "." + Layer[i].Description;
+                PointName.TextString = Layer[i].Definition + "." + Layer[i].Description;
                 PointName.Height = 2;
                 PointName.SetLayerId(ltId, true);
                 PointName.Position = new Point3d(Layer[i].y, Layer[i].x, Layer[i].z);
@@ -491,7 +491,7 @@
                     if (Layer[i].Description == null) Descriptor = "";
                     //if (Layer[i].NumGeopointA.Substring(0, 1) == ("н"))
                     // PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor + "Новая!";                else 
-                    PointName.TextString = Layer[i].NumGeopointA + " " + Descriptor;
+                    PointName.TextString = Layer[i].Definition + " " + Descriptor;
                     PointName.Height = 2;
                     PointName.SetLayerId(ltId, true);
                     PointName.Position = new Point3d(yy, xx, 0);
@@ -525,12 +525,12 @@
                 polyline.AddVertexAt(0, new Point2d(Layer[i].y, Layer[i].x), 0, 0, 0);
                 polyline.AddVertexAt(1, new Point2d(Layer[i + 1].y, Layer[i + 1].x), 0, 0, 0);
                         polyline.Color = PlatformDb.Colors.Color.FromColor(System.Drawing.Color.Black); // default
-                   if (Layer[i].NumGeopointA.Substring(0, 1) == ("н"))
+                   if (Layer[i].Definition.Substring(0, 1) == ("н"))
                    {
                        polyline.Color = PlatformDb.Colors.Color.FromColor(System.Drawing.Color.Red);
                    }
 
-                   if (Layer[i+1].NumGeopointA.Substring(0, 1) == ("н"))
+                   if (Layer[i+1].Definition.Substring(0, 1) == ("н"))
                    {
                        polyline.Color = PlatformDb.Colors.Color.FromColor(System.Drawing.Color.Red);
                    }

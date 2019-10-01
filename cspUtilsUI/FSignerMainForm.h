@@ -346,27 +346,30 @@ namespace FormSigner2 {
 
 
 			// Подписать файл
-	public: System::Void My_UI_SignFile_CSP_Utils_GOST()
-	{
-
-		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
-		{
-			this->FileName = openFileDialog1->FileName;
-			int check_res = cw->Sign_Example1(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
-			//int check_res = cw->Sign_GOST(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
-			toolStripStatusLabel2->Text = this->FileName;
-		}
-	}
-
 	public: System::Void My_UI_SignFile_CSP_Utils_GOST2012()
 	{
-
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			this->FileName = openFileDialog1->FileName;
-			int check_res = cw->Sign_GOST_2012(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
-			//int check_res = cw->Sign_GOST(this->FileName, (string)Certs_listBox->SelectedItem); // in CSP Wrapper
-			toolStripStatusLabel2->Text = this->FileName;
+			String^ Subject = (string)Certs_listBox->SelectedItem;
+			PCCERT_CONTEXT ret = cw->GetCertificat(Subject);
+			if (ret)
+			{
+				int funcRes = cw->Sign_GOST_2012(this->FileName, Subject);
+
+				if (funcRes > 1)
+				{
+					toolStripStatusLabel2->Text = "cades error " + funcRes.ToString();
+					int err = GetLastError(); // system error stack
+					LPTSTR errMeesage = SignerUtils::cades::Error2Message(err);
+					textBox1->Text = "Error " + err.ToString() + ":\r\n" + LPTSTRToString(errMeesage);
+				}
+				else
+				{
+					toolStripStatusLabel2->Text = "Signed success ";
+					textBox1->Text = "file " + this->FileName + "\r\n    signed ok";
+				}
+			}
 		}
 	}
 
@@ -382,8 +385,39 @@ namespace FormSigner2 {
 		this->openFileDialog1->DefaultExt = "*.sig";
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
+			textBox1->Text = "";
 			cw->DisplaySig(this->openFileDialog1->FileName, Handle);
-			cw->ReadTimeStamp(StringtoChar( this->openFileDialog1->FileName));
+
+		int ret=cw->ReadTimeStamp(StringtoChar( this->openFileDialog1->FileName));
+		switch (ret)   // Pointer to CERT_INFO.
+		{
+		case -1:
+		{
+			textBox1->Text = ret.ToString();
+			break;
+		}
+		case 2:
+		{
+			textBox1->Text = "Signature correct. No Timestamp present \n";
+			break;
+		}
+
+		case 31:
+		{
+			textBox1->Text = "Signature correct. Отсутствуют вложенные в сообщение доказательства \n"+
+							 "проверки на отзыв (закодированные списки отозванных сертификатов и \n"+
+							 "закодированные ответы службы OCSP) в виде массивов\n";
+			break;
+		}
+
+		
+
+		case 0:
+		{
+			textBox1->Text = "ok";
+			break;
+		}
+		};
 		}
 	}
 
@@ -419,7 +453,7 @@ namespace FormSigner2 {
 
 			 //
 	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-		My_UI_SignFile_CSP_Utils_GOST();
+		
 	}
 
 			 // sign wincrypt
