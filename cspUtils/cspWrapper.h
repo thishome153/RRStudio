@@ -56,8 +56,10 @@ namespace cspUtils {
 
 	public ref struct CertInfo
 	{
+		String^ ValidNotAfter;
 		String^ SubjectName;
-		String^ Serial;
+		String^ SerialNumber;
+		CRYPT_INTEGER_BLOB* Serial;
 	};
 
 
@@ -67,14 +69,19 @@ namespace cspUtils {
 	public:
 		System::String^ GetCertDateExpirate(PCCERT_CONTEXT Certificat);
 		PCCERT_CONTEXT  GetCertificat(System::String^ SubjectName);
+		PCCERT_CONTEXT GetCertificatbySN(String^ SerialNumber);
 		//Find certificate by SN, in case difficult Subject Name finds by Subject may not sucess
 		PCCERT_CONTEXT  GetCertificatbySN(CRYPT_INTEGER_BLOB SerialNumber);
-	public: System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
+	public:
+		System::String^ GetCertificatSerialNumber(PCCERT_CONTEXT ret);
+		System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
+		System::String^ DisplayCertInfo(PCCERT_CONTEXT ret);
 			// Разбор полей спертификата в строку
-	public:	System::String^ DisplayCertInfo(System::String^ SubjectName);
+	public:	System::String^ DisplayCertInfo(System::String^ SerialNumber);
 	public:	List<System::String^>^ GetCertificates();
+	public: List<CertInfo^>^ GetCertificatesObj();
 			// подпись чисто по WinCrypt
-	public:	System::Int16	SignFileWinCrypt(System::String^ filename, System::String^ SubjectName);
+	public:	System::Int16	SignFileWinCrypt(System::String^ filename, System::String^ SerialNumber);
 	};
 
 
@@ -98,7 +105,7 @@ namespace cspUtils {
 	//Read atributes - timestamp
 			int ReadTimeStamp(const char* Filename);
 	// Sign file with GOST_R3411_12_256 using cades (CSP Crypto Pro)
-	public:	System::Int16			Sign_GOST_2012(System::String^ filename, System::String^ SubjectName); 
+	public:	System::Int16			Sign_GOST_2012(System::String^ filename, System::String^ SerialNumber);
 	public: System::Int16			Sign_Example1(System::String^ filename, System::String^ SubjectName);
 	public: System::Int16			Sign_Examples(System::String^ filename, System::String^ SubjectName);
 

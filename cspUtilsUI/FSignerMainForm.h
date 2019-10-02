@@ -57,7 +57,7 @@ namespace FormSigner2 {
 		}
 
 	public:	cspUtils::CadesWrapper^ cw;
-	private: System::Windows::Forms::ListBox^ Certs_listBox;
+
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ файлToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ выходToolStripMenuItem;
@@ -67,14 +67,20 @@ namespace FormSigner2 {
 	private: System::String^ FileName;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	private: System::Windows::Forms::TextBox^ textBox1;
-	private: System::Windows::Forms::Button^ button2;
+
 
 	private: System::Windows::Forms::StatusStrip^ statusStrip1;
 	private: System::Windows::Forms::ToolStripStatusLabel^ toolStripStatusLabel1;
 	private: System::Windows::Forms::ToolStripStatusLabel^ toolStripStatusLabel2;
 
 
+
+	private: System::Windows::Forms::ListView^ listView_Certs;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader1;
+	private: System::Windows::Forms::ColumnHeader^ columnHeader2;
+	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::Button^ button3;
+	private: System::Windows::Forms::Button^ button2;
 	protected:
 
 	private:
@@ -90,7 +96,10 @@ namespace FormSigner2 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->Certs_listBox = (gcnew System::Windows::Forms::ListBox());
+			System::Windows::Forms::ListViewItem^ listViewItem4 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(2) {
+				L"Item1",
+					L"Sub1"
+			}, -1));
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->файлToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -99,28 +108,19 @@ namespace FormSigner2 {
 			this->оПрограммеToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
-			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->statusStrip1 = (gcnew System::Windows::Forms::StatusStrip());
 			this->toolStripStatusLabel1 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->toolStripStatusLabel2 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
+			this->listView_Certs = (gcnew System::Windows::Forms::ListView());
+			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			this->statusStrip1->SuspendLayout();
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
-			// 
-			// Certs_listBox
-			// 
-			this->Certs_listBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->Certs_listBox->FormattingEnabled = true;
-			this->Certs_listBox->ItemHeight = 18;
-			this->Certs_listBox->Location = System::Drawing::Point(0, 25);
-			this->Certs_listBox->Name = L"Certs_listBox";
-			this->Certs_listBox->Size = System::Drawing::Size(595, 274);
-			this->Certs_listBox->TabIndex = 2;
-			this->Certs_listBox->Click += gcnew System::EventHandler(this, &Form1::Certs_listBox_Click);
-			this->Certs_listBox->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::Certs_listBox_MouseClick);
-			this->Certs_listBox->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Certs_listBox_KeyUp);
 			// 
 			// menuStrip1
 			// 
@@ -132,7 +132,7 @@ namespace FormSigner2 {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(739, 25);
+			this->menuStrip1->Size = System::Drawing::Size(687, 25);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -180,27 +180,16 @@ namespace FormSigner2 {
 			// 
 			// textBox1
 			// 
+			this->textBox1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->textBox1->Location = System::Drawing::Point(0, 305);
+			this->textBox1->Location = System::Drawing::Point(0, 233);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(739, 159);
+			this->textBox1->Size = System::Drawing::Size(530, 225);
 			this->textBox1->TabIndex = 0;
-			// 
-			// button2
-			// 
-			this->button2->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
-			this->button2->FlatAppearance->BorderSize = 2;
-			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button2->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button2->Location = System::Drawing::Point(601, 28);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(126, 42);
-			this->button2->TabIndex = 4;
-			this->button2->Text = L"Подписать\r\n";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
 			// statusStrip1
 			// 
@@ -208,9 +197,9 @@ namespace FormSigner2 {
 				this->toolStripStatusLabel1,
 					this->toolStripStatusLabel2
 			});
-			this->statusStrip1->Location = System::Drawing::Point(0, 482);
+			this->statusStrip1->Location = System::Drawing::Point(0, 461);
 			this->statusStrip1->Name = L"statusStrip1";
-			this->statusStrip1->Size = System::Drawing::Size(739, 22);
+			this->statusStrip1->Size = System::Drawing::Size(687, 22);
 			this->statusStrip1->TabIndex = 6;
 			this->statusStrip1->Text = L"statusStrip1";
 			// 
@@ -238,32 +227,89 @@ namespace FormSigner2 {
 			this->toolStripStatusLabel2->Size = System::Drawing::Size(320, 17);
 			this->toolStripStatusLabel2->Text = L"toolStripStatusLabel1";
 			// 
+			// listView_Certs
+			// 
+			this->listView_Certs->BackColor = System::Drawing::SystemColors::Info;
+			this->listView_Certs->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(2) {
+				this->columnHeader1,
+					this->columnHeader2
+			});
+			this->listView_Certs->Dock = System::Windows::Forms::DockStyle::Top;
+			this->listView_Certs->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->listView_Certs->FullRowSelect = true;
+			this->listView_Certs->GridLines = true;
+			this->listView_Certs->HideSelection = false;
+			listViewItem4->Tag = L"Tag0";
+			this->listView_Certs->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem4 });
+			this->listView_Certs->Location = System::Drawing::Point(0, 25);
+			this->listView_Certs->Name = L"listView_Certs";
+			this->listView_Certs->Size = System::Drawing::Size(536, 202);
+			this->listView_Certs->TabIndex = 10;
+			this->listView_Certs->UseCompatibleStateImageBehavior = false;
+			this->listView_Certs->View = System::Windows::Forms::View::Details;
+			this->listView_Certs->Click += gcnew System::EventHandler(this, &Form1::ListView_Certs_Click);
+			this->listView_Certs->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::ListView_Certs_KeyUp);
+			// 
+			// columnHeader1
+			// 
+			this->columnHeader1->Text = L"Subject";
+			this->columnHeader1->Width = 139;
+			// 
+			// columnHeader2
+			// 
+			this->columnHeader2->Text = L"Valid date";
+			this->columnHeader2->Width = 145;
+			// 
+			// panel1
+			// 
+			this->panel1->Controls->Add(this->button3);
+			this->panel1->Controls->Add(this->button2);
+			this->panel1->Dock = System::Windows::Forms::DockStyle::Right;
+			this->panel1->Location = System::Drawing::Point(536, 25);
+			this->panel1->Name = L"panel1";
+			this->panel1->Size = System::Drawing::Size(151, 436);
+			this->panel1->TabIndex = 11;
+			// 
 			// button3
 			// 
 			this->button3->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
 			this->button3->FlatAppearance->BorderSize = 2;
 			this->button3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->button3->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->button3->Location = System::Drawing::Point(601, 140);
+			this->button3->Location = System::Drawing::Point(12, 131);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(126, 42);
-			this->button3->TabIndex = 9;
+			this->button3->TabIndex = 11;
 			this->button3->Text = L"Подписать  ГОСТ 34.11-94 2012";
 			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &Form1::button3_Click_1);
+			this->button3->Click += gcnew System::EventHandler(this, &Form1::button3_Click);
+			// 
+			// button2
+			// 
+			this->button2->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
+			this->button2->FlatAppearance->BorderSize = 2;
+			this->button2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button2->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->button2->Location = System::Drawing::Point(12, 19);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(126, 42);
+			this->button2->TabIndex = 10;
+			this->button2->Text = L"Подписать\r\n";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(739, 504);
-			this->Controls->Add(this->button3);
+			this->ClientSize = System::Drawing::Size(687, 483);
+			this->Controls->Add(this->listView_Certs);
+			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->statusStrip1);
-			this->Controls->Add(this->button2);
 			this->Controls->Add(this->textBox1);
-			this->Controls->Add(this->Certs_listBox);
 			this->Controls->Add(this->menuStrip1);
 			this->MainMenuStrip = this->menuStrip1;
+			this->MinimumSize = System::Drawing::Size(461, 431);
 			this->Name = L"Form1";
 			this->Text = L"Средство работы с ЭЦП. @2014-19";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
@@ -271,6 +317,7 @@ namespace FormSigner2 {
 			this->menuStrip1->PerformLayout();
 			this->statusStrip1->ResumeLayout(false);
 			this->statusStrip1->PerformLayout();
+			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -287,10 +334,15 @@ namespace FormSigner2 {
 	private: System::Void ListCertificates() {
 
 		cspUtils::CadesWrapper^ cw;
-		this->Certs_listBox->Items->Clear();
-		for each (string var in cw->GetCertificates())
+		listView_Certs->Items->Clear();
+		List<cspUtils::CertInfo^>^ Certs = cw->GetCertificatesObj();
+		for each (cspUtils::CertInfo ^ ci  in Certs)
 		{
-			this->Certs_listBox->Items->Add(var);
+			ListViewItem^ Cert_Item = gcnew ListViewItem(ci->SubjectName);
+			Cert_Item->Tag = ci->SerialNumber;
+			Cert_Item->SubItems->Add(ci->ValidNotAfter);
+			void* blob = ci->Serial;
+			listView_Certs->Items->Add(Cert_Item);
 		}
 
 	}
@@ -312,18 +364,18 @@ namespace FormSigner2 {
 	}
 
 			 // Подписать файл  direct in signerUtils.h
-	public: System::Void My_UI_SignFile()
+	public: System::Void My_UI_SignFile(String^ Serial)
 	{
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			this->FileName = openFileDialog1->FileName;
-			String^ Subject = (string)Certs_listBox->SelectedItem;
 
-			PCCERT_CONTEXT ret = cw->GetCertificat(Subject);
+
+			PCCERT_CONTEXT ret = cw->GetCertificatbySN(Serial);
 			//PCCERT_CONTEXT ret = SignerUtils::wincrypt::GetCertificat((string)Certs_listBox->SelectedItem);  // direct call from api
 			if (ret)
 			{
-				int funcRes = cw->SignFileWinCrypt(this->FileName, Subject);
+				int funcRes = cw->SignFileWinCrypt(this->FileName, Serial);
 				//SignerUtils::wincrypt::SignFileWinCrypt(this->FileName, ret);
 				if (funcRes > 1)
 				{
@@ -346,13 +398,13 @@ namespace FormSigner2 {
 
 
 			// Подписать файл
-	public: System::Void My_UI_SignFile_CSP_Utils_GOST2012()
+	public: System::Void My_UI_SignFile_CSP_Utils_GOST2012(String^ Subject)
 	{
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
 		{
 			this->FileName = openFileDialog1->FileName;
-			String^ Subject = (string)Certs_listBox->SelectedItem;
-			PCCERT_CONTEXT ret = cw->GetCertificat(Subject);
+
+			PCCERT_CONTEXT ret = cw->GetCertificatbySN(Subject);
 			if (ret)
 			{
 				int funcRes = cw->Sign_GOST_2012(this->FileName, Subject);
@@ -376,11 +428,11 @@ namespace FormSigner2 {
 
 
 	private: System::Void Certs_listBox_Click(System::Object^ sender, System::EventArgs^ e) {
-		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
+
 
 	}
 
-			 /// Отобоазим UI signature
+			 // Отобоазим UI signature
 	private: System::Void ViewCMSInfo(string signatureName) {
 		this->openFileDialog1->DefaultExt = "*.sig";
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
@@ -388,46 +440,47 @@ namespace FormSigner2 {
 			textBox1->Text = "";
 			cw->DisplaySig(this->openFileDialog1->FileName, Handle);
 
-		int ret=cw->ReadTimeStamp(StringtoChar( this->openFileDialog1->FileName));
-		switch (ret)   // Pointer to CERT_INFO.
-		{
-		case -1:
-		{
-			textBox1->Text = ret.ToString();
-			break;
-		}
-		case 2:
-		{
-			textBox1->Text = "Signature correct. No Timestamp present \n";
-			break;
-		}
+			int ret = cw->ReadTimeStamp(StringtoChar(this->openFileDialog1->FileName));
+			switch (ret)   // Pointer to CERT_INFO.
+			{
+			case -1:
+			{
+				textBox1->Text = ret.ToString();
+				break;
+			}
+			case 2:
+			{
+				textBox1->Text = "Signature correct. No Timestamp present \n";
+				break;
+			}
 
-		case 31:
-		{
-			textBox1->Text = "Signature correct. Отсутствуют вложенные в сообщение доказательства \n"+
-							 "проверки на отзыв (закодированные списки отозванных сертификатов и \n"+
-							 "закодированные ответы службы OCSP) в виде массивов\n";
-			break;
-		}
+			case 31:
+			{
+				textBox1->Text = "Signature correct. Отсутствуют вложенные в сообщение доказательства \n" +
+					"проверки на отзыв (закодированные списки отозванных сертификатов и \n" +
+					"закодированные ответы службы OCSP) в виде массивов\n";
+				break;
+			}
 
-		
 
-		case 0:
-		{
-			textBox1->Text = "ok";
-			break;
-		}
-		};
+
+			case 0:
+			{
+				textBox1->Text = "ok";
+				break;
+			}
+			};
 		}
 	}
 
 
 
-	private: System::Void UpdateViewCertInfo(string SubjectName)
+	private: System::Void UpdateViewCertInfo(string SubjectName, Object^ Tag)
 	{
-		textBox1->Text = cw->DisplayCertInfo(SubjectName);
-		toolStripStatusLabel1->Text ="Serial Number " +  cw->GetCertificatSerialNumber(SubjectName);
-		toolStripStatusLabel2->Text = SubjectName;
+		PCCERT_CONTEXT Certificat = cw->GetCertificatbySN((String^)Tag);
+		textBox1->Text = cw->DisplayCertInfo(Certificat);
+		toolStripStatusLabel1->Text = "Serial Number " + cw->GetCertificatSerialNumber(Certificat);
+		toolStripStatusLabel2->Text = "";
 	}
 
 
@@ -438,27 +491,29 @@ namespace FormSigner2 {
 	private: System::Void Certs_listBox_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 	{
 
-		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
+
 	}
 
 	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
-
+		if (listView_Certs->SelectedItems->Count == 1)
+			My_UI_SignFile_CSP_Utils_GOST2012((string)listView_Certs->SelectedItems[0]->Tag);
 	}
 
 
 	private: System::Void Certs_listBox_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		UpdateViewCertInfo((string)Certs_listBox->SelectedItem);
+
 	}
 
 
 			 //
 	private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+
 	}
 
 			 // sign wincrypt
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		My_UI_SignFile();
+		if (listView_Certs->SelectedItems->Count == 1)
+			My_UI_SignFile((string)listView_Certs->SelectedItems[0]->Tag);
 	}
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
@@ -466,8 +521,19 @@ namespace FormSigner2 {
 	}
 
 	private: System::Void button3_Click_1(System::Object^ sender, System::EventArgs^ e) {
-		My_UI_SignFile_CSP_Utils_GOST2012();
+
 	}
+	private: System::Void ListView_Certs_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		if (listView_Certs->SelectedItems->Count == 1)
+			UpdateViewCertInfo((string)listView_Certs->SelectedItems[0]->Text, listView_Certs->SelectedItems[0]->Tag);
+	}
+	private: System::Void ListView_Certs_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (listView_Certs->SelectedItems->Count == 1)
+			UpdateViewCertInfo((string)listView_Certs->SelectedItems[0]->Text, listView_Certs->SelectedItems[0]->Tag);
+	}
+
+
 	};
 }
 
