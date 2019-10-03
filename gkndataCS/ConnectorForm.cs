@@ -105,7 +105,7 @@ namespace GKNData
         public string District_Name;
 		public string IddleTimeOut;
 		/// <summary>
-		/// Количество кварталов в районе
+		/// blocks in district
 		/// </summary>
 		public int BlockCount;
         public DialogResult Result;
@@ -116,7 +116,7 @@ namespace GKNData
         }
 
         /// <summary>
-        /// Запись в реестр
+        /// Registry interop
         /// </summary>
         public void CfgRead()
         {
@@ -146,7 +146,7 @@ namespace GKNData
         }
 
         /// <summary>
-        /// Запись в реестр
+        /// Savings to reg
         /// </summary>
         public void CfgWrite()
         {

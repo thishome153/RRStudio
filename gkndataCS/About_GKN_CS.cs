@@ -15,14 +15,14 @@ namespace GKNData
             InitializeComponent();
             this.Text = String.Format("О {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion_1.Text = String.Format("Версия {0}", AssemblyVersion);
-			this.label_Version.Text = AssemblyProduct + "  " +String.Format("Версия {0}", AssemblyVersion);
+            this.labelVersion_1.Text = String.Format("Version {0}", AssemblyVersion);
+			this.label_Version.Text = AssemblyProduct + "  " +String.Format("version {0}", AssemblyVersion);
 			this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text += AssemblyDescription;
         }
 
-        #region Методы доступа к атрибутам сборки
+        #region Assembly properties routines 
 
         public string AssemblyTitle
         {

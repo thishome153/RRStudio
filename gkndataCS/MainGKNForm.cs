@@ -112,7 +112,7 @@ namespace GKNData
 		/// <summary>
 		/// Операции при загрузке/перезагрузке районов/кварталов
 		/// </summary>
-		/// <param name="tv">TreeView для отображения</param>
+		/// <param name="tv">Target TreeView for works</param>
 		private void ConnectOps(TreeView tv)
 		{
 			tv.BackColor = SystemColors.Control;
@@ -136,8 +136,8 @@ namespace GKNData
 
 		private bool ConnectGo()
 		{
-			CF.Cfg.CfgRead(); // Загрyзимся из реестра
-							  //  if (CF.ShowDialog() == DialogResult.Yes)
+			CF.Cfg.CfgRead(); // Read reg
+
 			TIMEOUT_DONE = Convert.ToInt16(CF.Cfg.IddleTimeOut);
 			{
 				if (CF.conn != null)
@@ -174,7 +174,7 @@ namespace GKNData
 					{ "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to " +
 							"use near '', '-1','C# GKNDATA connect',\t 'developer_machine', '10.66.77.400', 'this', 'u1'' at line 1"}
 					*/
-					StatusLabel_DBName.ToolTipText = "Ошибка соединения " + CF.conn.Database;
+					StatusLabel_DBName.ToolTipText = "Connect error " + CF.conn.Database;
 					StatusLabel_DBName.Image = GKNData.Properties.Resources.cross;
 					StatusLabel_AllMessages.Text = ex.Message;
 					this.treeView1.BackColor = Color.DarkRed;
@@ -194,7 +194,7 @@ namespace GKNData
 			{
 				CF.conn.Close();
 				if (CF.conn.State == ConnectionState.Closed) ;
-				StatusLabel_SubRf_CN.Text = "Отключено";
+				StatusLabel_SubRf_CN.Text = "Disconnected";
 				treeView1.BeginUpdate();
 				treeView1.Nodes.Clear();
 				treeView1.EndUpdate();
@@ -270,31 +270,30 @@ namespace GKNData
 			return (cnt > 0);
 		}
 
-		//-------------------------------- Редактируем -------------------------------
-		private bool Edit(TCurrentItem Item)
-		{
-			if (this.CF.conn.State == ConnectionState.Closed) return false;
-			if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
-			{
-				if (Edit(CadBloksList.GetBlock(Item.Item_id))) // реентерабельно вызываем
-				{
-					// ОБновим ноду на всякой случай
-					treeView1.SelectedNode.ToolTipText = Item.Item_id.ToString() + "*";
-					treeView1.SelectedNode.Text = ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
-				}
-			}
+        //-------------------------------- Edititng -------------------------------
+        private bool Edit(TCurrentItem Item)
+        {
+            if (this.CF.conn.State == ConnectionState.Closed) return false;
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+            {
+                if (Edit(CadBloksList.GetBlock(Item.Item_id)))
+                {
+                    // Update node while editing
+                    treeView1.SelectedNode.ToolTipText = Item.Item_id.ToString() + "*";
+                    treeView1.SelectedNode.Text = ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
+                }
+            }
 
-			if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
-			{
-				if (Edit(CadBloksList.GetParcel(Item.Item_id))) // реентерабельно вызываем
-				{
-					// ОБновим ноду на всякой случай
-					treeView1.SelectedNode.Text = ((TMyParcel)treeView1.SelectedNode.Tag).CN;
-					//treeView1.SelectedNode.ToolTipText = "item " + Item.Item_id.ToString()+ "отредактирован";
-				}
-			}
-			return false;
-		}
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+            {
+                if (Edit(CadBloksList.GetParcel(Item.Item_id)))
+                {
+                    // Update node while editing
+                    treeView1.SelectedNode.Text = ((TMyParcel)treeView1.SelectedNode.Tag).CN;
+                }
+            }
+            return false;
+        }
 
 		private bool Edit(TMyCadastralBlock block)
 		{

@@ -268,7 +268,7 @@
   <ItemGroup>
     <Content Include="gkndata.ico" />
     <Content Include="gkndataCS_ico.ico" />
-    <Content Include="Readme GKN Data.txt" />
+    <None Include="Readme GKN Data.md" />
     <None Include="Resources\table_refresh.png" />
     <None Include="Resources\heart.png" />
     <None Include="Resources\application_form.png" />
@@ -336,7 +336,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
