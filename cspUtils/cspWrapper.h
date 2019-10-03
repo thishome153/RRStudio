@@ -74,7 +74,8 @@ namespace cspUtils {
 		PCCERT_CONTEXT  GetCertificatbySN(CRYPT_INTEGER_BLOB SerialNumber);
 	public:
 		System::String^ GetCertificatSerialNumber(PCCERT_CONTEXT ret);
-		System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
+		System::String^ GetCertIssuerName(PCCERT_CONTEXT Certificat);
+		//System::String^ GetCertificatSerialNumber(System::String^ SubjectName);
 		System::String^ DisplayCertInfo(PCCERT_CONTEXT ret);
 			// Разбор полей спертификата в строку
 	public:	System::String^ DisplayCertInfo(System::String^ SerialNumber);

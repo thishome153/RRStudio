@@ -9,16 +9,25 @@ namespace RRTypes.CommonCast
 	{
 		public const char SplitChar = ':';
 
-		public static string CNToId(string cadNum)
-		{
-			var strNumbers = cadNum.Split(SplitChar);
-			List<long> numbers = new List<long>();
-			foreach (var item in strNumbers)
-			{
-				numbers.Add(long.Parse(item));
-			}
-			return string.Join(":", numbers.ToArray());
-		}
+        public static string CNToId(string cadNum)
+        {
+            var strNumbers = cadNum.Split(SplitChar);
+            List<long> numbers = new List<long>();
+            foreach (var item in strNumbers)
+            {
+                long itemaslong;
+                try
+                {
+                    itemaslong = long.Parse(item);
+                    numbers.Add(itemaslong);
+                }
+                catch (Exception ex)
+                {
+                    numbers.Add(-1);
+                }
+            }
+            return string.Join(":", numbers.ToArray());
+        }
 
 		public static bool IsCN(string value)
 		{

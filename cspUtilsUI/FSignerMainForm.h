@@ -81,6 +81,8 @@ namespace FormSigner2 {
 	private: System::Windows::Forms::Panel^ panel1;
 	private: System::Windows::Forms::Button^ button3;
 	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::ToolStrip^ toolStrip1;
+	private: System::Windows::Forms::ToolStripButton^ toolStripButton1;
 	protected:
 
 	private:
@@ -96,7 +98,7 @@ namespace FormSigner2 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::ListViewItem^ listViewItem4 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(2) {
+			System::Windows::Forms::ListViewItem^ listViewItem2 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(2) {
 				L"Item1",
 					L"Sub1"
 			}, -1));
@@ -117,9 +119,12 @@ namespace FormSigner2 {
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->toolStrip1 = (gcnew System::Windows::Forms::ToolStrip());
+			this->toolStripButton1 = (gcnew System::Windows::Forms::ToolStripButton());
 			this->menuStrip1->SuspendLayout();
 			this->statusStrip1->SuspendLayout();
 			this->panel1->SuspendLayout();
+			this->toolStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuStrip1
@@ -185,10 +190,10 @@ namespace FormSigner2 {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->textBox1->Location = System::Drawing::Point(0, 233);
+			this->textBox1->Location = System::Drawing::Point(0, 258);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(530, 225);
+			this->textBox1->Size = System::Drawing::Size(536, 203);
 			this->textBox1->TabIndex = 0;
 			// 
 			// statusStrip1
@@ -239,9 +244,9 @@ namespace FormSigner2 {
 			this->listView_Certs->FullRowSelect = true;
 			this->listView_Certs->GridLines = true;
 			this->listView_Certs->HideSelection = false;
-			listViewItem4->Tag = L"Tag0";
-			this->listView_Certs->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem4 });
-			this->listView_Certs->Location = System::Drawing::Point(0, 25);
+			listViewItem2->Tag = L"Tag0";
+			this->listView_Certs->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem2 });
+			this->listView_Certs->Location = System::Drawing::Point(0, 50);
 			this->listView_Certs->Name = L"listView_Certs";
 			this->listView_Certs->Size = System::Drawing::Size(536, 202);
 			this->listView_Certs->TabIndex = 10;
@@ -265,9 +270,9 @@ namespace FormSigner2 {
 			this->panel1->Controls->Add(this->button3);
 			this->panel1->Controls->Add(this->button2);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Right;
-			this->panel1->Location = System::Drawing::Point(536, 25);
+			this->panel1->Location = System::Drawing::Point(536, 50);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(151, 436);
+			this->panel1->Size = System::Drawing::Size(151, 411);
 			this->panel1->TabIndex = 11;
 			// 
 			// button3
@@ -298,6 +303,25 @@ namespace FormSigner2 {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
+			// toolStrip1
+			// 
+			this->toolStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolStripButton1 });
+			this->toolStrip1->Location = System::Drawing::Point(0, 25);
+			this->toolStrip1->Name = L"toolStrip1";
+			this->toolStrip1->Size = System::Drawing::Size(687, 25);
+			this->toolStrip1->TabIndex = 13;
+			this->toolStrip1->Text = L"toolStrip1";
+			// 
+			// toolStripButton1
+			// 
+			this->toolStripButton1->DisplayStyle = System::Windows::Forms::ToolStripItemDisplayStyle::Image;
+			this->toolStripButton1->ImageTransparentColor = System::Drawing::Color::Magenta;
+			this->toolStripButton1->Name = L"toolStripButton1";
+			this->toolStripButton1->Size = System::Drawing::Size(23, 22);
+			this->toolStripButton1->Text = L"Sig";
+			this->toolStripButton1->ToolTipText = L"Open signature";
+			this->toolStripButton1->Click += gcnew System::EventHandler(this, &Form1::ToolStripButton1_Click);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -307,6 +331,7 @@ namespace FormSigner2 {
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->statusStrip1);
 			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->toolStrip1);
 			this->Controls->Add(this->menuStrip1);
 			this->MainMenuStrip = this->menuStrip1;
 			this->MinimumSize = System::Drawing::Size(461, 431);
@@ -318,6 +343,8 @@ namespace FormSigner2 {
 			this->statusStrip1->ResumeLayout(false);
 			this->statusStrip1->PerformLayout();
 			this->panel1->ResumeLayout(false);
+			this->toolStrip1->ResumeLayout(false);
+			this->toolStrip1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -344,19 +371,21 @@ namespace FormSigner2 {
 			void* blob = ci->Serial;
 			listView_Certs->Items->Add(Cert_Item);
 		}
-
 	}
 
 
 	private: System::Void âûõîäToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 	}
+
 	private: System::Void toolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 		ViewCMSInfo("*.sig");
 	}
+
 	private: System::Void Form1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 
 	}
+
 	private: System::Void îÏðîãðàììåToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 		FS2_About^ FormAbout = (gcnew FS2_About());
 		FormAbout->ShowDialog();
@@ -432,7 +461,7 @@ namespace FormSigner2 {
 
 	}
 
-			 // Îòîáîàçèì UI signature
+			 // View UI signature
 	private: System::Void ViewCMSInfo(string signatureName) {
 		this->openFileDialog1->DefaultExt = "*.sig";
 		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
@@ -480,7 +509,7 @@ namespace FormSigner2 {
 		PCCERT_CONTEXT Certificat = cw->GetCertificatbySN((String^)Tag);
 		textBox1->Text = cw->DisplayCertInfo(Certificat);
 		toolStripStatusLabel1->Text = "Serial Number " + cw->GetCertificatSerialNumber(Certificat);
-		toolStripStatusLabel2->Text = "";
+		toolStripStatusLabel2->Text = "Issuer " + cw->GetCertIssuerName(Certificat);
 	}
 
 
@@ -534,6 +563,9 @@ namespace FormSigner2 {
 	}
 
 
+	private: System::Void ToolStripButton1_Click(System::Object^ sender, System::EventArgs^ e) {
+		ViewCMSInfo("*.sig");
+	}
 	};
 }
 

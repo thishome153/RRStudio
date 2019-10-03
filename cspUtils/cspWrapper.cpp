@@ -707,10 +707,19 @@ namespace cspUtils {
 		else return "";
 	}
 
+	System::String^ WinCryptWrapper::GetCertIssuerName(PCCERT_CONTEXT Certificat)
+	{
+		//throw gcnew System::NotImplementedException();
+		// TODO: insert return statement here
+		return LPTSTRToString(SignerUtils::wincrypt::GetCertIssuerName(Certificat));
+	}
+
+	/*
 	System::String^ WinCryptWrapper::GetCertificatSerialNumber(System::String^ SubjectName)
 	{
 		return (GetCertificatSerialNumber(GetCertificat(SubjectName)));
 	}
+	*/
 
 	System::String^ WinCryptWrapper::DisplayCertInfo(PCCERT_CONTEXT	ret)
 	{
@@ -718,7 +727,7 @@ namespace cspUtils {
 		String^ res;
 		DWORD sz = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData;
 		PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
-		res = "Издатель: " + LPTSTRToString(SignerUtils::wincrypt::GetCertIssuerName(ret)) +
+		res = "Издатель: " +  GetCertIssuerName(ret) +
 			"\r\n" + " e-mail:" + LPTSTRToString(SignerUtils::wincrypt::GetCertEmail(ret)) +
 			"\r\n" + " серийный номер: " + PBYTEToStr(serial, sz) +
 			"\r\n\ Срок действия " + GetCertDateExpirate(ret); //LPTSTRToString(SignerUtils::wincrypt::GetCertDateExp(ret)) +
