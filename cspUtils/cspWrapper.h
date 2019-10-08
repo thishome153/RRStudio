@@ -27,11 +27,13 @@ namespace cspUtils {
 
 #pragma managed
 	//  Certificate context struct CLR wrapper:
+	/*
 	public ref struct PCCERT_CONTEXT_CLR {
 	public: PCCERT_CONTEXT* Item;
 	public:	int id;
 	};
-
+	*/
+	/*
 	public ref class PCCERT_CONTEXT_WR {
 	public: int id;
 
@@ -53,7 +55,8 @@ namespace cspUtils {
 
 	public: PCCERT_CONTEXT_WR();
 	};
-
+	*/
+	
 	public ref struct CertInfo
 	{
 		String^ ValidNotAfter;
@@ -62,7 +65,7 @@ namespace cspUtils {
 		CRYPT_INTEGER_BLOB* Serial;
 	};
 
-
+	
 	// Windows 'wincrypt' wrapper class. Simplify usage of system cryptography
 	public ref class WinCryptWrapper
 	{
@@ -97,8 +100,8 @@ namespace cspUtils {
 
 		// Отображение системного окна свойств подписи
 	public:	 int  DisplaySig(System::String^ FileSign, System::IntPtr Parent);
-	public:	PCCERT_CONTEXT_CLR^ GetCertificatCLR(System::String^ SubjectName);
-	public:	PCCERT_CONTEXT_WR^ GetCertificatWrapped(System::String^ SubjectName);
+	//public:	PCCERT_CONTEXT_CLR^ GetCertificatCLR(System::String^ SubjectName);
+	//public:	PCCERT_CONTEXT_WR^ GetCertificatWrapped(System::String^ SubjectName);
 
 
 

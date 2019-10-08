@@ -92,7 +92,7 @@ namespace cspUtils {
 	*/
 
 
-
+	/*
 	PCCERT_CONTEXT_CLR^ CadesWrapper::GetCertificatCLR(System::String^ SubjectName)
 	{
 		PCCERT_CONTEXT_CLR^ clr = gcnew PCCERT_CONTEXT_CLR();
@@ -101,6 +101,7 @@ namespace cspUtils {
 		return  clr;//PCCERT_CONTEXT_CLR();
 	}
 
+	
 	PCCERT_CONTEXT_WR^ CadesWrapper::GetCertificatWrapped(System::String^ SubjectName)
 	{
 		PCCERT_CONTEXT_WR^ res = gcnew PCCERT_CONTEXT_WR();
@@ -108,7 +109,7 @@ namespace cspUtils {
 		res->Certificat = &cert;
 		return res;
 	}
-
+	*/
 
 
 	/*
@@ -584,12 +585,13 @@ namespace cspUtils {
 
 
 
-
+	/*
 	PCCERT_CONTEXT_WR::PCCERT_CONTEXT_WR()
 	{
 		//throw gcnew System::NotImplementedException();
 		this->id = 1975;// watch value
 	}
+	*/
 
 	System::String^ WinCryptWrapper::GetCertDateExpirate(PCCERT_CONTEXT Certificat)
 	{
