@@ -27,10 +27,10 @@
     <ClCompile Include="cspUtilsIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
+    <ClCompile Include="cspWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cspWrapper.cpp">
+    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

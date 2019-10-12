@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Pkcs;
 
 // Crypto extentions Microsoft CSP: Capi COM
-using CAPICOM;
+//using CAPICOM;
 
 
 namespace netFteo.Crypt
@@ -335,7 +335,6 @@ namespace netFteo.Crypt
             return false;
         }
 
-
         public static bool VerifyHashes(string text, byte[] signature, string certPath)
 
         {
@@ -564,6 +563,7 @@ namespace netFteo.Crypt
             }
         }
 
+        #if (!COM_DISABLED)
         public static bool TestCAPICOM()
         {
             try
@@ -577,6 +577,7 @@ namespace netFteo.Crypt
                 return false;
             }
         }
+#endif
     }
 
 

@@ -5,13 +5,13 @@
     <ClCompile Include="cspUtilsFM.cpp" />
     <ClCompile Include="FS2_About.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
-      <Filter>Fixosoft SDK</Filter>
-    </ClCompile>
     <ClCompile Include="..\cspUtils\SignerUtils.cpp" />
     <ClCompile Include="..\cspUtils\cspUtilsIO.cpp" />
     <ClCompile Include="..\cspUtils\cspWrapper.cpp">
       <Filter>cspWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
+      <Filter>Fixosoft SDK</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

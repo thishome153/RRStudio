@@ -154,27 +154,33 @@ namespace GKNData
             else return null;
         }
 
-		public MemoryStream GetKPT11Body(MySqlConnection conn, int kpt_id)
-		{
-			if (conn == null) return null;
-			if (conn.State != ConnectionState.Open) return null;
+        public MemoryStream GetKPT11Body(MySqlConnection conn, int kpt_id)
+        {
+            if (conn == null) return null;
+            if (conn.State != ConnectionState.Open) return null;
 
-			data = new DataTable();
-			da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
-											" OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11" +
-											" where kpt_id = " + kpt_id.ToString(), conn);
-
-			da.Fill(data);
-
-			if (data.Rows.Count == 1)
-			{
-				DataRow row = data.Rows[0];
-				byte[] outbyte = (byte[])row[1];
-				MemoryStream res = new MemoryStream(outbyte);
-				return res;
-			}
-			else return null;
-		}
+            data = new DataTable();
+            da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
+                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11" +
+                                            " where kpt_id = " + kpt_id.ToString(), conn);
+            try
+            {
+                da.Fill(data);
+                if (data.Rows.Count == 1)
+                {
+                    DataRow row = data.Rows[0];
+                    byte[] outbyte = (byte[])row[1];
+                    MemoryStream res = new MemoryStream(outbyte);
+                    return res;
+                }
+                else return null;
+            }
+            catch (Exception ex)
+            {
+                object exept = ex;
+                return null;
+            }
+        }
 
 		private TFileHistory LoadBlockHistory(MySqlConnection conn, int block_id)
         {
@@ -236,6 +242,7 @@ namespace GKNData
         private void ReadXMLfromSelectedNode(int item_id)
         {
 		 dFileTypes item_type =	ITEM.KPTXmlBodyList.GetFileType(item_id);
+
 			if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
 			{
 				switch (item_type)

@@ -88,6 +88,7 @@ namespace XMLReaderCS
 
 					try
                     {
+                        /* Diable COM (CADESCOm and capicom)
                         if (netFteo.Crypt.CADESCOM.CadesCOMWrapper.TestCADESCOM()) //check COM
                         {
                             netFteo.Crypt.CADESCOM.CAdESCOMCert GOST_Cert = new netFteo.Crypt.CADESCOM.CAdESCOMCert();
@@ -104,6 +105,7 @@ namespace XMLReaderCS
                                     listView_Details.Items.Add(subExp23);
                                 }
                         }
+                        */
                     }
 
                     catch (System.Runtime.InteropServices.COMException  ex)
@@ -121,7 +123,7 @@ namespace XMLReaderCS
         }
 
 
-
+        /*
         private void SignFileGOST(string SubjectCNName)
         {
             if (netFteo.Crypt.Wrapper.TestCAPICOM())
@@ -176,7 +178,7 @@ namespace XMLReaderCS
                 listView_Details.Items.Add(it);
             }
         }
-
+*/
      
 
 
@@ -241,7 +243,7 @@ namespace XMLReaderCS
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            SignFileGOST(listView_certs.SelectedItems[0].Text);
+            //SignFileGOST(listView_certs.SelectedItems[0].Text);
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)

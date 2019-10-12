@@ -1,5 +1,5 @@
 ﻿// Copyright ©2018, Fixosoft (serg.home153@gmail.com)
-// All rights reserved.
+// All lefts reserved.
 //
 //****************************  CADES -  GOST CSP territorry   ****************************
 //Crypto extension for GOST`s: CAdES - CMS Advanced Electronic Signature. 
@@ -14,7 +14,9 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using CAPICOM;
+
+#if (!COM_DISABLED)
+//using CAPICOM;
 
 
 namespace netFteo.Crypt.CADESCOM
@@ -24,6 +26,7 @@ namespace netFteo.Crypt.CADESCOM
     /// Cadescom type wrapper
     /// for "CAdESCOM.CPCertificate"
     /// </summary>
+    
     public class CAdESCOMCert
     {
        public CAdESCOM.CPCertificate api;
@@ -59,15 +62,14 @@ namespace netFteo.Crypt.CADESCOM
 
         
     }
-
+    
     /// <summary>
     /// GOST CSP Provider wrapper class. Требует установленнoго CADESCOM (cadescom.dll)
     /// </summary>
 
     public static class CadesCOMWrapper
     {
-
-        public static bool TestCADESCOM()
+       public static bool TestCADESCOM()
         {
             try
             {
@@ -460,6 +462,7 @@ namespace netFteo.Crypt.CADESCOM
 
 
     } 
+
  }
 
  
@@ -469,3 +472,4 @@ namespace netFteo.Crypt.CADESCOM
 
 
 
+#endif

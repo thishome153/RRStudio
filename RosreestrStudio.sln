@@ -155,7 +155,8 @@ Global
 		{930BCD50-4F0B-42E9-A472-366948D35D01}.WinXP Release|x64.ActiveCfg = WinXP Release|x64
 		{930BCD50-4F0B-42E9-A472-366948D35D01}.WinXP Release|x64.Build.0 = WinXP Release|x64
 		{930BCD50-4F0B-42E9-A472-366948D35D01}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
-		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Debug|x64.ActiveCfg = Debug|Win32
+		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Debug|x64.ActiveCfg = Debug|x64
+		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Debug|x64.Build.0 = Debug|x64
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Debug|x86.ActiveCfg = Debug|Win32
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Debug|x86.Build.0 = Debug|Win32
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.Release|x64.ActiveCfg = Release|Win32
@@ -164,7 +165,8 @@ Global
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.WinXP Release|x64.ActiveCfg = WinXP Release|Win32
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.WinXP Release|x86.ActiveCfg = WinXP Release|Win32
 		{511A6A09-97CE-4FEB-B672-06151EB78FEE}.WinXP Release|x86.Build.0 = WinXP Release|Win32
-		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Debug|x64.ActiveCfg = Debug|Win32
+		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Debug|x64.ActiveCfg = Debug|x64
+		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Debug|x64.Build.0 = Debug|x64
 		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Debug|x86.ActiveCfg = Debug|Win32
 		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Debug|x86.Build.0 = Debug|Win32
 		{4B8B7125-669C-4D10-9609-FB89E7A67A9F}.Release|x64.ActiveCfg = Release|Win32
@@ -187,11 +189,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
-		BuildVersion_UpdateAssemblyVersion = False
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_StartDate = 2014/1/25
-		BuildVersion_UseGlobalSettings = False
 		BuildVersion_BuildAction = ReBuild
+		BuildVersion_UseGlobalSettings = False
+		BuildVersion_StartDate = 2014/1/25
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
 	EndGlobalSection
 EndGlobal
