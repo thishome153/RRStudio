@@ -356,7 +356,19 @@ namespace FormSigner2 {
 
 	}
 
+	private: System::Void CheckApiLite() {
 
+		LPCWSTR dllName_ = L"cspApiLite.dll";
+		LPCSTR SignFile_api_Lite = "SignFile_api_Lite";
+		typedef  int (*LP_func_SignFile_api_Lite) (char* FileName, PCCERT_CONTEXT SignerCertificat);	//Новый тип - указатель на функцию	 
+		HMODULE hMod_L = LoadLibrary(dllName_);
+		LP_func_SignFile_api_Lite func = (LP_func_SignFile_api_Lite)GetProcAddress(hMod_L, SignFile_api_Lite);
+		/*
+		LPFunc21  func21 = (LPFunc21)GetProcAddress(hMod_L, fncName21);
+		fteo::api::TMyPoint* testPoint = func21(65535, "Моя точка в dll. Name & id send for library");
+		*/
+
+	}
 
 	private: System::Void ListCertificates() {
 
@@ -514,6 +526,7 @@ namespace FormSigner2 {
 
 
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+		CheckApiLite();
 		this->ListCertificates();
 	}
 

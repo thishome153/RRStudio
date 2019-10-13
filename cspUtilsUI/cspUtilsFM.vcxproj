@@ -105,7 +105,7 @@
     <OutDir>..\Builds\x86\$(Configuration)\</OutDir>
     <IntDir>c:\TEMP\Intermediates\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;$(SolutionDir)..\CryptoProSDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;..\cspUtils;$(SolutionDir)..\CryptoProSDK\include;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -284,9 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
-    <ClCompile Include="..\cspUtils\cspUtilsIO.cpp" />
+    <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp" />
+    <ClCompile Include="..\cspApiLite\SignerUtils.cpp" />
     <ClCompile Include="..\cspUtils\cspWrapper.cpp" />
-    <ClCompile Include="..\cspUtils\SignerUtils.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="cspUtilsFM.cpp" />
     <ClCompile Include="FS2_About.cpp" />

@@ -40,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspUI", "cspUtilsUI\cspUtil
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspConsole", "cspConsole\csptest.vcxproj", "{77416ECC-C7C8-4345-8611-776B62CFAA7E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cspApiLite", "cspApiLite\cspApiLite.vcxproj", "{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -184,16 +186,28 @@ Global
 		{77416ECC-C7C8-4345-8611-776B62CFAA7E}.WinXP Release|x64.ActiveCfg = WinXP Release|Win32
 		{77416ECC-C7C8-4345-8611-776B62CFAA7E}.WinXP Release|x86.ActiveCfg = WinXP Release|Win32
 		{77416ECC-C7C8-4345-8611-776B62CFAA7E}.WinXP Release|x86.Build.0 = WinXP Release|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Debug|x64.ActiveCfg = Debug|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Debug|x64.Build.0 = Debug|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Debug|x86.ActiveCfg = Debug|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Debug|x86.Build.0 = Debug|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Release|x64.ActiveCfg = Release|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Release|x64.Build.0 = Release|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Release|x86.ActiveCfg = Release|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.Release|x86.Build.0 = Release|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.WinXP Release|x64.ActiveCfg = Release|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.WinXP Release|x64.Build.0 = Release|x64
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.WinXP Release|x86.ActiveCfg = Release|Win32
+		{725318A1-C3E1-4CC2-B2A9-AA3E0105BDF6}.WinXP Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildAction = ReBuild
-		BuildVersion_UseGlobalSettings = False
-		BuildVersion_StartDate = 2014/1/25
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_UpdateAssemblyVersion = False
 		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_StartDate = 2014/1/25
+		BuildVersion_UseGlobalSettings = False
+		BuildVersion_BuildAction = ReBuild
 	EndGlobalSection
 EndGlobal

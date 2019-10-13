@@ -229,16 +229,20 @@ namespace cspUtils {
 	System::Int16 CadesWrapper::Sign_Example1(System::String^ filename, System::String^ SubjectName)
 	{
 		//Certificat
-		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
+		/*
+		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName.);
 		int ret = SignerUtils::examples::SignCAdES_Example_01(filename, SignerUtils::wincrypt::GetCertificat(SubjectName));
+		*/
 		return -1;
 	}
 
 	System::Int16 CadesWrapper::Sign_Examples(System::String^ filename, System::String^ SubjectName)
 	{
 		//Certificat
+		/*
 		PCCERT_CONTEXT pContext = SignerUtils::wincrypt::GetCertificat(SubjectName);
 		int ret = SignerUtils::examples::SignCAdES_Example_01(filename, SignerUtils::wincrypt::GetCertificat(SubjectName));
+		*/
 		return -1;
 	}
 
@@ -882,7 +886,8 @@ namespace cspUtils {
 		PCCERT_CONTEXT	ret = GetCertificatbySN(SerialNumber);
 		if (ret)
 		{
-			return SignerUtils::wincrypt::SignFileWinCrypt(filename, ret);
+			
+			return SignerUtils::wincrypt::SignFileWinCrypt(StringtoChar(filename), ret);
 		}
 		else
 			return 21; //certificate error

@@ -9,11 +9,11 @@
       <UniqueIdentifier>{1852ecc8-3fb3-4edc-a90d-01e0a72bb7a6}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;rc</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Source Files">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{2c071973-7890-4c41-9762-a928d7997cea}</UniqueIdentifier>
       <Extensions>c</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Source Files\getopt">
+    <Filter Include="Source Files\getopt">
       <UniqueIdentifier>{afb7edb5-5737-4732-87b7-6b6b34a11fab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -39,94 +39,100 @@
     <ClInclude Include="src\include\WinCryptEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="boost_examples.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base64.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cmsenclo.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cmslow.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cmssf.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cryptenc.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cryptlo.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cryptsf.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ctkey.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ctmsg.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="delayhlp.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="export.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hashlo.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="makecert.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mtime.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mycert.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="property.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="reqcert.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="signlo.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="signlo1.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="signtsf.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stress.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tls.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tmain.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tprf.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WebClient.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WebServer.c">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="getop1.c">
-      <Filter>Resource Files\Source Files\getopt</Filter>
+      <Filter>Source Files\getopt</Filter>
     </ClCompile>
     <ClCompile Include="getopt.c">
-      <Filter>Resource Files\Source Files\getopt</Filter>
+      <Filter>Source Files\getopt</Filter>
+    </ClCompile>
+    <ClCompile Include="boost_examples.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

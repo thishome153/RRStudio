@@ -13,7 +13,7 @@
 
 
 #include "mycert.h"
-
+#include "boost_examples.h"
 
 
 #ifndef MAIN
@@ -39,6 +39,7 @@ int MAIN (int argc, char **argv)
 {
     int	ret = 1; /* код возврата плохо по умолчанию */
     int	print_help = 0;
+	int	boost_test = 0;
 
   
 #ifdef _DEBUG
@@ -113,7 +114,7 @@ int MAIN (int argc, char **argv)
 #ifdef TEXPORT
 	{"ep",		no_argument,		NULL, 'E'},
 #endif /* EXPORT */
-
+	{"boost",	no_argument,		NULL, 'b'},
 	{"help",	no_argument,		NULL, 'h'},
 	{0, 0, 0, 0}
     };
@@ -152,7 +153,14 @@ int MAIN (int argc, char **argv)
 	    continue;
 
 
-
+	case 'b':
+	{
+		boost_test = 1;
+		printf(" boost c++ library test: \n");
+		Boost_MultipleVector();
+		Boost_SplitString("hello abc-*-ABC-*-aBc goodbye", "*");
+		break;
+	}
 
 	case 'h':
 	    ret = 0;
@@ -287,10 +295,12 @@ int MAIN (int argc, char **argv)
 	break;
 #endif /* TCSPCHACK */
     }
+
 bad:    
     if (print_help) {
 		printf(" command line bad. Use these papams: \n");
 	printf("%s [global options] [mode] [options]\n",prog);
+
 
 /*
 #ifdef Fixosoft
@@ -344,17 +354,21 @@ bad:
 #endif /* CRYPTUI */
 
 #ifdef TSTRESS
-	fprintf(stdout,"  -stress       stress test for Acquire/ReleaseContext\n");
+	fprintf(stdout,"  -stress        stress test for Acquire/ReleaseContext\n");
 #endif /* TSTRESS */
 
 #ifdef TEXPORT
-    fprintf(stdout,"  -ep           public key export test \n");
+    fprintf(stdout,"  -ep            public key export test \n");
 #endif /* TEXPORT */
 
 #ifdef TCSPCHECK
 	fprintf(stdout,"  -csp-check    check CSP functionality\n");
 #endif /* TCSPCHECK */
+	fprintf(stdout, "  -boost            Boost library testing example1 \n");
     }
+
+
+
 
  // Вывод времени... необяхательное, но красиво
 	if( !notime )

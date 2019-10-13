@@ -110,7 +110,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)\cspApiLite;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
     <ExtensionsToDeleteOnClean>*.metagen;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
   </PropertyGroup>
@@ -163,7 +163,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_STDAFAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -267,13 +267,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
+    <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp" />
+    <ClCompile Include="..\cspApiLite\SignerUtils.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="cspWrapper.cpp">
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</SDLCheck>
     </ClCompile>
-    <ClCompile Include="cspUtilsIO.cpp" />
-    <ClCompile Include="SignerUtils.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -285,10 +285,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CryptoProSDK\include\cades.h" />
+    <ClInclude Include="..\cspApiLite\cspUtilsIO.h" />
+    <ClInclude Include="..\cspApiLite\SignerUtils.h" />
     <ClInclude Include="cspWrapper.h" />
-    <ClInclude Include="cspUtilsIO.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SignerUtils.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>

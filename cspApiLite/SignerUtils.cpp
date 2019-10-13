@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "SignerUtils.h"
 #include "cspUtilsIO.h"
-#include "MyStrMarshal.h"
+//#include "MyStrMarshal.h"
 #include "cades.h"
+//#include <wincrypt.h>
 #include "WinCryptEx.h"// Интерфейс КриптоПро CSP, добавление к WinCrypt.h
 #include <vector>
 
 
-using namespace System::IO;
+//using namespace System::IO;
 
 
 namespace SignerUtils {
@@ -15,105 +16,109 @@ namespace SignerUtils {
 	namespace wincrypt {
 		//Подпись файла через Wincrypt
 		// doc : https://docs.microsoft.com/en-us/windows/win32/seccrypto/example-c-program-signing-a-message-and-verifying-a-message-signature
-		int  SignFileWinCrypt(System::String^ FileToSign, PCCERT_CONTEXT SignerCert)
+		int  SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT SignerCert)
 		{
 			const int detached = 1;
 			LPVOID	    mem_tbs = NULL;
 			size_t	    mem_len = 0;
 			DWORD		signed_len = 0;
 			BYTE* signed_mem = NULL;  // Буффер с подписью
-			LPCSTR FileName = (LPCSTR)StringtoChar(FileToSign);
-			char* OutFileName = StringtoChar(Path::GetFileName(FileToSign) + ".sig");
+			//LPCSTR FileName = (LPCSTR)StringtoChar(FileToSign);
+			std::string fname(FileName);
+			//char* OutFileName =  StringtoChar(Path::GetFileName(FileToSign) + ".sig");
+			std::string OutFileName = fname + ".sig";
 			CRYPT_SIGN_MESSAGE_PARA param;
 			int retFile = cspUtils::IO::read_file(FileName, &mem_len, &mem_tbs);
-			if (retFile = 0) goto err;
-
-			DWORD		MessageSizeArray[1];
-			const BYTE* MessageArray[1];
-
-			MessageArray[0] = (BYTE*)mem_tbs;// file body here in [0]
-			MessageSizeArray[0] = mem_len;
-
-
-			/* Установим параметры*/
-			/* Обязательно нужно обнулить все поля структуры. */
-			/* Иначе это может привести к access violation в функциях CryptoAPI*/
-			/* В примере из MSDN это отсутствует*/
-			memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
-			param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
-			param.dwMsgEncodingType = TYPE_DER; //X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
-			param.pSigningCert = SignerCert;//
-			param.HashAlgorithm.pszObjId = szOID_CP_GOST_R3410_12_256;// works fine - szOID_CP_DH_12_256;
-			param.HashAlgorithm.Parameters.cbData = 0; // NULL by docs
-			param.HashAlgorithm.Parameters.pbData = NULL;
-			param.cMsgCert = 1;		// 0 - no certificates are included in the signed message
-			param.rgpMsgCert = &SignerCert; // NULL;
-			param.cAuthAttr = 0;
-			param.dwInnerContentType = 0;
-			param.cMsgCrl = 0;  // Cписки отзыва
-			param.cUnauthAttr = 0;
-			param.dwFlags = 0; //
-			param.pvHashAuxInfo = NULL;	/* не используется*/
-			param.rgAuthAttr = NULL;
-
-			/*  cades here :) ?!
-			CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
-			para.pSignMessagePara = &param;
-			*/
-
-			PCRYPT_DATA_BLOB pSignedMessage = 0;
-			/* First call - just calculate size CMS */
-			int ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray, NULL, &signed_len);
-
-			if (ret)
+			if (retFile)
 			{
-				// printf("Calculated signature (or signed message) length: %lu\n", signed_len);
-				signed_mem = (BYTE*)malloc(signed_len);
-				if (!signed_mem)
-					goto err;
-			}
-			else
-			{
-				return 25;//HandleErrorFL("Signature creation error");
-			}
-			/*--------------------------------------------------------------------*/
-			/* Second call - build CMS*/
-			ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray,
-				signed_mem,
-				&signed_len);
-			if (ret) {
-				printf("Signature was done. Signature (or signed message) length: %lu\n", signed_len);
-			}
-			else
-			{
-				return 26;//HandleErrorFL("Signature creation error");
-			}
+				DWORD		MessageSizeArray[1];
+				const BYTE* MessageArray[1];
 
-			if (cspUtils::IO::write_file(OutFileName, signed_len, signed_mem)) {
-				// printf ("Output file (%s) has been saved\n", outfile);
-			}
-			
-			//Cleanup memory ? :
-			/*
-			if (SignerCert)
-			{
-				CertFreeCertificateContext(SignerCert);
-			}
-			*/
-			return 1; // norm. all ok
+				MessageArray[0] = (BYTE*)mem_tbs;// file body here in [0]
+				MessageSizeArray[0] = mem_len;
 
+
+				/* Установим параметры*/
+				/* Обязательно нужно обнулить все поля структуры. */
+				/* Иначе это может привести к access violation в функциях CryptoAPI*/
+				/* В примере из MSDN это отсутствует*/
+				memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
+				param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
+				param.dwMsgEncodingType = TYPE_DER; //X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
+				param.pSigningCert = SignerCert;//
+				char    OID[64] = szOID_CP_GOST_R3410_12_256;
+				param.HashAlgorithm.pszObjId = OID; //szOID_CP_GOST_R3410_12_256;// works fine - szOID_CP_DH_12_256;
+				param.HashAlgorithm.Parameters.cbData = 0; // NULL by docs
+				param.HashAlgorithm.Parameters.pbData = NULL;
+				param.cMsgCert = 1;		// 0 - no certificates are included in the signed message
+				param.rgpMsgCert = &SignerCert; // NULL;
+				param.cAuthAttr = 0;
+				param.dwInnerContentType = 0;
+				param.cMsgCrl = 0;  // Cписки отзыва
+				param.cUnauthAttr = 0;
+				param.dwFlags = 0; //
+				param.pvHashAuxInfo = NULL;	/* не используется*/
+				param.rgAuthAttr = NULL;
+
+				/*  cades here :) ?!
+				CADES_SIGN_MESSAGE_PARA para = { sizeof(para) };
+				para.pSignMessagePara = &param;
+				*/
+
+				PCRYPT_DATA_BLOB pSignedMessage = 0;
+				/* First call - just calculate size CMS */
+				int ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray, NULL, &signed_len);
+
+				if (ret)
+				{
+					// printf("Calculated signature (or signed message) length: %lu\n", signed_len);
+					signed_mem = (BYTE*)malloc(signed_len);
+					if (!signed_mem)
+						goto err;
+				}
+				else
+				{
+					return 25;//HandleErrorFL("Signature creation error");
+				}
+				/*--------------------------------------------------------------------*/
+				/* Second call - build CMS*/
+				ret = CryptSignMessage(&param, detached, 1, MessageArray, MessageSizeArray,
+					signed_mem,
+					&signed_len);
+				if (ret) {
+					printf("Signature was done. Signature (or signed message) length: %lu\n", signed_len);
+				}
+				else
+				{
+					return 26;//HandleErrorFL("Signature creation error");
+				}
+
+				if (cspUtils::IO::write_file(OutFileName.c_str(), signed_len, signed_mem)) {
+					// printf ("Output file (%s) has been saved\n", outfile);
+				}
+
+				//Cleanup memory ? :
+				/*
+				if (SignerCert)
+				{
+					CertFreeCertificateContext(SignerCert);
+				}
+				*/
+				return 1; // norm. all ok
+			}
 		err:
 			if (signed_mem) free(signed_mem);
 			//    release_file_data_pointer (mem_tbs);
+			return -1;
 		}
 
 
-		
+
 		//  Результат - сертификат типа PCCERT_CONTEXT
 		//  Функция чтения сертификата из системного справочника пользователя'MY'
-		PCCERT_CONTEXT GetCertificat(System::String^ SubjectName)
+		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject)
 		{
-			if (!SubjectName) return NULL;
+			if (!lpszCertSubject) return NULL;
 
 			PCCERT_CONTEXT  ret = NULL;
 			HANDLE	    hCertStore = 0;
@@ -123,7 +128,7 @@ namespace SignerUtils {
 			FindName->cbData =sizeof(StringtoChar(CertName));
 			FindName->pbData =(BYTE *) (StringtoChar(CertName));
 			*/
-			LPCSTR lpszCertSubject = (LPCSTR)StringtoChar(SubjectName); //для случая поиска CERT_FIND_SUBJECT_STR
+			//LPCSTR lpszCertSubject = SubjectName.c_str();  //(LPCSTR)StringtoChar(SubjectName); //для случая поиска CERT_FIND_SUBJECT_STR
 
 			hCertStore = CertOpenStore(
 				CERT_STORE_PROV_SYSTEM, /* LPCSTR lpszStoreProvider*/
@@ -232,7 +237,7 @@ namespace SignerUtils {
 			DWORD cbSize;
 			LPTSTR pszName;
 			 LONG testTimeValiduty = CertVerifyTimeValidity(NULL, Certificat->pCertInfo);
-			
+
 			FILETIME timeAfter = Certificat->pCertInfo->NotAfter;
 			switch (CertVerifyTimeValidity(
 				NULL,               // Use current time.
@@ -259,9 +264,9 @@ namespace SignerUtils {
 		}
 */
 
-		// usage
-		//     CHAR msgText[256];
-		//     getLastErrorText(msgText,sizeof(msgText));
+// usage
+//     CHAR msgText[256];
+//     getLastErrorText(msgText,sizeof(msgText));
 		CHAR* GetLastErrorText(                  // converts "Lasr Error" code into text
 			CHAR* pBuf,                        //   message buffer
 			ULONG bufSize)                     //   buffer size
@@ -281,7 +286,7 @@ namespace SignerUtils {
 				NULL,
 				GetLastError(),
 				LANG_NEUTRAL,
-				(LPTSTR)& pTemp,
+				(LPTSTR)&pTemp,
 				0,
 				NULL);
 
@@ -290,7 +295,7 @@ namespace SignerUtils {
 			}
 			else {
 				// pTemp[strlen(pTemp)-2]='\0'; //remove cr and newline character
-				sprintf(pBuf, "%0.*s (0x%x)", bufSize - 16, pTemp, GetLastError());
+				//std::cout << "Getlasterror" << std::end;//sprintf(pBuf, "%0.*s (0x%x)", bufSize - 16, pTemp, GetLastError());
 				LocalFree((HLOCAL)pTemp);
 			}
 			return(pBuf);
@@ -322,7 +327,7 @@ namespace SignerUtils {
 
 	}
 
-
+#ifdef RememberExamples
 	namespace examples {
 
 		/**************************************************************************************
@@ -355,6 +360,10 @@ namespace SignerUtils {
 			CadesFreeBlob(pSignedMessage);
 			return 0;
 		}
+
+
+
+
 
 		int  SignCadesFile(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
 		{
@@ -515,9 +524,9 @@ namespace SignerUtils {
 
 			return 0; // ok
 		}
-
-
 	}
+#endif // RememberExamples
+
 }
 
 
