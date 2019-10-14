@@ -18,14 +18,14 @@
     <ClInclude Include="FS2_About.h" />
     <ClInclude Include="FSignerMainForm.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
-      <Filter>Fixosoft SDK</Filter>
-    </ClInclude>
     <ClInclude Include="..\cspUtils\cspWrapper.h">
       <Filter>cspWrapper</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
+      <Filter>Fixosoft SDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

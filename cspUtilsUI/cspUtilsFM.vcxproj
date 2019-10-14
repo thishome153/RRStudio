@@ -300,7 +300,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\c++\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h" />
+    <ClInclude Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h" />
     <ClInclude Include="..\cspUtils\cspWrapper.h" />
     <ClInclude Include="FS2_About.h">
       <FileType>CppForm</FileType>
