@@ -83,6 +83,7 @@ namespace FormSigner2 {
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::ToolStrip^ toolStrip1;
 	private: System::Windows::Forms::ToolStripButton^ toolStripButton1;
+	private: System::Windows::Forms::Button^ button1;
 	protected:
 
 	private:
@@ -98,7 +99,7 @@ namespace FormSigner2 {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::ListViewItem^ listViewItem2 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(2) {
+			System::Windows::Forms::ListViewItem^ listViewItem1 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(2) {
 				L"Item1",
 					L"Sub1"
 			}, -1));
@@ -121,6 +122,7 @@ namespace FormSigner2 {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->toolStrip1 = (gcnew System::Windows::Forms::ToolStrip());
 			this->toolStripButton1 = (gcnew System::Windows::Forms::ToolStripButton());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			this->statusStrip1->SuspendLayout();
 			this->panel1->SuspendLayout();
@@ -244,8 +246,8 @@ namespace FormSigner2 {
 			this->listView_Certs->FullRowSelect = true;
 			this->listView_Certs->GridLines = true;
 			this->listView_Certs->HideSelection = false;
-			listViewItem2->Tag = L"Tag0";
-			this->listView_Certs->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem2 });
+			listViewItem1->Tag = L"Tag0";
+			this->listView_Certs->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem1 });
 			this->listView_Certs->Location = System::Drawing::Point(0, 50);
 			this->listView_Certs->Name = L"listView_Certs";
 			this->listView_Certs->Size = System::Drawing::Size(536, 202);
@@ -267,6 +269,7 @@ namespace FormSigner2 {
 			// 
 			// panel1
 			// 
+			this->panel1->Controls->Add(this->button1);
 			this->panel1->Controls->Add(this->button3);
 			this->panel1->Controls->Add(this->button2);
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Right;
@@ -322,6 +325,20 @@ namespace FormSigner2 {
 			this->toolStripButton1->ToolTipText = L"Open signature";
 			this->toolStripButton1->Click += gcnew System::EventHandler(this, &Form1::ToolStripButton1_Click);
 			// 
+			// button1
+			// 
+			this->button1->FlatAppearance->BorderColor = System::Drawing::Color::Teal;
+			this->button1->FlatAppearance->BorderSize = 2;
+			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button1->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->button1->Location = System::Drawing::Point(12, 184);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(126, 65);
+			this->button1->TabIndex = 12;
+			this->button1->Text = L"Ïîäïèñàòü  ÃÎÑÒ 34.11-94 2012\r\nwith apilite.dll\r\n";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &Form1::Button1_Click_2);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -356,7 +373,7 @@ namespace FormSigner2 {
 
 	}
 
-	private: System::Int16 CheckApiLite() {
+	private: System::Int16 CheckApiLite(char* FileName, PCCERT_CONTEXT SignerCertificat) {
 
 		LPCWSTR dllName_ = L"cspApiLite.dll";
 		LPCSTR SignFile_api_Lite = "SignFile_api_Lite";
@@ -368,8 +385,8 @@ namespace FormSigner2 {
 			LP_func_SignFile_api_Lite func = (LP_func_SignFile_api_Lite)GetProcAddress(hMod_L, SignFile_api_Lite);
 			if (func != NULL)
 			{
-				PCCERT_CONTEXT cert = NULL;
-				int ret = func("FAKENAME", cert);
+				//PCCERT_CONTEXT cert = NULL;
+				int ret = func(FileName, SignerCertificat);
 				return ret;
 			}
 			else return 503;//service out
@@ -377,6 +394,8 @@ namespace FormSigner2 {
 		else
 			return 404; //notFound
 	}
+
+
 
 	private: System::Void ListCertificates() {
 
@@ -474,7 +493,32 @@ namespace FormSigner2 {
 		}
 	}
 
+	public: System::Void My_UI_SignFile_CSP_apiLite_GOST2012(String^ Serial)
+	{
+		if (this->openFileDialog1->ShowDialog() == DlgRes::OK)
+		{
+			this->FileName = openFileDialog1->FileName;
 
+			PCCERT_CONTEXT ret = cw->GetCertificatbySN(Serial);
+			if (ret)
+			{
+				int funcRes =  CheckApiLite(StringtoChar(this->FileName), ret);
+
+				if (funcRes > 1)
+				{
+					toolStripStatusLabel2->Text = "cades error " + funcRes.ToString();
+					int err = GetLastError(); // system error stack
+					LPTSTR errMeesage = SignerUtils::cades::Error2Message(err);
+					textBox1->Text = "Error " + err.ToString() + ":\r\n" + LPTSTRToString(errMeesage);
+				}
+				else
+				{
+					toolStripStatusLabel2->Text = "Signed success ";
+					textBox1->Text = "file " + this->FileName + "\r\n    signed ok";
+				}
+			}
+		}
+	}
 
 	private: System::Void Certs_listBox_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -534,7 +578,7 @@ namespace FormSigner2 {
 
 
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
-		CheckApiLite();
+		//CheckApiLite();
 		this->ListCertificates();
 	}
 
@@ -587,6 +631,10 @@ namespace FormSigner2 {
 	private: System::Void ToolStripButton1_Click(System::Object^ sender, System::EventArgs^ e) {
 		ViewCMSInfo("*.sig");
 	}
-	};
+	private: System::Void Button1_Click_2(System::Object^ sender, System::EventArgs^ e) {
+		if (listView_Certs->SelectedItems->Count == 1)
+			My_UI_SignFile_CSP_apiLite_GOST2012((string)listView_Certs->SelectedItems[0]->Tag);
+	}
+};
 }
 
