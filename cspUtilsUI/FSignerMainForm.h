@@ -387,6 +387,7 @@ namespace FormSigner2 {
 			{
 				//PCCERT_CONTEXT cert = NULL;
 				int ret = func(FileName, SignerCertificat);
+				FreeLibrary(hMod_L);
 				return ret;
 			}
 			else return 503;//service out
@@ -395,6 +396,21 @@ namespace FormSigner2 {
 			return 404; //notFound
 	}
 
+private: System::Boolean ApiLitePresent() {
+
+	LPCWSTR dllName_ = L"cspApiLite.dll";
+	LPCSTR SignFile_api_Lite = "SignFile_api_Lite";
+	typedef  int (*LP_func_SignFile_api_Lite) (char* FileName, PCCERT_CONTEXT SignerCertificat);	//Новый тип - указатель на функцию	 
+	HMODULE hMod_L = LoadLibrary(dllName_);
+
+	if (hMod_L != NULL) //0x00000000 < NULL > if not found dll
+	{
+		FreeLibrary(hMod_L);
+		return true;
+	}
+	else
+		return false; //notFound
+}
 
 
 	private: System::Void ListCertificates() {
@@ -502,7 +518,7 @@ namespace FormSigner2 {
 			PCCERT_CONTEXT ret = cw->GetCertificatbySN(Serial);
 			if (ret)
 			{
-				int funcRes =  CheckApiLite(StringtoChar(this->FileName), ret);
+				int funcRes = CheckApiLite(StringtoChar(this->FileName), ret);
 
 				if (funcRes > 1)
 				{
@@ -518,6 +534,7 @@ namespace FormSigner2 {
 				}
 			}
 		}
+
 	}
 
 	private: System::Void Certs_listBox_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -580,6 +597,12 @@ namespace FormSigner2 {
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 		//CheckApiLite();
 		this->ListCertificates();
+		if (ApiLitePresent())
+		{
+			button1->Visible = true;
+		}
+		else
+			button1->Visible = false;
 	}
 
 	private: System::Void Certs_listBox_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)

@@ -195,8 +195,10 @@ namespace netFteo.IO
         {
             PointList points_of_current = new PointList();
             points_of_current.Definition = defintition;
+            //filter in case childed items
+            var child_items_of_current = items_of_current.Where(pos => pos[0].Contains(defintition));// filter List by definition
 
-            foreach (string[] item_of_current in items_of_current)
+            foreach (string[] item_of_current in child_items_of_current)
             {
                 points_of_current.AddPoint(CSV_Parse_point(item_of_current));
             }

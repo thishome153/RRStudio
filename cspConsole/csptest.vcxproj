@@ -66,6 +66,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
+    <IncludePath>$(SolutionDir)..\boost_1_71_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\boost_1_71_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='WinXP Release|Win32'">
     <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography\WinXP</OutDir>
@@ -97,7 +99,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>tmain.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\release.tmp/csptest.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\release.tmp/</AssemblerListingLocation>

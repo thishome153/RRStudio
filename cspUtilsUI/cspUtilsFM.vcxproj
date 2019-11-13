@@ -121,7 +121,7 @@
     <OutDir>\\10.66.77.4\Obmen\SOFT\Fixosoft\Cryptography</OutDir>
     <IntDir>c:\TEMP\Intermediates\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;..\cspUtils;C:\Program Files %28x86%29\Crypto Pro\SDK\include;C:\Program Files\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;..\cspUtils;C:\Program Files %28x86%29\Crypto Pro\SDK\include;C:\Program Files\Crypto Pro\SDK\include;$(IncludePath)</IncludePath>
     <GenerateManifest>false</GenerateManifest>
     <LibraryPath>C:\Program Files %28x86%29\Crypto Pro\SDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>

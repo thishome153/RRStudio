@@ -131,8 +131,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <IncludePath>$(SolutionDir)..\..\c++\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)..\..\c++\CryptoProSDK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\c++\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
