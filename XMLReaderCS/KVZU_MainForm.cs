@@ -472,6 +472,9 @@ namespace XMLReaderCS
 
             if (DocInfo.DocRootName == "SchemaParcels")
             {
+                /* as file SchemaKPTMainForm was corrupted with wrong unicode bytes
+                 * we hide them
+                 * TODO: check form
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
                 SchemaKPTMainForm frm = new SchemaKPTMainForm();
                 frm.Top = this.Top; frm.Left = this.Left;
@@ -480,6 +483,7 @@ namespace XMLReaderCS
                 this.Visible = false;
                 frm.ShowDialog();
                 this.Close();
+                */
             }
 
 
