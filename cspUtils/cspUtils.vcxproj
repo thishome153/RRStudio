@@ -110,7 +110,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)\cspApiLite;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)\cspApiLite;$(SolutionDir)..\..\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
     <ExtensionsToDeleteOnClean>*.metagen;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
   </PropertyGroup>
@@ -131,7 +131,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)..\..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -266,7 +266,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
+    <ClCompile Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp" />
     <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp" />
     <ClCompile Include="..\cspApiLite\SignerUtils.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />

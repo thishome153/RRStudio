@@ -8,11 +8,11 @@
     <ClCompile Include="..\cspUtils\cspWrapper.cpp">
       <Filter>cspWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
-      <Filter>Fixosoft SDK</Filter>
-    </ClCompile>
     <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp" />
     <ClCompile Include="..\cspApiLite\SignerUtils.cpp" />
+    <ClCompile Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
+      <Filter>Fixosoft SDK</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FS2_About.h" />
@@ -24,7 +24,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
+    <ClInclude Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
       <Filter>Fixosoft SDK</Filter>
     </ClInclude>
   </ItemGroup>

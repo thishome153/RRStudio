@@ -24,13 +24,13 @@
     <ClCompile Include="cspWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\cspApiLite\SignerUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
