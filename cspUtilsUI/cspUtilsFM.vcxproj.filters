@@ -10,7 +10,7 @@
     </ClCompile>
     <ClCompile Include="..\cspApiLite\cspUtilsIO.cpp" />
     <ClCompile Include="..\cspApiLite\SignerUtils.cpp" />
-    <ClCompile Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
+    <ClCompile Include="..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.cpp">
       <Filter>Fixosoft SDK</Filter>
     </ClCompile>
   </ItemGroup>
