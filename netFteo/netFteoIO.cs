@@ -703,6 +703,60 @@ namespace netFteo.IO
                             goto next;
                         };
 
+                        /* PointList */
+                        if (line.Contains("PointList"))
+                        {
+                            string[] SplittedStr = line.Split(TabDelimiter.ToCharArray());
+                            PointList resPoly = new PointList();
+                            resPoly.Definition = (SplittedStr[1]);//   line.Substring(7));
+
+                            line = readFile.ReadLine();
+                            while (!line.Contains("PointList"))
+                            {
+
+                                StrCounter++;
+                                SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
+                                TPoint FilePoint = new TPoint();
+                                //FilePoint.id = StrCounter;
+                                FilePoint.Definition = SplittedStr[0].ToString();
+                                if (FilePoint.Definition.Substring(0, 1) == "н")
+                                {
+                                    FilePoint.Pref = "н";
+                                    FilePoint.Definition = FilePoint.Definition.Substring(1);
+                                }
+
+                                if (!SplittedStr[1].Contains("-"))
+                                {
+                                    FilePoint.oldX = Convert.ToDouble(SplittedStr[1].ToString());
+                                    FilePoint.oldY = Convert.ToDouble(SplittedStr[2].ToString());
+                                    FilePoint.Status = 4;
+                                }
+                                else FilePoint.Status = 0; // нет старых координат
+
+                                // нет новых координат (z.B. точка ликвидируется)
+                                if (!SplittedStr[3].Contains("-"))
+                                {
+                                    FilePoint.x = Convert.ToDouble(SplittedStr[3].ToString());
+                                    FilePoint.y = Convert.ToDouble(SplittedStr[4].ToString());
+                                }
+
+                                // нет Mt (z.B. точка ликвидируется)
+                                if (!SplittedStr[5].Contains("-"))
+                                {
+                                    FilePoint.Mt = Convert.ToDouble(SplittedStr[5].ToString());
+                                }
+                                if (SplittedStr.Count() > 6)
+                                    FilePoint.Description = SplittedStr[6].ToString();
+                                resPoly.AddPoint(FilePoint);
+
+                                line = readFile.ReadLine();
+                            }
+                            resPolys.Add(resPoly);
+                        }
+                         
+                        /*endPpointList */
+
+
                         if (line.Contains("Polygon"))
                         {
                             string[] SplittedStr = line.Split(TabDelimiter.ToCharArray());
@@ -972,6 +1026,25 @@ namespace netFteo.IO
             writer.WriteLine("# Геометрий " + ES.FeaturesCount("*").ToString());
             foreach (IGeometry feature in ES)
             {
+                
+                if (feature.GetType().ToString() == "netFteo.Spatial.PointList")
+                {
+                    PointList Poly = (PointList)feature;
+                    writer.WriteLine("PointList" + "\t" + (Poly.Definition));
+                    for (int i = 0; i <= Poly.PointCount - 1; i++)
+                    {
+                        writer.WriteLine(((Poly[i].Status == 0) ? Poly[i].Pref + Poly[i].Definition : Poly[i].Definition) + "\t" +
+                                         Poly[i].oldX_s + "\t" +
+                                         Poly[i].oldY_s + "\t" +
+                                         Poly[i].x_s + "\t" +
+                                         Poly[i].y_s + "\t" +
+                                         Poly[i].Mt_s + "\t" +
+                                         Poly[i].Description + "\t" +
+                                         Poly[i].OrdIdent);
+                    }
+                    writer.WriteLine("EndPointList");
+                }
+
                 if (feature.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                 {
                     TMyPolygon Poly = (TMyPolygon)feature;
@@ -980,7 +1053,7 @@ namespace netFteo.IO
                     for (int i = 0; i <= Poly.PointCount - 1; i++)
                     {
 
-                        writer.WriteLine(((Poly[i].Status == 0) ? Poly[i].Pref + Poly[i].NumGeopointA : Poly[i].NumGeopointA) + "\t" +
+                        writer.WriteLine(((Poly[i].Status == 0) ? Poly[i].Pref + Poly[i].Definition : Poly[i].Definition) + "\t" +
                                          Poly[i].oldX_s + "\t" +
                                          Poly[i].oldY_s + "\t" +
                                          Poly[i].x_s + "\t" +

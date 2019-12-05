@@ -2866,6 +2866,17 @@ LV.Items.Add(LVipP);
                 }
             }
 
+            if (STrN.Name.Contains("PointList."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
             if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
             {
                 IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));

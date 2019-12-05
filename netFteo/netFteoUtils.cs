@@ -186,7 +186,18 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
-		public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.PointList ES, string NodeName, string Definition, int Status)
+        {
+            if (ES == null) return;
+            TreeNode Node = NodeTo.Nodes.Add("PointList." + ES.id.ToString(), Definition);
+            Node.ToolTipText = Spatial.TMyState.StateToString(Status);
+            Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+            Node.ImageIndex = 13;
+            Node.SelectedImageIndex = 13;
+            Node.Tag = ES.id;
+        }
+
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TCircle ES, string Definition, int Status)
 		{
 			if (ES == null) return;
 			TreeNode Node = NodeTo.Nodes.Add("Circle." + ES.id.ToString(), Definition);
@@ -225,8 +236,14 @@ namespace netFteo
 						if (((Spatial.TPolyLine)feature).PointCount > 0)
 							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
 					}
+                    
+                    if (feature.TypeName == "netFteo.Spatial.PointList")
+                    {
+                        if (((Spatial.PointList)feature).PointCount > 0)
+                            netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.PointList)feature, "SPElem.", ((Spatial.PointList)feature).Definition, 6);
+                    }
 
-					if (feature.TypeName == "netFteo.Spatial.TCircle")
+                    if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
 						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, ((Spatial.TCircle)feature).NumGeopointA, 6);
 					}
