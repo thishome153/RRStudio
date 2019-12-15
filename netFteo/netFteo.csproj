@@ -306,6 +306,7 @@
     <Compile Include="DXF\XData.cs" />
     <Compile Include="DXF\XDataCode.cs" />
     <Compile Include="DXF\XDataRecord.cs" />
+    <Compile Include="MVVM\EntityViewer.xaml.cs" />
     <Compile Include="netFteoCadwork.cs" />
     <Compile Include="netFteoIO.cs" />
     <Compile Include="netFteoDXF.cs" />
@@ -326,6 +327,11 @@
   <ItemGroup>
     <Content Include="IPoint_TODO.txt" />
     <Compile Include="netFteoRuntime.cs" />
+    <Content Include="MVVM\Images\add.png" />
+    <Content Include="MVVM\Images\FixosoftTM.gif" />
+    <Content Include="MVVM\Images\save.bmp" />
+    <Content Include="MVVM\Images\save1.bmp" />
+    <Content Include="MVVM\Images\WPF_logo.jpg" />
     <Content Include="Schemes\Contours_.xml">
       <CustomToolNamespace>netFteo.BaseClasess</CustomToolNamespace>
     </Content>
@@ -339,6 +345,12 @@
       <DependentUpon>Points.xsd</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="MVVM\EntityViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -346,7 +358,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2000/1/1" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

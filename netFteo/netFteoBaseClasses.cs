@@ -4402,20 +4402,28 @@ namespace netFteo.Spatial
             }
 
             //From OKS
+            /*
             foreach (IGeometry feature in this.SpatialData)
             {
                 if (feature.id == Item_id)
                     return feature;
 
             }
+            */
+            if (this.SpatialData.FeatureExists(Item_id))
+                return this.SpatialData.GetFeature(Item_id);
 
             //From dxf, mif
             // Single feature
+            /*
             foreach (IGeometry feature in this.ParsedSpatial)
             {
                 if (feature.id == Item_id)
                     return feature;
             }
+            */
+            if (this.ParsedSpatial.FeatureExists(Item_id))
+                return this.ParsedSpatial.GetFeature(Item_id);
 
             //next, point in features:
             foreach (IGeometry item in this.ParsedSpatial)
@@ -4745,6 +4753,54 @@ namespace netFteo.Spatial
                 return false;
             }
         }
+        
+        public bool FeatureExists(int Item_id)
+        {
+            foreach (IGeometry feature in this)
+            {
+                if (feature.id == Item_id)
+                    return true;
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Select feature by id
+        /// </summary>
+        /// <param name="id">id for desired feature</param>
+        /// <returns></returns>
+        public Object GetFeature(int Item_id)
+        {
+
+            //From OKS
+            foreach (IGeometry feature in this)
+            {
+                if (feature.id == Item_id)
+                    return feature;
+
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Select features by Layer
+        /// </summary>
+        /// <param name="LayerHandle">Handle of desired layer</param>
+        /// <returns></returns>
+        public TEntitySpatial GetFeatures(string LayerHandle)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            foreach (IGeometry feature in this)
+            {
+                if (feature.LayerHandle == LayerHandle)
+                {
+                    res.Add(feature);
+                }
+            }
+            return res;
+        }
+
 
 
         private void EsChekerProc(string sender, int process, byte[] Data)
@@ -4954,24 +5010,6 @@ namespace netFteo.Spatial
             }
         }
 
-
-        /// <summary>
-        /// Select features by Layer
-        /// </summary>
-        /// <param name="LayerHandle">Handle of desired layer</param>
-        /// <returns></returns>
-        public TEntitySpatial Select(string LayerHandle)
-        {
-            TEntitySpatial res = new TEntitySpatial();
-            foreach (IGeometry feature in this)
-            {
-                if (feature.LayerHandle == LayerHandle)
-                {
-                    res.Add(feature);
-                }
-            }
-            return res;
-        }
 
 
         public void ShowasListItems(ListView LV, bool SetTag)

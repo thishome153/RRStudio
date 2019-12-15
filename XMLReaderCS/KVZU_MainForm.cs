@@ -38,7 +38,7 @@ namespace XMLReaderCS
         RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
 
         MyWindowEx ESwindow;
-        EntityViewer ViewWindow; // xaml WPF control
+        netFteo.EntityViewer ViewWindow; // xaml WPF control
 
         /// <summary>
         /// Current file properies
@@ -2834,7 +2834,7 @@ LV.Items.Add(LVipP);
             //Show features by whole layer 
             if (STrN.Name.Contains("Layer."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.Select(STrN.Name.Substring(6));
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.GetFeatures(STrN.Name.Substring(6));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3951,7 +3951,7 @@ LV.Items.Add(LVipP);
 
 
             ESwindow.Title = "Визуализация ПД (WPF)";
-            ViewWindow = new EntityViewer();
+            ViewWindow = new netFteo.EntityViewer();
             ViewWindow.Definition = "Viewer Created ok";
             ESwindow.Content = ViewWindow;
             ESwindow.MinHeight = 300; ESwindow.MinWidth = 500;
@@ -4990,7 +4990,7 @@ LV.Items.Add(LVipP);
                                 else
                                     ViewWindow.Spatial = ES;
 
-                                ViewWindow.label2.Content = res.Parent_Id.ToString();
+                                //TODO : repair ViewWindow.label2.Content = res.Parent_Id.ToString();
                                 ViewWindow.BringIntoView();
                                 ViewWindow.CreateView(ES);
                             }

@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+//using System.Windows.Forms;
+//using System.Drawing;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+//using System.Windows.Data;
+//using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+//using System.Windows.Media.Imaging;
+//using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using netFteo.Spatial;
-using netFteo.Drawing;
+//using netFteo.Drawing;
 
-namespace XMLReaderCS
+namespace netFteo
 {
     /// <summary>
     /// Логика взаимодействия для EntityViewer.xaml
     /// </summary>
-    public partial class EntityViewer : UserControl
+    public partial class EntityViewer : System.Windows.Controls.UserControl
     {
         public int i = 0;
         public double pointSignRadius = 2.5;

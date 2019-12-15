@@ -194,9 +194,6 @@
     <Compile Include="Controls\LoadingCircleToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MVVM\EntityViewer.xaml.cs">
-      <DependentUpon>EntityViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ESChecker_MP06Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -537,14 +534,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MVVM\Images\" />
     <Folder Include="Properties\InspectionAct\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="MVVM\EntityViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -578,7 +568,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
