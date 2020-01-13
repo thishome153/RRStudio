@@ -2018,9 +2018,10 @@ return res;
             LV.Columns[0].Text = "Субъект";
             LV.Columns[1].Text = "Право";
             LV.Columns[2].Text = "Рег. номер";
-            LV.Columns[3].Text = "Доля в праве";
-            LV.Columns[4].Text = "Особые отметки";
-            LV.Columns[5].Text = "Обременения";
+            LV.Columns[3].Text = "Дата рег.";
+            LV.Columns[4].Text = "Доля в праве";
+            LV.Columns[5].Text = "Особые отметки";
+            LV.Columns[6].Text = "Обременения";
             ListToListView(LV, list);
         }
 

@@ -522,7 +522,7 @@ namespace netFteo.Rosreestr
 			{
 				foreach (TMyOwner own in this[i].Owners)
 				{
-					listedRight = (own.OwnerName + "\t" + this[i].Name + "\t" + this[i].RegNumber + "\t" + this[i].ShareText + "\t" + this[i].Desc);
+					listedRight = (own.OwnerName + "\t" + this[i].Name + "\t" + this[i].RegNumber +"\t" + this[i].RegDate+ "\t" + this[i].ShareText + "\t" + this[i].Desc);
 
 
 					if (this[i].Encumbrances.Count > 0)
