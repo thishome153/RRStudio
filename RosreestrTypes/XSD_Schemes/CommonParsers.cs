@@ -4011,9 +4011,19 @@ namespace RRTypes.CommonParsers
 			return Point;
 		}
 
+        private static TPoint SchemaParcels_ES_ParseSpelement_Unit(System.Xml.XmlNode Spelement_Unit)
+        {
+            TPoint Point = new TPoint();
+            Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("NewOrdinate").Attributes.GetNamedItem("X").Value);
+            Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("NewOrdinate").Attributes.GetNamedItem("Y").Value);
+            //Point.oldX = Point.x;
+            //Point.oldY = Point.y;
+            Point.Definition = Spelement_Unit.SelectSingleNode("NewOrdinate").Attributes.GetNamedItem("Num_Geopoint").Value;
+            return Point;
+        }
 
-		//Разбор ordinate KPT11
-		private static TPoint KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
+        //Разбор ordinate KPT11
+        private static TPoint KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
 		{
 			TPoint Point = new TPoint();
 			Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("x").FirstChild.Value);
@@ -4070,13 +4080,48 @@ namespace RRTypes.CommonParsers
 			}
 		}
 
-		/// <summary>
-		/// Разбор Entity_Spatial KPT_V11
-		/// </summary>
-		/// <param name="Definition"></param>
-		/// <param name="ES"></param>
-		/// <returns></returns>
-		private static TMyPolygon KPT11LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
+
+        private static TMyPolygon SchemaParcelsEStoFteo(System.Xml.XmlNode ES)
+        {
+            {
+                if (ES == null) return null;
+                TMyPolygon EntSpat = new TMyPolygon();
+                //Первый Spatial_Element - внешний контур ( 0 )
+                System.Xml.XmlNodeList OuterRing = ES.ChildNodes[0].ChildNodes;
+
+                for (int iSpelement = 0; iSpelement <= OuterRing.Count - 1; iSpelement++)
+                {
+                    EntSpat.AddPoint(SchemaParcels_ES_ParseSpelement_Unit(OuterRing[iSpelement]));
+                }
+
+                //Второй и след. Spatial_Element - Внутренние контура
+                if (ES.ChildNodes.Count > 1)
+
+                {
+                    for (int ring = 1; ring <= ES.ChildNodes.Count - 1; ring++)
+                    {
+                        System.Xml.XmlNodeList childRing = ES.ChildNodes[ring].ChildNodes;
+                        if (ES.ChildNodes[ring].Name == "Spatial_Element") // prevent reading same like "Borders" 
+                        {
+                            TRing InLayer = EntSpat.AddChild();
+
+                            for (int iSpelement = 1; iSpelement <= childRing.Count - 1; iSpelement++)
+                            {
+                                InLayer.AddPoint(SchemaParcels_ES_ParseSpelement_Unit(childRing[iSpelement]));
+                            }
+                        }
+                    }
+                }
+                return EntSpat;
+            }
+        }
+        /// <summary>
+        /// Разбор Entity_Spatial KPT_V11
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        private static TMyPolygon KPT11LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
 		{
 			{
 				if (ES == null) return null;
@@ -4942,10 +4987,85 @@ namespace RRTypes.CommonParsers
 			}
 			return res;
 		}
-		#endregion
+        #endregion
 
-		#region  Разбор KPZU 5.0.8
-		public netFteo.IO.FileInfo ParseKPZU508(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+
+        public netFteo.IO.FileInfo ParseSchemaParcels(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        {
+            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            res.CommentsType = "-";
+            res.DocType = "Схема на КПТ";
+            res.DocTypeNick = "СКПТ";
+            res.Version = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/eDocument/@Version").FirstChild.Value;
+            res.Number = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/eDocument/@GUID").FirstChild.Value;
+
+            // /SchemaParcels/Document/Name
+
+            // /SchemaParcels/Document/Date
+
+            // /SchemaParcels/Document/Number
+
+            /// SchemaParcels / Document / IssueOrgans / IssueOrgan
+            res.AppointmentFIO = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/Document/IssueOrgans/IssueOrgan").FirstChild.Value;
+            res.Cert_Doc_Organization = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/Document/Name").FirstChild.Value +
+                 "\n\r" +
+                xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/Document/Number").FirstChild.Value +
+                "  " +
+               xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name + "/Document/Date").FirstChild.Value;
+            //TODO : 
+            //  SchemaParcels / NewParcels
+            System.Xml.XmlNodeList NewParcels = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/NewParcels/NewParcel");
+
+            if (NewParcels != null)
+            {  //count items of every parcel:
+                for (int i = 0; i <= NewParcels.Count - 1; i++)
+                {
+                    // / SchemaParcels / NewParcels / NewParcel / CadastralBlock
+                    if (NewParcels[i].SelectSingleNode("CadastralBlock") != null)
+                    {
+                        TMyCadastralBlock Bl = new TMyCadastralBlock(NewParcels[i].SelectSingleNode("CadastralBlock").FirstChild.Value);
+                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel());
+                        if (NewParcels[i].SelectSingleNode("Note") != null)
+                        {
+                            MainObj.Location.Address.Note = NewParcels[i].SelectSingleNode("Note").FirstChild.Value;
+                        }
+
+                        // / SchemaParcels / NewParcels / NewParcel / Utilization / @ByDoc
+                        if (NewParcels[i].SelectSingleNode("Utilization") != null)
+                        {
+                            MainObj.Utilization.UtilbyDoc = NewParcels[i].SelectSingleNode("Utilization/@ByDoc").FirstChild.Value;
+                        }
+                        // / SchemaParcels / NewParcels / NewParcel / Category / @Category
+                        if (NewParcels[i].SelectSingleNode("Category") != null)
+                        {
+                            MainObj.Category = NewParcels[i].SelectSingleNode("Category/@Category").FirstChild.Value;
+                        }
+                        // / SchemaParcels / NewParcels / NewParcel / Area / Area /#text
+                        if (NewParcels[i].SelectSingleNode("Area/Area") != null)
+                        {
+                            MainObj.AreaValue = NewParcels[i].SelectSingleNode("Area/Area").FirstChild.Value;
+                        }
+
+                        // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / @Ent_Sys
+                        // Single ES
+                        // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / Spatial_Element / Spelement_Unit[1] / @Type_Unit
+                        // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / Spatial_Element / Spelement_Unit[1] / NewOrdinate / @Num_Geopoint
+                        // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / Spatial_Element / Spelement_Unit[1] / NewOrdinate / @X
+
+                        if (NewParcels[i].SelectSingleNode("Entity_Spatial") != null)
+                            MainObj.EntSpat.AddPolygon(SchemaParcelsEStoFteo(NewParcels[i].SelectSingleNode("Entity_Spatial")));
+                        // otherweis : multicontours:
+
+
+                        res.MyBlocks.Blocks.Add(Bl);
+                    }
+                }
+            }
+            return res;
+        }
+
+            #region  Разбор KPZU 5.0.8
+            public netFteo.IO.FileInfo ParseKPZU508(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
 		{
 			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
 			RRTypes.kpzu.KPZU kp = (RRTypes.kpzu.KPZU)Desearialize<RRTypes.kpzu.KPZU>(xmldoc);

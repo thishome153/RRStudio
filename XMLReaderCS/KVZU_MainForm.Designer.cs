@@ -51,6 +51,7 @@
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьКакToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RecentFilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьДополнительноеОкноToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,7 +188,6 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.открытьДополнительноеОкноToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -253,6 +253,13 @@
             this.RecentFilesMenuItem.Text = "Последние файлы";
             this.RecentFilesMenuItem.Click += new System.EventHandler(this.RecentFilesMenuItem_Click);
             // 
+            // открытьДополнительноеОкноToolStripMenuItem
+            // 
+            this.открытьДополнительноеОкноToolStripMenuItem.Name = "открытьДополнительноеОкноToolStripMenuItem";
+            this.открытьДополнительноеОкноToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
+            this.открытьДополнительноеОкноToolStripMenuItem.Text = "Открыть дополнительное окно";
+            this.открытьДополнительноеОкноToolStripMenuItem.Click += new System.EventHandler(this.ОткрытьДополнительноеОкноToolStripMenuItem_Click);
+            // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
@@ -274,14 +281,14 @@
             // 
             this.копироватьToolStripMenuItem3.Enabled = false;
             this.копироватьToolStripMenuItem3.Name = "копироватьToolStripMenuItem3";
-            this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(157, 22);
             this.копироватьToolStripMenuItem3.Text = "Копировать";
             // 
             // удалитьToolStripMenuItem1
             // 
             this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
             this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
             this.удалитьToolStripMenuItem1.Text = "Удалить";
             this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
             // 
@@ -289,7 +296,7 @@
             // 
             this.вставитьToolStripMenuItem.Enabled = false;
             this.вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
-            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.вставитьToolStripMenuItem.Text = "Вставить";
             // 
             // toolStripMenuItem1
@@ -368,7 +375,7 @@
             // настройкиToolStripMenuItem
             // 
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
-            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.настройкиToolStripMenuItem.Text = "Настройки";
             this.настройкиToolStripMenuItem.Click += new System.EventHandler(this.настройкиToolStripMenuItem_Click);
             // 
@@ -383,7 +390,7 @@
             // оПрограммеToolStripMenuItem
             // 
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
-            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе";
             this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.оПрограммеToolStripMenuItem_Click);
             // 
@@ -460,11 +467,11 @@
             this.textBox_OrgName.BackColor = System.Drawing.SystemColors.Control;
             this.textBox_OrgName.ForeColor = System.Drawing.Color.Red;
             this.textBox_OrgName.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.textBox_OrgName.Location = new System.Drawing.Point(5, 244);
+            this.textBox_OrgName.Location = new System.Drawing.Point(5, 222);
             this.textBox_OrgName.Margin = new System.Windows.Forms.Padding(5, 0, 3, 0);
             this.textBox_OrgName.Name = "textBox_OrgName";
             this.textBox_OrgName.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.textBox_OrgName.Size = new System.Drawing.Size(692, 43);
+            this.textBox_OrgName.Size = new System.Drawing.Size(692, 65);
             this.textBox_OrgName.TabIndex = 28;
             this.textBox_OrgName.TabStop = true;
             this.textBox_OrgName.Text = "Фио";
@@ -1601,13 +1608,6 @@
             // tPointBindingSource
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
-            // 
-            // открытьДополнительноеОкноToolStripMenuItem
-            // 
-            this.открытьДополнительноеОкноToolStripMenuItem.Name = "открытьДополнительноеОкноToolStripMenuItem";
-            this.открытьДополнительноеОкноToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
-            this.открытьДополнительноеОкноToolStripMenuItem.Text = "Открыть дополнительное окно";
-            this.открытьДополнительноеОкноToolStripMenuItem.Click += new System.EventHandler(this.ОткрытьДополнительноеОкноToolStripMenuItem_Click);
             // 
             // KVZU_Form
             // 

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("home153@mail.ru")]
 [assembly: AssemblyProduct("netFteo")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-19")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-20")]
 [assembly: AssemblyTrademark("Fteo Projects")]
 [assembly: AssemblyCulture("")]
 

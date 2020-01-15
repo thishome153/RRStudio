@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fixosoft , home153@mail.ru")]
 [assembly: AssemblyProduct("XMLReader .NET")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-19")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-20")]
 [assembly: AssemblyTrademark("Fixosoft")]
 [assembly: AssemblyCulture("")]
 

@@ -484,6 +484,8 @@ namespace XMLReaderCS
                 frm.ShowDialog();
                 this.Close();
                 */
+                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.page_white_csharp;
+                this.DocInfo = parser.ParseSchemaParcels(this.DocInfo, xmldoc);
             }
 
 
@@ -669,7 +671,8 @@ namespace XMLReaderCS
 
             // We recieve archive package GKUOKS, GKUZU:
             if (Path.GetExtension(FileName).Equals(".zip"))
-                if (FileName.Contains("GKU"))
+                if ((FileName.Contains("GKU"))  ||
+                    (FileName.Contains("SchemaParcels")))
                 {
                     ClearFiles();
                     BackgroundWorker w1 = new BackgroundWorker();
@@ -679,6 +682,8 @@ namespace XMLReaderCS
                     w1.RunWorkerCompleted += this.UnZipComplete;
                     w1.RunWorkerAsync(FileName);
                 }
+
+
 
             // file is signature
 #if DEBUG
@@ -837,6 +842,10 @@ namespace XMLReaderCS
                 {
                     DocInfo.FileName = firstFileName;
                     //until unzipping, start checking MP for bugs :
+                    if (firstFileName.Contains("SchemaParcels"))
+                    {
+                        //BugReport_SchemaParcels(ArchiveFolder);
+                    }
                     if (firstFileName.Contains("GKUZU"))
                     {
                         BugReport_MP06_II(ArchiveFolder);

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Horns & Hooves")]
 [assembly: AssemblyProduct("RosreestrTypes")]
-[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2015-2019")]
+[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2015-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
