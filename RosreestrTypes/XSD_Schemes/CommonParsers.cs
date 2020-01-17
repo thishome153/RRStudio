@@ -4086,6 +4086,7 @@ namespace RRTypes.CommonParsers
             {
                 if (ES == null) return null;
                 TMyPolygon EntSpat = new TMyPolygon();
+                EntSpat.Definition = "[==]";
                 //Первый Spatial_Element - внешний контур ( 0 )
                 System.Xml.XmlNodeList OuterRing = ES.ChildNodes[0].ChildNodes;
 
@@ -5015,7 +5016,7 @@ namespace RRTypes.CommonParsers
             //TODO : 
             //  SchemaParcels / NewParcels
             System.Xml.XmlNodeList NewParcels = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/NewParcels/NewParcel");
-
+            string ParcelDefinition = "ЗУ";
             if (NewParcels != null)
             {  //count items of every parcel:
                 for (int i = 0; i <= NewParcels.Count - 1; i++)
@@ -5025,6 +5026,7 @@ namespace RRTypes.CommonParsers
                     {
                         TMyCadastralBlock Bl = new TMyCadastralBlock(NewParcels[i].SelectSingleNode("CadastralBlock").FirstChild.Value);
                         TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel());
+                        MainObj.Definition = ParcelDefinition + (i+1).ToString();
                         if (NewParcels[i].SelectSingleNode("Note") != null)
                         {
                             MainObj.Location.Address.Note = NewParcels[i].SelectSingleNode("Note").FirstChild.Value;
@@ -5055,8 +5057,20 @@ namespace RRTypes.CommonParsers
                         if (NewParcels[i].SelectSingleNode("Entity_Spatial") != null)
                             MainObj.EntSpat.AddPolygon(SchemaParcelsEStoFteo(NewParcels[i].SelectSingleNode("Entity_Spatial")));
                         // otherweis : multicontours:
+                        // /SchemaParcels/NewParcels/NewParcel/Contours
+                        // /SchemaParcels/NewParcels/NewParcel/Contours/Contour[1]/@Definition
+                        // /SchemaParcels/NewParcels/NewParcel/Contours/Contour[1]/Entity_Spatial/Spatial_Element/Spelement_Unit[1]/NewOrdinate/@Num_Geopoint
 
-
+                        if (NewParcels[i].SelectSingleNode("Contours") != null)
+                        {
+                            System.Xml.XmlNode contours = NewParcels[i].SelectSingleNode("Contours");
+                            for (int ic = 0; ic <= NewParcels[i].SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+                            {
+                                TMyPolygon NewCont = SchemaParcelsEStoFteo(contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
+                                NewCont.Definition = /* MainObj.Definition + */  NewParcels[i].SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Definition").Value;
+                                MainObj.EntSpat.Add(NewCont);
+                            }
+                        }
                         res.MyBlocks.Blocks.Add(Bl);
                     }
                 }

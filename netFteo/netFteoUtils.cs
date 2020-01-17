@@ -87,79 +87,81 @@ namespace netFteo
 		}
 
 	}
-	public static class ObjectLister
-	{
-		public static void ListZone(TreeNode Node, netFteo.Spatial.TZone Zone)
-		{
-			string CN = Zone.Description;
-			TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
-				if (Zone.TypeName == "Территориальная зона")
-				{
-					PNode.ImageIndex = 1;
-					PNode.SelectedImageIndex = 1;
-				}
-				else
-				{
-					Node.ImageIndex = 6;
-					PNode.SelectedImageIndex = 6;
-				}
+    public static class ObjectLister
+    {
+        public static void ListZone(TreeNode Node, netFteo.Spatial.TZone Zone)
+        {
+            string CN = Zone.Description;
+            TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
+            if (Zone.TypeName == "Территориальная зона")
+            {
+                PNode.ImageIndex = 1;
+                PNode.SelectedImageIndex = 1;
+            }
+            else
+            {
+                Node.ImageIndex = 6;
+                PNode.SelectedImageIndex = 6;
+            }
 
-			//  
-			if (Zone.PermittedUses != null)
-			{
-				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
-				foreach (string item in Zone.PermittedUses)
-				{
-					PuNode.Nodes.Add(item);
-				}
-				//PNode.ImageIndex = 7;
-				//PNode.SelectedImageIndex = 7;
-			}
-
-
-			if (Zone.Documents.Count > 0)
-			{
-				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
-				foreach (Spatial.TDocument doc in Zone.Documents)
-				{
-
-					if (doc.Name != null)
-					{
-						TreeNode PutNode = PuNode.Nodes.Add(doc.Name);
-
-						if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
-						if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
-						if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
-						if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
-					}
-				}
-			}
+            //  
+            if (Zone.PermittedUses != null)
+            {
+                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
+                foreach (string item in Zone.PermittedUses)
+                {
+                    PuNode.Nodes.Add(item);
+                }
+                //PNode.ImageIndex = 7;
+                //PNode.SelectedImageIndex = 7;
+            }
 
 
-			if (Zone.EntitySpatial != null)
-				if (Zone.EntitySpatial.Count > 0)
-				{
-					//TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
-					//ListEntSpat(ESNode,  Zone.EntitySpatial);
-					ListEntSpat(PNode, Zone.EntitySpatial, "SPElem.", "Границы", 0);
+            if (Zone.Documents.Count > 0)
+            {
+                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
+                foreach (Spatial.TDocument doc in Zone.Documents)
+                {
 
-				}
-		}
+                    if (doc.Name != null)
+                    {
+                        TreeNode PutNode = PuNode.Nodes.Add(doc.Name);
+
+                        if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
+                        if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
+                        if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
+                        if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
+                    }
+                }
+            }
 
 
-		public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName, string Definition, int Status)
-		{
-			if (ES == null) return;
-			TreeNode Node = NodeTo.Nodes.Add(NodeName + ES.id.ToString(), Definition);
-			Node.ToolTipText = Spatial.TMyState.StateToString(Status) + ES.HasChanges;
-			Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
-																	 //redifine status color, if happend changes:
-			if (ES.HasChangesBool)
-				Node.ForeColor = Spatial.TMyColors.StatusToColor(0);
-			Node.ImageIndex = 3;
-			Node.SelectedImageIndex = 3;
-			Node.Tag = ES.id;//
-		}
+            if (Zone.EntitySpatial != null)
+                if (Zone.EntitySpatial.Count > 0)
+                {
+                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
+                    //ListEntSpat(ESNode,  Zone.EntitySpatial);
+                    ListEntSpat(PNode, Zone.EntitySpatial, "SPElem.", "Границы", 0);
+
+                }
+        }
+
+
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName, string Definition, int Status)
+        {
+            if (ES == null) return;
+            TreeNode Node = /* NodeTo; */ NodeTo.Nodes.Add(NodeName + ES.id.ToString(), Definition); 
+            //Node.Name = NodeName + ES.id.ToString();
+            Node.ToolTipText = Spatial.TMyState.StateToString(Status) + ES.HasChanges;
+            Node.ForeColor = Spatial.TMyColors.StatusToColor(Status);// Rosreestr.System.Drawing.Color.DarkSeaGreen;
+                                                                     //redifine status color, if happend changes:
+            if (ES.HasChangesBool)
+                Node.ForeColor = Spatial.TMyColors.StatusToColor(0);
+            Node.ImageIndex = 3;
+            Node.SelectedImageIndex = 3;
+            Node.Tag = ES.id;//
+        }
+    
 
 		public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
 		{
@@ -221,7 +223,9 @@ namespace netFteo
 
 		private static void ListFeature(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
 		{
-			foreach (Spatial.IGeometry feature in ES)
+           // TreeNode Node = NodeTo;
+            //if (ES.Count >1 ) { NodeTo = NodeTo.Nodes.Add(NodeTo.Text); }
+            foreach (Spatial.IGeometry feature in ES)
 			{
 				if (feature.LayerHandle == LayerHandle)
 				{
@@ -245,12 +249,12 @@ namespace netFteo
 
                     if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, ((Spatial.TCircle)feature).NumGeopointA, 6);
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, ((Spatial.TCircle)feature).Definition, 6);
 					}
 
 					if (feature.TypeName == "netFteo.Spatial.TPoint")
 					{
-						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPoint)feature, ((Spatial.TPoint)feature).NumGeopointA, 6);
+						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPoint)feature, ((Spatial.TPoint)feature).Definition, 6);
 					}
 
 				}
