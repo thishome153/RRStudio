@@ -5048,6 +5048,13 @@ namespace RRTypes.CommonParsers
                             MainObj.AreaValue = NewParcels[i].SelectSingleNode("Area/Area").FirstChild.Value;
                         }
 
+                        // / SchemaParcels / NewParcels / NewParcel / Note
+                        if (NewParcels[i].SelectSingleNode("Note") != null)
+                        {
+                            MainObj.SpecialNote = NewParcels[i].SelectSingleNode("Note").FirstChild.Value;
+                            MainObj.Location.Address.Note = NewParcels[i].SelectSingleNode("Note").FirstChild.Value;
+                            MainObj.Location.Address.Region = "99"; // fake region
+                        }
                         // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / @Ent_Sys
                         // Single ES
                         // / SchemaParcels / NewParcels / NewParcel / Entity_Spatial / Spatial_Element / Spelement_Unit[1] / @Type_Unit

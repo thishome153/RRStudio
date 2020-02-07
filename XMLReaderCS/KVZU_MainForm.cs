@@ -1681,6 +1681,7 @@ namespace XMLReaderCS
 
                 if (Address.Region != null)
                     if (dRegionsRF_v01 != null)
+                        if (Address.Region != "99") //prevent fake value
                         Adrs.Nodes.Add("Adr", "Регион").Nodes.Add(dRegionsRF_v01.Item2Annotation(Address.Region));
 
                 if (Address.District != null)
