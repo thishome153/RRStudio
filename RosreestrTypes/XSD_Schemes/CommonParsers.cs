@@ -5728,6 +5728,7 @@ namespace RRTypes.CommonParsers
 			MainObj.Category = kv.Parcels.Parcel.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(kv.Parcels.Parcel.Category.ToString());
 
 			MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(kv.Parcels.Parcel.Location);
+            if (kv.Parcels.Parcel.CadastralCost != null)
 			MainObj.CadastralCost = kv.Parcels.Parcel.CadastralCost.Value;
 			MainObj.Rights = KVZU_v06Utils.KVZURightstoFteorights(kv.Parcels.Parcel.Rights);
 			MainObj.Encumbrances = KVZU_v06Utils.KVZUEncumstoFteoEncums(kv.Parcels.Parcel.Encumbrances);
@@ -6024,9 +6025,13 @@ namespace RRTypes.CommonParsers
 				Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
 				Bld.Building.Area = kv.Realty.Building.Area;
 				Bld.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
-				Bld.Floors = kv.Realty.Building.Floors.Floors;
+                if (kv.Realty.Building.Floors != null)
+                {
+                    Bld.Floors = kv.Realty.Building.Floors.Floors;
+                    Bld.UndergroundFloors = kv.Realty.Building.Floors.UndergroundFloors;
+                }
                 Bld.Notes = kv.Realty.Building.Notes;
-                Bld.UndergroundFloors = kv.Realty.Building.Floors.UndergroundFloors;
+
 				foreach (RRTypes.kvoks_v07.tOldNumber n in kv.Realty.Building.OldNumbers)
 					Bld.Building.OldNumbers.Add(new TKeyParameter() { Type = netFteo.Rosreestr.dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
@@ -6077,7 +6082,7 @@ namespace RRTypes.CommonParsers
                 Unc.Notes = kv.Realty.Uncompleted.Notes;
 
                 foreach (kvoks_v07.tOldNumber n in kv.Realty.Uncompleted.OldNumbers)
-					Unc.Building.OldNumbers.Add(new TKeyParameter() { Type = dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
+					Unc.Uncompleted.OldNumbers.Add(new TKeyParameter() { Type = dOldNumber_v01.ItemToName(n.Type.ToString()), Value = n.Number });
 
 				res.CommentsType = " Особые отметки";
 				res.Comments = Unc.Notes;
