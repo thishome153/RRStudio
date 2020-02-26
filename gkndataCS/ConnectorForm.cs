@@ -102,6 +102,10 @@ namespace GKNData
         public string SubRF_Name;
         public int District_id;
         public string District_KN;
+        /// <summary>
+        /// Common application unzipping work folder
+        /// </summary>
+        public string Folder_Unzip;
         public string District_Name;
 		public string IddleTimeOut;
 		/// <summary>
