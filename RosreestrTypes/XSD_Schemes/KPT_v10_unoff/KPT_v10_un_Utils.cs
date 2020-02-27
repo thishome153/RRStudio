@@ -173,6 +173,7 @@ namespace RRTypes
 			{
 				if (use.LandUseSpecified)
 				{
+                    if (dAllowedUse_v02 != null)
 					res.Add(dAllowedUse_v02.Item2Annotation(use.LandUse.ToString()));
 				}
 			}

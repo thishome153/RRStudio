@@ -248,6 +248,7 @@ namespace XMLReaderCS
                 toolStripStatusLabel1.Text = "document null";
                 return;
             }
+
             DocInfo.DocRootName = xmldoc.DocumentElement.Name;
             DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
                                                                       // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
@@ -3360,7 +3361,7 @@ LV.Items.Add(LVipP);
                 if (Lot != null)
                 {
                     TEntitySpatial res = new TEntitySpatial();
-                    res.AddRange(Lot.CompozitionEZ);
+                    res.AddRange(Lot.EntSpat);//  Lot.CompozitionEZ);
                     return res;
                 }
             }

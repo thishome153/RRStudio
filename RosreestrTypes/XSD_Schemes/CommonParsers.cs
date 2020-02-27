@@ -2089,7 +2089,11 @@ namespace RRTypes.CommonParsers
 
 	public class Doc2Type : Parser
 	{
-		public Doc2Type(netFteo.XML.XSDFile dUtil, netFteo.XML.XSDFile dAllowedUse)
+
+        public Doc2Type()
+        {
+        }
+            public Doc2Type(netFteo.XML.XSDFile dUtil, netFteo.XML.XSDFile dAllowedUse)
 		{
 			this.dAllowedUse_v02 = dAllowedUse;
 			this.dutilizations_v01 = dUtil;
@@ -4649,7 +4653,7 @@ namespace RRTypes.CommonParsers
 					for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
 					{
 						TPoint OMS = new TPoint();
-						OMS.NumGeopointA = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;
+						OMS.Definition = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;
 						OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;
 						OMS.Description = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;
 						OMS.x = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdX;

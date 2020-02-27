@@ -44,7 +44,7 @@ namespace GKNData
         /// List of files, dragged on to form
         /// </summary>
         string[] DraggedFiles;
-
+        string CurrentDraggedFile;
 
         public MainGKNForm()
         {
@@ -703,6 +703,7 @@ namespace GKNData
                 //1: unzip files to tmp
                 {
                     //   ClearFiles();
+                    CurrentDraggedFile = FileName; // store to global var
                     BackgroundWorker w1 = new BackgroundWorker();
                     w1.WorkerSupportsCancellation = false;
                     w1.WorkerReportsProgress = true;
@@ -773,42 +774,75 @@ namespace GKNData
         //Распаковка окончена, читаем результаты:
         private void UnZipComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            // string ArchiveFolder = this.Folder_Unzip +
-            //                 "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
-            //string ArchiveFolder = (string)e.Result;
             if (Directory.Exists(Archive_Folder))
             {
                 DirectoryInfo di = new DirectoryInfo(Archive_Folder);
                 string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
 
-
-                if (File.Exists(Archive_Folder + "\\" + firstFileName))
-                       if (Path.GetExtension(firstFileName.ToUpper()).Equals(".XML"))
+                if ((File.Exists(Archive_Folder + "\\" + firstFileName))
+                    &&
+                     (Path.GetExtension(firstFileName.ToUpper()).Equals(".XML")))
                 {
-                        TextReader reader = new StreamReader(Archive_Folder + "\\" + firstFileName);
-                        XmlDocument XMLDocFromFile = new XmlDocument();
-                        XMLDocFromFile.Load(reader);
-                        reader.Close();
-
-
-                        //DocInfo.FileName = firstFileName;
-                        //Read(ArchiveFolder + "\\" + firstFileName, true); // теперь загружаем xml
-                        /*
-                         *      if (Path.GetExtension(FileName).Equals(".xml"))
-                {
-                    this.DocInfo.FileName = Path.GetFileName(FileName);
-                    this.DocInfo.FilePath = Path.GetFullPath(FileName);
-                    TextReader reader = new StreamReader(FileName);
+                    TextReader reader = new StreamReader(Archive_Folder + "\\" + firstFileName);
                     XmlDocument XMLDocFromFile = new XmlDocument();
                     XMLDocFromFile.Load(reader);
+                    string TargetDirectoryName = ParseResponse(XMLDocFromFile);
                     reader.Close();
-                         */
+
+                    string[] CNs = TargetDirectoryName.Split(':');
+
+                    string DraggedFromPath = Path.GetDirectoryName(CurrentDraggedFile);
+
+
+                    if ((CNs != null) && (CNs.Count() == 3)) // check CN corrects
+                    {
+                        string Target_Folder_Path = DraggedFromPath + "\\" + CNs[0] + "\\" + CNs[1] + "\\" + CNs[2];
+                        if (Directory.Exists(Target_Folder_Path))
+                        {
+                            Console.WriteLine("That path exists already.");
+                            // return;
+                        }
+
+                        // Try to create the directory.
+                            DirectoryInfo Target_Folder_Info = Directory.CreateDirectory(Target_Folder_Path);
+                        
+                        //Copy files from disarchivedPlace to TargetDir
+                        //TODO:
+                        string[] filePaths = Directory.GetFiles(Archive_Folder);
+                        foreach (string filename in filePaths)
+                        {
+                            //Do job for "filename"  
+                            string str = Target_Folder_Path +"\\"+ Path.GetFileName(filename);
+                            if (!File.Exists(str))
+                            {
+                                File.Copy(filename, str);
+                            }
+                        }
                     }
 
+                }
             }
+        }
 
+        /// <summary>
+        /// Parse xml document to detect CN of block
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        private string ParseResponse(XmlDocument xmldoc)
+        {
 
+            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); // construct instance without  classificators {dutilizations_v01, dAllowedUse_v02}
 
+            // КПТ v10 is here?
+            if ((xmldoc.DocumentElement.Name == "KPT") && (xmldoc.DocumentElement.NamespaceURI == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+            {
+                netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
+                DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
+                if (DocInfo.MyBlocks.Blocks.Count() == 1)
+                    return DocInfo.MyBlocks.SingleCN;
+            }
+            return "FILE TYPE WRONG";
         }
 
         private void ClearFiles()
