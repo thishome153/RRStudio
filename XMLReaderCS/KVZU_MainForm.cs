@@ -672,8 +672,8 @@ namespace XMLReaderCS
 
             // We recieve archive package GKUOKS, GKUZU:
             if (Path.GetExtension(FileName).Equals(".zip"))
-                if ((FileName.Contains("GKU"))  ||
-                    (FileName.Contains("SchemaParcels")))
+                /*if ((FileName.Contains("GKU"))  ||
+                    (FileName.Contains("SchemaParcels"))) */
                 {
                     ClearFiles();
                     BackgroundWorker w1 = new BackgroundWorker();
