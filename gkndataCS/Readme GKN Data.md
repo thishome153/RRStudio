@@ -12,3 +12,5 @@ Install Connector MySQL Connector Net: be sure about targetting of project and C
 
 
 Best regards, dear mr. Fix
+
+@Fixosoft2020

@@ -144,7 +144,7 @@ namespace GKNData
             Application.DoEvents();
             CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
             ListBlockListTreeView(CadBloksList, tv);
-            AppendHistory(CF.conn, CF.Cfg);
+            AppendHistory(200, -1, 200, "Connect", CF.conn, CF.conn2, CF.Cfg.District_id, CF.Cfg);
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
 #if !DEBUG
@@ -468,8 +468,8 @@ namespace GKNData
         }
 
 
-        //Одуренная поцедура Заполенния Полями Таблиц
-        private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, int distr_id)
+            //crazyFull  function filling information
+            private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, int distr_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_AllMessages.Text = "Загрузка кварталов.... ";
@@ -507,7 +507,7 @@ namespace GKNData
                 Block.id = int.Parse(dataReader["block_id"].ToString());
                 Block.Name = dataReader["block_name"].ToString();
                 //Загрузка участков - только при expande ??? Но тогда в начае неизвестно
-                Block.HasParcels = CheckParcels(conn2, Block.id);// Запишем только признак наличия ЗУ
+                Block.HasParcels = CheckParcels(conn2, Block.id);// Set only parcel present flag
                 CadBloksList.Blocks.Add(Block);
 
                 // data.Rows.Add(dataReader);
@@ -907,7 +907,9 @@ namespace GKNData
             }
         }
 
-        private void AppendHistory(MySqlConnection conn, TAppCfgRecord Config)
+        // Also working code, writed before version below
+        // Used MySqlDataReader
+        private void AppendHistory1(MySqlConnection conn, TAppCfgRecord Config)
         {
             TFiles files = new TFiles();
             if (conn == null) return;
@@ -935,6 +937,45 @@ namespace GKNData
             re.Close();
 
         }
+
+
+        /// <summary>
+        /// Logging application activity to db
+        /// </summary>
+        /// <param name="item_type"></param>
+        /// <param name="item_id"></param>
+        /// <param name="Status"></param>
+        /// <param name="Comment"></param>
+        /// <param name="conn"></param>
+        /// <param name="conn2"></param>
+        /// <param name="distr_id"></param>
+        /// <returns></returns>
+        private int AppendHistory(int item_type, int item_id, int Status, string Comment,//;Config:TAppCfgRecord);
+            MySqlConnection conn, MySqlConnection conn2, int distr_id, TAppCfgRecord Config)
+        {
+            if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
+            StatusLabel_AllMessages.Text = "write log.... ";
+            string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            MySqlCommand cmd = new MySqlCommand(
+                "INSERT INTO history(history_id,hi_disrtict_id,hi_item_type,hi_item_id," +
+                 "hi_data,hi_status_id,hi_rid_id, hi_comment, hi_host, hi_ip,hi_systemusername,hi_dbusername)" +
+                 " VALUES(NULL, ?hi_disrtict_id, ?hi_item_type,?hi_item_id," +
+                 "?hi_data,?hi_status_id,?hi_rid_id, ?hi_comment, ?hi_host, ?hi_ip, ?hi_systemusername, ?hi_dbusername)", conn);
+            cmd.Parameters.Add("?hi_item_type", MySqlDbType.Int32).Value = item_type;
+            cmd.Parameters.Add("?hi_item_id", MySqlDbType.Int32).Value = item_id;
+            cmd.Parameters.Add("?hi_disrtict_id", MySqlDbType.Int32).Value = distr_id;
+            cmd.Parameters.Add("?hi_status_id", MySqlDbType.Int32).Value = Status; //int(11)
+            cmd.Parameters.Add("?hi_comment", MySqlDbType.VarChar).Value = Comment + ". App v "+ ver; //varchar(128)
+            cmd.Parameters.Add("?hi_ip", MySqlDbType.VarChar).Value = netFteo.NetWork.NetWrapper.HostIP;
+            cmd.Parameters.Add("?hi_host", MySqlDbType.VarChar).Value = netFteo.NetWork.NetWrapper.Host;
+            cmd.Parameters.Add("?hi_data", MySqlDbType.DateTime).Value = DateTime.Now;
+            cmd.Parameters.Add("?hi_rid_id", MySqlDbType.Int32).Value = null;
+            cmd.Parameters.Add("?hi_systemusername", MySqlDbType.VarChar).Value = netFteo.NetWork.NetWrapper.UserName;
+            cmd.Parameters.Add("?hi_dbusername", MySqlDbType.VarChar).Value = Config.UserName;
+            cmd.ExecuteNonQuery();
+            return 0; // fake res
+        }
+
 
 
         #endregion
