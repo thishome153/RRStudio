@@ -800,10 +800,22 @@ namespace XMLReaderCS
             {
                 try
                 {
-                    ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
+                   //ZipFile  zip_Test = ZipFile.Read((string)e.Argument);
+                    //zip_Test.AlternateEncoding
+
+                    ReadOptions ro = new ReadOptions();
+                    // if under Win:
+                    Encoding win1251 = Encoding.GetEncoding("windows-1251");
+                    Encoding dos866 = Encoding.GetEncoding(866);
+                    ro.Encoding = dos866;
+                    
                     //ro.ReadProgress += ZipReadProgress;
 
+
+
                     zip = ZipFile.Read((string)e.Argument, ro);
+                   // zip.AlternateEncoding = dos866;
+
                     this.toolStripProgressBar1.Maximum = zip.Count();
                     this.toolStripProgressBar1.Value = 0;
                     this.toolStripProgressBar1.Minimum = 0;

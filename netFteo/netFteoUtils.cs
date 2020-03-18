@@ -425,7 +425,16 @@ namespace netFteo
 			sr.Close();
 		}
 
-	}
+        public static string Win1251ToUTF8(string source)
+        {
+            Encoding utf8 = Encoding.GetEncoding("utf-8");
+            Encoding win1251 = Encoding.GetEncoding("windows-1251");
+            byte[] utf8Bytes = win1251.GetBytes(source);
+            byte[] win1251Bytes = Encoding.Convert(win1251, utf8, utf8Bytes);
+            source = win1251.GetString(win1251Bytes);
+            return source;
+        }
+    }
 	public static class GUID
 	{
 		/// <summary>
