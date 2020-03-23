@@ -1008,12 +1008,11 @@ namespace netFteo.Spatial
             LV.Columns[0].Text = "Имя";
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
-            LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "Описание";
-            LV.Columns[5].Text = "-";
+            LV.Columns[3].Text = "z, м.";
+            LV.Columns[4].Text = "Mt, м.";
+            LV.Columns[5].Text = "Описание";
             LV.Columns[6].Text = "-";
             LV.View = View.Details;
-
 
             //LV.Tag = PList.Parent_Id;
             if (SetTag) LV.Tag = id;
@@ -1027,6 +1026,7 @@ namespace netFteo.Spatial
                 LVi.Tag = "TPoint." + this[i].id;
                 LVi.SubItems.Add(this[i].x_s);
                 LVi.SubItems.Add(this[i].y_s);
+                LVi.SubItems.Add(this[i].z_s);
                 LVi.SubItems.Add(this[i].Mt_s);
                 LVi.SubItems.Add(this[i].Description);
                 if (this[i].Pref == "н")

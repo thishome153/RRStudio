@@ -92,7 +92,8 @@ namespace netFteo.IO
     {
         public List<DataColumn> DataColumns;
         public const string TabDelimiter = "\t";  // tab
-        public const string CommaDelimiter = ";";  // tab
+        public const string DotCommaDelimiter = ";";  // tab
+        public const string CommaDelimiter = ",";  // tab
                                                    //		public string FileType = "";  // tab
         private String fBody;
         public string Body
@@ -220,7 +221,7 @@ namespace netFteo.IO
 
                 foreach (string line in LinesRN)
                 {
-                    string[] Columns = line.Split(CommaDelimiter.ToCharArray());
+                    string[] Columns = line.Split(DotCommaDelimiter.ToCharArray());
                     foreach (string Column in Columns)
                     {
                         this.DataColumns.Add(new DataColumn("CSVField", Column));
@@ -233,7 +234,7 @@ namespace netFteo.IO
 
                     if (line.Contains("[")) //feature arrived
                     {
-                        items.Add(line.Split(CommaDelimiter.ToCharArray()));
+                        items.Add(line.Split(DotCommaDelimiter.ToCharArray()));
                         LinesTotal++;
                     }
                 }
@@ -325,6 +326,14 @@ namespace netFteo.IO
 
                     if (line.Equals("#Fixosoft spatial text file V2018"))
                         return ImportNXYZDFile2018(Fname);
+                    //otherwise, test if comma separated (aka Nikon xy file)
+                    StringSplitOptions so = new StringSplitOptions();
+
+
+                    string[] NikonString = line.Split(',');
+                    if (NikonString.Length > 0)
+
+                        return ImportXYZDNikon(Fname);
                 }
             }
             return null;
@@ -852,6 +861,62 @@ namespace netFteo.IO
                 }
                 readFile.Close();
                 readFile = null;
+                return resPolys;
+            }
+            catch (IOException ex)
+            {
+                //  MessageBox.Show(ex.ToString());
+                return null;
+            }
+        }
+
+        private TEntitySpatial ImportXYZDNikon(string Fname)
+        {
+            TEntitySpatial resPolys = new TEntitySpatial();
+            PointList resPoly = new PointList();
+            try
+            {
+                string line = null;
+                int StrCounter = 0;
+                System.IO.TextReader readFile = new StreamReader(Fname);
+
+                while (readFile.Peek() != -1)
+                {
+                    line = readFile.ReadLine();
+
+                    if (line != null) //Читаем строку
+                    {      //по строке
+
+                        string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray());
+
+                        if (SplittedStr.Length < 5)
+                        {
+                            goto next;
+                        };
+
+                        /* PointList */
+
+                        StrCounter++;
+
+                        TPoint FilePoint = new TPoint();
+                        FilePoint.Definition = SplittedStr[0].ToString();
+                        FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
+                        FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
+                        FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
+                        if (SplittedStr.Length == 5)
+                        {
+                            FilePoint.Code = SplittedStr[4].ToString();
+                            FilePoint.Description = SplittedStr[4].ToString();
+                        }
+                         resPoly.AddPoint(FilePoint);
+                        //resPolys.Add(FilePoint);
+                        //line = readFile.ReadLine();
+                    }
+                next:;
+                }
+                readFile.Close();
+                readFile = null;
+                resPolys.Add(resPoly);
                 return resPolys;
             }
             catch (IOException ex)

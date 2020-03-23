@@ -2853,8 +2853,6 @@ LV.Items.Add(LVipP);
                 }
             }
 
-
-
             //Show features by whole layer 
             if (STrN.Name.Contains("Layer."))
             {
@@ -2866,7 +2864,6 @@ LV.Items.Add(LVipP);
                     PropertiesToListView(listView_Properties, Entity);
                 }
             }
-
 
             if (STrN.Name.Contains("SPElem."))
             {
