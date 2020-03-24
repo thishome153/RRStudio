@@ -285,26 +285,29 @@ namespace Traverser
             {
                 if (Path.GetExtension(openFileDialog1.FileName).Equals(".txt"))
                 {
-                    System.IO.TextReader readFile = new StreamReader(openFileDialog1.FileName);
-                    string line = null;
-
-                    if (readFile.Peek() != -1)
-                        line = readFile.ReadLine();
-                    RAWBodyrichTextBox.Clear();
-                    RAWBodyrichTextBox.Text = readFile.ReadToEnd();
-                    if (line != null) //Читаем строку, Проверим форомат файла: 
-                        if (line.Contains("CO,Nikon RAW data format V2.00"))
-                        {
-                            Project.Raw.ImportRawFile(openFileDialog1.FileName);
-
-                            toolStripStatusLabel1.Text = Path.GetFileName(openFileDialog1.FileName);
-                            toolStripStatusLabel2.Text = "ST = " + Convert.ToString(Project.Raw.ST.Count);
-                            FillRawtreeSTOnly (Project.Raw);
-                         }
-
+                    ReadRawFile(openFileDialog1.FileName);
                 }
             }
         }
+
+        public void ReadRawFile(string Fname)
+        {
+            System.IO.TextReader readFile = new StreamReader(Fname);
+            string line = null;
+            if (readFile.Peek() != -1)
+                line = readFile.ReadLine();
+            RAWBodyrichTextBox.Clear();
+            RAWBodyrichTextBox.Text = readFile.ReadToEnd();
+            if (line != null) //Check file correct format: 
+                if (line.Contains("CO,Nikon RAW data format V2.00"))
+                {
+                    Project.Raw.ImportRawFile(Fname);
+                    toolStripStatusLabel1.Text = Path.GetFileName(Fname);
+                    toolStripStatusLabel2.Text = "ST = " + Convert.ToString(Project.Raw.ST.Count);
+                    FillRawtreeSTOnly(Project.Raw);
+                }
+        }
+
         private void FillRawtree(TNikonRaw raw)
         {
             RawtreeView.Nodes.Clear();

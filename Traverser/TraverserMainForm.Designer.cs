@@ -135,10 +135,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 520);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 541);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1036, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(887, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -183,7 +183,7 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1036, 23);
+            this.toolStrip1.Size = new System.Drawing.Size(887, 23);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -369,7 +369,7 @@
             this.contextMenu_SaveAS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сохранитьКакToolStripMenuItem1});
             this.contextMenu_SaveAS.Name = "contextMenuStrip1";
-            this.contextMenu_SaveAS.Size = new System.Drawing.Size(167, 26);
+            this.contextMenu_SaveAS.Size = new System.Drawing.Size(166, 26);
             // 
             // сохранитьКакToolStripMenuItem1
             // 
@@ -380,41 +380,41 @@
             this.txtToolStripMenuItem,
             this.текстовыйФайлNXYZD2015ToolStripMenuItem});
             this.сохранитьКакToolStripMenuItem1.Name = "сохранитьКакToolStripMenuItem1";
-            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(165, 22);
             this.сохранитьКакToolStripMenuItem1.Text = "Сохранить как....";
             // 
             // mifToolStripMenuItem
             // 
             this.mifToolStripMenuItem.Name = "mifToolStripMenuItem";
-            this.mifToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mifToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.mifToolStripMenuItem.Text = "mif";
             this.mifToolStripMenuItem.Click += new System.EventHandler(this.mifToolStripMenuItem_Click);
             // 
             // dxfToolStripMenuItem
             // 
             this.dxfToolStripMenuItem.Name = "dxfToolStripMenuItem";
-            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.dxfToolStripMenuItem.Text = "dxf";
             this.dxfToolStripMenuItem.Click += new System.EventHandler(this.dxfToolStripMenuItem_Click);
             // 
             // xmlToolStripMenuItem
             // 
             this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
-            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.xmlToolStripMenuItem.Text = "xml";
             this.xmlToolStripMenuItem.Click += new System.EventHandler(this.xmlToolStripMenuItem_Click);
             // 
             // txtToolStripMenuItem
             // 
             this.txtToolStripMenuItem.Name = "txtToolStripMenuItem";
-            this.txtToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.txtToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.txtToolStripMenuItem.Text = "Текстовый файл NXYZD 2014";
             this.txtToolStripMenuItem.Click += new System.EventHandler(this.txtToolStripMenuItem_Click);
             // 
             // текстовыйФайлNXYZD2015ToolStripMenuItem
             // 
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Name = "текстовыйФайлNXYZD2015ToolStripMenuItem";
-            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Text = "Текстовый файл NXYZD 2015";
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Click += new System.EventHandler(this.текстовыйФайлNXYZD2015ToolStripMenuItem_Click);
             // 
@@ -514,7 +514,7 @@
             this.dataGridTraverseView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridTraverseView.Location = new System.Drawing.Point(6, 69);
             this.dataGridTraverseView.Name = "dataGridTraverseView";
-            this.dataGridTraverseView.Size = new System.Drawing.Size(672, 273);
+            this.dataGridTraverseView.Size = new System.Drawing.Size(536, 273);
             this.dataGridTraverseView.TabIndex = 14;
             // 
             // checkBoxBO
@@ -560,7 +560,7 @@
             this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 20;
-            this.listBox1.Location = new System.Drawing.Point(685, 7);
+            this.listBox1.Location = new System.Drawing.Point(548, 11);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(317, 404);
             this.listBox1.TabIndex = 9;
@@ -614,7 +614,7 @@
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip2.Size = new System.Drawing.Size(1036, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(887, 24);
             this.menuStrip2.TabIndex = 4;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -811,7 +811,7 @@
             // 
             this.настройкиToolStripMenuItem.Enabled = false;
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
-            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.настройкиToolStripMenuItem.Text = "&Настройки";
             this.настройкиToolStripMenuItem.Click += new System.EventHandler(this.НастройкиToolStripMenuItem_Click);
             // 
@@ -819,7 +819,7 @@
             // 
             this.параметрыToolStripMenuItem.Enabled = false;
             this.параметрыToolStripMenuItem.Name = "параметрыToolStripMenuItem";
-            this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.параметрыToolStripMenuItem.Text = "&Параметры";
             this.параметрыToolStripMenuItem.Click += new System.EventHandler(this.ПараметрыToolStripMenuItem_Click);
             // 
@@ -856,7 +856,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1036, 542);
+            this.ClientSize = new System.Drawing.Size(887, 563);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);

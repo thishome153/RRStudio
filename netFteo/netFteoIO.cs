@@ -326,9 +326,15 @@ namespace netFteo.IO
 
                     if (line.Equals("#Fixosoft spatial text file V2018"))
                         return ImportNXYZDFile2018(Fname);
-                    //otherwise, test if comma separated (aka Nikon xy file)
-                    StringSplitOptions so = new StringSplitOptions();
 
+                    if (line.Equals("CO,Nikon RAW data format V2.00"))
+                    {
+                        ImportNikonRAWdataformat(Fname);
+                        return null;
+                    }
+
+                    //otherwise, test if comma separated (aka Nikon xy file)
+                   // StringSplitOptions so = new StringSplitOptions();
 
                     string[] NikonString = line.Split(',');
                     if (NikonString.Length > 0)
@@ -339,12 +345,28 @@ namespace netFteo.IO
             return null;
         }
 
-        /// <summary>
-        /// Импорт xml для типов netfeo::BaseClasses
-        /// </summary>
-        /// <param name="Fname">Имя файла</param>
-        /// <returns>Коллекция полигонов</returns>
-        public TEntitySpatial ImportXML(string Fname)
+        public bool isNikonRaw(string Fname)
+        {
+            string line = null;
+            System.IO.TextReader readFile = new StreamReader(Fname);
+            BodyLoad(Fname);
+            while (readFile.Peek() != -1)
+            {
+                line = readFile.ReadLine();
+                if (line != null)
+                {
+                    return line.Equals("CO,Nikon RAW data format V2.00");
+                }
+            }
+            return false;
+        }
+
+                /// <summary>
+                /// Импорт xml для типов netfeo::BaseClasses
+                /// </summary>
+                /// <param name="Fname">Имя файла</param>
+                /// <returns>Коллекция полигонов</returns>
+                public TEntitySpatial ImportXML(string Fname)
         {
             System.IO.TextReader reader = new System.IO.StreamReader(Fname);
             System.Xml.XmlDocument XMLDocFromFile = new System.Xml.XmlDocument();
@@ -868,6 +890,13 @@ namespace netFteo.IO
                 //  MessageBox.Show(ex.ToString());
                 return null;
             }
+        }
+
+
+
+        private void ImportNikonRAWdataformat(string Fname)
+        {
+
         }
 
         private TEntitySpatial ImportXYZDNikon(string Fname)

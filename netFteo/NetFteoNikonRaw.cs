@@ -233,8 +233,8 @@ namespace netFteo.NikonRaw
         public bool HaSetinQuickStation; // проверить по инструкции. если в QuickStation азимут назад всегда ноль ??
         public string StationName
         {
-            get { return this.NumGeopointA; }
-            set { this.NumGeopointA = value; }
+            get { return this.Definition; }
+            set { this.Definition= value; }
         }
            public TStation()//(string StName, string BackName)
         {

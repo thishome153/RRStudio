@@ -623,6 +623,15 @@ namespace XMLReaderCS
                 this.DocInfo.Comments = mifreader.Body;
                 this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
                 this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding.EncodingName;
+
+                if (mifreader.isNikonRaw(FileName))
+                {
+                    this.DocInfo.DocTypeNick = "Nikon RAW data format V2.00";
+                    //call Traverser:
+                    Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
+                    frmTraverser.ReadRawFile(FileName);
+                    frmTraverser.ShowDialog(this);
+                }
             }
 
 
@@ -3398,7 +3407,17 @@ LV.Items.Add(LVipP);
 
                 }
             }
-
+            
+            if (NodeName.Contains("PointList."))
+            {
+                PointList Pl = (PointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
+                if (Pl != null)
+                {
+                    TEntitySpatial PC = new TEntitySpatial();
+                    PC.Add(Pl);
+                    return PC;
+                }
+            }
 
             //Не Все зоны - только территориальные, ==(1) ??
             if (NodeName.Contains("ZonesNode"))
