@@ -5545,7 +5545,8 @@ LV.Items.Add(LVipP);
                         (parent).SelectedItems[0].Text = pt.Pref + pt.Definition;
                         (parent).SelectedItems[0].SubItems[1].Text = pt.x_s;
                         (parent).SelectedItems[0].SubItems[2].Text = pt.y_s;
-                        (parent).SelectedItems[0].SubItems[3].Text = pt.Mt_s;
+                        (parent).SelectedItems[0].SubItems[3].Text = pt.z_s;
+                        (parent).SelectedItems[0].SubItems[4].Text = pt.Mt_s;
                     }
                 }
             }

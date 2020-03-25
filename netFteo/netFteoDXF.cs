@@ -248,7 +248,7 @@ namespace netFteo.IO
 						netFteo.Spatial.TPoint point = new netFteo.Spatial.TPoint(vertex.Location.Y, vertex.Location.X);
 						point.oldX = vertex.Location.Y;
 						point.oldY = vertex.Location.X;
-						point.NumGeopointA = "dxf" + (++ptNum).ToString();
+						point.Definition = "dxf" + (++ptNum).ToString();
 						res.AddPoint(point);
 					}
 					return res;
@@ -261,7 +261,7 @@ namespace netFteo.IO
 						netFteo.Spatial.TPoint point = new netFteo.Spatial.TPoint(vertex.Location.Y, vertex.Location.X);
 						point.oldX = vertex.Location.Y;
 						point.oldY = vertex.Location.X;
-						point.NumGeopointA = "dxf" + (++ptNum).ToString();
+						point.Definition = "dxf" + (++ptNum).ToString();
 						res.AddPoint(point);
 					}
 					if ((poly.Vertexes[0].Location.X == poly.Vertexes[poly.Vertexes.Count - 1].Location.X) &&

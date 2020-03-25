@@ -770,14 +770,19 @@ namespace netFteo.IO
                                     FilePoint.x = Convert.ToDouble(SplittedStr[3].ToString());
                                     FilePoint.y = Convert.ToDouble(SplittedStr[4].ToString());
                                 }
-
-                                // нет Mt (z.B. точка ликвидируется)
+                                //z
                                 if (!SplittedStr[5].Contains("-"))
                                 {
-                                    FilePoint.Mt = Convert.ToDouble(SplittedStr[5].ToString());
+                                    FilePoint.z = Convert.ToDouble(SplittedStr[5].ToString());
                                 }
-                                if (SplittedStr.Count() > 6)
-                                    FilePoint.Description = SplittedStr[6].ToString();
+                                // нет Mt (z.B. точка ликвидируется)
+                                if (!SplittedStr[6].Contains("-"))
+                                {
+                                    FilePoint.Mt = Convert.ToDouble(SplittedStr[6].ToString());
+                                }
+
+                                if (SplittedStr.Count() > 7)
+                                    FilePoint.Description = SplittedStr[7].ToString();
                                 resPoly.AddPoint(FilePoint);
 
                                 line = readFile.ReadLine();
@@ -1132,6 +1137,7 @@ namespace netFteo.IO
                                          Poly[i].oldY_s + "\t" +
                                          Poly[i].x_s + "\t" +
                                          Poly[i].y_s + "\t" +
+                                         Poly[i].z_s + "\t" +
                                          Poly[i].Mt_s + "\t" +
                                          Poly[i].Description + "\t" +
                                          Poly[i].OrdIdent);

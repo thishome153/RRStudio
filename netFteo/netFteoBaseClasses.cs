@@ -351,9 +351,9 @@ namespace netFteo.Spatial
             LV.Columns[0].Text = "Имя";
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
-            LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "Описание";
-            LV.Columns[5].Text = "-";
+            LV.Columns[3].Text = "z, м.";
+            LV.Columns[4].Text = "Mt, м.";
+            LV.Columns[5].Text = "Описание";
             LV.Columns[6].Text = "-";
             LV.View = View.Details;
 
@@ -361,12 +361,13 @@ namespace netFteo.Spatial
             //LV.Tag = PList.Parent_Id;
             if (SetTag) LV.Tag = id;
             ListViewItem res = null; ;
-            BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+            BName = this.Pref + this.Definition + this.OrdIdent;
             ListViewItem LVi = new ListViewItem();
             LVi.Text = BName;
             LVi.Tag = id;
             LVi.SubItems.Add(x_s);
             LVi.SubItems.Add(y_s);
+            LVi.SubItems.Add(z_s);
             LVi.SubItems.Add(Mt_s);
             LVi.SubItems.Add(Description);
             if (Pref == "н")
@@ -715,21 +716,22 @@ namespace netFteo.Spatial
             LV.Columns[0].Text = "Имя";
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
-            LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "радиус";
-            LV.Columns[5].Text = "-";
+            LV.Columns[3].Text = "z, м.";
+            LV.Columns[4].Text = "Mt, м.";
+            LV.Columns[5].Text = "радиус";
             LV.Columns[6].Text = "-";
             LV.View = View.Details;
 
 
             //LV.Tag = PList.Parent_Id;
             if (SetTag) LV.Tag = id;
-            BName = this.Pref + this.NumGeopointA + this.OrdIdent;
+            BName = this.Pref + this.Definition + this.OrdIdent;
             ListViewItem LVi = new ListViewItem();
             LVi.Text = BName;
             LVi.Tag = id;
             LVi.SubItems.Add(x_s);
             LVi.SubItems.Add(y_s);
+            LVi.SubItems.Add(z_s);
             LVi.SubItems.Add(Mt_s);
             LVi.SubItems.Add(R.ToString());
             if (Pref == "н")
@@ -2016,12 +2018,13 @@ namespace netFteo.Spatial
             string BName;
             for (int i = 0; i <= points.Count - 1; i++)
             {
-                BName = points[i].Pref + points[i].NumGeopointA + points[i].OrdIdent;
+                BName = points[i].Pref + points[i].Definition + points[i].OrdIdent;
                 ListViewItem LVi = new ListViewItem();
                 LVi.Text = BName;
                 LVi.Tag = "TPoint." + points[i].id;
                 LVi.SubItems.Add(points[i].x_s);
                 LVi.SubItems.Add(points[i].y_s);
+                LVi.SubItems.Add(points[i].z_s);
                 LVi.SubItems.Add(points[i].Mt_s);
                 LVi.SubItems.Add(points[i].Description);
 
@@ -2049,9 +2052,9 @@ namespace netFteo.Spatial
             LV.Columns[0].Text = "Имя";
             LV.Columns[1].Text = "x, м.";
             LV.Columns[2].Text = "y, м.";
-            LV.Columns[3].Text = "Mt, м.";
-            LV.Columns[4].Text = "Описание";
-            LV.Columns[5].Text = "-";
+            LV.Columns[3].Text = "z, м.";
+            LV.Columns[4].Text = "Mt, м.";
+            LV.Columns[5].Text = "Описание";
             LV.Columns[6].Text = "-";
             if (SetTag) LV.Tag = id;
 
@@ -4353,9 +4356,10 @@ namespace netFteo.Spatial
             {
                 TEntitySpatial res = new TEntitySpatial();
                 //Realtys
-                res.Add(this.GetRealtyEs());
+                res.AddFeatures(this.GetRealtyEs());
+
                 //Parcels
-                res.Add(this.GetParcelsEs());
+                res.AddFeatures(this.GetParcelsEs());
                 //Zones
                 //Bound
                 return res;
@@ -4377,6 +4381,7 @@ namespace netFteo.Spatial
             this.Blocks = new List<TMyCadastralBlock>();
             //this.ParsedSpatial = new List<TEntitySpatial>();
             this.ParsedSpatial = new TEntitySpatial();
+            TEntitySpatial checkFake = this.SpatialData;
             this.CSs = new TCoordSystems();
         }
 
@@ -4609,7 +4614,7 @@ namespace netFteo.Spatial
     }
     #endregion
 
-    #region Полилиния (знает площадь)
+    #region Spatial classes
 
     public class TLayer : Geometry
     {
@@ -4624,7 +4629,6 @@ namespace netFteo.Spatial
             this.Parent_id = Parent_id;
         }
     }
-
 
     /// <summary>
     /// Getero spatial data collection -lines, polygons, points, circles 
@@ -4708,6 +4712,21 @@ namespace netFteo.Spatial
 
             //"netFteo.Spatial.TPolyLine" ????
             return null;
+        }
+
+        /// <summary>
+        /// Most used instead Add, due check fake(empty) Features collection
+        /// </summary>
+        /// <param name="Features"></param>
+        /// <returns></returns>
+        public bool AddFeatures(TEntitySpatial Features)
+        {
+            if (Features.Count > 0)
+            {
+                this.Add(Features);
+                return true;
+            }
+            else return false;
         }
 
         /// <summary>
@@ -5027,6 +5046,7 @@ namespace netFteo.Spatial
             LV.Columns[2].Text = "id";
             LV.Columns[3].Text = "layer handle";
             LV.Columns[4].Text = "-";
+
             foreach (TLayer Layer in this.Layers)
             {
 
@@ -5036,6 +5056,8 @@ namespace netFteo.Spatial
                 LVi.SubItems.Add(Layer.TypeName);
                 LVi.SubItems.Add(Layer.id.ToString());
                 LVi.SubItems.Add(Layer.LayerHandle);
+                LVi.SubItems.Add("-");
+                LVi.SubItems.Add("-");
                 LV.Items.Add(LVi);
             }
             /*
@@ -5065,7 +5087,16 @@ namespace netFteo.Spatial
                 LVi.Text = feature.Definition;
                 LVi.Tag = feature.id;
                 if (feature is IPoint)
-                    LVi.Tag = "TPoint." + feature.id;
+                {
+                    TPoint pt = (TPoint)feature;
+                    LVi.Tag = "TPoint." + pt.id;
+                    LVi.SubItems.Add(pt.x_s);
+                    LVi.SubItems.Add(pt.y_s);
+                    LVi.SubItems.Add(pt.z_s);
+                    LVi.SubItems.Add(pt.Mt_s);
+                    LVi.SubItems.Add(pt.Code);
+                }
+                else
                 LVi.SubItems.Add(feature.Name);
 
                 if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
