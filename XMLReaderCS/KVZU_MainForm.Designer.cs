@@ -785,7 +785,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 164);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(297, 186);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -810,6 +810,7 @@
             // 
             // csvStripMenuItem
             // 
+            this.csvStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.technoCAD_Express;
             this.csvStripMenuItem.Name = "csvStripMenuItem";
             this.csvStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.csvStripMenuItem.Text = "csv-файл (ТЭ)";
@@ -817,6 +818,7 @@
             // 
             // mifфайлToolStripMenuItem
             // 
+            this.mifфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.MapInfo16_16;
             this.mifфайлToolStripMenuItem.Name = "mifфайлToolStripMenuItem";
             this.mifфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.mifфайлToolStripMenuItem.Text = "mif-файл";
@@ -824,6 +826,7 @@
             // 
             // списокТочекФайлNikonToolStripMenuItem
             // 
+            this.списокТочекФайлNikonToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.tripod;
             this.списокТочекФайлNikonToolStripMenuItem.Name = "списокТочекФайлNikonToolStripMenuItem";
             this.списокТочекФайлNikonToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.списокТочекФайлNikonToolStripMenuItem.Text = "Список точек - файл Nikon";
@@ -837,6 +840,7 @@
             this.m5000ToolStripMenuItem,
             this.m110000ToolStripMenuItem,
             this.m133333ToolStripMenuItem});
+            this.dxfфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Nanocad_16x16;
             this.dxfфайлToolStripMenuItem.Name = "dxfфайлToolStripMenuItem";
             this.dxfфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.dxfфайлToolStripMenuItem.Text = "dxf-файл";
@@ -844,35 +848,35 @@
             // m1500ToolStripMenuItem
             // 
             this.m1500ToolStripMenuItem.Name = "m1500ToolStripMenuItem";
-            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m1500ToolStripMenuItem.Text = "M 1 :500";
             this.m1500ToolStripMenuItem.Click += new System.EventHandler(this.m1500ToolStripMenuItem_Click);
             // 
             // m11000ToolStripMenuItem
             // 
             this.m11000ToolStripMenuItem.Name = "m11000ToolStripMenuItem";
-            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m11000ToolStripMenuItem.Text = "M 1:1000";
             this.m11000ToolStripMenuItem.Click += new System.EventHandler(this.m11000ToolStripMenuItem_Click);
             // 
             // m5000ToolStripMenuItem
             // 
             this.m5000ToolStripMenuItem.Name = "m5000ToolStripMenuItem";
-            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m5000ToolStripMenuItem.Text = "M 1:5000";
             this.m5000ToolStripMenuItem.Click += new System.EventHandler(this.m5000ToolStripMenuItem_Click);
             // 
             // m110000ToolStripMenuItem
             // 
             this.m110000ToolStripMenuItem.Name = "m110000ToolStripMenuItem";
-            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m110000ToolStripMenuItem.Text = "M 1:10000";
             this.m110000ToolStripMenuItem.Click += new System.EventHandler(this.m110000ToolStripMenuItem_Click);
             // 
             // m133333ToolStripMenuItem
             // 
             this.m133333ToolStripMenuItem.Name = "m133333ToolStripMenuItem";
-            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m133333ToolStripMenuItem.Text = "M 1:33333";
             this.m133333ToolStripMenuItem.Click += new System.EventHandler(this.m133333ToolStripMenuItem_Click);
             // 
@@ -907,6 +911,7 @@
             // 
             // найтиНаПККбровзерToolStripMenuItem
             // 
+            this.найтиНаПККбровзерToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Rosreestr;
             this.найтиНаПККбровзерToolStripMenuItem.Name = "найтиНаПККбровзерToolStripMenuItem";
             this.найтиНаПККбровзерToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
             this.найтиНаПККбровзерToolStripMenuItem.Text = "Найти на ПКК (бровзер)";

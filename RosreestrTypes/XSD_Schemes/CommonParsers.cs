@@ -2760,12 +2760,12 @@ namespace RRTypes.CommonParsers
 
 						TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
 						Bl.CN = MP.Package.SpecifyParcel.ExistParcel.CadastralBlock;
-                        if (MP.Package.SpecifyParcel.ExistParcel.ObjectRealty != null)
-                            MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistParcel.ObjectRealty.InnerCadastralNumbers);
                         MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.AreaInGKN;
 						MainObj.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Area.Area; //Указанная площадь??
+
 						if (MP.Package.SpecifyParcel.ExistParcel.ObjectRealty != null)
 							MainObj.InnerCadastralNumbers.AddRange(MP.Package.SpecifyParcel.ExistParcel.ObjectRealty.InnerCadastralNumbers);
+
 						if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
 						{
 							for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)

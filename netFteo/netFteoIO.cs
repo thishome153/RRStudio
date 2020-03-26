@@ -1120,15 +1120,15 @@ namespace netFteo.IO
             writer.WriteLine("# Created " + DateTime.Now.ToString() + ". " +
                              "Library: netfteo " +
                                 String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()));  //"Версия {0}", 
-            writer.WriteLine("# Разделители полей tab. Кодировка " + encoding.EncodingName + ".  Поля файла: ");
-            writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
-            writer.WriteLine("# Геометрий " + ES.FeaturesCount("*").ToString());
+            writer.WriteLine("# Field delimiters: tab. Encoding " + encoding.EncodingName);
+            writer.WriteLine("# Features count: " + ES.FeaturesCount("*").ToString());
             foreach (IGeometry feature in ES)
             {
                 
                 if (feature.GetType().ToString() == "netFteo.Spatial.PointList")
                 {
                     PointList Poly = (PointList)feature;
+                    writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;  Z; Mt;    Описание закрепления");
                     writer.WriteLine("PointList" + "\t" + (Poly.Definition));
                     for (int i = 0; i <= Poly.PointCount - 1; i++)
                     {
@@ -1148,6 +1148,7 @@ namespace netFteo.IO
                 if (feature.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
                 {
                     TMyPolygon Poly = (TMyPolygon)feature;
+                    writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
                     writer.WriteLine("Polygon" + "\t" + (Poly.Definition));
 
                     for (int i = 0; i <= Poly.PointCount - 1; i++)
