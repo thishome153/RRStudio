@@ -3275,6 +3275,42 @@ LV.Items.Add(LVipP);
 
         #region Запись в DXF, MIF, TXT 
 
+
+        private void списокТочекФайлNikonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /*
+            //Для отдельного ОИПД выгружаем:
+            netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+            saveFileDialog1.FilterIndex = 2; // txt
+
+            TEntitySpatial ES = GetES(TV_Parcels.SelectedNode.Name);
+
+            if (TV_Parcels.SelectedNode.Name.Contains("PointList"))
+            {
+
+            }
+
+            if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
+            {
+                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                if (Pl != null)
+                {
+                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
+                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                    {
+
+
+                        TR.SaveAsNikon(saveFileDialog1.FileName, Pl.AsPointList());
+                    }
+
+                }
+            }
+            */
+            SaveAs("NikonXY", TV_Parcels.SelectedNode.Name);
+        }
+
+
+
         //------------------------------------------------------------------------------------------
         private void SaveAs(string Format, string ItemName, int scale = 1000)
         {
@@ -3318,6 +3354,18 @@ LV.Items.Add(LVipP);
                             }
                             break;
                         }
+
+                    case "NikonXY":
+                        {
+                            saveFileDialog1.FilterIndex = 2;
+                            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+                            {
+                                netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
+                                TR.SaveAsNikon(saveFileDialog1.FileName, ES);
+                            }
+                            break;
+                        }
+
 
                     case "DXF":
                         {
@@ -4586,28 +4634,7 @@ LV.Items.Add(LVipP);
         }
 
 
-        private void списокТочекФайлNikonToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Для отдельного ОИПД выгружаем:
-            netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
-            saveFileDialog1.FilterIndex = 2; // txt
 
-            if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
-            {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
-                if (Pl != null)
-                {
-                    saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
-                    if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
-                    {
-
-
-                        TR.SaveAsNikon(saveFileDialog1.FileName, Pl.AsPointList());
-                    }
-
-                }
-            }
-        }
 
 
 

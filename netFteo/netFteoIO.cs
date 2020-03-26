@@ -1214,17 +1214,29 @@ namespace netFteo.IO
             }
             writer.Close();
         }
-        public void SaveAsNikon(string FileName, PointList ES)
+
+        /// <summary>
+        /// Nikon coordinates file. Delimiters - comma
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="ES"></param>
+        public void SaveAsNikon(string FileName, TEntitySpatial ES)
         {
             if (ES.Count == 0) return;
             System.IO.TextWriter writer = new StreamWriter(FileName);
-
-            for (int i = 0; i <= ES.Count - 1; i++)
+            foreach (IGeometry feature in ES)
             {
-                if (ES[i].Code != null)
-                    writer.WriteLine(ES[i].NumGeopointA + "," + ES[i].x_s + "," + ES[i].y_s + "," + ES[i].z_s + "," + ES[i].Code);
-                else
-                    writer.WriteLine(ES[i].NumGeopointA + "," + ES[i].x_s + "," + ES[i].y_s + "," + ES[i].z_s);
+                if (feature.GetType().ToString() == "netFteo.Spatial.PointList")
+                {
+                    PointList Poly = (PointList)feature;
+                    for (int i = 0; i <= Poly.PointCount - 1; i++)
+                    {
+                        if (Poly[i].Code != null)
+                            writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s + "," + Poly[i].Code);
+                        else
+                            writer.WriteLine(Poly[i].Description + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
+                    }
+                }
             }
             writer.Close();
         }
