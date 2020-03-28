@@ -136,15 +136,13 @@ namespace GKNData
         private void ConnectOps(TreeView tv)
         {
             tv.BackColor = SystemColors.Control;
-            loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
-            loadingCircleToolStripMenuItem1.Visible = true;
-            loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = true;
+  
             tv.Nodes.Clear();
             CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
             Application.DoEvents();
             CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
             ListBlockListTreeView(CadBloksList, tv);
-            AppendHistory(200, -1, 200, "Connect", CF.conn, CF.conn2, CF.Cfg.District_id, CF.Cfg);
+            DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect", CF.conn, CF.conn2, CF.Cfg.District_id, CF.Cfg);
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
 #if !DEBUG
@@ -157,6 +155,9 @@ namespace GKNData
         private bool ConnectGo()
         {
             CF.Cfg.CfgRead(); // Read reg
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
+            loadingCircleToolStripMenuItem1.Visible = true;
+            loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = true;
 
             TIMEOUT_DONE = Convert.ToInt16(CF.Cfg.IddleTimeOut);
             {
@@ -168,7 +169,6 @@ namespace GKNData
 
                 try
                 {
-
                     CF.conn = new MySqlConnection(connStr);
                     CF.conn.Open();
                     CF.conn2 = new MySqlConnection(connStr);
@@ -194,6 +194,8 @@ namespace GKNData
 					{ "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to " +
 							"use near '', '-1','C# GKNDATA connect',\t 'developer_machine', '10.66.77.400', 'this', 'u1'' at line 1"}
 					*/
+
+                    treeView1.Nodes.Add("Connect Error").Nodes.Add(ex.Message);
                     StatusLabel_DBName.ToolTipText = "Connect error " + CF.conn.Database;
                     StatusLabel_DBName.Image = GKNData.Properties.Resources.cross;
                     StatusLabel_AllMessages.Text = ex.Message;
@@ -254,6 +256,7 @@ namespace GKNData
                 ENode = ((TreeNodeMouseClickEventArgs)e).Node;
             }
 
+            CF.Cfg.CurrentItem.SelectedNode = ENode;
             if ((ENode != null) && (ENode.Tag != null))
             {
                 if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
@@ -290,8 +293,54 @@ namespace GKNData
             return (cnt > 0);
         }
 
-        //-------------------------------- Edititng -------------------------------
-        private bool Edit(TCurrentItem Item)
+
+        private bool AddItem(TCurrentItem Item)
+        {
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+            {
+                //add Parcel
+
+                TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
+                TMyParcel parcel = new TMyParcel();
+                parcel.CadastralBlock = bl.CN;
+                parcel.CadastralBlock_id = bl.id;
+                parcel.CN = bl.CN + ":1";
+
+                if (bl.Parcels.Count > 0)
+                {
+                    parcel.CN = bl.Parcels.Last().CN;
+                }
+
+                if (InputBox.doInputBox("Добавление объекта недвижимости", "Введите номер", ref parcel.CN) == DialogResult.OK)
+                {
+                    if (!bl.ParcelExist(parcel.CN))
+                    {
+                        if (AddParcel(parcel))
+                        {
+                            bl.Parcels.AddParcel(parcel);
+                            //populate new node by new item
+                            insertItem(parcel, Item.SelectedNode);
+                        }
+                    }
+                }
+            }
+
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+            {
+                //add document
+            }
+                return false;
+        }
+
+        private bool AddParcel(TMyParcel item)
+        {
+            item.id = DB_AppendParcel(item, CF.conn, CF.conn2, CF.Cfg.District_id);
+            if (item.id > 0)
+                return true;
+            else return false;
+        }
+            //-------------------------------- Edititng -------------------------------
+            private bool Edit(TCurrentItem Item)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
@@ -339,7 +388,9 @@ namespace GKNData
             frmParcelEditor.ITEM = item;
 
             if (frmParcelEditor.ShowDialog() == DialogResult.OK)
-                return true;
+            {
+                return DB_UpdateParcel(item, CF.conn);
+            }
             else return false;
         }
 
@@ -361,6 +412,7 @@ namespace GKNData
                                                                                               //parcel.Name = row[3].ToString(); //Name
                 parcel.CadastralBlock_id = Convert.ToInt32(row[4]); // block_id
                 parcel.SpecialNote = row[5].ToString(); // lot_comment
+                parcel.Name = row[3].ToString(); // lot_name
                 parcel.AreaGKN = row[6].ToString();
                 ParcelsList.Add(parcel);
             }
@@ -434,7 +486,7 @@ namespace GKNData
             return files;
         }
 
-        private TFiles LoadParcelFiles(MySqlConnection conn, int parcel_id)
+        private TFiles LoadParcelFiles(MySqlConnection conn, long parcel_id)
         {
 
             TFiles files = new TFiles();
@@ -950,7 +1002,7 @@ namespace GKNData
         /// <param name="conn2"></param>
         /// <param name="distr_id"></param>
         /// <returns></returns>
-        private int AppendHistory(int item_type, int item_id, int Status, string Comment,//;Config:TAppCfgRecord);
+        private int DB_AppendHistory(ItemTypes item_type, long item_id, int Status, string Comment,//;Config:TAppCfgRecord);
             MySqlConnection conn, MySqlConnection conn2, int distr_id, TAppCfgRecord Config)
         {
             if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
@@ -975,8 +1027,61 @@ namespace GKNData
             cmd.ExecuteNonQuery();
             return 0; // fake res
         }
+        
+        /// <summary>
+        /// Add parcel record to table LOTTABLE
+        /// </summary>
+        private long DB_AppendParcel(TMyParcel parcel,
+              MySqlConnection conn, MySqlConnection conn2, int distr_id)
+        {
+            if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
+            StatusLabel_AllMessages.Text = "Adding parcel.... ";
+            string lot_small_kn = parcel.CN.Split(':').Last().ToString();
+            MySqlCommand cmd = new MySqlCommand(
+      
+            "INSERT INTO lottable(lottable_id,lot_kn, lot_small_kn, lotname, Code_KLADR, block_id)" + "" +
+            "              VALUES(NULL,      ?lot_kn,?lot_small_kn,?lotname,?Code_KLADR,?block_id)", conn);
 
+            //cmd.Parameters.Add("?lottable_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?lot_kn", MySqlDbType.VarChar).Value = parcel.CN;
+            cmd.Parameters.Add("?lot_small_kn", MySqlDbType.VarChar).Value = lot_small_kn;
+            cmd.Parameters.Add("?lotname", MySqlDbType.VarChar).Value = "-";
+            cmd.Parameters.Add("?Code_KLADR", MySqlDbType.VarChar).Value = "-";
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = parcel.CadastralBlock_id;
+            cmd.ExecuteNonQuery();
+            long last_id = cmd.LastInsertedId;
+            DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
+            return last_id;
+        }
+        private bool DB_UpdateParcel(TMyParcel parcel,  MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
+            StatusLabel_AllMessages.Text = "Update parcel.... ";
+            string lot_small_kn = parcel.CN.Split(':').Last().ToString();
+            MySqlCommand cmd = new MySqlCommand(
 
+            "update lottable set " +
+            "lot_kn = ?lot_kn," +
+            "lot_small_kn= ?lot_small_kn," +
+            "lotname = ?lotname,"+
+            "lot_comment = ?lot_comment"+
+            //"Code_KLADR = ?Code_KLADR"+
+            // "block_id = ?block_id "+
+            " where lottable_id = ?lottable_id", conn);
+
+            cmd.Parameters.Add("?lottable_id", MySqlDbType.Int32).Value = parcel.id;//
+            cmd.Parameters.Add("?lot_kn", MySqlDbType.VarChar).Value = parcel.CN;
+            cmd.Parameters.Add("?lot_small_kn", MySqlDbType.VarChar).Value = lot_small_kn;
+            cmd.Parameters.Add("?lotname", MySqlDbType.VarChar).Value = parcel.Name;
+            cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote;
+            
+            //cmd.Parameters.Add("?Code_KLADR", MySqlDbType.VarChar).Value = parcel.;
+            //cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = parcel.CadastralBlock_id;
+            cmd.ExecuteNonQuery();
+            //long last_id = cmd.LastInsertedId;
+            //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
+            return true;
+        }
 
         #endregion
 
@@ -1249,8 +1354,27 @@ namespace GKNData
 			treeView1.Dock = DockStyle.None;
 		}
 
-		/*
+        private void ToolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            ConnectGo();
+        }
+
+        private void КопироватьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode != null)
+            {
+                Clipboard.SetText(treeView1.SelectedNode.Text);
+            }
+        }
+
+        private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           AddItem(CF.Cfg.CurrentItem);
+        }
+    }
+
+        /*
 		 * 
 		 */
-	}
+    
 }

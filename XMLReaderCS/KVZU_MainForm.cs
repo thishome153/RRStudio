@@ -1695,7 +1695,7 @@ namespace XMLReaderCS
         }
 
 
-        private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, int id)
+        private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, long id)
         {
             if (Address.Empty) return;
             {
@@ -3138,7 +3138,7 @@ LV.Items.Add(LVipP);
             return false;
         }
 
-        private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, int ownerid, string Name, string Nodename)
+        private void ListRights(TreeNode PNode, netFteo.Rosreestr.TMyRights Rights, long ownerid, string Name, string Nodename)
         {
             if (Rights == null) return;
             if (Rights.Count > 0)

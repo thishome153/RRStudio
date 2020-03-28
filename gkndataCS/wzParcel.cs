@@ -41,6 +41,7 @@ namespace GKNData
         {
             textBox_CN.Text = ITEM.CN;
             textBox_BlockName.Text = ITEM.Name;
+            textBox_Block_Comment.Text = ITEM.SpecialNote;
             ListFiles();
             pkk5Viewer1.Start(ITEM.CN, pkk5_Types.Parcel);
             this.BlockHistory = new netFteo.Spatial.TFileHistory(ITEM.id);
@@ -115,7 +116,7 @@ namespace GKNData
         }
         private void textBox_Block_Komment_TextChanged(object sender, EventArgs e)
         {
-           // this.ITEM.Comments = ((TextBox)sender).Text;
+           this.ITEM.SpecialNote = ((TextBox)sender).Text;
         }
 
         private void toolButton_SaveXML_Click(object sender, EventArgs e)
@@ -148,7 +149,7 @@ namespace GKNData
             }
             else return null;
         }
-        private TFileHistory LoadParcelHistory(MySqlConnection conn, int item_id)
+        private TFileHistory LoadParcelHistory(MySqlConnection conn, long item_id)
         {
             TFileHistory files = new TFileHistory(item_id);
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
@@ -298,36 +299,41 @@ namespace GKNData
             SetupControls();
         }
 
-       
-
-       
-
-      
-     /* 
-      
-        private void label_MapScale_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
-            if (!backgroundWorker1.IsBusy)
-            {
-                label_MapScale.Text = "    M 1:" + pkk5Viewer1.Server.mapScale.ToString() +"      .... ";
-                tabPage3.Text = "Он-лайн.........";
-                backgroundWorker1.RunWorkerAsync();
-            }
+
         }
 
 
-        */
 
 
-        
 
 
-     
-       
-   
-        
-       
-        
+        /* 
+
+           private void label_MapScale_Click(object sender, EventArgs e)
+           {
+               if (!backgroundWorker1.IsBusy)
+               {
+                   label_MapScale.Text = "    M 1:" + pkk5Viewer1.Server.mapScale.ToString() +"      .... ";
+                   tabPage3.Text = "Он-лайн.........";
+                   backgroundWorker1.RunWorkerAsync();
+               }
+           }
+
+
+           */
+
+
+
+
+
+
+
+
+
+
+
     }
     // Threading issues:
     /*

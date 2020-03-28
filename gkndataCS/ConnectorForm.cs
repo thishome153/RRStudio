@@ -78,7 +78,8 @@ namespace GKNData
         public string TypeName_Block = "netFteo.Spatial.TMyCadastralBlock";
         public string TypeName_Parcel = "netFteo.Spatial.TMyParcel";
         public string Item_TypeName;
-        public int Item_id;
+        public long Item_id;
+        public TreeNode SelectedNode;
         public TCurrentItem()
         {
             this.Item_id = -1;
@@ -182,5 +183,23 @@ namespace GKNData
             {
             }
         }
+    }
+
+    public enum ItemTypes
+    {
+        it_District = 127, //района
+        it_Block = 128, //квартал
+        it_Lot = 129,
+        it_kpt = 130,
+        it_vidimus = 131,
+        it_history = 132,
+        it_historylist = 133,
+        it_EMPTY = 134,
+        it_LotInfo = 158,
+        it_other = 156,
+        it_Inserting = 157,
+        it_Browse = 158,
+        it_Connect = 200,
+        it_Update = 205
     }
 }

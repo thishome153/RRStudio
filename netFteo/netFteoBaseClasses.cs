@@ -42,7 +42,7 @@ namespace netFteo.Spatial
     /// </summary>
     public interface IGeometry//, ICloneable, IComparable, IComparable<IGeometry>, IPuntal
     {
-        int id { get; set; }
+        long id { get; set; }
         int State { get; set; }
         string Definition { get; set; }
         string Name { get; set; }
@@ -83,8 +83,8 @@ namespace netFteo.Spatial
     /// </summary>
     public class Geometry : IGeometry
     {
-        private int fid;
-        public int id
+        private long  fid;
+        public long id
         {
             get { return this.fid; }
             set { this.fid = value; }
@@ -806,8 +806,8 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="mt"></param>
         void SetMt(double mt);
-        bool RemovePoint(int PointID);
-        TPoint GetPoint(int PointID);
+        bool RemovePoint(long PointID);
+        TPoint GetPoint(long PointID);
     }
 
     /// <summary>
@@ -817,11 +817,11 @@ namespace netFteo.Spatial
     {
         public const string TabDelimiter = "\t";  // tab
                                                   //public PointList Points;
-        public int Parent_Id; // ид Участка или чего тоо ттам
-        private int fid;
+        public long Parent_Id; // ид Участка или чего тоо ттам
+        private long fid;
         private int fState;
         private string fDefinition;
-        public int id
+        public long id
         {
             get { return this.fid; }
             set { this.fid = value; }
@@ -916,7 +916,7 @@ namespace netFteo.Spatial
             }
         }
 
-        public bool RemovePoint(int PointID)
+        public bool RemovePoint(long PointID)
         {
             //linq:
             // case 1
@@ -958,7 +958,7 @@ namespace netFteo.Spatial
             return this.Remove(pt);
         }
 
-        public TPoint GetPoint(int PointID)
+        public TPoint GetPoint(long PointID)
         {
             foreach (TPoint pt in this)
             {
@@ -1532,7 +1532,7 @@ namespace netFteo.Spatial
     {
         public TPolyLine()
         {
-            int check = this.id;
+            long check = this.id;
             Name = "Ломаная";
         }
 
@@ -2784,7 +2784,7 @@ namespace netFteo.Spatial
 
     public class EZPEntry : TCadasterItem
     {
-        public int Spatial_ID;
+        public long Spatial_ID;
         public decimal AreaEntry;
     }
 
@@ -2853,7 +2853,7 @@ namespace netFteo.Spatial
 
     public class TMySlots : BindingList<TmySlot>
     {
-        public TMyPolygon GetEs(int Layer_id)
+        public TMyPolygon GetEs(long Layer_id)
         {
             for (int i = 0; i <= this.Items.Count - 1; i++)
             {
@@ -3182,7 +3182,7 @@ namespace netFteo.Spatial
             }
         }
 
-        public IGeometry GetEs(int Layer_id)
+        public IGeometry GetEs(long Layer_id)
         {
             foreach (IGeometry Feauture in this.EntSpat)
             {
@@ -4039,8 +4039,8 @@ namespace netFteo.Spatial
     }
     public class TFileHistory : List<TFileHistoryItem>
     {
-        int Block_id;
-        public TFileHistory(int block_id)
+        long Block_id;
+        public TFileHistory(long block_id)
         {
             this.Block_id = block_id;
         }
@@ -4253,7 +4253,17 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public object GetObject(int id)
+        public bool ParcelExist(string CN)
+        {
+            for (int i = 0; i <= this.Parcels.Count - 1; i++)
+            {
+                if (this.Parcels[i].CN == CN)
+                    return true;
+            }
+            return false;
+        }
+
+        public object GetObject(long id)
         {
             for (int i = 0; i <= this.Parcels.Count - 1; i++)
             {
@@ -4461,7 +4471,7 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public bool RemoveGeometry(int id)
+        public bool RemoveGeometry(long id)
         {
             //From dxf, mif
             // Single feature
@@ -4585,7 +4595,7 @@ namespace netFteo.Spatial
             return Res;
         }
 
-        public TMyCadastralBlock GetBlock(int id)
+        public TMyCadastralBlock GetBlock(long id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
             {
@@ -4595,12 +4605,26 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public TMyParcel GetParcel(int id)
+
+        public bool ParcelExist(string CN)
+        {
+            //return (TMyParcel)this.GetObject(id);
+
+            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+            {
+                if (this.Blocks[i].ParcelExist(CN))
+                    return true;
+            }
+            return false;
+        }
+
+        public TMyParcel GetParcel(long id)
         {
             return (TMyParcel)this.GetObject(id);
         }
 
-        public object GetObject(int id)
+
+        public object GetObject(long id)
         {
             for (int i = 0; i <= this.Blocks.Count - 1; i++)
             {
@@ -4618,13 +4642,13 @@ namespace netFteo.Spatial
 
     public class TLayer : Geometry
     {
-        public int Parent_id; //? what you think
+        public long Parent_id; //? what you think
         public TLayer()
         {
             this.Name = "0";
         }
 
-        public TLayer(int Parent_id) : this()
+        public TLayer(long Parent_id) : this()
         {
             this.Parent_id = Parent_id;
         }
@@ -4635,11 +4659,11 @@ namespace netFteo.Spatial
     /// </summary>
     public class TEntitySpatial : List<IGeometry>, IGeometry, IEnumerable
     {
-        private int fid;
+        private long fid;
         private string fDefinition;
         private int totalItems;
         public event ESCheckingHandler OnChecking;
-        public int id
+        public long id
         {
             get { return this.fid; }
             set { this.fid = value; }
