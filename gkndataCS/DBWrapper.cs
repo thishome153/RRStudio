@@ -106,6 +106,20 @@ namespace GKNData
             return true;
         }
 
+        public static bool DB_EraseKPT(long KPT_id, MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
+            //StatusLabel_AllMessages.Text = "Update parcel.... ";
+
+            MySqlCommand cmd = new MySqlCommand(
+             "DELETE FROM `gkndatabase`.`kpt` WHERE `kpt_id`= ?kpt_id", conn);
+
+            cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = KPT_id;//
+            cmd.ExecuteNonQuery();
+            //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
+            return true;
+        }
+
 
     }
 }

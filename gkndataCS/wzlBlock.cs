@@ -68,7 +68,7 @@ namespace GKNData
         private void ListFiles()
         {
             listView1.Items.Clear();
-            foreach (netFteo.Spatial.TFile file in ITEM.KPTXmlBodyList)
+            foreach (TFile file in ITEM.KPTXmlBodyList)
             {
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
@@ -219,7 +219,7 @@ namespace GKNData
             return files;
         }
 
-        private long DB_AddBlock_KPT(TMyCadastralBlock block, string FileName, string XML_NS, string KPT_num, string KPT_date, MySqlConnection conn)
+        private long DB_AddBlock_KPT(TMyCadastralBlock block, TFile KPT, MySqlConnection conn)
         {
 
             if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
@@ -243,67 +243,36 @@ namespace GKNData
 
             //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
             cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block.id;
-            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT_num;
-            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT_date;
-            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = Path.GetFileName(FileName);
-            cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = XML_NS;
+            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT.Number;
+            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = Path.GetFileName(KPT.FileName);
+            cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
             //xml_file_body
-
-            //MemoryStream res = new MemoryStream(outbyte);
+            /*
             if (Path.GetExtension(FileName).Equals(".xml"))
             {
                 byte[] UploadBody = File.ReadAllBytes(FileName);
                 FileInfo info = new FileInfo(FileName);
-
-                //TextReader reader = new StreamReader(FileName);
-                //System.Xml.XmlDocument XMLDocFromFile = new System.Xml.XmlDocument();
-                //XMLDocFromFile.Load(reader);
-                //reader.Close();
-
-                //Read(XMLDocFromFile);
                 cmd.Parameters.Add("?xml_file_body", MySqlDbType.Blob).Value = UploadBody;
             }
             else
                 cmd.Parameters.Add("?xml_file_body", MySqlDbType.Blob).Value = null;
+            */
+            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_bytes;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return -1;
+            }
 
-            cmd.ExecuteNonQuery();
             long last_id = cmd.LastInsertedId;
+            KPT.id = last_id;
             DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block.id, 111, "kpt++." + last_id.ToString() + " " + block.CN, conn);
             return last_id;
-
-            /*
-            INSERT INTO kpt(kpt_id,
-                 GUID,
-                 block_id,
-                 kpt_num,
-                 kpt_serial,
-                 kpt_date,
-                 requestnum,
-                 acesscode,
-                 xml_ns,
-                 xml_file_name,
-                 xml_file_body,
-                 pdf_file_name,
-                 pdf_file_body,
-                 zip_file_name,
-                 zip_file_body)
-
-VALUES(:kpt_id,
-        :GUID,
-        :block_id,
-        :kpt_num,
-        :kpt_serial,
-        :kpt_date,
-        :requestnum,
-        :acesscode,
-        :xml_ns,
-        :xml_file_name,
-        :xml_file_body,
-        :pdf_file_name,
-        :pdf_file_body,
-        :zip_file_name,
-        :zip_file_body
-        ); */
         }
 
         private void SaveXMLfromSelectedNode()
@@ -462,9 +431,30 @@ VALUES(:kpt_id,
             od.FileName = "";
             if (od.ShowDialog() == DialogResult.OK)
             {
-                DB_AddBlock_KPT(ITEM, od.FileName, "xmlns fake", "Number 100", System.DateTime.Now.ToString("yyyy-MM-dd"), CF.conn);
+                FileInfo fi = new FileInfo(od.FileName);
                 TFile xmlUploaded = new TFile();
-                ITEM.KPTXmlBodyList.Add(xmlUploaded);
+                xmlUploaded.FileName = fi.Name;
+                xmlUploaded.xmlSize_SQL = fi.Length / 1024;
+                xmlUploaded.File_bytes = File.ReadAllBytes(od.FileName);
+                xmlUploaded.ReadFileBody(new MemoryStream(xmlUploaded.File_bytes));
+
+                //parse XMlDocument:
+                xmlUploaded.xmlns = "nameSpace";
+                xmlUploaded.Number = "Just Added doc";
+                xmlUploaded.Doc_Date = DateTime.Now.ToString("yyyy-MM-dd");
+
+
+                //wich type of KPT accquried:? 
+                //KPT10
+
+                if (DB_AddBlock_KPT(ITEM, xmlUploaded, CF.conn) > 0)
+                {
+                    ITEM.KPTXmlBodyList.Add(xmlUploaded);
+                }
+
+                //KPT11
+
+                ListFiles();
             }
         }
 
@@ -486,6 +476,7 @@ VALUES(:kpt_id,
         {
             //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
             {
+                DBWrapper.DB_EraseKPT(item_id, CF.conn);
                 ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile(item_id));
             }
 

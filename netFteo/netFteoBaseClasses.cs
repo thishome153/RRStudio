@@ -3889,7 +3889,7 @@ namespace netFteo.Spatial
     /// </summary>
     public class TFile : TDocument
     {
-        public int id;
+        public long id;
         public dFileTypes Type;
         public string AccessCode;
         public string FileName;
@@ -3899,6 +3899,8 @@ namespace netFteo.Spatial
         public double xmlSize_SQL; // size of body ( prepared by server)
                                   
         private System.Xml.XmlDocument fxml_file_body;
+        public byte[] File_bytes;
+
         public System.Xml.XmlDocument xml_file_body
         {
             get
@@ -3910,7 +3912,7 @@ namespace netFteo.Spatial
                 return this.fxml_file_body;
             }
         }
-        public void DownLoadFileBody(MemoryStream filestreambody)
+        public void ReadFileBody(MemoryStream filestreambody)
         {
             if (filestreambody != null)
             {
@@ -3938,7 +3940,7 @@ namespace netFteo.Spatial
             {
                 if (file.id == file_id)
                 {
-                    file.DownLoadFileBody(filebody);
+                    file.ReadFileBody(filebody);
                     //FileBody = filebody;
                     return file;
                 }

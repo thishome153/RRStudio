@@ -367,8 +367,10 @@ namespace GKNData
 
         private bool Edit(TMyCadastralBlock block)
         {
-            if (block.KPTXmlBodyList.Count == 0)
-                block.KPTXmlBodyList = LoadBlockFiles(CF.conn, block.id);
+            //if (block.KPTXmlBodyList.Count == 0)
+            //anyway load files:
+            block.KPTXmlBodyList.Clear();
+            block.KPTXmlBodyList = LoadBlockFiles(CF.conn, block.id);
             wzlBlockEd frmBlockEditor = new wzlBlockEd();
             frmBlockEditor.CF.conn = CF.conn;
             frmBlockEditor.Left = this.Left + 20; frmBlockEditor.Top = this.Top + 25;
