@@ -2,6 +2,7 @@
 
 #GKNData .NET
 ## Project are porting from Pascal (Lazarus) to NET
+###GKNData - database desktop application for manage xml files collection
 
 
 
@@ -15,30 +16,11 @@ Install Connector MySQL Connector Net: be sure about targetting of project and C
 
 Mysql server local version:
 5.5.62 
+Appropriate Mysql WorkBench: 
+6.3.3
 
-mysql-installer-community-5.xxx
-Install type: "developer"  includes:
-
-* MySQL Server
-
-* MySQL Workbench
-The GUI application to develop for and manage the server.
-
-* MySQL for Excel
-Excel plug-in to easily access and manipulate MySQL data.
-
-* MySQL for Visual Studio
-To work with the MySQL Server from VS.
-
-* MySQL Connectors
-Connector/Net, Java, C/C++, OBDC and others.
-
-* Examples and tutorials
-To help you get started with your development.
-
-* Documentation
-Allows you to read the documentation offline.
-
+Note Mysql WorkBench compatibility:
+WorkBench 8.0.18 - server 5.6, 5.7, 8.x
 
 Best regards, dear mr. Fix
 @Fixosoft2020

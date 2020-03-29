@@ -3896,9 +3896,9 @@ namespace netFteo.Spatial
         public string RequestNum;
         public string RootName;
         public string xmlns;
-        public double xmlSize_SQL; // размер вычисленный сервером
-                                   // public  MemoryStream FileBody ;
-        private System.Xml.XmlDocument fFileBody;
+        public double xmlSize_SQL; // size of body ( prepared by server)
+                                  
+        private System.Xml.XmlDocument fxml_file_body;
         public System.Xml.XmlDocument xml_file_body
         {
             get
@@ -3907,17 +3907,17 @@ namespace netFteo.Spatial
                  resDoc.Load(FileBody);
                  return resDoc;
                  */
-                return this.fFileBody;
+                return this.fxml_file_body;
             }
         }
-        public void DownLoadFileBody(MemoryStream filebody)
+        public void DownLoadFileBody(MemoryStream filestreambody)
         {
-            if (filebody != null)
+            if (filestreambody != null)
             {
-                filebody.Seek(0, 0);
-                if (this.fFileBody == null)
-                    this.fFileBody = new System.Xml.XmlDocument();
-                this.fFileBody.Load(filebody);
+                filestreambody.Seek(0, 0);
+                if (this.fxml_file_body == null)
+                    this.fxml_file_body = new System.Xml.XmlDocument(); // create empty
+                this.fxml_file_body.Load(filestreambody);               // fill by source in stream
             }
         }
 

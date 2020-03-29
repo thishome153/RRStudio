@@ -32,7 +32,7 @@ namespace GKNData
         public wzlBlockEd()
         {
             InitializeComponent();
-           
+
         }
 
         private void SetupControls()
@@ -51,8 +51,8 @@ namespace GKNData
         private void ListHistory()
         {
             listView_History.Items.Clear();
-           
-                
+
+
             foreach (TFileHistoryItem file in BlockHistory)
             {
                 ListViewItem LV = new ListViewItem(file.hi_data);
@@ -73,7 +73,7 @@ namespace GKNData
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
                 LV.SubItems.Add(file.Number);
-                LV.SubItems.Add("("+file.Type.ToString()+") " +file.FileName);
+                LV.SubItems.Add("(" + file.Type.ToString() + ") " + file.FileName);
                 LV.SubItems.Add(file.xmlSize_SQL.ToString());
                 LV.SubItems.Add(file.RequestNum); //Комментарий/ Номер запроса
                 listView1.Items.Add(LV);
@@ -82,15 +82,15 @@ namespace GKNData
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
-          
+
         }
         //Вход на заколадку On-Line: threading parallesl??
         private void tabPage3_Enter(object sender, EventArgs e)
         {
-    
+
         }
 
-        
+
 
         private void wzlBlock_Shown(object sender, EventArgs e)
         {
@@ -141,17 +141,18 @@ namespace GKNData
             da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
                                             " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt" +
                                             " where kpt_id = " + kpt_id.ToString(), conn);
-
             da.Fill(data);
-
             if (data.Rows.Count == 1)
             {
                 DataRow row = data.Rows[0];
-                byte[] outbyte = (byte[])row[1];
-                MemoryStream res = new MemoryStream(outbyte);
-                return res;
+                if (row[1].ToString().Length > 0)
+                {
+                    byte[] outbyte = (byte[])row[1];
+                    MemoryStream res = new MemoryStream(outbyte);
+                    return res;
+                }
             }
-            else return null;
+            return null;
         }
 
         public MemoryStream GetKPT11Body(MySqlConnection conn, int kpt_id)
@@ -182,7 +183,7 @@ namespace GKNData
             }
         }
 
-		private TFileHistory LoadBlockHistory(MySqlConnection conn, int block_id)
+        private TFileHistory DB_LoadBlockHistory(MySqlConnection conn, int block_id)
         {
             TFileHistory files = new TFileHistory(block_id);
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
@@ -205,7 +206,7 @@ namespace GKNData
                  7 `hi_comment`, `hi_host`, `hi_ip`, 
                  10 `hi_systemusername`, `hi_dbusername
                  * */
-                file.hi_item_id = "Type("+row[2].ToString()+").id "+row[3].ToString();
+                file.hi_item_id = "Type(" + row[2].ToString() + ").id " + row[3].ToString();
                 file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
                 // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
                 file.hi_comment = row[7].ToString();
@@ -216,6 +217,93 @@ namespace GKNData
                 files.Add(file);
             }
             return files;
+        }
+
+        private long DB_AddBlock_KPT(TMyCadastralBlock block, string FileName, string XML_NS, string KPT_num, string KPT_date, MySqlConnection conn)
+        {
+
+            if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
+            // StatusLabel_AllMessages.Text = "Adding KPT file.... ";
+
+            MySqlCommand cmd = new MySqlCommand(
+
+            "INSERT INTO kpt (kpt_id, block_id, " +
+                             " kpt_num,  " +
+                             "kpt_date," +
+                             "xml_file_name, xml_ns, xml_file_body) " +
+            /*  xml_file_name,
+                xml_file_body,
+                pdf_file_name,
+                pdf_file_body,
+                zip_file_name,
+                zip_file_body" + */
+            "  VALUES(NULL, ?block_id, ?kpt_num, " +
+            "?kpt_date," +
+                           "?xml_file_name, ?xml_ns, ?xml_file_body)", conn);
+
+            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block.id;
+            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT_num;
+            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT_date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = Path.GetFileName(FileName);
+            cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = XML_NS;
+            //xml_file_body
+
+            //MemoryStream res = new MemoryStream(outbyte);
+            if (Path.GetExtension(FileName).Equals(".xml"))
+            {
+                byte[] UploadBody = File.ReadAllBytes(FileName);
+                FileInfo info = new FileInfo(FileName);
+
+                //TextReader reader = new StreamReader(FileName);
+                //System.Xml.XmlDocument XMLDocFromFile = new System.Xml.XmlDocument();
+                //XMLDocFromFile.Load(reader);
+                //reader.Close();
+
+                //Read(XMLDocFromFile);
+                cmd.Parameters.Add("?xml_file_body", MySqlDbType.Blob).Value = UploadBody;
+            }
+            else
+                cmd.Parameters.Add("?xml_file_body", MySqlDbType.Blob).Value = null;
+
+            cmd.ExecuteNonQuery();
+            long last_id = cmd.LastInsertedId;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block.id, 111, "kpt++." + last_id.ToString() + " " + block.CN, conn);
+            return last_id;
+
+            /*
+            INSERT INTO kpt(kpt_id,
+                 GUID,
+                 block_id,
+                 kpt_num,
+                 kpt_serial,
+                 kpt_date,
+                 requestnum,
+                 acesscode,
+                 xml_ns,
+                 xml_file_name,
+                 xml_file_body,
+                 pdf_file_name,
+                 pdf_file_body,
+                 zip_file_name,
+                 zip_file_body)
+
+VALUES(:kpt_id,
+        :GUID,
+        :block_id,
+        :kpt_num,
+        :kpt_serial,
+        :kpt_date,
+        :requestnum,
+        :acesscode,
+        :xml_ns,
+        :xml_file_name,
+        :xml_file_body,
+        :pdf_file_name,
+        :pdf_file_body,
+        :zip_file_name,
+        :zip_file_body
+        ); */
         }
 
         private void SaveXMLfromSelectedNode()
@@ -235,38 +323,40 @@ namespace GKNData
         }
 
 
-		/// <summary>
-		/// Загрузка тела КПТ из BLOB поля таблицы
-		/// </summary>
-		/// <param name="item_id"></param>
+        /// <summary>
+        /// Загрузка тела КПТ из BLOB поля таблицы
+        /// </summary>
+        /// <param name="item_id"></param>
         private void ReadXMLfromSelectedNode(int item_id)
         {
-		 dFileTypes item_type =	ITEM.KPTXmlBodyList.GetFileType(item_id);
+            dFileTypes item_type = ITEM.KPTXmlBodyList.GetFileType(item_id);
 
-			if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
-			{
-				switch (item_type)
-				{
-					case dFileTypes.KPT10:
-						{
-							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
-						}
+            if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
+            {
+                switch (item_type)
+                {
+                    case dFileTypes.KPT10:
+                        {
+                            ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
+                        }
 
-					case dFileTypes.KPT11:
-						{
-							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPT11Body(CF.conn, item_id));break;
-						}
+                    case dFileTypes.KPT11:
+                        {
+                            ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPT11Body(CF.conn, item_id)); break;
+                        }
 
-					default:
-						{
-							ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
-						}
-				}
-				//
-				//??? откуда грузить?
+                    default:
+                        {
+                            ITEM.KPTXmlBodyList.DownLoadFileBody(item_id, GetKPTBody(CF.conn, item_id)); break;
+                        }
+                }
+                //
+                //??? откуда грузить?
 
-			}
-
+            }
+            // if after all attemps to load not empty:
+            if (!ITEM.KPTXmlBodyList.BodyEmpty(item_id))
+            {
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader в составе приложения
@@ -274,6 +364,7 @@ namespace GKNData
                 frmReader.Read(ITEM.KPTXmlBodyList.GetFileBody(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
+            }
         }
 
 
@@ -294,14 +385,14 @@ namespace GKNData
 
         private void toolButton_PropertyXML_Click(object sender, EventArgs e)
         {
-             
+
             if (listView1.SelectedItems.Count == 1)
             {
-                
-            wzKPTProperty wzkptproperty = new wzKPTProperty(ITEM.KPTXmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag));
-            wzkptproperty.Top = this.Top + listView1.SelectedItems[0].Index*20 + 180; wzkptproperty.Left = this.Left + +395 + 60;
-            wzkptproperty.ShowDialog();
-             }
+
+                wzKPTProperty wzkptproperty = new wzKPTProperty(ITEM.KPTXmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag));
+                wzkptproperty.Top = this.Top + listView1.SelectedItems[0].Index * 20 + 180; wzkptproperty.Left = this.Left + +395 + 60;
+                wzkptproperty.ShowDialog();
+            }
         }
 
         private void снимокКартыToolStripMenuItem_Click(object sender, EventArgs e)
@@ -326,7 +417,7 @@ namespace GKNData
 
         private void tabPage3_MouseMove(object sender, MouseEventArgs e)
         {
-          
+
         }
         /*
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -356,7 +447,7 @@ namespace GKNData
         private void backgroundWorker_History_DoWork(object sender, DoWorkEventArgs e)
         {
             if (this.BlockHistory.Count == 0)
-                BlockHistory = LoadBlockHistory(CF.conn, ITEM.id);
+                BlockHistory = DB_LoadBlockHistory(CF.conn, ITEM.id);
         }
 
         private void backgroundWorker_History_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -364,9 +455,42 @@ namespace GKNData
             ListHistory();
         }
 
-        
-       
-        
+        private void ToolStripButton1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog od = new OpenFileDialog();
+            od.Filter = "Документы xml|*.xml";
+            od.FileName = "";
+            if (od.ShowDialog() == DialogResult.OK)
+            {
+                DB_AddBlock_KPT(ITEM, od.FileName, "xmlns fake", "Number 100", System.DateTime.Now.ToString("yyyy-MM-dd"), CF.conn);
+                TFile xmlUploaded = new TFile();
+                ITEM.KPTXmlBodyList.Add(xmlUploaded);
+            }
+        }
+
+        /// <summary>
+        /// Remove kpt entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Delete_toolStripButton_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                Delete_KPTEntry((int)listView1.SelectedItems[0].Tag);// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                listView1.Items.Remove(listView1.SelectedItems[0]);
+            }
+        }
+
+        private void Delete_KPTEntry(int item_id)
+        {
+            //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
+            {
+                ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile(item_id));
+            }
+
+        }
+
     }
 
 
