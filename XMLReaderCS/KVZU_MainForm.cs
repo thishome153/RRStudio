@@ -32,10 +32,10 @@ namespace XMLReaderCS
     public partial class KVZU_Form : Form
     { // Глобальные объекты:
         IntPtr Ptr;
-        string TextDefault; // Текст заголовока по учмолчанию
+        string TextDefault; // Текст заголовока по умолчанию
 
-        RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
-        RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
+        //KILL: RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
+        //KILL: RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
 
         MyWindowEx ESwindow;
         netFteo.EntityViewer ViewWindow; // xaml WPF control
@@ -234,14 +234,29 @@ namespace XMLReaderCS
 
         }
 
+        /// <summary>
+        ///   Read and parse all types of xml documents
+        /// </summary>
+        /// <param name="xmldoc">XML Document</param>
+        public void Read(XmlDocument xmldoc)
+        {
+            документToolStripMenuItem.Enabled = true;
+            string FileName = DocInfo.FileName; // store 
+            // Вначале отобразим xml, вдруг далее парсеры слажают... :)
+            cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+            DocInfo =  RRTypes.CommonParsers.ParserCommon.ReadXML(xmldoc);
+            DocInfo.FileName = FileName;
+            cXmlTreeView2.RootName = DocInfo.FileName;
+            tabPage5.Text = DocInfo.FileName;
+        }
 
-
-
+        /* TODO Remove after rewriting RRTypes.CommonParsers.ParserCommon.ReadXML
+          
         /// <summary>
         ///   Читать документ из объекта(instance)
         /// </summary>
         /// <param name="xmldoc">Объект типа XMLDocument</param>
-        public void Read(XmlDocument xmldoc)
+        public void Read_Deprecated(XmlDocument xmldoc)
         {
             if (xmldoc == null)
             {
@@ -264,33 +279,7 @@ namespace XMLReaderCS
             Stream stream = new MemoryStream();
             xmldoc.Save(stream);
             stream.Seek(0, 0);
-            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02); //prepare parser
-                                                                                                                                 /*
-                                                                                                                             if (DocInfo.DocRootName == "TMyPolygon")
-                                                                                                                             {
-                                                                                                                                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                                                                                                                                 tabPage1.Text = "netfteo::TMyPolygon";
-                                                                                                                                 {
-                                                                                                                                     toolStripStatusLabel3.Text = "netfteo::";
-                                                                                                                                     XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
-                                                                                                                                     TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(stream);
-                                                                                                                                     ParseTMyPolygon(xmlPolygon);
-                                                                                                                                 }
-                                                                                                                             }
-
-                                                                                                                             if (DocInfo.DocRootName == "TPolygonCollection")
-                                                                                                                             {
-                                                                                                                                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                                                                                                                                 tabPage1.Text = "PolygonCollection";
-                                                                                                                                 {
-                                                                                                                                     toolStripStatusLabel3.Text = "netfteo::";
-                                                                                                                                     XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
-                                                                                                                                     TPolygonCollection xmlPolygons = (TPolygonCollection)serializer.Deserialize(stream);
-                                                                                                                                     ParseTMyPolygon(xmlPolygons);
-                                                                                                                                 }
-                                                                                                                             }
-                                                                                                                             */
-                                                                                                                                 // EZP hard editing:
+            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02); 
             if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
             {
                 toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
@@ -485,60 +474,53 @@ namespace XMLReaderCS
                 frm.ShowDialog();
                 this.Close();
                 */
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.page_white_csharp;
-                this.DocInfo = parser.ParseSchemaParcels(this.DocInfo, xmldoc);
-            }
+        /*
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.page_white_csharp;
+        this.DocInfo = parser.ParseSchemaParcels(this.DocInfo, xmldoc);
+    }
 
 
-            if (DocInfo.DocRootName == "STD_MP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                /*
-                XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.STD_MPV04.STD_MP));
-                RRTypes.STD_MPV04.STD_MP MP = (RRTypes.STD_MPV04.STD_MP)serializerMP.Deserialize(stream);
-                ParseSTDMPV04(MP);
-                */
-                this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
-            }
+    if (DocInfo.DocRootName == "STD_MP")
+    {
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+
+        this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
+    }
 
 
-            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
-            {
+    if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
+    {
 
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                /*
-				XmlSerializer serializerMP = new XmlSerializer(typeof(RRTypes.MP_V05.MP));
-				MPV05 = (RRTypes.MP_V05.MP)serializerMP.Deserialize(stream);
-				ParseMPV05(MPV05);
-				*/
-                this.DocInfo = parser.ParseMPV05(this.DocInfo, xmldoc);
-            }
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
 
-            // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
-            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
-                this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
-            }
+        this.DocInfo = parser.ParseMPV05(this.DocInfo, xmldoc);
+    }
+
+    // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
+    if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
+    {
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
+        this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
+    }
 
 
-            if (DocInfo.DocRootName == "STD_TP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
-                RRTypes.STD_TPV02.STD_TP TP = (RRTypes.STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
-                ParseSTDTPV02(TP);
-            }
+    if (DocInfo.DocRootName == "STD_TP")
+    {
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+        XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
+        RRTypes.STD_TPV02.STD_TP TP = (RRTypes.STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
+        ParseSTDTPV02(TP);
+    }
 
-            //TP
-            if (DocInfo.DocRootName == "TP")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
-            }
+    //TP
+    if (DocInfo.DocRootName == "TP")
+    {
+        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+        this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
+    }
 
-        }
-
+}
+*/
 
         /// <summary>
         /// Читать документ из файла

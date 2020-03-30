@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
+using System.IO;
 
 namespace netFteo.XML
 {
@@ -503,6 +504,10 @@ namespace netFteo.XML
     /// </summary>
     public static class XMLWrapper
     {
+
+ 
+
+
         /// <summary>
         /// Translate xpath to namespaced xpath otherwise append xpath to root
         /// </summary>

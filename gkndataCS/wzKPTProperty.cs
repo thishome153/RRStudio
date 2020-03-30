@@ -23,10 +23,12 @@ namespace GKNData
            textBox_FileName.Text = ITEM.FileName;
             textBox_Code.Text = ITEM.AccessCode;
             textBox_Date.Text = ITEM.Doc_Date;
-            textBox_id.Text = ITEM.id.ToString();
+            textBox_Number.Text = ITEM.Number;
+            Text = "Свойства файла КПТ." + ITEM.id.ToString(); //textBox_id.Text = ITEM.id.ToString();
             textBox_RequestNumber.Text = ITEM.RequestNum;
             textBox_xmlns.Text = ITEM.xmlns;
             label_sizeXML.Text = ITEM.xmlSize_SQL.ToString("0.00");
+            label_DocType.Text = ITEM.Type.ToString();
         }
 
         private void wzKPTProperty_Shown(object sender, EventArgs e)

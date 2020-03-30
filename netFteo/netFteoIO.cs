@@ -45,12 +45,26 @@ namespace netFteo.IO
         public string RequeryNumber;
         public string ReceivName;
         public string ReceivAdress;
+        /// <summary>
+        /// Document date
+        /// </summary>
         public string Date;
         public string Appointment;
         public string AppointmentFIO;
         public string Cert_Doc_Organization;
         //public netDxf.Header.HeaderVariables dxfVAriables;
         public List<Rosreestr.TEngineerOut> Contractors;// исполнители работ
+        /// <summary>
+        /// Spec for Mysql date field format "yyyy-MM-dd"
+        /// </summary>
+        public string DateMySQL
+        {
+            get
+            {
+                DateTime dateValue = DateTime.Parse(Date);
+                return dateValue.ToString("yyyy-MM-dd");
+            }
+        }
         public string Comments // Conclusion, Notes
         {
             get

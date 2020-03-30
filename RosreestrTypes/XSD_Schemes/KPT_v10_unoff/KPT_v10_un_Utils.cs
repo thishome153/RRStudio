@@ -29,7 +29,7 @@ namespace RRTypes
                     Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
                     Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
                     Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                    Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
+                    Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
                     EntSpat.AddPoint (Point);
                 }
                 //Внутренние контура
@@ -43,7 +43,7 @@ namespace RRTypes
                         Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                         Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                         Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                        Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                        Point.Definition = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
                         InLayer.AddPoint (Point);
                     }
                 }

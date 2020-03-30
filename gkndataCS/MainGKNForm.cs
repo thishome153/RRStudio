@@ -143,7 +143,8 @@ namespace GKNData
             CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
             ListBlockListTreeView(CadBloksList, tv);
             DBWrapper.Config = CF.Cfg;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect", CF.conn);
+            string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect App V" + ver, CF.conn);
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
 #if !DEBUG
@@ -165,8 +166,8 @@ namespace GKNData
                 if (CF.conn != null)
                     CF.conn.Close();
                 //SSL Mode=Required
-                string connStr = String.Format("server={0};user id={1}; password={2}; database={3}; pooling=false;SSL Mode=None",
-                    CF.Cfg.ServerName, CF.Cfg.UserName, CF.Cfg.UserPwrd, CF.Cfg.DatabaseName);
+                string connStr = String.Format("server={0};user id={1}; password={2}; database={3}; CharSet={4}; pooling=false;SSL Mode=None",
+                    CF.Cfg.ServerName, CF.Cfg.UserName, CF.Cfg.UserPwrd, CF.Cfg.DatabaseName, CF.Cfg.CharSet);
 
                 try
                 {
@@ -177,6 +178,10 @@ namespace GKNData
 
                     if (CF.conn.State == ConnectionState.Open)
                     {
+                       // MySqlCommand SetNamesCMD = new MySqlCommand("SET NAMES 'cp1251'", CF.conn2);
+                       // SetNamesCMD.ExecuteNonQuery();
+                       // SetNamesCMD.CommandText = "SET CHARACTER SET 'cp1251'";
+                       // SetNamesCMD.ExecuteNonQuery();
                         ConnectOps(treeView1);
                         return true;
                     }
@@ -346,11 +351,12 @@ namespace GKNData
             if (this.CF.conn.State == ConnectionState.Closed) return false;
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
             {
-                if (Edit(CadBloksList.GetBlock(Item.Item_id)))
+                TMyCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
+                if (Edit(block))
                 {
-                    // Update node while editing
-                    treeView1.SelectedNode.ToolTipText = Item.Item_id.ToString() + "*";
-                    treeView1.SelectedNode.Text = ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
+                    // Update node after changes
+                    treeView1.SelectedNode.ToolTipText = block.Comments;
+                    treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
                 }
             }
 
@@ -369,6 +375,7 @@ namespace GKNData
         {
             //if (block.KPTXmlBodyList.Count == 0)
             //anyway load files:
+            if (block == null) return false;
             block.KPTXmlBodyList.Clear();
             block.KPTXmlBodyList = LoadBlockFiles(CF.conn, block.id);
             wzlBlockEd frmBlockEditor = new wzlBlockEd();
@@ -445,7 +452,7 @@ namespace GKNData
             {
                 TFile file = new TFile(); // CN
                 file.id = Convert.ToInt32(row[0]);           // id
-                file.FileName = row[2].ToString();                       // block_name
+                file.FileName = row[2].ToString();           // block_name
                 file.Number = row[3].ToString();
                 if (row[4].ToString().Length > 0)
                 file.Doc_Date = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
@@ -456,11 +463,6 @@ namespace GKNData
                 file.AccessCode = row[8].ToString();
                 if (row[9] != DBNull.Value)
                     file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[9]));
-                file.Type = dFileTypes.KPT10; //KPT old than V11
-                if (file.xmlns.Equals("urn://fake/kpt/5.0.0")) file.Type = dFileTypes.KPT05;
-                if (file.xmlns.Equals("urn://fake/kpt/6.0.0")) file.Type = dFileTypes.KPT06;
-                if (file.xmlns.Equals("urn://fake/kpt/7.0.0")) file.Type = dFileTypes.KPT07;
-                if (file.xmlns.Equals("urn://fake/kpt/8.0.0")) file.Type = dFileTypes.KPT08;
                 files.Add(file);
             }
             data.Reset();
@@ -475,7 +477,8 @@ namespace GKNData
             {
                 TFile file = new TFile(); // CN
                 file.id = Convert.ToInt32(row[0]);           // id
-                file.Type = dFileTypes.KPT11; //Convert.ToByte(row[1]);           // kpt type
+                //file.Type = dFileTypes.KPT11; //Convert.ToByte(row[1]);           // kpt type
+                file.xmlns = netFteo.Rosreestr.NameSpaces.KPT11; // explicit setuped
                 file.FileName = row[9].ToString();           // block_id
                 file.Number = row[4].ToString();
                 file.Doc_Date = Convert.ToString(row[6]).Substring(0, Convert.ToString(row[6]).Length - 7);
@@ -926,7 +929,6 @@ namespace GKNData
                 DistrictForm DistrSelectfrm = new DistrictForm(CF.conn2, CfgRec.Subrf_id);
                 if (DistrSelectfrm.ShowDialog() == DialogResult.Yes)
                 {
-
                     CfgRec.District_id = DistrSelectfrm.district_id;
                     CfgRec.District_KN = DistrSelectfrm.district_kn;
                     CfgRec.District_Name = DistrSelectfrm.district_Name;
@@ -1008,6 +1010,7 @@ namespace GKNData
         /// <returns></returns>
         private bool DB_UpdateCadastralBlock(TMyCadastralBlock block, int Status, int Color, MySqlConnection conn)
         {
+            //int distr_id_check = DBWrapper.Config.District_id; //remain, whenever district used
             if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
             StatusLabel_AllMessages.Text = "Update block.... ";
             MySqlCommand cmd = new MySqlCommand(

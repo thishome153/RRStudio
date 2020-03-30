@@ -39,7 +39,7 @@ namespace GKNData
             cmd.Parameters.Add("?hi_item_id", MySqlDbType.Int32).Value = item_id;
             cmd.Parameters.Add("?hi_disrtict_id", MySqlDbType.Int32).Value = Config.District_id;
             cmd.Parameters.Add("?hi_status_id", MySqlDbType.Int32).Value = Status; //int(11)
-            cmd.Parameters.Add("?hi_comment", MySqlDbType.VarChar).Value = Comment + ". App v " + ver; //varchar(128)
+            cmd.Parameters.Add("?hi_comment", MySqlDbType.VarChar).Value = Comment;
             cmd.Parameters.Add("?hi_ip", MySqlDbType.VarChar).Value = netFteo.NetWork.NetWrapper.HostIP;
             cmd.Parameters.Add("?hi_host", MySqlDbType.VarChar).Value = netFteo.NetWork.NetWrapper.Host;
             cmd.Parameters.Add("?hi_data", MySqlDbType.DateTime).Value = DateTime.Now;

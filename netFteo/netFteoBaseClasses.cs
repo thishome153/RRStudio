@@ -3868,29 +3868,44 @@ namespace netFteo.Spatial
         public string CodeDocument;
         public string IssueOrgan;
         public string Serial;
+        /// <summary>
+        /// MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format
+        /// </summary>
         public string Doc_Date;
     }
 
 
-    public enum dFileTypes
-    {
-        KPT11 = 111,
-        KPT10 = 110,
-        KPT09 = 109,
-        KPT08 = 108,
-        KPT07 = 107,
-        KPT06 = 106,
-        KPT05 = 105,
-        Undefined = -1
-    }
+ 
 
     /// <summary>
     /// класс Файл. Представляет xml-файл всех видов
     /// </summary>
     public class TFile : TDocument
     {
+
         public long id;
-        public dFileTypes Type;
+        public Rosreestr.dFileTypes Type
+        {
+            get
+            {
+                return Rosreestr.NameSpaces.NStoFileType(xmlns);
+                /*
+                if (xmlns.Equals(Rosreestr.NameSpaces.KVZU_07)) return dFileTypes.KVZU_07;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KVZU_06)) return dFileTypes.KVZU_06;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPZU_06)) return dFileTypes.KPZU_06;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KVOKS_07)) return dFileTypes.KVOKS_07;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPOKS_04)) return dFileTypes.KPOKS_04;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT05)) return dFileTypes.KPT05;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT06)) return dFileTypes.KPT06;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT07)) return dFileTypes.KPT07;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT08)) return dFileTypes.KPT08;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT09)) return dFileTypes.KPT09;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT10)) return dFileTypes.KPT10;
+                if (xmlns.Equals(Rosreestr.NameSpaces.KPT11)) return dFileTypes.KPT11;
+                return dFileTypes.Undefined; //default
+                */
+            }
+        }
         public string AccessCode;
         public string FileName;
         public string RequestNum;
@@ -3898,28 +3913,45 @@ namespace netFteo.Spatial
         public string xmlns;
         public double xmlSize_SQL; // size of body ( prepared by server)
                                   
-        private System.Xml.XmlDocument fxml_file_body;
-        public byte[] File_bytes;
+        //private System.Xml.XmlDocument fxml_file_body;
 
+        /// <summary>
+        /// File body as binary array - BLOB
+        /// </summary>
+        public byte[] File_BLOB;
+
+        /// <summary>
+        /// File body as XmlDocument
+        /// </summary>
         public System.Xml.XmlDocument xml_file_body
         {
             get
             {
-                /* System.Xml.XmlDocument resDoc = new System.Xml.XmlDocument();
-                 resDoc.Load(FileBody);
-                 return resDoc;
-                 */
-                return this.fxml_file_body;
+                if (File_BLOB != null)
+                {
+                    System.Xml.XmlDocument resDoc = new System.Xml.XmlDocument();
+                    using (MemoryStream ms = new MemoryStream(File_BLOB))
+                    {
+                        resDoc.Load(ms);
+                    }
+                    return resDoc;
+                }
+                else return null;
+               // return this.fxml_file_body;
             }
         }
+
         public void ReadFileBody(MemoryStream filestreambody)
         {
             if (filestreambody != null)
             {
                 filestreambody.Seek(0, 0);
+                File_BLOB = filestreambody.ToArray();
+                /*
                 if (this.fxml_file_body == null)
                     this.fxml_file_body = new System.Xml.XmlDocument(); // create empty
                 this.fxml_file_body.Load(filestreambody);               // fill by source in stream
+                */
             }
         }
 
@@ -3934,7 +3966,7 @@ namespace netFteo.Spatial
     /// </summary>
     public class TFiles : List<TFile>
     {
-        public TFile DownLoadFileBody(int file_id, MemoryStream filebody)
+        public TFile DownLoadFileBody(long file_id, MemoryStream filebody)
         {
             foreach (TFile file in this)
             {
@@ -3948,7 +3980,7 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public bool BodyEmpty(int file_id)
+        public bool BodyEmpty(long file_id)
         {
             foreach (TFile file in this)
             {
@@ -3961,7 +3993,7 @@ namespace netFteo.Spatial
             return false;
         }
 
-        public dFileTypes GetFileType(int file_id)
+        public Rosreestr.dFileTypes GetFileType(long file_id)
         {
             foreach (TFile file in this)
             {
@@ -3970,10 +4002,10 @@ namespace netFteo.Spatial
                     return file.Type;
                 }
             }
-            return dFileTypes.Undefined;
+            return Rosreestr.dFileTypes.Undefined;
         }
 
-        public System.Xml.XmlDocument GetFileBody(int file_id)
+        public System.Xml.XmlDocument GetFileBody(long file_id)
         {
             foreach (TFile file in this)
             {
@@ -3985,7 +4017,7 @@ namespace netFteo.Spatial
             return null;
         }
 
-        public String GetFileName(int file_id)
+        public String GetFileName(long file_id)
         {
             foreach (TFile file in this)
             {
@@ -4009,7 +4041,7 @@ namespace netFteo.Spatial
             return false;
         }
 
-        public TFile GetFile(int file_id)
+        public TFile GetFile(long file_id)
         {
             foreach (TFile file in this)
             {

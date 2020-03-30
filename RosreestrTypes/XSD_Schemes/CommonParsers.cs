@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
-using netFteo;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using netFteo.Spatial;
 using netFteo.Rosreestr;
-using System.Xml;
+
 
 namespace RRTypes.CommonCast
 {
@@ -2018,12 +2020,481 @@ namespace RRTypes.CommonCast
 	}
 
 
+    
 }
+
+
 namespace RRTypes.CommonParsers
 {
 	public delegate void XMLParsingHandler(object sender, ESCheckingEventArgs e);
 
-	public class Parser
+    public static class ParserCommon
+    {
+        public static netFteo.XML.XSDFile dutilizations_v01;
+        public static netFteo.XML.XSDFile dAllowedUse_v02;
+
+        /*      TODO: body for rewriting: ParseKVOKS 
+                 private void ParseKVOKS(RRTypes.kvoks_v02.KVOKS kv)
+                {
+
+                    label_DocType.Text = "Кадастровая выписка";
+                    tabPage1.Text = "ОКС";
+                    textBox_DocNum.Text = kv.CertificationDoc.Number;
+                    textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
+                    if (kv.CertificationDoc.Official != null)
+                    {
+                        textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
+                        textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
+                    }
+
+                    textBox_OrgName.Text = kv.CertificationDoc.Organization;
+
+
+                    for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
+                    {
+                        this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+
+                    }
+
+                    for (int i = 0; i <= kv.Contractors.Count - 1; i++)
+                    {
+                        ListViewItem LVi = new ListViewItem();
+                        LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
+                        LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
+                        LVi.SubItems.Add(kv.Contractors[i].NCertificate);
+
+                        if (kv.Contractors[i].Organization != null)
+                            LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
+                        else LVi.SubItems.Add("-");
+
+
+                        listView_Contractors.Items.Add(LVi);
+
+                    }
+
+                    if (kv.Realty.Building != null)
+                    {
+                        TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                        TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                        Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
+                        Bld.Name = kv.Realty.Building.Name;
+                        //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
+                        Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+                        Bl.AddOKS(Bld);
+                        //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                        this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                    }
+
+
+
+                    if (kv.Realty.Construction != null)
+                    {
+                        TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                        TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+
+                        Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
+                        Constructions.Name = kv.Realty.Construction.Name;
+                        Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+                        foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
+                            Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number });
+                        Bl.AddOKS(Constructions);
+                        this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                    }
+
+                    ListMyCoolections(this.DocInfo.MyBlocks);
+                }
+
+        */
+
+        /*    TODO: body for rewriting: ParseKPOKS
+   private void ParseKPOKS(RRTypes.kpoks_v03.KPOKS kv)
+    {
+
+        label_DocType.Text = "Кадастровый паспорт";
+        tabPage1.Text = "ОКС";
+        textBox_DocNum.Text = kv.CertificationDoc.Number;
+        textBox_DocDate.Text = kv.CertificationDoc.Date.ToString("dd/MM/yyyy");
+        if (kv.CertificationDoc.Official != null)
+        {
+            textBox_Appointment.Text = kv.CertificationDoc.Official.Appointment;
+            textBox_Appointment.Text = kv.CertificationDoc.Official.FamilyName + " " + kv.CertificationDoc.Official.FirstName + " " + kv.CertificationDoc.Official.Patronymic;
+        }
+
+        textBox_OrgName.Text = kv.CertificationDoc.Organization;
+
+
+        for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
+        {
+            this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+
+        }
+
+        for (int i = 0; i <= kv.Contractors.Count - 1; i++)
+        {
+            ListViewItem LVi = new ListViewItem();
+            LVi.Text = kv.Contractors[i].Date.ToString("dd/MM/yyyy");
+            LVi.SubItems.Add(kv.Contractors[i].FamilyName + " " + kv.Contractors[i].FirstName + " " + kv.Contractors[i].Patronymic);
+            LVi.SubItems.Add(kv.Contractors[i].NCertificate);
+
+            if (kv.Contractors[i].Organization != null)
+                LVi.SubItems.Add(kv.Contractors[i].Organization.Name);
+            else LVi.SubItems.Add("-");
+
+
+            listView_Contractors.Items.Add(LVi);
+
+        }
+
+        if (kv.Realty.Building != null)
+        {
+            TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+            TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+            Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
+            Bld.Name = kv.Realty.Building.Name;
+            Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
+            Bld.Area = kv.Realty.Building.Area;
+            Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
+            Bld.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Building.ObjectType);
+            if (kv.Realty.Building.CadastralNumbersFlats != null)
+                if (kv.Realty.Building.CadastralNumbersFlats.Count() > 0)
+                {
+                    foreach (string s in kv.Realty.Building.CadastralNumbersFlats)
+                    {
+                        TFlat flat = new TFlat(s);
+                        Bld.Building.Flats.Add(flat);
+                    }
+                }
+
+            Bl.AddOKS(Bld);
+            //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+            this.DocInfo.MyBlocks.Blocks.Add(Bl);
+        }
+
+
+
+        if (kv.Realty.Construction != null)
+        {
+            TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+            TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+            Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
+            //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
+            Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
+            Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
+            Bl.AddOKS(Constructions);
+            //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+            this.DocInfo.MyBlocks.Blocks.Add(Bl);
+        }
+
+        ListMyCoolections(this.DocInfo.MyBlocks);
+    }
+
+         */
+
+        /* TODO: body for rewriting: ParseSTDTPV02
+   private void ParseSTDTPV02(RRTypes.STD_TPV02.STD_TP TP)
+    {
+        label_DocType.Text = "Технический план";
+        tabPage1.Text = "ОКС";
+        if (TP.Construction != null)
+        {
+
+            richTextBox1.AppendText(TP.Construction.Conclusion);
+            this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.Coord_Systems[0].Name, TP.Construction.Coord_Systems[0].Cs_Id));
+            ListViewItem LVi = new ListViewItem();
+            LVi.Text = TP.Construction.Contractor.Date.ToString();
+            LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
+                                 " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic);
+            LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.N_Certificate);
+            listView_Contractors.Items.Add(LVi);
+            textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
+                             " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.Patronymic + ";  " + TP.Construction.Contractor.Cadastral_Engineer.E_mail;
+            textBox_DocDate.Text = TP.Construction.Contractor.Date.ToString();
+            if (TP.Construction.Contractor.Cadastral_Organization != null)
+                textBox_OrgName.Text = TP.Construction.Contractor.Cadastral_Organization.Name;
+            textBox_Appointment.Text = TP.Construction.Contractor.Cadastral_Engineer.N_Certificate;
+            textBox_DocNum.Text = TP.GUID;
+
+            if (TP.Construction.Package.New_Construction.Count > 0)
+            {
+                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
+                Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
+                Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
+                                                                                 TP.Construction.Package.New_Construction[0].Entity_Spatial);
+                Bl.AddOKS(Constructions);
+                this.DocInfo.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
+                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+            }
+
+            ListMyCoolections(this.DocInfo.MyBlocks);
+
+        }
+    }
+         */
+        public static netFteo.IO.FileInfo ReadXML(XmlDocument xmldoc)
+        {
+
+            if (xmldoc == null)
+            {
+                //toolStripStatusLabel1.Text = "document null";
+                return null;
+            }
+
+            netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
+            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
+            DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
+                                                                      // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
+            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+                DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+
+            Stream stream = new MemoryStream();
+            xmldoc.Save(stream);
+            stream.Seek(0, 0);
+            CommonParsers.Doc2Type parser = new CommonParsers.Doc2Type(dutilizations_v01, dAllowedUse_v02);
+
+            if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
+            {
+                // toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                //   tabPage1.Text = "tExistEZEntryParcelCollection";
+                {
+                    //toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
+                    XmlSerializer serializer = new XmlSerializer(typeof(MP_V06.tExistEZEntryParcelCollection));
+                    MP_V06.tExistEZEntryParcelCollection xmlPolygons = (MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(stream);
+                }
+            }
+
+            //Если это КВЗУ V04/V05
+            if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
+            {
+                // toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                string ver_Vidimus = "";
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                        (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))
+                    ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
+
+                if (ver_Vidimus.Equals("04")) // Проверим
+                {
+                    DocInfo = parser.ParseKVZU04(DocInfo, xmldoc);
+                }
+                // Проверим
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
+                {
+                    DocInfo = parser.ParseKVZU05(DocInfo, xmldoc);
+                }
+            }
+
+            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                ///tabPage1.Text = "Кадастровая выписка 6";
+                DocInfo = parser.ParseKVZU06(DocInfo, xmldoc);
+            }
+
+
+            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKVZU07(DocInfo, xmldoc);
+            }
+
+            if (DocInfo.DocRootName == "KPZU")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
+                {
+                    DocInfo = parser.ParseKPZU508(DocInfo, xmldoc);
+                }
+
+                // KPZU_V6 01  - ЕГРН
+                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
+                {
+                    DocInfo = parser.ParseKPZU(DocInfo, xmldoc);
+                }
+            }
+
+            //Выписка ЕГРП, блядь есть и такое
+            if (xmldoc.DocumentElement.Name == "Extract")
+            {
+                DocInfo = parser.ParseEGRP(DocInfo, xmldoc);
+
+            }
+
+
+            if (xmldoc.DocumentElement.Name == "Users")
+            {
+                XmlElement xRoot = xmldoc.DocumentElement;
+
+                // выбор всех дочерних узлов
+                //XmlNodeList childnodes = xRoot.SelectNodes("*");
+                //Выберем все узлы <user>:
+                XmlNodeList childnodes = xRoot.SelectNodes("//user/company");
+            }
+
+
+
+            if (DocInfo.DocRootName == "KVOKS")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvoks_v02.KVOKS));
+                    kvoks_v02.KVOKS KVoks02 = (kvoks_v02.KVOKS)serializer.Deserialize(stream);
+                    //TODO: rewrite  ParseKVOKS(KVoks02);
+                }
+
+                //Под этим urn urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1 как бы выписка версии KVOKS_V07
+                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
+                {
+                    DocInfo = parser.ParseKVOKS07(DocInfo, xmldoc);
+                }
+            }
+
+            if (DocInfo.DocRootName == "KPOKS")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+
+                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpoks_v03.KPOKS));
+                    kpoks_v03.KPOKS KPoks03 = (kpoks_v03.KPOKS)serializer.Deserialize(stream);
+                    //TODO: ParseKPOKS(KPoks03);
+                }
+
+                // KPOKS_V4
+                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
+                {
+                    DocInfo = parser.ParseKPOKS(DocInfo, xmldoc);
+                }
+            }
+
+
+            if ((DocInfo.DocRootName == "Region_Cadastr"))
+            {
+                DocInfo.DocTypeNick = "КПТ";
+                DocInfo.DocType = "Кадастровый план территории";
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
+                {
+                    DocInfo = parser.ParseKPT05(DocInfo, xmldoc);
+                }
+
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
+                {
+                    DocInfo = parser.ParseKPT06(DocInfo, xmldoc);
+                }
+
+                //Не КПТ v07 ли это?   
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
+                {
+                    DocInfo = parser.ParseKPT07(DocInfo, xmldoc);
+                }
+
+                //Не КПТ v08 ли это?            
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
+                {
+                    //toolStripProgressBar1.Minimum = 0;
+                    // toolStripProgressBar1.Value = 0;
+                    //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
+                    //parser.OnStartParsing += XMLStartUpdater; //
+                    DocInfo.Version = "08";
+                    DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
+                }
+            }
+
+            //Не КПТ v09 ли это?            
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKPT09(DocInfo, xmldoc);
+            }
+
+            //Не КПТ v10 ли это?
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
+            }
+
+
+            //Не КПТ v11 ли это?
+            if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKPT11(DocInfo, xmldoc);
+            }
+
+
+
+            if (DocInfo.DocRootName == "SchemaParcels")
+            {
+                /* as file SchemaKPTMainForm was corrupted with wrong unicode bytes
+                 * we hide them
+                 * TODO: check form
+                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
+                SchemaKPTMainForm frm = new SchemaKPTMainForm();
+                frm.Top = this.Top; frm.Left = this.Left;
+                frm.StartPosition = FormStartPosition.Manual;
+                frm.OpenXML(xmldoc);
+                this.Visible = false;
+                frm.ShowDialog();
+                this.Close();
+                */
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.page_white_csharp;
+                DocInfo = parser.ParseSchemaParcels(DocInfo, xmldoc);
+            }
+
+
+            if (DocInfo.DocRootName == "STD_MP")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseMPV04(DocInfo, xmldoc);
+            }
+
+
+            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
+            {
+
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseMPV05(DocInfo, xmldoc);
+            }
+
+            // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
+            if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
+                DocInfo = parser.ParseMPV06(DocInfo, xmldoc);
+            }
+
+
+            if (DocInfo.DocRootName == "STD_TP")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
+                STD_TPV02.STD_TP TP = (STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
+                //TODO : rewrite ParseSTDTPV02(TP);
+            }
+
+            //TP
+            if (DocInfo.DocRootName == "TP")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseTP_V03(DocInfo, xmldoc);
+            }
+            return DocInfo;
+        }
+
+
+    }
+
+    public class Parser
 	{
 		/// <summary>
 		/// An event handler invoked during parsing  of entries in the xml file.
@@ -3326,7 +3797,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "05";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
-			res.Namespace = "urn://fake/kpt/5.0.0";
+            res.Namespace = NameSpaces.KPT05; // "urn://fake/kpt/5.0.0";
 			//TODO - need deserialization
 
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block");
@@ -3499,7 +3970,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "06";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
-			res.Namespace = "urn://fake/kpt/6.0.0";
+            res.Namespace = NameSpaces.KPT06; // "urn://fake/kpt/6.0.0";
 			//TODO - need deserialization
 
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block");
@@ -3672,7 +4143,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "07";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
-			res.Namespace = "urn://fake/kpt/7.0.0";
+            res.Namespace = NameSpaces.KPT07; //"urn://fake/kpt/7.0.0";
 			//TODO - need deserialization
 
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Federal/Cadastral_Regions/Cadastral_Region/Cadastral_Districts/Cadastral_District/Cadastral_Blocks/Cadastral_Block");
@@ -3844,7 +4315,7 @@ namespace RRTypes.CommonParsers
 			res.Version = "08";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
-			res.Namespace = "urn://fake/kpt/8.0.0";
+            res.Namespace = NameSpaces.KPT08;// "urn://fake/kpt/8.0.0";
 			//TODO - need deserialization
 			System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
 			if (Blocksnodes != null)
@@ -4799,6 +5270,7 @@ namespace RRTypes.CommonParsers
 			res.CommentsType = "-";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
+            res.Namespace = NameSpaces.KPT11;
 			res.Version = "11";
 			Parse_KTP11Info(xmldoc, res);
 

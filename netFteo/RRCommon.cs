@@ -9,6 +9,93 @@ using System.Collections.Generic;
 
 namespace netFteo.Rosreestr
 {
+    public enum dFileTypes
+    {
+        KPT11 = 111,
+        KPT10 = 110,
+        KPT09 = 109,
+        KPT08 = 108,
+        KPT07 = 107,
+        KPT06 = 106,
+        KPT05 = 105,
+        KVZU_06 = 206,
+        KVZU_07 = 207,
+        KPZU_06 = 306,
+        KPOKS_04 = 404,
+        KVOKS_07 = 507,
+        Undefined = -1
+    }
+
+    public static class NameSpaces
+    {
+        public static string KVZU_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
+        public static string KVZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
+        public static string KPZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
+        public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
+        public static string KPOKS_04 = "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1";
+        public static string KPT05 = "urn://fake/kpt/5.0.0";
+        public static string KPT06 = "urn://fake/kpt/6.0.0";
+        public static string KPT07 = "urn://fake/kpt/7.0.0";
+        public static string KPT08 = "urn://fake/kpt/8.0.0";
+        public static string KPT09 = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3";
+        public static string KPT10 = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1";
+        public static string KPT11 = "urn://fake/kpt/11.0.0";
+
+        public static string FileTypeToNS(netFteo.Rosreestr.dFileTypes ftype)
+        {
+
+            Dictionary<dFileTypes, string> DocumentTypes = new Dictionary<dFileTypes, string>()
+            {
+              { dFileTypes.KVZU_06,KVZU_06},
+              { dFileTypes.KVZU_07,KVZU_07},
+              { dFileTypes.KPZU_06,KPZU_06},
+              { dFileTypes.KVOKS_07,KVOKS_07},
+              { dFileTypes.KPZU_06,KPZU_06},
+              { dFileTypes.KPT05,KPT05},
+              { dFileTypes.KPT06,KPT06},
+              { dFileTypes.KPT07,KPT07},
+              { dFileTypes.KPT08,KPT08},
+              { dFileTypes.KPT09,KPT09},
+              { dFileTypes.KPT10,KPT10},
+              { dFileTypes.KPT11,KPT11}
+                };
+            string Test = DocumentTypes[ftype];
+            return Test;
+        }
+
+        public static dFileTypes NStoFileType(string ns)
+        {
+
+            Dictionary<string, dFileTypes > DocumentTypes = new Dictionary< string, dFileTypes>()
+            {
+              { KVZU_06,dFileTypes.KVZU_06},
+              { KVZU_07,dFileTypes.KVZU_07},
+              { KPZU_06,dFileTypes.KPZU_06},
+              { KVOKS_07,dFileTypes.KVOKS_07},
+              { KPOKS_04,dFileTypes.KPOKS_04},
+              { KPT05,dFileTypes.KPT05},
+              { KPT06,dFileTypes.KPT06},
+              { KPT07,dFileTypes.KPT07},
+              { KPT08,dFileTypes.KPT08},
+              { KPT09,dFileTypes.KPT09},
+              { KPT10,dFileTypes.KPT10},
+              { KPT11,dFileTypes.KPT11}
+                };
+
+            if (DocumentTypes.ContainsKey(ns))
+            {
+                dFileTypes Test = DocumentTypes[ns];
+                return Test;
+            }
+            else return dFileTypes.Undefined;
+        }
+    }
+
+    public class DocumentType
+    {
+
+    }
+  
     #region Cправочники для преобразований из xsd.enum 
     /// <summary>
     /// Справочник типов обьектов недвижимости
@@ -22,7 +109,7 @@ namespace netFteo.Rosreestr
             Dictionary<string, string> items = new Dictionary<string, string>()
             {
                 { "Item01","Землепользование"},
-				{ "Item0101","Квартал"}, // Дополнительные
+                { "Item0101","Квартал"}, // Дополнительные
                 { "Item0102","Территориальная Зона"}, // Дополнительные
                 { "Item0103","Зона Охранная"},// Дополнительные
                 { "Item0104","Здание"},// Дополнительные
@@ -38,42 +125,22 @@ namespace netFteo.Rosreestr
                 { "Item06","Значение отсутствует"},
 				// KPT11 types:
 				{ "Item002001001000","Землепользование"},
-			};
+            };
             if (Item != null)
                 return items[Item];
             else return null;
-		}
+        }
 
-		
-			/*
-			public static string ItemToName_cased(string Item)
-			{
+    }
 
-				switch (Item)
-				{
-					case "Item01": return "Землепользование";
-					case "Item0101": return "Квартал"; // Дополнительные
-					case "Item0102": return "Территориальная Зона"; // Дополнительные
-					case "Item0103": return "Зона Охранная";// Дополнительные
-					case "Item0104": return "Здание";// Дополнительные
-					case "Item0105": return "Сооружение";// Дополнительные
-					case "Item0106": return "НезавершенныйОКС";// Дополнительные
-					case "Item02": return "Единое землепользование";
-					case "Item03": return "Обособленный участок";
-					case "Item04": return "Условный участок";
-					case "Item05": return "Многоконтурный участок";
-					case "Item06": return "Значение отсутствует";
-					default: return "Значение отсутствует";
-				}
-			}
-			*/
-		}
 
-    /// <summary>
-    /// Справочник типов обьектов недвижимости
-    /// dParcelsV01 -Перечисление "Имя земельного участка"
-    /// </summary>
-    public enum dParcelsv01_enum
+
+
+/// <summary>
+/// Справочник типов обьектов недвижимости
+/// dParcelsV01 -Перечисление "Имя земельного участка"
+/// </summary>
+public enum dParcelsv01_enum
     {
         Землепользование = 01,
         Квартал = 0101,

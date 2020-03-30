@@ -185,7 +185,9 @@ namespace GKNData
             // 
             this.comboBox_CharSet.FormattingEnabled = true;
             this.comboBox_CharSet.Items.AddRange(new object[] {
-            "UTF8"});
+            "UTF8",
+            "utf8",
+            "Default"});
             this.comboBox_CharSet.Location = new System.Drawing.Point(277, 106);
             this.comboBox_CharSet.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_CharSet.Name = "comboBox_CharSet";

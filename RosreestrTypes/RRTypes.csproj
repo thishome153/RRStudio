@@ -130,6 +130,7 @@
     <Compile Include="RRApiFir.cs" />
     <Compile Include="RRCommonCast.cs" />
     <Compile Include="RRApiPKK5.cs" />
+    <Compile Include="RRConst.cs" />
     <Compile Include="XSD_Schemes\KPOKS\KPOKS_v03.Generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1041,7 +1042,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
