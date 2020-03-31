@@ -194,8 +194,8 @@ namespace GKNData
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
-                        ITEM.XmlBodyList.DownLoadFileBody((int)listView1.SelectedItems[0].Tag, GetVidimusBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
-                    xmlFile.xml_file_body.Save(saveFileDialog1.FileName);
+                        ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, GetVidimusBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
+                    xmlFile.XML_file_body.Save(saveFileDialog1.FileName);
                 }
             }
         }
@@ -205,15 +205,15 @@ namespace GKNData
             if (listView1.SelectedItems.Count == 1)
             {
                 if (ITEM.XmlBodyList.BodyEmpty(item_id))
-                    ITEM.XmlBodyList.DownLoadFileBody(item_id, GetVidimusBody(CF.conn, item_id));
-                System.Xml.XmlDocument body = ITEM.XmlBodyList.GetFileBody(item_id);
-                if (body != null)
+                    ITEM.XmlBodyList.ReadFileBody(item_id, GetVidimusBody(CF.conn, item_id));
+               // System.Xml.XmlDocument body = ITEM.XmlBodyList.XML_file_body(item_id);
+                if (!ITEM.XmlBodyList.BodyEmpty(item_id))
                 {
                     XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                     frmReader.StartPosition = FormStartPosition.Manual;
                     frmReader.Tag = 3; // XMl Reader as application part
                     frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFileName(item_id);
-                    frmReader.Read(body);
+                    frmReader.Read(ITEM.XmlBodyList.XML_file_body(item_id));
                     frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                     frmReader.ShowDialog();
                 }

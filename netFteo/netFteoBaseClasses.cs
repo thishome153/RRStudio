@@ -3923,7 +3923,7 @@ namespace netFteo.Spatial
         /// <summary>
         /// File body as XmlDocument
         /// </summary>
-        public System.Xml.XmlDocument xml_file_body
+        public System.Xml.XmlDocument XML_file_body
         {
             get
             {
@@ -3941,18 +3941,19 @@ namespace netFteo.Spatial
             }
         }
 
-        public void ReadFileBody(MemoryStream filestreambody)
+        /// <summary>
+        /// Read file body as binary array - BLOB from stream
+        /// </summary>
+        /// <param name="filestreambody"></param>
+        public bool ReadFileBody(MemoryStream filestreambody)
         {
             if (filestreambody != null)
             {
                 filestreambody.Seek(0, 0);
                 File_BLOB = filestreambody.ToArray();
-                /*
-                if (this.fxml_file_body == null)
-                    this.fxml_file_body = new System.Xml.XmlDocument(); // create empty
-                this.fxml_file_body.Load(filestreambody);               // fill by source in stream
-                */
+                return true;
             }
+            return false;
         }
 
         public TFile()
@@ -3966,14 +3967,20 @@ namespace netFteo.Spatial
     /// </summary>
     public class TFiles : List<TFile>
     {
-        public TFile DownLoadFileBody(long file_id, MemoryStream filebody)
+
+        /// <summary>
+        /// Read file body as binary array - BLOB from stream
+        /// </summary>
+        /// <param name="file_id"></param>
+        /// <param name="filebody"></param>
+        /// <returns></returns>
+        public TFile ReadFileBody(long file_id, MemoryStream filebody)
         {
             foreach (TFile file in this)
             {
                 if (file.id == file_id)
                 {
                     file.ReadFileBody(filebody);
-                    //FileBody = filebody;
                     return file;
                 }
             }
@@ -3986,7 +3993,7 @@ namespace netFteo.Spatial
             {
                 if (file.id == file_id)
                 {
-                    if (file.xml_file_body == null)
+                    if (file.XML_file_body == null)
                         return true;
                 }
             }
@@ -4005,13 +4012,19 @@ namespace netFteo.Spatial
             return Rosreestr.dFileTypes.Undefined;
         }
 
-        public System.Xml.XmlDocument GetFileBody(long file_id)
+
+        /// <summary>
+        /// Select file body from list as XmlDocument by id
+        /// </summary>
+        /// <param name="id">File id</param>
+        /// <returns>XmlDocument</returns>
+        public System.Xml.XmlDocument XML_file_body(long id)
         {
             foreach (TFile file in this)
             {
-                if (file.id == file_id)
+                if (file.id == id)
                 {
-                    return file.xml_file_body;
+                    return file.XML_file_body;
                 }
             }
             return null;
