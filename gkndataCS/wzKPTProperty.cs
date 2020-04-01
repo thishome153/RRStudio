@@ -21,7 +21,7 @@ namespace GKNData
         private void SetupControls()
         {
            textBox_FileName.Text = ITEM.FileName;
-            textBox_Code.Text = ITEM.AccessCode;
+            textBox_AccessCode.Text = ITEM.AccessCode;
             textBox_Date.Text = ITEM.Doc_Date;
             textBox_Number.Text = ITEM.Number;
             Text = "Свойства файла КПТ." + ITEM.id.ToString(); //textBox_id.Text = ITEM.id.ToString();

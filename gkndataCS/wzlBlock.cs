@@ -231,7 +231,7 @@ namespace GKNData
             return files;
         }
 
-  
+
         private void SaveXMLfromSelectedNode()
         {
             if (listView1.SelectedItems.Count == 1)
@@ -255,7 +255,7 @@ namespace GKNData
         /// <param name="item_id"></param>
         private void ReadXMLfromSelectedNode(long item_id)
         {
-          netFteo.Rosreestr.dFileTypes item_type = ITEM.KPTXmlBodyList.GetFileType(item_id);
+            netFteo.Rosreestr.dFileTypes item_type = ITEM.KPTXmlBodyList.GetFileType(item_id);
 
             if (ITEM.KPTXmlBodyList.BodyEmpty(item_id))
             {
@@ -401,75 +401,44 @@ namespace GKNData
 
             //parse XMlDocument:
             netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ReadXML(xmlUploaded.XML_file_body);
-             
+
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
             xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;// dateValue.ToString("yyyy-MM-dd");//DateTime.Now.ToString("yyyy-MM-dd");
 
+
             //wich type of KPT accquried:? 
-            //KPT10
-            if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT09) || (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT10))
-                if (DB_AddBlock_KPT(ITEM.id, xmlUploaded, CF.conn) > 0)
+            if (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT11)
+            {
+                if (DBWrapper.DB_AddBlock_KPT11(ITEM.id, xmlUploaded, CF.conn) > 0)             //KPT11
                 {
                     ITEM.KPTXmlBodyList.Add(xmlUploaded);
+                    ListFiles();
                 }
-
-            //KPT11
-
-            ListFiles();
-        }
-
-        private long DB_AddBlock_KPT(long block_id, TFile KPT, MySqlConnection conn)
-        {
-
-            if (conn == null) return -1; if (conn.State != ConnectionState.Open) return 1;
-            // StatusLabel_AllMessages.Text = "Adding KPT file.... ";
-
-            MySqlCommand cmd = new MySqlCommand(
-
-            "INSERT INTO kpt (kpt_id, block_id, " +
-                             " kpt_num,  " +
-                             "kpt_date," +
-                             "xml_file_name, xml_ns, xml_file_body) " +
-            /*  xml_file_name,
-                xml_file_body,
-                pdf_file_name,
-                pdf_file_body,
-                zip_file_name,
-                zip_file_body" + */
-            "  VALUES(NULL, ?block_id, ?kpt_num, " +
-            "?kpt_date," +
-                           "?xml_file_name, ?xml_ns, ?xml_file_body)", conn);
-
-            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
-            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
-            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value =  KPT.Number;
-            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
-            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = Path.GetFileName(KPT.FileName);
-            cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
-            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_BLOB;
-            try
-            {
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                string exMesssage = ex.Message;
-                return -1;
             }
 
-            long last_id = cmd.LastInsertedId;
-            KPT.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
-            return last_id;
-        }
+            //All known types, excetpt KPT11
+            if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT05) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT06) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT07) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT08) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT09) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT10))
 
-        /// <summary>
-        /// Remove kpt entry
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Delete_toolStripButton_Click(object sender, EventArgs e)
+                if (DBWrapper.DB_AddBlock_KPT(ITEM.id, xmlUploaded, CF.conn) > 0)
+                {
+                    ITEM.KPTXmlBodyList.Add(xmlUploaded);
+                    ListFiles();
+                }
+        }
+     
+
+            /// <summary>
+            /// Remove kpt entry
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void Delete_toolStripButton_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
             {

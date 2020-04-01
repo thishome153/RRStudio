@@ -384,7 +384,10 @@ namespace GKNData
             frmBlockEditor.ITEM = block;
 
             if (frmBlockEditor.ShowDialog() == DialogResult.OK)
-                return DB_UpdateCadastralBlock(block,0,0,CF.conn);
+            {
+                StatusLabel_AllMessages.Text = "Update block.... ";
+                return DBWrapper.DB_UpdateCadastralBlock(block, 0, 0, CF.conn);
+            }
             else return false;
         }
 
@@ -999,39 +1002,6 @@ namespace GKNData
 
 
       
-      
-        /// <summary>
-        /// Update cadastral block
-        /// </summary>
-        /// <param name="block"></param>
-        /// <param name="Status"></param>
-        /// <param name="Color">Color for display</param>
-        /// <param name="conn"></param>
-        /// <returns></returns>
-        private bool DB_UpdateCadastralBlock(TMyCadastralBlock block, int Status, int Color, MySqlConnection conn)
-        {
-            //int distr_id_check = DBWrapper.Config.District_id; //remain, whenever district used
-            if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
-            StatusLabel_AllMessages.Text = "Update block.... ";
-            MySqlCommand cmd = new MySqlCommand(
-            "update blocks set " +
-            "block_kn    = ?block_kn," +
-            "block_status= ?block_status," +
-            "block_color = ?block_color," +
-            "block_name  = ?block_name," +
-            "block_comment = ?block_comment" +
-            " where block_id = ?block_id", conn);
-
-            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block.id;//
-            cmd.Parameters.Add("?block_kn", MySqlDbType.VarChar).Value = block.CN;
-            cmd.Parameters.Add("?block_status", MySqlDbType.Int32).Value = Status;
-            cmd.Parameters.Add("?block_color", MySqlDbType.Int32).Value = Color;
-            cmd.Parameters.Add("?block_name", MySqlDbType.VarChar).Value = block.Name;
-            cmd.Parameters.Add("?block_comment", MySqlDbType.VarChar).Value = block.Comments;
-            cmd.ExecuteNonQuery();
-            return true;
-        }
-
 
         #endregion
 

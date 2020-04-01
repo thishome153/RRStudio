@@ -76,6 +76,37 @@ namespace GKNData
             return last_id;
         }
 
+
+        /// <summary>
+        /// Update cadastral block
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="Status"></param>
+        /// <param name="Color">Color for display</param>
+        /// <param name="conn"></param>
+        /// <returns></returns>
+        public static bool DB_UpdateCadastralBlock(TMyCadastralBlock block, int Status, int Color, MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
+            MySqlCommand cmd = new MySqlCommand(
+            "update blocks set " +
+            "block_kn    = ?block_kn," +
+            "block_status= ?block_status," +
+            "block_color = ?block_color," +
+            "block_name  = ?block_name," +
+            "block_comment = ?block_comment" +
+            " where block_id = ?block_id", conn);
+
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block.id;//
+            cmd.Parameters.Add("?block_kn", MySqlDbType.VarChar).Value = block.CN;
+            cmd.Parameters.Add("?block_status", MySqlDbType.Int32).Value = Status;
+            cmd.Parameters.Add("?block_color", MySqlDbType.Int32).Value = Color;
+            cmd.Parameters.Add("?block_name", MySqlDbType.VarChar).Value = block.Name;
+            cmd.Parameters.Add("?block_comment", MySqlDbType.VarChar).Value = block.Comments;
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
         public static bool DB_UpdateParcel(TMyParcel parcel, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
@@ -106,6 +137,7 @@ namespace GKNData
             return true;
         }
 
+
         public static bool DB_EraseKPT(long KPT_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
@@ -119,6 +151,95 @@ namespace GKNData
             //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
             return true;
         }
+
+        public static long DB_AddBlock_KPT(long block_id, TFile KPT, MySqlConnection conn)
+        {
+
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            // StatusLabel_AllMessages.Text = "Adding KPT file.... ";
+
+            MySqlCommand cmd = new MySqlCommand(
+
+            "INSERT INTO kpt (kpt_id, block_id, " +
+                             " kpt_num,  " +
+                             "kpt_date," +
+                             "xml_file_name, xml_ns, xml_file_body) " +
+            /*  xml_file_name,
+                xml_file_body,
+                pdf_file_name,
+                pdf_file_body,
+                zip_file_name,
+                zip_file_body" + */
+            "  VALUES(NULL, ?block_id, ?kpt_num, " +
+            "?kpt_date," +
+                           "?xml_file_name, ?xml_ns, ?xml_file_body)", conn);
+
+            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
+            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT.Number;
+            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = System.IO.Path.GetFileName(KPT.FileName);
+            cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
+            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_BLOB;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return -1;
+            }
+
+            long last_id = cmd.LastInsertedId;
+            KPT.id = last_id;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
+            return last_id;
+        }
+
+        public static long DB_AddBlock_KPT11(long block_id, TFile KPT, MySqlConnection conn)
+        {
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            if (KPT.Type != netFteo.Rosreestr.dFileTypes.KPT11) return -404;
+            MySqlCommand cmd = new MySqlCommand(
+
+                 "INSERT INTO kpt11 (kpt_id, " +
+                                  " kpt_type, block_id, " +
+                                  " kpt_num,  " +
+                                  " kpt_date," +
+                                  " xml_file_name, " +
+                                  //xml_ns,+
+                                  "xml_file_body) " +
+                 "  VALUES(NULL, ?kpt_type, ?block_id, ?kpt_num, " +
+                                "?kpt_date, ?xml_file_name, " +
+                                // "?xml_ns, "+
+                                "?xml_file_body)", conn);
+
+            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?kpt_type", MySqlDbType.UByte).Value = KPT.Type;
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
+            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT.Number;
+            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = System.IO.Path.GetFileName(KPT.FileName);
+            //cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
+            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_BLOB;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return -1;
+            }
+
+            long last_id = cmd.LastInsertedId;
+            KPT.id = last_id;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
+            return last_id;
+            return -1;
+        }
+
 
 
     }

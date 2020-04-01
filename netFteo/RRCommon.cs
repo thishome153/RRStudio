@@ -18,6 +18,12 @@ namespace netFteo.Rosreestr
         KPT07 = 107,
         KPT06 = 106,
         KPT05 = 105,
+        /// <summary>
+        /// KPT family older KPT11
+        /// </summary>
+        /*
+        KPT = KPT05 | KPT06| KPT07 |KPT08 | KPT09| KPT10,
+        */
         KVZU_06 = 206,
         KVZU_07 = 207,
         KPZU_06 = 306,
@@ -28,18 +34,18 @@ namespace netFteo.Rosreestr
 
     public static class NameSpaces
     {
-        public static string KVZU_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
-        public static string KVZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
-        public static string KPZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
+        public static string KVZU_07  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
+        public static string KVZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
+        public static string KPZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
         public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
         public static string KPOKS_04 = "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1";
-        public static string KPT05 = "urn://fake/kpt/5.0.0";
-        public static string KPT06 = "urn://fake/kpt/6.0.0";
-        public static string KPT07 = "urn://fake/kpt/7.0.0";
-        public static string KPT08 = "urn://fake/kpt/8.0.0";
-        public static string KPT09 = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3";
-        public static string KPT10 = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1";
-        public static string KPT11 = "urn://fake/kpt/11.0.0";
+        public static string KPT05    = "urn://fake/kpt/5.0.0";
+        public static string KPT06    = "urn://fake/kpt/6.0.0";
+        public static string KPT07    = "urn://fake/kpt/7.0.0";
+        public static string KPT08    = "urn://fake/kpt/8.0.0";
+        public static string KPT09    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3";
+        public static string KPT10    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1";
+        public static string KPT11    = "urn://fake/kpt/11.0.0";
 
         public static string FileTypeToNS(netFteo.Rosreestr.dFileTypes ftype)
         {
@@ -79,8 +85,7 @@ namespace netFteo.Rosreestr
               { KPT08,dFileTypes.KPT08},
               { KPT09,dFileTypes.KPT09},
               { KPT10,dFileTypes.KPT10},
-              { KPT11,dFileTypes.KPT11}
-                };
+              { KPT11,dFileTypes.KPT11}};
 
             if (DocumentTypes.ContainsKey(ns))
             {
