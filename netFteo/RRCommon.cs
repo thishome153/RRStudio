@@ -23,20 +23,34 @@ namespace netFteo.Rosreestr
         /// </summary>
         /*
         KPT = KPT05 | KPT06| KPT07 |KPT08 | KPT09| KPT10,
-        */
+
+ *         */
+        KVZU_04 = 204,
+        KVZU_05 = 205,
         KVZU_06 = 206,
         KVZU_07 = 207,
-        KPZU_06 = 306,
+
+        EGRP_04 = 304,
+        EGRP_06 = 306,
+
         KPOKS_04 = 404,
         KVOKS_07 = 507,
+//        KVOKS_03 = 2031, // ???
+
+        KPZU_05 = 605,
+        KPZU_06 = 606,
+
         Undefined = -1
     }
 
     public static class NameSpaces
     {
+        public static string KVZU_04 = "urn://fake/kvzu/4.0.0";
+        public static string KVZU_05 = "urn://fake/kvzu/5.0.0";
+        public static string KVZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
         public static string KVZU_07  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
-        public static string KVZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
         public static string KPZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
+        public static string KPZU_05 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/5.0.8";
         public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
         public static string KPOKS_04 = "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1";
         public static string KPT05    = "urn://fake/kpt/5.0.0";
@@ -46,6 +60,8 @@ namespace netFteo.Rosreestr
         public static string KPT09    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3";
         public static string KPT10    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1";
         public static string KPT11    = "urn://fake/kpt/11.0.0";
+        public static string EGRP_04 = "urn://fake/egrp/4.0.0";
+        public static string EGRP_06 = "urn://fake/egrp/6.0.0";
 
         public static string FileTypeToNS(netFteo.Rosreestr.dFileTypes ftype)
         {
@@ -71,11 +87,15 @@ namespace netFteo.Rosreestr
 
         public static dFileTypes NStoFileType(string ns)
         {
-
             Dictionary<string, dFileTypes > DocumentTypes = new Dictionary< string, dFileTypes>()
             {
+              { EGRP_04,dFileTypes.EGRP_04},
+              { EGRP_06,dFileTypes.EGRP_06},
+              { KVZU_04,dFileTypes.KVZU_04},
+              { KVZU_05,dFileTypes.KVZU_05},
               { KVZU_06,dFileTypes.KVZU_06},
               { KVZU_07,dFileTypes.KVZU_07},
+              { KPZU_05,dFileTypes.KPZU_05},
               { KPZU_06,dFileTypes.KPZU_06},
               { KVOKS_07,dFileTypes.KVOKS_07},
               { KPOKS_04,dFileTypes.KPOKS_04},

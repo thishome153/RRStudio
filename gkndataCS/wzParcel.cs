@@ -44,7 +44,7 @@ namespace GKNData
             textBox_Block_Comment.Text = ITEM.SpecialNote;
             ListFiles();
             pkk5Viewer1.Start(ITEM.CN, pkk5_Types.Parcel);
-            this.BlockHistory = new netFteo.Spatial.TFileHistory(ITEM.id);
+            this.BlockHistory = new TFileHistory(ITEM.id);
             if (!backgroundWorker_History.IsBusy)
                 backgroundWorker_History.RunWorkerAsync();
         }
@@ -69,13 +69,14 @@ namespace GKNData
         private void ListFiles()
         {
             listView1.Items.Clear();
-            foreach (netFteo.Spatial.TFile file in ITEM.XmlBodyList)
+            foreach (TFile file in ITEM.XmlBodyList)
             {
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
                 LV.SubItems.Add(file.Number);
-                LV.SubItems.Add(file.FileName);
-                LV.SubItems.Add(file.xmlSize_SQL.ToString());
+                LV.SubItems.Add("(" + file.Type.ToString() + ") " + file.FileName);
+                //LV.SubItems.Add(file.FileName);
+                LV.SubItems.Add(file.xmlSize_SQL.ToString("0"));
                 LV.SubItems.Add(file.RequestNum); //Комментарий/ Номер запроса
                 listView1.Items.Add(LV);
             }
@@ -124,31 +125,9 @@ namespace GKNData
             SaveXMLfromSelectedNode();
         }
 
-        // **** Read BLOB from the Database and save it on the Filesystem
-        public MemoryStream GetVidimusBody(MySqlConnection conn, int vidimus_id)
-        {
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
-
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT vidimus_id, xml_file_body," +
-                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from vidimus "  +
-                                            " where vidimus_id  = " + vidimus_id.ToString(), conn);
-
-            da.Fill(data);
-
-            if (data.Rows.Count == 1)
-            {
-                DataRow row = data.Rows[0];
-                if (row[1].ToString().Length > 0)
-                {
-                    byte[] outbyte = (byte[])row[1];
-                    MemoryStream res = new MemoryStream(outbyte);
-                    return res;
-                }
-                else return null;
-            }
-            else return null;
-        }
+        // **** 
+      
+        /* TODO KIll
         private TFileHistory LoadParcelHistory(MySqlConnection conn, long item_id)
         {
             TFileHistory files = new TFileHistory(item_id);
@@ -162,16 +141,6 @@ namespace GKNData
             foreach (DataRow row in data.Rows)
             {
                 TFileHistoryItem file = new TFileHistoryItem(Convert.ToInt32(row[0])); //id
-                /*
-                 1`hi_disrtict_id`,
-                 2`hi_item_type`, 
-                 3`hi_item_id`, 
-                 4`hi_data`, 
-                 5`hi_status_id`, 
-                 6`hi_rid_id`, 
-                 7 `hi_comment`, `hi_host`, `hi_ip`, 
-                 10 `hi_systemusername`, `hi_dbusername
-                 * */
                 file.hi_item_id = "Type("+row[2].ToString()+").id "+row[3].ToString();
                 file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
                 // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
@@ -184,28 +153,29 @@ namespace GKNData
             }
             return files;
         }
+        */
         private void SaveXMLfromSelectedNode()
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                netFteo.Spatial.TFile xmlFile = ITEM.XmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag);
+                netFteo.Spatial.TFile xmlFile = ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag);
                 saveFileDialog1.FileName = xmlFile.FileName;
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
-                        ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, GetVidimusBody(CF.conn, (int)listView1.SelectedItems[0].Tag));
+                        ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
                     xmlFile.XML_file_body.Save(saveFileDialog1.FileName);
                 }
             }
         }
 
-        private void ReadXMLfromSelectedNode(int item_id)
+        private void ReadXMLfromSelectedNode(long item_id)
         {
             if (listView1.SelectedItems.Count == 1)
             {
                 if (ITEM.XmlBodyList.BodyEmpty(item_id))
-                    ITEM.XmlBodyList.ReadFileBody(item_id, GetVidimusBody(CF.conn, item_id));
+                    ITEM.XmlBodyList.ReadFileBody(item_id, DBWrapper.FetchVidimusBody(CF.conn, item_id));
                // System.Xml.XmlDocument body = ITEM.XmlBodyList.XML_file_body(item_id);
                 if (!ITEM.XmlBodyList.BodyEmpty(item_id))
                 {
@@ -224,7 +194,7 @@ namespace GKNData
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                ReadXMLfromSelectedNode((long)listView1.SelectedItems[0].Tag);
             }
         }
 
@@ -232,7 +202,7 @@ namespace GKNData
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                ReadXMLfromSelectedNode((long)listView1.SelectedItems[0].Tag);
             }
         }
 
@@ -242,7 +212,7 @@ namespace GKNData
             if (listView1.SelectedItems.Count == 1)
             {
                 
-            wzKPTProperty wzkptproperty = new wzKPTProperty(ITEM.XmlBodyList.GetFile((int)listView1.SelectedItems[0].Tag));
+            wzKPTProperty wzkptproperty = new wzKPTProperty(ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag));
             wzkptproperty.Top = this.Top + listView1.SelectedItems[0].Index*20 + 180; wzkptproperty.Left = this.Left + +395 + 60;
             wzkptproperty.ShowDialog();
              }
@@ -286,7 +256,7 @@ namespace GKNData
         private void backgroundWorker_History_DoWork(object sender, DoWorkEventArgs e)
         {
             if (this.BlockHistory.Count == 0)
-                BlockHistory = LoadParcelHistory(CF.conn, ITEM.id);
+                BlockHistory = DBWrapper.LoadBlockHistory(CF.conn, ITEM.id);
         }
 
         private void backgroundWorker_History_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -304,7 +274,89 @@ namespace GKNData
 
         }
 
+        private void ToolStripButton1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog od = new OpenFileDialog();
+            od.Filter = "Документы xml|*.xml";
+            od.FileName = "";
+            if (od.ShowDialog() == DialogResult.OK)
+            {
+                ImportXMLVidimus(od.FileName);
+            }
+        }
 
+
+        public void ImportXMLVidimus(string FileName)
+        {
+
+            FileInfo fi = new FileInfo(FileName);
+            TFile xmlUploaded = new TFile();
+            xmlUploaded.FileName = fi.Name;
+            xmlUploaded.xmlSize_SQL = fi.Length / 1024;
+            xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
+
+            //parse XMlDocument:
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ReadXML(xmlUploaded.XML_file_body);
+
+            xmlUploaded.xmlns = ParsedDoc.Namespace;
+            xmlUploaded.Number = ParsedDoc.Number;
+            xmlUploaded.RootName = ParsedDoc.DocRootName;
+            xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;// dateValue.ToString("yyyy-MM-dd");//DateTime.Now.ToString("yyyy-MM-dd");
+
+
+            //wich type of XML accquried:? 
+            if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_07) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_06) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_05) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_04) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPZU_05)  ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPZU_06) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVOKS_07) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPOKS_04) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.EGRP_04) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.EGRP_06) 
+                    )
+
+            {
+                if (DBWrapper.DB_AddParcel_Vidimus(ITEM.id, xmlUploaded, CF.conn) > 0)             //KPT11
+                {
+                    ITEM.XmlBodyList.Add(xmlUploaded);
+                    ListFiles();
+                }
+            }
+
+        
+        }
+
+        private void ToolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                string message = "Удалить запись " + listView1.SelectedItems[0].SubItems[1].Text;
+                const string caption = "Подтвердите";
+               if ( MessageBox.Show(message, caption,
+                                             MessageBoxButtons.YesNo,
+                                             MessageBoxIcon.Question) == DialogResult.Yes)
+
+                if (listView1.SelectedItems.Count == 1)
+                {
+                    if (Delete_Entry((long)listView1.SelectedItems[0].Tag))// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                    listView1.Items.Remove(listView1.SelectedItems[0]);
+                }
+            }
+        }
+
+        private bool Delete_Entry(long item_id)
+        {
+            //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
+            {
+                if (DBWrapper.EraseVidimus(item_id, CF.conn))
+                {
+                  return  ITEM.XmlBodyList.Remove(ITEM.XmlBodyList.GetFile(item_id));
+                }
+            }
+            return false;
+        }
 
 
 

@@ -74,7 +74,7 @@ namespace GKNData
                 LV.Tag = file.id;
                 LV.SubItems.Add(file.Number);
                 LV.SubItems.Add("(" + file.Type.ToString() + ") " + file.FileName);
-                LV.SubItems.Add(file.xmlSize_SQL.ToString());
+                LV.SubItems.Add(file.xmlSize_SQL.ToString("0"));
                 LV.SubItems.Add(file.RequestNum); //Комментарий/ Номер запроса
                 listView1.Items.Add(LV);
             }
@@ -195,42 +195,7 @@ namespace GKNData
             }
         }
 
-        private TFileHistory DB_LoadBlockHistory(MySqlConnection conn, int block_id)
-        {
-            TFileHistory files = new TFileHistory(block_id);
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT *" +
-                                      " from history where hi_item_id = " + block_id.ToString() +
-                                      " order by history_id asc", conn);
-
-            da.Fill(data);
-            foreach (DataRow row in data.Rows)
-            {
-                TFileHistoryItem file = new TFileHistoryItem(Convert.ToInt32(row[0])); //id
-                /*
-                 1`hi_disrtict_id`,
-                 2`hi_item_type`, 
-                 3`hi_item_id`, 
-                 4`hi_data`, 
-                 5`hi_status_id`, 
-                 6`hi_rid_id`, 
-                 7 `hi_comment`, `hi_host`, `hi_ip`, 
-                 10 `hi_systemusername`, `hi_dbusername
-                 * */
-                file.hi_item_id = "Type(" + row[2].ToString() + ").id " + row[3].ToString();
-                file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
-                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
-                file.hi_comment = row[7].ToString();
-                file.hi_host = row[8].ToString();
-                file.hi_ip = row[9].ToString();
-                file.hi_systemusername = row[10].ToString();
-                file.hi_dbusername = row[11].ToString();
-                files.Add(file);
-            }
-            return files;
-        }
-
+  
 
         private void SaveXMLfromSelectedNode()
         {
@@ -370,7 +335,7 @@ namespace GKNData
         private void backgroundWorker_History_DoWork(object sender, DoWorkEventArgs e)
         {
             if (this.BlockHistory.Count == 0)
-                BlockHistory = DB_LoadBlockHistory(CF.conn, ITEM.id);
+                BlockHistory = DBWrapper.LoadBlockHistory(CF.conn, ITEM.id);
         }
 
         private void backgroundWorker_History_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -404,6 +369,7 @@ namespace GKNData
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
+            //xmlUploaded.GUID = ParsedDoc. ??
             xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;// dateValue.ToString("yyyy-MM-dd");//DateTime.Now.ToString("yyyy-MM-dd");
 
 
@@ -431,30 +397,40 @@ namespace GKNData
                     ListFiles();
                 }
         }
-     
 
-            /// <summary>
-            /// Remove kpt entry
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            private void Delete_toolStripButton_Click(object sender, EventArgs e)
+
+        /// <summary>
+        /// Remove kpt entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Delete_toolStripButton_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                Delete_KPTEntry((long)listView1.SelectedItems[0].Tag);// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
-                listView1.Items.Remove(listView1.SelectedItems[0]);
+                string message = "Удалить запись " + listView1.SelectedItems[0].SubItems[1].Text;
+                const string caption = "Подтвердите";
+                if (MessageBox.Show(message, caption,
+                                              MessageBoxButtons.YesNo,
+                                              MessageBoxIcon.Question) == DialogResult.Yes)
+
+                {
+                  if (  Delete_KPTEntry((long)listView1.SelectedItems[0].Tag))// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                    listView1.Items.Remove(listView1.SelectedItems[0]);
+                }
             }
         }
 
-        private void Delete_KPTEntry(long item_id)
+        private bool Delete_KPTEntry(long item_id)
         {
             //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
             {
-                DBWrapper.DB_EraseKPT(item_id, CF.conn);
-                ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile(item_id));
+                if (DBWrapper.EraseKPT(item_id, CF.conn))
+                {
+                  return  ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile(item_id));
+                }
             }
-
+            return false;
         }
 
     }

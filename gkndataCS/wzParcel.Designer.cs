@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "31.32.2045"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "26/501/301/589-4586"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "doc6220643.xml", System.Drawing.SystemColors.MenuHighlight, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)))),
@@ -38,7 +38,7 @@
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "Админи Стра Тор"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "mySQL_user_1")}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(wzParcelfrm));
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "31,10,2016",
             "xml++",
             "Добавление",
@@ -46,7 +46,7 @@
             "192.168.0.1975",
             "Админи Стра Тор",
             "mySQL_user_1"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Item2");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Item2");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -70,7 +70,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.contextMenu_pkk5 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.снимокКартыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,15 +88,18 @@
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.contextMenu_pkk5.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -162,7 +164,7 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(0, 23);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
@@ -204,6 +206,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripSeparator1,
+            this.toolStripButton1,
+            this.toolStripButton2,
             this.toolButton_SaveXML,
             this.toolButton_ReadXML,
             this.toolStripSeparator2,
@@ -345,23 +349,6 @@
             this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
             this.tabPage3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabPage3_MouseMove);
             // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pkk5Viewer1.ContextMenuStrip = this.contextMenu_pkk5;
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
-            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
-            this.pkk5Viewer1.Margin = new System.Windows.Forms.Padding(4);
-            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.fir;
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
-            this.pkk5Viewer1.QueryValue = null;
-            this.pkk5Viewer1.Size = new System.Drawing.Size(851, 521);
-            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pkk5Viewer1.TabIndex = 7;
-            this.pkk5Viewer1.TabStop = false;
-            // 
             // contextMenu_pkk5
             // 
             this.contextMenu_pkk5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -417,8 +404,8 @@
             this.listView_History.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView_History.HideSelection = false;
             this.listView_History.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6});
+            listViewItem2,
+            listViewItem3});
             this.listView_History.Location = new System.Drawing.Point(4, 4);
             this.listView_History.Margin = new System.Windows.Forms.Padding(4);
             this.listView_History.Name = "listView_History";
@@ -519,6 +506,44 @@
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::GKNData.Properties.Resources.xml_import16x16;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.ToolTipText = "Импорт xml";
+            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            // 
+            // pkk5Viewer1
+            // 
+            this.pkk5Viewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pkk5Viewer1.ContextMenuStrip = this.contextMenu_pkk5;
+            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
+            this.pkk5Viewer1.Location = new System.Drawing.Point(4, 4);
+            this.pkk5Viewer1.Margin = new System.Windows.Forms.Padding(4);
+            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.fir;
+            this.pkk5Viewer1.Name = "pkk5Viewer1";
+            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Block;
+            this.pkk5Viewer1.QueryValue = null;
+            this.pkk5Viewer1.Size = new System.Drawing.Size(851, 521);
+            this.pkk5Viewer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pkk5Viewer1.TabIndex = 7;
+            this.pkk5Viewer1.TabStop = false;
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::GKNData.Properties.Resources.cross;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click);
+            // 
             // wzParcelfrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -542,10 +567,10 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.contextMenu_pkk5.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -596,5 +621,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker_History;
         private RRTypes.pkk5.pkk5Viewer pkk5Viewer1;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }

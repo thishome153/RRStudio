@@ -2,6 +2,8 @@
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Data;
 using System.Text;
 using netFteo.Spatial;
 
@@ -50,6 +52,70 @@ namespace GKNData
             return 0; // fake res
         }
 
+        public static TFileHistory LoadBlockHistory(MySqlConnection conn, long block_id)
+        {
+            TFileHistory files = new TFileHistory(block_id);
+            if (conn == null) return null; if (conn.State != System.Data.ConnectionState.Open) return null;
+             DataTable data  = new DataTable();
+             MySqlDataAdapter da = new MySqlDataAdapter("SELECT *" +
+                                      " from history where hi_item_id = " + block_id.ToString() +
+                                      " order by history_id asc", conn);
+
+            da.Fill(data);
+            foreach (DataRow row in data.Rows)
+            {
+                TFileHistoryItem file = new TFileHistoryItem(Convert.ToInt32(row[0])); //id
+                /*
+                 1`hi_disrtict_id`,
+                 2`hi_item_type`, 
+                 3`hi_item_id`, 
+                 4`hi_data`, 
+                 5`hi_status_id`, 
+                 6`hi_rid_id`, 
+                 7 `hi_comment`, `hi_host`, `hi_ip`, 
+                 10 `hi_systemusername`, `hi_dbusername
+                 * */
+                file.hi_item_id = "Type(" + row[2].ToString() + ").id " + row[3].ToString();
+                file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
+                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+                file.hi_comment = row[7].ToString();
+                file.hi_host = row[8].ToString();
+                file.hi_ip = row[9].ToString();
+                file.hi_systemusername = row[10].ToString();
+                file.hi_dbusername = row[11].ToString();
+                files.Add(file);
+            }
+            return files;
+        }
+
+        /*TODO KILL
+        public static TFileHistory LoadParcelHistory(MySqlConnection conn, long item_id)
+        {
+            TFileHistory files = new TFileHistory(item_id);
+            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+            DataTable data = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT *" +
+                                      " from history where hi_item_id = " + item_id.ToString() +
+                                      " order by history_id asc", conn);
+
+            da.Fill(data);
+            foreach (DataRow row in data.Rows)
+            {
+                TFileHistoryItem file = new TFileHistoryItem(Convert.ToInt32(row[0])); //id
+                file.hi_item_id = "Type(" + row[2].ToString() + ").id " + row[3].ToString();
+                file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
+                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+                file.hi_comment = row[7].ToString();
+                file.hi_host = row[8].ToString();
+                file.hi_ip = row[9].ToString();
+                file.hi_systemusername = row[10].ToString();
+                file.hi_dbusername = row[11].ToString();
+                files.Add(file);
+            }
+            return files;
+        }
+
+        */
 
         /// <summary>
         /// Add parcel record to table LOTTABLE
@@ -137,8 +203,7 @@ namespace GKNData
             return true;
         }
 
-
-        public static bool DB_EraseKPT(long KPT_id, MySqlConnection conn)
+        public static bool EraseKPT(long KPT_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
             //StatusLabel_AllMessages.Text = "Update parcel.... ";
@@ -147,6 +212,18 @@ namespace GKNData
              "DELETE FROM `gkndatabase`.`kpt` WHERE `kpt_id`= ?kpt_id", conn);
 
             cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = KPT_id;//
+            cmd.ExecuteNonQuery();
+            //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
+            return true;
+        }
+
+        public static bool EraseVidimus(long id, MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
+            MySqlCommand cmd = new MySqlCommand(
+             "DELETE FROM `gkndatabase`.`vidimus` WHERE `vidimus_id`= ?vidimus_id", conn);
+
+            cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id;//
             cmd.ExecuteNonQuery();
             //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
             return true;
@@ -197,6 +274,76 @@ namespace GKNData
             return last_id;
         }
 
+        public static long DB_AddParcel_Vidimus(long parcel_id, TFile Vidimus, MySqlConnection conn)
+        {
+
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            // StatusLabel_AllMessages.Text = "Adding KPT file.... ";
+
+            MySqlCommand cmd = new MySqlCommand(
+
+            "INSERT INTO vidimus (vidimus_id, parcel_id, vidimus_type, " +
+                             " v_num,  v_date," +
+                             "xml_file_name, xml_file_tns,  xml_file_RootName, xml_file_body) " +
+            "  VALUES(NULL, ?parcel_id, ?vidimus_type, ?v_num, ?v_date," +
+                           "?xml_file_name, ?xml_file_tns, ?xml_file_RootName, ?xml_file_body)", conn);
+
+            //cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id ????; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?parcel_id", MySqlDbType.Int32).Value = parcel_id;
+            cmd.Parameters.Add("?vidimus_type", MySqlDbType.Int32).Value = (int)Vidimus.Type;
+            cmd.Parameters.Add("?v_num", MySqlDbType.VarChar).Value = Vidimus.Number;
+            cmd.Parameters.Add("?v_date", MySqlDbType.Date).Value = Vidimus.Doc_Date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = System.IO.Path.GetFileName(Vidimus.FileName);
+            cmd.Parameters.Add("?xml_file_RootName", MySqlDbType.VarChar).Value = Vidimus.RootName;
+            cmd.Parameters.Add("?xml_file_tns", MySqlDbType.VarChar).Value = Vidimus.xmlns;
+            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = Vidimus.File_BLOB;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return -1;
+            }
+
+            long last_id = cmd.LastInsertedId;
+            Vidimus.id = last_id;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_vidimus, parcel_id, 111, "kpt++." + last_id.ToString(), conn);
+            return last_id;
+        }
+
+        /// <summary>
+        /// Read BLOB from the Database and save it on to stream
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="vidimus_id"></param>
+        /// <returns></returns>
+        public static MemoryStream FetchVidimusBody(MySqlConnection conn, long vidimus_id)
+        {
+            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+
+            DataTable data = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT vidimus_id, xml_file_body," +
+                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from vidimus " +
+                                            " where vidimus_id  = " + vidimus_id.ToString(), conn);
+
+            da.Fill(data);
+
+            if (data.Rows.Count == 1)
+            {
+                DataRow row = data.Rows[0];
+                if (row[1].ToString().Length > 0)
+                {
+                    byte[] outbyte = (byte[])row[1];
+                    MemoryStream res = new MemoryStream(outbyte);
+                    return res;
+                }
+                else return null;
+            }
+            else return null;
+        }
+
         public static long DB_AddBlock_KPT11(long block_id, TFile KPT, MySqlConnection conn)
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
@@ -238,6 +385,103 @@ namespace GKNData
             DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
             return last_id;
             return -1;
+        }
+
+        /// <summary>
+        /// Выборка записей из kpt + kpt11, без blob поля xml_file_body, только сведения о его размере 
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="block_id">id квартала</param>
+        /// <returns></returns>
+        public static TFiles LoadBlockFiles(MySqlConnection conn, int block_id)
+        {
+
+            TFiles files = new TFiles();
+            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+
+            DataTable data = new DataTable();
+
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT kpt_id,block_id,xml_file_name,kpt_num,kpt_date,kpt_serial,xml_ns,requestnum,acesscode," +
+                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt where block_id = " + block_id.ToString() +
+                                      " order by kpt_id asc", conn);
+
+            da.Fill(data);
+            foreach (DataRow row in data.Rows)
+            {
+                TFile file = new TFile(); // CN
+                file.id = Convert.ToInt32(row[0]);           // id
+                file.FileName = row[2].ToString();           // block_name
+                file.Number = row[3].ToString();
+                if (row[4].ToString().Length > 0)
+                    file.Doc_Date = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
+                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+                file.Serial = row[5].ToString();
+                file.xmlns = row[6].ToString();
+                file.RequestNum = row[7].ToString();
+                file.AccessCode = row[8].ToString();
+                if (row[9] != DBNull.Value)
+                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[9]));
+                files.Add(file);
+            }
+            data.Reset();
+
+            //KPT11 load:
+            da = new MySqlDataAdapter("SELECT kpt_id, kpt_type,block_id,GUID,kpt_num,kpt_serial,kpt_date,requestnum,acesscode,	xml_file_name," +
+                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11 where block_id = " + block_id.ToString() +
+                                      " order by kpt_id asc", conn);
+
+            da.Fill(data);
+            foreach (DataRow row in data.Rows)
+            {
+                TFile file = new TFile(); // CN
+                file.id = Convert.ToInt32(row[0]);           // id
+                //file.Type = dFileTypes.KPT11; //Convert.ToByte(row[1]);           // kpt type
+                file.xmlns = netFteo.Rosreestr.NameSpaces.KPT11; // explicit setuped
+                file.FileName = row[9].ToString();           // block_id
+                file.Number = row[4].ToString();
+                file.Doc_Date = Convert.ToString(row[6]).Substring(0, Convert.ToString(row[6]).Length - 7);
+                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+                file.Serial = row[5].ToString();
+                file.RequestNum = row[7].ToString();
+                file.AccessCode = row[8].ToString();
+                if (row[10] != DBNull.Value)
+                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[10]));
+                files.Add(file);
+            }
+            return files;
+        }
+
+        public static TFiles LoadParcelFiles(MySqlConnection conn, long parcel_id)
+        {
+
+            TFiles files = new TFiles();
+            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
+            DataTable data = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT vidimus_id,parcel_id, " +
+                                      "xml_file_name,v_num,v_date,v_serial,xml_file_tns,requestnum,acesscode," +
+                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb, vidimus_type from vidimus where parcel_id = " + parcel_id.ToString() +
+                                      " order by vidimus_id asc", conn);
+
+            da.Fill(data);
+            foreach (DataRow row in data.Rows)
+            {
+                TFile file = new TFile(); // CN
+                file.id = Convert.ToInt32(row[0]);           // id
+                file.FileName = row[2].ToString();                       // block_name
+                file.Number = row[3].ToString();
+                file.Doc_Date = row[4].ToString();
+                //file.Doc_Date = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
+                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
+                file.Serial = row[5].ToString();
+                file.xmlns = row[6].ToString();
+                file.RequestNum = row[7].ToString();
+                file.AccessCode = row[8].ToString();
+                if (row[9].ToString().Length > 0)
+                    file.xmlSize_SQL = Convert.ToDouble(row[9]);
+                //file.id = Convert.ToInt32(row[10]); // vidimus_type, int
+                files.Add(file);
+            }
+            return files;
         }
 
 

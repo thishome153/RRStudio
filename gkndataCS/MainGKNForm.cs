@@ -377,7 +377,7 @@ namespace GKNData
             //anyway load files:
             if (block == null) return false;
             block.KPTXmlBodyList.Clear();
-            block.KPTXmlBodyList = LoadBlockFiles(CF.conn, block.id);
+            block.KPTXmlBodyList = DBWrapper.LoadBlockFiles(CF.conn, block.id);
             wzlBlockEd frmBlockEditor = new wzlBlockEd();
             frmBlockEditor.CF.conn = CF.conn;
             frmBlockEditor.Left = this.Left + 20; frmBlockEditor.Top = this.Top + 25;
@@ -393,8 +393,10 @@ namespace GKNData
 
         private bool Edit(TMyParcel item)
         {
-            if (item.XmlBodyList.Count == 0)
-                item.XmlBodyList = LoadParcelFiles(CF.conn, item.id);
+            if (item == null) return false;
+            //anyway load files:
+            item.XmlBodyList.Clear();
+            item.XmlBodyList = DBWrapper.LoadParcelFiles(CF.conn, item.id);
             wzParcelfrm frmParcelEditor = new wzParcelfrm();
             frmParcelEditor.CF.conn = CF.conn;
             frmParcelEditor.Left = this.Left + 20; frmParcelEditor.Top = this.Top + 25;
@@ -432,104 +434,8 @@ namespace GKNData
             return ParcelsList;
         }
 
-        /// <summary>
-        /// Выборка записей из kpt, без blob поля xml_file_body, только сведения о его размере 
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="block_id">id квартала</param>
-        /// <returns></returns>
-        private TFiles LoadBlockFiles(MySqlConnection conn, int block_id)
-        {
-
-            TFiles files = new TFiles();
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
-
-            data = new DataTable();
-
-            da = new MySqlDataAdapter("SELECT kpt_id,block_id,xml_file_name,kpt_num,kpt_date,kpt_serial,xml_ns,requestnum,acesscode," +
-                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt where block_id = " + block_id.ToString() +
-                                      " order by kpt_id asc", conn);
-
-            da.Fill(data);
-            foreach (DataRow row in data.Rows)
-            {
-                TFile file = new TFile(); // CN
-                file.id = Convert.ToInt32(row[0]);           // id
-                file.FileName = row[2].ToString();           // block_name
-                file.Number = row[3].ToString();
-                if (row[4].ToString().Length > 0)
-                file.Doc_Date = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
-                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
-                file.Serial = row[5].ToString();
-                file.xmlns = row[6].ToString();
-                file.RequestNum = row[7].ToString();
-                file.AccessCode = row[8].ToString();
-                if (row[9] != DBNull.Value)
-                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[9]));
-                files.Add(file);
-            }
-            data.Reset();
-
-            //KPT11 load:
-            da = new MySqlDataAdapter("SELECT kpt_id, kpt_type,block_id,GUID,kpt_num,kpt_serial,kpt_date,requestnum,acesscode,	xml_file_name," +
-                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11 where block_id = " + block_id.ToString() +
-                                      " order by kpt_id asc", conn);
-
-            da.Fill(data);
-            foreach (DataRow row in data.Rows)
-            {
-                TFile file = new TFile(); // CN
-                file.id = Convert.ToInt32(row[0]);           // id
-                //file.Type = dFileTypes.KPT11; //Convert.ToByte(row[1]);           // kpt type
-                file.xmlns = netFteo.Rosreestr.NameSpaces.KPT11; // explicit setuped
-                file.FileName = row[9].ToString();           // block_id
-                file.Number = row[4].ToString();
-                file.Doc_Date = Convert.ToString(row[6]).Substring(0, Convert.ToString(row[6]).Length - 7);
-                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
-                file.Serial = row[5].ToString();
-                file.RequestNum = row[7].ToString();
-                file.AccessCode = row[8].ToString();
-                if (row[10] != DBNull.Value)
-                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[10]));
-                files.Add(file);
-            }
-            return files;
-        }
-
-        private TFiles LoadParcelFiles(MySqlConnection conn, long parcel_id)
-        {
-
-            TFiles files = new TFiles();
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT vidimus_id,parcel_id, " +
-                                      "xml_file_name,v_num,v_date,v_serial,xml_file_tns,requestnum,acesscode," +
-                   " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb, vidimus_type from vidimus where parcel_id = " + parcel_id.ToString() +
-                                      " order by vidimus_id asc", conn);
-
-            da.Fill(data);
-            foreach (DataRow row in data.Rows)
-            {
-                TFile file = new TFile(); // CN
-                file.id = Convert.ToInt32(row[0]);           // id
-                file.FileName = row[2].ToString();                       // block_name
-                file.Number = row[3].ToString();
-                file.Doc_Date = row[4].ToString();
-                //file.Doc_Date = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
-                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
-                file.Serial = row[5].ToString();
-                file.xmlns = row[6].ToString();
-                file.RequestNum = row[7].ToString();
-                file.AccessCode = row[8].ToString();
-                if (row[9].ToString().Length > 0)
-                    file.xmlSize_SQL = Convert.ToDouble(row[9]);
-                //file.id = Convert.ToInt32(row[10]); // vidimus_type, int
-                files.Add(file);
-            }
-            return files;
-        }
-
-
+ 
+  
             //crazyFull  function filling information
             private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, int distr_id)
         {

@@ -3889,34 +3889,20 @@ namespace netFteo.Spatial
             get
             {
                 return Rosreestr.NameSpaces.NStoFileType(xmlns);
-                /*
-                if (xmlns.Equals(Rosreestr.NameSpaces.KVZU_07)) return dFileTypes.KVZU_07;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KVZU_06)) return dFileTypes.KVZU_06;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPZU_06)) return dFileTypes.KPZU_06;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KVOKS_07)) return dFileTypes.KVOKS_07;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPOKS_04)) return dFileTypes.KPOKS_04;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT05)) return dFileTypes.KPT05;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT06)) return dFileTypes.KPT06;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT07)) return dFileTypes.KPT07;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT08)) return dFileTypes.KPT08;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT09)) return dFileTypes.KPT09;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT10)) return dFileTypes.KPT10;
-                if (xmlns.Equals(Rosreestr.NameSpaces.KPT11)) return dFileTypes.KPT11;
-                return dFileTypes.Undefined; //default
-                */
             }
         }
         public string AccessCode;
         public string FileName;
         public string RequestNum;
+        public string GUID;
         public string RootName;
         public string xmlns;
         public double xmlSize_SQL; // size of body ( prepared by server)
-                                  
+
         //private System.Xml.XmlDocument fxml_file_body;
 
         /// <summary>
-        /// File body as binary array - BLOB
+        /// BLOB file body as binary array - byte[]
         /// </summary>
         public byte[] File_BLOB;
 

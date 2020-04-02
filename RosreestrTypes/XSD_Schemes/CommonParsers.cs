@@ -5672,6 +5672,7 @@ namespace RRTypes.CommonParsers
 			res.DocTypeNick = "КПЗУ";
 			res.DocType = "Кадастровый паспорт земельного участка";
 			res.Version = "5.0.8";
+            res.Namespace = netFteo.Rosreestr.NameSpaces.KPZU_05;
 			CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
 			Parse_Contractors(xmldoc, res);
 			return res;
@@ -5915,7 +5916,8 @@ namespace RRTypes.CommonParsers
 
 			res.DocTypeNick = "КВЗУ";
 			res.Version = "04";
-			CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
+            res.Namespace = netFteo.Rosreestr.NameSpaces.KVZU_04;
+            CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
 			Parse_ContractorsV04(xmldoc, res);
 
 			return res;
@@ -5934,6 +5936,7 @@ namespace RRTypes.CommonParsers
 			{
 				res.DocTypeNick = "КВЗУ";
 				res.Version = "05";
+                res.Namespace = netFteo.Rosreestr.NameSpaces.KVZU_05;
 			}
 
 			//TODO
@@ -6620,9 +6623,13 @@ namespace RRTypes.CommonParsers
 			res.DocTypeNick = "ЕГРП";
 			// /Extract/eDocument/@Version
 			res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "eDocument");
+            if (res.Version.Equals("06"))
+            res.Namespace = NameSpaces.EGRP_06;
+            if (res.Version.Equals("04"))
+                res.Namespace = NameSpaces.EGRP_04;
 
 
-			TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TMyCadastralBlock Bl = new TMyCadastralBlock();
 			System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
 			nsmgr.AddNamespace("egrp", xmldoc.DocumentElement.NamespaceURI);
 			res.DocType = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:ReestrExtract/egrp:DeclarAttribute/@egrp:ExtractTypeText", nsmgr).Value.ToString();
