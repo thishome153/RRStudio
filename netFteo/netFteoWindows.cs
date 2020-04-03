@@ -6,6 +6,31 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
+
+
+
+namespace netFteo
+{
+    /// <summary>
+    /// Small object for pointing in treevew to objects
+    /// </summary>
+    public class TreeNodeTag
+    {
+        public long Item_id;
+        public string Type;
+        /// <summary>
+        /// Create small Tag object for treenodes ops
+        /// </summary>
+        /// <param name="item_id"></param>
+        /// <param name="item_type"></param>
+        public TreeNodeTag(long item_id, string item_type)
+        {
+            this.Item_id = item_id;
+            this.Type = item_type;
+        }
+    }
+}
+
 /// <summary>
 /// Not An MS Windows, everyvere window, controls, forms etc.
 /// </summary>
@@ -53,7 +78,6 @@ namespace netFteo.Windows
 
     }
 
-
     public class TreeViewSearchable : TreeView
     {
         private System.Windows.Forms.TextBox SearchTextBox;
@@ -99,8 +123,6 @@ namespace netFteo.Windows
         }
 
     }
-
-
 
     /// <summary>
     /// Класс для поиска по деревьям TreeView
@@ -174,13 +196,7 @@ namespace netFteo.Windows
         }
     }
 
-
-
-
-
-
-
-    //Модифицированный класс компонента для работы в потоках
+   //Модифицированный класс компонента для работы в потоках
     public class TMyLabel : Label
     {
         public TMyLabel()

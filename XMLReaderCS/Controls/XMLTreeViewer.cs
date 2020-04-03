@@ -23,6 +23,11 @@ namespace XMLReaderCS
         ToolStripMenuItem ItemSearch;
         public string Namespace;
         public string RootName;
+        /// <summary>
+        /// Reject bodys larger 33M due catastrophic memory usage
+        /// </summary>
+        public static int MaxSize33M = 32768; //
+        public static int MaxSize134M = 131072;
         public CXmlTreeView()
         {
             BeforeExpand += OnItemexpanding;
@@ -147,8 +152,9 @@ namespace XMLReaderCS
             }
         }
 
-        public bool LoadXML(XmlDocument dom)
+        public bool LoadXML(long DocumentSize, XmlDocument dom)
         {
+            if (DocumentSize > MaxSize33M) return false;
             this.Nodes.Clear();
             string href = "";
             this.Namespace = dom.DocumentElement.NamespaceURI;

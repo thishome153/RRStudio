@@ -3897,7 +3897,7 @@ namespace netFteo.Spatial
         public string GUID;
         public string RootName;
         public string xmlns;
-        public double xmlSize_SQL; // size of body ( prepared by server)
+        public long xmlSize_SQL; // size of body ( prepared by server)
 
         //private System.Xml.XmlDocument fxml_file_body;
 
@@ -4027,6 +4027,19 @@ namespace netFteo.Spatial
             }
             return null;
         }
+
+        public long GetFileSize(long file_id)
+        {
+            foreach (TFile file in this)
+            {
+                if (file.id == file_id)
+                {
+                    return file.xmlSize_SQL;
+                }
+            }
+            return -1; ;
+        }
+
 
         public bool FileBodyExist(int file_id)
         {
@@ -4199,6 +4212,8 @@ namespace netFteo.Spatial
     {
         public string Name;
     }
+
+
 
     #region Кадастровый квартал
 

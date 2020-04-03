@@ -8,7 +8,7 @@ namespace XMLReaderCS
 {
    public static class FileSizeAdapter
     {
-       public  static string FileSize(string FileName)
+       public  static string FileSizeToString(string FileName)
        { 
             FileInfo info = new FileInfo(FileName);
            if (info.Length < 1024)
@@ -26,6 +26,12 @@ namespace XMLReaderCS
            else return "";
 
        }
+
+        public static long FileSize(string FileName)
+        {
+            return new FileInfo(FileName).Length;
+        }
+
     }
    public class RecentFiles 
    {

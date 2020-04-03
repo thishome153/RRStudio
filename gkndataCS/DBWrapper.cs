@@ -420,7 +420,7 @@ namespace GKNData
                 file.RequestNum = row[7].ToString();
                 file.AccessCode = row[8].ToString();
                 if (row[9] != DBNull.Value)
-                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[9]));
+                    file.xmlSize_SQL = (Convert.ToInt64(row[9]));
                 files.Add(file);
             }
             data.Reset();
@@ -445,7 +445,7 @@ namespace GKNData
                 file.RequestNum = row[7].ToString();
                 file.AccessCode = row[8].ToString();
                 if (row[10] != DBNull.Value)
-                    file.xmlSize_SQL = Math.Round(Convert.ToDouble(row[10]));
+                    file.xmlSize_SQL = Convert.ToInt64(row[10]);  // long is signed 64 bit integer
                 files.Add(file);
             }
             return files;
@@ -477,7 +477,7 @@ namespace GKNData
                 file.RequestNum = row[7].ToString();
                 file.AccessCode = row[8].ToString();
                 if (row[9].ToString().Length > 0)
-                    file.xmlSize_SQL = Convert.ToDouble(row[9]);
+                    file.xmlSize_SQL = Convert.ToInt64(row[9]);
                 //file.id = Convert.ToInt32(row[10]); // vidimus_type, int
                 files.Add(file);
             }

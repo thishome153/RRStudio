@@ -296,7 +296,7 @@ namespace GKNData
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ReadXML(xmlUploaded.XML_file_body);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmlUploaded.XML_file_body);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

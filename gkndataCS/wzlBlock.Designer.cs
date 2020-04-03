@@ -60,6 +60,7 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.Delete_toolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolButton_SaveXML = new System.Windows.Forms.ToolStripButton();
             this.toolButton_ReadXML = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -84,13 +85,13 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.contextMenu_pkk5 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.снимокКартыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.backgroundWorker_History = new System.ComponentModel.BackgroundWorker();
-            this.Delete_toolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.свойстваToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.свойстваToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -160,6 +161,7 @@
             this.columnHeader11,
             this.columnHeader9,
             this.columnHeader12});
+            this.listView1.ContextMenuStrip = this.contextMenu_pkk5;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
@@ -247,6 +249,17 @@
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.ToolTipText = "Импорт КПТ (xml)";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            // 
+            // Delete_toolStripButton
+            // 
+            this.Delete_toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Delete_toolStripButton.Image = global::GKNData.Properties.Resources.cross;
+            this.Delete_toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Delete_toolStripButton.Name = "Delete_toolStripButton";
+            this.Delete_toolStripButton.Size = new System.Drawing.Size(23, 20);
+            this.Delete_toolStripButton.Text = "toolStripButton2";
+            this.Delete_toolStripButton.ToolTipText = "Delete_toolStripButton2";
+            this.Delete_toolStripButton.Click += new System.EventHandler(this.Delete_toolStripButton_Click);
             // 
             // toolButton_SaveXML
             // 
@@ -465,26 +478,19 @@
             // contextMenu_pkk5
             // 
             this.contextMenu_pkk5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сохранитьToolStripMenuItem});
+            this.свойстваToolStripMenuItem,
+            this.сохранитьToolStripMenuItem,
+            this.свойстваToolStripMenuItem1});
             this.contextMenu_pkk5.Name = "contextMenu_pkk5";
-            this.contextMenu_pkk5.Size = new System.Drawing.Size(134, 26);
+            this.contextMenu_pkk5.Size = new System.Drawing.Size(181, 92);
             // 
             // сохранитьToolStripMenuItem
             // 
-            this.сохранитьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.снимокКартыToolStripMenuItem});
             this.сохранитьToolStripMenuItem.Image = global::GKNData.Properties.Resources.bullet_disk;
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            // 
-            // снимокКартыToolStripMenuItem
-            // 
-            this.снимокКартыToolStripMenuItem.Image = global::GKNData.Properties.Resources.pictures;
-            this.снимокКартыToolStripMenuItem.Name = "снимокКартыToolStripMenuItem";
-            this.снимокКартыToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.снимокКартыToolStripMenuItem.Text = "Снимок карты";
-            this.снимокКартыToolStripMenuItem.Click += new System.EventHandler(this.снимокКартыToolStripMenuItem_Click);
+            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.СохранитьToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -534,16 +540,20 @@
             this.backgroundWorker_History.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_History_DoWork);
             this.backgroundWorker_History.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_History_RunWorkerCompleted);
             // 
-            // Delete_toolStripButton
+            // свойстваToolStripMenuItem
             // 
-            this.Delete_toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Delete_toolStripButton.Image = global::GKNData.Properties.Resources.cross;
-            this.Delete_toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Delete_toolStripButton.Name = "Delete_toolStripButton";
-            this.Delete_toolStripButton.Size = new System.Drawing.Size(23, 20);
-            this.Delete_toolStripButton.Text = "toolStripButton2";
-            this.Delete_toolStripButton.ToolTipText = "Delete_toolStripButton2";
-            this.Delete_toolStripButton.Click += new System.EventHandler(this.Delete_toolStripButton_Click);
+            this.свойстваToolStripMenuItem.Image = global::GKNData.Properties.Resources.Свойства;
+            this.свойстваToolStripMenuItem.Name = "свойстваToolStripMenuItem";
+            this.свойстваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.свойстваToolStripMenuItem.Text = "Просмотр";
+            // 
+            // свойстваToolStripMenuItem1
+            // 
+            this.свойстваToolStripMenuItem1.Image = global::GKNData.Properties.Resources.application_form;
+            this.свойстваToolStripMenuItem1.Name = "свойстваToolStripMenuItem1";
+            this.свойстваToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.свойстваToolStripMenuItem1.Text = "Свойства";
+            this.свойстваToolStripMenuItem1.Click += new System.EventHandler(this.СвойстваToolStripMenuItem1_Click);
             // 
             // wzlBlockEd
             // 
@@ -614,7 +624,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ContextMenuStrip contextMenu_pkk5;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem снимокКартыToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.ComponentModel.BackgroundWorker backgroundWorker_History;
@@ -622,5 +631,7 @@
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton Delete_toolStripButton;
+        private System.Windows.Forms.ToolStripMenuItem свойстваToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem свойстваToolStripMenuItem1;
     }
 }

@@ -185,8 +185,6 @@ namespace XMLReaderCS
 		/// <param name="workDir"></param>
 		private void CheckIt(string workDir)
 		{
-
-
 			if (Directory.Exists(workDir))
 			{
 				AddCheckPosition(listView1, "Состав пакетa", "Наличие лишних файлов", "....");
@@ -211,7 +209,7 @@ namespace XMLReaderCS
 					XmlNode MP_Root = fMP_v06_xml.DocumentElement;
 					// Вначале отобразим xml, вдруг далее парсеры слажают... :)
 					cXmlTreeView2.RootName = ze_local;
-					cXmlTreeView2.LoadXML(fMP_v06_xml); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+					cXmlTreeView2.LoadXML(-1,fMP_v06_xml); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
 					string version = "-";
 					if (MP_Root.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
 						version = MP_Root.Attributes.GetNamedItem("Version").Value;

@@ -37,6 +37,7 @@ namespace netFteo.IO
         public string Version;
         public string DocRootName;
         public string FileName;
+        public long FileSize;
         public string FilePath;
         public string Namespace;
         public string DocType;

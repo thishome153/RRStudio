@@ -249,14 +249,25 @@ namespace GKNData
                 frmReader.StartPosition = FormStartPosition.Manual;
                 frmReader.Tag = 3; // XMl Reader as Application part
                 frmReader.DocInfo.FileName = ITEM.KPTXmlBodyList.GetFileName(item_id);
+                frmReader.DocInfo.FileSize = ITEM.KPTXmlBodyList.GetFileSize(item_id);
                 frmReader.Read(ITEM.KPTXmlBodyList.XML_file_body(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
             }
         }
 
+        private void ShowProperties()
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                wzKPTProperty wzkptproperty = new wzKPTProperty(ITEM.KPTXmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag));
+                wzkptproperty.Top = this.Top + listView1.SelectedItems[0].Index * 20 + 180; wzkptproperty.Left = this.Left + +395 + 60;
+                wzkptproperty.ShowDialog();
+            }
+        }
 
-        private void toolButton_ReadXML_Click(object sender, EventArgs e)
+
+    private void toolButton_ReadXML_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
             {
@@ -273,7 +284,8 @@ namespace GKNData
 
         private void toolButton_PropertyXML_Click(object sender, EventArgs e)
         {
-
+            ShowProperties();
+            /*
             if (listView1.SelectedItems.Count == 1)
             {
 
@@ -281,6 +293,7 @@ namespace GKNData
                 wzkptproperty.Top = this.Top + listView1.SelectedItems[0].Index * 20 + 180; wzkptproperty.Left = this.Left + +395 + 60;
                 wzkptproperty.ShowDialog();
             }
+            */
         }
 
         private void снимокКартыToolStripMenuItem_Click(object sender, EventArgs e)
@@ -365,12 +378,12 @@ namespace GKNData
             //xmlUploaded.ReadFileBody(new MemoryStream(xmlUploaded.File_BLOB));
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ReadXML(xmlUploaded.XML_file_body);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmlUploaded.XML_file_body);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
             //xmlUploaded.GUID = ParsedDoc. ??
-            xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;// dateValue.ToString("yyyy-MM-dd");//DateTime.Now.ToString("yyyy-MM-dd");
+            xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;
 
 
             //wich type of KPT accquried:? 
@@ -433,6 +446,15 @@ namespace GKNData
             return false;
         }
 
+        private void СохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveXMLfromSelectedNode();
+        }
+
+        private void СвойстваToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ShowProperties();
+        }
     }
 
 

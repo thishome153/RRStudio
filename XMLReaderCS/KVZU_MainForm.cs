@@ -234,6 +234,249 @@ namespace XMLReaderCS
 
         }
 
+
+
+        private void ClearControls()
+        {
+            richTextBox1.Clear();
+            listView1.Controls.Clear();
+            listView1.Items.Clear();
+            listView_Properties.Items.Clear();
+            contextMenuStrip_SaveAs.Enabled = false;
+            listView_Contractors.Items.Clear();
+            cXmlTreeView2.Clear();
+            TV_Parcels.ImageIndex = imList_dStates.Images.Count;
+            if (this.DocInfo == null)
+                this.DocInfo = new netFteo.IO.FileInfo();
+
+            else
+            {
+                this.DocInfo.FileName = null;
+                this.DocInfo.FilePath = null;
+                this.DocInfo.Comments = null;
+                this.DocInfo.Version = null;
+                this.DocInfo.Number = null;
+                this.DocInfo.Date = null;
+                this.DocInfo.MyBlocks.Blocks.Clear();
+            }
+            TV_Parcels.Nodes.Clear();
+
+            textBox_Appointment.Text = "";
+            textBox_DocDate.Text = "";
+            textBox_DocNum.Text = ""; linkLabel_Recipient.Text = ""; linkLabel_Request.Text = "";
+            textBox_Appointment.Text = "";
+            textBox_FIO.Text = "";
+            textBox_OrgName.Text = "";
+            toolStripStatusLabel1.Text = "";
+            tabPage3.Show();
+            tabPage3.Text = "-";
+            tabPage5.Text = "XML";
+            label_FileSize.Text = "";
+            label2.Text = "Получатель";
+            toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
+            textBox_DocNum.Image = XMLReaderCS.Properties.Resources.calendar_view_day;
+            PreloaderMenuItem.LoadingCircleControl.Active = false;
+            PreloaderMenuItem.Visible = false;
+            PreloaderMenuItem.BackColor = Color.Transparent;
+            документToolStripMenuItem.Enabled = false;
+            pathToHtmlFile = null;
+            this.Text = TextDefault;
+            toolStripProgressBar1.Value = 0;
+            Gen_id.Reset();
+
+#if (DEBUG)
+            debugToolStripMenuItem.Enabled = true;
+
+#else
+            debugToolStripMenuItem.Enabled = false;
+         //   проверкаГеометрииToolStripMenuItem.Enabled = false;
+#endif
+        }
+
+
+        /// <summary>
+        /// Читать документ из файла
+        /// </summary>
+        /// <param name="FileName">Имя файла</param>
+        /// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
+        public void Read(string FileName, bool NeedListing)
+        {
+            if (!File.Exists(FileName))
+            {
+                toolStripStatusLabel1.Text = "not exist:" + Path.GetFileName(FileName);
+                return;
+            }
+
+            ClearControls();
+            PreloaderMenuItem.LoadingCircleControl.Active = true;
+            PreloaderMenuItem.Visible = true;
+            Application.DoEvents();
+            SaveLastDir(Path.GetDirectoryName(FileName));
+            if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
+            linkLabel_FileName.Text = Path.GetFileName(FileName);
+            toolStripStatusLabel1.Text = Path.GetFileName(FileName);
+            this.Text = Path.GetFileName(FileName);
+            label_FileSize.Text = FileSizeAdapter.FileSizeToString(FileName);
+            this.DocInfo.FileName = Path.GetFileName(FileName);
+            this.DocInfo.FilePath = Path.GetFullPath(FileName);
+            this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName);
+
+            // got mif file:
+            if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
+            {
+                netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
+                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();// (dutilizations_v01, dAllowedUse_v02);
+                mifreader.OnParsing += XMLStateUpdater;
+                this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
+            }
+
+            if (Path.GetExtension(FileName).ToUpper().Equals(".TAB"))
+            {
+                OpenMiTab(FileName);
+            }
+
+            // got AutoCad Drawing Exchange Format -  dxf file:
+            if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
+            {
+                string Body = "";
+                try
+                {
+                    netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
+                    Body = dxfreader.Body;
+                    this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding.EncodingName;
+                    toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount;
+                    toolStripProgressBar1.Minimum = 0;
+                    toolStripProgressBar1.Value = 0;
+                    dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02);
+                    this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
+                }
+
+                catch (ArgumentException err)
+                {
+                    ClearControls();
+                    this.DocInfo.DocTypeNick = "dxf";
+                    this.DocInfo.CommentsType = "DXF error...";
+                    this.DocInfo.Comments = "\r" + FileName + " contain errors:\r" + err.Message + "\r DXF file body:\r\r" + Body;
+                    this.DocInfo.DocType = "dxf";
+                }
+            }
+
+            if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
+            {
+                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
+                TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
+                if (polyfromMIF != null)
+                {
+                    DocInfo.MyBlocks.ParsedSpatial.Clear();
+                    DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
+                }
+
+                this.DocInfo.DocTypeNick = "Текстовый файл";
+                this.DocInfo.CommentsType = "TXT";
+                this.DocInfo.Comments = mifreader.Body;
+                this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
+                this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding.EncodingName;
+
+                if (mifreader.isNikonRaw(FileName))
+                {
+                    this.DocInfo.DocTypeNick = "Nikon RAW data format V2.00";
+                    //call Traverser:
+                    Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
+                    frmTraverser.ReadRawFile(FileName);
+                    frmTraverser.ShowDialog(this);
+                }
+            }
+
+
+            if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
+            {
+                netFteo.IO.TextReader CSVReader = new netFteo.IO.TextReader(FileName);
+                CSVReader.OnParsing += XMLStateUpdater;
+                TEntitySpatial ES_from_CSV = CSVReader.ImportCSVFile();
+
+                if (ES_from_CSV != null)
+                {
+                    DocInfo.MyBlocks.ParsedSpatial.Clear();
+                    DocInfo.MyBlocks.ParsedSpatial = ES_from_CSV;
+                    this.DocInfo.DocTypeNick = "Текстовый файл";
+                    this.DocInfo.CommentsType = "CSV";
+                    this.DocInfo.Comments = CSVReader.Body;
+                    this.DocInfo.Encoding = CSVReader.BodyEncoding.EncodingName;
+                    this.DocInfo.Number = "Текстовый файл CSV ,  " + CSVReader.BodyEncoding.EncodingName;
+                }
+            }
+
+            if (Path.GetExtension(FileName).Equals(".xml"))
+            {
+                TextReader reader = new StreamReader(FileName);
+                XmlDocument XMLDocFromFile = new XmlDocument();
+                XMLDocFromFile.Load(reader);
+                reader.Close();
+                Read(XMLDocFromFile);
+
+#if (DEBUG)
+                //LV_SchemaDisAssembly.Visible =  TODO...;                      
+#else
+                //LV_SchemaDisAssembly.Visible = false;                      
+#endif
+                this.DocInfo.MyBlocks.SpatialData.Definition = Path.GetFileName(FileName);
+                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(netFteo.StringUtils.ReplaceComma(this.DocInfo.MyBlocks.SpatialData.Definition));
+                //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
+            }
+
+            // Got XSD schema file
+            if (Path.GetExtension(FileName).Equals(".xsd"))
+            {
+                netFteo.XML.XSDFile xsdenum = new netFteo.XML.XSDFile(FileName);
+            }
+
+            // We recieve archive package GKUOKS, GKUZU:
+            if (Path.GetExtension(FileName).Equals(".zip"))
+                /*if ((FileName.Contains("GKU"))  ||
+                    (FileName.Contains("SchemaParcels"))) */
+                {
+                    ClearFiles();
+                    BackgroundWorker w1 = new BackgroundWorker();
+                    w1.WorkerSupportsCancellation = false;
+                    w1.WorkerReportsProgress = true;
+                    w1.DoWork += this.UnZipit;
+                    w1.RunWorkerCompleted += this.UnZipComplete;
+                    w1.RunWorkerAsync(FileName);
+                }
+
+
+
+            // file is signature
+#if DEBUG
+            if (Path.GetExtension(FileName).Equals(".sig"))
+            {
+                /*
+                cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
+                cwrp.DisplaySig(FileName, this.Handle);
+                */
+            }
+#endif
+            //Если есть парная ЭЦП:
+            if (File.Exists(FileName + ".sig"))
+            {
+                frmCertificates certfrm = new frmCertificates();
+                List<string> sigs = certfrm.ParseSignature(FileName + ".sig");
+                if (sigs != null)
+                    foreach (string sig in sigs)
+                        textBox_FIO.Text += "\n ЭЦП= " + sig;
+            }
+
+            if (NeedListing)
+            {
+                ListMyCoolections(this.DocInfo.MyBlocks);
+                ListFileInfo(DocInfo);
+            }
+            PreloaderMenuItem.LoadingCircleControl.Active = false;
+            PreloaderMenuItem.Visible = false;
+        }
+
+
         /// <summary>
         ///   Read and parse all types of xml documents
         /// </summary>
@@ -242,9 +485,13 @@ namespace XMLReaderCS
         {
             документToolStripMenuItem.Enabled = true;
             string FileName = DocInfo.FileName; // store 
-            // Вначале отобразим xml, вдруг далее парсеры слажают... :)
-            cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
-            DocInfo =  RRTypes.CommonParsers.ParserCommon.ReadXML(xmldoc);
+
+            // First show xml, before parsing... :)
+            cXmlTreeView2.LoadXML(DocInfo.FileSize, xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+
+            RRTypes.CommonParsers.ParserCommon.dAllowedUse_v02 = dAllowedUse_v02;
+            RRTypes.CommonParsers.ParserCommon.dutilizations_v01 = dutilizations_v01;
+            DocInfo =  RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc);
             DocInfo.FileName = FileName;
             cXmlTreeView2.RootName = DocInfo.FileName;
             tabPage5.Text = DocInfo.FileName;
@@ -522,193 +769,6 @@ namespace XMLReaderCS
 }
 */
 
-        /// <summary>
-        /// Читать документ из файла
-        /// </summary>
-        /// <param name="FileName">Имя файла</param>
-        /// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
-        public void Read(string FileName, bool NeedListing)
-        {
-            if (!File.Exists(FileName))
-            {
-                toolStripStatusLabel1.Text = "not exist:" + Path.GetFileName(FileName);
-                return;
-            }
-
-            ClearControls();
-            PreloaderMenuItem.LoadingCircleControl.Active = true;
-            PreloaderMenuItem.Visible = true;
-            Application.DoEvents();
-            SaveLastDir(Path.GetDirectoryName(FileName));
-            if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
-            linkLabel_FileName.Text = Path.GetFileName(FileName);
-            toolStripStatusLabel1.Text = Path.GetFileName(FileName);
-            this.Text = Path.GetFileName(FileName);
-            label_FileSize.Text = FileSizeAdapter.FileSize(FileName);
-            // got mif file:
-
-
-            if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
-            {
-                netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
-                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02);
-                mifreader.OnParsing += XMLStateUpdater;
-                this.DocInfo = parser.ParseMIF(this.DocInfo, mifreader);
-            }
-
-            if (Path.GetExtension(FileName).ToUpper().Equals(".TAB"))
-            {
-                OpenMiTab(FileName);
-            }
-
-            // got AutoCad Drawing Exchange Format -  dxf file:
-            if (Path.GetExtension(FileName).ToUpper().Equals(".DXF"))
-            {
-                string Body = "";
-                try
-                {
-                    netFteo.IO.DXFReader dxfreader = new netFteo.IO.DXFReader(FileName);
-                    Body = dxfreader.Body;
-                    this.DocInfo.Number = "Encoding  " + dxfreader.BodyEncoding.EncodingName;
-                    toolStripProgressBar1.Maximum = dxfreader.BodyLinesCount;
-                    toolStripProgressBar1.Minimum = 0;
-                    toolStripProgressBar1.Value = 0;
-                    dxfreader.dxfFile.OnReaderRead += DXFStateUpdater;
-                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02);
-                    this.DocInfo = parser.ParseDXF(this.DocInfo, dxfreader);
-                }
-
-                catch (ArgumentException err)
-                {
-                    ClearControls();
-                    this.DocInfo.DocTypeNick = "dxf";
-                    this.DocInfo.CommentsType = "DXF error...";
-                    this.DocInfo.Comments = "\r" + FileName + " contain errors:\r" + err.Message + "\r DXF file body:\r\r" + Body;
-                    this.DocInfo.DocType = "dxf";
-                }
-
-
-            }
-
-            if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
-            {
-                netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
-                TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
-                if (polyfromMIF != null)
-                {
-                    DocInfo.MyBlocks.ParsedSpatial.Clear();
-                    DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
-                }
-
-                this.DocInfo.DocTypeNick = "Текстовый файл";
-                this.DocInfo.CommentsType = "TXT";
-                this.DocInfo.Comments = mifreader.Body;
-                this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
-                this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding.EncodingName;
-
-                if (mifreader.isNikonRaw(FileName))
-                {
-                    this.DocInfo.DocTypeNick = "Nikon RAW data format V2.00";
-                    //call Traverser:
-                    Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
-                    frmTraverser.ReadRawFile(FileName);
-                    frmTraverser.ShowDialog(this);
-                }
-            }
-
-
-            if (Path.GetExtension(FileName).ToUpper().Equals(".CSV"))
-            {
-                netFteo.IO.TextReader CSVReader = new netFteo.IO.TextReader(FileName);
-                CSVReader.OnParsing += XMLStateUpdater;
-                TEntitySpatial ES_from_CSV = CSVReader.ImportCSVFile();
-
-                if (ES_from_CSV != null)
-                {
-                    DocInfo.MyBlocks.ParsedSpatial.Clear();
-                    DocInfo.MyBlocks.ParsedSpatial = ES_from_CSV;
-                    this.DocInfo.DocTypeNick = "Текстовый файл";
-                    this.DocInfo.CommentsType = "CSV";
-                    this.DocInfo.Comments = CSVReader.Body;
-                    this.DocInfo.Encoding = CSVReader.BodyEncoding.EncodingName;
-                    this.DocInfo.Number = "Текстовый файл CSV ,  " + CSVReader.BodyEncoding.EncodingName;
-                }
-            }
-
-            if (Path.GetExtension(FileName).Equals(".xml"))
-            {
-                this.DocInfo.FileName = Path.GetFileName(FileName);
-                this.DocInfo.FilePath = Path.GetFullPath(FileName);
-                TextReader reader = new StreamReader(FileName);
-                XmlDocument XMLDocFromFile = new XmlDocument();
-                XMLDocFromFile.Load(reader);
-                reader.Close();
-                Read(XMLDocFromFile);
-
-#if (DEBUG)
-                //LV_SchemaDisAssembly.Visible =  TODO...;                      
-#else
-                //LV_SchemaDisAssembly.Visible = false;                      
-#endif
-                this.DocInfo.MyBlocks.SpatialData.Definition = Path.GetFileName(FileName);
-                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(netFteo.StringUtils.ReplaceComma(this.DocInfo.MyBlocks.SpatialData.Definition));
-                //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
-            }
-
-            // Got XSD schema file
-            if (Path.GetExtension(FileName).Equals(".xsd"))
-            {
-                netFteo.XML.XSDFile xsdenum = new netFteo.XML.XSDFile(FileName);
-            }
-
-            // We recieve archive package GKUOKS, GKUZU:
-            if (Path.GetExtension(FileName).Equals(".zip"))
-                /*if ((FileName.Contains("GKU"))  ||
-                    (FileName.Contains("SchemaParcels"))) */
-                {
-                    ClearFiles();
-                    BackgroundWorker w1 = new BackgroundWorker();
-                    w1.WorkerSupportsCancellation = false;
-                    w1.WorkerReportsProgress = true;
-                    w1.DoWork += this.UnZipit;
-                    w1.RunWorkerCompleted += this.UnZipComplete;
-                    w1.RunWorkerAsync(FileName);
-                }
-
-
-
-            // file is signature
-#if DEBUG
-            if (Path.GetExtension(FileName).Equals(".sig"))
-            {
-                /*
-                cspUtils.CadesWrapper cwrp = new cspUtils.CadesWrapper();
-                cwrp.DisplaySig(FileName, this.Handle);
-                */
-            }
-#endif
-            //Если есть парная ЭЦП:
-            if (File.Exists(FileName + ".sig"))
-            {
-                frmCertificates certfrm = new frmCertificates();
-                List<string> sigs = certfrm.ParseSignature(FileName + ".sig");
-                if (sigs != null)
-                    foreach (string sig in sigs)
-                        textBox_FIO.Text += "\n ЭЦП= " + sig;
-
-            }
-
-
-            if (NeedListing)
-            {
-                ListMyCoolections(this.DocInfo.MyBlocks);
-                ListFileInfo(DocInfo);
-            }
-            PreloaderMenuItem.LoadingCircleControl.Active = false;
-            PreloaderMenuItem.Visible = false;
-        }
-
-
         private void InitSchemas(string folder_xsd)
         {
             dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
@@ -720,7 +780,6 @@ namespace XMLReaderCS
             dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
             MP_06_schema = folder_xsd + "\\V06_MP" + "\\MP_v06.xsd";
         }
-
 
 
         //Zip utils 
@@ -3534,64 +3593,7 @@ LV.Items.Add(LVipP);
 
         }
 
-        private void ClearControls()
-        {
-            richTextBox1.Clear();
-            listView1.Controls.Clear();
-            listView1.Items.Clear();
-            listView_Properties.Items.Clear();
-            contextMenuStrip_SaveAs.Enabled = false;
-            listView_Contractors.Items.Clear();
-            TV_Parcels.Nodes.Clear();
-            TV_Parcels.ImageIndex = imList_dStates.Images.Count;
-            if (this.DocInfo == null)
-                this.DocInfo = new netFteo.IO.FileInfo();
-
-            else
-            {
-                this.DocInfo.FileName = null;
-                this.DocInfo.FilePath = null;
-                this.DocInfo.Comments = null;
-                this.DocInfo.Version = null;
-                this.DocInfo.Number = null;
-                this.DocInfo.Date = null;
-            }
-            cXmlTreeView2.Clear();
-
-            textBox_Appointment.Text = "";
-            textBox_DocDate.Text = "";
-            textBox_DocNum.Text = ""; linkLabel_Recipient.Text = ""; linkLabel_Request.Text = "";
-            textBox_Appointment.Text = "";
-            textBox_FIO.Text = "";
-            textBox_OrgName.Text = "";
-            toolStripStatusLabel1.Text = "";
-            tabPage3.Show();
-            tabPage3.Text = "-";
-            tabPage5.Text = "XML";
-            label_FileSize.Text = "";
-            label2.Text = "Получатель";
-            toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.exclamation;
-            textBox_DocNum.Image = XMLReaderCS.Properties.Resources.calendar_view_day;
-            PreloaderMenuItem.LoadingCircleControl.Active = false;
-            PreloaderMenuItem.Visible = false;
-            PreloaderMenuItem.BackColor = Color.Transparent;
-            документToolStripMenuItem.Enabled = false;
-            pathToHtmlFile = null;
-            this.Text = TextDefault;
-            toolStripProgressBar1.Value = 0;
-            this.DocInfo.MyBlocks.Blocks.Clear();
-            Gen_id.Reset();
-
-#if (DEBUG)
-            debugToolStripMenuItem.Enabled = true;
-
-#else
-            debugToolStripMenuItem.Enabled = false;
-         //   проверкаГеометрииToolStripMenuItem.Enabled = false;
-#endif
-        }
-
-
+ 
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 

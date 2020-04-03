@@ -21,11 +21,11 @@ namespace GKNData
 
         private DataTable data;
         private MySqlDataAdapter da;
-        private MySqlCommandBuilder cb;
+ //       private MySqlCommandBuilder cb;
         private int TIMEOUT_DONE;
         private Timer TimeOutTimer; // iddle timer
         ConnectorForm CF = new ConnectorForm();
-        public TMyBlockCollection CadBloksList; // Глобальный перечень кварталов
+        public TMyBlockCollection CadBloksList; // Global collection
         ZipFile zip;
 
         /// <summary>
@@ -46,12 +46,16 @@ namespace GKNData
         string[] DraggedFiles;
         string CurrentDraggedFile;
 
+        Font Font_Arial10, Font_Arial12 ; 
+
         public MainGKNForm()
         {
             InitializeComponent();
             treeView1.BeforeExpand += OnItemexpanding; //Подключаем обработчик раскрытия
             Application.Idle += On_Iddle;
             treeView1.Nodes.Clear();
+            Font_Arial10 =  new Font("Arial", 10);
+            Font_Arial12 = new Font("Arial", 12);
             /*
             MRG.Controls.UI.LoadingCircleToolStripMenuItem trobbler = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             trobbler.Visible = true;
@@ -224,6 +228,9 @@ namespace GKNData
                 if (CF.conn.State == ConnectionState.Closed) ;
                 StatusLabel_SubRf_CN.Text = "Disconnected";
                 treeView1.BeginUpdate();
+                CadBloksList.Blocks.Clear();
+                CadBloksList.ParsedSpatial.Clear();
+                CadBloksList.SpatialData.Clear();
                 treeView1.Nodes.Clear();
                 treeView1.EndUpdate();
                 this.treeView1.BackColor = Color.DarkGray;
@@ -263,19 +270,29 @@ namespace GKNData
             }
 
             CF.Cfg.CurrentItem.SelectedNode = ENode;
+
             if ((ENode != null) && (ENode.Tag != null))
             {
-                if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
+                
+                if (ENode.Tag.GetType().ToString() == "netFteo.TreeNodeTag")
+                {
+                    CF.Cfg.CurrentItem.Item_id = ((netFteo.TreeNodeTag)ENode.Tag).Item_id;
+                    CF.Cfg.CurrentItem.Item_TypeName = ((netFteo.TreeNodeTag)ENode.Tag).Type;
+                }
+
+                /*
+                if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock")
                 {
                     CF.Cfg.CurrentItem.Item_id = ((TMyCadastralBlock)ENode.Tag).id;
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
                 }
 
-                if ((ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyParcel"))
+                if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyParcel")
                 {
                     CF.Cfg.CurrentItem.Item_id = ((TMyParcel)ENode.Tag).id;
                     CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
                 }
+                */
                 StatusLabel_CurrentItem.Text = "id " + CF.Cfg.CurrentItem.Item_id.ToString();
             }
         }
@@ -365,7 +382,7 @@ namespace GKNData
                 if (Edit(CadBloksList.GetParcel(Item.Item_id)))
                 {
                     // Update node while editing
-                    treeView1.SelectedNode.Text = ((TMyParcel)treeView1.SelectedNode.Tag).CN;
+                    treeView1.SelectedNode.Text = CadBloksList.GetParcel(Item.Item_id).CN;     // ((TMyParcel)treeView1.SelectedNode.Tag).CN;
                 }
             }
             return false;
@@ -513,7 +530,7 @@ namespace GKNData
 
 
         //Одуренная поцедура Заполенния TreeView Полями Класса TCadastralBlockList:
-        private void ListBlockListTreeView(netFteo.Spatial.TMyBlockCollection List, TreeView WhatTree)
+        private void ListBlockListTreeView(TMyBlockCollection List, TreeView WhatTree)
         {
             if (List == null) return;
             WhatTree.BeginUpdate();
@@ -522,7 +539,8 @@ namespace GKNData
 
             foreach (TMyCadastralBlock block in List.Blocks)
             {
-                TreeNode node_ = insertItem(block, WhatTree);
+                insertItem(block, WhatTree);
+                //TreeNode node_ = insertItem(block, WhatTree); //+68TReeNodes after loads
                 //  node_.Expand();
 
             }
@@ -530,52 +548,37 @@ namespace GKNData
         }
 
 
-        //Добавление района
-        private TreeNode insertItem(TCadastralDistrict District, TreeView hParent)
-        {
-            TreeNode nn = hParent.Nodes.Add(District.CN);//nodeName);
-            nn.Tag = District;
-            if (District.Name != null) nn.ToolTipText = District.Name;
-
-            nn.NodeFont = new Font("Arial", 12);//, FontStyle.Bold);
-            nn.ImageIndex = 0; nn.SelectedImageIndex = 0;
-            return nn;
-        }
 
         //Добавление квартала
-        private TreeNode insertItem(TMyCadastralBlock item, TreeView hParent)
+        private void insertItem(TMyCadastralBlock item, TreeView hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);//nodeName);
             if (item.Name != null)
                 nn.Text = item.CN + " " + item.Name;
-
-            nn.Tag = item;
+            //nn.Tag = item; 
+            //instead of putting full object insert just smaller:
+            nn.Tag = new netFteo.TreeNodeTag(item.id, item.GetType().ToString());
             if (item.Name != null) nn.ToolTipText = item.Comments;
             if (item.HasParcels) // ДОбавим ноду-пустышку, по этому признаку будут подгружаться зу при expande ноды
             {
                 TreeNode hChildItem = nn.Nodes.Add("");
                 hChildItem.Tag = null;
             }
-            nn.NodeFont = new Font("Arial", 12);//, FontStyle.Bold);
+            nn.NodeFont = Font_Arial12;// new Font("Arial", 12);
             nn.ImageIndex = 0; nn.SelectedImageIndex = 0;
-            return nn;
+            //return nn;
         }
 
         //Добавление участка(объекта недвижимости)
-        private TreeNode insertItem(TMyParcel node, TreeNode hParent)
+        private TreeNode insertItem(TMyParcel item, TreeNode hParent)
         {
-            TreeNode nn = hParent.Nodes.Add(node.CN);
-            nn.Tag = node;
-            if (node.SpecialNote != null)
-                nn.ToolTipText = node.SpecialNote;
-            // а что для зу нужно в childnodes запихивать вообще?
-            /*
-            if (node.Parcels.Parcels.Count > 0)
-            {
-                TreeNode hChildItem = nn.Nodes.Add("");
-                hChildItem.Tag = null;
-            }*/
-            nn.NodeFont = new Font("Arial", 10);
+            TreeNode nn = hParent.Nodes.Add(item.CN);
+            //nn.Tag = node;
+            //instead of putting full object insert just smaller:
+            nn.Tag = new netFteo.TreeNodeTag(item.id, item.GetType().ToString());
+            if (item.SpecialNote != null)
+                nn.ToolTipText = item.SpecialNote;
+            nn.NodeFont = Font_Arial10;//new Font("Arial", 10);
             nn.ImageIndex = 1;
             nn.SelectedImageIndex = 2;
             return nn;
@@ -643,7 +646,21 @@ namespace GKNData
         // и замена "пустышки" при необходимости
         private void OnItemexpanding(object sender, TreeViewCancelEventArgs e)
         {
-            PrepareNode(e.Node, (TMyCadastralBlock)e.Node.Tag);
+            TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)e.Node.Tag).Item_id);
+            if (block != null)
+            PrepareNode(e.Node, block);
+        }
+
+        //Добавление района
+        private TreeNode insertItem(TCadastralDistrict District, TreeView hParent)
+        {
+            TreeNode nn = hParent.Nodes.Add(District.CN);//nodeName);
+            nn.Tag = District;
+            if (District.Name != null) nn.ToolTipText = District.Name;
+
+            nn.NodeFont = new Font("Arial", 12);//, FontStyle.Bold);
+            nn.ImageIndex = 0; nn.SelectedImageIndex = 0;
+            return nn;
         }
 
 
@@ -1051,13 +1068,14 @@ namespace GKNData
                     treeView1.SelectedNode = res;
                     //TODO:  
                     //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
-                    PrepareNode(treeView1.SelectedNode, res.Tag);
+                    TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
+                    if (block != null)
+                        PrepareNode(treeView1.SelectedNode, res.Tag);
                     treeView1.SelectedNode.EnsureVisible();
                 }
                 SearchTextBox.Focus();
                 treeView1.EndUpdate();
             }
-
         }
 
         private void button2_Click(object sender, EventArgs e)
