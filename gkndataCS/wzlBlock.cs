@@ -201,14 +201,14 @@ namespace GKNData
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                netFteo.Spatial.TFile xmlFile = ITEM.KPTXmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag);
+                TFile xmlFile = ITEM.KPTXmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag);
                 saveFileDialog1.FileName = xmlFile.FileName;
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (ITEM.KPTXmlBodyList.BodyEmpty((long)listView1.SelectedItems[0].Tag))
                         ITEM.KPTXmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, FetchKPTBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
-                    xmlFile.XML_file_body.Save(saveFileDialog1.FileName);
+                    ///xmlFile.File_Stream ====>>  Save(saveFileDialog1.FileName);
                 }
             }
         }
@@ -250,7 +250,7 @@ namespace GKNData
                 frmReader.Tag = 3; // XMl Reader as Application part
                 frmReader.DocInfo.FileName = ITEM.KPTXmlBodyList.GetFileName(item_id);
                 frmReader.DocInfo.FileSize = ITEM.KPTXmlBodyList.GetFileSize(item_id);
-                frmReader.Read(ITEM.KPTXmlBodyList.XML_file_body(item_id));
+                frmReader.Read(null, ITEM.KPTXmlBodyList.File_stream(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
             }
@@ -378,7 +378,7 @@ namespace GKNData
             //xmlUploaded.ReadFileBody(new MemoryStream(xmlUploaded.File_BLOB));
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmlUploaded.XML_file_body);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.File_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

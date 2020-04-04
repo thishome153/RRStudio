@@ -409,11 +409,14 @@ namespace XMLReaderCS
 
             if (Path.GetExtension(FileName).Equals(".xml"))
             {
+                Stream fs = new FileStream(FileName, FileMode.Open);
+                /*
                 TextReader reader = new StreamReader(FileName);
                 XmlDocument XMLDocFromFile = new XmlDocument();
                 XMLDocFromFile.Load(reader);
                 reader.Close();
-                Read(XMLDocFromFile);
+                */
+                Read(null, fs);
 
 #if (DEBUG)
                 //LV_SchemaDisAssembly.Visible =  TODO...;                      
@@ -481,7 +484,7 @@ namespace XMLReaderCS
         ///   Read and parse all types of xml documents
         /// </summary>
         /// <param name="xmldoc">XML Document</param>
-        public void Read(XmlDocument xmldoc)
+        public void Read(XmlDocument xmldoc,Stream fs)
         {
             документToolStripMenuItem.Enabled = true;
             string FileName = DocInfo.FileName; // store 
@@ -491,7 +494,7 @@ namespace XMLReaderCS
 
             RRTypes.CommonParsers.ParserCommon.dAllowedUse_v02 = dAllowedUse_v02;
             RRTypes.CommonParsers.ParserCommon.dutilizations_v01 = dutilizations_v01;
-            DocInfo =  RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc);
+            DocInfo =  RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc, fs);
             DocInfo.FileName = FileName;
             cXmlTreeView2.RootName = DocInfo.FileName;
             tabPage5.Text = DocInfo.FileName;

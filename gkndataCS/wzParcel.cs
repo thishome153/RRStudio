@@ -165,7 +165,7 @@ namespace GKNData
                 {
                     if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
                         ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
-                    xmlFile.XML_file_body.Save(saveFileDialog1.FileName);
+                    //xmlFile.File_Stream ===>   .Save(saveFileDialog1.FileName);
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace GKNData
                     frmReader.StartPosition = FormStartPosition.Manual;
                     frmReader.Tag = 3; // XMl Reader as application part
                     frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFileName(item_id);
-                    frmReader.Read(ITEM.XmlBodyList.XML_file_body(item_id));
+                    frmReader.Read(null, ITEM.XmlBodyList.File_stream (item_id));
                     frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                     frmReader.ShowDialog();
                 }
@@ -296,7 +296,7 @@ namespace GKNData
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmlUploaded.XML_file_body);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.File_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

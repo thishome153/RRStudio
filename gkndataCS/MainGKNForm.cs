@@ -824,7 +824,7 @@ namespace GKNData
             if ((xmldoc.DocumentElement.Name == "KPT") && (xmldoc.DocumentElement.NamespaceURI == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
             {
                 netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
-                DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
+                /// DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
                 if (DocInfo.MyBlocks.Blocks.Count() == 1)
                     return DocInfo.MyBlocks.SingleCN;
             }

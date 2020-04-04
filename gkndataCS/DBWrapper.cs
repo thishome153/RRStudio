@@ -274,6 +274,49 @@ namespace GKNData
             return last_id;
         }
 
+        public static long DB_AddBlock_KPT11(long block_id, TFile KPT, MySqlConnection conn)
+        {
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            if (KPT.Type != netFteo.Rosreestr.dFileTypes.KPT11) return -404;
+            MySqlCommand cmd = new MySqlCommand(
+
+                 "INSERT INTO kpt11 (kpt_id, " +
+                                  " kpt_type, block_id, " +
+                                  " kpt_num,  " +
+                                  " kpt_date," +
+                                  " xml_file_name, " +
+                                  //xml_ns,+
+                                  "xml_file_body) " +
+                 "  VALUES(NULL, ?kpt_type, ?block_id, ?kpt_num, " +
+                                "?kpt_date, ?xml_file_name, " +
+                                // "?xml_ns, "+
+                                "?xml_file_body)", conn);
+
+            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?kpt_type", MySqlDbType.UByte).Value = KPT.Type;
+            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
+            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT.Number;
+            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
+            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = System.IO.Path.GetFileName(KPT.FileName);
+            //cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
+            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_BLOB;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return -1;
+            }
+
+            long last_id = cmd.LastInsertedId;
+            KPT.id = last_id;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
+            return last_id;
+            return -1;
+        }
+
         public static long DB_AddParcel_Vidimus(long parcel_id, TFile Vidimus, MySqlConnection conn)
         {
 
@@ -344,48 +387,7 @@ namespace GKNData
             else return null;
         }
 
-        public static long DB_AddBlock_KPT11(long block_id, TFile KPT, MySqlConnection conn)
-        {
-            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
-            if (KPT.Type != netFteo.Rosreestr.dFileTypes.KPT11) return -404;
-            MySqlCommand cmd = new MySqlCommand(
-
-                 "INSERT INTO kpt11 (kpt_id, " +
-                                  " kpt_type, block_id, " +
-                                  " kpt_num,  " +
-                                  " kpt_date," +
-                                  " xml_file_name, " +
-                                  //xml_ns,+
-                                  "xml_file_body) " +
-                 "  VALUES(NULL, ?kpt_type, ?block_id, ?kpt_num, " +
-                                "?kpt_date, ?xml_file_name, " +
-                                // "?xml_ns, "+
-                                "?xml_file_body)", conn);
-
-            //cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
-            cmd.Parameters.Add("?kpt_type", MySqlDbType.UByte).Value = KPT.Type;
-            cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
-            cmd.Parameters.Add("?kpt_num", MySqlDbType.VarChar).Value = KPT.Number;
-            cmd.Parameters.Add("?kpt_date", MySqlDbType.Date).Value = KPT.Doc_Date;
-            cmd.Parameters.Add("?xml_file_name", MySqlDbType.VarChar).Value = System.IO.Path.GetFileName(KPT.FileName);
-            //cmd.Parameters.Add("?xml_ns", MySqlDbType.VarChar).Value = KPT.xmlns;
-            cmd.Parameters.Add("?xml_file_body", MySqlDbType.LongBlob).Value = KPT.File_BLOB;
-            try
-            {
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                string exMesssage = ex.Message;
-                return -1;
-            }
-
-            long last_id = cmd.LastInsertedId;
-            KPT.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
-            return last_id;
-            return -1;
-        }
+   
 
         /// <summary>
         /// Выборка записей из kpt + kpt11, без blob поля xml_file_body, только сведения о его размере 

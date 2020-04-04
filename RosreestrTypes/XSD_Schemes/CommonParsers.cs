@@ -2066,7 +2066,7 @@ namespace RRTypes.CommonParsers
 		}
 
 		/// <summary>
-		/// Десериализатор для любых типов
+		/// Десериализатор для любых типов. 
 		/// </summary>
 		/// <typeparam name="T">Целевой тип "<T>"</typeparam>
 		/// <param name="xmldoc">Исходный xml документ</param>
@@ -2074,13 +2074,27 @@ namespace RRTypes.CommonParsers
 		protected object Desearialize<T>(System.Xml.XmlDocument xmldoc)
 		{
 			System.IO.Stream stream = new System.IO.MemoryStream();
-			xmldoc.Save(stream);
-			stream.Seek(0, 0);
-			System.Xml.Serialization.XmlSerializer serializerKPT = new System.Xml.Serialization.XmlSerializer(typeof(T));
-			return (T)serializerKPT.Deserialize(stream);
+			xmldoc.Save(stream); //Dramatic MEMORY consumtion!
+            stream.Seek(0, 0);
+			XmlSerializer serializerKPT = new XmlSerializer(typeof(T));
+            object TResult = (T)serializerKPT.Deserialize(stream);
+            stream.Close();
+            return TResult;
 		}
 
-		protected netFteo.IO.FileInfo InitFileInfo(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+
+        protected object Desearialize<T>(Stream stream)
+        {
+         //   System.IO.Stream stream = new System.IO.MemoryStream();
+           // xmldoc.Save(stream); //Dramatic MEMORY consumtion!
+            stream.Seek(0, 0);
+            XmlSerializer serializerKPT = new XmlSerializer(typeof(T));
+            object TResult = (T)serializerKPT.Deserialize(stream);
+            stream.Close();
+            return TResult;
+        }
+
+        protected netFteo.IO.FileInfo InitFileInfo(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
 		{
 			netFteo.IO.FileInfo res = new netFteo.IO.FileInfo();
 			res.FileName = fi.FileName;
@@ -4598,15 +4612,16 @@ namespace RRTypes.CommonParsers
 		#endregion
 
 		#region  Разбор КПТ 10
-		public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+		public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, Stream xmldocStream) //RRTypes.kpt10_un.KPT KPT10)
 		{
-			netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            //TODO replace func version: 
+            netFteo.IO.FileInfo res = InitFileInfo(fi, null);
 			res.CommentsType = "-";
 			res.DocType = "Кадастровый план территории";
 			res.DocTypeNick = "КПТ";
 			res.Version = "10";
 
-			RRTypes.kpt10_un.KPT KPT10 = (RRTypes.kpt10_un.KPT)Desearialize<RRTypes.kpt10_un.KPT>(xmldoc);
+			kpt10_un.KPT KPT10 = (kpt10_un.KPT)Desearialize<kpt10_un.KPT>(xmldocStream);
 
 			for (int i = 0; i <= KPT10.CadastralBlocks.Count - 1; i++)
 			{
@@ -6505,38 +6520,99 @@ namespace RRTypes.CommonParsers
         /// </summary>
         /// <param name="xmldoc">XmlDocument</param>
         /// <returns></returns>
-        public static netFteo.IO.FileInfo ParseXMLDocument(XmlDocument xmldoc)
+        public static netFteo.IO.FileInfo ParseXMLDocument(XmlDocument xmldoc, Stream xmlStream)
         {
-
+            /*
             if (xmldoc == null)
             {
                 //toolStripStatusLabel1.Text = "document null";
                 return null;
             }
-
+            */
             netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
-            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
-            DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
-                                                                      // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
-            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+   
 
-            Stream stream = new MemoryStream();
-            xmldoc.Save(stream);
-            stream.Seek(0, 0);
+            //here again memory *2 Allocation:
+            if (xmldoc != null)
+            {
+                //TODO : code reading :
+                DocInfo.DocRootName = xmldoc.DocumentElement.Name;
+                DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
+                                                                          // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
+                if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+                    DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+
+
+                Stream stream = new MemoryStream();
+                xmldoc.Save(stream);
+                stream.Seek(0, 0);
+            }
 
             Doc2Type parser = new Doc2Type(dutilizations_v01, dAllowedUse_v02);// (dutilizations_v01, dAllowedUse_v02);
 
-            if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
+            if ((DocInfo.DocRootName == "Region_Cadastr"))
             {
-                // toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                //   tabPage1.Text = "tExistEZEntryParcelCollection";
+                DocInfo.DocTypeNick = "КПТ";
+                DocInfo.DocType = "Кадастровый план территории";
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
                 {
-                    //toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
-                    XmlSerializer serializer = new XmlSerializer(typeof(MP_V06.tExistEZEntryParcelCollection));
-                    MP_V06.tExistEZEntryParcelCollection xmlPolygons = (MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(stream);
+                    DocInfo = parser.ParseKPT05(DocInfo, xmldoc);
+                }
+
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
+                {
+                    DocInfo = parser.ParseKPT06(DocInfo, xmldoc);
+                }
+
+                //Не КПТ v07 ли это?   
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
+                {
+                    DocInfo = parser.ParseKPT07(DocInfo, xmldoc);
+                }
+
+                //Не КПТ v08 ли это?            
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
+                {
+                    //toolStripProgressBar1.Minimum = 0;
+                    // toolStripProgressBar1.Value = 0;
+                    //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
+                    //parser.OnStartParsing += XMLStartUpdater; //
+                    DocInfo.Version = "08";
+                    DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
                 }
             }
+
+            //Не КПТ v09 ли это?            
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                return parser.ParseKPT09(DocInfo, xmldoc);
+            }
+
+            //Не КПТ v10 ли это?
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                return parser.ParseKPT10(DocInfo, xmlStream);
+            }
+
+
+            //Не КПТ v11 ли это?
+            if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                return parser.ParseKPT11(DocInfo, xmldoc);
+            }
+
+
+
 
             //Если это КВЗУ V04/V05
             if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
@@ -6608,13 +6684,26 @@ namespace RRTypes.CommonParsers
 
 
 
+
+    
+            if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
+            {
+                // toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                //   tabPage1.Text = "tExistEZEntryParcelCollection";
+                {
+                    //toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
+                    XmlSerializer serializer = new XmlSerializer(typeof(MP_V06.tExistEZEntryParcelCollection));
+                    MP_V06.tExistEZEntryParcelCollection xmlPolygons = (MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(xmlStream);
+                }
+            }
+
             if (DocInfo.DocRootName == "KVOKS")
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvoks_v02.KVOKS));
-                    kvoks_v02.KVOKS KVoks02 = (kvoks_v02.KVOKS)serializer.Deserialize(stream);
+                    kvoks_v02.KVOKS KVoks02 = (kvoks_v02.KVOKS)serializer.Deserialize(xmlStream);
                     //TODO: rewrite  ParseKVOKS(KVoks02);
                 }
 
@@ -6632,7 +6721,7 @@ namespace RRTypes.CommonParsers
                 if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpoks_v03.KPOKS));
-                    kpoks_v03.KPOKS KPoks03 = (kpoks_v03.KPOKS)serializer.Deserialize(stream);
+                    kpoks_v03.KPOKS KPoks03 = (kpoks_v03.KPOKS)serializer.Deserialize(xmlStream);
                     //TODO: ParseKPOKS(KPoks03);
                 }
 
@@ -6643,67 +6732,6 @@ namespace RRTypes.CommonParsers
                 }
             }
 
-
-            if ((DocInfo.DocRootName == "Region_Cadastr"))
-            {
-                DocInfo.DocTypeNick = "КПТ";
-                DocInfo.DocType = "Кадастровый план территории";
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
-                {
-                    DocInfo = parser.ParseKPT05(DocInfo, xmldoc);
-                }
-
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
-                {
-                    DocInfo = parser.ParseKPT06(DocInfo, xmldoc);
-                }
-
-                //Не КПТ v07 ли это?   
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
-                {
-                    DocInfo = parser.ParseKPT07(DocInfo, xmldoc);
-                }
-
-                //Не КПТ v08 ли это?            
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
-                {
-                    //toolStripProgressBar1.Minimum = 0;
-                    // toolStripProgressBar1.Value = 0;
-                    //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
-                    //parser.OnStartParsing += XMLStartUpdater; //
-                    DocInfo.Version = "08";
-                    DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
-                }
-            }
-
-            //Не КПТ v09 ли это?            
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
-            {
-                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT09(DocInfo, xmldoc);
-            }
-
-            //Не КПТ v10 ли это?
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
-            {
-                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
-            }
-
-
-            //Не КПТ v11 ли это?
-            if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
-            {
-                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT11(DocInfo, xmldoc);
-            }
 
 
 
@@ -6752,7 +6780,7 @@ namespace RRTypes.CommonParsers
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
-                STD_TPV02.STD_TP TP = (STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
+                STD_TPV02.STD_TP TP = (STD_TPV02.STD_TP)serializerTP.Deserialize(xmlStream);
                 //TODO : rewrite ParseSTDTPV02(TP);
             }
 
