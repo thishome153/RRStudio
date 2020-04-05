@@ -153,13 +153,37 @@ namespace GKNData
                 DataRow row = data.Rows[0];
                 if (row[1].ToString().Length > 0)
                 {
-                    byte[] outbyte = (byte[])row[1];
-                    MemoryStream res = new MemoryStream(outbyte);
+                   //byte[] outbyte = (byte[])row[1];
+                    MemoryStream res = new MemoryStream((byte[])row[1]);
                     return res;
                 }
             }
             return null;
         }
+
+
+        public byte[] FetchKPTBodyToArray(MySqlConnection conn, long kpt_id)
+        {
+            if (conn == null) return null;
+            if (conn.State != ConnectionState.Open) return null;
+
+            data = new DataTable();
+            da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
+                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt" +
+                                            " where kpt_id = " + kpt_id.ToString(), conn);
+            da.Fill(data);
+            if (data.Rows.Count == 1)
+            {
+                DataRow row = data.Rows[0];
+                if (row[1].ToString().Length > 0)
+                {
+                    byte[] outbyte = (byte[])row[1];
+                    return outbyte;
+                }
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Read (SELECT) BLOB from the Database and save it in the stream (RAM). KPT11 only
@@ -207,7 +231,7 @@ namespace GKNData
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     if (ITEM.KPTXmlBodyList.BodyEmpty((long)listView1.SelectedItems[0].Tag))
-                        ITEM.KPTXmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, FetchKPTBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
+                        ITEM.KPTXmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, FetchKPTBodyToArray(CF.conn, (long)listView1.SelectedItems[0].Tag));
                     ///xmlFile.File_Stream ====>>  Save(saveFileDialog1.FileName);
                 }
             }
@@ -228,17 +252,18 @@ namespace GKNData
                 {
                     case netFteo.Rosreestr.dFileTypes.KPT10:
                         {
-                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBody(CF.conn, item_id)); break;
+                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBodyToArray(CF.conn, item_id)); break;
                         }
 
                     case netFteo.Rosreestr.dFileTypes.KPT11:
                         {
-                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPT11Body(CF.conn, item_id)); break;
+                            //TODO : ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPT11Body(CF.conn, item_id)); 
+                            break;
                         }
 
                     default:
                         {
-                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBody(CF.conn, item_id)); break;
+                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBodyToArray(CF.conn, item_id)); break;
                         }
                 }
             }
@@ -250,7 +275,7 @@ namespace GKNData
                 frmReader.Tag = 3; // XMl Reader as Application part
                 frmReader.DocInfo.FileName = ITEM.KPTXmlBodyList.GetFileName(item_id);
                 frmReader.DocInfo.FileSize = ITEM.KPTXmlBodyList.GetFileSize(item_id);
-                frmReader.Read(null, ITEM.KPTXmlBodyList.File_stream(item_id));
+                frmReader.Read(ITEM.KPTXmlBodyList.File_stream(item_id));
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
             }
@@ -378,7 +403,7 @@ namespace GKNData
             //xmlUploaded.ReadFileBody(new MemoryStream(xmlUploaded.File_BLOB));
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.File_Stream);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.FileBody_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

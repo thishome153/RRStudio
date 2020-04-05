@@ -3899,9 +3899,9 @@ namespace netFteo.Spatial
         public string xmlns;
         public long xmlSize_SQL; // size of body ( prepared by server)
 
-        private System.Xml.XmlDocument fXML_file_body;
+        //private System.Xml.XmlDocument fXML_file_body;
         private byte[] fFile_BLOB;
-        public MemoryStream File_Stream;
+        //public MemoryStream FileBody_Stream;
 
         /// <summary>
         /// BLOB file body as binary array - byte[]
@@ -3911,13 +3911,6 @@ namespace netFteo.Spatial
             set
             {
                 this.fFile_BLOB = value;
-                using (MemoryStream ms = new MemoryStream(fFile_BLOB))
-                {
-                    if (fXML_file_body == null)
-                    fXML_file_body = new System.Xml.XmlDocument();
-                    fXML_file_body.Load(ms);
-                    ms.Close();
-                }
             }
 
             get
@@ -3926,6 +3919,7 @@ namespace netFteo.Spatial
             }
         }
 
+        /*
         /// <summary>
         /// File body as XmlDocument. Loaded when File_Blob setuped
         /// </summary>
@@ -3946,30 +3940,42 @@ namespace netFteo.Spatial
                 }
                 else return null;
                 */
+                /*
                 return this.fXML_file_body;
             }
         }
 
-        /// <summary>
+        */
+
+            /*
+            /// <summary>
         /// Read file body as binary array - BLOB from stream
         /// </summary>
         /// <param name="filestreambody"></param>
-        public bool ReadFileBody(MemoryStream filestreambody)
+        public bool ReadFileBodyStream(MemoryStream filestreambody)
         {
             if (filestreambody != null)
             {
                 filestreambody.Seek(0, 0);
-
                 byte[] tmp = filestreambody.ToArray();
-                File_Stream = new MemoryStream(tmp);
-
-                //filestreambody.Seek(0, 0);
-                //File_BLOB = filestreambody.ToArray();
+                if (FileBody_Stream != null) FileBody_Stream.Dispose();
+                    FileBody_Stream = new MemoryStream(tmp);
+                  filestreambody.Dispose();
                 return true;
             }
             return false;
         }
 
+*/
+        public bool ReadFileBody(byte[] buffer)
+        {
+            if (buffer.Length > 0)
+            {
+                this.File_BLOB = buffer;
+                return true;
+            }
+            return false;
+        }
         public TFile()
         {
             // this.fFileBody = new System.Xml.XmlDocument();
@@ -3988,14 +3994,14 @@ namespace netFteo.Spatial
         /// <param name="file_id"></param>
         /// <param name="filebody"></param>
         /// <returns></returns>
-        public TFile ReadFileBody(long file_id, MemoryStream filebody)
+        public TFile ReadFileBody(long file_id, byte[] filebody)
         {
             foreach (TFile file in this)
             {
                 if (file.id == file_id)
                 {
                     file.ReadFileBody(filebody);
-                    filebody.Close();
+                    //filebody.Close();
                     return file;
                 }
             }
@@ -4008,7 +4014,9 @@ namespace netFteo.Spatial
             {
                 if (file.id == file_id)
                 {
-                    if (file.File_Stream.Length == 0) 
+
+                   // if ((file.FileBody_Stream == null) || (file.FileBody_Stream.Length == 0))
+                   if ((file.File_BLOB == null) || (file.File_BLOB.Length == 0))
                         return true;
                 }
             }
@@ -4054,7 +4062,8 @@ namespace netFteo.Spatial
             {
                 if (file.id == id)
                 {
-                    return file.File_Stream;
+                    MemoryStream ms = new MemoryStream(file.File_BLOB);
+                    return ms;
                 }
             }
             return null;

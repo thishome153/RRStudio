@@ -2074,11 +2074,11 @@ namespace RRTypes.CommonParsers
 		protected object Desearialize<T>(System.Xml.XmlDocument xmldoc)
 		{
 			System.IO.Stream stream = new System.IO.MemoryStream();
-			xmldoc.Save(stream); //Dramatic MEMORY consumtion!
+			xmldoc.Save(stream); //Dramatic MEMORY consumption!
             stream.Seek(0, 0);
 			XmlSerializer serializerKPT = new XmlSerializer(typeof(T));
             object TResult = (T)serializerKPT.Deserialize(stream);
-            stream.Close();
+            stream.Dispose();
             return TResult;
 		}
 
@@ -2090,7 +2090,7 @@ namespace RRTypes.CommonParsers
             stream.Seek(0, 0);
             XmlSerializer serializerKPT = new XmlSerializer(typeof(T));
             object TResult = (T)serializerKPT.Deserialize(stream);
-            stream.Close();
+            stream.Dispose();
             return TResult;
         }
 
@@ -4814,6 +4814,7 @@ namespace RRTypes.CommonParsers
 									 KPT10.CertificationDoc.Official.FirstName + " " +
 									 KPT10.CertificationDoc.Official.Patronymic;
 			}
+
 			return res;
 		}
 
@@ -6522,17 +6523,17 @@ namespace RRTypes.CommonParsers
         /// <returns></returns>
         public static netFteo.IO.FileInfo ParseXMLDocument(XmlDocument xmldoc, Stream xmlStream)
         {
-            /*
+           
             if (xmldoc == null)
             {
                 //toolStripStatusLabel1.Text = "document null";
                 return null;
             }
-            */
+          
             netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
    
 
-            //here again memory *2 Allocation:
+
             if (xmldoc != null)
             {
                 //TODO : code reading :
@@ -6542,15 +6543,17 @@ namespace RRTypes.CommonParsers
                 if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
                     DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
 
-
+                //here again memory *2 Allocation:
+                /*
                 Stream stream = new MemoryStream();
                 xmldoc.Save(stream);
                 stream.Seek(0, 0);
+                */
             }
 
             Doc2Type parser = new Doc2Type(dutilizations_v01, dAllowedUse_v02);// (dutilizations_v01, dAllowedUse_v02);
 
-            if ((DocInfo.DocRootName == "Region_Cadastr"))
+            if (DocInfo.DocRootName == "Region_Cadastr")
             {
                 DocInfo.DocTypeNick = "КПТ";
                 DocInfo.DocType = "Кадастровый план территории";

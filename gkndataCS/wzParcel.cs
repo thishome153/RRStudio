@@ -163,8 +163,8 @@ namespace GKNData
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag))
-                        ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
+                    if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag)) ;
+                    //    ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
                     //xmlFile.File_Stream ===>   .Save(saveFileDialog1.FileName);
                 }
             }
@@ -174,8 +174,8 @@ namespace GKNData
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                if (ITEM.XmlBodyList.BodyEmpty(item_id))
-                    ITEM.XmlBodyList.ReadFileBody(item_id, DBWrapper.FetchVidimusBody(CF.conn, item_id));
+                if (ITEM.XmlBodyList.BodyEmpty(item_id)) ;
+                   // ITEM.XmlBodyList.ReadFileBody(item_id, DBWrapper.FetchVidimusBody(CF.conn, item_id));
                // System.Xml.XmlDocument body = ITEM.XmlBodyList.XML_file_body(item_id);
                 if (!ITEM.XmlBodyList.BodyEmpty(item_id))
                 {
@@ -183,7 +183,7 @@ namespace GKNData
                     frmReader.StartPosition = FormStartPosition.Manual;
                     frmReader.Tag = 3; // XMl Reader as application part
                     frmReader.DocInfo.FileName = ITEM.XmlBodyList.GetFileName(item_id);
-                    frmReader.Read(null, ITEM.XmlBodyList.File_stream (item_id));
+                    frmReader.Read(ITEM.XmlBodyList.File_stream (item_id));
                     frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                     frmReader.ShowDialog();
                 }
@@ -296,7 +296,7 @@ namespace GKNData
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.File_Stream);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.FileBody_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
