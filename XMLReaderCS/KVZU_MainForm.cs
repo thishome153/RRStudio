@@ -313,13 +313,14 @@ namespace XMLReaderCS
             Application.DoEvents();
             SaveLastDir(Path.GetDirectoryName(FileName));
             if (File.Exists(FileName + "~.html")) File.Delete(FileName + "~.html"); // если есть предыдущий сеанс
-            linkLabel_FileName.Text = Path.GetFileName(FileName);
-            toolStripStatusLabel1.Text = Path.GetFileName(FileName);
-            this.Text = Path.GetFileName(FileName);
             label_FileSize.Text = FileSizeAdapter.FileSizeToString(FileName);
             this.DocInfo.FileName = Path.GetFileName(FileName);
             this.DocInfo.FilePath = Path.GetFullPath(FileName);
             this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName);
+            this.Text = DocInfo.FileName;
+            tabPage5.Text = DocInfo.FileName;
+            linkLabel_FileName.Text = DocInfo.FileName;
+            toolStripStatusLabel1.Text = DocInfo.FileName;
 
             // got mif file:
             if (Path.GetExtension(FileName).ToUpper().Equals(".MIF"))
@@ -409,10 +410,14 @@ namespace XMLReaderCS
 
             if (Path.GetExtension(FileName).Equals(".xml"))
             {
+                /*
                 Stream fs = new FileStream(FileName, FileMode.Open);
                 Stream ms = new MemoryStream();
                 fs.CopyTo(ms);
                 fs.Close();
+                */
+                Stream ms = new MemoryStream(File.ReadAllBytes(FileName));
+
                 /* //leave to compare memory allocations:
                 TextReader reader = new StreamReader(FileName);
                 XmlDocument XMLDocFromFile = new XmlDocument();
@@ -422,6 +427,8 @@ namespace XMLReaderCS
                 //XmlDocument XMLDocFromFile = new XmlDocument();
                 //XMLDocFromFile.Load(ms);
                 Read(ms);
+                ms.Dispose();
+                DocInfo.FileName = FileName;
 
 #if (DEBUG)
                 //LV_SchemaDisAssembly.Visible =  TODO...;                      
@@ -482,6 +489,7 @@ namespace XMLReaderCS
             }
             PreloaderMenuItem.LoadingCircleControl.Active = false;
             PreloaderMenuItem.Visible = false;
+            документToolStripMenuItem.Enabled = true;
         }
 
 
@@ -491,298 +499,29 @@ namespace XMLReaderCS
         /// <param name="xmldoc">XML Document</param>
         public void Read(Stream fs)
         {
+
             fs.Seek(0, 0);
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(fs);
 
-
-            документToolStripMenuItem.Enabled = true;
-            string FileName = DocInfo.FileName; // store 
-
             // First show xml, before parsing... :)
-            cXmlTreeView2.LoadXML(DocInfo.FileSize, xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+            int MaxSize33M = 33554432;
+            if (fs.Length < MaxSize33M)
+            {
+                cXmlTreeView2.RootName = DocInfo.FileName;
+                cXmlTreeView2.LoadXML(DocInfo.FileSize, xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+            }
+            fs.Dispose();
 
             RRTypes.CommonParsers.ParserCommon.dAllowedUse_v02 = dAllowedUse_v02;
             RRTypes.CommonParsers.ParserCommon.dutilizations_v01 = dutilizations_v01;
-            DocInfo =  RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc, fs);
-            DocInfo.FileName = FileName;
-            cXmlTreeView2.RootName = DocInfo.FileName;
-            tabPage5.Text = DocInfo.FileName;
+            DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc);
             xmldoc = null;
             GC.Collect();
+
+
         }
-
-        /* TODO Remove after rewriting RRTypes.CommonParsers.ParserCommon.ReadXML
-          
-        /// <summary>
-        ///   Читать документ из объекта(instance)
-        /// </summary>
-        /// <param name="xmldoc">Объект типа XMLDocument</param>
-        public void Read_Deprecated(XmlDocument xmldoc)
-        {
-            if (xmldoc == null)
-            {
-                toolStripStatusLabel1.Text = "document null";
-                return;
-            }
-
-            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
-            DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
-                                                                      // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"
-            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
-            документToolStripMenuItem.Enabled = true;
-            // Вначале отобразим xml, вдруг далее парсеры слажают... :)
-            cXmlTreeView2.RootName = DocInfo.FileName;
-            tabPage5.Text = this.DocInfo.FileName;
-            cXmlTreeView2.LoadXML(xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
-
-
-            Stream stream = new MemoryStream();
-            xmldoc.Save(stream);
-            stream.Seek(0, 0);
-            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(this.dutilizations_v01, dAllowedUse_v02); 
-            if (DocInfo.DocRootName == "tExistEZEntryParcelCollection")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "tExistEZEntryParcelCollection";
-                {
-                    toolStripStatusLabel3.Text = "tExistEZEntryParcelCollection";
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.MP_V06.tExistEZEntryParcelCollection));
-                    RRTypes.MP_V06.tExistEZEntryParcelCollection xmlPolygons = (RRTypes.MP_V06.tExistEZEntryParcelCollection)serializer.Deserialize(stream);
-                }
-            }
-
-            //Если это КВЗУ V04/V05
-            if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                string ver_Vidimus = "";
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                        (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))
-                    ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
-
-                if (ver_Vidimus.Equals("04")) // Проверим
-                {
-                    this.DocInfo = parser.ParseKVZU04(this.DocInfo, xmldoc);
-                }
-                // Проверим
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
-                {
-                    this.DocInfo = parser.ParseKVZU05(this.DocInfo, xmldoc);
-                }
-            }
-
-            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                tabPage1.Text = "Кадастровая выписка 6";
-                this.DocInfo = parser.ParseKVZU06(this.DocInfo, xmldoc);
-            }
-
-
-            if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKVZU07(this.DocInfo, xmldoc);
-            }
-
-            if (DocInfo.DocRootName == "KPZU")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
-                {
-                    this.DocInfo = parser.ParseKPZU508(this.DocInfo, xmldoc);
-                }
-
-                // KPZU_V6 01  - ЕГРН
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
-                {
-                    this.DocInfo = parser.ParseKPZU(this.DocInfo, xmldoc);
-                }
-            }
-
-            //Выписка ЕГРП, блядь есть и такое
-            if (xmldoc.DocumentElement.Name == "Extract")
-            {
-                this.DocInfo = parser.ParseEGRP(this.DocInfo, xmldoc);
-
-            }
-
-
-            if (xmldoc.DocumentElement.Name == "Users")
-            {
-                XmlElement xRoot = xmldoc.DocumentElement;
-
-                // выбор всех дочерних узлов
-                //XmlNodeList childnodes = xRoot.SelectNodes("*");
-                //Выберем все узлы <user>:
-                XmlNodeList childnodes = xRoot.SelectNodes("//user/company");
-            }
-
-
-
-            if (DocInfo.DocRootName == "KVOKS")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kvoks_v02.KVOKS));
-                    KVoks02 = (RRTypes.kvoks_v02.KVOKS)serializer.Deserialize(stream);
-                    ParseKVOKS(KVoks02);
-                }
-
-                //Под этим urn urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1 как бы выписка версии KVOKS_V07
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1")
-                {
-                    this.DocInfo = parser.ParseKVOKS07(this.DocInfo, xmldoc);
-                }
-            }
-
-            if (DocInfo.DocRootName == "KPOKS")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-
-                if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RRTypes.kpoks_v03.KPOKS));
-                    KPoks03 = (RRTypes.kpoks_v03.KPOKS)serializer.Deserialize(stream);
-                    ParseKPOKS(KPoks03);
-                }
-
-                // KPOKS_V4
-                if (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1")
-                {
-                    this.DocInfo = parser.ParseKPOKS(this.DocInfo, xmldoc);
-                }
-            }
-
-
-            if ((DocInfo.DocRootName == "Region_Cadastr"))
-            {
-                DocInfo.DocTypeNick = "КПТ";
-                DocInfo.DocType = "Кадастровый план территории";
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
-                {
-                    this.DocInfo = parser.ParseKPT05(this.DocInfo, xmldoc);
-                }
-
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
-                {
-                    this.DocInfo = parser.ParseKPT06(this.DocInfo, xmldoc);
-                }
-
-                //Не КПТ v07 ли это?   
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
-                {
-                    this.DocInfo = parser.ParseKPT07(this.DocInfo, xmldoc);
-                }
-
-                //Не КПТ v08 ли это?            
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
-                {
-                    toolStripProgressBar1.Minimum = 0;
-                    toolStripProgressBar1.Value = 0;
-                    parser.OnParsing += XMLStateUpdater;
-                    parser.OnStartParsing += XMLStartUpdater;
-                    DocInfo.Version = "08";
-                    this.DocInfo = parser.ParseKPT08(this.DocInfo, xmldoc);
-                }
-            }
-
-            //Не КПТ v09 ли это?            
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKPT09(this.DocInfo, xmldoc);
-            }
-
-            //Не КПТ v10 ли это?
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKPT10(this.DocInfo, xmldoc);
-            }
-
-
-            //Не КПТ v11 ли это?
-            if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
-            {
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                this.DocInfo = parser.ParseKPT11(this.DocInfo, xmldoc);
-            }
-
-
-
-            if (DocInfo.DocRootName == "SchemaParcels")
-            {
-                /* as file SchemaKPTMainForm was corrupted with wrong unicode bytes
-                 * we hide them
-                 * TODO: check form
-                toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.misc28;
-                SchemaKPTMainForm frm = new SchemaKPTMainForm();
-                frm.Top = this.Top; frm.Left = this.Left;
-                frm.StartPosition = FormStartPosition.Manual;
-                frm.OpenXML(xmldoc);
-                this.Visible = false;
-                frm.ShowDialog();
-                this.Close();
-                */
-        /*
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.page_white_csharp;
-        this.DocInfo = parser.ParseSchemaParcels(this.DocInfo, xmldoc);
-    }
-
-
-    if (DocInfo.DocRootName == "STD_MP")
-    {
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-
-        this.DocInfo = parser.ParseMPV04(this.DocInfo, xmldoc);
-    }
-
-
-    if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "05"))
-    {
-
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-
-        this.DocInfo = parser.ParseMPV05(this.DocInfo, xmldoc);
-    }
-
-    // Типы MP Версия 06 - без XSD to clasess. напрямую XSD.exe
-    if ((DocInfo.DocRootName == "MP") && (DocInfo.Version == "06"))
-    {
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.cross;
-        this.DocInfo = parser.ParseMPV06(this.DocInfo, xmldoc);
-    }
-
-
-    if (DocInfo.DocRootName == "STD_TP")
-    {
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-        XmlSerializer serializerTP = new XmlSerializer(typeof(RRTypes.STD_TPV02.STD_TP));
-        RRTypes.STD_TPV02.STD_TP TP = (RRTypes.STD_TPV02.STD_TP)serializerTP.Deserialize(stream);
-        ParseSTDTPV02(TP);
-    }
-
-    //TP
-    if (DocInfo.DocRootName == "TP")
-    {
-        toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-        this.DocInfo = parser.ParseTP_V03(this.DocInfo, xmldoc);
-    }
-
-}
-*/
+    
 
         private void InitSchemas(string folder_xsd)
         {

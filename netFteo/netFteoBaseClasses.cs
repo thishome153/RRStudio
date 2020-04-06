@@ -3901,7 +3901,6 @@ namespace netFteo.Spatial
 
         //private System.Xml.XmlDocument fXML_file_body;
         private byte[] fFile_BLOB;
-        //public MemoryStream FileBody_Stream;
 
         /// <summary>
         /// BLOB file body as binary array - byte[]
@@ -3916,6 +3915,18 @@ namespace netFteo.Spatial
             get
             {
                 return this.fFile_BLOB;
+            }
+        }
+
+        /// <summary>
+        /// Create and return File_Body as memory stream 
+        /// </summary>
+        public MemoryStream File_BLOB_Stream
+        {
+            get
+            {
+                MemoryStream ms = new MemoryStream(this.File_BLOB);
+                return ms;
             }
         }
 
@@ -3940,31 +3951,31 @@ namespace netFteo.Spatial
                 }
                 else return null;
                 */
-                /*
-                return this.fXML_file_body;
-            }
-        }
+        /*
+        return this.fXML_file_body;
+    }
+}
 
-        */
+*/
 
-            /*
-            /// <summary>
-        /// Read file body as binary array - BLOB from stream
-        /// </summary>
-        /// <param name="filestreambody"></param>
-        public bool ReadFileBodyStream(MemoryStream filestreambody)
+        /*
+        /// <summary>
+    /// Read file body as binary array - BLOB from stream
+    /// </summary>
+    /// <param name="filestreambody"></param>
+    public bool ReadFileBodyStream(MemoryStream filestreambody)
+    {
+        if (filestreambody != null)
         {
-            if (filestreambody != null)
-            {
-                filestreambody.Seek(0, 0);
-                byte[] tmp = filestreambody.ToArray();
-                if (FileBody_Stream != null) FileBody_Stream.Dispose();
-                    FileBody_Stream = new MemoryStream(tmp);
-                  filestreambody.Dispose();
-                return true;
-            }
-            return false;
+            filestreambody.Seek(0, 0);
+            byte[] tmp = filestreambody.ToArray();
+            if (FileBody_Stream != null) FileBody_Stream.Dispose();
+                FileBody_Stream = new MemoryStream(tmp);
+              filestreambody.Dispose();
+            return true;
         }
+        return false;
+    }
 
 */
         public bool ReadFileBody(byte[] buffer)

@@ -33,6 +33,7 @@ namespace netFteo.Rosreestr
         EGRP_04 = 304,
         EGRP_06 = 306,
 
+        KPOKS_03 = 403,
         KPOKS_04 = 404,
         KVOKS_07 = 507,
 //        KVOKS_03 = 2031, // ???
@@ -52,6 +53,7 @@ namespace netFteo.Rosreestr
         public static string KPZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
         public static string KPZU_05 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/5.0.8";
         public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
+        public static string KPOKS_03 = "urn://fake/kpoks/3.0.0";
         public static string KPOKS_04 = "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1";
         public static string KPT05    = "urn://fake/kpt/5.0.0";
         public static string KPT06    = "urn://fake/kpt/6.0.0";
@@ -87,6 +89,8 @@ namespace netFteo.Rosreestr
 
         public static dFileTypes NStoFileType(string ns)
         {
+            if (ns == null) return dFileTypes.Undefined;
+
             Dictionary<string, dFileTypes > DocumentTypes = new Dictionary< string, dFileTypes>()
             {
               { EGRP_04,dFileTypes.EGRP_04},
@@ -98,6 +102,7 @@ namespace netFteo.Rosreestr
               { KPZU_05,dFileTypes.KPZU_05},
               { KPZU_06,dFileTypes.KPZU_06},
               { KVOKS_07,dFileTypes.KVOKS_07},
+              { KPOKS_03,dFileTypes.KPOKS_03},
               { KPOKS_04,dFileTypes.KPOKS_04},
               { KPT05,dFileTypes.KPT05},
               { KPT06,dFileTypes.KPT06},

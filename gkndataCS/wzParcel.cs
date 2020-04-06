@@ -22,9 +22,9 @@ namespace GKNData
     public partial class wzParcelfrm : Form
     {
         public TMyParcel ITEM;
-        private DataTable data;
-        private MySqlDataAdapter da;
-        private MySqlCommandBuilder cb;
+//        private DataTable data;
+//        private MySqlDataAdapter da;
+//        private MySqlCommandBuilder cb;
         public ConnectorForm CF = new ConnectorForm();
         public MySqlConnection conn;
         public TFileHistory BlockHistory;
@@ -101,7 +101,7 @@ namespace GKNData
 
       
 
-        //Просмотр истории:
+       
         private void tabControl1_Enter(object sender, EventArgs e)
         {
 
@@ -125,47 +125,19 @@ namespace GKNData
             SaveXMLfromSelectedNode();
         }
 
-        // **** 
-      
-        /* TODO KIll
-        private TFileHistory LoadParcelHistory(MySqlConnection conn, long item_id)
-        {
-            TFileHistory files = new TFileHistory(item_id);
-            if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT *" +
-                                      " from history where hi_item_id = " + item_id.ToString() +
-                                      " order by history_id asc", conn);
-
-            da.Fill(data);
-            foreach (DataRow row in data.Rows)
-            {
-                TFileHistoryItem file = new TFileHistoryItem(Convert.ToInt32(row[0])); //id
-                file.hi_item_id = "Type("+row[2].ToString()+").id "+row[3].ToString();
-                file.hi_data = Convert.ToString(row[4]).Substring(0, Convert.ToString(row[4]).Length - 7);
-                // срезать семь нулей времени MySQL "05.04.2016 0:00:00"
-                file.hi_comment = row[7].ToString();
-                file.hi_host = row[8].ToString();
-                file.hi_ip = row[9].ToString();
-                file.hi_systemusername = row[10].ToString();
-                file.hi_dbusername = row[11].ToString();
-                files.Add(file);
-            }
-            return files;
-        }
-        */
+     
         private void SaveXMLfromSelectedNode()
         {
             if (listView1.SelectedItems.Count == 1)
             {
-                netFteo.Spatial.TFile xmlFile = ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag);
+                TFile xmlFile = ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag);
                 saveFileDialog1.FileName = xmlFile.FileName;
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if (ITEM.XmlBodyList.BodyEmpty((int)listView1.SelectedItems[0].Tag)) ;
-                    //    ITEM.XmlBodyList.ReadFileBody((int)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
-                    //xmlFile.File_Stream ===>   .Save(saveFileDialog1.FileName);
+                    if (ITEM.XmlBodyList.BodyEmpty((long)listView1.SelectedItems[0].Tag)) 
+                        ITEM.XmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, DBWrapper.FetchVidimusBody(CF.conn, (long)listView1.SelectedItems[0].Tag));
+                   File.WriteAllBytes(saveFileDialog1.FileName, xmlFile.File_BLOB);
                 }
             }
         }
@@ -175,7 +147,7 @@ namespace GKNData
             if (listView1.SelectedItems.Count == 1)
             {
                 if (ITEM.XmlBodyList.BodyEmpty(item_id)) ;
-                   // ITEM.XmlBodyList.ReadFileBody(item_id, DBWrapper.FetchVidimusBody(CF.conn, item_id));
+                    ITEM.XmlBodyList.ReadFileBody(item_id, DBWrapper.FetchVidimusBody(CF.conn, item_id));
                // System.Xml.XmlDocument body = ITEM.XmlBodyList.XML_file_body(item_id);
                 if (!ITEM.XmlBodyList.BodyEmpty(item_id))
                 {
@@ -296,7 +268,7 @@ namespace GKNData
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.FileBody_Stream);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument( xmlUploaded.File_BLOB_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

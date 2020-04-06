@@ -162,65 +162,6 @@ namespace GKNData
         }
 
 
-        public byte[] FetchKPTBodyToArray(MySqlConnection conn, long kpt_id)
-        {
-            if (conn == null) return null;
-            if (conn.State != ConnectionState.Open) return null;
-
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
-                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt" +
-                                            " where kpt_id = " + kpt_id.ToString(), conn);
-            da.Fill(data);
-            if (data.Rows.Count == 1)
-            {
-                DataRow row = data.Rows[0];
-                if (row[1].ToString().Length > 0)
-                {
-                    byte[] outbyte = (byte[])row[1];
-                    return outbyte;
-                }
-            }
-            return null;
-        }
-
-
-        /// <summary>
-        /// Read (SELECT) BLOB from the Database and save it in the stream (RAM). KPT11 only
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="kpt_id"></param>
-        /// <returns></returns>
-        public MemoryStream FetchKPT11Body(MySqlConnection conn, long kpt_id)
-        {
-            if (conn == null) return null;
-            if (conn.State != ConnectionState.Open) return null;
-
-            data = new DataTable();
-            da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
-                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11" +
-                                            " where kpt_id = " + kpt_id.ToString(), conn);
-            try
-            {
-                da.Fill(data);
-                if (data.Rows.Count == 1)
-                {
-                    DataRow row = data.Rows[0];
-                    byte[] outbyte = (byte[])row[1];
-                    MemoryStream res = new MemoryStream(outbyte);
-                    return res;
-                }
-                else return null;
-            }
-            catch (Exception ex)
-            {
-                object exept = ex;
-                return null;
-            }
-        }
-
-  
-
         private void SaveXMLfromSelectedNode()
         {
             if (listView1.SelectedItems.Count == 1)
@@ -230,9 +171,9 @@ namespace GKNData
                 saveFileDialog1.FilterIndex = 1;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if (ITEM.KPTXmlBodyList.BodyEmpty((long)listView1.SelectedItems[0].Tag))
-                        ITEM.KPTXmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, FetchKPTBodyToArray(CF.conn, (long)listView1.SelectedItems[0].Tag));
-                    ///xmlFile.File_Stream ====>>  Save(saveFileDialog1.FileName);
+                    if (ITEM.KPTXmlBodyList.BodyEmpty((long)listView1.SelectedItems[0].Tag)) //fetch from DB file body, when empty
+                        ITEM.KPTXmlBodyList.ReadFileBody((long)listView1.SelectedItems[0].Tag, DBWrapper.FetchKPTBodyToArray(CF.conn, (long)listView1.SelectedItems[0].Tag));
+                    File.WriteAllBytes(saveFileDialog1.FileName, xmlFile.File_BLOB);
                 }
             }
         }
@@ -252,18 +193,18 @@ namespace GKNData
                 {
                     case netFteo.Rosreestr.dFileTypes.KPT10:
                         {
-                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBodyToArray(CF.conn, item_id)); break;
+                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, DBWrapper.FetchKPTBodyToArray(CF.conn, item_id)); break;
                         }
 
                     case netFteo.Rosreestr.dFileTypes.KPT11:
                         {
-                            //TODO : ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPT11Body(CF.conn, item_id)); 
+                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, DBWrapper.FetchKPT11Body(CF.conn, item_id)); 
                             break;
                         }
 
                     default:
                         {
-                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, FetchKPTBodyToArray(CF.conn, item_id)); break;
+                            ITEM.KPTXmlBodyList.ReadFileBody(item_id, DBWrapper.FetchKPTBodyToArray(CF.conn, item_id)); break;
                         }
                 }
             }
@@ -394,16 +335,17 @@ namespace GKNData
 
         public void ImportXMLKPT(string FileName)
         {
-
             FileInfo fi = new FileInfo(FileName);
             TFile xmlUploaded = new TFile();
             xmlUploaded.FileName = fi.Name;
             xmlUploaded.xmlSize_SQL = fi.Length / 1024;
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
-            //xmlUploaded.ReadFileBody(new MemoryStream(xmlUploaded.File_BLOB));
-
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            doc.Load(new MemoryStream(xmlUploaded.File_BLOB));
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(null, xmlUploaded.FileBody_Stream);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(doc);
+            doc = null;
+            GC.Collect();
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;

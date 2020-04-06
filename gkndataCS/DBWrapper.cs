@@ -206,26 +206,39 @@ namespace GKNData
         public static bool EraseKPT(long KPT_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
-            //StatusLabel_AllMessages.Text = "Update parcel.... ";
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                 "DELETE FROM `gkndatabase`.`kpt` WHERE `kpt_id`= ?kpt_id", conn);
 
-            MySqlCommand cmd = new MySqlCommand(
-             "DELETE FROM `gkndatabase`.`kpt` WHERE `kpt_id`= ?kpt_id", conn);
+                cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = KPT_id;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return false;
+            }
 
-            cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = KPT_id;//
-            cmd.ExecuteNonQuery();
-            //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
             return true;
         }
 
         public static bool EraseVidimus(long id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
-            MySqlCommand cmd = new MySqlCommand(
-             "DELETE FROM `gkndatabase`.`vidimus` WHERE `vidimus_id`= ?vidimus_id", conn);
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                 "DELETE FROM `gkndatabase`.`vidimus` WHERE `vidimus_id`= ?vidimus_id", conn);
 
-            cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id;//
-            cmd.ExecuteNonQuery();
-            //DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn, conn2, CF.Cfg.District_id, CF.Cfg);
+                cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id;//
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                string exMesssage = ex.Message;
+                return false;
+            }
             return true;
         }
 
@@ -272,6 +285,71 @@ namespace GKNData
             KPT.id = last_id;
             DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
             return last_id;
+        }
+
+
+        public static byte[] FetchKPTBodyToArray(MySqlConnection conn, long kpt_id)
+        {
+            if (conn == null) return null;
+            if (conn.State != ConnectionState.Open) return null;
+
+            DataTable data = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
+                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt" +
+                                            " where kpt_id = " + kpt_id.ToString(), conn);
+            da.Fill(data);
+            if (data.Rows.Count == 1)
+            {
+                DataRow row = data.Rows[0];
+                if (row[1].ToString().Length > 0)
+                {
+                    byte[] outbyte = (byte[])row[1];
+                    row.Delete();
+                    row = null;
+                    data.Dispose();
+                    da.Dispose();
+                    GC.Collect();
+                    return outbyte;
+                }
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Read (SELECT) BLOB from the Database and save it in the stream (RAM). KPT11 only
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="kpt_id"></param>
+        /// <returns></returns>
+        public static byte[] FetchKPT11Body(MySqlConnection conn, long kpt_id)
+        {
+            if (conn == null) return null;
+            if (conn.State != ConnectionState.Open) return null;
+
+            DataTable data = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter("SELECT kpt_id, xml_file_body," +
+                                            " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt11" +
+                                            " where kpt_id = " + kpt_id.ToString(), conn);
+            try
+            {
+                da.Fill(data);
+                if (data.Rows.Count == 1)
+                {
+                    DataRow row = data.Rows[0];
+                    byte[] outbyte = (byte[])row[1];
+                    //MemoryStream res = new MemoryStream(outbyte);
+                    da.Dispose();
+                    data.Dispose();
+                    return outbyte;
+                }
+                else return null;
+            }
+            catch (Exception ex)
+            {
+                object exept = ex;
+                return null;
+            }
         }
 
         public static long DB_AddBlock_KPT11(long block_id, TFile KPT, MySqlConnection conn)
@@ -362,7 +440,7 @@ namespace GKNData
         /// <param name="conn"></param>
         /// <param name="vidimus_id"></param>
         /// <returns></returns>
-        public static MemoryStream FetchVidimusBody(MySqlConnection conn, long vidimus_id)
+        public static byte[] FetchVidimusBody(MySqlConnection conn, long vidimus_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
 
@@ -379,8 +457,12 @@ namespace GKNData
                 if (row[1].ToString().Length > 0)
                 {
                     byte[] outbyte = (byte[])row[1];
-                    MemoryStream res = new MemoryStream(outbyte);
-                    return res;
+                    row.Delete();
+                    row = null;
+                    data.Dispose();
+                    da.Dispose();
+                    GC.Collect();
+                    return outbyte;
                 }
                 else return null;
             }
