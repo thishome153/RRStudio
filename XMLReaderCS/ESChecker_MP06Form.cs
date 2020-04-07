@@ -208,8 +208,7 @@ namespace XMLReaderCS
 
 					XmlNode MP_Root = fMP_v06_xml.DocumentElement;
 					// Вначале отобразим xml, вдруг далее парсеры слажают... :)
-					cXmlTreeView2.RootName = ze_local;
-					cXmlTreeView2.LoadXML(-1,fMP_v06_xml); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+					//TODO: need stream here: cXmlTreeView2.LoadXML(ze_local, fMP_v06_xml); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
 					string version = "-";
 					if (MP_Root.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
 						version = MP_Root.Attributes.GetNamedItem("Version").Value;

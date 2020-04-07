@@ -4444,15 +4444,15 @@ namespace RRTypes.CommonParsers
 
         #region  Разбор КПТ 09
 
-        public netFteo.IO.FileInfo ParseKPT09(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        public netFteo.IO.FileInfo ParseKPT09(netFteo.IO.FileInfo fi, Stream xmldocStream)
         {
-            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            netFteo.IO.FileInfo res = InitFileInfo(fi, null);
             res.CommentsType = "-";
             res.Version = "09";
             res.DocType = "Кадастровый план территории";
             res.DocTypeNick = "КПТ";
 
-            RRTypes.kpt09.KPT KPT09 = (RRTypes.kpt09.KPT)Desearialize<RRTypes.kpt09.KPT>(xmldoc);
+            RRTypes.kpt09.KPT KPT09 = (RRTypes.kpt09.KPT)Desearialize<kpt09.KPT>(xmldocStream);
 
             for (int i = 0; i <= KPT09.CadastralBlocks.Count - 1; i++)
             {
@@ -4866,6 +4866,22 @@ namespace RRTypes.CommonParsers
 
             return res;
         }
+
+        public netFteo.IO.FileInfo ParseKPT10WithReader(netFteo.IO.FileInfo fi, Stream xmlStream)
+        {
+            using (XmlReader reader = XmlReader.Create(xmlStream))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+
+                    }
+                }
+            }
+            return null;
+        }
+
         public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, null);
@@ -5073,7 +5089,13 @@ namespace RRTypes.CommonParsers
         #endregion
 
         #region  Разбор КПТ 11
-        public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+        /// <summary>
+        /// Parse XMLDocument. Types not used, also deserializations no needed
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";
@@ -5083,10 +5105,7 @@ namespace RRTypes.CommonParsers
             res.Version = "11";
             Parse_KTP11Info(xmldoc, res);
 
-            //TODO : нужен КПТ 
-            /*
-			*/
-            System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
+            XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
             if (Blocksnodes != null)
             {  //count items of every block:
                 for (int i = 0; i <= Blocksnodes.Count - 1; i++)
@@ -6963,22 +6982,42 @@ namespace RRTypes.CommonParsers
         {
             if (xmlStream == null)
             {
-                //toolStripStatusLabel1.Text = "document null";
                 return null;
             }
 
+            netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
+            DocInfo.DocRootName = netFteo.XML.XMLWrapper.XMLReader_GetRoot(xmlStream);
+            DocInfo.Namespace = netFteo.XML.XMLWrapper.XMLReader_GetNameSpace(xmlStream);
+            DocInfo.Version = netFteo.XML.XMLWrapper.XMLReader_GetRootAtrr(xmlStream, "Version"); //Для MP версия в корне
+            Doc2Type parser = new Doc2Type(dutilizations_v01, dAllowedUse_v02);
+
+            //DocInfo.DocRootName = xmldoc.DocumentElement.Name;
+            //DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
+
+            //if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
+            //  DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
+
+
+            //Не КПТ v09 ли это?            
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKPT09(DocInfo, xmlStream);
+                return DocInfo;
+            }
+
+            //Не КПТ v10 ли это?
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKPT10(DocInfo, xmlStream);
+                return DocInfo;
+            }
+            
+            //next deprecated metods for XMLDoc:
             xmlStream.Seek(0, 0);
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(xmlStream);
-
-            netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
-            DocInfo.DocRootName = xmldoc.DocumentElement.Name;
-            DocInfo.Namespace = xmldoc.DocumentElement.NamespaceURI;  // "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"
-            if (xmldoc.DocumentElement.Attributes.GetNamedItem("Version") != null) // Для MP версия в корне
-                DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
-
-
-            Doc2Type parser = new Doc2Type(dutilizations_v01, dAllowedUse_v02);// (dutilizations_v01, dAllowedUse_v02);
 
             if (DocInfo.DocRootName == "Region_Cadastr")
             {
@@ -7019,19 +7058,7 @@ namespace RRTypes.CommonParsers
                 }
             }
 
-            //Не КПТ v09 ли это?            
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
-            {
-                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT09(DocInfo, xmldoc);
-            }
-
-            //Не КПТ v10 ли это?
-            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
-            {
-                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT10(DocInfo, xmlStream);
-            }
+    
 
 
             //Не КПТ v11 ли это?
@@ -7211,7 +7238,8 @@ namespace RRTypes.CommonParsers
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 DocInfo = parser.ParseTP_V03(DocInfo, xmldoc);
             }
-            xmlStream.Dispose();
+
+ FinalPoint: xmlStream.Dispose();
             xmldoc = null;
             GC.Collect(); //start mem garbage 
             return DocInfo;
@@ -7280,7 +7308,7 @@ namespace RRTypes.CommonParsers
             if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT09(DocInfo, xmldoc);
+                //DocInfo = parser.ParseKPT09(DocInfo, xmldoc);
             }
 
             //Не КПТ v10 ли это?

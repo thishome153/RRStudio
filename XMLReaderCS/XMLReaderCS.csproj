@@ -194,6 +194,12 @@
     <Compile Include="Controls\LoadingCircleToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\XmlGridView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\XmlGridView.designer.cs">
+      <DependentUpon>XmlGridView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ESChecker_MP06Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +249,9 @@
     <Compile Include="XSLWriter.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\XmlGridView.resx">
+      <DependentUpon>XmlGridView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ESChecker_MP06Form.resx">
       <DependentUpon>ESChecker_MP06Form.cs</DependentUpon>
@@ -568,7 +577,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

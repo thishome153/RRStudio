@@ -505,8 +505,72 @@ namespace netFteo.XML
     public static class XMLWrapper
     {
 
- 
+        /// <summary>
+        /// Read just RootNode. Not  using XMLDocument !!!
+        /// </summary>
+        /// <param name="xmlStream"></param>
+        /// <returns></returns>
+        public static string XMLReader_GetRoot(Stream xmlStream)
+        {
+            xmlStream.Seek(0, 0);
+            using (XmlReader reader = XmlReader.Create(xmlStream))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        return reader.Name;
+                    }
+                }
+                reader.Close();
+            }
 
+            return null;
+        }
+        public static string XMLReader_GetRootAtrr(Stream xmlStream, string AttrName)
+        {
+            xmlStream.Seek(0, 0);
+            using (XmlReader reader = XmlReader.Create(xmlStream))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        string attribute = reader[AttrName];
+                        if (attribute != null)
+                        {
+                            return attribute.Trim();
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+
+        /// <summary>
+        ///  Read just xmlns. Not  using XMLDocument !!!
+        /// </summary>
+        /// <param name="xmlStream"></param>
+        /// <returns></returns>
+        public static string XMLReader_GetNameSpace(Stream xmlStream)
+        {
+            xmlStream.Seek(0, 0);
+            using (XmlReader reader = XmlReader.Create(xmlStream))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        return reader.NamespaceURI;
+                    }
+                }
+                reader.Close();
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Translate xpath to namespaced xpath otherwise append xpath to root

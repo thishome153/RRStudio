@@ -37,7 +37,7 @@ namespace netFteo.IO
         public string Version;
         public string DocRootName;
         public string FileName;
-        public long FileSize;
+        public long FileSize;// KB
         public string FilePath;
         public string Namespace;
         public string DocType;
@@ -2054,6 +2054,7 @@ namespace netFteo.IO
             try
             {
                 WebRequest wrGETURL = null;
+#if (!DEBUG) //Due RR fuckeup their own web api`s, now close when develop another
                 //Запрос 
                 wrGETURL = WebRequest.Create(url_api + "?AppType=" + query +
                                             "&AppVer=" + this.App_Version +
@@ -2079,6 +2080,7 @@ namespace netFteo.IO
                         return true;
                     }
                 }
+#endif
                 this.watch.Stop();
                 return false;
             }
@@ -2090,6 +2092,8 @@ namespace netFteo.IO
                 this.watch.Stop();
                 return false;
             }
+
+
         }
 
 

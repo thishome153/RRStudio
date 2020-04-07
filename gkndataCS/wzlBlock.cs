@@ -340,11 +340,13 @@ namespace GKNData
             xmlUploaded.FileName = fi.Name;
             xmlUploaded.xmlSize_SQL = fi.Length / 1024;
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
+            /*
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
             doc.Load(new MemoryStream(xmlUploaded.File_BLOB));
+            */
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(doc);
-            doc = null;
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(xmlUploaded.File_BLOB));
+            //doc = null;
             GC.Collect();
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;

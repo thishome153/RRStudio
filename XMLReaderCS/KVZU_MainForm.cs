@@ -316,7 +316,7 @@ namespace XMLReaderCS
             label_FileSize.Text = FileSizeAdapter.FileSizeToString(FileName);
             this.DocInfo.FileName = Path.GetFileName(FileName);
             this.DocInfo.FilePath = Path.GetFullPath(FileName);
-            this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName);
+            this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName)/1024; // kBytes
             this.Text = DocInfo.FileName;
             tabPage5.Text = DocInfo.FileName;
             linkLabel_FileName.Text = DocInfo.FileName;
@@ -410,22 +410,8 @@ namespace XMLReaderCS
 
             if (Path.GetExtension(FileName).Equals(".xml"))
             {
-                /*
-                Stream fs = new FileStream(FileName, FileMode.Open);
-                Stream ms = new MemoryStream();
-                fs.CopyTo(ms);
-                fs.Close();
-                */
-                Stream ms = new MemoryStream(File.ReadAllBytes(FileName));
 
-                /* //leave to compare memory allocations:
-                TextReader reader = new StreamReader(FileName);
-                XmlDocument XMLDocFromFile = new XmlDocument();
-                XMLDocFromFile.Load(reader);
-                reader.Close();
-                */
-                //XmlDocument XMLDocFromFile = new XmlDocument();
-                //XMLDocFromFile.Load(ms);
+                Stream ms = new MemoryStream(File.ReadAllBytes(FileName));
                 Read(ms);
                 ms.Dispose();
                 DocInfo.FileName = FileName;
@@ -501,25 +487,33 @@ namespace XMLReaderCS
         {
 
             fs.Seek(0, 0);
-            XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(fs);
+
+            //DataSet dsXmlFile = new DataSet();
+            //fs.Seek(0, 0);
+            //dsXmlFile.ReadXml(fs); //Dataset consumpt memory at 2 times than XMLDocument
+
+            /*
+            webBrowser1.Navigate(DocInfo.FilePath);
+            webBrowser1.Visible = true;
+            */
 
             // First show xml, before parsing... :)
-            int MaxSize33M = 33554432;
-            if (fs.Length < MaxSize33M)
+            /*
+            if (DocInfo.FileSize < 32768)
             {
-                cXmlTreeView2.RootName = DocInfo.FileName;
-                cXmlTreeView2.LoadXML(DocInfo.FileSize, xmldoc); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(fs);
+                cXmlTreeView2.LoadXML(DocInfo.FileName, fs); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+                xmldoc = null;
             }
-            fs.Dispose();
-
+            */
+            cXmlTreeView2.LoadXML(DocInfo.FileName, fs); // Загрузим тело в дерево XMlTreeView - собственный клас/компонент, умеющий показывать XmlDocument
+            fs.Seek(0, 0);
             RRTypes.CommonParsers.ParserCommon.dAllowedUse_v02 = dAllowedUse_v02;
             RRTypes.CommonParsers.ParserCommon.dutilizations_v01 = dutilizations_v01;
-            DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmldoc);
-            xmldoc = null;
+            DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(fs);
+            fs.Dispose();
             GC.Collect();
-
-
         }
     
 

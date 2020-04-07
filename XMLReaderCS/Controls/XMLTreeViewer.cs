@@ -152,16 +152,34 @@ namespace XMLReaderCS
             }
         }
 
-        public bool LoadXML(long DocumentSize, XmlDocument dom)
+        public bool LoadXML(string Root_Name, System.IO.Stream xmlStream)
         {
-            if (DocumentSize > MaxSize33M) return false;
             this.Nodes.Clear();
             string href = "";
-            this.Namespace = dom.DocumentElement.NamespaceURI;
-            XmlElement Root = dom.DocumentElement;
+            this.Namespace = netFteo.XML.XMLWrapper.XMLReader_GetNameSpace(xmlStream);// dom.DocumentElement.NamespaceURI;
+            this.RootName = Root_Name;
             TreeNode TreeRoot = this.Nodes.Add(RootName);
-            TreeRoot.Tag = Root;
 
+            if (xmlStream.Length/1024 > MaxSize33M)
+            {
+                TreeNode rn = TreeRoot.Nodes.Add("XMLDocument to large (" + (xmlStream.Length /1048576).ToString() + ") Mb");
+                rn.ForeColor = System.Drawing.Color.Red;
+                rn.NodeFont = new System.Drawing.Font("System", 10);
+                TreeRoot.ExpandAll();
+                /*
+                System.Data.DataSet dsXmlFile = new System.Data.DataSet();
+                System.IO.Stream ms = new System.IO.MemoryStream();
+                dom.Save(ms);
+                dsXmlFile.ReadXml(ms);
+                */
+                return false;
+            }
+
+            XmlDocument dom = new XmlDocument();
+            xmlStream.Seek(0, 0);
+            dom.Load(xmlStream);
+            XmlElement Root = dom.DocumentElement;
+            TreeRoot.Tag = Root;
 
             //insert xml prolog (aka Declaration):
             if (dom.FirstChild is XmlDeclaration)
@@ -292,7 +310,7 @@ namespace XMLReaderCS
             TreeNode hItem = e.Node;
             TreeNode hChildItem;
             XmlNode XMLSrc = (XmlNode)e.Node.Tag;
-
+            if (XMLSrc == null) return;
             hChildItem = hItem.FirstNode;
             if ((hChildItem) != null)
             {
