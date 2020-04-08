@@ -3914,22 +3914,30 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        public netFteo.IO.FileInfo ParseKPT08(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        /// <summary>
+        /// Uses only XMLDocument, none desirialization required
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        public netFteo.IO.FileInfo ParseKPT08(netFteo.IO.FileInfo fi, Stream ms)
         {
+            ms.Seek(0, 0);
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(ms);
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";
             res.Version = "08";
             res.DocType = "Кадастровый план территории";
             res.DocTypeNick = "КПТ";
             res.Namespace = NameSpaces.KPT08;// "urn://fake/kpt/8.0.0";
-                                             //TODO - need deserialization
-            System.Xml.XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
+             //TODO - need deserialization....
+            XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/Package/Cadastral_Blocks/Cadastral_Block");
             if (Blocksnodes != null)
 
                 for (int i = 0; i <= Blocksnodes.Count - 1; i++)
                 {
                     //TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
-
                     var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
                     for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                     {
@@ -4077,11 +4085,12 @@ namespace RRTypes.CommonParsers
             // end TODO
 
             Parse_KTP08Info(xmldoc, res);
+            xmldoc = null;
             return res;
         }
 
         //Разбор Spelement_Unit
-        private static TPoint KPT08_ES_ParseSpelement_Unit(System.Xml.XmlNode Spelement_Unit)
+        private static TPoint KPT08_ES_ParseSpelement_Unit(XmlNode Spelement_Unit)
         {
             TPoint Point = new TPoint();
             Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("Ordinate").Attributes.GetNamedItem("X").Value);
@@ -7054,12 +7063,9 @@ namespace RRTypes.CommonParsers
                     //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
                     //parser.OnStartParsing += XMLStartUpdater; //
                     DocInfo.Version = "08";
-                    DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
+                    DocInfo = parser.ParseKPT08(DocInfo, xmlStream);
                 }
             }
-
-    
-
 
             //Не КПТ v11 ли это?
             if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
@@ -7067,8 +7073,6 @@ namespace RRTypes.CommonParsers
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 DocInfo = parser.ParseKPT11(DocInfo, xmldoc);
             }
-
-
 
 
             //Если это КВЗУ V04/V05
@@ -7300,7 +7304,7 @@ namespace RRTypes.CommonParsers
                     //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
                     //parser.OnStartParsing += XMLStartUpdater; //
                     DocInfo.Version = "08";
-                    DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
+                   // DocInfo = parser.ParseKPT08(DocInfo, xmldoc);
                 }
             }
 

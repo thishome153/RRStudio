@@ -340,19 +340,14 @@ namespace GKNData
             xmlUploaded.FileName = fi.Name;
             xmlUploaded.xmlSize_SQL = fi.Length / 1024;
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
-            /*
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
-            doc.Load(new MemoryStream(xmlUploaded.File_BLOB));
-            */
-            //parse XMlDocument:
+            //parse XMlDocument as stream:
             netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(xmlUploaded.File_BLOB));
-            //doc = null;
+
             GC.Collect();
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
-            //xmlUploaded.GUID = ParsedDoc. ??
-            xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;
+              xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;
 
 
             //wich type of KPT accquried:? 
