@@ -3742,8 +3742,10 @@ namespace RRTypes.CommonParsers
             Parse_KTP05Info(xmldoc, res);
             return res;
         }
-        public netFteo.IO.FileInfo ParseKPT07(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        public netFteo.IO.FileInfo ParseKPT07(netFteo.IO.FileInfo fi, Stream ms )
         {
+            System.Xml.XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(ms);
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";
             res.Version = "07";
@@ -7051,7 +7053,7 @@ namespace RRTypes.CommonParsers
                   (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
                     (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
                 {
-                    DocInfo = parser.ParseKPT07(DocInfo, xmldoc);
+                    DocInfo = parser.ParseKPT07(DocInfo, xmlStream);
                 }
 
                 //Не КПТ v08 ли это?            
@@ -7292,9 +7294,11 @@ namespace RRTypes.CommonParsers
                   (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
                     (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
                 {
-                    DocInfo = parser.ParseKPT07(DocInfo, xmldoc);
+                    //DocInfo = parser.ParseKPT07(DocInfo, xmlstream);
                 }
-
+                
+                
+                
                 //Не КПТ v08 ли это?            
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
                 (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
