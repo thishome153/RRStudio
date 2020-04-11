@@ -5649,18 +5649,19 @@ namespace RRTypes.CommonParsers
         #endregion
 
         #region разбор КВЗУ04 - Region_Cadastr_Vidimus_KV V04
-        public netFteo.IO.FileInfo ParseKVZU04(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        public netFteo.IO.FileInfo ParseKVZU04(netFteo.IO.FileInfo fi, Stream xmldocStream)
         {
-
-            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
-            RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV kv = (RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV)Desearialize<RRTypes.STD_KV04.Region_Cadastr_Vidimus_KV>(xmldoc);
+            xmldocStream.Seek(0,0);
+            System.Xml.XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(xmldocStream);
+            netFteo.IO.FileInfo res = InitFileInfo(fi, null);
+            STD_KV04.Region_Cadastr_Vidimus_KV kv = (STD_KV04.Region_Cadastr_Vidimus_KV)Desearialize<STD_KV04.Region_Cadastr_Vidimus_KV>(xmldocStream);
 
 
             for (int i = 0; i <= kv.Coord_Systems.Count - 1; i++)
             {
                 res.MyBlocks.CSs.Add(new TCoordSystem(kv.Coord_Systems[i].Name, kv.Coord_Systems[i].Cs_Id));
             }
-
 
             Parse_Contractors(xmldoc, res);
             foreach (STD_KV04.tCadastral_Region region in kv.Package.Federal.Cadastral_Regions)
@@ -5775,7 +5776,14 @@ namespace RRTypes.CommonParsers
         #endregion
 
         #region разбор КВ KVZU_05
-        public netFteo.IO.FileInfo ParseKVZU05(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+
+        /// <summary>
+        /// ParseKVZU05 without type deserialization
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"> XmlDocument (monster Hi)</param>
+        /// <returns></returns>
+        public netFteo.IO.FileInfo ParseKVZU05(netFteo.IO.FileInfo fi,XmlDocument xmldoc)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             // Region_Cadastr_Vidimus_KV / @Version
@@ -7018,6 +7026,58 @@ namespace RRTypes.CommonParsers
             //  DocInfo.Version = xmldoc.DocumentElement.Attributes.GetNamedItem("Version").Value;
 
 
+
+            if (DocInfo.DocRootName == "Region_Cadastr")
+            {
+                DocInfo.DocTypeNick = "КПТ";
+                DocInfo.DocType = "Кадастровый план территории";
+                /*
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05")))
+*/
+                if (netFteo.XML.XMLWrapper.XMLReader_GetNodeAttr(xmlStream, "eDocument", "Version") == "05")
+                {
+                    DocInfo = parser.ParseKPT05(DocInfo, xmlStream);
+                }
+
+                /*
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
+                    */
+                if (netFteo.XML.XMLWrapper.XMLReader_GetNodeAttr(xmlStream, "eDocument", "Version") == "06")
+                {
+                    DocInfo = parser.ParseKPT06(DocInfo, xmlStream);
+                }
+
+                //Не КПТ v07 ли это?   
+                /*
+                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
+                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
+                    */
+                if (netFteo.XML.XMLWrapper.XMLReader_GetNodeAttr(xmlStream, "eDocument", "Version") == "07")
+                {
+                    DocInfo = parser.ParseKPT07(DocInfo, xmlStream);
+                }
+
+                //Не КПТ v08 ли это?            
+                /*
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
+                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
+                */
+                if (netFteo.XML.XMLWrapper.XMLReader_GetRootAtrr(xmlStream, "Version") == "08")
+                {
+                    //toolStripProgressBar1.Minimum = 0;
+                    // toolStripProgressBar1.Value = 0;
+                    //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
+                    //parser.OnStartParsing += XMLStartUpdater; //
+                    DocInfo = parser.ParseKPT08(DocInfo, xmlStream);
+                }
+            }
+
+
             //Не КПТ v09 ли это?            
             if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3"))
             {
@@ -7031,52 +7091,14 @@ namespace RRTypes.CommonParsers
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 DocInfo = parser.ParseKPT10(DocInfo, xmlStream);
-                return DocInfo;
+                return DocInfo; // Need return, due below estimated XMLDocument creation
             }
             
+  
             //next deprecated metods for XMLDoc:
             xmlStream.Seek(0, 0);
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(xmlStream);
-
-            if (DocInfo.DocRootName == "Region_Cadastr")
-            {
-                DocInfo.DocTypeNick = "КПТ";
-                DocInfo.DocType = "Кадастровый план территории";
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                          (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                            (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("05"))))
-                {
-                    DocInfo = parser.ParseKPT05(DocInfo, xmlStream);
-                }
-
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("06"))))
-                {
-                    DocInfo = parser.ParseKPT06(DocInfo, xmlStream);
-                }
-
-                //Не КПТ v07 ли это?   
-                if (((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
-                  (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null) &&
-                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value.Equals("07"))))
-                {
-                    DocInfo = parser.ParseKPT07(DocInfo, xmlStream);
-                }
-
-                //Не КПТ v08 ли это?            
-                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
-                (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("08")))
-                {
-                    //toolStripProgressBar1.Minimum = 0;
-                    // toolStripProgressBar1.Value = 0;
-                    //parser.OnParsing += XMLStateUpdater; // handlers most linked outside class
-                    //parser.OnStartParsing += XMLStartUpdater; //
-                    DocInfo.Version = "08";
-                    DocInfo = parser.ParseKPT08(DocInfo, xmlStream);
-                }
-            }
 
             //Не КПТ v11 ли это?
             if (DocInfo.DocRootName == "extract_cadastral_plan_territory")
@@ -7090,19 +7112,25 @@ namespace RRTypes.CommonParsers
             if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
             {
                 // toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                /*
                 string ver_Vidimus = "";
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument") != null) &&
                         (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version") != null))
                     ver_Vidimus = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "/eDocument").Attributes.GetNamedItem("Version").Value;
+                */
 
-                if (ver_Vidimus.Equals("04")) // Проверим
+                if (netFteo.XML.XMLWrapper.XMLReader_GetNodeAttr(xmlStream, "eDocument", "Version") == "04")
                 {
-                    DocInfo = parser.ParseKVZU04(DocInfo, xmldoc);
+                    DocInfo = parser.ParseKVZU04(DocInfo, xmlStream);
                 }
+
                 // Проверим
+                /*
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&
                     (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version").Value.Equals("05")))
-                {
+                    */
+                    if (netFteo.XML.XMLWrapper.XMLReader_GetRootAtrr(xmlStream,  "Version") == "05")
+                    {
                     DocInfo = parser.ParseKVZU05(DocInfo, xmldoc);
                 }
             }
@@ -7357,7 +7385,7 @@ namespace RRTypes.CommonParsers
 
                 if (ver_Vidimus.Equals("04")) // Проверим
                 {
-                    DocInfo = parser.ParseKVZU04(DocInfo, xmldoc);
+                    //DocInfo = parser.ParseKVZU04(DocInfo, xmldoc);
                 }
                 // Проверим
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name).Attributes.GetNamedItem("Version") != null) &&

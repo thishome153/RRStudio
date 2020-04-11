@@ -524,9 +524,33 @@ namespace netFteo.XML
                 }
                 reader.Close();
             }
-
             return null;
         }
+
+        public static string XMLReader_GetNodeAttr(Stream xmlStream, String NodeName,  string AttrName)
+        {
+            xmlStream.Seek(0, 0);
+            using (XmlReader reader = XmlReader.Create(xmlStream))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                         //Region_Cadastr/eDocument/@Version
+                        if ( reader.ReadToDescendant(NodeName))
+                        {
+                            string attribute = reader[AttrName];
+                            if (attribute != null)
+                            {
+                                return attribute.Trim();
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public static string XMLReader_GetRootAtrr(Stream xmlStream, string AttrName)
         {
             xmlStream.Seek(0, 0);
