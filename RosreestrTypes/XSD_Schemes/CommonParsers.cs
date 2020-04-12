@@ -5411,10 +5411,13 @@ namespace RRTypes.CommonParsers
         #endregion
 
         #region  Разбор KPZU 5.0.8
-        public netFteo.IO.FileInfo ParseKPZU508(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
+        public netFteo.IO.FileInfo ParseKPZU508(netFteo.IO.FileInfo fi, Stream ms) //RRTypes.kpzu06.KPZU kp, XmlDocument xmldoc)
         {
+            ms.Seek(0, 0);
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(ms);
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
-            RRTypes.kpzu.KPZU kp = (RRTypes.kpzu.KPZU)Desearialize<RRTypes.kpzu.KPZU>(xmldoc);
+            RRTypes.kpzu.KPZU kp = (kpzu.KPZU)Desearialize<kpzu.KPZU>(xmldoc);
             TMyCadastralBlock Bl = new TMyCadastralBlock();
             //----------
             for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
@@ -6033,12 +6036,14 @@ namespace RRTypes.CommonParsers
         /// <param name="fi"></param>
         /// <param name="xmldoc">файл по схеме urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1</param>
         /// <returns></returns>
-        public netFteo.IO.FileInfo ParseKVZU07(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//  RRTypes.kvzu07.KVZU kv, XmlDocument xmldoc)
+        public netFteo.IO.FileInfo ParseKVZU07(netFteo.IO.FileInfo fi, Stream ms )//  RRTypes.kvzu07.KVZU kv, XmlDocument xmldoc)
         {
+            ms.Seek(0, 0);
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.Load(ms);
+            netFteo.IO.FileInfo res = InitFileInfo(fi, null);
 
-            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
-
-            RRTypes.kvzu07.KVZU kv = (RRTypes.kvzu07.KVZU)Desearialize<RRTypes.kvzu07.KVZU>(xmldoc);
+            kvzu07.KVZU kv = (kvzu07.KVZU)Desearialize<kvzu07.KVZU>(ms);
 
             TMyCadastralBlock Bl = new TMyCadastralBlock();
 
@@ -6164,6 +6169,7 @@ namespace RRTypes.CommonParsers
             res.DocTypeNick = "КВЗУ";
             CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
+            xmldoc = null;
             return res;
         }
         #endregion
@@ -7146,7 +7152,7 @@ namespace RRTypes.CommonParsers
             if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKVZU07(DocInfo, xmldoc);
+                DocInfo = parser.ParseKVZU07(DocInfo, xmlStream);
             }
 
             if (DocInfo.DocRootName == "KPZU")
@@ -7154,7 +7160,7 @@ namespace RRTypes.CommonParsers
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
                 {
-                    DocInfo = parser.ParseKPZU508(DocInfo, xmldoc);
+                    DocInfo = parser.ParseKPZU508(DocInfo, xmlStream);
                 }
 
                 // KPZU_V6 01  - ЕГРН
@@ -7406,7 +7412,7 @@ namespace RRTypes.CommonParsers
             if ((DocInfo.DocRootName == "KVZU") & (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"))
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKVZU07(DocInfo, xmldoc);
+                //DocInfo = parser.ParseKVZU07(DocInfo, xmldoc);
             }
 
             if (DocInfo.DocRootName == "KPZU")
@@ -7414,7 +7420,7 @@ namespace RRTypes.CommonParsers
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 if (DocInfo.Namespace != "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1")
                 {
-                    DocInfo = parser.ParseKPZU508(DocInfo, xmldoc);
+                  //  DocInfo = parser.ParseKPZU508(DocInfo, xmldoc);
                 }
 
                 // KPZU_V6 01  - ЕГРН

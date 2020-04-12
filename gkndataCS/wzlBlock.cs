@@ -347,7 +347,7 @@ namespace GKNData
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
-              xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;
+            xmlUploaded.Doc_Date = ParsedDoc.DateMySQL;
 
 
             //wich type of KPT accquried:? 
