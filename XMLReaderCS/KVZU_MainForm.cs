@@ -374,10 +374,11 @@ namespace XMLReaderCS
                 }
 
                 this.DocInfo.DocTypeNick = "Текстовый файл";
+                this.DocInfo.DocType = "Текстовый файл";
                 this.DocInfo.CommentsType = "TXT";
                 this.DocInfo.Comments = mifreader.Body;
                 this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
-                this.DocInfo.Number = "Текстовый файл,  " + mifreader.BodyEncoding.EncodingName;
+                this.DocInfo.Number = "Encoding  " + mifreader.BodyEncoding.EncodingName;
 
                 if (mifreader.isNikonRaw(FileName))
                 {
@@ -5123,6 +5124,22 @@ LV.Items.Add(LVipP);
                 )
             {
                 TMyPolygon NewFeature = new TMyPolygon((TPolyLine)Feature);
+                NewFeature.LayerHandle = Feature.LayerHandle;
+                NewFeature.Definition = Feature.Definition + "*";
+                this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
+                //Insert new node:
+                netFteo.ObjectLister.ListEntSpat(TV_Parcels.SelectedNode.Parent, NewFeature, "SPElem.", NewFeature.Definition, NewFeature.State);
+                //ListMyCoolections(this.DocInfo.MyBlocks);
+                NewFeature.ShowasListItems(listView1, true);
+            }
+
+
+
+            if ((Feature != null) &&
+                    (Feature.TypeName == "netFteo.Spatial.PointList")
+                    )
+            {
+                TMyPolygon NewFeature = new TMyPolygon((PointList)Feature);
                 NewFeature.LayerHandle = Feature.LayerHandle;
                 NewFeature.Definition = Feature.Definition + "*";
                 this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);

@@ -6164,9 +6164,11 @@ namespace RRTypes.CommonParsers
                 }
 
             //Прикрутим сюды парсинг Прав ветки ЕГРП через XPATH ЕГРН
-            MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
+            MainObj.EGRN = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
             res.MyBlocks.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
+            res.DocType = "Кадастровая выписка о земельном участке";
+            res.Version = "07";
             CommonCast.CasterEGRP.Parse_DocumentProperties(xmldoc, res);
             Parse_Contractors(xmldoc, res);
             xmldoc = null;

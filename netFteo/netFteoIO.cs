@@ -352,9 +352,11 @@ namespace netFteo.IO
                    // StringSplitOptions so = new StringSplitOptions();
 
                     string[] NikonString = line.Split(',');
-                    if (NikonString.Length > 0)
-
+                    if (NikonString.Length > 3)
                         return ImportXYZDNikon(Fname);
+                    NikonString = line.Split(TabDelimiter.ToCharArray());
+                    if (NikonString.Length == 2)
+                        return ImportPKZO(Fname);
                 }
             }
             return null;
@@ -445,11 +447,12 @@ namespace netFteo.IO
         /// </summary>
         /// <param name="Fname"></param>
         /// <returns></returns>
-        private TMyPolygon ImportPKZO(string Fname)
+        private TEntitySpatial ImportPKZO(string Fname)
         {
+            TEntitySpatial resPolys = new TEntitySpatial();
+            PointList resPoly = new PointList();
             try
             {
-                TMyPolygon resPoly = new TMyPolygon(0, Fname);
                 string line = null;
                 int StrCounter = 0;
                 System.IO.TextReader readFile = new StreamReader(Fname);
@@ -470,19 +473,19 @@ namespace netFteo.IO
                         };
 
                         StrCounter++;
-                        string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
+                        string[] SplittedStr = line.Split(TabDelimiter.ToCharArray());
                         TPoint FilePoint = new TPoint();
-                        //FilePoint.id = StrCounter;
-                        FilePoint.NumGeopointA = StrCounter.ToString();
-                        FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
-                        FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
+                        FilePoint.Definition = StrCounter.ToString();
+                        FilePoint.x = Convert.ToDouble(SplittedStr[0].ToString());
+                        FilePoint.y = Convert.ToDouble(SplittedStr[1].ToString());
                         resPoly.AddPoint(FilePoint);
                     }
 
                 }
                 readFile.Close();
                 readFile = null;
-                return resPoly;
+                resPolys.Add(resPoly);
+                return resPolys;
             }
             catch (IOException ex)
             {
@@ -601,7 +604,7 @@ namespace netFteo.IO
                                         string[] ChildStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
                                         TPoint ChildPoint = new TPoint();
                                         //ChildPoint.id = StrCounter;
-                                        ChildPoint.NumGeopointA = ChildStr[0].ToString();
+                                        ChildPoint.Definition = ChildStr[0].ToString();
                                         ChildPoint.x = Convert.ToDouble(ChildStr[1].ToString());
                                         ChildPoint.y = Convert.ToDouble(ChildStr[2].ToString());
                                         ChildPoint.z = Convert.ToDouble(ChildStr[3].ToString());

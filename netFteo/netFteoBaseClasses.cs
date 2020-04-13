@@ -1947,7 +1947,14 @@ namespace netFteo.Spatial
             //	this.id = Ring.id;
         }
 
-
+        public TMyPolygon(PointList SrcPoints): this()
+        {
+            foreach(TPoint pt in SrcPoints)
+            {
+                this.Add(pt);
+            }
+            this.Close();
+        }
 
         public TMyPolygon(int id, string Def) : this(id)
         {
