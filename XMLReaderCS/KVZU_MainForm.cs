@@ -366,23 +366,14 @@ namespace XMLReaderCS
             if (Path.GetExtension(FileName).ToUpper().Equals(".TXT"))
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
-                TEntitySpatial polyfromMIF = mifreader.ImportTxtFile(FileName);
-                if (polyfromMIF != null)
-                {
-                    DocInfo.MyBlocks.ParsedSpatial.Clear();
-                    DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
-                }
-
-                this.DocInfo.DocTypeNick = "Текстовый файл";
-                this.DocInfo.DocType = "Текстовый файл";
-                this.DocInfo.CommentsType = "TXT";
-                this.DocInfo.Comments = mifreader.Body;
-                this.DocInfo.Encoding = mifreader.BodyEncoding.ToString();
-                this.DocInfo.Number = "Encoding  " + mifreader.BodyEncoding.EncodingName;
+                DocInfo = mifreader.ImportTxtFile(FileName);
+   
+                 //   DocInfo.MyBlocks.ParsedSpatial.Clear();
+                   // DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
 
                 if (mifreader.isNikonRaw(FileName))
                 {
-                    this.DocInfo.DocTypeNick = "Nikon RAW data format V2.00";
+                    //this.DocInfo.DocTypeNick = "Nikon RAW data format V2.00";
                     //call Traverser:
                     Traverser.TraverserMainForm frmTraverser = new Traverser.TraverserMainForm();
                     frmTraverser.ReadRawFile(FileName);

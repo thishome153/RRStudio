@@ -316,11 +316,18 @@ namespace netFteo.IO
         /// </summary>
         /// <param name="Fname"></param>
         /// <returns></returns>
-        public TEntitySpatial ImportTxtFile(string Fname)
+        public netFteo.IO.FileInfo ImportTxtFile(string Fname)
         {
             string line = null;
+            FileInfo DocInfo = new FileInfo();
             System.IO.TextReader readFile = new StreamReader(Fname);
             BodyLoad(Fname);
+            DocInfo.DocTypeNick = "Text file";
+            DocInfo.CommentsType = "Body";
+            DocInfo.Comments = Body;
+            DocInfo.Encoding = BodyEncoding.ToString();
+            DocInfo.Number = "Encoding  " + BodyEncoding.EncodingName;
+
             while (readFile.Peek() != -1)
             {
                 line = readFile.ReadLine();
@@ -330,36 +337,60 @@ namespace netFteo.IO
                     {
                         TEntitySpatial rets = new TEntitySpatial();
                         rets.Add(ImportNXYZDFile2014(Fname));
-                        return rets;
+                        DocInfo.MyBlocks.ParsedSpatial = rets;// not Add, need assume to update Layers
+                        DocInfo.DocType = "Fixosoft NumXYZD data format V2014";
+                        return DocInfo;
                     }
 
                     if (line.Contains("#Fixosoft NumXYZD data format V2015"))
-                        return ImportNXYZDFile2015(Fname);
+                    {
+                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2015(Fname);
+                        DocInfo.DocType = "Fixosoft NumXYZD data format V2015";
+                        return DocInfo;
+                    }
 
                     if (line.Contains("#Fixosoft NumXYZD data format V2016"))
-                        return ImportNXYZDFile2016(Fname);
+                    {
+                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2016(Fname);
+                        DocInfo.DocType = "Fixosoft NumXYZD data format V2016";
+                        return DocInfo;
+                    }
 
                     if (line.Equals("#Fixosoft spatial text file V2018"))
-                        return ImportNXYZDFile2018(Fname);
-
-                    if (line.Equals("CO,Nikon RAW data format V2.00"))
+                    {
+                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2018(Fname);
+                        DocInfo.DocType = "Fixosoft spatial text file V2018";
+                        return DocInfo;
+                    }
+                    //if (line.Equals("CO,Nikon RAW data format V2.00"))
+                    if (isNikonRaw(FileName))
                     {
                         ImportNikonRAWdataformat(Fname);
-                        return null;
+                        DocInfo.DocType = "Nikon RAW data format V2.00";
+                        return DocInfo;
                     }
 
                     //otherwise, test if comma separated (aka Nikon xy file)
-                   // StringSplitOptions so = new StringSplitOptions();
+                    // StringSplitOptions so = new StringSplitOptions();
 
                     string[] NikonString = line.Split(',');
                     if (NikonString.Length > 3)
-                        return ImportXYZDNikon(Fname);
+
+                    {
+                        DocInfo.DocType = "Nikon XYZ file";
+                        DocInfo.MyBlocks.ParsedSpatial = ImportXYZDNikon(Fname);
+                        return DocInfo;
+                    }
+
                     NikonString = line.Split(TabDelimiter.ToCharArray());
                     if (NikonString.Length == 2)
-                        return ImportPKZO(Fname);
+                    {
+                        DocInfo.MyBlocks.ParsedSpatial = ImportPKZO(Fname);
+                        DocInfo.DocType = "X tab Y ";
+                    }
                 }
             }
-            return null;
+            return DocInfo;
         }
 
         public bool isNikonRaw(string Fname)
@@ -526,7 +557,7 @@ namespace netFteo.IO
                         string[] SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
                         TPoint FilePoint = new TPoint();
                         //FilePoint.id = StrCounter;
-                        FilePoint.NumGeopointA = SplittedStr[0].ToString();
+                        FilePoint.Definition = SplittedStr[0].ToString();
                         FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
                         FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
                         FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
@@ -919,7 +950,7 @@ namespace netFteo.IO
 
         private void ImportNikonRAWdataformat(string Fname)
         {
-
+            // Todo: move code from traverser...
         }
 
         private TEntitySpatial ImportXYZDNikon(string Fname)

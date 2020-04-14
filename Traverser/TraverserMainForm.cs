@@ -491,7 +491,7 @@ namespace Traverser
                         }
                      * */
                     netFteo.IO.TextReader TR = new netFteo.IO.TextReader(openFileDialog1.FileName);
-                    this.Project.ES = TR.ImportTxtFile(openFileDialog1.FileName);
+                    this.Project.ES = TR.ImportTxtFile(openFileDialog1.FileName).MyBlocks.ParsedSpatial;
                     this.Project.Points.AppendPoints(this.Project.ES.AsPointList);
                     this.ListNumTxtPolygons(this.Project.ES);
                     toolStripStatusLabel1.Text = Path.GetFileName(openFileDialog1.FileName);
@@ -650,7 +650,7 @@ namespace Traverser
               textBoxAO.Text = this.Project.Travers.VertexList[0].Station.BackStation;
             if (this.Project.Travers.BeginOrientir != null)
             {
-                if (this.Project.Points.GetPointbyName(this.Project.Travers.BeginOrientir.NumGeopointA) != null)
+                if (this.Project.Points.GetPointbyName(this.Project.Travers.BeginOrientir.Definition) != null)
                 {
                     checkBox2.Checked = true;
                     textBoxAO.ForeColor = Color.Black;
