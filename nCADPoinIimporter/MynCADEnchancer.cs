@@ -239,10 +239,10 @@
                     ed.WriteMessage("\nИмпорт текстового файла (Fixosoft2014, 2015,  2018)");
                     try
                     {
-                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
-                        fteofile = TR.ImportTxtFile(sourceFileName.StringResult);
-                        ParseData(dm,ed,sourceFileName, fteofile);
+                        TEntitySpatial fteofile = new TEntitySpatial();
+                        IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
+                        netFteo.IO.FileInfo fi = TR.ImportTxtFile(sourceFileName.StringResult);
+                        ParseData(dm,ed,sourceFileName, fi.MyBlocks.ParsedSpatial);
                     }
                     catch (PlatformDb.Runtime.Exception ex)
                     {

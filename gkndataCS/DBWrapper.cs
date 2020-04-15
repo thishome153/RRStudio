@@ -14,7 +14,10 @@ namespace GKNData
         
     {
         public static TAppCfgRecord Config;
-
+        /// <summary>
+        /// Stored messages from exceptions handlers, etc
+        /// </summary>
+        public static string LastErrorMsg;
         /// <summary>
         /// Logging application activity to db
         /// </summary>
@@ -216,7 +219,7 @@ namespace GKNData
             }
             catch (Exception ex)
             {
-                string exMesssage = ex.Message;
+                LastErrorMsg = ex.Message;
                 return false;
             }
 
@@ -236,7 +239,7 @@ namespace GKNData
             }
             catch (Exception ex)
             {
-                string exMesssage = ex.Message;
+                LastErrorMsg = ex.Message;
                 return false;
             }
             return true;
@@ -277,7 +280,7 @@ namespace GKNData
             }
             catch (Exception ex)
             {
-                string exMesssage = ex.Message;
+                LastErrorMsg = ex.Message;
                 return -1;
             }
 
@@ -384,7 +387,7 @@ namespace GKNData
             }
             catch (Exception ex)
             {
-                string exMesssage = ex.Message;
+                LastErrorMsg = ex.Message;
                 return -1;
             }
 
@@ -424,7 +427,7 @@ namespace GKNData
             }
             catch (Exception ex)
             {
-                string exMesssage = ex.Message;
+                LastErrorMsg = ex.Message;
                 return -1;
             }
 

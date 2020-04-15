@@ -312,23 +312,19 @@ namespace GKNData
 
                 if (listView1.SelectedItems.Count == 1)
                 {
-                    if (Delete_Entry((long)listView1.SelectedItems[0].Tag))// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
-                    listView1.Items.Remove(listView1.SelectedItems[0]);
+                        if (DBWrapper.EraseVidimus((long)listView1.SelectedItems[0].Tag, CF.conn))
+                        {
+                            if (ITEM.XmlBodyList.Remove(ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag)))
+                                listView1.Items.Remove(listView1.SelectedItems[0]);
+                        }
+                        else
+                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
                 }
             }
         }
 
-        private bool Delete_Entry(long item_id)
-        {
-            //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
-            {
-                if (DBWrapper.EraseVidimus(item_id, CF.conn))
-                {
-                  return  ITEM.XmlBodyList.Remove(ITEM.XmlBodyList.GetFile(item_id));
-                }
-            }
-            return false;
-        }
+        
 
 
 

@@ -358,6 +358,8 @@ namespace GKNData
                     ITEM.KPTXmlBodyList.Add(xmlUploaded);
                     ListFiles();
                 }
+                else
+                    MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
             }
 
             //All known types, excetpt KPT11
@@ -373,6 +375,9 @@ namespace GKNData
                     ITEM.KPTXmlBodyList.Add(xmlUploaded);
                     ListFiles();
                 }
+                else
+                    MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
         }
 
 
@@ -386,28 +391,21 @@ namespace GKNData
             if (listView1.SelectedItems.Count == 1)
             {
                 string message = "Удалить запись " + listView1.SelectedItems[0].SubItems[1].Text;
-                const string caption = "Подтвердите";
-                if (MessageBox.Show(message, caption,
+                if (MessageBox.Show(message, "Подтвердите",
                                               MessageBoxButtons.YesNo,
                                               MessageBoxIcon.Question) == DialogResult.Yes)
 
                 {
-                  if (  Delete_KPTEntry((long)listView1.SelectedItems[0].Tag))// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
-                    listView1.Items.Remove(listView1.SelectedItems[0]);
-                }
-            }
-        }
+                    if (DBWrapper.EraseKPT((long)listView1.SelectedItems[0].Tag, CF.conn))// ReadXMLfromSelectedNode((int)listView1.SelectedItems[0].Tag);
+                    {
+                        if (ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag)))
+                            listView1.Items.Remove(listView1.SelectedItems[0]);
+                    }
+                    else
+                        MessageBox.Show(DBWrapper.LastErrorMsg, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Question);
 
-        private bool Delete_KPTEntry(long item_id)
-        {
-            //if (ITEM.KPTXmlBodyList.Exists(ITEM.KPTXmlBodyList.GetFile(item_id)))
-            {
-                if (DBWrapper.EraseKPT(item_id, CF.conn))
-                {
-                  return  ITEM.KPTXmlBodyList.Remove(ITEM.KPTXmlBodyList.GetFile(item_id));
                 }
             }
-            return false;
         }
 
         private void СохранитьToolStripMenuItem_Click(object sender, EventArgs e)
