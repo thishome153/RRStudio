@@ -50,6 +50,7 @@ namespace GKNData
             this.comboBox_CharSet.Text = this.Cfg.CharSet;
             this.textBox_pswrd.Text = this.Cfg.UserPwrd;
 			this.textBox_TimeOut.Text = this.Cfg.IddleTimeOut;
+            textBox_max_allowed_packet.Text = "100500";
 		}
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
