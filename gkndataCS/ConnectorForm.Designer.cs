@@ -45,13 +45,13 @@ namespace GKNData
             this.comboBox_Database = new System.Windows.Forms.ComboBox();
             this.textBox_Port = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBox_max_allowed_packet = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.textBox_TimeOut = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox_max_allowed_packet = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -234,6 +234,25 @@ namespace GKNData
             this.tabPage2.Text = "Common";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // textBox_max_allowed_packet
+            // 
+            this.textBox_max_allowed_packet.Location = new System.Drawing.Point(179, 102);
+            this.textBox_max_allowed_packet.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_max_allowed_packet.Name = "textBox_max_allowed_packet";
+            this.textBox_max_allowed_packet.Size = new System.Drawing.Size(193, 23);
+            this.textBox_max_allowed_packet.TabIndex = 21;
+            this.textBox_max_allowed_packet.Text = "MySQL Server Variable";
+            this.textBox_max_allowed_packet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 102);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(138, 17);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "max_allowed_packet";
+            // 
             // textBox_TimeOut
             // 
             this.textBox_TimeOut.Location = new System.Drawing.Point(124, 56);
@@ -286,24 +305,6 @@ namespace GKNData
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 102);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(138, 17);
-            this.label8.TabIndex = 20;
-            this.label8.Text = "max_allowed_packet";
-            // 
-            // textBox_max_allowed_packet
-            // 
-            this.textBox_max_allowed_packet.Location = new System.Drawing.Point(179, 102);
-            this.textBox_max_allowed_packet.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_max_allowed_packet.Name = "textBox_max_allowed_packet";
-            this.textBox_max_allowed_packet.Size = new System.Drawing.Size(156, 23);
-            this.textBox_max_allowed_packet.TabIndex = 21;
-            this.textBox_max_allowed_packet.Text = "MySQL Server Variable";
             // 
             // ConnectorForm
             // 

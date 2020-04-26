@@ -245,6 +245,32 @@ namespace GKNData
             return true;
         }
 
+
+        public static long DB_GetMySQLVariable(string VarName, MySqlConnection conn)
+        {
+            MySqlCommand cmd = new MySqlCommand(
+           "show global variables WHERE  Variable_name ='" + VarName + "'", conn);
+
+            try
+            {
+                //object resO =   cmd.ExecuteScalar();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    long VarValue = Convert.ToInt64(reader["Value"]);
+                    reader.Close();
+                    return VarValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                LastErrorMsg = ex.Message;
+                return -1;
+            }
+
+            return -2;
+        }
+
         public static long DB_AddBlock_KPT(long block_id, TFile KPT, MySqlConnection conn)
         {
 
