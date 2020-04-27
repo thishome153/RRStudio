@@ -683,6 +683,38 @@ namespace GKNData
                 frmReader.Left = this.Left + 25; frmReader.Top = this.Top + 25;
                 frmReader.ShowDialog(this);
             }
+
+            // got xml file of several kind:
+            if (EXTention.Equals(".XML"))
+            {
+                byte[] File_BLOB = File.ReadAllBytes(FileName);
+                //parse XMlDocument as stream:
+                netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(File_BLOB));
+                //so go on:
+                if (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10)
+                {
+                    if (CadBloksList.Blocks.Exists(x => x.CN == ParsedDoc.MyBlocks.SingleCN))
+                    {
+                       if ( CadBloksList.Blocks.Select(x => x.CN == ParsedDoc.MyBlocks.SingleCN))
+                        {
+
+                        }
+
+                    }
+                    else
+                    {
+                        // Need new Block
+                        TMyCadastralBlock block = new TMyCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        insertItem(block, null);
+                        if (Edit(block))
+                        {
+
+                        }
+                    }
+                }
+            }
+
+
             //may be here packet with RR response: zip archive, containing xml with detached signature
             if (EXTention.Equals(".ZIP"))
             {

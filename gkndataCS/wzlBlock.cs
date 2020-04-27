@@ -362,7 +362,7 @@ namespace GKNData
                     MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
             }
 
-            //All known types, excetpt KPT11
+            //All known types, except KPT11
             if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT05) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT06) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT07) ||
