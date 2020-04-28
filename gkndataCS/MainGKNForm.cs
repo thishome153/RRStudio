@@ -149,6 +149,8 @@ namespace GKNData
             DBWrapper.Config = CF.Cfg;
             string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect App V" + ver, CF.conn);
+            toolStripButton_Connect.Enabled = false;
+            MenuItem_Connect.Enabled = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
 #if !DEBUG
@@ -236,6 +238,8 @@ namespace GKNData
                 this.treeView1.BackColor = Color.DarkGray;
                 loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
                 loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
+                toolStripButton_Connect.Enabled = true;
+                MenuItem_Connect.Enabled = true;
                 toolStripProgressBar1.Value = 0;
             }
             StatusLabel_AllMessages.Text = "";
@@ -298,7 +302,7 @@ namespace GKNData
         }
 
         //теперь Проверка количества зу в квартале:
-        private bool CheckParcels(MySqlConnection conn, int block_id)
+        private bool CheckParcels(MySqlConnection conn, long block_id)
         {
             if (conn == null) return false;
             /*
@@ -426,6 +430,85 @@ namespace GKNData
             else return false;
         }
 
+        private bool Erase(TCurrentItem Item)
+        {
+            if (this.CF.conn.State == ConnectionState.Closed) return false;
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+            {
+                TMyCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
+                if (Erase(block, CF.conn))
+                {
+                    // Update node after changes
+                    treeView1.Nodes.Remove(treeView1.SelectedNode);
+                }
+            }
+
+            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+            {
+                if (Erase(CadBloksList.GetParcel(Item.Item_id),CF.conn))
+                {
+                    // Update node while editing
+                    treeView1.Nodes.Remove(treeView1.SelectedNode);
+                }
+            }
+            return false;
+        }
+
+        private bool Erase(TMyCadastralBlock block, MySqlConnection conn)
+        {
+            string message = "Удалить " + block.CN;
+            if (MessageBox.Show(message, "Подтвердите",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                //kill docs
+                foreach (TFile file in block.KPTXmlBodyList)
+                {
+                    if (DBWrapper.EraseKPT(file.id, conn))
+                    {
+                        // kill file body
+                        file.File_BLOB = null;
+                    }
+                }
+
+                foreach(TMyParcel Parcel in block.Parcels)
+                {
+                    Erase(Parcel, conn);
+                }
+
+                if (DBWrapper.EraseBlock(block.id, conn))
+                    return true;
+                else
+                    MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
+            }
+            return false;
+        }
+
+        private bool Erase(TMyParcel parcel, MySqlConnection conn)
+        {
+            string message = "Удалить " + parcel.CN;
+            if (MessageBox.Show(message, "Подтвердите",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                //kill docs
+                foreach (TFile file in parcel.XmlBodyList)
+                {
+                    if (DBWrapper.EraseVidimus(file.id, conn))
+                    {
+                        // kill file body
+                        file.File_BLOB = null;
+                    }
+                }
+                if (DBWrapper.EraseParcel(parcel.id, conn))
+                    return true;
+                else
+                    MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
+            }
+            return false;
+        }
 
         private TMyParcelCollection LoadParcelsList(MySqlConnection conn, int block_id)
         {
@@ -463,6 +546,7 @@ namespace GKNData
 
             TMyBlockCollection CadBloksList = new TMyBlockCollection();
             CadBloksList.DistrictName = distr_id.ToString();
+            CadBloksList.District_id = distr_id;
 
             data = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
@@ -494,7 +578,7 @@ namespace GKNData
                 Block.Comments = dataReader["block_comment"].ToString();
                 //Загрузка участков - только при expande ??? Но тогда в начае неизвестно
                 Block.HasParcels = CheckParcels(conn2, Block.id);// Set only parcel present flag
-                CadBloksList.Blocks.Add(Block);
+                CadBloksList.AddBlock(Block);
 
                 // data.Rows.Add(dataReader);
                 // Update progress view..
@@ -670,10 +754,10 @@ namespace GKNData
             string EXTention = Path.GetExtension(FileName).ToUpper();
 
             // got spatial file of several kind:
-            if ((EXTention.Equals(".MIF")) ||
-                (EXTention.Equals(".DXF")) ||
-                (EXTention.Equals(".TXT")) ||
-                (EXTention.Equals(".XML")))
+            if (EXTention.Equals(".MIF") ||
+                EXTention.Equals(".DXF") ||
+                EXTention.Equals(".TXT") 
+                )
             {
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
                 frmReader.DocInfo.FileName = FileName;
@@ -687,29 +771,41 @@ namespace GKNData
             // got xml file of several kind:
             if (EXTention.Equals(".XML"))
             {
-                byte[] File_BLOB = File.ReadAllBytes(FileName);
                 //parse XMlDocument as stream:
-                netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(File_BLOB));
+                netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(File.ReadAllBytes(FileName)));
                 //so go on:
+                //case 1  - got KPT kind:
                 if (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10)
                 {
-                    if (CadBloksList.Blocks.Exists(x => x.CN == ParsedDoc.MyBlocks.SingleCN))
+                    if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
-                       if ( CadBloksList.Blocks.Select(x => x.CN == ParsedDoc.MyBlocks.SingleCN))
-                        {
-
-                        }
-
+                        TMyCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
+                        wzlBlockEd blEd = new wzlBlockEd();
+                        blEd.ImportXMLKPT(FileName, block, CF.conn);
                     }
                     else
                     {
                         // Need new Block
                         TMyCadastralBlock block = new TMyCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
-                        insertItem(block, null);
-                        if (Edit(block))
-                        {
+                        block.Parent_id = CF.Cfg.District_id;
 
+                        if (DBWrapper.DB_AppendBlock(block, CF.conn) > 0)
+                        {
+                            CadBloksList.AddBlock(block); // need apdate treeview
+                            insertItem(block, treeView1);
+                            wzlBlockEd blEd = new wzlBlockEd();
+                            blEd.ImportXMLKPT(FileName, block, CF.conn);
+                            /*
+                            if (Edit(block))
+                            {
+                                treeView1.SelectedNode.ToolTipText = block.Comments;
+                                treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
+                            }
+                            */
                         }
+                        else
+                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+
                     }
                 }
             }
@@ -1241,6 +1337,11 @@ namespace GKNData
             {
                 Clipboard.SetText(treeView1.SelectedNode.Text);
             }
+        }
+
+        private void УдалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Erase(CF.Cfg.CurrentItem);
         }
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)

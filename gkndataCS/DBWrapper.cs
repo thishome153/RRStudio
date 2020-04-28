@@ -145,6 +145,37 @@ namespace GKNData
             return last_id;
         }
 
+        public static long DB_AppendBlock(TMyCadastralBlock block, MySqlConnection conn)
+        {
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            
+            //string lot_small_kn = parcel.CN.Split(':').Last().ToString();
+
+            MySqlCommand cmd = new MySqlCommand(
+
+            "INSERT INTO blocks(block_id, block_kn, block_status, block_name, district_id)" + "" +
+            "              VALUES(NULL,  ?block_kn,?block_status,?block_name,?district_id)", conn);
+
+            //cmd.Parameters.Add("?lottable_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?block_kn", MySqlDbType.VarChar).Value = block.CN;
+            cmd.Parameters.Add("?block_name", MySqlDbType.VarChar).Value = block.Name;
+            cmd.Parameters.Add("?district_id", MySqlDbType.Int32).Value = block.Parent_id;
+            cmd.Parameters.Add("?block_status", MySqlDbType.Int32).Value = 0;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                LastErrorMsg = ex.Message;
+                return -1;
+            }
+
+            int last_id = (int)cmd.LastInsertedId; // crop them to INT
+            block.id = last_id; // update
+            DBWrapper.DB_AppendHistory(ItemTypes.it_Block, last_id, 50, last_id.ToString() + " " + block.CN + "++", conn);
+            return last_id;
+        }
 
         /// <summary>
         /// Update cadastral block
@@ -206,13 +237,51 @@ namespace GKNData
             return true;
         }
 
+        public static bool EraseBlock(int block_id, MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                 "DELETE FROM blocks WHERE `block_id`= ?block_id", conn);
+                cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = block_id;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                LastErrorMsg = ex.Message;
+                return false;
+            }
+
+            return true;
+        }
+
+
+        public static bool EraseParcel(long parcel_id, MySqlConnection conn)
+        {
+            if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(
+                 "DELETE FROM lottable WHERE `lottable_id`= ?lottable_id", conn);
+                cmd.Parameters.Add("?lottable_id", MySqlDbType.Int32).Value = parcel_id;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                LastErrorMsg = ex.Message;
+                return false;
+            }
+            return true;
+        }
+
         public static bool EraseKPT(long KPT_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
             try
             {
                 MySqlCommand cmd = new MySqlCommand(
-                 "DELETE FROM `gkndatabase`.`kpt` WHERE `kpt_id`= ?kpt_id", conn);
+                 "DELETE FROM kpt WHERE `kpt_id`= ?kpt_id", conn);
 
                 cmd.Parameters.Add("?kpt_id", MySqlDbType.Int32).Value = KPT_id;
                 cmd.ExecuteNonQuery();
@@ -232,7 +301,7 @@ namespace GKNData
             try
             {
                 MySqlCommand cmd = new MySqlCommand(
-                 "DELETE FROM `gkndatabase`.`vidimus` WHERE `vidimus_id`= ?vidimus_id", conn);
+                 "DELETE FROM vidimus WHERE `vidimus_id`= ?vidimus_id", conn);
 
                 cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id;//
                 cmd.ExecuteNonQuery();
@@ -372,11 +441,17 @@ namespace GKNData
                     data.Dispose();
                     return outbyte;
                 }
-                else return null;
+                else
+                {
+                    da.Dispose();
+                    return null;
+                }
             }
             catch (Exception ex)
             {
                 object exept = ex;
+                da.Dispose();
+                data.Dispose();
                 return null;
             }
         }
@@ -506,7 +581,7 @@ namespace GKNData
         /// <param name="conn"></param>
         /// <param name="block_id">id квартала</param>
         /// <returns></returns>
-        public static TFiles LoadBlockFiles(MySqlConnection conn, int block_id)
+        public static TFiles LoadBlockFiles(MySqlConnection conn, long block_id)
         {
 
             TFiles files = new TFiles();

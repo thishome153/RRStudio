@@ -28,15 +28,15 @@
 			DocumentCollection dm = Platform.ApplicationServices.Application.DocumentManager;
 			// Get the command line editor object
 			Editor ed = dm.MdiActiveDocument.Editor;
-			ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
+			ed.WriteMessage("\nFixosoft Nanocad plugin @2015-20. v" + AssemblyVersion());
 			ed.WriteMessage("\nInstance created. Log success");
 		}
             private bool ParseData(DocumentCollection dm, Editor ed, PromptFileNameResult sourceFileName, TEntitySpatial FteoFile)
             {
                 if (FteoFile == null) return false;
-                ed.WriteMessage("\nFixosoft Nanocad plugin @2015-19. v" + AssemblyVersion());
-                ed.WriteMessage("\nОбработка файла " + Path.GetFileNameWithoutExtension(sourceFileName.StringResult));
-                ed.WriteMessage("\nРазбор файла  " + sourceFileName.StringResult);
+                ed.WriteMessage("\nFixosoft Nanocad plugin @2015-20. v" + AssemblyVersion());
+                ed.WriteMessage("\nRead file " + Path.GetFileNameWithoutExtension(sourceFileName.StringResult));
+                ed.WriteMessage("\nParse file  " + sourceFileName.StringResult);
                 if (FteoFile.Count == 0) { ed.WriteMessage("\nОшибка файла - пустой файл. Проверьте формат и файл!"); return false; };
                 /*   0 - Creates a point at 5 percent of the drawing area height.
                     >0 - Specifies an absolute size [The "Set Size in Absolute Units" is selected].
@@ -281,10 +281,11 @@
                     ed.WriteMessage("\nИмпорт  CSV файла (Technocad)");
                     try
                     {
-                        netFteo.Spatial.TEntitySpatial fteofile = new TEntitySpatial();
-                        netFteo.IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
-                        fteofile = TR.ImportCSVFile();
-                        ParseData(dm, ed, sourceFileName, fteofile);
+                        TEntitySpatial ES = new TEntitySpatial();
+                        IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
+                        ES = TR.ImportCSVFile();
+                        ES.RemovePointDescriptions();
+                        ParseData(dm, ed, sourceFileName, ES);
                     }
                     catch (PlatformDb.Runtime.Exception ex)
                     {

@@ -163,7 +163,8 @@ namespace netFteo.IO
         private TPoint CSV_Parse_point(string[] src)
         {
             TPoint FilePoint = new TPoint();
-            FilePoint.NumGeopointA = src[2].ToString();
+            FilePoint.Definition = src[2].ToString(); // PointName
+            //FilePoint.Pref = src[1].ToString(); // Point name prefix, z.b. "n"
             if (src.Length > 11)
                 FilePoint.Description = src[11].ToString();
 
@@ -202,7 +203,7 @@ namespace netFteo.IO
             {
                 //FilePoint.oldX = FilePoint.x;
                 //FilePoint.oldY = FilePoint.y;
-                FilePoint.Status = 6; // exist, not changed
+                FilePoint.Status = 4; // exist, not changed
             }
             return FilePoint;
         }

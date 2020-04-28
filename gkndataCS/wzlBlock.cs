@@ -42,7 +42,7 @@ namespace GKNData
             textBox_Block_Komment.Text = ITEM.Comments;
             pkk5Viewer1.Server.mapScale = 5000; // Для квартала старт с М5000
             pkk5Viewer1.Start(ITEM.CN, pkk5_Types.Block);
-            ListFiles();
+            ListFiles(ITEM);
             this.BlockHistory = new netFteo.Spatial.TFileHistory(ITEM.id);
             if (!backgroundWorker_History.IsBusy)
                 backgroundWorker_History.RunWorkerAsync();
@@ -65,10 +65,10 @@ namespace GKNData
             }
         }
         // Отображение файлов в listview- КПТ
-        private void ListFiles()
+        private void ListFiles(TMyCadastralBlock Block)
         {
             listView1.Items.Clear();
-            foreach (TFile file in ITEM.KPTXmlBodyList)
+            foreach (TFile file in Block.KPTXmlBodyList)
             {
                 ListViewItem LV = new ListViewItem(file.Doc_Date);
                 LV.Tag = file.id;
@@ -329,11 +329,11 @@ namespace GKNData
             od.FileName = "";
             if (od.ShowDialog() == DialogResult.OK)
             {
-                ImportXMLKPT(od.FileName);
+                ImportXMLKPT(od.FileName, ITEM, this.CF.conn);
             }
         }
 
-        public void ImportXMLKPT(string FileName)
+        public void ImportXMLKPT(string FileName, TMyCadastralBlock TargetBlock, MySqlConnection conn)
         {
             FileInfo fi = new FileInfo(FileName);
             TFile xmlUploaded = new TFile();
@@ -353,10 +353,10 @@ namespace GKNData
             //wich type of KPT accquried:? 
             if (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT11)
             {
-                if (DBWrapper.DB_AddBlock_KPT11(ITEM.id, xmlUploaded, CF.conn) > 0)             //KPT11
+                if (DBWrapper.DB_AddBlock_KPT11(TargetBlock.id, xmlUploaded, conn) > 0)             //KPT11
                 {
-                    ITEM.KPTXmlBodyList.Add(xmlUploaded);
-                    ListFiles();
+                    TargetBlock.KPTXmlBodyList.Add(xmlUploaded);
+                    ListFiles(TargetBlock);
                 }
                 else
                     MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -370,10 +370,13 @@ namespace GKNData
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT09) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPT10))
 
-                if (DBWrapper.DB_AddBlock_KPT(ITEM.id, xmlUploaded, CF.conn) > 0)
+                //TODO: check if file with same filename already in DB: ?
+                // ??
+
+                if (DBWrapper.DB_AddBlock_KPT(TargetBlock.id, xmlUploaded, conn) > 0)
                 {
-                    ITEM.KPTXmlBodyList.Add(xmlUploaded);
-                    ListFiles();
+                    TargetBlock.KPTXmlBodyList.Add(xmlUploaded);
+                    ListFiles(TargetBlock);
                 }
                 else
                     MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);

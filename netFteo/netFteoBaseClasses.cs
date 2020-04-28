@@ -792,6 +792,7 @@ namespace netFteo.Spatial
         /// Reset old values of ordinates - like tnewContour
         /// </summary>
         void ResetOrdinates();
+        void ResetStatus(string Prefix);
         void ExchangeOrdinates();
         void DetectSpins(IPointList src);
         int ReorderPoints(int StartNumber);
@@ -975,7 +976,7 @@ namespace netFteo.Spatial
         {
             foreach (TPoint pt in this)
             {
-                pt.NumGeopointA = StartIndex++.ToString();
+                pt.Definition = StartIndex++.ToString();
             }
             /*
 			if (this.Closed)
@@ -992,7 +993,15 @@ namespace netFteo.Spatial
                 pt.oldY = Coordinate.NullOrdinate;
             }
         }
+        public void ResetStatus(string Prefix)
+        {
+            foreach (TPoint pt in this)
+            {
+                pt.Status = 0;
+                pt.Pref = Prefix;
+            }
 
+        }
 
         public void SetMt(double mt)
         {
@@ -1021,7 +1030,7 @@ namespace netFteo.Spatial
             ListViewItem res = null; ;
             for (int i = 0; i <= Count - 1; i++)
             {
-                BName = this[i].Pref + this[i].NumGeopointA + this[i].OrdIdent;
+                BName = this[i].Pref + this[i].Definition + this[i].OrdIdent;
                 ListViewItem LVi = new ListViewItem();
                 LVi.Text = BName;
                 //LVi.Tag = this[i].id;
@@ -1173,13 +1182,13 @@ namespace netFteo.Spatial
                 {
                     if (!Double.IsNaN(this[i].x))
                     {
-                        Xsumm = Xsumm + (this[i].x);
-                        Ysumm = Ysumm + (this[i].y);
+                        Xsumm += (this[i].x);
+                        Ysumm += (this[i].y);
                         pointcnt++;
                     }
                 }
                 TPoint Respoint = new TPoint();
-                Respoint.NumGeopointA = "Center";
+                Respoint.Definition = "Center";
                 Respoint.x = Xsumm / pointcnt;
                 Respoint.y = Ysumm / pointcnt;
                 return Respoint;
@@ -1774,7 +1783,7 @@ namespace netFteo.Spatial
                     Ysumm = Ysumm + (this[i].y + this[i + 1].y) * (this[i].x * this[i + 1].y - this[i + 1].x * this[i].y);
                 }
                 TPoint Respoint = new TPoint();
-                Respoint.NumGeopointA = "Centroid";
+                Respoint.Definition = "Centroid";
                 Respoint.x = Xsumm * (1 / (6 * Area));
                 Respoint.y = Ysumm * (1 / (6 * Area));
                 return Respoint;
@@ -1994,7 +2003,6 @@ namespace netFteo.Spatial
             base.ResetOrdinates();
             foreach (TRing child in this.Childs)
                 child.ResetOrdinates();
-
         }
 
         public new void SetMt(double mt)
@@ -2002,6 +2010,11 @@ namespace netFteo.Spatial
             base.SetMt(mt);
             foreach (TRing child in this.Childs)
                 child.SetMt(mt);
+        }
+
+        void ResetStatus(string Prefix)
+        {
+
         }
 
         public new bool RemovePoint(int PointID)
@@ -2036,13 +2049,13 @@ namespace netFteo.Spatial
                 LVi.SubItems.Add(points[i].Description);
 
                 LVi.ForeColor = TMyColors.StatusToColor(points[i].State);
-                /*
+                
 				if (points[i].Pref == "н")
 					LVi.ForeColor = System.Drawing.Color.Red;
 				else LVi.ForeColor = System.Drawing.Color.Black;
 				if (points[i].Status == 6)
 					LVi.ForeColor = System.Drawing.Color.Blue;
-				*/
+				
                 //if (i == 0) res = LV.Items.Add(LVi);
                 //else
                 LV.Items.Add(LVi);
@@ -3003,7 +3016,7 @@ namespace netFteo.Spatial
             }
         }
         public string CadastralBlock;
-        public int CadastralBlock_id;
+        public long CadastralBlock_id;
         public string AreaGKN;
         /// <summary>
         /// Значение, указаное
@@ -4291,6 +4304,10 @@ namespace netFteo.Spatial
     public class TMyCadastralBlock
     {
         public int id;
+        /// <summary>
+        /// District id
+        /// </summary>
+        public int Parent_id;
         public bool HasParcels;
         public TMyPolygon Entity_Spatial;
         public TMyParcelCollection Parcels;
@@ -4461,6 +4478,7 @@ namespace netFteo.Spatial
     /// </summary>
     public class TMyBlockCollection
     {
+        public int District_id;
         public string DistrictCN;   // Кадастровый номер района
         public string DistrictName; // Название района
         public List<TMyCadastralBlock> Blocks;
@@ -4523,6 +4541,12 @@ namespace netFteo.Spatial
                 else
                     return null;
             }
+        }
+
+        public void AddBlock(TMyCadastralBlock block)
+        {
+            block.Parent_id = District_id;
+            this.Blocks.Add(block);
         }
 
         public Object GetEs(int Item_id)
@@ -4716,12 +4740,39 @@ namespace netFteo.Spatial
 
         public TMyCadastralBlock GetBlock(long id)
         {
-            for (int i = 0; i <= this.Blocks.Count - 1; i++)
+            if (this.Blocks.Exists(x => x.id == id))
             {
-                if (this.Blocks[i].id == id)
-                    return this.Blocks[i];
-            }
+                return Blocks.Find(x => x.id == id);
+                    }
+            else
+                /* TODO :  kill
+                for (int i = 0; i <= this.Blocks.Count - 1; i++)
+                {
+                    if (this.Blocks[i].id == id)
+                        return this.Blocks[i];
+                }
+                */
             return null;
+        }
+
+        public bool BlockExist(int id)
+        {
+            return Blocks.Exists(PredicateAkaBlock => PredicateAkaBlock.id == id);
+        }
+
+        public bool BlockExist(string cn)
+        {
+            return Blocks.Exists(PredicateAkaBlock => PredicateAkaBlock.CN  == cn);
+        }
+
+        public TMyCadastralBlock GetBlock(string CN)
+        {
+            if (this.Blocks.Exists(x => x.CN == CN))
+            {
+                return Blocks.Find(x => x.CN == CN);
+            }
+            else
+                return null;
         }
 
 
@@ -5054,12 +5105,33 @@ namespace netFteo.Spatial
         public void RemoveParentCN(string ParentCN)
         {
             if (ParentCN == null) return;
-            foreach (Spatial.IGeometry poly in this)
+            foreach (IGeometry poly in this)
             {
                 if (poly.Definition != null &&
                     poly.Definition.Contains(ParentCN))
                     if (poly.Definition.Substring(0, ParentCN.Length) == ParentCN)
                         poly.Definition = poly.Definition.Substring(ParentCN.Length);
+            }
+        }
+
+        /// <summary>
+        /// Remove Elevation, Codes, descriptions for polygons
+        /// </summary>
+        public void RemovePointDescriptions()
+        {
+            foreach (IGeometry feature in this)
+            {
+                
+                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                {
+                     TMyPolygon poly = (TMyPolygon)feature;
+                    foreach (TPoint pt in poly)
+                    {
+                        pt.Description = "erased Description";
+                        pt.Code = "erased Code";
+                        pt.z = Coordinate.NullOrdinate;
+                    }
+                }
             }
         }
 

@@ -120,9 +120,9 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Плагин Nanocad 
 Представляет функции импорта из файлов
-xml  - IMPORT_xml - netfteo::Baseclasses
+csv  - IMPORT_csv - TechnocadExpress csv format
 mif   - IMPORT_mif - Mapinfo import file format
-txt  - IMPORT_TextFiles -  Fixosoft #2014, 2015, 2016, 2018
+txt  - IMPORT_TextFiles -  Fixosoft #2014 - 2018
          IMPORT_PKZO  - типа ПКЗО
 </value>
   </data>

@@ -4718,11 +4718,11 @@ LV.Items.Add(LVipP);
         }
 
         /// <summary>
-        /// Проверка топокорректности Пространственных данных 
+        /// Проверка топокорректности Пространственных данных and set spinned point
         /// </summary>
         private void TopoCheck(TreeNode STrN)
         {
-            netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
+             TPoint test = new netFteo.Spatial.TPoint();
 
             openFileDialog1.Filter = "Про$транственные данные|*.mif";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
@@ -4786,9 +4786,6 @@ LV.Items.Add(LVipP);
                                 ViewWindow.CreateView(ES);
                             }
                         }
-
-
-
                     }
                 }
 
@@ -4819,16 +4816,12 @@ LV.Items.Add(LVipP);
         /// </summary>
         private void TopoCheckSpin(TreeNode STrN, string FileName)
         {
-            netFteo.Spatial.TPoint test = new netFteo.Spatial.TPoint();
-
             if (STrN.Name.Contains("ES."))
             {
-
                 IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
                 if (Entity != null)
                     if (Entity.TypeName == "netFteo.Spatial.TEntitySpatial")
                     {
-
                         //подключим обработчик события
                         netFteo.IO.MIFReader mifreader = new netFteo.IO.MIFReader(FileName);
                         mifreader.OnParsing += XMLStateUpdater;
@@ -4836,9 +4829,7 @@ LV.Items.Add(LVipP);
                         TEntitySpatial SourceES = (TEntitySpatial)Entity;
                         SourceES.DetectSpins(polyfromMIF);
                         PointList res = new PointList();
-
                     }
-
             }
         }
 
@@ -5073,13 +5064,8 @@ LV.Items.Add(LVipP);
             }
         }
 
-        private void ававааToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
+    
+        // Format points for cadastral usage
         private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
@@ -5087,6 +5073,8 @@ LV.Items.Add(LVipP);
             {
                 Feature.Fraq("0.00");
                 Feature.SetMt(0.1); // Also set Mt= 0.1
+                Feature.ResetOrdinates();
+                Feature.ResetStatus("н");
                 Feature.ShowasListItems(listView1, true);
             }
         }
