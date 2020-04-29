@@ -477,7 +477,10 @@ namespace GKNData
                 }
 
                 if (DBWrapper.EraseBlock(block.id, conn))
+                {
+                    CadBloksList.Blocks.Remove(block);
                     return true;
+                }
                 else
                     MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
 
@@ -633,7 +636,11 @@ namespace GKNData
 
 
 
-        //Добавление квартала
+        /// <summary>
+        /// Insert node for Cadatastral Block
+        /// </summary>
+        /// <param name="item">CadastralBlock</param>
+        /// <param name="hParent">Target Treeview</param>
         private void insertItem(TMyCadastralBlock item, TreeView hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);//nodeName);
@@ -789,23 +796,20 @@ namespace GKNData
                         TMyCadastralBlock block = new TMyCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
                         block.Parent_id = CF.Cfg.District_id;
 
-                        if (DBWrapper.DB_AppendBlock(block, CF.conn) > 0)
+                        //if (Edit(block)) //if user OK, insert item into DB and collctions TODO set TAG for detect behavior : "onInsert on onEdit"
                         {
-                            CadBloksList.AddBlock(block); // need apdate treeview
-                            insertItem(block, treeView1);
-                            wzlBlockEd blEd = new wzlBlockEd();
-                            blEd.ImportXMLKPT(FileName, block, CF.conn);
-                            /*
-                            if (Edit(block))
+                            if (DBWrapper.DB_AppendBlock(block, CF.conn) > 0)
                             {
-                                treeView1.SelectedNode.ToolTipText = block.Comments;
-                                treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
+                                CadBloksList.AddBlock(block); 
+                                wzlBlockEd blEd = new wzlBlockEd();
+                                blEd.ImportXMLKPT(FileName, block, CF.conn);
+                                insertItem(block, treeView1);
+                                //treeView1.SelectedNode.ToolTipText = block.Comments;
+                                //treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
                             }
-                            */
+                            else
+                                MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
                         }
-                        else
-                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
-
                     }
                 }
             }
