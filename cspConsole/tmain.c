@@ -131,7 +131,7 @@ int MAIN (int argc, char **argv)
     opterr = 1;
 	printf("\n\n\n\n");
 	printf("**********************************************************\n");
-	printf("my CSP cli. 2019 VisualStudio 2019 CE recompilation \n\n");
+	printf("my CSP cli. 2020 VisualStudio 2019 CE recompilation \n\n");
 #ifdef SoftName    printf(SoftName " program: %s \n");
    printf(" parse comand line.... \n");
 #endif
@@ -365,12 +365,11 @@ bad:
 	fprintf(stdout,"  -csp-check    check CSP functionality\n");
 #endif /* TCSPCHECK */
 	fprintf(stdout, "  -boost            Boost library testing example1 \n");
+	fprintf(stdout, "  -kP		         getKeyParams \n");
     }
 
 
-
-
- // ¬ывод времени... необ€хательное, но красиво
+ // Print elapses time:
 	if( !notime )
     {
 	curTime = MTimeGet(NULL);

@@ -1,5 +1,8 @@
 
-cspconsole.exe -sfsign -sign -my Ромаш Жа Юр  -in gkuzu.xml - out gkuzu.xml.sig -detached
+
+#cli tool for CSP cspconsole.exe
+
+### cspconsole.exe -sfsign -sign -my Ромаш Жа Юр  -in gkuzu.xml - out gkuzu.xml.sig -detached
 
  parse comand line....
 Source message length: 12524

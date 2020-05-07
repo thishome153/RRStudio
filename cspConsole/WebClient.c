@@ -640,7 +640,7 @@ CreateCredentials(
     //
 
 
-    Status = g_SecurityFunc.AcquireCredentialsHandleA(
+    Status = g_SecurityFunc.AcquireCredentialsHandleW(
                         NULL,                   // Name of principal    
                         UNISP_NAME_A,           // Name of package
                         SECPKG_CRED_OUTBOUND,   // Flags indicating use
@@ -827,7 +827,7 @@ DisconnectFromServer(
     OutBuffer.pBuffers  = OutBuffers;
     OutBuffer.ulVersion = SECBUFFER_VERSION;
 
-    Status = g_SecurityFunc.InitializeSecurityContextA(
+    Status = g_SecurityFunc.InitializeSecurityContextW(
                     phCreds,
                     phContext,
                     NULL,
@@ -933,7 +933,7 @@ PerformClientHandshake(
     OutBuffer.pBuffers = OutBuffers;
     OutBuffer.ulVersion = SECBUFFER_VERSION;
 
-    scRet = g_SecurityFunc.InitializeSecurityContextA(
+    scRet = g_SecurityFunc.InitializeSecurityContextW(
                     phCreds,
                     NULL,
                     noCache ? NULL : pszServerName,
@@ -1129,7 +1129,7 @@ ClientHandshakeLoop(
         // Call InitializeSecurityContext.
         //
 
-        scRet = g_SecurityFunc.InitializeSecurityContextA(phCreds,
+        scRet = g_SecurityFunc.InitializeSecurityContextW(phCreds,
                                           phContext,
                                           NULL,
                                           dwSSPIFlags,
@@ -2036,7 +2036,7 @@ GetNewClientCredentials(
         SchannelCred.cCreds = 1;
         SchannelCred.paCred = &pCertContext;
 
-        Status = g_SecurityFunc.AcquireCredentialsHandleA(
+        Status = g_SecurityFunc.AcquireCredentialsHandleW(
                             NULL,                   // Name of principal
                             UNISP_NAME_A,           // Name of package
                             SECPKG_CRED_OUTBOUND,   // Flags indicating use

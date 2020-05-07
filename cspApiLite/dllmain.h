@@ -13,4 +13,5 @@
 extern "C"
 {
 	DLL_EXPORTABLE int   SignFile_api_Lite(char* FileName, PCCERT_CONTEXT SignerCertificat);
+	DLL_EXPORTABLE DWORD CertKeyParams(PCCERT_CONTEXT Certificat);
 }

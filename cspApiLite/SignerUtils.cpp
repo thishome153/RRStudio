@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "SignerUtils.h"
 #include "cspUtilsIO.h"
-//#include "MyStrMarshal.h"
-#include "cades.h"
-//#include <wincrypt.h>
+#include <wincrypt.h>
 #include "WinCryptEx.h"// Интерфейс КриптоПро CSP, добавление к WinCrypt.h
 #include <vector>
 
@@ -12,6 +10,9 @@
 
 
 namespace SignerUtils {
+
+	
+
 
 	namespace wincrypt {
 		//Подпись файла через Wincrypt
@@ -112,6 +113,50 @@ namespace SignerUtils {
 			return -1;
 		}
 
+		//Get certificate params, "CRYPT_EXPORT - Allow key to be exported."
+		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert)
+		{
+			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
+			DWORD dwKeySpecSender;
+			HCRYPTKEY hKey;
+			if (CryptAcquireCertificatePrivateKey(SignerCert,
+				0,
+				NULL,
+				&hProvSender,
+				&dwKeySpecSender,
+				NULL))
+			{
+				// Получение дескриптора закрытого ключа
+				if (CryptGetUserKey(
+					hProvSender,
+					dwKeySpecSender,
+					&hKey))
+				{
+					DWORD DataLen = NULL;
+					static BYTE* pbData = NULL;
+					if (CryptGetKeyParam(hKey, KP_PERMISSIONS, NULL, &DataLen, 0))
+					{
+						pbData = (BYTE*)malloc(DataLen); //The pbData parameter is a pointer to a DWORD value 
+															//that receives the permission flags for the key
+						if (CryptGetKeyParam(hKey, KP_PERMISSIONS, pbData, &DataLen, 0))
+						{
+							DWORD Permissions_Flags = 0;
+							memcpy(&Permissions_Flags, &pbData, DataLen);
+							return Permissions_Flags;
+						}
+						free(pbData);
+					}
+					if (hKey != 0) CryptDestroyKey(hKey);
+					if (hProvSender)
+					{
+						CryptReleaseContext(hProvSender, 0);
+						hProvSender = 0;
+					}
+				}
+				return NULL;
+			}
+			return NULL;
+		}
 
 
 		//  Результат - сертификат типа PCCERT_CONTEXT
@@ -323,7 +368,7 @@ namespace SignerUtils {
 				return (LPTSTR)buf;
 			//std::cout << buf << std::endl;
 		}
-
+	
 
 	}
 
@@ -474,14 +519,14 @@ namespace SignerUtils {
 			//    release_file_data_pointer (mem_tbs);
 		}
 
-
+		*/
 		/**************************************************************************************
 		/* Создание подписи CRypto Pro (упрощённые функции): Пример cpdn.
 		/*
 		/* Cоздание подписи CAdES - BES с помощью упрощённых функций
 		/* Входные данные - файл
 		*/
-
+			*/
 		DWORD SignCAdES_Example_01(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
 		{
 			CRYPT_SIGN_MESSAGE_PARA signPara = { sizeof(signPara) };

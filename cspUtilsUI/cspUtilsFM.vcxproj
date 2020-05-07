@@ -33,7 +33,7 @@
     <TargetFrameworkVersion>
     </TargetFrameworkVersion>
     <ProjectName>cspUI</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -157,7 +157,7 @@
       <CompileAsManaged>true</CompileAsManaged>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>crypt32.lib;cades.lib</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;cades.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

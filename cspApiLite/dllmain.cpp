@@ -28,3 +28,10 @@ DLL_EXPORTABLE int SignFile_api_Lite(char* FileName, PCCERT_CONTEXT SignerCertif
 	return SignerUtils::wincrypt::SignFileWinCrypt(FileName, SignerCertificat);
 	//return DLL_EXPORTABLE int();
 }
+
+DLL_EXPORTABLE DWORD CertKeyParams(PCCERT_CONTEXT Certificat)
+{
+
+	return SignerUtils::wincrypt::GetCertParam( Certificat);
+	//return DLL_EXPORTABLE int();
+}
