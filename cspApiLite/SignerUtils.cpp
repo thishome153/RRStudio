@@ -15,8 +15,7 @@ namespace SignerUtils {
 
 
 	namespace wincrypt {
-		//Подпись файла через Wincrypt
-		// doc : https://docs.microsoft.com/en-us/windows/win32/seccrypto/example-c-program-signing-a-message-and-verifying-a-message-signature
+		// Sign file for detached cms with wincrypt
 		int  SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT SignerCert)
 		{
 			const int detached = 1;
@@ -113,36 +112,129 @@ namespace SignerUtils {
 			return -1;
 		}
 
-		//Get certificate params, "CRYPT_EXPORT - Allow key to be exported."
+		//Get certificate params, like "CRYPT_EXPORT - Allow key to be exported."
+		//uses advapi32.lib -be sure to set librarian
 		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert)
 		{
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
 			DWORD dwKeySpecSender;
 			HCRYPTKEY hKey;
+			//obtains the private key for a certificate
+			if (CryptAcquireCertificatePrivateKey(SignerCert, 
+				0,
+				NULL,
+				&hProvSender,
+				&dwKeySpecSender,
+				NULL))
+			{ //retrieves a handle of one of a user's two public/private key
+				if (CryptGetUserKey(
+					hProvSender,
+					dwKeySpecSender,
+					&hKey))
+				{
+					DWORD pdwDataLen = NULL;
+					static BYTE* pbData = NULL;
+					if (CryptGetKeyParam(hKey, KP_PERMISSIONS, NULL, &pdwDataLen, 0))
+					{
+						pbData = (BYTE*)malloc(pdwDataLen); //The pbData parameter is a pointer to a DWORD value 
+															//that receives the permission flags for the key
+						//retrieves data that governs the operations of a key
+						if (CryptGetKeyParam(hKey, KP_PERMISSIONS, pbData, &pdwDataLen, 0))
+						{
+							DWORD Permissions_Flags = 0;
+							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
+							return Permissions_Flags;
+						}
+						free(pbData);
+					}
+					if (hKey != 0) CryptDestroyKey(hKey);
+					if (hProvSender)
+					{
+						CryptReleaseContext(hProvSender, 0);
+						hProvSender = 0;
+					}
+				}
+				return NULL;
+			}
+			return NULL;
+		}
+
+		DWORD GetCertALGID(PCCERT_CONTEXT SignerCert)
+		{
+			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
+			DWORD dwKeySpecSender;
+			HCRYPTKEY hKey;
+			//obtains the private key for a certificate
 			if (CryptAcquireCertificatePrivateKey(SignerCert,
 				0,
 				NULL,
 				&hProvSender,
 				&dwKeySpecSender,
 				NULL))
-			{
-				// Получение дескриптора закрытого ключа
+			{ //retrieves a handle of one of a user's two public/private key
 				if (CryptGetUserKey(
 					hProvSender,
 					dwKeySpecSender,
 					&hKey))
 				{
-					DWORD DataLen = NULL;
+					DWORD pdwDataLen = NULL;
 					static BYTE* pbData = NULL;
-					if (CryptGetKeyParam(hKey, KP_PERMISSIONS, NULL, &DataLen, 0))
+					if (CryptGetKeyParam(hKey, KP_ALGID, NULL, &pdwDataLen, 0))
 					{
-						pbData = (BYTE*)malloc(DataLen); //The pbData parameter is a pointer to a DWORD value 
+						pbData = (BYTE*)malloc(pdwDataLen); //The pbData parameter is a pointer to a DWORD value 
 															//that receives the permission flags for the key
-						if (CryptGetKeyParam(hKey, KP_PERMISSIONS, pbData, &DataLen, 0))
+						//retrieves data that governs the operations of a key
+						if (CryptGetKeyParam(hKey, KP_ALGID, pbData, &pdwDataLen, 0))
 						{
 							DWORD Permissions_Flags = 0;
-							memcpy(&Permissions_Flags, &pbData, DataLen);
+							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
 							return Permissions_Flags;
+						}
+						free(pbData);
+					}
+					if (hKey != 0) CryptDestroyKey(hKey);
+					if (hProvSender)
+					{
+						CryptReleaseContext(hProvSender, 0);
+						hProvSender = 0;
+					}
+				}
+				return NULL;
+			}
+			return NULL;
+		}
+
+		BYTE* GetCert(PCCERT_CONTEXT SignerCert)
+		{
+			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
+			DWORD dwKeySpecSender;
+			HCRYPTKEY hKey;
+			//obtains the private key for a certificate
+			if (CryptAcquireCertificatePrivateKey(SignerCert,
+				0,
+				NULL,
+				&hProvSender,
+				&dwKeySpecSender,
+				NULL))
+			{ //retrieves a handle of one of a user's two public/private key
+				if (CryptGetUserKey(
+					hProvSender,
+					dwKeySpecSender,
+					&hKey))
+				{
+					DWORD pdwDataLen = NULL;
+					static BYTE* pbData = NULL;
+					if (CryptGetKeyParam(hKey, KP_CERTIFICATE, NULL, &pdwDataLen, 0))
+					{
+						pbData = (BYTE*)malloc(pdwDataLen); //The pbData parameter is a pointer to a DWORD value 
+															//that receives the permission flags for the key
+						//retrieves data that governs the operations of a key
+						if (CryptGetKeyParam(hKey, KP_CERTIFICATE, pbData, &pdwDataLen, 0))
+						{
+							/*DWORD Permissions_Flags = 0;
+							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
+							*/
+							return pbData;
 						}
 						free(pbData);
 					}

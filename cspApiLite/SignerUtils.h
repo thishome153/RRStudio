@@ -27,6 +27,8 @@ namespace SignerUtils {
 		int    SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT  SignerCert);
 		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject);
 		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert);
+		DWORD   GetCertALGID(PCCERT_CONTEXT SignerCert);
+		BYTE* GetCert(PCCERT_CONTEXT SignerCert);
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);
 		CHAR* GetLastErrorText(CHAR* pBuf, ULONG bufSize);
