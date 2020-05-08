@@ -174,7 +174,7 @@
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cades.lib;crypt32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>cades.lib;crypt32.lib;advapi32.lib;Bcrypt.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>

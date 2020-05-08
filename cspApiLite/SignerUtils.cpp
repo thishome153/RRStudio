@@ -11,7 +11,7 @@
 
 namespace SignerUtils {
 
-	
+
 
 
 	namespace wincrypt {
@@ -120,7 +120,7 @@ namespace SignerUtils {
 			DWORD dwKeySpecSender;
 			HCRYPTKEY hKey;
 			//obtains the private key for a certificate
-			if (CryptAcquireCertificatePrivateKey(SignerCert, 
+			if (CryptAcquireCertificatePrivateKey(SignerCert,
 				0,
 				NULL,
 				&hProvSender,
@@ -423,7 +423,7 @@ namespace SignerUtils {
 				NULL,
 				GetLastError(),
 				LANG_NEUTRAL,
-				(LPTSTR)&pTemp,
+				(LPTSTR)& pTemp,
 				0,
 				NULL);
 
@@ -460,7 +460,7 @@ namespace SignerUtils {
 				return (LPTSTR)buf;
 			//std::cout << buf << std::endl;
 		}
-	
+
 
 	}
 
@@ -612,14 +612,14 @@ namespace SignerUtils {
 		}
 
 		*/
-		/**************************************************************************************
-		/* Создание подписи CRypto Pro (упрощённые функции): Пример cpdn.
-		/*
-		/* Cоздание подписи CAdES - BES с помощью упрощённых функций
-		/* Входные данные - файл
-		*/
+			/**************************************************************************************
+			/* Создание подписи CRypto Pro (упрощённые функции): Пример cpdn.
+			/*
+			/* Cоздание подписи CAdES - BES с помощью упрощённых функций
+			/* Входные данные - файл
 			*/
-		DWORD SignCAdES_Example_01(System::String^ FileToSign, PCCERT_CONTEXT CertToSign)
+			*/
+			DWORD SignCAdES_Example_01(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign)
 		{
 			CRYPT_SIGN_MESSAGE_PARA signPara = { sizeof(signPara) };
 			signPara.dwMsgEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
@@ -666,11 +666,50 @@ namespace SignerUtils {
 
 }
 
+//CNG : bcrypt.h => Bcrypt.lib
+void SignerUtils::CNG::EnumerateKeys()
+{
+	NTSTATUS                status = STATUS_UNSUCCESSFUL;
+	BCRYPT_ALG_HANDLE       hAlg = NULL;
+	//=============================================
+	//Opening the Algorithm Provider
+	if (!NT_SUCCESS(status = BCryptOpenAlgorithmProvider( //loads and initializes a CNG provider
+		&hAlg,
+		BCRYPT_SHA256_ALGORITHM,
+		NULL,
+		0)))
+	{
+		wprintf(L"**** Error 0x%x returned by BCryptOpenAlgorithmProvider\n", status);
+		goto Cleanup;
+	}
 
+	//=============================================
+	//Getting or Setting Algorithm Properties
+	//Creating or Importing a Key
+	//Performing Cryptographic Operations
+	//Closing the Algorithm Provider
+	//=============================================
 
+	Cleanup: // Destroyem ALL ::))
 
+		if (hAlg)
+		{
+			BCryptCloseAlgorithmProvider(hAlg, 0);
+		}
+		/*
+		if (hHash)
+		{
+			BCryptDestroyHash(hHash);
+		}
 
+		if (pbHashObject)
+		{
+			HeapFree(GetProcessHeap(), 0, pbHashObject);
+		}
 
-
-
-
+		if (pbHash)
+		{
+			HeapFree(GetProcessHeap(), 0, pbHash);
+		}
+		*/
+}

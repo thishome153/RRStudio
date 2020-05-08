@@ -23,6 +23,12 @@
 
 
 namespace SignerUtils {
+	namespace CNG {
+#define NT_SUCCESS(Status)          (((NTSTATUS)(Status)) >= 0)
+#define STATUS_UNSUCCESSFUL         ((NTSTATUS)0xC0000001L)
+		void EnumerateKeys(); // Enumerate all keys
+	}
+
 	namespace wincrypt {
 		int    SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT  SignerCert);
 		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject);
