@@ -8,6 +8,7 @@
 
 namespace cspUtils {
 
+
 	namespace IO {
 		//int get_file_data_pointer(LPCSTR infile, size_t *len, LPVOID *buffer);
 		int read_file(LPCSTR infile, size_t * len, LPVOID * buffer);

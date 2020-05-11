@@ -108,6 +108,7 @@
     <IncludePath>$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(SolutionDir)\cspApiLite;..\cspUtils;$(SolutionDir)..\CryptoProSDK\include;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
+    <EmbedManifest>true</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -157,7 +158,7 @@
       <CompileAsManaged>true</CompileAsManaged>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>crypt32.lib;cades.lib;advapi32.lib;Bcrypt.lib</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;cades.lib;advapi32.lib;Bcrypt.lib;Ncrypt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -170,7 +171,12 @@
       </Version>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <AllowIsolation>true</AllowIsolation>
+      <ForceSymbolReferences>
+      </ForceSymbolReferences>
+      <EmbedManagedResourceFile>
+      </EmbedManagedResourceFile>
     </Link>
+    <ResourceCompile />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -321,17 +327,17 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="FS2_About.resx">
       <DependentUpon>FS2_About.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FSignerMainForm.resX">
+    <EmbeddedResource Include="FSignerMainForm.resx">
       <DependentUpon>FSignerMainForm.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

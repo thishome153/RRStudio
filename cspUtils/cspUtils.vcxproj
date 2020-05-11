@@ -114,6 +114,7 @@
     <IncludePath>$(SolutionDir)..\CryptoProSDK\include;$(SolutionDir)\cspApiLite;$(SolutionDir)..\Fixosoft-SDK\fteo\fteoNET;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\CryptoProSDK\lib;$(LibraryPath)</LibraryPath>
     <ExtensionsToDeleteOnClean>*.metagen;$(ExtensionsToDeleteOnClean)</ExtensionsToDeleteOnClean>
+    <EmbedManifest>true</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -174,7 +175,7 @@
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cades.lib;crypt32.lib;advapi32.lib;Bcrypt.lib</AdditionalDependencies>
+      <AdditionalDependencies>cades.lib;crypt32.lib;advapi32.lib;Bcrypt.lib;Ncrypt.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>

@@ -4,12 +4,31 @@
 #include <wincrypt.h>
 #include "WinCryptEx.h"// Интерфейс КриптоПро CSP, добавление к WinCrypt.h
 #include <vector>
+#include <string>
+#include <algorithm>
 
 
 //using namespace System::IO;
 
 
 namespace SignerUtils {
+
+	void string_to_wstring(const std::string& src, std::wstring& dest)
+	{
+		std::wstring tmp;
+		tmp.resize(src.size());
+		std::transform(src.begin(), src.end(), tmp.begin(), btowc);
+		tmp.swap(dest);
+	}
+
+	void wstring_to_string(const std::wstring& src, std::string& dest)
+	{
+		std::string tmp;
+		tmp.resize(src.size());
+		std::transform(src.begin(), src.end(), tmp.begin(), wctob);
+		tmp.swap(dest);
+	}
+
 
 
 
@@ -143,6 +162,11 @@ namespace SignerUtils {
 						{
 							DWORD Permissions_Flags = 0;
 							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
+
+							for (DWORD i = 0; i < pdwDataLen; i++)
+							{
+								BYTE item = pbData[i];
+							}
 							return Permissions_Flags;
 						}
 						free(pbData);
@@ -204,7 +228,120 @@ namespace SignerUtils {
 			return NULL;
 		}
 
-		BYTE* GetCert(PCCERT_CONTEXT SignerCert)
+		std::vector<CSPItem>  EnumProvidersTypes()
+		{
+			DWORD       dwType;
+			DWORD       cbName;
+			DWORD       dwIndex = 0;
+	
+			static LPTSTR      pszName = NULL;
+			std::vector<SignerUtils::CSPItem> ProvidersTypes;
+
+			dwIndex = 0;
+			while (CryptEnumProviderTypes(
+				dwIndex,     // in -- dwIndex
+				NULL,        // in -- pdwReserved- устанавливается в NULL
+				0,           // in -- dwFlags -- устанавливается в ноль
+				&dwType,     // out -- pdwProvType
+				NULL,        // out -- pszProvName -- NULL при первом вызове
+				&cbName      // in, out -- pcbProvName
+			))
+			{
+				//  cbName - длина имени следующего типа провайдера.
+				//  Распределение памяти в буфере для восстановления этого имени.
+				pszName = (LPTSTR)malloc(cbName);
+				if (!pszName)
+					//HandleError("ERROR - malloc failed!");
+
+					memset(pszName, 0, cbName);
+
+				//--------------------------------------------------------------------
+				//  Получение имени типа провайдера.
+
+				if (CryptEnumProviderTypes(
+					dwIndex++,
+					NULL,
+					0,
+					&dwType,
+					pszName,
+					&cbName))
+				{
+					std::string std_sName;
+					SignerUtils::wstring_to_string(pszName, std_sName);
+					CSPItem  ProvTypeItem = { dwType, std_sName };
+					ProvidersTypes.push_back(ProvTypeItem);
+				}
+				else
+				{
+					//	HandleError("ERROR - CryptEnumProviders");
+				}
+			}
+			return ProvidersTypes;
+		}
+
+		std::vector<std::string>  EnumAllProviders()
+		{
+			DWORD       dwType;
+			DWORD       cbName;
+			DWORD       dwIndex = 0;
+			BYTE* ptr = NULL;
+			ALG_ID      aiAlgid;
+			DWORD       dwBits;
+			DWORD       dwNameLen;
+			CHAR        szName[1024];//[NAME_LENGTH]; // Распределены динамически
+			BYTE        pbData[1024];// Распределены динамически
+			DWORD       cbData = 1024;
+			DWORD       dwIncrement = sizeof(DWORD);
+			DWORD       dwFlags = CRYPT_FIRST;
+			CHAR* pszAlgType = NULL;
+			static LPTSTR      pszName = NULL;
+			BOOL        fMore = TRUE;
+			DWORD       cbProvName;
+			std::vector<std::string> Providers;
+
+		
+			dwIndex = 0;
+			while (CryptEnumProviders(
+				dwIndex,     // in -- dwIndex
+				NULL,        // in -- pdwReserved- устанавливается в NULL
+				0,           // in -- dwFlags -- устанавливается в ноль
+				&dwType,     // out -- pdwProvType
+				NULL,        // out -- pszProvName -- NULL при первом вызове
+				&cbName      // in, out -- pcbProvName
+			))
+			{
+				//  cbName - длина имени следующего провайдера.
+				//  Распределение памяти в буфере для восстановления этого имени.
+				pszName = (LPTSTR)malloc(cbName);
+				if (!pszName)
+					//	HandleError("ERROR - malloc failed!");
+
+					memset(pszName, 0, cbName);
+
+				//  Получение имени провайдера.
+				if (CryptEnumProviders(
+					dwIndex++,
+					NULL,
+					0,
+					&dwType,
+					pszName,
+					&cbName     // pcbProvName -- длина pszName
+				))
+				{
+					std::string std_sName;
+					SignerUtils::wstring_to_string(pszName, std_sName);
+					Providers.push_back(std_sName);
+				}
+				else
+				{
+					//	HandleError("ERROR - CryptEnumProviders");
+				}
+
+			} 
+			return Providers;
+		}
+
+		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert)
 		{
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
 			DWORD dwKeySpecSender;
@@ -223,20 +360,17 @@ namespace SignerUtils {
 					&hKey))
 				{
 					DWORD pdwDataLen = NULL;
-					static BYTE* pbData = NULL;
+					static BYTE* pbCert = NULL;
+					PCCERT_CONTEXT pCertContext = NULL;
 					if (CryptGetKeyParam(hKey, KP_CERTIFICATE, NULL, &pdwDataLen, 0))
 					{
-						pbData = (BYTE*)malloc(pdwDataLen); //The pbData parameter is a pointer to a DWORD value 
-															//that receives the permission flags for the key
-						//retrieves data that governs the operations of a key
-						if (CryptGetKeyParam(hKey, KP_CERTIFICATE, pbData, &pdwDataLen, 0))
+						pbCert = (BYTE*)malloc(pdwDataLen);
+						if (CryptGetKeyParam(hKey, KP_CERTIFICATE, pbCert, &pdwDataLen, 0))
 						{
-							/*DWORD Permissions_Flags = 0;
-							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
-							*/
-							return pbData;
+							pCertContext = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, pbCert, pdwDataLen);
+							return pCertContext;
 						}
-						free(pbData);
+						free(pbCert);
 					}
 					if (hKey != 0) CryptDestroyKey(hKey);
 					if (hProvSender)
@@ -250,9 +384,6 @@ namespace SignerUtils {
 			return NULL;
 		}
 
-
-		//  Результат - сертификат типа PCCERT_CONTEXT
-		//  Функция чтения сертификата из системного справочника пользователя'MY'
 		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject)
 		{
 			if (!lpszCertSubject) return NULL;
@@ -664,52 +795,118 @@ namespace SignerUtils {
 	}
 #endif // RememberExamples
 
-}
 
-//CNG : bcrypt.h => Bcrypt.lib
-void SignerUtils::CNG::EnumerateKeys()
-{
-	NTSTATUS                status = STATUS_UNSUCCESSFUL;
-	BCRYPT_ALG_HANDLE       hAlg = NULL;
-	//=============================================
-	//Opening the Algorithm Provider
-	if (!NT_SUCCESS(status = BCryptOpenAlgorithmProvider( //loads and initializes a CNG provider
-		&hAlg,
-		BCRYPT_SHA256_ALGORITHM,
-		NULL,
-		0)))
+
+	namespace CNG //CNG : bcrypt.h => Bcrypt.lib
 	{
-		wprintf(L"**** Error 0x%x returned by BCryptOpenAlgorithmProvider\n", status);
-		goto Cleanup;
+
+		void EnumerateKeys()
+		{
+			NTSTATUS                status = STATUS_UNSUCCESSFUL;
+			SECURITY_STATUS			secstatus;
+			BCRYPT_ALG_HANDLE       hAlg = NULL;
+			NCRYPT_PROV_HANDLE phProvider;
+			void* ppEnumState = NULL;
+			std::vector<std::string> Keys;
+			//=============================================
+			//Opening the Algorithm Provider
+			if (!NT_SUCCESS(status = BCryptOpenAlgorithmProvider( //loads and initializes a CNG provider
+				&hAlg,
+				BCRYPT_SHA256_ALGORITHM,
+				NULL,
+				0)))
+			{
+				wprintf(L"**** Error 0x%x returned by BCryptOpenAlgorithmProvider\n", status);
+				goto Cleanup;
+			}
+
+			//load a key storage provider 
+			//loads and initializes a CNG key storage provider
+			secstatus = NCryptOpenStorageProvider( //loads and initializes a CNG provider
+				&phProvider,
+				MS_KEY_STORAGE_PROVIDER, // default provider
+				0 //noflags
+			);
+
+			if (!NTSEC_SUCCESS(secstatus))
+			{
+				wprintf(L"**** Error 0x%x returned by NCryptOpenStorageProvider\n", secstatus);
+				goto Cleanup;
+			}
+
+			//and then create or load the keys
+			NCryptKeyName* key;
+
+			while (secstatus != NTE_NO_MORE_ITEMS) //NTE_NO_MORE_ITEMS)
+			{
+				secstatus = NCryptEnumKeys(phProvider, NULL, &key, &ppEnumState, 0);
+				if (secstatus == ERROR_SUCCESS)
+				{
+					std::string keyName;
+					SignerUtils::wstring_to_string(key->pszName, keyName);
+					Keys.push_back(keyName);
+				}
+			}
+
+			NCryptFreeBuffer(key);
+			NCryptFreeBuffer(ppEnumState);
+
+			//=============================================
+			//Getting or Setting Algorithm Properties
+			//Creating or Importing a Key
+			//Performing Cryptographic Operations
+			//Closing the Algorithm Provider
+			//=============================================
+
+		Cleanup: // Destroyem ALL ::))
+
+			if (hAlg)
+			{
+				BCryptCloseAlgorithmProvider(hAlg, 0);
+			}
+			if (phProvider)
+			{
+				NCryptFreeObject(phProvider);
+			}
+			/*
+			if (hHash)
+			{
+				BCryptDestroyHash(hHash);
+			}
+
+			if (pbHashObject)
+			{
+				HeapFree(GetProcessHeap(), 0, pbHashObject);
+			}
+
+			if (pbHash)
+			{
+				HeapFree(GetProcessHeap(), 0, pbHash);
+			}
+			*/
+
+		}
+
+		std::vector<std::string> EnumerateStorageProviders()
+		{
+			SECURITY_STATUS			secstatus;
+			std::vector<std::string> Providers;
+			NCryptProviderName* ppProviderList = NULL; //array with names
+			DWORD pdwProviderCount = 0;
+			secstatus = NCryptEnumStorageProviders(&pdwProviderCount, &ppProviderList, 0);
+			if (ppProviderList != NULL)
+			{
+				for (DWORD i = 0; i < pdwProviderCount; i++)
+				{
+					NCryptProviderName current = ppProviderList[i];
+					std::string keyName;
+					SignerUtils::wstring_to_string(current.pszName, keyName);
+					Providers.push_back(keyName);
+				}
+			}
+			NCryptFreeBuffer(ppProviderList);
+			return Providers;
+		}
+
 	}
-
-	//=============================================
-	//Getting or Setting Algorithm Properties
-	//Creating or Importing a Key
-	//Performing Cryptographic Operations
-	//Closing the Algorithm Provider
-	//=============================================
-
-	Cleanup: // Destroyem ALL ::))
-
-		if (hAlg)
-		{
-			BCryptCloseAlgorithmProvider(hAlg, 0);
-		}
-		/*
-		if (hHash)
-		{
-			BCryptDestroyHash(hHash);
-		}
-
-		if (pbHashObject)
-		{
-			HeapFree(GetProcessHeap(), 0, pbHashObject);
-		}
-
-		if (pbHash)
-		{
-			HeapFree(GetProcessHeap(), 0, pbHash);
-		}
-		*/
 }

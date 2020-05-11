@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FS2_About.h" />
-    <ClInclude Include="FSignerMainForm.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\cspUtils\cspWrapper.h">
       <Filter>cspWrapper</Filter>
@@ -27,6 +26,7 @@
     <ClInclude Include="..\..\..\Fixosoft-SDK\fteo\fteoNET\MyStrMarshal.h">
       <Filter>Fixosoft SDK</Filter>
     </ClInclude>
+    <ClInclude Include="FSignerMainForm.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Fixosoft2002.ico">
@@ -43,9 +43,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Fixosoft SDK">
       <UniqueIdentifier>{8a6140c4-21ea-4328-b0ed-469f0bd9dd54}</UniqueIdentifier>
     </Filter>
@@ -60,5 +57,8 @@
     <ResourceCompile Include="app.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

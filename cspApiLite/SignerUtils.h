@@ -1,7 +1,7 @@
-//2014-2020  Fixosoft wincrypt routines
+//2014-2020  Fixosoft wincrypt,CNG routines
 
 
-#ifndef _SignerUtils_h_INCLUDED // типа защита от множественного включения
+#ifndef _SignerUtils_h_INCLUDED 
 #define _SignerUtils_h_INCLUDED
 
 #define HAVE_MAPVIEWOFFILE 1
@@ -10,8 +10,8 @@
 #pragma warning (disable:4115)
 #endif /* WIN32 */
 
-//#include <windows.h>  //типы основные
-//#include <stdio.h>
+#include <vector>
+#include <string>
 //#include <malloc.h>
 //#include <wincrypt.h>
 //#include <memory.h>
@@ -23,18 +23,30 @@
 
 
 namespace SignerUtils {
+	void string_to_wstring(const std::string& src, std::wstring& dest);
+	void wstring_to_string(const std::wstring& src, std::string& dest);
+
+	struct CSPItem {
+		int Type;
+		std::string Name;
+	};
+
 	namespace CNG {
 #define NT_SUCCESS(Status)          (((NTSTATUS)(Status)) >= 0)
 #define STATUS_UNSUCCESSFUL         ((NTSTATUS)0xC0000001L)
+#define NTSEC_SUCCESS(Status)          (((SECURITY_STATUS)(Status)) >= 0)
 		void EnumerateKeys(); // Enumerate all keys
+		std::vector<std::string> EnumerateStorageProviders();
 	}
 
 	namespace wincrypt {
 		int    SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT  SignerCert);
 		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject);
+		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert); //With getparam
 		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert);
 		DWORD   GetCertALGID(PCCERT_CONTEXT SignerCert);
-		BYTE* GetCert(PCCERT_CONTEXT SignerCert);
+		std::vector<CSPItem> EnumProvidersTypes();
+		std::vector<std::string>  EnumAllProviders(); //function retrieve in sequence all of the CSPs
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);
 		CHAR* GetLastErrorText(CHAR* pBuf, ULONG bufSize);
@@ -44,6 +56,7 @@ namespace SignerUtils {
 	}
 
 #define TYPE_DER (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING)
+
 
 #ifdef RememberExamples
 	namespace examples {
@@ -59,6 +72,7 @@ namespace SignerUtils {
 #endif
 
 #endif 
+
 
 	/* _SignerUtils_h_INCLUDED */
 }
