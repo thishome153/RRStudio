@@ -341,6 +341,34 @@ namespace SignerUtils {
 			return Providers;
 		}
 
+		std::vector<std::string> EnumAllContainers()
+		{
+			std::vector<std::string> Containers;
+			HCRYPTPROV hProv;
+			if (CryptAcquireContext(&hProv, NULL, NULL, 81, 0)) //CRYPT_SILENT
+			{
+				BYTE* pbData;
+				DWORD pbdwDataLen = 0;
+				char* container_name;
+				DWORD base_flags = 0;
+				if (CryptGetProvParam(hProv, PP_ENUMCONTAINERS, NULL, &pbdwDataLen, 0))
+				{
+					container_name = (char*)malloc(pbdwDataLen);
+					while (CryptGetProvParam(hProv, PP_ENUMCONTAINERS, (BYTE*)container_name, &pbdwDataLen, 0))
+					{
+						if (base_flags & CRYPT_UNIQUE)
+						{
+
+						}
+					}
+				}
+				free(container_name);
+				CryptReleaseContext(hProv, 0);
+			}
+			
+			return Containers;
+		}
+
 		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert)
 		{
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle

@@ -45,8 +45,10 @@ namespace SignerUtils {
 		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert); //With getparam
 		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert);
 		DWORD   GetCertALGID(PCCERT_CONTEXT SignerCert);
+
 		std::vector<CSPItem> EnumProvidersTypes();
 		std::vector<std::string>  EnumAllProviders(); //function retrieve in sequence all of the CSPs
+		std::vector<std::string>  EnumAllContainers(); //function retrieve in sequence all of the CSPs
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);
 		CHAR* GetLastErrorText(CHAR* pBuf, ULONG bufSize);
