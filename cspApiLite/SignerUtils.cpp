@@ -345,7 +345,8 @@ namespace SignerUtils {
 		{
 			std::vector<std::string> Containers;
 			HCRYPTPROV hProv;
-			if (CryptAcquireContext(&hProv, NULL, NULL, 81, 0)) //CRYPT_SILENT
+			//acquire a handle to a particular key container within a particular cryptographic service provider (CSP):
+			if (CryptAcquireContext(&hProv, NULL, NULL, 81, 0)) //CRYPT_SILENT 
 			{
 				BYTE* pbData;
 				DWORD pbdwDataLen = 0;
@@ -361,11 +362,10 @@ namespace SignerUtils {
 
 						}
 					}
+					free(container_name);
 				}
-				free(container_name);
 				CryptReleaseContext(hProv, 0);
 			}
-			
 			return Containers;
 		}
 
