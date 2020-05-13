@@ -1305,7 +1305,7 @@ namespace netFteo.Spatial
             Point.x = x_;
             Point.y = y_;
             Point.Description = Descr;
-            Point.NumGeopointA = Name;
+            Point.Definition = Name;
             this.AddPoint(Point);
             return this[this.Count - 1];
         }
@@ -5127,8 +5127,8 @@ namespace netFteo.Spatial
                      TMyPolygon poly = (TMyPolygon)feature;
                     foreach (TPoint pt in poly)
                     {
-                        pt.Description = "erased Description";
-                        pt.Code = "erased Code";
+                        pt.Description = "";
+                        pt.Code = "";
                         pt.z = Coordinate.NullOrdinate;
                     }
                 }

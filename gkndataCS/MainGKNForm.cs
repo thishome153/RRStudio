@@ -1176,38 +1176,45 @@ namespace GKNData
 
 
 
-
-
-        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        private void SearchWithTree(object sender, EventArgs e)
         {
             TextBox searchtbox = (TextBox)sender;
             if (searchtbox.Visible)
             {   // начинаем с высшей ноды:
-                treeView1.BeginUpdate();
-
                 if (searchtbox.Text == "")
                 {
                     treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node, seek to begin
+                    //treeView1.ForeColor = SystemColors.WindowText;
                     treeView1.CollapseAll();
+                    treeView1.Update();
                 }
                 //FindNode не ходит далее одного root элемента:
                 //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
-
                 TreeNode res = TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
 
                 if (res != null)
                 {
+                    treeView1.BeginUpdate();
                     treeView1.SelectedNode = res;
                     //TODO:  
                     //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
                     TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
                     if (block != null)
                         PrepareNode(treeView1.SelectedNode, res.Tag);
+                    //treeView1.Focus();
+                    //treeView1.SelectedNode.BackColor = SystemColors.Highlight;
+                    //treeView1.SelectedNode.ForeColor =  SystemColors.MenuHighlight;
                     treeView1.SelectedNode.EnsureVisible();
+                    treeView1.Update();
+                    treeView1.EndUpdate();
                 }
-                SearchTextBox.Focus();
-                treeView1.EndUpdate();
+                searchtbox.Focus();
             }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            SearchWithTree(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1346,6 +1353,44 @@ namespace GKNData
         private void УдалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Erase(CF.Cfg.CurrentItem);
+        }
+
+        private void TreeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            /*
+            if (treeView1.SelectedNode != null)
+                treeView1.SelectedNode.ForeColor = Color.Black;
+            e.Node.ForeColor = Color.Blue;
+            */
+        }
+
+        // When DrawMode= OwnerDrawText , need draw text self:
+        private void TreeView_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            if (e.Node == null) return;
+
+            // if treeview's HideSelection property is "True", 
+            // this will always returns "False" on unfocused treeview
+            var selected = (e.State & TreeNodeStates.Selected) == TreeNodeStates.Selected;
+            var unfocused = !e.Node.TreeView.Focused;
+
+            // we need to do owner drawing only on a selected node
+            // and when the treeview is unfocused, else let the OS do it for us
+            if (selected && unfocused)
+            {
+                var font = e.Node.NodeFont ?? e.Node.TreeView.Font;
+                e.Graphics.FillRectangle(SystemBrushes.MenuHighlight, e.Bounds);
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, SystemColors.HighlightText, TextFormatFlags.GlyphOverhangPadding);
+            }
+            else
+            {
+                e.DrawDefault = true;
+            }
+        }
+
+        private void TreeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            TreeView_DrawNode(sender, e);
         }
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)
