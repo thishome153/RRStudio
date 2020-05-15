@@ -214,7 +214,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>crypt32.lib;cades.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;cades.lib;advapi32.lib;NCrypt.lib;BCrypt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
