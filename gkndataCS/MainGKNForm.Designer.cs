@@ -579,7 +579,9 @@ namespace GKNData
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.TreeView1_DrawNode);
             this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.Enter += new System.EventHandler(this.TreeView1_Enter);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
+            this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
             // 
             // MainGKNForm
             // 

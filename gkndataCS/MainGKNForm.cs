@@ -1024,6 +1024,15 @@ namespace GKNData
             }
         }
 
+        private void Hide_SearchTextBox(TextBox sender)
+        {
+            if (sender.Visible)
+            {
+                panel1.Visible = false;
+                sender.Visible = false;
+            }
+        }
+
         // Also working code, writed before version below
         // Used MySqlDataReader
         private void AppendHistory1(MySqlConnection conn, TAppCfgRecord Config)
@@ -1327,12 +1336,14 @@ namespace GKNData
 
 		private void button_History_Click(object sender, EventArgs e)
 		{
-			treeView1.Visible = false;
+            Hide_SearchTextBox(SearchTextBox);
+            treeView1.Visible = false;
 			treeView1.Dock = DockStyle.None;
 		}
 
 		private void button_Favorites_Click(object sender, EventArgs e)
 		{
+            Hide_SearchTextBox(SearchTextBox);
 			treeView1.Visible = false;
 			treeView1.Dock = DockStyle.None;
 		}
@@ -1391,6 +1402,16 @@ namespace GKNData
         private void TreeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             TreeView_DrawNode(sender, e);
+        }
+
+        private void TreeView1_Enter(object sender, EventArgs e)
+        {
+            Button_Property.Enabled = true;
+        }
+
+        private void TreeView1_Leave(object sender, EventArgs e)
+        {
+            Button_Property.Enabled = false;
         }
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)
