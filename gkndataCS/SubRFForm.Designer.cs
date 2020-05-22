@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataSet1 = new System.Data.DataSet();
             this.myDataGridView1 = new GKNData.myDataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
@@ -81,17 +85,22 @@
             // 
             this.myDataGridView1.AllowUserToAddRows = false;
             this.myDataGridView1.AllowUserToDeleteRows = false;
-            this.myDataGridView1.BackgroundColor = System.Drawing.Color.RoyalBlue;
+            this.myDataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.myDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.myDataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
             this.Column1,
             this.Column2});
             this.myDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.myDataGridView1.GridColor = System.Drawing.Color.SpringGreen;
+            this.myDataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.myDataGridView1.Location = new System.Drawing.Point(0, 0);
             this.myDataGridView1.MultiSelect = false;
             this.myDataGridView1.Name = "myDataGridView1";
             this.myDataGridView1.ReadOnly = true;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.myDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.myDataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.myDataGridView1.ShowEditingIcon = false;
             this.myDataGridView1.Size = new System.Drawing.Size(343, 366);
@@ -99,6 +108,27 @@
             this.myDataGridView1.Click += new System.EventHandler(this.myDataGridView1_Click);
             this.myDataGridView1.DoubleClick += new System.EventHandler(this.myDataGridView1_DoubleClick);
             this.myDataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.myDataGridView1_KeyUp);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 40;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "КН";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Наименование";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 250;
             // 
             // Column1
             // 
@@ -144,5 +174,8 @@
         private myDataGridView myDataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
     }
 }

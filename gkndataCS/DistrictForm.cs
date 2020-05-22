@@ -111,6 +111,10 @@ namespace GKNData
         {
             ChangeGridItem();
         }
+
+        private void MyDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
     } 
 
 }
