@@ -273,10 +273,13 @@
   <ItemGroup>
     <Content Include="gkndata.ico" />
     <Content Include="gkndataCS_ico.ico" />
+    <None Include="Resources\photos.png" />
     <None Include="README.md" />
     <None Include="Resources\table_refresh.png" />
     <None Include="Resources\heart.png" />
     <None Include="Resources\application_form.png" />
+    <None Include="Resources\arrow_left.png" />
+    <None Include="Resources\arrow_right.png" />
     <Content Include="Resources\gkndataCS.bmp" />
     <Content Include="Resources\GKNDATASharp.bmp" />
     <None Include="Resources\MySQL_8.png" />

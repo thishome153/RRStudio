@@ -4307,7 +4307,7 @@ namespace netFteo.Spatial
         /// <summary>
         /// District id
         /// </summary>
-        public int Parent_id;
+        public long Parent_id;
         public bool HasParcels;
         public TMyPolygon Entity_Spatial;
         public TMyParcelCollection Parcels;
@@ -4478,7 +4478,7 @@ namespace netFteo.Spatial
     /// </summary>
     public class TMyBlockCollection
     {
-        public int District_id;
+        public long District_id;
         public string DistrictCN;   // Кадастровый номер района
         public string DistrictName; // Название района
         public List<TMyCadastralBlock> Blocks;

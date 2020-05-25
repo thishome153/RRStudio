@@ -18,6 +18,7 @@ namespace netFteo
     {
         public long Item_id;
         public string Type;
+        public string Name;
         /// <summary>
         /// Create small Tag object for treenodes ops
         /// </summary>
@@ -30,6 +31,7 @@ namespace netFteo
         }
     }
 }
+
 
 /// <summary>
 /// Not An MS Windows, everyvere window, controls, forms etc.

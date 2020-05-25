@@ -21,7 +21,7 @@ namespace GKNData
 
         private DataTable data;
         private MySqlDataAdapter da;
- //       private MySqlCommandBuilder cb;
+        //       private MySqlCommandBuilder cb;
         private int TIMEOUT_DONE;
         private Timer TimeOutTimer; // iddle timer
         ConnectorForm CF = new ConnectorForm();
@@ -31,12 +31,12 @@ namespace GKNData
         /// <summary>
         /// Common application unzipping work folder
         /// </summary>
-       // string Folder_Unzip;
-        
+        // string Folder_Unzip;
+
         /// <summary>
         /// Current archive folder
         /// </summary>
-        string Archive_Folder; 
+        string Archive_Folder;
 
 
 
@@ -46,7 +46,7 @@ namespace GKNData
         string[] DraggedFiles;
         string CurrentDraggedFile;
 
-        Font Font_Arial10, Font_Arial12 ; 
+        Font Font_Arial10, Font_Arial12;
 
         public MainGKNForm()
         {
@@ -54,7 +54,7 @@ namespace GKNData
             treeView1.BeforeExpand += OnItemexpanding; //Подключаем обработчик раскрытия
             Application.Idle += On_Iddle;
             treeView1.Nodes.Clear();
-            Font_Arial10 =  new Font("Arial", 10);
+            Font_Arial10 = new Font("Arial", 10);
             Font_Arial12 = new Font("Arial", 12);
             /*
             MRG.Controls.UI.LoadingCircleToolStripMenuItem trobbler = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
@@ -137,20 +137,20 @@ namespace GKNData
         /// Операции при загрузке/перезагрузке районов/кварталов
         /// </summary>
         /// <param name="tv">Target TreeView for works</param>
-        private void ConnectOps(TreeView tv)
+        private void ConnectOps(long District_id)
         {
-            tv.BackColor = SystemColors.Control;
-  
-            tv.Nodes.Clear();
-            CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
+            //tv.BackColor = SystemColors.Control;
+            //tv.Nodes.Clear();
+            CadBloksList = LoadBlockList(CF.conn, CF.conn2, District_id);
             Application.DoEvents();
-            CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
-            ListBlockListTreeView(CadBloksList, tv);
+            //CF.Cfg.BlockCount = CadBloksList.Blocks.Count();
+            ListBlockListTreeView(CadBloksList, treeView1);
             DBWrapper.Config = CF.Cfg;
             string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect App V" + ver, CF.conn);
             toolStripButton_Connect.Enabled = false;
             MenuItem_Connect.Enabled = false;
+            button4.Enabled = true;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
 #if !DEBUG
@@ -160,9 +160,13 @@ namespace GKNData
             screen.CaptureScreenToFile("Screenshot.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
+
+
         private bool ConnectGo()
         {
             CF.Cfg.CfgRead(); // Read reg
+            this.treeView1.BackColor = SystemColors.Control;
+            this.treeView1.Nodes.Clear();
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
             loadingCircleToolStripMenuItem1.Visible = true;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = true;
@@ -184,11 +188,12 @@ namespace GKNData
 
                     if (CF.conn.State == ConnectionState.Open)
                     {
-                       // MySqlCommand SetNamesCMD = new MySqlCommand("SET NAMES 'cp1251'", CF.conn2);
-                       // SetNamesCMD.ExecuteNonQuery();
-                       // SetNamesCMD.CommandText = "SET CHARACTER SET 'cp1251'";
-                       // SetNamesCMD.ExecuteNonQuery();
-                        ConnectOps(treeView1);
+                        // MySqlCommand SetNamesCMD = new MySqlCommand("SET NAMES 'cp1251'", CF.conn2);
+                        // SetNamesCMD.ExecuteNonQuery();
+                        // SetNamesCMD.CommandText = "SET CHARACTER SET 'cp1251'";
+                        // SetNamesCMD.ExecuteNonQuery();
+                        ConnectOps(CF.Cfg.District_id);
+                        ShowSubRFs();
                         return true;
                     }
                     else
@@ -234,11 +239,13 @@ namespace GKNData
                 CadBloksList.ParsedSpatial.Clear();
                 CadBloksList.SpatialData.Clear();
                 treeView1.Nodes.Clear();
+                Explorer_listView.Items.Clear();
                 treeView1.EndUpdate();
                 this.treeView1.BackColor = Color.DarkGray;
                 loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
                 loadingCircleToolStripMenuItem1.LoadingCircleControl.Visible = false;
                 toolStripButton_Connect.Enabled = true;
+                button4.Enabled = false;
                 MenuItem_Connect.Enabled = true;
                 toolStripProgressBar1.Value = 0;
             }
@@ -263,41 +270,74 @@ namespace GKNData
         private void ChangeObj(object sender, EventArgs e)
         {
             TreeNode ENode = null;
-            if (e.GetType().ToString() == "System.Windows.Forms.KeyEventArgs")
+            if (sender.GetType().ToString() == "System.Windows.Forms.TreeView")
             {
-                ENode = ((TreeView)sender).SelectedNode;
-            }
-
-            if (e.GetType().ToString() == "System.Windows.Forms.TreeNodeMouseClickEventArgs")
-            {
-                ENode = ((TreeNodeMouseClickEventArgs)e).Node;
-            }
-
-            CF.Cfg.CurrentItem.SelectedNode = ENode;
-
-            if ((ENode != null) && (ENode.Tag != null))
-            {
-                
-                if (ENode.Tag.GetType().ToString() == "netFteo.TreeNodeTag")
+                if (e.GetType().ToString() == "System.Windows.Forms.KeyEventArgs")
                 {
-                    CF.Cfg.CurrentItem.Item_id = ((netFteo.TreeNodeTag)ENode.Tag).Item_id;
-                    CF.Cfg.CurrentItem.Item_TypeName = ((netFteo.TreeNodeTag)ENode.Tag).Type;
+                    ENode = ((TreeView)sender).SelectedNode;
                 }
 
+                if (e.GetType().ToString() == "System.Windows.Forms.TreeNodeMouseClickEventArgs")
+                {
+                    ENode = ((TreeNodeMouseClickEventArgs)e).Node;
+                }
+
+                CF.Cfg.CurrentItem.SelectedNode = ENode;
+
+                if ((ENode != null) && (ENode.Tag != null))
+                {
+
+                    if (ENode.Tag.GetType().ToString() == "netFteo.TreeNodeTag")
+                    {
+                        CF.Cfg.CurrentItem.Item_id = ((netFteo.TreeNodeTag)ENode.Tag).Item_id;
+                        CF.Cfg.CurrentItem.Item_TypeName = ((netFteo.TreeNodeTag)ENode.Tag).Type;
+                    }
+
+                    /*
+                    if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock")
+                    {
+                        CF.Cfg.CurrentItem.Item_id = ((TMyCadastralBlock)ENode.Tag).id;
+                        CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
+                    }
+
+                    if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyParcel")
+                    {
+                        CF.Cfg.CurrentItem.Item_id = ((TMyParcel)ENode.Tag).id;
+                        CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
+                    }
+                    */
+                    StatusLabel_CurrentItem.Text = "id " + CF.Cfg.CurrentItem.Item_id.ToString();
+                }
+            }
+
+            if (sender.GetType().ToString() == "System.Windows.Forms.ListView")
+            {
+                ListViewItem EItem = null;
+                if (e.GetType().ToString() == "System.Windows.Forms.KeyEventArgs")
+                {
+                    EItem = ((ListView)sender).SelectedItems[0];
+                }
+
+                string CheckType2 = sender.GetType().ToString();
                 /*
-                if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock")
+                if (e.GetType().ToString() == "System.Windows.Forms.TreeNodeMouseClickEventArgs")
                 {
-                    CF.Cfg.CurrentItem.Item_id = ((TMyCadastralBlock)ENode.Tag).id;
-                    CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
-                }
-
-                if (ENode.Tag.GetType().ToString() == "netFteo.Spatial.TMyParcel")
-                {
-                    CF.Cfg.CurrentItem.Item_id = ((TMyParcel)ENode.Tag).id;
-                    CF.Cfg.CurrentItem.Item_TypeName = ENode.Tag.GetType().ToString();
+                    EItem = ((TreeNodeMouseClickEventArgs)e).Node;
                 }
                 */
-                StatusLabel_CurrentItem.Text = "id " + CF.Cfg.CurrentItem.Item_id.ToString();
+
+                if ((EItem != null) && (EItem.Tag != null))
+                {
+
+                    if (EItem.Tag.GetType().ToString() == "netFteo.TreeNodeTag")
+                    {
+                        CF.Cfg.CurrentItem.Item_id = ((netFteo.TreeNodeTag)EItem.Tag).Item_id;
+                        CF.Cfg.CurrentItem.Item_TypeName = ((netFteo.TreeNodeTag)EItem.Tag).Type;
+                    }
+
+                    CF.Cfg.CurrentItem.SelectedItem = EItem;
+                    StatusLabel_CurrentItem.Text = "id " + ((netFteo.TreeNodeTag)EItem.Tag).Item_id.ToString();
+                }
             }
         }
 
@@ -356,7 +396,7 @@ namespace GKNData
             {
                 //add document
             }
-                return false;
+            return false;
         }
 
         private bool AddParcel(TMyParcel item)
@@ -366,8 +406,8 @@ namespace GKNData
                 return true;
             else return false;
         }
-            //-------------------------------- Edititng -------------------------------
-            private bool Edit(TCurrentItem Item)
+        //-------------------------------- Edititng -------------------------------
+        private bool Edit(TCurrentItem Item)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
@@ -445,7 +485,7 @@ namespace GKNData
 
             if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
             {
-                if (Erase(CadBloksList.GetParcel(Item.Item_id),CF.conn))
+                if (Erase(CadBloksList.GetParcel(Item.Item_id), CF.conn))
                 {
                     // Update node while editing
                     treeView1.Nodes.Remove(treeView1.SelectedNode);
@@ -471,7 +511,7 @@ namespace GKNData
                     }
                 }
 
-                foreach(TMyParcel Parcel in block.Parcels)
+                foreach (TMyParcel Parcel in block.Parcels)
                 {
                     Erase(Parcel, conn);
                 }
@@ -537,10 +577,10 @@ namespace GKNData
             return ParcelsList;
         }
 
- 
-  
-            //crazyFull  function filling information
-            private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, int distr_id)
+
+
+        //crazyFull  function filling information
+        private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, long distr_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_AllMessages.Text = "Загрузка кварталов.... ";
@@ -614,22 +654,113 @@ namespace GKNData
             return CadBloksList;
         }
 
+        private void LoadSubRF(MySqlConnection conn, ListView lv)
+        {
+            if (conn != null)
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlDataReader reader;
+                    MySqlCommand command = new MySqlCommand();
+                    string commandString = "select * from subrf;";
+                    command.CommandText = commandString;
+                    command.Connection = conn;
+                    lv.Items.Clear();
+
+                    /*
+                    ListViewItem subRFItemTop = new ListViewItem("Верх");
+                    netFteo.TreeNodeTag tagTop = new netFteo.TreeNodeTag(0, "subrf");
+                    tagTop.Name = "SubRfTop";
+                    subRFItemTop.Tag = tagTop;
+                    subRFItemTop.ToolTipText = "Top";
+                    subRFItemTop.ImageIndex = 0;
+                    lv.Items.Add(subRFItemTop);
+                    */
+
+                    try
+                    {
+                        reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            netFteo.TreeNodeTag tag = new netFteo.TreeNodeTag(Convert.ToInt32(reader["subrf_id"]), "subrf");
+                            tag.Name = reader["subrf_Name"].ToString();
+                            ListViewItem subRFItem = new ListViewItem(tag.Name);
+                            subRFItem.Tag = tag;//ci_Item; //reader["subrf_id"].ToString();
+                            subRFItem.ToolTipText = reader["subrf_kn"].ToString();
+                            subRFItem.ImageIndex = 1;
+                            lv.Items.Add(subRFItem);
+                        }
+                        reader.Close();
 
 
-        //Одуренная поцедура Заполенния TreeView Полями Класса TCadastralBlockList:
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Console.WriteLine("Error: \r\n{0}", ex.ToString());
+                    }
+                    finally
+                    {
+                        //command.Connection.Close();
+                    }
+
+                }
+        }
+
+        private void LoadDistricts(long subrf_id, MySqlConnection conn, ListView lv)
+        {
+            if (conn != null)
+                if (conn.State == ConnectionState.Open)
+                {
+                    MySqlDataReader reader;
+
+                    lv.Items.Clear();
+                    MySqlCommand command = new MySqlCommand();
+                    string commandString = "SELECT * FROM districts where 	districts.subrf_id = " + subrf_id;
+                    command.CommandText = commandString;
+                    command.Connection = conn;
+                    ListViewItem subRFItemTop = new ListViewItem("Верх");
+                    subRFItemTop.Tag = -1;
+                    subRFItemTop.ToolTipText = "Top";
+                    subRFItemTop.ImageIndex = 4;
+                    lv.Items.Add(subRFItemTop);
+                    try
+                    {
+                        reader = command.ExecuteReader();
+                        string test;
+                        while (reader.Read())
+                        {
+                            netFteo.TreeNodeTag tag = new netFteo.TreeNodeTag(Convert.ToInt32(reader["district_id"]), "district");
+                            tag.Name = reader["district_Name"].ToString();
+
+                            ListViewItem subRFItem = new ListViewItem(tag.Name);
+                            subRFItem.Tag = tag;//reader["district_id"].ToString();
+                            subRFItem.ToolTipText = reader["district_kn"].ToString();
+                            subRFItem.ImageIndex = 1;
+                            lv.Items.Add(subRFItem);
+                        }
+                        reader.Close();
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Console.WriteLine("Error: \r\n{0}", ex.ToString());
+                    }
+                    finally
+                    {
+                        //command.Connection.Close();
+                    }
+
+                }
+        }
+
+        // TreeView  TCadastralBlockList:
         private void ListBlockListTreeView(TMyBlockCollection List, TreeView WhatTree)
         {
             if (List == null) return;
             WhatTree.BeginUpdate();
-            //WhatTree.Nodes.Add(List.DistrictName);
-            //insertItem(, WhatTree)
+            WhatTree.Nodes.Clear();
 
             foreach (TMyCadastralBlock block in List.Blocks)
             {
                 insertItem(block, WhatTree);
-                //TreeNode node_ = insertItem(block, WhatTree); //+68TReeNodes after loads
-                //  node_.Expand();
-
             }
             WhatTree.EndUpdate();
         }
@@ -739,7 +870,7 @@ namespace GKNData
         {
             TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)e.Node.Tag).Item_id);
             if (block != null)
-            PrepareNode(e.Node, block);
+                PrepareNode(e.Node, block);
         }
 
         //Добавление района
@@ -763,7 +894,7 @@ namespace GKNData
             // got spatial file of several kind:
             if (EXTention.Equals(".MIF") ||
                 EXTention.Equals(".DXF") ||
-                EXTention.Equals(".TXT") 
+                EXTention.Equals(".TXT")
                 )
             {
                 XMLReaderCS.KVZU_Form frmReader = new XMLReaderCS.KVZU_Form();
@@ -800,7 +931,7 @@ namespace GKNData
                         {
                             if (DBWrapper.DB_AppendBlock(block, CF.conn) > 0)
                             {
-                                CadBloksList.AddBlock(block); 
+                                CadBloksList.AddBlock(block);
                                 wzlBlockEd blEd = new wzlBlockEd();
                                 blEd.ImportXMLKPT(FileName, block, CF.conn);
                                 insertItem(block, treeView1);
@@ -872,7 +1003,7 @@ namespace GKNData
 
                     //this.Folder_Unzip = Path.GetTempPath() + Application.ProductName + "-tmp-zip";
 
-                    Archive_Folder = CF.Cfg.Folder_Unzip +   "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
+                    Archive_Folder = CF.Cfg.Folder_Unzip + "\\" + Path.GetFileNameWithoutExtension((string)e.Argument);
                     /*
                      */
                     //if (zip.EntryFileNames.Contains(".xml")) // wrong ???? not working .Contains !!!
@@ -922,15 +1053,15 @@ namespace GKNData
                         }
 
                         // Try to create the directory.
-                            DirectoryInfo Target_Folder_Info = Directory.CreateDirectory(Target_Folder_Path);
-                        
+                        DirectoryInfo Target_Folder_Info = Directory.CreateDirectory(Target_Folder_Path);
+
                         //Copy files from disarchivedPlace to TargetDir
                         //TODO:
                         string[] filePaths = Directory.GetFiles(Archive_Folder);
                         foreach (string filename in filePaths)
                         {
                             //Do job for "filename"  
-                            string str = Target_Folder_Path +"\\"+ Path.GetFileName(filename);
+                            string str = Target_Folder_Path + "\\" + Path.GetFileName(filename);
                             if (!File.Exists(str))
                             {
                                 File.Copy(filename, str);
@@ -998,7 +1129,7 @@ namespace GKNData
                     CfgRec.BlockCount = CadBloksList.Blocks.Count();
                     ListBlockListTreeView(CadBloksList, treeView1);
                     */
-                    ConnectOps(treeView1);
+                    ConnectOps(CF.Cfg.District_id);
                     return true;
                 }
             }
@@ -1065,7 +1196,7 @@ namespace GKNData
         }
 
 
-      
+
 
         #endregion
 
@@ -1286,67 +1417,76 @@ namespace GKNData
             }
 
         }
-    
 
-		private void MainGKNForm_Load(object sender, EventArgs e)
-		{
-			loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
-			this.TimeOutTimer = new Timer();
-			TimeOutTimer.Interval = 1000;
-			TimeOutTimer.Tick += TimeOut_TimerTick;
+
+        private void MainGKNForm_Load(object sender, EventArgs e)
+        {
+            loadingCircleToolStripMenuItem1.BackColor = Color.Transparent;
+            this.TimeOutTimer = new Timer();
+            TimeOutTimer.Interval = 1000;
+            TimeOutTimer.Tick += TimeOut_TimerTick;
             CF.Cfg.Folder_Unzip = Path.GetTempPath() + Application.ProductName + "-tmp-zip";
+            treeView1.Visible = false;
+            treeView1.Dock = DockStyle.None;
+            Explorer_listView.Visible = true;
+            Explorer_listView.Dock = DockStyle.Fill;
+            Explorer_listView.View = View.LargeIcon;
+            Explorer_listView.Items.Clear();
             ClearFiles();
         }
 
 
 
 
-		private void свойстваToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Edit(CF.Cfg.CurrentItem);
-		}
+        private void свойстваToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Edit(CF.Cfg.CurrentItem);
+        }
 
-		private void panel1_Paint(object sender, PaintEventArgs e)
-		{
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
 
-		}
+        }
 
-		private void button1_Click(object sender, EventArgs e)
-		{
+        private void button1_Click(object sender, EventArgs e)
+        {
 
-		}
+        }
 
-		private void button3_Click(object sender, EventArgs e)
-		{
-			SelectDistrict(CF.Cfg);
-		}
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SelectDistrict(CF.Cfg);
+        }
 
-		private void Button_Exit_Click(object sender, EventArgs e)
-		{
-			GoDisconnect();
-			this.Close();
+        private void Button_Exit_Click(object sender, EventArgs e)
+        {
+            GoDisconnect();
+            this.Close();
 
-		}
+        }
 
-		private void button1_Click_1(object sender, EventArgs e)
-		{
-			treeView1.Visible = true;
-			treeView1.Dock = DockStyle.Fill;
-		}
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Explorer_listView.Visible = false;
+            Explorer_listView.Dock = DockStyle.None;
+            treeView1.Visible = true;
+            treeView1.Dock = DockStyle.Fill;
+            ListBlockListTreeView(CadBloksList, treeView1);
+        }
 
-		private void button_History_Click(object sender, EventArgs e)
-		{
+        private void button_History_Click(object sender, EventArgs e)
+        {
             Hide_SearchTextBox(SearchTextBox);
             treeView1.Visible = false;
-			treeView1.Dock = DockStyle.None;
-		}
+            treeView1.Dock = DockStyle.None;
+        }
 
-		private void button_Favorites_Click(object sender, EventArgs e)
-		{
+        private void button_Favorites_Click(object sender, EventArgs e)
+        {
             Hide_SearchTextBox(SearchTextBox);
-			treeView1.Visible = false;
-			treeView1.Dock = DockStyle.None;
-		}
+            treeView1.Visible = false;
+            treeView1.Dock = DockStyle.None;
+        }
 
         private void ToolStripButton1_Click_1(object sender, EventArgs e)
         {
@@ -1414,14 +1554,63 @@ namespace GKNData
             Button_Property.Enabled = false;
         }
 
+        private void ShowSubRFs()
+        {
+            treeView1.Visible = false;
+            treeView1.Dock = DockStyle.None;
+            Explorer_listView.Visible = true;
+            Explorer_listView.Dock = DockStyle.Fill;
+            Explorer_listView.View = View.LargeIcon;
+            LoadSubRF(CF.conn, Explorer_listView);
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            ShowSubRFs();
+        }
+
+        private void Explorer_listView_KeyUp(object sender, KeyEventArgs e)
+        {
+            ChangeObj(sender, e);
+        }
+
+        private void Explorer_listView_DoubleClick(object sender, EventArgs e)
+        {
+            var senderList = (ListView)sender;
+            if (senderList.SelectedItems.Count == 1)
+            {
+                ListView.SelectedListViewItemCollection items = senderList.SelectedItems;
+                ListViewItem lvItem = items[0];
+                var what = lvItem.Tag.ToString();
+                if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "subrf")
+                LoadDistricts(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.conn, Explorer_listView);
+
+                if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "district")
+                {
+                    CF.Cfg.District_id = ((netFteo.TreeNodeTag)lvItem.Tag).Item_id;
+                    //CfgRec.District_KN = DistrSelectfrm.district_kn;
+                    CF.Cfg.District_Name = ((netFteo.TreeNodeTag)lvItem.Tag).Name;
+                    //StatusLabel_SubRf_CN.Text = CfgRec.SubRF_Name + " " + CfgRec.District_Name;
+                    CF.Cfg.CfgWrite();
+                    //ConnectOps();
+                    CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
+                    ListBlockListTreeView(CadBloksList, treeView1);
+                    Explorer_listView.Visible = false;
+                    Explorer_listView.Dock = DockStyle.None;
+                    treeView1.Visible = true;
+                    treeView1.Dock = DockStyle.Fill;
+                }
+            }
+        }
+
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           AddItem(CF.Cfg.CurrentItem);
+            AddItem(CF.Cfg.CurrentItem);
         }
     }
 
-        /*
-		 * 
-		 */
-    
+    /*
+     * 
+     */
+
 }

@@ -82,6 +82,7 @@ namespace GKNData
         public string Item_TypeName;
         public long Item_id;
         public TreeNode SelectedNode;
+        public ListViewItem SelectedItem;
         public TCurrentItem()
         {
             this.Item_id = -1;
@@ -103,7 +104,7 @@ namespace GKNData
         public int Subrf_id;
         public string SubRF_KN;
         public string SubRF_Name;
-        public int District_id;
+        public long District_id;
         public string District_KN;
         /// <summary>
         /// Common application unzipping work folder
@@ -142,13 +143,14 @@ namespace GKNData
                 this.Subrf_id = (int)nk.GetValue("subrf_ID");
                 this.SubRF_KN = (string)nk.GetValue("SubRF_KN");
                 this.SubRF_Name = (string)nk.GetValue("SubRF_Name");
-                this.District_id = (int)nk.GetValue("district_ID");
+                this.District_id = Convert.ToInt64(nk.GetValue("district_ID"));
                 this.District_KN = (string)nk.GetValue("District_KN");
                 this.District_Name = (string)nk.GetValue("District_Name");
 				this.IddleTimeOut = (string)nk.GetValue("IddleTimeOut");
 			}
-            catch
+            catch (Exception dx)
             {
+                var dxm = dx.Message;
             }
         }
 

@@ -33,6 +33,8 @@ namespace GKNData
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGKNForm));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Top", 4);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Sub #1", 0);
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
             treeNode1});
@@ -68,20 +70,26 @@ namespace GKNData
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_Connect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
             this.Button_Import = new System.Windows.Forms.ToolStripButton();
-            this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.button_Favorites = new System.Windows.Forms.Button();
             this.button_History = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.Button_Exit = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -351,8 +359,13 @@ namespace GKNData
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton_Connect,
             this.toolStripSeparator3,
-            this.Button_Property,
             this.Button_Import,
+            this.toolStripSeparator4,
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripSeparator5,
+            this.Button_Property,
+            this.toolStripSeparator6,
             this.loadingCircleToolStripMenuItem1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -374,7 +387,62 @@ namespace GKNData
             // 
             this.toolStripSeparator3.AutoSize = false;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(160, 25);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(70, 25);
+            // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.AccessibleName = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(434, 1);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(26, 22);
+            this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.AutoSize = false;
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(45, 25);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::GKNData.Properties.Resources.arrow_left;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::GKNData.Properties.Resources.arrow_right;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.AutoSize = false;
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(45, 25);
             // 
             // Button_Property
             // 
@@ -397,31 +465,6 @@ namespace GKNData
             this.Button_Import.Text = "toolStripButton1";
             this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
             this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
-            // 
-            // loadingCircleToolStripMenuItem1
-            // 
-            this.loadingCircleToolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            // 
-            // loadingCircleToolStripMenuItem1
-            // 
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.AccessibleName = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(238, 1);
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(26, 22);
-            this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
             // 
             // panel1
             // 
@@ -459,16 +502,31 @@ namespace GKNData
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.panel2.Controls.Add(this.button4);
             this.panel2.Controls.Add(this.button_Favorites);
             this.panel2.Controls.Add(this.button_History);
             this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.button3);
             this.panel2.Controls.Add(this.Button_Exit);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(168, 525);
             this.panel2.TabIndex = 12;
+            // 
+            // button4
+            // 
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button4.Image = global::GKNData.Properties.Resources.photos;
+            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button4.Location = new System.Drawing.Point(2, 7);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(165, 40);
+            this.button4.TabIndex = 1;
+            this.button4.Text = "Проводник";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // button_Favorites
             // 
@@ -515,21 +573,6 @@ namespace GKNData
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // button3
-            // 
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Image = global::GKNData.Properties.Resources.ВыборСубъектаРФ;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(1, 14);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(165, 40);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Субъект";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // Button_Exit
             // 
             this.Button_Exit.FlatAppearance.BorderSize = 0;
@@ -547,6 +590,7 @@ namespace GKNData
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.Explorer_listView);
             this.panel3.Controls.Add(this.treeView1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(168, 84);
@@ -554,17 +598,34 @@ namespace GKNData
             this.panel3.Size = new System.Drawing.Size(773, 490);
             this.panel3.TabIndex = 13;
             // 
+            // Explorer_listView
+            // 
+            this.Explorer_listView.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.Explorer_listView.HideSelection = false;
+            this.Explorer_listView.HotTracking = true;
+            this.Explorer_listView.HoverSelection = true;
+            this.Explorer_listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2});
+            this.Explorer_listView.LargeImageList = this.Tree_imageList;
+            this.Explorer_listView.Location = new System.Drawing.Point(430, 25);
+            this.Explorer_listView.Name = "Explorer_listView";
+            this.Explorer_listView.Size = new System.Drawing.Size(331, 265);
+            this.Explorer_listView.TabIndex = 4;
+            this.Explorer_listView.UseCompatibleStateImageBehavior = false;
+            this.Explorer_listView.DoubleClick += new System.EventHandler(this.Explorer_listView_DoubleClick);
+            this.Explorer_listView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Explorer_listView_KeyUp);
+            // 
             // treeView1
             // 
             this.treeView1.BackColor = System.Drawing.SystemColors.Control;
             this.treeView1.ContextMenuStrip = this.contextMenu1;
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.treeView1.HideSelection = false;
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.Tree_imageList;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Location = new System.Drawing.Point(13, 25);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "Node1";
             treeNode1.Text = "Node1";
@@ -574,7 +635,7 @@ namespace GKNData
             treeNode2});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowNodeToolTips = true;
-            this.treeView1.Size = new System.Drawing.Size(773, 490);
+            this.treeView1.Size = new System.Drawing.Size(411, 265);
             this.treeView1.TabIndex = 3;
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.TreeView1_DrawNode);
             this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.TreeView1_BeforeSelect);
@@ -582,6 +643,12 @@ namespace GKNData
             this.treeView1.Enter += new System.EventHandler(this.TreeView1_Enter);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.AutoSize = false;
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(150, 25);
             // 
             // MainGKNForm
             // 
@@ -662,7 +729,6 @@ namespace GKNData
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.TreeView treeView1;
 		private System.Windows.Forms.Button Button_Exit;
-		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button_History;
 		private System.Windows.Forms.Button button_Favorites;
@@ -670,6 +736,13 @@ namespace GKNData
         private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ListView Explorer_listView;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 

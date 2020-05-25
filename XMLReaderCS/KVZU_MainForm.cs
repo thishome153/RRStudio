@@ -1478,39 +1478,40 @@ namespace XMLReaderCS
 
         private void ListAdress(TreeNode Node, netFteo.Rosreestr.TAddress Address, long id)
         {
+            if (Address == null) return;
             if (Address.Empty) return;
-            {
-                TreeNode Adrs = Node.Nodes.Add("Adrss" + id.ToString(), "Адрес");
 
-                if (Address.Region != null)
-                    if (dRegionsRF_v01 != null)
-                        if (Address.Region != "99") //prevent fake value
+            TreeNode Adrs = Node.Nodes.Add("Adrss" + id.ToString(), "Адрес");
+
+            if (Address.Region != null)
+                if (dRegionsRF_v01 != null)
+                    if (Address.Region != "99") //prevent fake value
                         Adrs.Nodes.Add("Adr", "Регион").Nodes.Add(dRegionsRF_v01.Item2Annotation(Address.Region));
 
-                if (Address.District != null)
-                    Adrs.Nodes.Add("Adr", "Район").Nodes.Add(Address.District);
-                if (Address.City != null)
-                    Adrs.Nodes.Add("Adr", "Муниципальное образование").Nodes.Add(Address.City);
+            if (Address.District != null)
+                Adrs.Nodes.Add("Adr", "Район").Nodes.Add(Address.District);
+            if (Address.City != null)
+                Adrs.Nodes.Add("Adr", "Муниципальное образование").Nodes.Add(Address.City);
 
-                if (Address.Locality != null)
-                    Adrs.Nodes.Add("Adr", "Населённый пункт").Nodes.Add(Address.Locality);
-                if (Address.Street != null)
-                    Adrs.Nodes.Add("Adr", "Улица").Nodes.Add(Address.Street);
-                if (Address.Level1 != null)
-                    Adrs.Nodes.Add("Adr", "Дом").Nodes.Add(Address.Level1);
-                if (Address.Level2 != null)
-                    Adrs.Nodes.Add("Adr", "Стр.").Nodes.Add(Address.Level2);
-                if (Address.Apartment != null)
-                    Adrs.Nodes.Add("Adr", "Квартира").Nodes.Add(Address.Apartment);
+            if (Address.Locality != null)
+                Adrs.Nodes.Add("Adr", "Населённый пункт").Nodes.Add(Address.Locality);
+            if (Address.Street != null)
+                Adrs.Nodes.Add("Adr", "Улица").Nodes.Add(Address.Street);
+            if (Address.Level1 != null)
+                Adrs.Nodes.Add("Adr", "Дом").Nodes.Add(Address.Level1);
+            if (Address.Level2 != null)
+                Adrs.Nodes.Add("Adr", "Стр.").Nodes.Add(Address.Level2);
+            if (Address.Apartment != null)
+                Adrs.Nodes.Add("Adr", "Квартира").Nodes.Add(Address.Apartment);
 
-                if (Address.Note != null)
-                {
-                    TreeNode an = Adrs.Nodes.Add("AdrNote", "Неформализованное описание");
-                    an.ToolTipText = "Неформализованное описание";
-                    an.Nodes.Add(Address.Note.Replace("Российская федерация", "РФ.."));
-                }
-
+            if (Address.Note != null)
+            {
+                TreeNode an = Adrs.Nodes.Add("AdrNote", "Неформализованное описание");
+                an.ToolTipText = "Неформализованное описание";
+                an.Nodes.Add(Address.Note.Replace("Российская федерация", "РФ.."));
             }
+
+
         }
 
         private void ListOldNumbers(TreeNode node, TKeyParameters oldnumbers)
@@ -2044,6 +2045,7 @@ return res;
 
         private void AdressToListView(ListView LV, netFteo.Rosreestr.TAddress Address)
         {
+            if (Address == null) return;
             if (Address.Empty) return;
             {
                 if (Address.Note != null)
