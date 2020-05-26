@@ -9,6 +9,7 @@ using netFteo.Spatial;
 
 namespace GKNData
 {
+    /*
     public enum ViewMode
     {
         vmExplorer =1,
@@ -17,12 +18,31 @@ namespace GKNData
         vmHistory =4
     }
 
+    */
+    /// <summary>
+    /// Enumerate levels of viewing contents
+    /// </summary>
     public enum ViewLevel
     {
-        vlExploreSubRF =0,
-        vlExploreDistricts =1,
+        /// <summary>
+        /// Displaying cadastral subjects collection of Russian Federation 
+        /// </summary>
+        vlExploreSubRF = 0,
+        /// <summary>
+        /// Displaying cadastral districts collection of appropriate cadastral subject (subRF)
+        /// </summary>
+        vlExploreDistricts = 1,
+        /// <summary>
+        /// Displaying cadastral blocks collection of appropriate district
+        /// </summary>
         vlBlocks =2,
-        vlFavorites =3,
+        /// <summary>
+        /// Displaying cadastral blocks collection from favorites list
+        /// </summary>
+        vlFavorites = 3,
+        /// <summary>
+        /// /// Displaying cadastral blocks collection from history list
+        /// </summary>
         vlHistory = 4
     }
 

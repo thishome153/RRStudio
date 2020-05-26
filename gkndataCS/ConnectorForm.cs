@@ -96,14 +96,14 @@ namespace GKNData
         string Fixosoft_GKNDATA_NETApps = "\\Software\\Fixosoft\\GKNData\\NET";
         public TCurrentItem CurrentItem;
         public ViewLevel ViewLevel;
-        public ViewMode ViewMode;
+//        public ViewMode ViewMode;
         public string DatabaseName;
         public string ServerName;
         public string ServerPort;
         public string CharSet;
         public string UserName;
         public string UserPwrd;
-        public int Subrf_id;
+        public short Subrf_id; // RF uses just 85 subjects
         public string SubRF_KN;
         public string SubRF_Name;
         public long District_id;
@@ -142,7 +142,7 @@ namespace GKNData
                 this.CharSet = (string)nk.GetValue("CharSet");
                 this.UserName = (string)nk.GetValue("SQLUserName");
                 this.UserPwrd = (string)nk.GetValue("Password");
-                this.Subrf_id = (int)nk.GetValue("subrf_ID");
+                this.Subrf_id = Convert.ToByte(nk.GetValue("subrf_ID"));
                 this.SubRF_KN = (string)nk.GetValue("SubRF_KN");
                 this.SubRF_Name = (string)nk.GetValue("SubRF_Name");
                 this.District_id = Convert.ToInt64(nk.GetValue("district_ID"));

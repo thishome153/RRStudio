@@ -73,7 +73,7 @@ namespace GKNData
             this.Button_Import = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton_Forward = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -362,7 +362,7 @@ namespace GKNData
             this.Button_Import,
             this.toolStripSeparator4,
             this.toolStripButton1,
-            this.toolStripButton2,
+            this.toolStripButton_Forward,
             this.toolStripSeparator5,
             this.Button_Property,
             this.toolStripSeparator6,
@@ -416,14 +416,16 @@ namespace GKNData
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_2);
             // 
-            // toolStripButton2
+            // toolStripButton_Forward
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::GKNData.Properties.Resources.arrow_right;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton_Forward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_Forward.Enabled = false;
+            this.toolStripButton_Forward.Image = global::GKNData.Properties.Resources.arrow_right;
+            this.toolStripButton_Forward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Forward.Name = "toolStripButton_Forward";
+            this.toolStripButton_Forward.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton_Forward.Text = "toolStripButton2";
+            this.toolStripButton_Forward.Click += new System.EventHandler(this.ToolStripButton_Forward_Click);
             // 
             // toolStripSeparator5
             // 
@@ -620,6 +622,7 @@ namespace GKNData
             this.Explorer_listView.Size = new System.Drawing.Size(331, 265);
             this.Explorer_listView.TabIndex = 4;
             this.Explorer_listView.UseCompatibleStateImageBehavior = false;
+            this.Explorer_listView.ItemActivate += new System.EventHandler(this.Explorer_listView_ItemActivate);
             this.Explorer_listView.DoubleClick += new System.EventHandler(this.Explorer_listView_DoubleClick);
             this.Explorer_listView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Explorer_listView_KeyUp);
             // 
@@ -741,7 +744,7 @@ namespace GKNData
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton_Forward;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }

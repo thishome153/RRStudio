@@ -17,7 +17,7 @@ namespace GKNData
         private MySqlDataAdapter da;
         private MySqlCommandBuilder cb;
         MySqlConnection conn;
-        public int subrf_id;
+        public Byte subrf_id;
         public string subrf_Name;
         public string subrf_kn;
 
@@ -81,7 +81,7 @@ namespace GKNData
         {
             if (myDataGridView1.SelectedRows.Count == 1)
             {
-                this.subrf_id = Convert.ToInt32(myDataGridView1.SelectedRows[0].Cells[0].Value);
+                this.subrf_id = Convert.ToByte(myDataGridView1.SelectedRows[0].Cells[0].Value);
                 this.subrf_kn = myDataGridView1.SelectedRows[0].Cells[1].Value.ToString();
                 this.subrf_Name = myDataGridView1.SelectedRows[0].Cells[2].Value.ToString();
             }
