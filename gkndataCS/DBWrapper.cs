@@ -9,6 +9,23 @@ using netFteo.Spatial;
 
 namespace GKNData
 {
+    public enum ViewMode
+    {
+        vmExplorer =1,
+        vmBlockList =2,
+        vmFavorites =3,
+        vmHistory =4
+    }
+
+    public enum ViewLevel
+    {
+        vlExploreSubRF =0,
+        vlExploreDistricts =1,
+        vlBlocks =2,
+        vlFavorites =3,
+        vlHistory = 4
+    }
+
     public static class DBWrapper
 
         

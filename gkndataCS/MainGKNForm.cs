@@ -193,7 +193,7 @@ namespace GKNData
                         // SetNamesCMD.CommandText = "SET CHARACTER SET 'cp1251'";
                         // SetNamesCMD.ExecuteNonQuery();
                         ConnectOps(CF.Cfg.District_id);
-                        ShowSubRFs();
+                        LoadSubRF(CF.conn, Explorer_listView);
                         return true;
                     }
                     else
@@ -263,7 +263,7 @@ namespace GKNData
         }
 
         /// <summary>
-        /// Опредление текущей ноды - что содержит
+        /// Change Object context - when scrolling, typing, clicking nodes/items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -341,6 +341,7 @@ namespace GKNData
             }
         }
 
+  
         //теперь Проверка количества зу в квартале:
         private bool CheckParcels(MySqlConnection conn, long block_id)
         {
@@ -579,7 +580,14 @@ namespace GKNData
 
 
 
-        //crazyFull  function filling information
+
+        /// <summary>
+        /// Load BlockList from database
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="conn2"></param>
+        /// <param name="distr_id"></param>
+        /// <returns></returns>
         private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, long distr_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
@@ -654,8 +662,39 @@ namespace GKNData
             return CadBloksList;
         }
 
+
+ 
+
+
+        /// <summary>
+        /// Change blocks for appropiate district
+        /// </summary>
+        /// <param name="District_id">Parent district id</param>
+        /// <param name="Cfg">Configuration</param>
+        /// <param name="District_Name"></param>
+        private void LoadBlocks(long District_id, TAppCfgRecord Cfg, string District_Name = "***")
+        {
+            //change id
+            Cfg.District_id = District_id; //((netFteo.TreeNodeTag)lvItem.Tag).Item_id;
+            //CfgRec.District_KN = DistrSelectfrm.district_kn;
+            Cfg.District_Name = District_Name; //((netFteo.TreeNodeTag)lvItem.Tag).Name;
+            //StatusLabel_SubRf_CN.Text = Cfg.SubRF_Name + " " + Cfg.District_Name;
+            CF.Cfg.ViewLevel = ViewLevel.vlBlocks;
+            CF.Cfg.ViewMode = ViewMode.vmBlockList;
+            Cfg.CfgWrite(); //save them
+            CadBloksList = LoadBlockList(CF.conn, CF.conn2, District_id);
+            ListBlockListTreeView(CadBloksList, treeView1);
+        }
+
         private void LoadSubRF(MySqlConnection conn, ListView lv)
         {
+            treeView1.Visible = false;
+            treeView1.Dock = DockStyle.None;
+            lv.Visible = true;
+            lv.Dock = DockStyle.Fill;
+            lv.View = View.LargeIcon;
+            Hide_SearchTextBox(SearchTextBox);
+
             if (conn != null)
                 if (conn.State == ConnectionState.Open)
                 {
@@ -665,16 +704,6 @@ namespace GKNData
                     command.CommandText = commandString;
                     command.Connection = conn;
                     lv.Items.Clear();
-
-                    /*
-                    ListViewItem subRFItemTop = new ListViewItem("Верх");
-                    netFteo.TreeNodeTag tagTop = new netFteo.TreeNodeTag(0, "subrf");
-                    tagTop.Name = "SubRfTop";
-                    subRFItemTop.Tag = tagTop;
-                    subRFItemTop.ToolTipText = "Top";
-                    subRFItemTop.ImageIndex = 0;
-                    lv.Items.Add(subRFItemTop);
-                    */
 
                     try
                     {
@@ -690,8 +719,8 @@ namespace GKNData
                             lv.Items.Add(subRFItem);
                         }
                         reader.Close();
-
-
+                        CF.Cfg.ViewLevel = ViewLevel.vlExploreSubRF;
+                        CF.Cfg.ViewMode = ViewMode.vmExplorer;
                     }
                     catch (MySqlException ex)
                     {
@@ -704,6 +733,7 @@ namespace GKNData
 
                 }
         }
+
 
         private void LoadDistricts(long subrf_id, MySqlConnection conn, ListView lv)
         {
@@ -738,6 +768,8 @@ namespace GKNData
                             lv.Items.Add(subRFItem);
                         }
                         reader.Close();
+                        CF.Cfg.ViewLevel = ViewLevel.vlExploreDistricts;
+                        CF.Cfg.ViewMode = ViewMode.vmExplorer;
                     }
                     catch (MySqlException ex)
                     {
@@ -764,8 +796,6 @@ namespace GKNData
             }
             WhatTree.EndUpdate();
         }
-
-
 
         /// <summary>
         /// Insert node for Cadatastral Block
@@ -1471,6 +1501,7 @@ namespace GKNData
             Explorer_listView.Dock = DockStyle.None;
             treeView1.Visible = true;
             treeView1.Dock = DockStyle.Fill;
+            Hide_SearchTextBox(SearchTextBox);
             ListBlockListTreeView(CadBloksList, treeView1);
         }
 
@@ -1479,6 +1510,8 @@ namespace GKNData
             Hide_SearchTextBox(SearchTextBox);
             treeView1.Visible = false;
             treeView1.Dock = DockStyle.None;
+            CF.Cfg.ViewLevel = ViewLevel.vlHistory;
+            CF.Cfg.ViewMode = ViewMode.vmHistory;
         }
 
         private void button_Favorites_Click(object sender, EventArgs e)
@@ -1486,6 +1519,8 @@ namespace GKNData
             Hide_SearchTextBox(SearchTextBox);
             treeView1.Visible = false;
             treeView1.Dock = DockStyle.None;
+            CF.Cfg.ViewLevel = ViewLevel.vlFavorites;
+            CF.Cfg.ViewMode = ViewMode.vmFavorites;
         }
 
         private void ToolStripButton1_Click_1(object sender, EventArgs e)
@@ -1554,19 +1589,11 @@ namespace GKNData
             Button_Property.Enabled = false;
         }
 
-        private void ShowSubRFs()
-        {
-            treeView1.Visible = false;
-            treeView1.Dock = DockStyle.None;
-            Explorer_listView.Visible = true;
-            Explorer_listView.Dock = DockStyle.Fill;
-            Explorer_listView.View = View.LargeIcon;
-            LoadSubRF(CF.conn, Explorer_listView);
-        }
+       
 
         private void Button4_Click(object sender, EventArgs e)
         {
-            ShowSubRFs();
+            LoadSubRF(CF.conn, Explorer_listView);
         }
 
         private void Explorer_listView_KeyUp(object sender, KeyEventArgs e)
@@ -1581,26 +1608,32 @@ namespace GKNData
             {
                 ListView.SelectedListViewItemCollection items = senderList.SelectedItems;
                 ListViewItem lvItem = items[0];
-                var what = lvItem.Tag.ToString();
                 if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "subrf")
                 LoadDistricts(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.conn, Explorer_listView);
 
                 if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "district")
                 {
-                    CF.Cfg.District_id = ((netFteo.TreeNodeTag)lvItem.Tag).Item_id;
-                    //CfgRec.District_KN = DistrSelectfrm.district_kn;
-                    CF.Cfg.District_Name = ((netFteo.TreeNodeTag)lvItem.Tag).Name;
-                    //StatusLabel_SubRf_CN.Text = CfgRec.SubRF_Name + " " + CfgRec.District_Name;
-                    CF.Cfg.CfgWrite();
-                    //ConnectOps();
-                    CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
-                    ListBlockListTreeView(CadBloksList, treeView1);
+                    LoadBlocks(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.Cfg, ((netFteo.TreeNodeTag)lvItem.Tag).Name);
+                    StatusLabel_SubRf_CN.Text = CF.Cfg.SubRF_Name + " " + CF.Cfg.District_Name;
                     Explorer_listView.Visible = false;
                     Explorer_listView.Dock = DockStyle.None;
                     treeView1.Visible = true;
                     treeView1.Dock = DockStyle.Fill;
                 }
             }
+        }
+
+        private void ToolStripButton1_Click_2(object sender, EventArgs e)
+        {
+            //back button:
+
+            LoadDistricts(CF.Cfg.Subrf_id, CF.conn, Explorer_listView);
+            //LoadBlocks(CF.Cfg.District_id, CF.Cfg, ((netFteo.TreeNodeTag)lvItem.Tag).Name);
+            StatusLabel_SubRf_CN.Text = CF.Cfg.SubRF_Name + " " + CF.Cfg.District_Name;
+            Explorer_listView.Visible = false;
+            Explorer_listView.Dock = DockStyle.None;
+            treeView1.Visible = true;
+            treeView1.Dock = DockStyle.Fill;
         }
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)

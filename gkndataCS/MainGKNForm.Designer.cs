@@ -70,13 +70,14 @@ namespace GKNData
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_Connect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.Button_Import = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Property = new System.Windows.Forms.ToolStripButton();
-            this.Button_Import = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
@@ -89,7 +90,6 @@ namespace GKNData
             this.panel3 = new System.Windows.Forms.Panel();
             this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -389,30 +389,16 @@ namespace GKNData
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(70, 25);
             // 
-            // loadingCircleToolStripMenuItem1
+            // Button_Import
             // 
-            this.loadingCircleToolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            // 
-            // loadingCircleToolStripMenuItem1
-            // 
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.AccessibleName = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(434, 1);
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
-            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(26, 22);
-            this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
+            this.Button_Import.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Button_Import.Image = global::GKNData.Properties.Resources.xml_import16x16;
+            this.Button_Import.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Button_Import.Name = "Button_Import";
+            this.Button_Import.Size = new System.Drawing.Size(23, 22);
+            this.Button_Import.Text = "toolStripButton1";
+            this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
+            this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
             // 
             // toolStripSeparator4
             // 
@@ -428,6 +414,7 @@ namespace GKNData
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_2);
             // 
             // toolStripButton2
             // 
@@ -455,16 +442,36 @@ namespace GKNData
             this.Button_Property.ToolTipText = "Свойства";
             this.Button_Property.Click += new System.EventHandler(this.Button_Property_Click);
             // 
-            // Button_Import
+            // toolStripSeparator6
             // 
-            this.Button_Import.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.Button_Import.Image = global::GKNData.Properties.Resources.xml_import16x16;
-            this.Button_Import.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Button_Import.Name = "Button_Import";
-            this.Button_Import.Size = new System.Drawing.Size(23, 22);
-            this.Button_Import.Text = "toolStripButton1";
-            this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
-            this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
+            this.toolStripSeparator6.AutoSize = false;
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(150, 25);
+            // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            // 
+            // loadingCircleToolStripMenuItem1
+            // 
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.AccessibleName = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = false;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(434, 1);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.RotationSpeed = 100;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.SpokeThickness = 2;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.TabIndex = 1;
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Name = "loadingCircleToolStripMenuItem1";
+            this.loadingCircleToolStripMenuItem1.Size = new System.Drawing.Size(26, 22);
+            this.loadingCircleToolStripMenuItem1.Text = "loadingCircleToolStripMenuItem1";
             // 
             // panel1
             // 
@@ -643,12 +650,6 @@ namespace GKNData
             this.treeView1.Enter += new System.EventHandler(this.TreeView1_Enter);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.AutoSize = false;
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(150, 25);
             // 
             // MainGKNForm
             // 

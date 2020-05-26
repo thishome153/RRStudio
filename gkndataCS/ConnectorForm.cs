@@ -95,6 +95,8 @@ namespace GKNData
         string Fixosoft_GKNDATA2 = "\\Software\\Fixosoft\\GKNData\\2.x.x.x";
         string Fixosoft_GKNDATA_NETApps = "\\Software\\Fixosoft\\GKNData\\NET";
         public TCurrentItem CurrentItem;
+        public ViewLevel ViewLevel;
+        public ViewMode ViewMode;
         public string DatabaseName;
         public string ServerName;
         public string ServerPort;
