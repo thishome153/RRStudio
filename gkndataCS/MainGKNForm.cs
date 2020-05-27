@@ -361,42 +361,106 @@ namespace GKNData
         }
 
 
-        private bool AddItem(TCurrentItem Item)
+        private bool AddItem(TCurrentItem Item, ViewLevel Level)
         {
-            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+            switch (Level)
             {
-                //add Parcel
-
-                TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
-                TMyParcel parcel = new TMyParcel();
-                parcel.CadastralBlock = bl.CN;
-                parcel.CadastralBlock_id = bl.id;
-                parcel.CN = bl.CN + ":1";
-
-                if (bl.Parcels.Count > 0)
-                {
-                    parcel.CN = bl.Parcels.Last().CN;
-                }
-
-                if (InputBox.doInputBox("Добавление объекта недвижимости", "Введите номер", ref parcel.CN) == DialogResult.OK)
-                {
-                    if (!bl.ParcelExist(parcel.CN))
+                case ViewLevel.vlExploreSubRF:
                     {
-                        if (AddParcel(parcel))
+                        string SubRFCN = "00:00";
+                        if (InputBox.doInputBox("Добавление Кадастрового округа", "Введите номер", ref SubRFCN) == DialogResult.OK)
                         {
-                            bl.Parcels.AddParcel(parcel);
-                            //populate new node by new item
-                            insertItem(parcel, Item.SelectedNode);
+                            TCadasterItem SubRF = new TCadasterItem(SubRFCN);
+                            if (AddSubRF(SubRF))
+                            {
+                                return true;
+                            }
+                            
                         }
+                        return false;
                     }
-                }
-            }
 
-            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
-            {
-                //add document
+                case ViewLevel.vlExploreDistricts:
+                    {
+                        if (Item.Item_TypeName == "subrf")
+                        {
+                            string DistrictCN = "00:00";
+                            if (InputBox.doInputBox("Добавление Кадастрового района", "Введите номер", ref DistrictCN) == DialogResult.OK)
+                            {
+                                TCadastralDistrict District = new TCadastralDistrict();
+                                District.CN = DistrictCN;
+                                District.Name = "Район";
+                                District.SubRF_id = Convert.ToByte(Item.Item_id);
+                                /*
+                                District.Parent.id = CF.Cfg.Subrf_id;
+                                District.Parent.CN = CF.Cfg.SubRF_KN;
+                                District.Parent.Definition = CF.Cfg.SubRF_Name;
+                                */
+                                if (AddDistrict(District))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+
+                case ViewLevel.vlBlocks:
+                    {
+                        if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+                        {
+                            //add Parcel
+
+                            TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
+                            TMyParcel parcel = new TMyParcel();
+                            parcel.CadastralBlock = bl.CN;
+                            parcel.CadastralBlock_id = bl.id;
+                            parcel.CN = bl.CN + ":1";
+
+                            if (bl.Parcels.Count > 0)
+                            {
+                                parcel.CN = bl.Parcels.Last().CN;
+                            }
+
+                            if (InputBox.doInputBox("Добавление объекта недвижимости", "Введите номер", ref parcel.CN) == DialogResult.OK)
+                            {
+                                if (!bl.ParcelExist(parcel.CN))
+                                {
+                                    if (AddParcel(parcel))
+                                    {
+                                        bl.Parcels.AddParcel(parcel);
+                                        //populate new node by new item
+                                        insertItem(parcel, Item.SelectedNode);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+                        {
+                            //add document
+                        }
+                        return false;
+                    }
             }
             return false;
+        }
+
+
+        private bool AddSubRF(TCadasterItem item)
+        {
+            item.id = DBWrapper.DB_AppendSubRF(item, CF.conn);
+            if (item.id > 0)
+                return true;
+            else return false;
+        }
+
+        private bool AddDistrict(TCadastralDistrict item)
+        {
+            item.id = DBWrapper.DB_AppendDistrict(item, CF.conn);
+            if (item.id > 0)
+                return true;
+            else return false;
         }
 
         private bool AddParcel(TMyParcel item)
@@ -1604,7 +1668,8 @@ namespace GKNData
 
         private void Button4_Click(object sender, EventArgs e)
         {
-            LoadSubRF(CF.conn, Explorer_listView);
+            ChangeViewLevel(CF.Cfg.ViewLevel);
+            //LoadSubRF(CF.conn, Explorer_listView);
         }
 
 
@@ -1630,9 +1695,24 @@ namespace GKNData
             }
         }
 
+        private void ChangeViewLevel(ViewLevel vl)
+        {
+            switch (vl)
+            {
+                case ViewLevel.vlExploreSubRF: { return; } // nothing  - Top level
+                case ViewLevel.vlExploreDistricts: { LoadSubRF(CF.conn, Explorer_listView); return; }
+                case ViewLevel.vlBlocks: { LoadDistricts(CF.Cfg.Subrf_id, CF.conn, Explorer_listView); return; }
+                case ViewLevel.vlFavorites: { return; }
+                case ViewLevel.vlHistory: { return; }
+                default: { return; }
+            }
+        }
+
         private void ToolStripButton1_Click_2(object sender, EventArgs e)
         {
             //back button:
+            ChangeViewLevel(CF.Cfg.ViewLevel);
+            /*
             switch (CF.Cfg.ViewLevel)
             {
                 case ViewLevel.vlExploreSubRF: { return; } // nothing  - Top level
@@ -1642,6 +1722,7 @@ namespace GKNData
                 case ViewLevel.vlHistory: { return; }
                 default: { return; }
             }
+            */
         }
 
         private void ToolStripButton_Forward_Click(object sender, EventArgs e)
@@ -1672,7 +1753,7 @@ namespace GKNData
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddItem(CF.Cfg.CurrentItem);
+            AddItem(CF.Cfg.CurrentItem, CF.Cfg.ViewLevel);
         }
     }
 

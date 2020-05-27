@@ -96,6 +96,7 @@ namespace netFteo.Spatial
             set { this.fState = value; }
         }
         private string fDefinition;
+
         public string Definition
         {
             get { return this.fDefinition; }
@@ -2937,11 +2938,13 @@ namespace netFteo.Spatial
         public string CN;
         public string DateCreated;
         public decimal CadastralCost;
+   //     public TCadasterItem Parent;
 
         public TCadasterItem()
         {
             this.CN = "";
             this.id = Gen_id.newId;
+            //this.Parent = new TCadasterItem(); //causes StackOverFlow
         }
         public TCadasterItem(string cn)
         {
@@ -4294,9 +4297,25 @@ namespace netFteo.Spatial
 
     public class TCadastralDistrict : TCadasterItem
     {
-        public string Name;
+        public string SubRF_Name;
+        public string SubRF_CN;
+        public Byte   SubRF_id;
+        List<TMyCadastralBlock> CadastralBlocks;
+        public TCadastralDistrict()
+        {
+            CadastralBlocks = new List<TMyCadastralBlock>();
+        }
+
     }
 
+    public class TCadastralSubject: TCadasterItem
+    {
+        List<TCadastralDistrict> Districts;
+        public TCadastralSubject()
+        {
+            Districts = new List<TCadastralDistrict>();
+        }
+    }
 
 
     #region Кадастровый квартал

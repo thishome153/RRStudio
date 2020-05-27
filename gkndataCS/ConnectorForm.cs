@@ -88,6 +88,17 @@ namespace GKNData
             this.Item_id = -1;
             this.Item_TypeName = "EMPTY";
         }
+        public string Name
+        {
+            get
+            {
+                if (SelectedNode != null)
+                    return SelectedNode.Text;
+                if (SelectedItem != null)
+                    return SelectedItem.Text;
+                return "";
+            }
+        }
     }
 
     public class TAppCfgRecord

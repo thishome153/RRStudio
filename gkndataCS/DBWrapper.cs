@@ -157,6 +157,22 @@ namespace GKNData
 
         */
 
+        public static long DB_AppendSubRF(TCadasterItem SubRF, MySqlConnection conn)
+        {
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            //long last_id = cmd.LastInsertedId;
+            //return last_id;
+            throw new System.NotImplementedException();
+        }
+
+        public static long DB_AppendDistrict(TCadastralDistrict district, MySqlConnection conn)
+        {
+            if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
+            //long last_id = cmd.LastInsertedId;
+            //return last_id;
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Add parcel record to table LOTTABLE
         /// </summary>
