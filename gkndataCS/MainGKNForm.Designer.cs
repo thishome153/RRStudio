@@ -90,6 +90,7 @@ namespace GKNData
             this.panel3 = new System.Windows.Forms.Panel();
             this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -269,7 +270,7 @@ namespace GKNData
             // 
             this.добавитьToolStripMenuItem.Image = global::GKNData.Properties.Resources.add;
             this.добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
-            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.добавитьToolStripMenuItem.Text = "Добавить";
             this.добавитьToolStripMenuItem.Click += new System.EventHandler(this.ДобавитьToolStripMenuItem_Click);
             // 
@@ -277,7 +278,7 @@ namespace GKNData
             // 
             this.открытьToolStripMenuItem.Image = global::GKNData.Properties.Resources.Свойства;
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.открытьToolStripMenuItem.Text = "Свойства";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
@@ -285,7 +286,7 @@ namespace GKNData
             // 
             this.удалитьToolStripMenuItem.Image = global::GKNData.Properties.Resources.cross;
             this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.удалитьToolStripMenuItem.Text = "Удалить";
             this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.УдалитьToolStripMenuItem_Click);
             // 
@@ -364,6 +365,7 @@ namespace GKNData
             this.toolStripButton1,
             this.toolStripButton_Forward,
             this.toolStripSeparator5,
+            this.toolStripButton2,
             this.Button_Property,
             this.toolStripSeparator6,
             this.loadingCircleToolStripMenuItem1});
@@ -381,6 +383,7 @@ namespace GKNData
             this.toolStripButton_Connect.Name = "toolStripButton_Connect";
             this.toolStripButton_Connect.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton_Connect.Text = "toolStripButton1";
+            this.toolStripButton_Connect.ToolTipText = "Подключить";
             this.toolStripButton_Connect.Click += new System.EventHandler(this.ToolStripButton1_Click_1);
             // 
             // toolStripSeparator3
@@ -397,6 +400,7 @@ namespace GKNData
             this.Button_Import.Name = "Button_Import";
             this.Button_Import.Size = new System.Drawing.Size(23, 22);
             this.Button_Import.Text = "toolStripButton1";
+            this.Button_Import.ToolTipText = "Импорт XML";
             this.Button_Import.CheckStateChanged += new System.EventHandler(this.Button_Import_CheckStateChanged);
             this.Button_Import.Click += new System.EventHandler(this.Button_Import_Click);
             // 
@@ -414,6 +418,7 @@ namespace GKNData
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.ToolTipText = "Назад";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click_2);
             // 
             // toolStripButton_Forward
@@ -425,6 +430,7 @@ namespace GKNData
             this.toolStripButton_Forward.Name = "toolStripButton_Forward";
             this.toolStripButton_Forward.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton_Forward.Text = "toolStripButton2";
+            this.toolStripButton_Forward.ToolTipText = "Вперед";
             this.toolStripButton_Forward.Click += new System.EventHandler(this.ToolStripButton_Forward_Click);
             // 
             // toolStripSeparator5
@@ -461,7 +467,7 @@ namespace GKNData
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.InnerCircleRadius = 5;
-            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(434, 1);
+            this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Location = new System.Drawing.Point(457, 1);
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.Name = "loadingCircleToolStripMenuItem1";
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.NumberSpoke = 12;
             this.loadingCircleToolStripMenuItem1.LoadingCircleControl.OuterCircleRadius = 11;
@@ -654,6 +660,17 @@ namespace GKNData
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
             // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::GKNData.Properties.Resources.add;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.ToolTipText = "Добавить";
+            this.toolStripButton2.Click += new System.EventHandler(this.ToolStripButton2_Click_1);
+            // 
             // MainGKNForm
             // 
             this.AllowDrop = true;
@@ -747,6 +764,7 @@ namespace GKNData
         private System.Windows.Forms.ToolStripButton toolStripButton_Forward;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }
 

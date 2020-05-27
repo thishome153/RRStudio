@@ -407,42 +407,66 @@ namespace GKNData
 
                 case ViewLevel.vlBlocks:
                     {
-                        if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+
+                        if (Item.Item_TypeName == "district")
                         {
-                            //add Parcel
-
-                            TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
-                            TMyParcel parcel = new TMyParcel();
-                            parcel.CadastralBlock = bl.CN;
-                            parcel.CadastralBlock_id = bl.id;
-                            parcel.CN = bl.CN + ":1";
-
-                            if (bl.Parcels.Count > 0)
+                            //add block
+                            TMyCadastralBlock Block = new TMyCadastralBlock();
+                            if (InputBox.doInputBox("Добавление кадастрового квартала", "Введите номер", ref Block.CN) == DialogResult.OK)
                             {
-                                parcel.CN = bl.Parcels.Last().CN;
-                            }
-
-                            if (InputBox.doInputBox("Добавление объекта недвижимости", "Введите номер", ref parcel.CN) == DialogResult.OK)
-                            {
-                                if (!bl.ParcelExist(parcel.CN))
+                                if (!CadBloksList.BlockExist(Block.CN))
                                 {
-                                    if (AddParcel(parcel))
+                                    Block.Parent_id = CF.Cfg.District_id;
                                     {
-                                        bl.Parcels.AddParcel(parcel);
-                                        //populate new node by new item
-                                        insertItem(parcel, Item.SelectedNode);
+                                        if (DBWrapper.DB_AppendBlock(Block, CF.conn) > 0)
+                                        {
+                                            CadBloksList.AddBlock(Block);
+                                            wzlBlockEd blEd = new wzlBlockEd();
+                                            insertItem(Block, treeView1);
+                                        }
+                                        else
+                                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
                                     }
                                 }
                             }
                         }
 
-                        if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
-                        {
-                            //add document
+                            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+
+                            {
+                                //add Parcel
+                                TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
+                                TMyParcel parcel = new TMyParcel();
+                                parcel.CadastralBlock = bl.CN;
+                                parcel.CadastralBlock_id = bl.id;
+                                parcel.CN = bl.CN + ":1";
+
+                                if (bl.Parcels.Count > 0)
+                                {
+                                    parcel.CN = bl.Parcels.Last().CN;
+                                }
+
+                                if (InputBox.doInputBox("Добавление объекта недвижимости", "Введите номер", ref parcel.CN) == DialogResult.OK)
+                                {
+                                    if (!bl.ParcelExist(parcel.CN))
+                                    {
+                                        if (AddParcel(parcel))
+                                        {
+                                            bl.Parcels.AddParcel(parcel);
+                                            //populate new node by new item
+                                            insertItem(parcel, Item.SelectedNode);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+                            {
+                                //add document
+                            }
+                            return false;
                         }
-                        return false;
                     }
-            }
             return false;
         }
 
@@ -1206,6 +1230,7 @@ namespace GKNData
             }
         }
 
+        /*
         bool SelectDistrict(TAppCfgRecord CfgRec)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
@@ -1227,19 +1252,14 @@ namespace GKNData
                     CfgRec.District_Name = DistrSelectfrm.district_Name;
                     StatusLabel_SubRf_CN.Text = CfgRec.SubRF_Name + " " + CfgRec.District_Name;
                     CfgRec.CfgWrite();
-                    /*
-                    CadBloksList = LoadBlockList(CF.conn, CF.conn2, CF.Cfg.District_id);
-                    Application.DoEvents();
-                    CfgRec.BlockCount = CadBloksList.Blocks.Count();
-                    ListBlockListTreeView(CadBloksList, treeView1);
-                    */
+           
                     ConnectOps(CF.Cfg.District_id);
                     return true;
                 }
             }
             return false;
         }
-
+*/
         private bool Toggle_SearchTextBox(TextBox sender)
         {
             if (!sender.Visible)
@@ -1315,7 +1335,7 @@ namespace GKNData
         }
         private void Button_ChangeSub_Click(object sender, EventArgs e)
         {
-            SelectDistrict(CF.Cfg);
+            //SelectDistrict(CF.Cfg);
         }
 
         private void Button_Import_Click(object sender, EventArgs e)
@@ -1363,7 +1383,7 @@ namespace GKNData
 
         private void сменитьСубъектToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SelectDistrict(CF.Cfg);
+            //SelectDistrict(CF.Cfg);
 
         }
 
@@ -1559,7 +1579,7 @@ namespace GKNData
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SelectDistrict(CF.Cfg);
+            //SelectDistrict(CF.Cfg);
         }
 
         private void Button_Exit_Click(object sender, EventArgs e)
@@ -1749,6 +1769,11 @@ namespace GKNData
         private void Explorer_listView_ItemActivate(object sender, EventArgs e)
         {
             ChangeObj(sender, e);
+        }
+
+        private void ToolStripButton2_Click_1(object sender, EventArgs e)
+        {
+            AddItem(CF.Cfg.CurrentItem, CF.Cfg.ViewLevel);
         }
 
         private void ДобавитьToolStripMenuItem_Click(object sender, EventArgs e)

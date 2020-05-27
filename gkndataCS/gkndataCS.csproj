@@ -161,12 +161,6 @@
       <DependentUpon>ConnectorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DBWrapper.cs" />
-    <Compile Include="DistrictForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DistrictForm.Designer.cs">
-      <DependentUpon>DistrictForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="gkndataThreads.cs" />
     <Compile Include="LoadingCircle.cs">
       <SubType>Component</SubType>
@@ -188,12 +182,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubRFForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SubRFForm.Designer.cs">
-      <DependentUpon>SubRFForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="wzKPTProperty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,9 +212,6 @@
     <EmbeddedResource Include="ConnectorForm.resx">
       <DependentUpon>ConnectorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DistrictForm.resx">
-      <DependentUpon>DistrictForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainGKNForm.resx">
       <DependentUpon>MainGKNForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -240,9 +225,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SubRFForm.resx">
-      <DependentUpon>SubRFForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="wzKPTProperty.resx">
       <DependentUpon>wzKPTProperty.cs</DependentUpon>
     </EmbeddedResource>
@@ -344,7 +326,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2000/1/1" BuildVersion_BuildAction="ReBuild" />
+      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
