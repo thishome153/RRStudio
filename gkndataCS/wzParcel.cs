@@ -17,11 +17,12 @@ using System.Web;
 
 using RRTypes.pkk5;
 using netFteo.Spatial;
+using netFteo.Cadaster;
 namespace GKNData
 {
     public partial class wzParcelfrm : Form
     {
-        public TMyParcel ITEM;
+        public TParcel ITEM;
 //        private DataTable data;
 //        private MySqlDataAdapter da;
 //        private MySqlCommandBuilder cb;

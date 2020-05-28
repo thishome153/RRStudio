@@ -1,4 +1,4 @@
-﻿#region Вся используемые NameSpaces
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,10 +20,11 @@ using System.Runtime.InteropServices;
 
 
 using netFteo.Spatial;
+using netFteo.Cadaster;
 using netFteo.Windows;
 using RRTypes.pkk5;
 
-#endregion
+
 
 namespace XMLReaderCS
 
@@ -733,11 +734,11 @@ namespace XMLReaderCS
 
         private void ParseTMyPolygon(TMyPolygon xmlPolygon)
         {
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
             if (xmlPolygon.Definition != null)
                 Bl.CN = xmlPolygon.Definition;
             else Bl.CN = "Polygon";
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
             MainObj.EntSpat.Add(xmlPolygon);
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
             ListMyCoolections(this.DocInfo.MyBlocks);
@@ -924,8 +925,8 @@ namespace XMLReaderCS
 
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
                 Bld.Name = kv.Realty.Building.Name;
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
@@ -939,8 +940,8 @@ namespace XMLReaderCS
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 Constructions.Name = kv.Realty.Construction.Name;
@@ -997,8 +998,8 @@ namespace XMLReaderCS
 
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
                 Bld.Name = kv.Realty.Building.Name;
                 Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
@@ -1024,8 +1025,8 @@ namespace XMLReaderCS
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
                 Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
@@ -1068,8 +1069,8 @@ namespace XMLReaderCS
 
                 if (TP.Construction.Package.New_Construction.Count > 0)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                    TCadastralBlock Bl = new TCadastralBlock();
+                    TRealEstate Constructions = new TRealEstate(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
                     Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
                     Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
                     Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
@@ -1230,7 +1231,7 @@ namespace XMLReaderCS
                 if ((BlockList.Blocks[bc].Parcels != null) && (BlockList.Blocks[bc].Parcels.Count > 0))
                 {
                     TreeNode ParcelsNode_ = TopNode_.Nodes.Add("ParcelsNode", "Земельные участки");
-                    foreach (TMyParcel Parcel in BlockList.Blocks[bc].Parcels)
+                    foreach (TParcel Parcel in BlockList.Blocks[bc].Parcels)
                     {
                         TreeNode TnP = ListMyParcel(ParcelsNode_, Parcel);
                         if (BlockList.Blocks[bc].Parcels.Count == 1) TnP.Expand();
@@ -1319,7 +1320,7 @@ namespace XMLReaderCS
         }
 
         //-------------------------------------------------------------------------------------------------------------------
-        private TreeNode ListMyParcel(TreeNode Node, TMyParcel Parcel)
+        private TreeNode ListMyParcel(TreeNode Node, TParcel Parcel)
         {
             if (Parcel.SpecialNote != null)
             {
@@ -1526,7 +1527,7 @@ namespace XMLReaderCS
             }
         }
 
-        private void ListMyOKS(TreeNode Node, TMyRealty oks)
+        private void ListMyOKS(TreeNode Node, TRealEstate oks)
         {
             TreeNode PNode = Node.Nodes.Add("PNode" + oks.id.ToString(), oks.CN);
 
@@ -2066,10 +2067,10 @@ return res;
                 //  }
             }
         }
-        private void KeyParametersToListView(ListView LV, netFteo.Spatial.TKeyParameters ps)
+        private void KeyParametersToListView(ListView LV, TKeyParameters ps)
         {
             if (ps == null) return;
-            foreach (netFteo.Spatial.TKeyParameter param in ps)
+            foreach (TKeyParameter param in ps)
             {
                 ListViewItem LViAssgn = new ListViewItem();
                 LViAssgn.Text = "Осн. характеристика/ Параметры";
@@ -2094,7 +2095,7 @@ return res;
                 LV.BeginUpdate();
                 if (Obj.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)Obj;
+                    TParcel P = (TParcel)Obj;
                     LV.Items.Clear();
                     LV.Controls.Clear();
 
@@ -2224,7 +2225,7 @@ return res;
 
                 if (Obj.ToString() == "netFteo.Spatial.TBuilding")
                 {
-                    netFteo.Spatial.TBuilding bld = (netFteo.Spatial.TBuilding)Obj;
+                    TBuilding bld = (TBuilding)Obj;
                     if (bld.Flats != null)
                     {
                         if (bld.Flats.Count > 0)
@@ -2267,7 +2268,7 @@ return res;
 
                 if (Obj.ToString() == "netFteo.Spatial.TMyRealty")
                 {
-                    TMyRealty P = (TMyRealty)Obj;
+                    TRealEstate P = (TRealEstate)Obj;
                     LV.Items.Clear();
 
                     ListViewItem LViCN = new ListViewItem();
@@ -2403,7 +2404,7 @@ return res;
                 //  Если это часть: 
                 if (Obj.ToString() == "netFteo.Spatial.TmySlot")
                 {
-                    TmySlot P = (TmySlot)Obj;
+                    TSlot P = (TSlot)Obj;
                     LV.Items.Clear();
                     ListViewItem LViCN = new ListViewItem();
                     LViCN.Text = "Учетный номер части";
@@ -2573,7 +2574,7 @@ LV.Items.Add(LVipP);
                 if (Obj.ToString() == "netFteo.Spatial.TZone")
                 {
                     LV.Items.Clear();
-                    netFteo.Spatial.TZone Zn = (netFteo.Spatial.TZone)Obj;
+                    TZone Zn = (TZone)Obj;
                     ListViewItem LVip = new ListViewItem();
                     LVip.Text = "Идентификационный реестровый номер";
                     LVip.SubItems.Add(Zn.AccountNumber);
@@ -2706,14 +2707,14 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
                 {
-                    TMyParcel parcel = (TMyParcel)O;
+                    TParcel parcel = (TParcel)O;
                     GeometryToSpatialView(listView1, parcel.EntSpat);
                     parcel.EntSpat.ShowasListItems(listView1, true);
                 }
 
                 if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))
                 {
-                    TMyRealty parcel = (TMyRealty)O;
+                    TRealEstate parcel = (TRealEstate)O;
                     GeometryToSpatialView(listView1, parcel.EntSpat);
                     parcel.EntSpat.ShowasListItems(listView1, true);
                 }
@@ -2763,7 +2764,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     //TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
                     GeometryToSpatialView(listView1, P.EntSpat);
                     P.EntSpat.ShowasListItems(listView1, true);
@@ -2824,7 +2825,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     PropertiesToListView(listView_Properties, P.Rights);
                     if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
                 }
@@ -2836,7 +2837,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     PropertiesToListView(listView_Properties, P.EGRN);
                     if (P.EGRN != null) RightsToListView(listView1, P.EGRN.AsList());
                 }
@@ -2850,7 +2851,7 @@ LV.Items.Add(LVipP);
 
                 if (O.ToString() == "netFteo.Spatial.TMyRealty")
                 {
-                    TMyRealty P = (TMyRealty)O;
+                    TRealEstate P = (TRealEstate)O;
                     if (P.Building != null)
                         if (P.Building.Flats.Count > 0)
                         {
@@ -3206,7 +3207,7 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("EntrysNode"))
             {
-                TMyParcel Lot = (TMyParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(NodeName.Substring(10)));
+                TParcel Lot = (TParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(NodeName.Substring(10)));
                 if (Lot != null)
                 {
                     TEntitySpatial res = new TEntitySpatial();
@@ -3693,7 +3694,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     saveFileDialog1.FileName = "Права_ГКН_" + netFteo.StringUtils.ReplaceSlash(P.CN);
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
@@ -3708,7 +3709,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     saveFileDialog1.FileName = "Права_ГРП_" + netFteo.StringUtils.ReplaceSlash(P.CN);
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
@@ -3947,7 +3948,7 @@ LV.Items.Add(LVipP);
             {
                 if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
                 {
-                    cn = ((TMyParcel)O).CN;
+                    cn = ((TParcel)O).CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.Parcel);
                     //Here instances for debug without threading:
                     pkk5_Rosreestr_ru srvPKK5 = new pkk5_Rosreestr_ru(256, 256);
@@ -3961,7 +3962,7 @@ LV.Items.Add(LVipP);
 
                 if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
                 {
-                    cn = ((TMyRealty)O).CN;
+                    cn = ((TRealEstate)O).CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
                 }
 
@@ -4049,12 +4050,12 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    GotoPKK5(((TMyParcel)O).CN);
+                    GotoPKK5(((TParcel)O).CN);
                 }
 
                 if (O.ToString() == "netFteo.Spatial.TMyOKS")
                 {
-                    GotoPKK5(((TMyRealty)O).CN);
+                    GotoPKK5(((TRealEstate)O).CN);
                 }
 
             }
@@ -4126,7 +4127,7 @@ LV.Items.Add(LVipP);
                 object O = this.DocInfo.MyBlocks.GetObject(id);
                 if (O.ToString() == "netFteo.Spatial.TMyParcel")
                 {
-                    TMyParcel P = (TMyParcel)O;
+                    TParcel P = (TParcel)O;
                     // Выписываем явное проебразование:
                     // cast from netfteo.CompozitionEZ to MP_V06.tExistEZEntryParcelCollection :
                     RRTypes.MP_V06.tExistEZEntryParcelCollection compoz = RRTypes.MP_V06.CasterEZPEntrys.CastEZP(P.CompozitionEZ);//new RRTypes.MP_V06.tExistEZEntryParcelCollection();
@@ -4737,7 +4738,7 @@ LV.Items.Add(LVipP);
                     object O = this.DocInfo.MyBlocks.GetObject(id);
                     if (O.ToString() == "netFteo.Spatial.TMyParcel")
                     {
-                        TMyParcel P = (TMyParcel)O;
+                        TParcel P = (TParcel)O;
                         //подключим обработчик события
                         //TODO P.CompozitionEZ.OnChecking += new ESCheckingHandler(ESCheckerStateUpdater);
 

@@ -11,7 +11,7 @@ namespace GKNData
 {
     public partial class wzDistrict : Form
     {
-        public netFteo.Spatial.TCadastralDistrict Item;
+        public netFteo.Cadaster.TCadastralDistrict Item;
         
         public wzDistrict()
         {

@@ -17,11 +17,12 @@ using System.Web;
 
 using RRTypes.pkk5;
 using netFteo.Spatial;
+using netFteo.Cadaster;
 namespace GKNData
 {
     public partial class wzlBlockEd : Form
     {
-        public TMyCadastralBlock ITEM;
+        public TCadastralBlock ITEM;
         private DataTable data;
         private MySqlDataAdapter da;
         private MySqlCommandBuilder cb;
@@ -65,7 +66,7 @@ namespace GKNData
             }
         }
         // Отображение файлов в listview- КПТ
-        private void ListFiles(TMyCadastralBlock Block)
+        private void ListFiles(TCadastralBlock Block)
         {
             listView1.Items.Clear();
             foreach (TFile file in Block.KPTXmlBodyList)
@@ -333,7 +334,7 @@ namespace GKNData
             }
         }
 
-        public void ImportXMLKPT(string FileName, TMyCadastralBlock TargetBlock, MySqlConnection conn)
+        public void ImportXMLKPT(string FileName, TCadastralBlock TargetBlock, MySqlConnection conn)
         {
             FileInfo fi = new FileInfo(FileName);
             TFile xmlUploaded = new TFile();

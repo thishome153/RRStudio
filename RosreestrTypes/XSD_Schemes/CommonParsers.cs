@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using netFteo.Spatial;
+using netFteo.Cadaster;
 using netFteo.Rosreestr;
 
 
@@ -2198,7 +2199,7 @@ namespace RRTypes.CommonParsers
                 res.Number = xmldoc.DocumentElement.SelectSingleNode("eDocument/@GUID").Value;
 
 
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
 
                 if (res.Version == "03")
                 {
@@ -2213,7 +2214,7 @@ namespace RRTypes.CommonParsers
                         {
                             System.Xml.XmlNode parcel = FormParcels[iP];
                             Bl.CN = parcel.SelectSingleNode("CadastralBlock").FirstChild.Value;
-                            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("Definition").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("Definition").Value, parcel.Attributes.GetNamedItem("Name").Value));
                             if (parcel.SelectSingleNode("Entity_Spatial") != null)
                             {
                                 TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("Definition").Value,
@@ -2240,7 +2241,7 @@ namespace RRTypes.CommonParsers
 
                             if (ExistParcel.SelectSingleNode("Entity_Spatial") != null)
                             {
-                                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item01"));
+                                TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item01"));
                                 TMyPolygon ents = KPT08LandEntSpatToFteo(ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                                           ExistParcel.SelectSingleNode("Entity_Spatial"));
                                 ents.AreaValue = (decimal)Convert.ToDouble(ExistParcel.SelectSingleNode("Area/Area").FirstChild.Value);
@@ -2252,7 +2253,7 @@ namespace RRTypes.CommonParsers
                             //Многоконтурный
                             if (ExistParcel.SelectSingleNode("Contours") != null)
                             {
-                                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item05"));
+                                TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item05"));
                                 System.Xml.XmlNode contours = ExistParcel.SelectSingleNode("Contours");
                                 string cn = ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value;
                                 for (int ic = 0; ic <= ExistParcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
@@ -2286,7 +2287,7 @@ namespace RRTypes.CommonParsers
                                     ParcelName = "Item05";
                                 else
                                     ParcelName = "Item01";
-                                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
+                                TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
                                 MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную!!
                                 MainObj.CadastralBlock = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
                                 MainObj.Location.Address.Note = MP.Package.FormParcels.NewParcel[i].Location.District.Type + " " +
@@ -2320,7 +2321,7 @@ namespace RRTypes.CommonParsers
                                     if (MP.Package.FormParcels.NewParcel[i].SubParcels.Count > 0)
                                         for (int ii = 0; ii <= MP.Package.FormParcels.NewParcel[i].SubParcels.Count - 1; ii++)
                                         {
-                                            TmySlot Sl = new TmySlot();
+                                            TSlot Sl = new TSlot();
                                             Sl.NumberRecord = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Definition;
                                             Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.FormParcels.NewParcel[i].SubParcels[ii].Encumbrance.Name });
                                             MainObj.SubParcels.Add(Sl);
@@ -2340,12 +2341,12 @@ namespace RRTypes.CommonParsers
 
                                 if (MP.Package.SpecifyParcel.ExistParcel.Entity_Spatial != null)
                                 {
-                                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item01"));
+                                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item01"));
                                 }
 
                                 if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
                                 {
-                                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item05"));
+                                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item05"));
                                     MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную!!
                                     MainObj.Location.Address.Note = MP.Package.SpecifyParcel.ExistParcel.Note;//Что здесь?
                                                                                                               //MainObj.SpecialNote  = ;//Что здесь?
@@ -2365,11 +2366,11 @@ namespace RRTypes.CommonParsers
                             if (MP.Package.NewSubParcel.Count > 0)
                             {
 
-                                TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.NewSubParcel[0].CadastralNumber_Parcel, "Item01"));
+                                TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.NewSubParcel[0].CadastralNumber_Parcel, "Item01"));
                                 if (MP.Package.NewSubParcel.Count > 0)
                                     for (int ii = 0; ii <= MP.Package.NewSubParcel.Count - 1; ii++)
                                     {
-                                        TmySlot Sl = new TmySlot();
+                                        TSlot Sl = new TSlot();
                                         Sl.NumberRecord = MP.Package.NewSubParcel[ii].Definition;
                                         Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.NewSubParcel[ii].Encumbrance.Name });
                                         Sl.AreaGKN = MP.Package.NewSubParcel[ii].Area.Area;
@@ -2518,7 +2519,7 @@ namespace RRTypes.CommonParsers
 				textBox_DocDate.Text = MP.GeneralCadastralWorks.DateCadastral.ToString("dd/MM/yyyy");
 				*/
 
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 string ParcelName;
                 if (MP.Package.FormParcels != null)
                 {
@@ -2528,7 +2529,7 @@ namespace RRTypes.CommonParsers
                             ParcelName = "Item05";
                         else
                             ParcelName = "Item01";
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.FormParcels.NewParcel[i].Definition, ParcelName));
                         MainObj.AreaGKN = MP.Package.FormParcels.NewParcel[i].Area.Area;//Вычисленную??
                         MainObj.Category = MP.Package.FormParcels.NewParcel[i].Category.Category.ToString();// netFteo.Rosreestr.dCategoriesv01.ItemToName(MP.Package.FormParcels.NewParcel[i].Category.Category.ToString());
                         MainObj.Utilization.UtilbyDoc = MP.Package.FormParcels.NewParcel[i].Utilization.ByDoc;
@@ -2564,7 +2565,7 @@ namespace RRTypes.CommonParsers
                                 ParcelName = "Item01";
 
 
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
                         MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.Area.Area;//Вычисленную??
                         if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)
                         {
@@ -2589,19 +2590,19 @@ namespace RRTypes.CommonParsers
                     if (MP.Package.SpecifyParcel.ExistEZ != null)
                     {
                         ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName));
                     }
                 }
                 //Только образование частей 
                 if (MP.Package.SubParcels != null)
                 {
                     ParcelName = "Item06";  // Значение отсутствует
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
 
                     if (MP.Package.SubParcels.NewSubParcel.Count > 0)
                         for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
                         {
-                            TmySlot Sl = new TmySlot();
+                            TSlot Sl = new TSlot();
                             Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
                             Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
                             Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
@@ -2718,7 +2719,7 @@ namespace RRTypes.CommonParsers
                     res.MyBlocks.CSs.Add(new TCoordSystem(MP.CoordSystems[i].Name, MP.CoordSystems[i].CsId));
 
                 }
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 string ParcelName;
                 //МП по образованию
                 if (MP.Package.FormParcels != null)
@@ -2726,7 +2727,7 @@ namespace RRTypes.CommonParsers
 
                     for (int i = 0; i <= MP.Package.FormParcels.NewParcel.Count - 1; i++)
                     {
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel());
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel());
                         MainObj.CadastralBlock = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
                         Bl.CN = MP.Package.FormParcels.NewParcel[i].CadastralBlock;
                         MainObj.Definition = MP.Package.FormParcels.NewParcel[i].Definition;
@@ -2756,7 +2757,7 @@ namespace RRTypes.CommonParsers
                     {
                         foreach (RRTypes.MP_V06.tChangeParcel chzSrc in MP.Package.FormParcels.ChangeParcel)
                         {
-                            TMyParcel chzObj = Bl.Parcels.AddParcel(new TMyParcel(chzSrc.CadastralNumber));
+                            TParcel chzObj = Bl.Parcels.AddParcel(new TParcel(chzSrc.CadastralNumber));
                             chzObj.CadastralBlock = chzSrc.CadastralBlock;
                             chzObj.CompozitionEZ = new TCompozitionEZ();
                             if (chzSrc.DeleteEntryParcels != null)
@@ -2790,7 +2791,7 @@ namespace RRTypes.CommonParsers
                                 ParcelName = "Item01";
 
 
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, ParcelName));
                         Bl.CN = MP.Package.SpecifyParcel.ExistParcel.CadastralBlock;
                         MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistParcel.AreaInGKN;
                         MainObj.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Area.Area; //Указанная площадь??
@@ -2827,7 +2828,7 @@ namespace RRTypes.CommonParsers
                     {
                         res.DocTypeNick = "Уточнение ЗУ";
                         ParcelName = "Item02"; // 02 = ЕЗП RRCommon.cs,  там есть public static class dParcelsv01
-                        TMyParcel MainObj = new TMyParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName);
+                        TParcel MainObj = new TParcel(MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.CadastralNumber, ParcelName);
                         Bl.Parcels.AddParcel(MainObj);
                         MainObj.AreaGKN = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.AreaInGKN;
                         MainObj.AreaValue = MP.Package.SpecifyParcel.ExistEZ.ExistEZParcels.Area.Area;
@@ -2867,11 +2868,11 @@ namespace RRTypes.CommonParsers
                 if (MP.Package.SubParcels != null)
                 {
                     ParcelName = "Item06";  // Значение отсутствует
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SubParcels.CadastralNumberParcel, ParcelName));
                     if (MP.Package.SubParcels.NewSubParcel.Count > 0)
                         for (int ii = 0; ii <= MP.Package.SubParcels.NewSubParcel.Count - 1; ii++)
                         {
-                            TmySlot Sl = new TmySlot();
+                            TSlot Sl = new TSlot();
                             Sl.NumberRecord = MP.Package.SubParcels.NewSubParcel[ii].Definition;
 
                             Sl.Encumbrances.Add(new TMyEncumbrance()
@@ -3070,14 +3071,14 @@ namespace RRTypes.CommonParsers
 
         }
 
-        private OMSPoints ParseInputData(V03_TP.tInputData inpData)
+        private PointList ParseInputData(V03_TP.tInputData inpData)
         {
-            OMSPoints res = new OMSPoints();
+            PointList res = new PointList();
             if (inpData.GeodesicBases != null)
                 foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
                 {
                     TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
-                    pt.NumGeopointA = oms.PName;
+                    pt.Definition = oms.PName;
                     pt.Description = oms.PKlass;
                     pt.Code = oms.PName;
                     res.AddPoint(pt);
@@ -3132,8 +3133,8 @@ namespace RRTypes.CommonParsers
                 */
                 if (TP.Construction.Package.New_Construction.Count > 0)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock();
-                    TMyRealty Constructions = new TMyRealty(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                    TCadastralBlock Bl = new TCadastralBlock();
+                    TRealEstate Constructions = new TRealEstate(TP.Construction.Package.New_Construction[0].Name, netFteo.Rosreestr.dRealty_v03.Сооружение);
                     Constructions.Construction.AssignationName = TP.Construction.Package.New_Construction[0].Assignation_Name;
                     Constructions.Location.Address.Note = TP.Construction.Package.New_Construction[0].Location.Note;
                     Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
@@ -3158,9 +3159,9 @@ namespace RRTypes.CommonParsers
 
             if (TP.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 Bl.CN = "ТП v3";
-                TMyRealty OKS = null;
+                TRealEstate OKS = null;
                 Bl.OMSPoints = ParseInputData(TP.Building.InputData);
                 ParseGeneralCadastralWorks(res, TP.Building.GeneralCadastralWorks, TP.Building.Conclusion);
                 res.MyBlocks.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
@@ -3171,7 +3172,7 @@ namespace RRTypes.CommonParsers
                     //if (TP.Building.Package.NewBuildings.Count == 1) <--- POZOR, fucking sin
                     foreach (V03_TP.tNewBuilding bld in TP.Building.Package.NewBuildings)
                     {
-                        OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
+                        OKS = new TRealEstate("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
                         OKS.Name = bld.Name;
                         OKS.Floors = bld.Floors.Floors;
                         OKS.UndergroundFloors = bld.Floors.UndergroundFloors;
@@ -3187,7 +3188,7 @@ namespace RRTypes.CommonParsers
                 //Многоэтажный жилой дом
                 if (TP.Building.Package.NewApartHouse != null)
                 {
-                    OKS = new TMyRealty(TP.Building.Package.NewApartHouse.NewBuilding.Name, netFteo.Rosreestr.dRealty_v03.Здание);
+                    OKS = new TRealEstate(TP.Building.Package.NewApartHouse.NewBuilding.Name, netFteo.Rosreestr.dRealty_v03.Здание);
                     OKS.Name = TP.Building.Package.NewApartHouse.NewBuilding.Name;
                     OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.NewBuilding.Address);
                     OKS.CadastralBlock = TP.Building.Package.NewApartHouse.NewBuilding.CadastralBlocks[0];
@@ -3223,7 +3224,7 @@ namespace RRTypes.CommonParsers
                 //Здание, изменение ОКС
                 if (TP.Building.Package.ExistBuilding != null)
                 {
-                    OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
+                    OKS = new TRealEstate("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
                     OKS.CN = TP.Building.Package.ExistBuilding.CadastralNumber;
                     OKS.Name = TP.Building.Package.ExistBuilding.Name;
                     OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.ExistBuilding.Address);
@@ -3242,9 +3243,9 @@ namespace RRTypes.CommonParsers
             //construction:
             if (TP.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 Bl.CN = "ТП v3";
-                TMyRealty OKS = null;
+                TRealEstate OKS = null;
                 ParseGeneralCadastralWorks(res, TP.Construction.GeneralCadastralWorks, TP.Construction.Conclusion);
                 Bl.OMSPoints = ParseInputData(TP.Construction.InputData);
                 res.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.CoordSystems[0].Name, TP.Construction.CoordSystems[0].CsId));
@@ -3253,7 +3254,7 @@ namespace RRTypes.CommonParsers
                 {
                     foreach (V03_TP.tNewConstruction constr in TP.Construction.Package.NewConstructions)
                     {
-                        OKS = new TMyRealty("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
+                        OKS = new TRealEstate("Сооружение", netFteo.Rosreestr.dRealty_v03.Сооружение);
                         OKS.Name = constr.Name;
                         OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(constr.Address);
                         OKS.CadastralBlock = constr.CadastralBlocks[0];
@@ -3269,7 +3270,7 @@ namespace RRTypes.CommonParsers
                 //изменение
                 if (TP.Construction.Package.ExistConstruction != null)
                 {
-                    OKS = new TMyRealty("Сооружение", dRealty_v03.Сооружение);
+                    OKS = new TRealEstate("Сооружение", dRealty_v03.Сооружение);
                     OKS.CN = TP.Construction.Package.ExistConstruction.CadastralNumber;
                     OKS.Name = TP.Construction.Package.ExistConstruction.Name;
                     OKS.Location.Address = CommonCast.CasterOKS.CastAddress(TP.Construction.Package.ExistConstruction.Address);
@@ -3292,14 +3293,14 @@ namespace RRTypes.CommonParsers
 
             if (TP.Flat != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 Bl.CN = "ТП v3";
-                TMyRealty OKS = null;
+                TRealEstate OKS = null;
                 ParseGeneralCadastralWorks(res, TP.Flat.GeneralCadastralWorks, TP.Flat.Conclusion);
                 //Помещение, учет изменений ГКУ
                 if (TP.Flat.Package.ExistFlat != null)
                 {
-                    OKS = new TMyRealty(TP.Flat.Package.ExistFlat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
+                    OKS = new TRealEstate(TP.Flat.Package.ExistFlat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
                     //OKS.Name = TP.Flat.Package.ExistFlat......;
                     OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Flat.Package.ExistFlat.Address);
                     OKS.CadastralBlock = TP.Flat.Package.ExistFlat.CadastralBlock;
@@ -3324,7 +3325,7 @@ namespace RRTypes.CommonParsers
                 {
                     foreach (RRTypes.V03_TP.tNewFlat fl in TP.Flat.Package.NewFlats)
                     {
-                        OKS = new TMyRealty("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
+                        OKS = new TRealEstate("Здание", netFteo.Rosreestr.dRealty_v03.Здание);
                         OKS.CN = fl.ParentCadastralNumber.Item.ToString();
                         TFlat Flat = new TFlat(fl.PositionInObject.Levels[0].Position.NumberOnPlan);
                         Bl.CN = fl.CadastralBlock;
@@ -3348,16 +3349,16 @@ namespace RRTypes.CommonParsers
 
             if (TP.Uncompleted != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock();
+                TCadastralBlock Bl = new TCadastralBlock();
                 Bl.CN = "ТП v3";
-                TMyRealty OKS = null;
+                TRealEstate OKS = null;
                 Bl.OMSPoints = ParseInputData(TP.Uncompleted.InputData);
                 ParseGeneralCadastralWorks(res, TP.Uncompleted.GeneralCadastralWorks, TP.Uncompleted.Conclusion);
                 res.MyBlocks.CSs.Add(new TCoordSystem(TP.Uncompleted.CoordSystems[0].Name, TP.Uncompleted.CoordSystems[0].CsId));
                 //Здание, постановка на ГКУ
                 if (TP.Uncompleted != null)
                 {
-                    OKS = new TMyRealty("ОНС", netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
+                    OKS = new TRealEstate("ОНС", netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
                     if (TP.Uncompleted.Package.NewUncompleteds.Count == 1)
 
                         foreach (V03_TP.tNewUncompleted un in TP.Uncompleted.Package.NewUncompleteds)
@@ -3427,13 +3428,13 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= Blocksnodes.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
+                TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
 
                 var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
                 for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                 {
                     System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
 
                     MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
                     MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
@@ -3604,13 +3605,13 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= Blocksnodes.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
+                TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
 
                 var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
                 for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                 {
                     System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
 
                     MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
                     MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
@@ -3780,14 +3781,14 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= Blocksnodes.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
+                TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
 
                 var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
                 if (parcels != null) //some cadastral blocks may be without parcels 
                     for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                     {
                         System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
                         MainObj.AreaGKN = parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
                         MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
                         MainObj.DateCreated = parcel.Attributes.GetNamedItem("DateCreated").Value;//.ToString("dd.MM.yyyy");
@@ -3960,13 +3961,13 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= Blocksnodes.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
+                TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].Attributes.GetNamedItem("CadastralNumber").Value);
 
                 var parcels = Blocksnodes[i].SelectSingleNode("Parcels");
                 for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                 {
                     System.Xml.XmlNode parcel = parcels.ChildNodes[iP];
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
 
                     MainObj.AreaGKN = parcel.SelectSingleNode("Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
                     MainObj.State = parcel.Attributes.GetNamedItem("State").Value;
@@ -4405,7 +4406,7 @@ namespace RRTypes.CommonParsers
         }
 
         //   /Package/Cadastral_Blocks/Cadastral_Block
-        private TMyCadastralBlock Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
+        private TCadastralBlock Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
         {
 
 
@@ -4476,10 +4477,10 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= KPT09.CadastralBlocks.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(KPT09.CadastralBlocks[i].CadastralNumber);
+                TCadastralBlock Bl = new TCadastralBlock(KPT09.CadastralBlocks[i].CadastralNumber);
                 for (int iP = 0; iP <= KPT09.CadastralBlocks[i].Parcels.Count - 1; iP++)
                 {
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT09.CadastralBlocks[i].Parcels[iP].Name.ToString()));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT09.CadastralBlocks[i].Parcels[iP].Name.ToString()));
                     MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(KPT09.CadastralBlocks[i].Parcels[iP].Location);
                     MainObj.Utilization.UtilbyDoc = KPT09.CadastralBlocks[i].Parcels[iP].Utilization.ByDoc;
                     if (KPT09.CadastralBlocks[i].Parcels[iP].Utilization.UtilizationSpecified)
@@ -4599,7 +4600,7 @@ namespace RRTypes.CommonParsers
                         {
 
                             //Также параллельное TmyOKS
-                            TMyRealty Building = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                            TRealEstate Building = new TRealEstate(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                             Building.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
                             Building.Building.AssignationBuilding = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
                             Building.Location.Address = KPT_v09Utils.AddrKPT09(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
@@ -4613,7 +4614,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction != null)
                         {
-                            TMyRealty Constructions = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                            TRealEstate Constructions = new TRealEstate(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                             Constructions.Construction.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
                             if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost != null)
                                 Constructions.CadastralCost = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost.Value;
@@ -4647,7 +4648,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
                         {
-                            TMyRealty Uncompleted = new TMyRealty(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
+                            TRealEstate Uncompleted = new TRealEstate(KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
                             Uncompleted.Uncompleted.AssignationName = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
                             if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost != null)
                                 Uncompleted.CadastralCost = KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralCost.Value;
@@ -4694,10 +4695,10 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= KPT10.CadastralBlocks.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(KPT10.CadastralBlocks[i].CadastralNumber);
+                TCadastralBlock Bl = new TCadastralBlock(KPT10.CadastralBlocks[i].CadastralNumber);
                 for (int iP = 0; iP <= KPT10.CadastralBlocks[i].Parcels.Count - 1; iP++)
                 {
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT10.CadastralBlocks[i].Parcels[iP].Name.ToString()));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT10.CadastralBlocks[i].Parcels[iP].Name.ToString()));
                     MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(KPT10.CadastralBlocks[i].Parcels[iP].Location);
                     MainObj.Utilization.UtilbyDoc = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.ByDoc;
                     MainObj.Utilization.Untilization = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.Utilization.ToString();
@@ -4821,7 +4822,7 @@ namespace RRTypes.CommonParsers
                         {
 
                             //Также параллельное TmyOKS
-                            TMyRealty Building = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                            TRealEstate Building = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                             Building.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
                             Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
                             Building.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
@@ -4835,7 +4836,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction != null)
                         {
-                            TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                            TRealEstate Constructions = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                             Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
                             Constructions.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
                             if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost != null)
@@ -4856,7 +4857,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
                         {
-                            TMyRealty Uncompleted = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
+                            TRealEstate Uncompleted = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
                             Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
                             Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
                             Uncompleted.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
@@ -4914,10 +4915,10 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= KPT10.CadastralBlocks.Count - 1; i++)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(KPT10.CadastralBlocks[i].CadastralNumber);
+                TCadastralBlock Bl = new TCadastralBlock(KPT10.CadastralBlocks[i].CadastralNumber);
                 for (int iP = 0; iP <= KPT10.CadastralBlocks[i].Parcels.Count - 1; iP++)
                 {
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT10.CadastralBlocks[i].Parcels[iP].Name.ToString()));
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber, KPT10.CadastralBlocks[i].Parcels[iP].Name.ToString()));
                     MainObj.Location = RRTypes.CommonCast.CasterZU.CastLocation(KPT10.CadastralBlocks[i].Parcels[iP].Location);
                     MainObj.Utilization.UtilbyDoc = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.ByDoc;
                     MainObj.Utilization.Untilization = KPT10.CadastralBlocks[i].Parcels[iP].Utilization.Utilization.ToString();
@@ -5041,7 +5042,7 @@ namespace RRTypes.CommonParsers
                         {
 
                             //Также параллельное TmyOKS
-                            TMyRealty Building = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                            TRealEstate Building = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                             Building.EntSpat = CommonCast.CasterOKS.ES_OKS2(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.CadastralNumber, KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.EntitySpatial);
                             Building.Building.AssignationBuilding = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.AssignationBuilding.ToString();
                             Building.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Building.Address);
@@ -5055,7 +5056,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction != null)
                         {
-                            TMyRealty Constructions = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                            TRealEstate Constructions = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                             Constructions.Construction.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.AssignationName;
                             Constructions.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.Address);
                             if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Construction.CadastralCost != null)
@@ -5076,7 +5077,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
                         {
-                            TMyRealty Uncompleted = new TMyRealty(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
+                            TRealEstate Uncompleted = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
                             Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
                             Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
                             Uncompleted.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
@@ -5152,7 +5153,7 @@ namespace RRTypes.CommonParsers
 
                 for (int i = 0; i <= Blocksnodes.Count - 1; i++)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
+                    TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
 
                     var parcels = Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records");
                     var build_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records");
@@ -5168,7 +5169,7 @@ namespace RRTypes.CommonParsers
 
 
 
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, //(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, //(parcel.Attributes.GetNamedItem("CadastralNumber").Value, parcel.Attributes.GetNamedItem("Name").Value));
                             netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code")));
                         MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
                         MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
@@ -5216,7 +5217,7 @@ namespace RRTypes.CommonParsers
                         //   object/common_data/cad_number
 
                         //Также параллельное TmyOKS
-                        TMyRealty Building = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                        TRealEstate Building = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
                         Building.Location = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
                         if (build.SelectSingleNode("cost/value") != null)
                             Building.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
@@ -5239,7 +5240,7 @@ namespace RRTypes.CommonParsers
                     {
                         System.Xml.XmlNode build = construction_records.ChildNodes[iP];
                         //   object/common_data/cad_number
-                        TMyRealty Construct = new TMyRealty(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                        TRealEstate Construct = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
                         if (build.SelectSingleNode("cost/value") != null)
                             Construct.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
 
@@ -5252,7 +5253,7 @@ namespace RRTypes.CommonParsers
                     {
                         System.Xml.XmlNode under = under_constr_records.ChildNodes[iP];
                         //   object/common_data/cad_number
-                        TMyRealty UnderConstruct = new TMyRealty(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
+                        TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
                         UnderConstruct.Location = Parse_LocationKPT11(under.SelectSingleNode("address_location"));
                         if (under.SelectSingleNode("cost/value") != null)
                             UnderConstruct.CadastralCost = Convert.ToDecimal(under.SelectSingleNode("cost/value").FirstChild.Value);
@@ -5348,8 +5349,8 @@ namespace RRTypes.CommonParsers
                     // / SchemaParcels / NewParcels / NewParcel / CadastralBlock
                     if (NewParcels[i].SelectSingleNode("CadastralBlock") != null)
                     {
-                        TMyCadastralBlock Bl = new TMyCadastralBlock(NewParcels[i].SelectSingleNode("CadastralBlock").FirstChild.Value);
-                        TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel());
+                        TCadastralBlock Bl = new TCadastralBlock(NewParcels[i].SelectSingleNode("CadastralBlock").FirstChild.Value);
+                        TParcel MainObj = Bl.Parcels.AddParcel(new TParcel());
                         MainObj.Definition = ParcelDefinition + (i + 1).ToString();
                         if (NewParcels[i].SelectSingleNode("Note") != null)
                         {
@@ -5418,7 +5419,7 @@ namespace RRTypes.CommonParsers
             xmldoc.Load(ms);
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             RRTypes.kpzu.KPZU kp = (kpzu.KPZU)Desearialize<kpzu.KPZU>(xmldoc);
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
             //----------
             for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
             {
@@ -5427,7 +5428,7 @@ namespace RRTypes.CommonParsers
 
             }
 
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
             MainObj.CadastralBlock = kp.Parcel.CadastralBlock;
             Bl.CN = kp.Parcel.CadastralBlock;
             MainObj.SpecialNote = kp.Parcel.SpecialNote;
@@ -5502,7 +5503,7 @@ namespace RRTypes.CommonParsers
             {
                 for (int i = 0; i <= kp.Parcel.SubParcels.Count - 1; i++)
                 {
-                    TmySlot Sl = MainObj.AddSubParcel(kp.Parcel.SubParcels[i].NumberRecord);
+                    TSlot Sl = MainObj.AddSubParcel(kp.Parcel.SubParcels[i].NumberRecord);
                     Sl.AreaGKN = kp.Parcel.SubParcels[i].Area.Area.ToString();
 
                     if (kp.Parcel.SubParcels[i].Encumbrance != null)
@@ -5542,7 +5543,7 @@ namespace RRTypes.CommonParsers
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             RRTypes.kpzu06.KPZU kp = (RRTypes.kpzu06.KPZU)Desearialize<RRTypes.kpzu06.KPZU>(xmldoc);
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
 
             for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
             {
@@ -5551,7 +5552,7 @@ namespace RRTypes.CommonParsers
 
             }
 
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(kp.Parcel.CadastralNumber, kp.Parcel.Name.ToString()));
             MainObj.CadastralBlock = kp.Parcel.CadastralBlock;
             Bl.CN = kp.Parcel.CadastralBlock;
             MainObj.SpecialNote = kp.Parcel.SpecialNote;
@@ -5621,7 +5622,7 @@ namespace RRTypes.CommonParsers
             {
                 for (int i = 0; i <= kp.Parcel.SubParcels.Count - 1; i++)
                 {
-                    TmySlot Sl = MainObj.AddSubParcel(kp.Parcel.SubParcels[i].NumberRecord);
+                    TSlot Sl = MainObj.AddSubParcel(kp.Parcel.SubParcels[i].NumberRecord);
                     Sl.AreaGKN = kp.Parcel.SubParcels[i].Area.Area.ToString();
 
                     if (kp.Parcel.SubParcels[i].Encumbrance != null)
@@ -5671,10 +5672,10 @@ namespace RRTypes.CommonParsers
                 foreach (STD_KV04.tCadastr_District district in region.Cadastral_Districts)
                     foreach (STD_KV04.tCadastral_Block block in district.Cadastral_Blocks)
                     {
-                        TMyCadastralBlock Bl = new TMyCadastralBlock(block.CadastralNumber);
+                        TCadastralBlock Bl = new TCadastralBlock(block.CadastralNumber);
                         foreach (STD_KV04.ParcelsParcel parcel in block.Parcels.Parcel)
                         {
-                            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(parcel.CadastralNumber, parcel.Name.ToString()));
+                            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.CadastralNumber, parcel.Name.ToString()));
                             MainObj.CadastralBlock = block.CadastralNumber;
                             //MainObj.SpecialNote = parcel.SpecialNote;
                             MainObj.Utilization.UtilbyDoc = parcel.Utilization.ByDoc;
@@ -5741,7 +5742,7 @@ namespace RRTypes.CommonParsers
                                 {
                                     if (parcel.SubParcels[i].Object_Entry == null)
                                     {
-                                        TmySlot Sl = MainObj.AddSubParcel(parcel.SubParcels[i].Number_PP);
+                                        TSlot Sl = MainObj.AddSubParcel(parcel.SubParcels[i].Number_PP);
 
                                         Sl.AreaGKN = parcel.SubParcels[i].Areas[0].Area.ToString();
 
@@ -5809,8 +5810,8 @@ namespace RRTypes.CommonParsers
 
                 foreach (XmlNode Parcel in Parcelnodes)
                 {
-                    TMyCadastralBlock Bl = new TMyCadastralBlock(Parcel.SelectSingleNode("CadastralBlock").FirstChild.Value);
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(Parcel.Attributes.GetNamedItem("CadastralNumber").Value, Parcel.Attributes.GetNamedItem("Name").Value));
+                    TCadastralBlock Bl = new TCadastralBlock(Parcel.SelectSingleNode("CadastralBlock").FirstChild.Value);
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(Parcel.Attributes.GetNamedItem("CadastralNumber").Value, Parcel.Attributes.GetNamedItem("Name").Value));
 
                     // /Region_Cadastr_Vidimus_KV/Package/Parcels/Parcel/Area/Area/#text
                     MainObj.AreaGKN = Parcel.SelectSingleNode("Area/Area").FirstChild.Value; // идентично : .SelectSingleNode("Area").SelectSingleNode("Area")
@@ -5893,7 +5894,7 @@ namespace RRTypes.CommonParsers
 
             RRTypes.kvzu.KVZU kv = (RRTypes.kvzu.KVZU)Desearialize<RRTypes.kvzu.KVZU>(xmldoc);
 
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
 
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
@@ -5901,7 +5902,7 @@ namespace RRTypes.CommonParsers
                 res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
             //MainObj.SpecialNote = kv.Parcels.Parcel.SpecialNote;
             MainObj.Utilization.UtilbyDoc = kv.Parcels.Parcel.Utilization.ByDoc;
@@ -5962,7 +5963,7 @@ namespace RRTypes.CommonParsers
             {
                 for (int i = 0; i <= kv.Parcels.Parcel.SubParcels.Count - 1; i++)
                 {
-                    TmySlot Sl = MainObj.AddSubParcel(kv.Parcels.Parcel.SubParcels[i].NumberRecord);
+                    TSlot Sl = MainObj.AddSubParcel(kv.Parcels.Parcel.SubParcels[i].NumberRecord);
                     Sl.AreaGKN = kv.Parcels.Parcel.SubParcels[i].Area.Area.ToString();
                     if (kv.Parcels.Parcel.SubParcels[i].Encumbrance != null)
                         Sl.Encumbrances.Add(KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance));
@@ -5990,7 +5991,7 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.OffspringParcel != null)
                 for (int i = 0; i <= kv.Parcels.OffspringParcel.Count() - 1; i++)
                 {
-                    TMyParcel OffObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
+                    TParcel OffObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
                     OffObj.State = "Item05";
                     OffObj.EntSpat.Add(KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.OffspringParcel[i].CadastralNumber,
                                                                                   kv.Parcels.OffspringParcel[i].EntitySpatial));
@@ -6045,7 +6046,7 @@ namespace RRTypes.CommonParsers
 
             kvzu07.KVZU kv = (kvzu07.KVZU)Desearialize<kvzu07.KVZU>(ms);
 
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
 
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
@@ -6054,7 +6055,7 @@ namespace RRTypes.CommonParsers
 
             }
 
-            TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
 
             MainObj.CadastralBlock = kv.Parcels.Parcel.CadastralBlock;
             Bl.CN = kv.Parcels.Parcel.CadastralBlock; // !!! Иначе будет пустой 
@@ -6126,7 +6127,7 @@ namespace RRTypes.CommonParsers
             {
                 for (int i = 0; i <= kv.Parcels.Parcel.SubParcels.Count - 1; i++)
                 {
-                    TmySlot Sl = MainObj.AddSubParcel(kv.Parcels.Parcel.SubParcels[i].NumberRecord);
+                    TSlot Sl = MainObj.AddSubParcel(kv.Parcels.Parcel.SubParcels[i].NumberRecord);
                     Sl.AreaGKN = kv.Parcels.Parcel.SubParcels[i].Area.Area.ToString();
                     if (kv.Parcels.Parcel.SubParcels[i].Encumbrance != null)
                         Sl.Encumbrances.Add(KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance));
@@ -6157,7 +6158,7 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.OffspringParcel != null)
                 for (int i = 0; i <= kv.Parcels.OffspringParcel.Count() - 1; i++)
                 {
-                    TMyParcel OffObj = Bl.Parcels.AddParcel(new TMyParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
+                    TParcel OffObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
                     OffObj.EntSpat.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.OffspringParcel[i].CadastralNumber,
                                                                                   kv.Parcels.OffspringParcel[i].EntitySpatial));
                     OffObj.State = "Item05";
@@ -6232,8 +6233,8 @@ namespace RRTypes.CommonParsers
             */
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
                 Bld.Name = kv.Realty.Building.Name;
                 Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
@@ -6259,8 +6260,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
                 Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
@@ -6315,8 +6316,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.DateCreated = kv.Realty.Building.DateCreated.ToString("dd.MM.yyyy");
                 Bld.Building.AssignationBuilding = netFteo.Rosreestr.dAssBuildingv01.ItemToName(kv.Realty.Building.AssignationBuilding.ToString());
                 Bld.Name = kv.Realty.Building.Name;
@@ -6358,8 +6359,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Flat != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Flat.CadastralBlock);
-                TMyRealty flatObject = new TMyRealty(kv.Realty.Flat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Flat.CadastralBlock);
+                TRealEstate flatObject = new TRealEstate(kv.Realty.Flat.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Помещение);
                 if (kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberOKS != null)
                     flatObject.ParentCadastralNumbers.Add(kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberOKS);
                 if (kv.Realty.Flat.ParentCadastralNumbers.CadastralNumberFlat != null)
@@ -6399,8 +6400,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                 Constructions.DateCreated = kv.Realty.Construction.DateCreated.ToString("dd.MM.yyyy");
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 Constructions.Name = kv.Realty.Construction.Name;
@@ -6486,8 +6487,8 @@ namespace RRTypes.CommonParsers
             */
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
                 Bld.Name = kv.Realty.Building.Name;
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
@@ -6501,8 +6502,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
 
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 Constructions.Name = kv.Realty.Construction.Name;
@@ -6544,8 +6545,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Building != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
-                TMyRealty Bld = new TMyRealty(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Building.CadastralBlocks[0].ToString());
+                TRealEstate Bld = new TRealEstate(kv.Realty.Building.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Здание);
                 Bld.DateCreated = (kv.Realty.Building.DateCreatedSpecified) ? kv.Realty.Building.DateCreated.ToString().Replace("0:00:00", "") : "";
                 if (kv.Realty.Building.ParentCadastralNumbers != null)
                     Bld.ParentCadastralNumbers.AddRange(kv.Realty.Building.ParentCadastralNumbers);
@@ -6598,8 +6599,8 @@ namespace RRTypes.CommonParsers
             //Uncompleted
             if (kv.Realty.Uncompleted != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Uncompleted.CadastralBlocks[0].ToString());
-                TMyRealty Unc = new TMyRealty(kv.Realty.Uncompleted.CadastralNumber, dRealty_v03.Объект_незавершённого_строительства);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Uncompleted.CadastralBlocks[0].ToString());
+                TRealEstate Unc = new TRealEstate(kv.Realty.Uncompleted.CadastralNumber, dRealty_v03.Объект_незавершённого_строительства);
                 Unc.DateCreated = (kv.Realty.Uncompleted.DateCreatedSpecified) ? kv.Realty.Uncompleted.DateCreated.ToString().Replace("0:00:00", "") : "";
                 if (kv.Realty.Uncompleted.ParentCadastralNumbers != null)
                     Unc.ParentCadastralNumbers.AddRange(kv.Realty.Uncompleted.ParentCadastralNumbers);
@@ -6622,8 +6623,8 @@ namespace RRTypes.CommonParsers
 
             if (kv.Realty.Construction != null)
             {
-                TMyCadastralBlock Bl = new TMyCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
-                TMyRealty Constructions = new TMyRealty(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
+                TCadastralBlock Bl = new TCadastralBlock(kv.Realty.Construction.CadastralBlocks[0].ToString());
+                TRealEstate Constructions = new TRealEstate(kv.Realty.Construction.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Сооружение);
                 Constructions.DateCreated = (kv.Realty.Construction.DateCreatedSpecified) ? kv.Realty.Construction.DateCreated.ToString("dd.MM.yyyy").Replace("0:00:00", "") : "";
                 Constructions.Construction.AssignationName = kv.Realty.Construction.AssignationName;
                 Constructions.Name = kv.Realty.Construction.Name;
@@ -6680,7 +6681,7 @@ namespace RRTypes.CommonParsers
                 res.Namespace = NameSpaces.EGRP_04;
 
 
-            TMyCadastralBlock Bl = new TMyCadastralBlock();
+            TCadastralBlock Bl = new TCadastralBlock();
             System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
             nsmgr.AddNamespace("egrp", xmldoc.DocumentElement.NamespaceURI);
             res.DocType = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:ReestrExtract/egrp:DeclarAttribute/@egrp:ExtractTypeText", nsmgr).Value.ToString();
@@ -6707,7 +6708,7 @@ namespace RRTypes.CommonParsers
             {
                 if (ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:ObjectTypeText", nsmgr).FirstChild.Value.ToString() == "Земельный участок")
                 {
-                    TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:CadastralNumber", nsmgr).FirstChild.Value.ToString(),
+                    TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(ParcelNode.SelectSingleNode("egrp:ObjectRight/egrp:ObjectDesc/egrp:CadastralNumber", nsmgr).FirstChild.Value.ToString(),
                                                                            "Item01"));
 
                     Bl.CN = xmldoc.DocumentElement.SelectSingleNode("/egrp:Extract/egrp:eDocument/@egrp:Scope", nsmgr).Value.ToString();

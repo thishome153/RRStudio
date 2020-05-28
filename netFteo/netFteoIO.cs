@@ -13,6 +13,7 @@ using System.Net;
 //using System.Runtime.InteropServices;
 //using System.Drawing; // inter sect with netfteo Point
 using netFteo.Spatial;
+using netFteo.Cadaster;
 //changes 3 to 11 ( и Sync)
 
 namespace netFteo.IO
@@ -85,14 +86,14 @@ namespace netFteo.IO
 
         public string CommentsType; // Conclusion, Notes
 
-        public netFteo.Spatial.TCadastralDistrict MyBlocks;
+        public TCadastralDistrict MyBlocks;
         //   public Spatial.TEntitySpatial MifOKSSpatialCollection;
         //    public Spatial.TEntitySpatial MifPolygons;
         public FileInfo()
         {
             //  this.MifPolygons = new netFteo.Spatial.TEntitySpatial();
             //  this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
-            this.MyBlocks = new Spatial.TCadastralDistrict();
+            this.MyBlocks = new TCadastralDistrict();
             this.Contractors = new List<Rosreestr.TEngineerOut>();
             this.DocType = "-";
             this.Version = "";

@@ -91,6 +91,7 @@ namespace GKNData
             this.panel3 = new System.Windows.Forms.Panel();
             this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -234,17 +235,19 @@ namespace GKNData
             // сервисToolStripMenuItem
             // 
             this.сервисToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сменитьСубъектToolStripMenuItem,
-            this.OptionsToolStripMenuItem});
+            this.OptionsToolStripMenuItem,
+            this.toolStripSeparator7,
+            this.сменитьСубъектToolStripMenuItem});
             this.сервисToolStripMenuItem.Name = "сервисToolStripMenuItem";
             this.сервисToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.сервисToolStripMenuItem.Text = "Сервис";
             // 
             // сменитьСубъектToolStripMenuItem
             // 
+            this.сменитьСубъектToolStripMenuItem.Enabled = false;
             this.сменитьСубъектToolStripMenuItem.Image = global::GKNData.Properties.Resources.ВыборСубъектаРФ;
             this.сменитьСубъектToolStripMenuItem.Name = "сменитьСубъектToolStripMenuItem";
-            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.сменитьСубъектToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сменитьСубъектToolStripMenuItem.Text = "Сменить субъект";
             this.сменитьСубъектToolStripMenuItem.Click += new System.EventHandler(this.сменитьСубъектToolStripMenuItem_Click);
             // 
@@ -252,7 +255,7 @@ namespace GKNData
             // 
             this.OptionsToolStripMenuItem.Image = global::GKNData.Properties.Resources.page_white_code;
             this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
-            this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.OptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OptionsToolStripMenuItem.Text = "Настройки";
             this.OptionsToolStripMenuItem.Click += new System.EventHandler(this.настройкиToolStripMenuItem_Click);
             // 
@@ -672,6 +675,11 @@ namespace GKNData
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
             // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            // 
             // MainGKNForm
             // 
             this.AllowDrop = true;
@@ -766,6 +774,7 @@ namespace GKNData
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
     }
 }
 

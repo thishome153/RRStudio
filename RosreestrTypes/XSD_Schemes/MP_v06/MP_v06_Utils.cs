@@ -151,7 +151,7 @@ namespace RRTypes.MP_V06
             return res;
         }
 
-        public static tExistEZEntryParcelCollection CastEZP (netFteo.Spatial.TCompozitionEZ EZP)
+        public static tExistEZEntryParcelCollection CastEZP (netFteo.Cadaster.TCompozitionEZ EZP)
         {
             tExistEZEntryParcelCollection res = new tExistEZEntryParcelCollection();
 			/* TODO

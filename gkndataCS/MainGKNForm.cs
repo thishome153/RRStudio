@@ -13,6 +13,8 @@ using MySql.Data.MySqlClient;
 using Ionic.Zip;
 using netFteo.Windows;
 using netFteo.Spatial;
+using netFteo.Cadaster;
+
 namespace GKNData
 
 {
@@ -411,7 +413,7 @@ namespace GKNData
                         if (Item.Item_TypeName == "district")
                         {
                             //add block
-                            TMyCadastralBlock Block = new TMyCadastralBlock();
+                            TCadastralBlock Block = new TCadastralBlock();
                             if (InputBox.doInputBox("Добавление кадастрового квартала", "Введите номер", ref Block.CN) == DialogResult.OK)
                             {
                                 if (!CadBloksList.BlockExist(Block.CN))
@@ -435,8 +437,8 @@ namespace GKNData
 
                             {
                                 //add Parcel
-                                TMyCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
-                                TMyParcel parcel = new TMyParcel();
+                                TCadastralBlock bl = CadBloksList.GetBlock(Item.Item_id);
+                                TParcel parcel = new TParcel();
                                 parcel.CadastralBlock = bl.CN;
                                 parcel.CadastralBlock_id = bl.id;
                                 parcel.CN = bl.CN + ":1";
@@ -487,7 +489,7 @@ namespace GKNData
             else return false;
         }
 
-        private bool AddParcel(TMyParcel item)
+        private bool AddParcel(TParcel item)
         {
             item.id = DBWrapper.DB_AppendParcel(item, CF.conn);
             if (item.id > 0)
@@ -515,7 +517,7 @@ namespace GKNData
 
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
             {
-                TMyCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
+                TCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
                 if (Edit(block))
                 {
                     // Update node after changes
@@ -548,7 +550,7 @@ namespace GKNData
             else return false;
         }
 
-        private bool Edit(TMyCadastralBlock block)
+        private bool Edit(TCadastralBlock block)
         {
             //if (block.KPTXmlBodyList.Count == 0)
             //anyway load files:
@@ -568,7 +570,7 @@ namespace GKNData
             else return false;
         }
 
-        private bool Edit(TMyParcel item)
+        private bool Edit(TParcel item)
         {
             if (item == null) return false;
             //anyway load files:
@@ -591,7 +593,7 @@ namespace GKNData
             if (this.CF.conn.State == ConnectionState.Closed) return false;
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
             {
-                TMyCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
+                TCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
                 if (Erase(block, CF.conn))
                 {
                     // Update node after changes
@@ -610,7 +612,7 @@ namespace GKNData
             return false;
         }
 
-        private bool Erase(TMyCadastralBlock block, MySqlConnection conn)
+        private bool Erase(TCadastralBlock block, MySqlConnection conn)
         {
             string message = "Удалить " + block.CN;
             if (MessageBox.Show(message, "Подтвердите",
@@ -627,7 +629,7 @@ namespace GKNData
                     }
                 }
 
-                foreach (TMyParcel Parcel in block.Parcels)
+                foreach (TParcel Parcel in block.Parcels)
                 {
                     Erase(Parcel, conn);
                 }
@@ -644,7 +646,7 @@ namespace GKNData
             return false;
         }
 
-        private bool Erase(TMyParcel parcel, MySqlConnection conn)
+        private bool Erase(TParcel parcel, MySqlConnection conn)
         {
             string message = "Удалить " + parcel.CN;
             if (MessageBox.Show(message, "Подтвердите",
@@ -669,20 +671,20 @@ namespace GKNData
             return false;
         }
 
-        private TMyParcelCollection LoadParcelsList(MySqlConnection conn, int block_id)
+        private TParcels LoadParcelsList(MySqlConnection conn, int block_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_SubRf_CN.Text = "Загрузка участков.... ";
             StatusLabel_AllMessages.Text = "Квартал  " + block_id.ToString();
             this.Update();
-            TMyParcelCollection ParcelsList = new TMyParcelCollection();
+            TParcels ParcelsList = new TParcels();
             data = new DataTable();
             da = new MySqlDataAdapter("SELECT * FROM lottable where lottable.block_id = " + block_id.ToString() +
                                       " order by lottable.lot_kn asc", conn);
             da.Fill(data);
             foreach (DataRow row in data.Rows)
             {
-                TMyParcel parcel = new TMyParcel(row[1].ToString(), Convert.ToInt32(row[0])); // CN , id
+                TParcel parcel = new TParcel(row[1].ToString(), Convert.ToInt32(row[0])); // CN , id
                                                                                               //parcel.Name = row[3].ToString(); //Name
                 parcel.CadastralBlock_id = Convert.ToInt32(row[4]); // block_id
                 parcel.SpecialNote = row[5].ToString(); // lot_comment
@@ -738,7 +740,7 @@ namespace GKNData
                 toolStripProgressBar1.PerformStep();
                 StatusLabel_AllMessages.Text = toolStripProgressBar1.Value.ToString() + "/" + cnt.ToString();
                 Application.DoEvents();
-                TMyCadastralBlock Block = new TMyCadastralBlock(dataReader["block_kn"].ToString()); // CN
+                TCadastralBlock Block = new TCadastralBlock(dataReader["block_kn"].ToString()); // CN
                 Block.id = int.Parse(dataReader["block_id"].ToString());
                 Block.Name = dataReader["block_name"].ToString();
                 Block.Comments = dataReader["block_comment"].ToString();
@@ -916,7 +918,7 @@ namespace GKNData
             WhatTree.BeginUpdate();
             WhatTree.Nodes.Clear();
 
-            foreach (TMyCadastralBlock block in List.Blocks)
+            foreach (TCadastralBlock block in List.Blocks)
             {
                 insertItem(block, WhatTree);
             }
@@ -928,7 +930,7 @@ namespace GKNData
         /// </summary>
         /// <param name="item">CadastralBlock</param>
         /// <param name="hParent">Target Treeview</param>
-        private void insertItem(TMyCadastralBlock item, TreeView hParent)
+        private void insertItem(TCadastralBlock item, TreeView hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);//nodeName);
             if (item.Name != null)
@@ -948,7 +950,7 @@ namespace GKNData
         }
 
         //Добавление участка(объекта недвижимости)
-        private TreeNode insertItem(TMyParcel item, TreeNode hParent)
+        private TreeNode insertItem(TParcel item, TreeNode hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);
             //nn.Tag = node;
@@ -972,13 +974,13 @@ namespace GKNData
             if (nodeType == "netFteo.Spatial.TMyCadastralBlock")
             {
                 // Еще не загружены ли ЗУ
-                if ((((TMyCadastralBlock)inNode).HasParcels) && (((TMyCadastralBlock)inNode).Parcels.Count == 0))
+                if ((((TCadastralBlock)inNode).HasParcels) && (((TCadastralBlock)inNode).Parcels.Count == 0))
                 {
-                    TMyParcelCollection reloadP = LoadParcelsList(CF.conn, ((TMyCadastralBlock)inNode).id);
-                    ((TMyCadastralBlock)inNode).Parcels.AddParcels(reloadP);
+                    TParcels reloadP = LoadParcelsList(CF.conn, ((TCadastralBlock)inNode).id);
+                    ((TCadastralBlock)inNode).Parcels.AddParcels(reloadP);
                 }
                 {
-                    foreach (TMyParcel parcel in ((TMyCadastralBlock)inNode).Parcels)
+                    foreach (TParcel parcel in ((TCadastralBlock)inNode).Parcels)
                     {
                         insertItem(parcel, inTreeNode);
                     }
@@ -1000,7 +1002,7 @@ namespace GKNData
                     {
                         hItem.Nodes.Remove(hChildItem); // удаляем пустышку
                         if (BlockInTree != null)        //
-                            if (((TMyCadastralBlock)BlockInTree).HasParcels) // и заполняем участками, если они есть
+                            if (((TCadastralBlock)BlockInTree).HasParcels) // и заполняем участками, если они есть
                             {
                                 populateNode(BlockInTree, hItem);
                             }
@@ -1024,7 +1026,7 @@ namespace GKNData
         // и замена "пустышки" при необходимости
         private void OnItemexpanding(object sender, TreeViewCancelEventArgs e)
         {
-            TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)e.Node.Tag).Item_id);
+            TCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)e.Node.Tag).Item_id);
             if (block != null)
                 PrepareNode(e.Node, block);
         }
@@ -1073,14 +1075,14 @@ namespace GKNData
                 {
                     if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
-                        TMyCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
+                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
                         wzlBlockEd blEd = new wzlBlockEd();
                         blEd.ImportXMLKPT(FileName, block, CF.conn);
                     }
                     else
                     {
                         // Need new Block
-                        TMyCadastralBlock block = new TMyCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        TCadastralBlock block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
                         block.Parent_id = CF.Cfg.District_id;
 
                         //if (Edit(block)) //if user OK, insert item into DB and collctions TODO set TAG for detect behavior : "onInsert on onEdit"
@@ -1490,7 +1492,7 @@ namespace GKNData
                     treeView1.SelectedNode = res;
                     //TODO:  
                     //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
-                    TMyCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
+                    TCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
                     if (block != null)
                         PrepareNode(treeView1.SelectedNode, res.Tag);
                     //treeView1.Focus();

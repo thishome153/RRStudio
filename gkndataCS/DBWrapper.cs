@@ -6,6 +6,7 @@ using System.IO;
 using System.Data;
 using System.Text;
 using netFteo.Spatial;
+using netFteo.Cadaster;
 
 namespace GKNData
 {
@@ -195,7 +196,7 @@ namespace GKNData
         /// <summary>
         /// Add parcel record to table LOTTABLE
         /// </summary>
-        public static long DB_AppendParcel(TMyParcel parcel, MySqlConnection conn)
+        public static long DB_AppendParcel(TParcel parcel, MySqlConnection conn)
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
             //StatusLabel_AllMessages.Text = "Adding parcel.... ";
@@ -217,7 +218,7 @@ namespace GKNData
             return last_id;
         }
 
-        public static long DB_AppendBlock(TMyCadastralBlock block, MySqlConnection conn)
+        public static long DB_AppendBlock(TCadastralBlock block, MySqlConnection conn)
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
             
@@ -260,7 +261,7 @@ namespace GKNData
         /// <param name="Color">Color for display</param>
         /// <param name="conn"></param>
         /// <returns></returns>
-        public static bool DB_UpdateCadastralBlock(TMyCadastralBlock block, int Status, int Color, MySqlConnection conn)
+        public static bool DB_UpdateCadastralBlock(TCadastralBlock block, int Status, int Color, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
             MySqlCommand cmd = new MySqlCommand(
@@ -282,7 +283,7 @@ namespace GKNData
             return true;
         }
 
-        public static bool DB_UpdateParcel(TMyParcel parcel, MySqlConnection conn)
+        public static bool DB_UpdateParcel(TParcel parcel, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
             //StatusLabel_AllMessages.Text = "Update parcel.... ";

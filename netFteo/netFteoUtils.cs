@@ -89,7 +89,7 @@ namespace netFteo
 	}
     public static class ObjectLister
     {
-        public static void ListZone(TreeNode Node, netFteo.Spatial.TZone Zone)
+        public static void ListZone(TreeNode Node, Cadaster.TZone Zone)
         {
             string CN = Zone.Description;
             TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
