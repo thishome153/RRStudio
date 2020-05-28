@@ -25,7 +25,7 @@ namespace GKNData
         private int TIMEOUT_DONE;
         private Timer TimeOutTimer; // iddle timer
         ConnectorForm CF = new ConnectorForm();
-        public TMyBlockCollection CadBloksList; // Global collection
+        public TCadastralDistrict CadBloksList; // Global collection
         ZipFile zip;
 
         /// <summary>
@@ -498,6 +498,21 @@ namespace GKNData
         private bool Edit(TCurrentItem Item)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
+
+            if (Item.Item_TypeName == "district")
+            {
+                //TOdo: where stores colections
+                //wzDstrict required:
+                
+                if (Edit(CadBloksList))
+                {
+                    // Update node after changes
+                    //treeView1.SelectedNode.ToolTipText = CadBloksList.
+                    treeView1.SelectedNode.Text = CadBloksList.CN + " " + CadBloksList.Name;
+                }
+
+            }
+
             if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
             {
                 TMyCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
@@ -518,6 +533,19 @@ namespace GKNData
                 }
             }
             return false;
+        }
+
+        private bool Edit(TCadastralDistrict district)
+        {
+            if (district == null) return false;
+            wzDistrict wzDistrictFrm = new wzDistrict();
+            wzDistrictFrm.Item = district;
+            if (wzDistrictFrm.ShowDialog(this) == DialogResult.OK)
+            {
+                StatusLabel_AllMessages.Text = "Update district.... ";
+                return DBWrapper.DB_UpdateCadastralDistrict(district, CF.conn);
+            }
+            else return false;
         }
 
         private bool Edit(TMyCadastralBlock block)
@@ -675,16 +703,16 @@ namespace GKNData
         /// <param name="conn2"></param>
         /// <param name="distr_id"></param>
         /// <returns></returns>
-        private TMyBlockCollection LoadBlockList(MySqlConnection conn, MySqlConnection conn2, long distr_id)
+        private TCadastralDistrict LoadBlockList(MySqlConnection conn, MySqlConnection conn2, long distr_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_AllMessages.Text = "Загрузка кварталов.... ";
             toolStripProgressBar1.Maximum = 0;
             toolStripProgressBar1.Value = 0;
 
-            TMyBlockCollection CadBloksList = new TMyBlockCollection();
-            CadBloksList.DistrictName = distr_id.ToString();
-            CadBloksList.District_id = distr_id;
+            TCadastralDistrict CadBloksList = new TCadastralDistrict();
+            CadBloksList.Name = distr_id.ToString();
+            CadBloksList.id = distr_id;
 
             data = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM blocks where blocks.district_id =" + distr_id.ToString() +
@@ -759,7 +787,7 @@ namespace GKNData
         /// <param name="District_id">Parent district id</param>
         /// <param name="Cfg">Configuration</param>
         /// <param name="District_Name"></param>
-        private void LoadBlocks(long District_id, TAppCfgRecord Cfg, string District_Name = "***")
+        private void LoadBlocks(long District_id, TAppCfgRecord Cfg, TreeView tv, string District_Name = "***")
         {
             //change id
             Cfg.District_id = District_id; //((netFteo.TreeNodeTag)lvItem.Tag).Item_id;
@@ -770,7 +798,7 @@ namespace GKNData
             //CF.Cfg.ViewMode = ViewMode.vmBlockList;
             Cfg.CfgWrite(); //save them
             CadBloksList = LoadBlockList(CF.conn, CF.conn2, District_id);
-            ListBlockListTreeView(CadBloksList, treeView1);
+            ListBlockListTreeView(CadBloksList, tv);
         }
 
         private void LoadSubRF(MySqlConnection conn, ListView lv)
@@ -804,7 +832,7 @@ namespace GKNData
                             ListViewItem subRFItem = new ListViewItem(tag.Name);
                             subRFItem.Tag = tag;//ci_Item; //reader["subrf_id"].ToString();
                             subRFItem.ToolTipText = reader["subrf_kn"].ToString();
-                            subRFItem.ImageIndex = 1;
+                            subRFItem.ImageIndex = 5;
                             lv.Items.Add(subRFItem);
                             cnt++;
                         }
@@ -882,7 +910,7 @@ namespace GKNData
         }
 
         // TreeView  TCadastralBlockList:
-        private void ListBlockListTreeView(TMyBlockCollection List, TreeView WhatTree)
+        private void ListBlockListTreeView(TCadastralDistrict List, TreeView WhatTree)
         {
             if (List == null) return;
             WhatTree.BeginUpdate();
@@ -1705,7 +1733,7 @@ namespace GKNData
 
                 if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "district")
                 {
-                    LoadBlocks(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.Cfg, ((netFteo.TreeNodeTag)lvItem.Tag).Name);
+                    LoadBlocks(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.Cfg, treeView1, ((netFteo.TreeNodeTag)lvItem.Tag).Name);
                     StatusLabel_SubRf_CN.Text = CF.Cfg.SubRF_Name + " " + CF.Cfg.District_Name;
                     Explorer_listView.Visible = false;
                     Explorer_listView.Dock = DockStyle.None;

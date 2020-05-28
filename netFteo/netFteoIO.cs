@@ -85,14 +85,14 @@ namespace netFteo.IO
 
         public string CommentsType; // Conclusion, Notes
 
-        public netFteo.Spatial.TMyBlockCollection MyBlocks;
+        public netFteo.Spatial.TCadastralDistrict MyBlocks;
         //   public Spatial.TEntitySpatial MifOKSSpatialCollection;
         //    public Spatial.TEntitySpatial MifPolygons;
         public FileInfo()
         {
             //  this.MifPolygons = new netFteo.Spatial.TEntitySpatial();
             //  this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
-            this.MyBlocks = new Spatial.TMyBlockCollection();
+            this.MyBlocks = new Spatial.TCadastralDistrict();
             this.Contractors = new List<Rosreestr.TEngineerOut>();
             this.DocType = "-";
             this.Version = "";

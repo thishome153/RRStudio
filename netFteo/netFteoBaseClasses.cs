@@ -4295,18 +4295,7 @@ namespace netFteo.Spatial
     }
 
 
-    public class TCadastralDistrict : TCadasterItem
-    {
-        public string SubRF_Name;
-        public string SubRF_CN;
-        public Byte   SubRF_id;
-        List<TMyCadastralBlock> CadastralBlocks;
-        public TCadastralDistrict()
-        {
-            CadastralBlocks = new List<TMyCadastralBlock>();
-        }
-
-    }
+  
 
     public class TCadastralSubject: TCadasterItem
     {
@@ -4492,14 +4481,37 @@ namespace netFteo.Spatial
     #endregion
 
     #region Кадастровый район (коллекция кадастровых кварталов)
-    /// <summary>
-    /// Кадастровый район (коллекция кадастровых кварталов)
-    /// </summary>
-    public class TMyBlockCollection
+
+    /*
+    public class TCadastralDistrict : TCadasterItem
     {
-        public long District_id;
-        public string DistrictCN;   // Кадастровый номер района
-        public string DistrictName; // Название района
+        public string SubRF_Name;
+        public string SubRF_CN;
+        public Byte SubRF_id;
+        List<TMyCadastralBlock> CadastralBlocks;
+        public TCadastralDistrict()
+        {
+            CadastralBlocks = new List<TMyCadastralBlock>();
+        }
+
+    }
+    */
+
+    /// <summary>
+    /// Cadastral district - collection of cadastral blocks
+    /// </summary>
+    public class TCadastralDistrict : TCadasterItem
+    {
+
+        public string SubRF_Name;
+        public string SubRF_CN;
+        public Byte SubRF_id;
+
+        public void SelTest()
+        {
+
+        }
+
         public List<TMyCadastralBlock> Blocks;
         public TEntitySpatial OMSPoints
         {
@@ -4542,7 +4554,7 @@ namespace netFteo.Spatial
 
         public Rosreestr.TMyRights EGRN; // Временно  прикручиваем сюды ???
 
-        public TMyBlockCollection()
+        public TCadastralDistrict()
         {
             this.Blocks = new List<TMyCadastralBlock>();
             //this.ParsedSpatial = new List<TEntitySpatial>();
@@ -4564,7 +4576,7 @@ namespace netFteo.Spatial
 
         public void AddBlock(TMyCadastralBlock block)
         {
-            block.Parent_id = District_id;
+            block.Parent_id = this.id;
             this.Blocks.Add(block);
         }
 

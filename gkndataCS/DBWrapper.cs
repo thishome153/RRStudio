@@ -168,9 +168,28 @@ namespace GKNData
         public static long DB_AppendDistrict(TCadastralDistrict district, MySqlConnection conn)
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
-            //long last_id = cmd.LastInsertedId;
-            //return last_id;
-            throw new System.NotImplementedException();
+            MySqlCommand cmd = new MySqlCommand(
+
+                "INSERT INTO districts(district_id, district_kn, district_Name, subrf_id)" + "" +
+                "              VALUES(NULL,  ?district_kn, ?district_Name, ?subrf_id)", conn);
+
+            //cmd.Parameters.Add("?district_id", MySqlDbType.Int32).Value = item_type; - set to NULL due autoIncrement by MySQL server
+            cmd.Parameters.Add("?district_kn", MySqlDbType.VarChar).Value = district.CN;
+            cmd.Parameters.Add("?district_Name", MySqlDbType.VarChar).Value = district.Name;
+            cmd.Parameters.Add("?subrf_id", MySqlDbType.Int32).Value = district.SubRF_id;
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                LastErrorMsg = ex.Message;
+                return -1;
+            }
+            long last_id = cmd.LastInsertedId;
+            district.id = last_id;
+            DBWrapper.DB_AppendHistory(ItemTypes.it_District, last_id, 50, last_id.ToString() + " " + district.CN + "++", conn);
+            return last_id;
         }
 
         /// <summary>
@@ -202,8 +221,6 @@ namespace GKNData
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
             
-            //string lot_small_kn = parcel.CN.Split(':').Last().ToString();
-
             MySqlCommand cmd = new MySqlCommand(
 
             "INSERT INTO blocks(block_id, block_kn, block_status, block_name, district_id)" + "" +
@@ -228,6 +245,11 @@ namespace GKNData
             block.id = last_id; // update
             DBWrapper.DB_AppendHistory(ItemTypes.it_Block, last_id, 50, last_id.ToString() + " " + block.CN + "++", conn);
             return last_id;
+        }
+
+        public static bool DB_UpdateCadastralDistrict(TCadastralDistrict district, MySqlConnection conn)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <summary>

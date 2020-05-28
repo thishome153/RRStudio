@@ -1202,7 +1202,7 @@ namespace XMLReaderCS
 
         /// </summary>
         /// <param name="kpt09"></param>
-        private void ListMyCoolections(TMyBlockCollection BlockList)
+        private void ListMyCoolections(TCadastralDistrict BlockList)
         {
             //TreeNode TopNode_ = TV_Parcels.Nodes.Add("TopNode", DocInfo.DocRootName);
             TreeNode TopNode_ = null;
