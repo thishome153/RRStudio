@@ -75,11 +75,17 @@ namespace GKNData
         */
 
 
+        /// <summary>
+        /// Current selected item of views, Treeviews 
+        /// </summary>
     public class TCurrentItem
     {
-        public string TypeName_Block = "netFteo.Spatial.TMyCadastralBlock";
-        public string TypeName_Parcel = "netFteo.Spatial.TMyParcel";
+
+        public string TypeName_District;
+        public string TypeName_Block; //  =   "netFteo.Cadaster.TCadastralBlock";
+        public string TypeName_Parcel;// =   "netFteo.Cadaster.TParcel";
         public string Item_TypeName;
+        public string Item_NameExt;
         public long Item_id;
         public TreeNode SelectedNode;
         public ListViewItem SelectedItem;
@@ -87,7 +93,23 @@ namespace GKNData
         {
             this.Item_id = -1;
             this.Item_TypeName = "EMPTY";
+            TypeName_District = (new netFteo.Cadaster.TCadastralDistrict()).GetType().ToString();
+            TypeName_Block = (new netFteo.Cadaster.TCadastralBlock()).GetType().ToString();
+            TypeName_Parcel = (new netFteo.Cadaster.TParcel()).GetType().ToString();
         }
+
+        public bool isDistrict
+        {
+            get
+            {
+
+                if (Item_TypeName == TypeName_District)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
         public string Name
         {
             get

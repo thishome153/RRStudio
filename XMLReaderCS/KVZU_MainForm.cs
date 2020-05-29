@@ -2093,7 +2093,7 @@ return res;
             {
                 LV.Controls.Clear();
                 LV.BeginUpdate();
-                if (Obj.ToString() == "netFteo.Spatial.TMyParcel")
+                if (Obj.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)Obj;
                     LV.Items.Clear();
@@ -2266,7 +2266,8 @@ return res;
 
                 }
 
-                if (Obj.ToString() == "netFteo.Spatial.TMyRealty")
+                
+                if (Obj.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
                     TRealEstate P = (TRealEstate)Obj;
                     LV.Items.Clear();
@@ -2402,7 +2403,8 @@ return res;
                 }
 
                 //  Если это часть: 
-                if (Obj.ToString() == "netFteo.Spatial.TmySlot")
+                
+                if (Obj.ToString() == "netFteo.Cadaster.TSlot")
                 {
                     TSlot P = (TSlot)Obj;
                     LV.Items.Clear();
@@ -2571,7 +2573,8 @@ LV.Items.Add(LVipP);
 }
 }
 */
-                if (Obj.ToString() == "netFteo.Spatial.TZone")
+
+                if (Obj.ToString() == "netFteo.Cadaster.TZone")
                 {
                     LV.Items.Clear();
                     TZone Zn = (TZone)Obj;
@@ -2705,14 +2708,16 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.GetType().ToString().Equals("netFteo.Spatial.TMyParcel"))
+                
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
                 {
                     TParcel parcel = (TParcel)O;
                     GeometryToSpatialView(listView1, parcel.EntSpat);
                     parcel.EntSpat.ShowasListItems(listView1, true);
                 }
 
-                if (O.GetType().ToString().Equals("netFteo.Spatial.TMyRealty"))
+                
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TRealEstate"))
                 {
                     TRealEstate parcel = (TRealEstate)O;
                     GeometryToSpatialView(listView1, parcel.EntSpat);
@@ -2762,7 +2767,8 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     //TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
@@ -2823,7 +2829,7 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     PropertiesToListView(listView_Properties, P.Rights);
@@ -2835,7 +2841,7 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     PropertiesToListView(listView_Properties, P.EGRN);
@@ -2848,8 +2854,8 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-
-                if (O.ToString() == "netFteo.Spatial.TMyRealty")
+                
+                if (O.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
                     TRealEstate P = (TRealEstate)O;
                     if (P.Building != null)
@@ -2865,8 +2871,8 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-
-                if (O.ToString() == "netFteo.Spatial.TFlat")
+                
+                if (O.ToString() == "netFteo.Cadaster.TFlat")
                 {
                     TFlat P = (TFlat)O;
                     if (P != null)
@@ -3692,7 +3698,8 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     saveFileDialog1.FileName = "Права_ГКН_" + netFteo.StringUtils.ReplaceSlash(P.CN);
@@ -3707,7 +3714,7 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(9));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     saveFileDialog1.FileName = "Права_ГРП_" + netFteo.StringUtils.ReplaceSlash(P.CN);
@@ -3946,7 +3953,7 @@ LV.Items.Add(LVipP);
             object O = this.DocInfo.MyBlocks.GetObject(id);
             if (O != null)
             {
-                if (O.ToString() == "netFteo.Spatial.TMyParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
+                if (O.ToString() == "netFteo.Cadaster.TParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
                 {
                     cn = ((TParcel)O).CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.Parcel);
@@ -3959,20 +3966,20 @@ LV.Items.Add(LVipP);
 
 
                 }
-
-                if (O.ToString() == "netFteo.Spatial.TMyRealty") //далее - добавим ОКС. 
+                
+                if (O.ToString() == "netFteo.Cadaster.TRealEstate") //далее - добавим ОКС. 
                 {
                     cn = ((TRealEstate)O).CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
                 }
 
-                if (O.ToString() == "netFteo.Spatial.TFlat") //далее - ОКС. 
+                if (O.ToString() == "netFteo.Cadaster.TFlat") //далее - ОКС. 
                 {
                     cn = ((TFlat)O).CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.OKS);//oks
                 }
 
-                if (O.ToString() == "netFteo.Spatial.TZone") //
+                if (O.ToString() == "netFteo.Cadaster.TZone") //
                 {
                     cn = ((TZone)O).AccountNumber;
                     pkk5Viewer1.Start(cn, pkk5_Types.TerrZone);// Terr Zone!!!
@@ -4048,12 +4055,13 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     GotoPKK5(((TParcel)O).CN);
                 }
-
-                if (O.ToString() == "netFteo.Spatial.TMyOKS")
+                
+                if (O.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
                     GotoPKK5(((TRealEstate)O).CN);
                 }
@@ -4125,7 +4133,8 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10));
                 object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
                     // Выписываем явное проебразование:
@@ -4318,7 +4327,7 @@ LV.Items.Add(LVipP);
                 {
                     Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
                     object O = this.DocInfo.MyBlocks.GetObject(id);
-                    if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                    if (O.ToString() == "netFteo.Cadaster.TParcel")
                     {
                         TMyParcel P = (TMyParcel)O;
 
@@ -4736,7 +4745,7 @@ LV.Items.Add(LVipP);
                 {
                     Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
                     object O = this.DocInfo.MyBlocks.GetObject(id);
-                    if (O.ToString() == "netFteo.Spatial.TMyParcel")
+                    if (O.ToString() == "netFteo.Cadaster.TParcel")
                     {
                         TParcel P = (TParcel)O;
                         //подключим обработчик события

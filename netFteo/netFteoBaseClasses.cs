@@ -20,18 +20,18 @@ namespace netFteo.Spatial
     /// </summary>
     public static class Gen_id
     {
-        private static int fid;
+        private static int _id;
         public static int newId
         {
             get
             {
-                fid++;
-                return fid;
+                _id++;
+                return _id;
             }
         }
         public static void Reset()
         {
-            fid = 0;
+            _id = 0;
         }
     }
     #endregion

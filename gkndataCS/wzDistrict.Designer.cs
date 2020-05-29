@@ -44,20 +44,20 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 134);
+            this.panel1.Location = new System.Drawing.Point(0, 153);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(635, 71);
+            this.panel1.Size = new System.Drawing.Size(635, 52);
             this.panel1.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(333, 9);
+            this.button2.Location = new System.Drawing.Point(333, 12);
             this.button2.Margin = new System.Windows.Forms.Padding(5);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 46);
+            this.button2.Size = new System.Drawing.Size(108, 28);
             this.button2.TabIndex = 3;
             this.button2.Text = "Отмена";
             this.button2.UseVisualStyleBackColor = true;
@@ -67,10 +67,10 @@
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(176, 9);
+            this.button1.Location = new System.Drawing.Point(221, 12);
             this.button1.Margin = new System.Windows.Forms.Padding(5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 46);
+            this.button1.Size = new System.Drawing.Size(102, 28);
             this.button1.TabIndex = 2;
             this.button1.Text = "Ок";
             this.button1.UseVisualStyleBackColor = true;
@@ -80,7 +80,7 @@
             // 
             this.textBox_Number.BackColor = System.Drawing.SystemColors.Info;
             this.textBox_Number.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox_Number.Location = new System.Drawing.Point(85, 28);
+            this.textBox_Number.Location = new System.Drawing.Point(140, 28);
             this.textBox_Number.Margin = new System.Windows.Forms.Padding(5);
             this.textBox_Number.Name = "textBox_Number";
             this.textBox_Number.Size = new System.Drawing.Size(75, 23);
@@ -89,7 +89,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 73);
+            this.label3.Location = new System.Drawing.Point(23, 75);
             this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 17);
@@ -106,12 +106,11 @@
             this.textBox_FileName.Size = new System.Drawing.Size(478, 23);
             this.textBox_FileName.TabIndex = 10;
             this.textBox_FileName.Text = "kpt_846bc35f-9c6e-4791-9611-8d1938f8fc77.xml";
-            this.textBox_FileName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label_Filename
             // 
             this.label_Filename.AutoSize = true;
-            this.label_Filename.Location = new System.Drawing.Point(14, 28);
+            this.label_Filename.Location = new System.Drawing.Point(70, 28);
             this.label_Filename.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label_Filename.Name = "label_Filename";
             this.label_Filename.Size = new System.Drawing.Size(51, 17);

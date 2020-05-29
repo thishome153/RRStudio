@@ -248,7 +248,7 @@ namespace GKNData
             return last_id;
         }
 
-        public static bool DB_UpdateCadastralDistrict(TCadastralDistrict district, MySqlConnection conn)
+        public static bool DB_UpdateCadastralDistrict(TCurrentItem district, MySqlConnection conn)
         {
             throw new System.NotImplementedException();
         }

@@ -11,7 +11,7 @@ namespace GKNData
 {
     public partial class wzDistrict : Form
     {
-        public netFteo.Cadaster.TCadastralDistrict Item;
+        public TCurrentItem Item;
         
         public wzDistrict()
         {
@@ -25,8 +25,8 @@ namespace GKNData
 
         private void WzDistrict_Shown(object sender, EventArgs e)
         {
-            textBox_FileName.Text = Item.Name;
-            textBox_Number.Text = Item.CN;
+            textBox_FileName.Text = Item.Item_TypeName;
+            textBox_Number.Text = Item.Item_NameExt;
         }
     }
 }

@@ -19,6 +19,7 @@ namespace netFteo
         public long Item_id;
         public string Type;
         public string Name;
+        public string NameExt;
         /// <summary>
         /// Create small Tag object for treenodes ops
         /// </summary>
