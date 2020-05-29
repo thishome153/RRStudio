@@ -81,9 +81,9 @@ namespace GKNData
     public class TCurrentItem
     {
 
-        public string TypeName_District;
-        public string TypeName_Block; //  =   "netFteo.Cadaster.TCadastralBlock";
-        public string TypeName_Parcel;// =   "netFteo.Cadaster.TParcel";
+//        public string TypeName_District;
+//        public string TypeName_Block; //  =   "netFteo.Cadaster.TCadastralBlock";
+//        public string TypeName_Parcel;// =   "netFteo.Cadaster.TParcel";
         public string Item_TypeName;
         public string Item_NameExt;
         public long Item_id;
@@ -93,9 +93,8 @@ namespace GKNData
         {
             this.Item_id = -1;
             this.Item_TypeName = "EMPTY";
-            TypeName_District = (new netFteo.Cadaster.TCadastralDistrict()).GetType().ToString();
-            TypeName_Block = (new netFteo.Cadaster.TCadastralBlock()).GetType().ToString();
-            TypeName_Parcel = (new netFteo.Cadaster.TParcel()).GetType().ToString();
+          //  TypeName_Block = (new netFteo.Cadaster.TCadastralBlock()).GetType().ToString();
+          //  TypeName_Parcel = (new netFteo.Cadaster.TParcel()).GetType().ToString();
         }
 
         public bool isDistrict
@@ -103,7 +102,31 @@ namespace GKNData
             get
             {
 
-                if (Item_TypeName == TypeName_District)
+                if (Item_TypeName == NetFteoTypes.District)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public bool isBlock
+        {
+            get
+            {
+
+                if (Item_TypeName == NetFteoTypes.Block)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public bool isParcel
+        {
+            get
+            {
+
+                if (Item_TypeName == NetFteoTypes.Parcel)
                     return true;
                 else
                     return false;

@@ -3,39 +3,53 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
-using netFteo.Cadaster;
 
+
+/// <summary>
+/// Class for checking type names
+/// </summary>
+public static class NetFteoTypes
+{
+    public static string LibraryName =   String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.ToString());
+    public static string LibraryVersion = String.Format(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+    public static string Parcel = new netFteo.Cadaster.TParcel().GetType().ToString();
+    public static string RealEstate = new netFteo.Cadaster.TRealEstate().GetType().ToString();
+    public static string Block = new netFteo.Cadaster.TCadastralBlock().GetType().ToString();
+    public static string District = new netFteo.Cadaster.TCadastralDistrict().GetType().ToString();
+    public static string SubRf = new netFteo.Cadaster.TCadastralSubject().GetType().ToString();
+}
+
+
+#region Common primary key generator
+
+/// <summary>
+/// Common primary key generator
+/// </summary>
+public static class Gen_id
+{
+    private static int _id;
+    public static int newId
+    {
+        get
+        {
+            _id++;
+            return _id;
+        }
+    }
+    public static void Reset()
+    {
+        _id = 0;
+    }
+}
+#endregion
 
 namespace netFteo.Spatial
 
 {
 
-    #region Common primary key generator
-    
-    /// <summary>
-    /// Common primary key generator
-    /// </summary>
-    public static class Gen_id
-    {
-        private static int _id;
-        public static int newId
-        {
-            get
-            {
-                _id++;
-                return _id;
-            }
-        }
-        public static void Reset()
-        {
-            _id = 0;
-        }
-    }
-    #endregion
-
+  
     #region Base classes of all base classes 
 
     /// <summary>

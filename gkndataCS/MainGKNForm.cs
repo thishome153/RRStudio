@@ -418,7 +418,7 @@ namespace GKNData
                             }
                         }
 
-                            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+                            if (Item.isBlock)
 
                             {
                                 //add Parcel
@@ -506,7 +506,7 @@ namespace GKNData
                 }
             }
 
-            if (Item.Item_TypeName == Item.TypeName_Block)
+            if (Item.isBlock)
             {
                 TCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
                 if (Edit(block))
@@ -517,7 +517,7 @@ namespace GKNData
                 }
             }
 
-            if (Item.Item_TypeName == Item.TypeName_Parcel)
+            if (Item.isParcel)
             {
                 if (Edit(CadBloksList.GetParcel(Item.Item_id)))
                 {
@@ -583,7 +583,7 @@ namespace GKNData
         private bool Erase(TCurrentItem Item)
         {
             if (this.CF.conn.State == ConnectionState.Closed) return false;
-            if (Item.Item_TypeName == "netFteo.Spatial.TMyCadastralBlock")
+            if (Item.isBlock)
             {
                 TCadastralBlock block = CadBloksList.GetBlock(Item.Item_id);
                 if (Erase(block, CF.conn))
@@ -593,7 +593,7 @@ namespace GKNData
                 }
             }
 
-            if (Item.Item_TypeName == "netFteo.Spatial.TMyParcel")
+            if (Item.isParcel)
             {
                 if (Erase(CadBloksList.GetParcel(Item.Item_id), CF.conn))
                 {
@@ -1010,7 +1010,7 @@ namespace GKNData
             //TreeNode popuToNode;
             // что в ноде:
             nodeType = inNode.ToString();
-            if (nodeType == "netFteo.Spatial.TMyCadastralBlock")
+            if (nodeType == NetFteoTypes.Block)
             {
                 // Еще не загружены ли ЗУ
                 if ((((TCadastralBlock)inNode).HasParcels) && (((TCadastralBlock)inNode).Parcels.Count == 0))
@@ -1032,7 +1032,7 @@ namespace GKNData
         //Проверка загрузки участков и замена "пустышки" при необходимости
         private void PrepareNode(TreeNode hItem, object BlockInTree)
         {
-            if ((BlockInTree != null) && (BlockInTree.GetType().ToString() == "netFteo.Spatial.TMyCadastralBlock"))
+            if ((BlockInTree != null) && (BlockInTree.GetType().ToString() == NetFteoTypes.Block))
             {
                 TreeNode hChildItem = hItem.FirstNode;
                 if ((hChildItem) != null)
@@ -1570,7 +1570,7 @@ namespace GKNData
 
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
-            if (CF.Cfg.CurrentItem.Item_TypeName == CF.Cfg.CurrentItem.TypeName_Parcel)
+            if (CF.Cfg.CurrentItem.isParcel)
                 Edit(CF.Cfg.CurrentItem);
         }
 
