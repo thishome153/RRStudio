@@ -31,7 +31,7 @@ namespace RRTypes.CommonCast
 			{
 				if (ES.Spatial_Element[i].Spelement_Unit[0].Ordinate[0].X == ES.Spatial_Element[i].Spelement_Unit[ES.Spatial_Element[i].Spelement_Unit.Count() - 1].Ordinate[0].X)
 				{
-					TMyPolygon Polygon = new TMyPolygon();
+					TPolygon Polygon = new TPolygon();
 					Polygon.Definition = ES.Spatial_Element[i].Number;
 					//OUT ring
 					for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
@@ -92,7 +92,7 @@ namespace RRTypes.CommonCast
 						//may be already included as some child ??? used prdeicate (lambda ops):
 						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
-							TMyPolygon Polygon = new TMyPolygon();
+							TPolygon Polygon = new TPolygon();
 							Polygon.Definition = ES.SpatialElement[i].Number;
 							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -176,7 +176,7 @@ namespace RRTypes.CommonCast
 						//may be already included as some child ??? used prdeicate (lambda ops):
 						//if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
-							TMyPolygon Polygon = new TMyPolygon();
+							TPolygon Polygon = new TPolygon();
 							Polygon.Definition = Definition;
 							//OUT ring
 							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -258,7 +258,7 @@ namespace RRTypes.CommonCast
 						//may be already included as some child ??? used prdeicate (lambda ops):
 						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
 						{
-							TMyPolygon Polygon = new TMyPolygon();
+							TPolygon Polygon = new TPolygon();
 							Polygon.Definition = Definition+ "." + ES.SpatialElement[i].Number;
 							Polygon.LayerHandle =  res.Layers[0].LayerHandle; //  "FFFF"; //default
 																			   //OUT ring
@@ -337,7 +337,7 @@ namespace RRTypes.CommonCast
 				{
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
-						TMyPolygon Polygon = new TMyPolygon();
+						TPolygon Polygon = new TPolygon();
 						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -409,7 +409,7 @@ namespace RRTypes.CommonCast
 				{
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
-						TMyPolygon Polygon = new TMyPolygon();
+						TPolygon Polygon = new TPolygon();
 						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -481,7 +481,7 @@ namespace RRTypes.CommonCast
 				{
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
-						TMyPolygon Polygon = new TMyPolygon();
+						TPolygon Polygon = new TPolygon();
 						Polygon.Definition = Definition;
 						//OUT ring
 						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
@@ -553,7 +553,7 @@ namespace RRTypes.CommonCast
 				{
 					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
 					{
-						TMyPolygon Polygon = new TMyPolygon();
+						TPolygon Polygon = new TPolygon();
 						Polygon.Definition = Definition;
 
 						//OUT ring
@@ -1372,9 +1372,9 @@ namespace RRTypes.CommonCast
 		/// <returns></returns>
 		/// 
 
-		public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
 		{
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 
 
@@ -1410,9 +1410,9 @@ namespace RRTypes.CommonCast
 
 			return EntSpat;
 		}
-		public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialZUInp ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialZUInp ES)
 		{
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 
 
@@ -1448,9 +1448,9 @@ namespace RRTypes.CommonCast
 
 			return EntSpat;
 		}
-		public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialOldNew ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialOldNew ES)
 		{
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 
 
@@ -1486,10 +1486,10 @@ namespace RRTypes.CommonCast
 
 			return EntSpat;
 		}
-		public static netFteo.Spatial.TMyPolygon AddEntSpatMP5(string Definition, MP_V05.tContoursSubParcelContour ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tContoursSubParcelContour ES)
 		{
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 
 
@@ -1535,10 +1535,10 @@ namespace RRTypes.CommonCast
 		#endregion
 
 		#region Cast MP V06
-		public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
+		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
 		{
 			/*
-            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             EntSpat.Definition = Definition;
             //Первый (внешний) контур
             for (int iord = 0; iord <= ES.Spatial_Element[0].Spelement_Unit.Count - 1; iord++)
@@ -1579,10 +1579,10 @@ namespace RRTypes.CommonCast
 		/// <param name="Definition"></param>
 		/// <param name="ES"></param>
 		/// <returns></returns>
-		public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialZUInp ES)
+		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialZUInp ES)
 		{
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			//Первый (внешний) контур
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
@@ -1616,10 +1616,10 @@ namespace RRTypes.CommonCast
 			return EntSpat;
 		}/// 
 
-		public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUInp ES)
+		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUInp ES)
 		{
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			//Первый (внешний) контур
 			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
@@ -1660,7 +1660,7 @@ namespace RRTypes.CommonCast
 			System.Collections.Generic.List<IGeometry> res = new System.Collections.Generic.List<IGeometry>();
 			foreach (MP_V06.tNewContour item in ESs)
 			{
-				TMyPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
+				TPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
 				//collItem.ResetOrdinates(); // because is only new tNewContour
 				collItem.State = 0; // tNewContour
 				collItem.AreaValue = item.Area.Area;
@@ -1733,11 +1733,11 @@ namespace RRTypes.CommonCast
 		/// <param name="Definition"></param>
 		/// <param name="ES"></param>
 		/// <returns></returns>
-		public static TMyPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
+		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
 		{
 			if (ES.SpatialElement.Count == 0) return null;
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 
 			//Первый (внешний) контур
@@ -1766,10 +1766,10 @@ namespace RRTypes.CommonCast
 			return EntSpat;
 		}
 
-		public static TMyPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
+		public static TPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
 		{
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			//Первый (внешний) контур
 			for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
@@ -1889,9 +1889,9 @@ namespace RRTypes.CommonCast
 
 
 		#region-----------------Конвертация из ОИПД КПЗУ в ОИПД Fteo.Spatial
-		public static netFteo.Spatial.TMyPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
 		{
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			if (ES == null) { return EntSpat; }
 
@@ -1938,9 +1938,9 @@ namespace RRTypes.CommonCast
 		/// <param name="Definition"></param>
 		/// <param name="ES"></param>
 		/// <returns></returns>
-		public static netFteo.Spatial.TMyPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
 		{
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			if (ES == null) { return EntSpat; }
 
@@ -1975,10 +1975,10 @@ namespace RRTypes.CommonCast
 		/// <param name="Definition"></param>
 		/// <param name="ES"></param>
 		/// <returns></returns>
-		public static netFteo.Spatial.TMyPolygon AddEntSpatKVZU07(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
+		public static netFteo.Spatial.TPolygon AddEntSpatKVZU07(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
 		{
 
-			netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
 			if (ES == null) { return EntSpat; }
 
@@ -2217,7 +2217,7 @@ namespace RRTypes.CommonParsers
                             TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(parcel.Attributes.GetNamedItem("Definition").Value, parcel.Attributes.GetNamedItem("Name").Value));
                             if (parcel.SelectSingleNode("Entity_Spatial") != null)
                             {
-                                TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("Definition").Value,
+                                TPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("Definition").Value,
                                                                           parcel.SelectSingleNode("Entity_Spatial"));
                                 ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Area/Area").FirstChild.Value);
                                 ents.Parent_Id = MainObj.id;
@@ -2242,7 +2242,7 @@ namespace RRTypes.CommonParsers
                             if (ExistParcel.SelectSingleNode("Entity_Spatial") != null)
                             {
                                 TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(ExistParcel.SelectSingleNode("@CadastralNumber").Value, "Item01"));
-                                TMyPolygon ents = KPT08LandEntSpatToFteo(ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                                TPolygon ents = KPT08LandEntSpatToFteo(ExistParcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                                           ExistParcel.SelectSingleNode("Entity_Spatial"));
                                 ents.AreaValue = (decimal)Convert.ToDouble(ExistParcel.SelectSingleNode("Area/Area").FirstChild.Value);
                                 ents.Parent_Id = MainObj.id;
@@ -2260,7 +2260,7 @@ namespace RRTypes.CommonParsers
                                 {
                                     /*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
                                     // / Contours / Contour[1] / @Number_PP
-                                    TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
+                                    TPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
                                                                           ExistParcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
                                                                           contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                                     MainObj.EntSpat.Add(NewCont);
@@ -2303,7 +2303,7 @@ namespace RRTypes.CommonParsers
                                 if (MP.Package.FormParcels.NewParcel[i].Contours != null)
                                     for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
                                     {
-                                        TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+                                        TPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
                                                                                         MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
                                         MainObj.EntSpat.Add(NewCont);
                                         /*  RRTypes.RetResult Checkresut = RRTypes.STD_MP_Utils.CheckESMP4(MP.Package.FormParcels.NewParcel[i].Contours[ic].Entity_Spatial);
@@ -2352,7 +2352,7 @@ namespace RRTypes.CommonParsers
                                                                                                               //MainObj.SpecialNote  = ;//Что здесь?
                                     for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
                                     {
-                                        TMyPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber + "(" +
+                                        TPolygon NewCont = STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber + "(" +
                                                                               MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition + ")",
                                                                               MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Entity_Spatial);
                                         MainObj.EntSpat.Add(NewCont);
@@ -2803,7 +2803,7 @@ namespace RRTypes.CommonParsers
                         {
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
                             {
-                                TMyPolygon NewCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+                                TPolygon NewCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial);
                                 NewCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Area.Area;
                                 MainObj.EntSpat.Add(NewCont);
@@ -2811,7 +2811,7 @@ namespace RRTypes.CommonParsers
 
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
                             {
-                                TMyPolygon ExistCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+                                TPolygon ExistCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial);
                                 ExistCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].Area.Area;
                                 MainObj.EntSpat.Add(ExistCont);
@@ -3464,7 +3464,7 @@ namespace RRTypes.CommonParsers
                     //Землепользование
                     if (parcel.SelectSingleNode("Entity_Spatial") != null)
                     {
-                        TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                        TPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                               parcel.SelectSingleNode("Entity_Spatial"));
                         ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Areas").SelectSingleNode("Area").FirstChild.Value);
                         ents.Parent_Id = MainObj.id;
@@ -3479,7 +3479,7 @@ namespace RRTypes.CommonParsers
                         string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
                         for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                            TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                   parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
                                                                   contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                             MainObj.EntSpat.Add(NewCont);
@@ -3641,7 +3641,7 @@ namespace RRTypes.CommonParsers
                     //Землепользование
                     if (parcel.SelectSingleNode("Entity_Spatial") != null)
                     {
-                        TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                        TPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                               parcel.SelectSingleNode("Entity_Spatial"));
                         ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Areas").SelectSingleNode("Area").FirstChild.Value);
                         ents.Parent_Id = MainObj.id;
@@ -3656,7 +3656,7 @@ namespace RRTypes.CommonParsers
                         string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
                         for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                            TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                   parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
                                                                   contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                             MainObj.EntSpat.Add(NewCont);
@@ -3815,7 +3815,7 @@ namespace RRTypes.CommonParsers
                         //Землепользование
                         if (parcel.SelectSingleNode("Entity_Spatial") != null)
                         {
-                            TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                            TPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                                   parcel.SelectSingleNode("Entity_Spatial"));
                             ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
                             ents.Parent_Id = MainObj.id;
@@ -3831,7 +3831,7 @@ namespace RRTypes.CommonParsers
                             {
                                 /*  /Entity_Spatial/Spatial_Element/Spelement_Unit[1]/Ordinate/@X */
                                 // / Contours / Contour[1] / @Number_PP
-                                TMyPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
+                                TPolygon NewCont = KPT08LandEntSpatToFteo(MainObj.CN + "(" +
                                                                       parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_PP").Value + ")",
                                                                       contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                                 MainObj.EntSpat.Add(NewCont);
@@ -3990,7 +3990,7 @@ namespace RRTypes.CommonParsers
 
                     if (parcel.SelectSingleNode("Entity_Spatial") != null)
                     {
-                        TMyPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
+                        TPolygon ents = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value,
                                                               parcel.SelectSingleNode("Entity_Spatial"));
                         ents.AreaValue = (decimal)Convert.ToDouble(parcel.SelectSingleNode("Area").SelectSingleNode("Area").FirstChild.Value);
                         ents.Parent_Id = MainObj.id;
@@ -4005,7 +4005,7 @@ namespace RRTypes.CommonParsers
                         string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
                         for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                            TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                   parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
                                                                   contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                             MainObj.EntSpat.Add(NewCont);
@@ -4146,11 +4146,11 @@ namespace RRTypes.CommonParsers
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
         /// <returns></returns>
-        private static TMyPolygon KPT08LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
+        private static TPolygon KPT08LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
                 //Первый Spatial_Element - внешний контур ( 0 )
                 System.Xml.XmlNodeList OuterRing = ES.ChildNodes[0].ChildNodes;
@@ -4183,11 +4183,11 @@ namespace RRTypes.CommonParsers
         }
 
 
-        private static TMyPolygon SchemaParcelsEStoFteo(System.Xml.XmlNode ES)
+        private static TPolygon SchemaParcelsEStoFteo(System.Xml.XmlNode ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = "[==]";
                 //Первый Spatial_Element - внешний контур ( 0 )
                 System.Xml.XmlNodeList OuterRing = ES.ChildNodes[0].ChildNodes;
@@ -4224,11 +4224,11 @@ namespace RRTypes.CommonParsers
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
         /// <returns></returns>
-        private static TMyPolygon KPT11LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
+        private static TPolygon KPT11LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
 
                 System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
@@ -4264,7 +4264,7 @@ namespace RRTypes.CommonParsers
         {
             if (ES == null) return null;
             TEntitySpatial res = new TEntitySpatial();
-            TMyPolygon EntSpat = new TMyPolygon();
+            TPolygon EntSpat = new TPolygon();
             EntSpat.Definition = Definition;
 
             System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
@@ -4498,7 +4498,7 @@ namespace RRTypes.CommonParsers
                     if (KPT09.CadastralBlocks[i].Parcels[iP].EntitySpatial != null)
                         if (KPT09.CadastralBlocks[i].Parcels[iP].EntitySpatial.SpatialElement.Count > 0)
                         {
-                            TMyPolygon ents = KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber,
+                            TPolygon ents = KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber,
                                                                   KPT09.CadastralBlocks[i].Parcels[iP].EntitySpatial);
                             ents.Parent_Id = MainObj.id;
                             ents.AreaValue = (decimal)Convert.ToDouble(KPT09.CadastralBlocks[i].Parcels[iP].Area.Area);
@@ -4510,7 +4510,7 @@ namespace RRTypes.CommonParsers
                     {
                         for (int ic = 0; ic <= KPT09.CadastralBlocks[i].Parcels[iP].Contours.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
+                            TPolygon NewCont = KPT_v09Utils.AddEntSpatKPT09(KPT09.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
                                                                   KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
                                                                   KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial);
                             //NewCont.GKNArea = KPT09.CadastralBlocks[i].Parcels[iP].Contours[ic].
@@ -4522,7 +4522,7 @@ namespace RRTypes.CommonParsers
                 }
                 //ОИПД Квартала:
                 //Виртуальный OIPD типа "Квартал":
-                //TMyPolygon BlockSpat = new TMyPolygon();
+                //TPolygon BlockSpat = new TPolygon();
                 //BlockSpat = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].CadastralNumber,KPT09.CadastralBlocks[i].SpatialData.EntitySpatial);
                 //this.DocInfo.MifPolygons.Items.Add(BlockSpat);
                 Bl.Entity_Spatial.ImportPolygon(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].CadastralNumber, KPT09.CadastralBlocks[i].SpatialData.EntitySpatial));
@@ -4716,7 +4716,7 @@ namespace RRTypes.CommonParsers
                     if (KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial != null)
                         if (KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial.SpatialElement.Count > 0)
                         {
-                            TMyPolygon ents = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
+                            TPolygon ents = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial);
                             ents.AreaValue = (decimal)Convert.ToDouble(KPT10.CadastralBlocks[i].Parcels[iP].Area.Area);
                             ents.Parent_Id = MainObj.id;
@@ -4728,7 +4728,7 @@ namespace RRTypes.CommonParsers
                     {
                         for (int ic = 0; ic <= KPT10.CadastralBlocks[i].Parcels[iP].Contours.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
+                            TPolygon NewCont = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial);
                             MainObj.EntSpat.Add(NewCont);
@@ -4739,7 +4739,7 @@ namespace RRTypes.CommonParsers
                 }
                 //ОИПД Квартала:
                 //Виртуальный OIPD типа "Квартал":
-                //TMyPolygon BlockSpat = new TMyPolygon();
+                //TPolygon BlockSpat = new TPolygon();
                 //BlockSpat = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT10.CadastralBlocks[i].CadastralNumber,KPT10.CadastralBlocks[i].SpatialData.EntitySpatial);
                 //MifPolygons.Items.Add(BlockSpat);
                 Bl.Entity_Spatial.ImportPolygon(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].CadastralNumber, KPT10.CadastralBlocks[i].SpatialData.EntitySpatial));
@@ -4936,7 +4936,7 @@ namespace RRTypes.CommonParsers
                     if (KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial != null)
                         if (KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial.SpatialElement.Count > 0)
                         {
-                            TMyPolygon ents = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
+                            TPolygon ents = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber,
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].EntitySpatial);
                             ents.AreaValue = (decimal)Convert.ToDouble(KPT10.CadastralBlocks[i].Parcels[iP].Area.Area);
                             ents.Parent_Id = MainObj.id;
@@ -4948,7 +4948,7 @@ namespace RRTypes.CommonParsers
                     {
                         for (int ic = 0; ic <= KPT10.CadastralBlocks[i].Parcels[iP].Contours.Count - 1; ic++)
                         {
-                            TMyPolygon NewCont = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
+                            TPolygon NewCont = KPT_v10Utils.AddEntSpatKPT10(KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber + "(" +
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].NumberRecord + ")",
                                                                   KPT10.CadastralBlocks[i].Parcels[iP].Contours[ic].EntitySpatial);
                             MainObj.EntSpat.Add(NewCont);
@@ -4959,7 +4959,7 @@ namespace RRTypes.CommonParsers
                 }
                 //ОИПД Квартала:
                 //Виртуальный OIPD типа "Квартал":
-                //TMyPolygon BlockSpat = new TMyPolygon();
+                //TPolygon BlockSpat = new TPolygon();
                 //BlockSpat = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT10.CadastralBlocks[i].CadastralNumber,KPT10.CadastralBlocks[i].SpatialData.EntitySpatial);
                 //MifPolygons.Items.Add(BlockSpat);
                 Bl.Entity_Spatial.ImportPolygon(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].CadastralNumber, KPT10.CadastralBlocks[i].SpatialData.EntitySpatial));
@@ -5182,7 +5182,7 @@ namespace RRTypes.CommonParsers
                         //Землепользование
                         if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
                         {
-                            TMyPolygon ents = KPT11LandEntSpatToFteo(MainObj.CN,
+                            TPolygon ents = KPT11LandEntSpatToFteo(MainObj.CN,
                                                                   parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial"));
 
                             ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
@@ -5201,7 +5201,7 @@ namespace RRTypes.CommonParsers
                             string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
                             for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                             {
-                                TMyPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                                TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
                                                                       parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
                                                                       contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                                 MainObj.EntSpat.Add(NewCont);
@@ -5398,7 +5398,7 @@ namespace RRTypes.CommonParsers
                             System.Xml.XmlNode contours = NewParcels[i].SelectSingleNode("Contours");
                             for (int ic = 0; ic <= NewParcels[i].SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
                             {
-                                TMyPolygon NewCont = SchemaParcelsEStoFteo(contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
+                                TPolygon NewCont = SchemaParcelsEStoFteo(contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
                                 NewCont.Definition = /* MainObj.Definition + */  NewParcels[i].SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Definition").Value;
                                 MainObj.EntSpat.Add(NewCont);
                             }
@@ -5473,7 +5473,7 @@ namespace RRTypes.CommonParsers
 														 kp.Parcel.Contours[ic].NumberRecord + ")",
 														 kp.Parcel.Contours[ic].EntitySpatial));
 					*/
-                    TMyPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -5510,7 +5510,7 @@ namespace RRTypes.CommonParsers
                         Sl.Encumbrances.Add(KPZU_v05Utils.KVZUEncumtoFteoEncum(kp.Parcel.SubParcels[i].Encumbrance));
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
+                        TPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
                                                                                kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MyBlocks.SpatialData.Add(SlEs);
@@ -5592,7 +5592,7 @@ namespace RRTypes.CommonParsers
                     res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                          kp.Parcel.Contours[ic].NumberRecord + ")",
                                                          kp.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
+                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -5630,7 +5630,7 @@ namespace RRTypes.CommonParsers
 
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord,
+                        TPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord,
                                                                                kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MyBlocks.SpatialData.Add(SlEs);
@@ -5693,7 +5693,7 @@ namespace RRTypes.CommonParsers
                             if (parcel.Entity_Spatial != null)
                                 if (parcel.Entity_Spatial.Spatial_Element.Count > 0)
                                 {
-                                    TMyPolygon ents = KV04_Utils.AddEntSpatKVZU04(parcel.CadastralNumber,
+                                    TPolygon ents = KV04_Utils.AddEntSpatKVZU04(parcel.CadastralNumber,
                                                                            parcel.Entity_Spatial);
                                     ents.Parent_Id = MainObj.id;
                                     MainObj.EntSpat.Add(ents);
@@ -5707,7 +5707,7 @@ namespace RRTypes.CommonParsers
                                 {
                                     res.MyBlocks.SpatialData.Add(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
                                                                                                  parcel.Contours[ic].Entity_Spatial));
-                                    TMyPolygon NewCont = KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
+                                    TPolygon NewCont = KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
                                                                                                                             parcel.Contours[ic].Entity_Spatial);
                                     NewCont.AreaValue = parcel.Contours[ic].Areas[0].Area;
                                     MainObj.EntSpat.Add(NewCont);
@@ -5720,7 +5720,7 @@ namespace RRTypes.CommonParsers
                                 {
                                     if (parcel.SubParcels[i].Entity_Spatial != null)
                                     {
-                                        TMyPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
+                                        TPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
                                             parcel.SubParcels[i].Entity_Spatial);
 
                                         if (parcel.SubParcels[i].Object_Entry != null)
@@ -5752,7 +5752,7 @@ namespace RRTypes.CommonParsers
 
                                         if (parcel.SubParcels[i].Entity_Spatial != null)
                                         {
-                                            TMyPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
+                                            TPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
                                                 parcel.SubParcels[i].Entity_Spatial);
                                             Sl.EntSpat.ImportPolygon(SlEs);
                                             res.MyBlocks.SpatialData.Add(SlEs);
@@ -5832,7 +5832,7 @@ namespace RRTypes.CommonParsers
 
                     if (Parcel.SelectSingleNode("Entity_Spatial") != null)
                     {
-                        TMyPolygon ents = KPT08LandEntSpatToFteo(MainObj.CN,
+                        TPolygon ents = KPT08LandEntSpatToFteo(MainObj.CN,
                                                               Parcel.SelectSingleNode("Entity_Spatial"));
                         //ents.AreaValue = (decimal)Convert.ToDouble(Parcel.SelectSingleNode("Areas/Area/Area").FirstChild.Value);
                         ents.Parent_Id = MainObj.id;
@@ -5922,7 +5922,7 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    TMyPolygon ents = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
+                    TPolygon ents = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial);
                     ents.Parent_Id = MainObj.id;
                     MainObj.EntSpat.Add(ents);
@@ -5935,7 +5935,7 @@ namespace RRTypes.CommonParsers
                 {
                     res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    TPolygon NewCont = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
                     MainObj.EntSpat.Add(NewCont);
@@ -5969,7 +5969,7 @@ namespace RRTypes.CommonParsers
                         Sl.Encumbrances.Add(KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance));
                     if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
+                        TPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MyBlocks.SpatialData.Add(SlEs);
                     }
@@ -6083,7 +6083,7 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    TMyPolygon ents = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
+                    TPolygon ents = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial);
                     ents.Parent_Id = MainObj.id;
                     MainObj.EntSpat.Add(ents);
@@ -6097,7 +6097,7 @@ namespace RRTypes.CommonParsers
                 {
                     res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
                     MainObj.EntSpat.Add(NewCont);
@@ -6133,7 +6133,7 @@ namespace RRTypes.CommonParsers
                         Sl.Encumbrances.Add(KVZU_v06Utils.KVZUEncumtoFteoEncum(kv.Parcels.Parcel.SubParcels[i].Encumbrance));
                     if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
+                        TPolygon SlEs = RRTypes.CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         res.MyBlocks.SpatialData.Add(SlEs);
                     }
@@ -6252,7 +6252,7 @@ namespace RRTypes.CommonParsers
                     }
 
                 Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 res.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -6267,7 +6267,7 @@ namespace RRTypes.CommonParsers
                 Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
                 Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Bl.AddOKS(Constructions);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 res.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -6494,7 +6494,7 @@ namespace RRTypes.CommonParsers
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
                 Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 res.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -6858,7 +6858,7 @@ namespace RRTypes.CommonParsers
                         //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
                         Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                         Bl.AddOKS(Bld);
-                        //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                        //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                         this.DocInfo.MyBlocks.Blocks.Add(Bl);
                     }
 
@@ -6943,7 +6943,7 @@ namespace RRTypes.CommonParsers
                 }
 
             Bl.AddOKS(Bld);
-            //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+            //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
         }
 
@@ -6958,7 +6958,7 @@ namespace RRTypes.CommonParsers
             Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
             Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
             Bl.AddOKS(Constructions);
-            //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+            //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
         }
 

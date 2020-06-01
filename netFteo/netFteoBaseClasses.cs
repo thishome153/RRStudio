@@ -1361,7 +1361,7 @@ namespace netFteo.Spatial
                 if (PointCounter == this.PointCount - 1)
                     NextPointIndex = 0;
                 else NextPointIndex = PointCounter + 1; // чтобы не вылетать на последней границе
-                ResPoint = Geodethic.FindIntersect(this[PointCounter++],
+                ResPoint = Geodethics.Geodethic.FindIntersect(this[PointCounter++],
                                          this[NextPointIndex],
                                          b1, b2);
 
@@ -1509,7 +1509,7 @@ namespace netFteo.Spatial
             return ResLayer;
         }
 
-        public PointList CommonPoints(TMyPolygon poly)
+        public PointList CommonPoints(TPolygon poly)
         {
             PointList ResLayer = new PointList();
             //main ring:
@@ -1573,7 +1573,7 @@ namespace netFteo.Spatial
                 double Test = 0;
                 for (int i = 0; i <= this.Count - 2; i++)
                 {
-                    Test = Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
+                    Test = Geodethics.Geodethic.lent(this[i].x, this[i].y, this[i + 1].x, this[i + 1].y);
                     if (!Double.IsNaN(Test))
                         Peryd += Test;
                 }
@@ -1631,7 +1631,7 @@ namespace netFteo.Spatial
 			*/
             Peryd = Length;
             //Add last (closing) fragment.
-            Test = Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
+            Test = Geodethics.Geodethic.lent(this[this.Count - 1].x, this[this.Count - 1].y, this[0].x, this[0].y);
             if (!Double.IsNaN(Test))
                 Peryd += Test;
             return Peryd;
@@ -1893,8 +1893,8 @@ namespace netFteo.Spatial
             TBorder NewBrd;
             if ((!Double.IsNaN(A.x)) && (!Double.IsNaN(A.y)) && (!Double.IsNaN(B.x)) && (!Double.IsNaN(B.y)))
             {
-                NewBrd = new TBorder(definition, Geodethic.lent(A.x, A.y, B.x, B.y));
-                NewBrd.PointNames = A.NumGeopointA + " - " + B.NumGeopointA;
+                NewBrd = new TBorder(definition, Geodethics.Geodethic.lent(A.x, A.y, B.x, B.y));
+                NewBrd.PointNames = A.Definition + " - " + B.Definition;
                 this.Add(NewBrd);
 
             }
@@ -1934,16 +1934,16 @@ namespace netFteo.Spatial
 
     #endregion
 
-    #region TMyPolygon Полигон c внутренними границами
+    #region TPolygon Полигон c внутренними границами
     /// <summary>
-    /// Класс Полигон
+    /// Polygon - closed ring with inner rings (childs)
     /// </summary>
-    public class TMyPolygon : TRing, IPointList, IGeometry
+    public class TPolygon : TRing, IPointList, IGeometry
     {
 
         public List<TRing> Childs;
 
-        public TMyPolygon()
+        public TPolygon()
         {
             this.Childs = new List<TRing>();
             this.id = Gen_id.newId; //RND.Next(1, 10000);
@@ -1952,26 +1952,26 @@ namespace netFteo.Spatial
             //			this.LayerHandle = "FFFF"; // default
         }
 
-        public TMyPolygon(int id) : this()
+        public TPolygon(int id) : this()
         {
             //  this.Childs = new List<TMyOutLayer>();
             this.id = id;
         }
 
-        public TMyPolygon(string Def) : this()
+        public TPolygon(string Def) : this()
         {
             //this.Childs = new List<TMyOutLayer>();
             //this.Layer_id = Gen_id.newId;
             this.Definition = Def;
         }
 
-        public TMyPolygon(TPolyLine Ring) : this()
+        public TPolygon(TPolyLine Ring) : this()
         {
             this.ImportRing(Ring);
             //	this.id = Ring.id;
         }
 
-        public TMyPolygon(PointList SrcPoints): this()
+        public TPolygon(PointList SrcPoints): this()
         {
             foreach(TPoint pt in SrcPoints)
             {
@@ -1980,7 +1980,7 @@ namespace netFteo.Spatial
             this.Close();
         }
 
-        public TMyPolygon(int id, string Def) : this(id)
+        public TPolygon(int id, string Def) : this(id)
         {
             //  this.Childs = new List<TMyOutLayer>();
             //  this.Layer_id = id;
@@ -2179,7 +2179,7 @@ namespace netFteo.Spatial
         }
 
 
-        public void ImportPolygon(TMyPolygon Poly)
+        public void ImportPolygon(TPolygon Poly)
         {
             if (Poly == null) return;
             for (int i = 0; i <= Poly.PointCount - 1; i++)
@@ -2207,7 +2207,7 @@ namespace netFteo.Spatial
 
 
 
-        public PointList FindCommonPoints(TMyPolygon ES)
+        public PointList FindCommonPoints(TPolygon ES)
         {
             PointList ResLayer = new PointList();
             // 1.
@@ -2252,7 +2252,7 @@ namespace netFteo.Spatial
                 return null;
         }
 
-        public PointList PointsIn(TMyPolygon ES)
+        public PointList PointsIn(TPolygon ES)
         {
             PointList res = new PointList();
             res.AppendPoints(this.PointsIn(ES));
@@ -2292,7 +2292,7 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="ES">Полигон (возможны внутр. границы)</param>
         /// <returns></returns>
-        public PointList FindSect(TMyPolygon ES)
+        public PointList FindSect(TPolygon ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -2317,9 +2317,9 @@ namespace netFteo.Spatial
         /// <summary>
         /// Программа полной проверки пересечений (clipping`a )с полигоном
         /// </summary>
-        /// <param name="ES">Полигон типа TMyPolygon</param>
+        /// <param name="ES">Полигон типа TPolygon</param>
         /// <returns></returns>
-        public PointList FindClip(TMyPolygon ES)
+        public PointList FindClip(TPolygon ES)
         {
             PointList ResultClip = new PointList();
             //  I. Self check - selfCrossing and Overlapping 
@@ -2476,18 +2476,18 @@ namespace netFteo.Spatial
     #region TPolygonCollection Коллекция Полигонов
     public delegate void ESCheckingHandler(object sender, ESCheckingEventArgs e);
 
-    public class TPolygonCollection : List<TMyPolygon>
+    public class TPolygonCollection : List<TPolygon>
     {
         public event ESCheckingHandler OnChecking;
         //public MifOptions MIF_Options; // настройки для полигонов MIF
         private int totalItems;
         private int fParent_id;
         public int id;
-        //public List<TMyPolygon> Items;
+        //public List<TPolygon> Items;
 
         public TPolygonCollection()  /// Конструктор
         {
-            //this.Items = new List<TMyPolygon>();
+            //this.Items = new List<TPolygon>();
             this.id = Gen_id.newId;
             //this.MIF_Options = new MifOptions();
         }
@@ -2512,7 +2512,7 @@ namespace netFteo.Spatial
             get
             {
                 int res = 0;
-                foreach (TMyPolygon item in this)
+                foreach (TPolygon item in this)
                 {
                     res += item.PolygonPointCount;
                 }
@@ -2548,20 +2548,20 @@ namespace netFteo.Spatial
 
         public string Defintion;
 
-        public TMyPolygon AddPolygon(object poly_)
+        public TPolygon AddPolygon(object poly_)
         {
             if (poly_ == null) return null;
-            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
-                (((TMyPolygon)poly_).PointCount > 0))
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TPolygon")) &&
+                (((TPolygon)poly_).PointCount > 0))
             {
-                this.Add((TMyPolygon)poly_);
-                return (TMyPolygon)poly_;
+                this.Add((TPolygon)poly_);
+                return (TPolygon)poly_;
             }
 
             if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
          (((TRing)poly_).PointCount > 0))
             {
-                TMyPolygon Vpoly = new TMyPolygon();
+                TPolygon Vpoly = new TPolygon();
                 Vpoly.AppendPoints((TRing)poly_);
                 Vpoly.Definition = ((TRing)poly_).Definition;
                 this.AddPolygon(Vpoly);
@@ -2643,7 +2643,7 @@ namespace netFteo.Spatial
             }
         }
 
-        public TMyPolygon GetEs(int Layer_id)
+        public TPolygon GetEs(int Layer_id)
         {
             for (int i = 0; i <= this.Count - 1; i++)
             {
@@ -2661,7 +2661,7 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="ESs">Полигон для проверки</param>
         /// <returns></returns>
-        public PointList CheckES(TMyPolygon ES)
+        public PointList CheckES(TPolygon ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -2708,7 +2708,7 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="ES">Полигон</param>
         /// <returns></returns>
-        public PointList CheckCommon(TMyPolygon ES)
+        public PointList CheckCommon(TPolygon ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -3248,21 +3248,21 @@ namespace netFteo.Spatial
             this.LoadExceptions = new List<string>();
         }
 
-        public TMyPolygon AddPolygon(object poly_)
+        public TPolygon AddPolygon(object poly_)
         {
 
             if (poly_ == null) return null;
-            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TMyPolygon")) &&
-                (((TMyPolygon)poly_).PointCount > 0))
+            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TPolygon")) &&
+                (((TPolygon)poly_).PointCount > 0))
             {
-                this.Add((TMyPolygon)poly_);
-                return (TMyPolygon)poly_;
+                this.Add((TPolygon)poly_);
+                return (TPolygon)poly_;
             }
 
             if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TRing")) &&
          (((TRing)poly_).PointCount > 0))
             {
-                TMyPolygon Vpoly = new TMyPolygon();
+                TPolygon Vpoly = new TPolygon();
                 Vpoly.AppendPoints((TRing)poly_);
                 Vpoly.Definition = ((TRing)poly_).Definition;
                 this.AddPolygon(Vpoly);
@@ -3298,9 +3298,9 @@ namespace netFteo.Spatial
                 double AreaC = 0;
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
 
-                        AreaC += ((TMyPolygon)feature).AreaSpatial;
+                        AreaC += ((TPolygon)feature).AreaSpatial;
                 }
                 return AreaC;
             }
@@ -3397,7 +3397,7 @@ namespace netFteo.Spatial
         /// </summary>
         /// <param name="ESs">Полигон для проверки</param>
         /// <returns></returns>
-        public PointList CheckES(TMyPolygon ES)
+        public PointList CheckES(TPolygon ES)
         {
             PointList res = new PointList();
             PointList PlREs;
@@ -3405,11 +3405,11 @@ namespace netFteo.Spatial
 
             foreach (IGeometry feature in this)
             {
-                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                if (feature.TypeName == "netFteo.Spatial.TPolygon")
                 {
                     totalItems++;
-                    PlREs = ((TMyPolygon)feature).FindClip(ES);
-                    EsChekerProc(((TMyPolygon)feature).Definition, totalItems, null);
+                    PlREs = ((TPolygon)feature).FindClip(ES);
+                    EsChekerProc(((TPolygon)feature).Definition, totalItems, null);
                     if (PlREs != null)
                     {
                         res.AppendPoints(PlREs);
@@ -3447,12 +3447,12 @@ namespace netFteo.Spatial
         {
             foreach (IGeometry feature in this)
             {
-                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                if (feature.TypeName == "netFteo.Spatial.TPolygon")
                 {
-                    TMyPolygon Poly = (TMyPolygon)feature;
+                    TPolygon Poly = (TPolygon)feature;
                     foreach (IGeometry srcFeature in src)
                     {
-                        if (srcFeature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        if (srcFeature.TypeName == "netFteo.Spatial.TPolygon")
                         {
                             Poly.DetectSpins((PointList)srcFeature);
                         }
@@ -3487,9 +3487,9 @@ namespace netFteo.Spatial
             foreach (IGeometry feature in this)
             {
                 
-                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                if (feature.TypeName == "netFteo.Spatial.TPolygon")
                 {
-                     TMyPolygon poly = (TMyPolygon)feature;
+                     TPolygon poly = (TPolygon)feature;
                     foreach (TPoint pt in poly)
                     {
                         pt.Description = "";
@@ -3560,9 +3560,9 @@ namespace netFteo.Spatial
                 double res = -1; // default empty value
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
                     {
-                        res += ((TMyPolygon)feature).AreaSpatial;
+                        res += ((TPolygon)feature).AreaSpatial;
 
                     }
                 }
@@ -3582,7 +3582,7 @@ namespace netFteo.Spatial
                 int res = 0; // default empty value
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
                     {
                         res++;
                     }
@@ -3599,9 +3599,9 @@ namespace netFteo.Spatial
                 int resCount = 0;
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
                     {
-                        res += ((TMyPolygon)feature).AreaSpatial;
+                        res += ((TPolygon)feature).AreaSpatial;
                         resCount++;
                     }
                 }
@@ -3679,17 +3679,17 @@ namespace netFteo.Spatial
                 else
                 LVi.SubItems.Add(feature.Name);
 
-                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                if (feature.TypeName == "netFteo.Spatial.TPolygon")
                 {
                     LVi.Tag = "Polygon." + feature.id;
                     LV.Columns[2].Text = "Площадь";
                     LV.Columns[3].Text = "Площ. гр.";
                     LV.Columns[4].Text = "Δ";
-                    if (((TMyPolygon)feature).AreaValue != -1)
-                        LVi.SubItems.Add(((TMyPolygon)feature).AreaValue.ToString());
+                    if (((TPolygon)feature).AreaValue != -1)
+                        LVi.SubItems.Add(((TPolygon)feature).AreaValue.ToString());
                     else LVi.SubItems.Add("-");
-                    LVi.SubItems.Add(((TMyPolygon)feature).AreaSpatialFmt("0.00"));
-                    LVi.SubItems.Add(((TMyPolygon)feature).AreaInaccuracy);
+                    LVi.SubItems.Add(((TPolygon)feature).AreaSpatialFmt("0.00"));
+                    LVi.SubItems.Add(((TPolygon)feature).AreaInaccuracy);
                 }
 
                 if (feature.TypeName == "netFteo.Spatial.TPolyLine")
@@ -3758,8 +3758,8 @@ namespace netFteo.Spatial
 
                 foreach (IGeometry feature in this)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-                        res.AppendPoints(((TMyPolygon)feature).AsPointList());
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
+                        res.AppendPoints(((TPolygon)feature).AsPointList());
 
                     if (feature.TypeName == "netFteo.Spatial.PointList")
                         res.AppendPoints(((PointList)feature));
@@ -3788,9 +3788,9 @@ namespace netFteo.Spatial
                 {
                     if (!feature.EmptySpatial)
                     {
-                        if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        if (feature.TypeName == "netFteo.Spatial.TPolygon")
                         {
-                            TMyPolygon poly = (TMyPolygon)feature;
+                            TPolygon poly = (TPolygon)feature;
                             Result.MinX = poly.Bounds.MinX;
                             Result.MinY = poly.Bounds.MinY;
                             Result.MaxX = poly.Bounds.MaxX;
@@ -3824,9 +3824,9 @@ namespace netFteo.Spatial
                 {
                     if (!feature.EmptySpatial)
                     {
-                        if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                        if (feature.TypeName == "netFteo.Spatial.TPolygon")
                         {
-                            TMyPolygon poly = (TMyPolygon)feature;
+                            TPolygon poly = (TPolygon)feature;
                             if (poly.Bounds != null)
                             {
                                 if (poly.Bounds.MinX < Result.MinX) Result.MinX = poly.Bounds.MinX;

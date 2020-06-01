@@ -242,7 +242,7 @@ namespace netFteo.IO
 			{
 				if (poly.IsClosed)
 				{
-					TMyPolygon res = new TMyPolygon();
+					TPolygon res = new TPolygon();
 					foreach (netDxf.Entities.LwPolylineVertex vertex in poly.Vertexes)
 					{
 						netFteo.Spatial.TPoint point = new netFteo.Spatial.TPoint(vertex.Location.Y, vertex.Location.X);
@@ -289,7 +289,7 @@ namespace netFteo.IO
 				if ((polys.Count > 0) && (polys[0].CodeName.Equals("LWPOLYLINE")) &&
 					((LwPolyline)polys[0]).Flags == PolylineTypeFlags.ClosedPolylineOrClosedPolygonMeshInM)
 				{
-					TMyPolygon res = new TMyPolygon("dxfPolygon");
+					TPolygon res = new TPolygon("dxfPolygon");
 					res.AppendPoints((PointList)DXF_ParseRing((LwPolyline)polys[0]));
 
 
@@ -534,9 +534,9 @@ namespace netFteo.IO
             {
                 //// TODO:
                 ///
-                if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                if (feature.TypeName == "netFteo.Spatial.TPolygon")
                 {
-                    TMyPolygon polygon = (TMyPolygon)feature;
+                    TPolygon polygon = (TPolygon)feature;
                     netDxf.Entities.Text ContourDef = new netDxf.Entities.Text();
                     ContourDef.Value = polygon.Definition;
                     ContourDef.Height = HatchRadius;
@@ -569,7 +569,7 @@ namespace netFteo.IO
 
                     AttributeDefinition attdefType = new AttributeDefinition("SpatialType"); // 
                     attdefType.Flags = AttributeFlags.Hidden;
-                    attdefType.Value = "netFteo.Spatial.TMyPolygon";
+                    attdefType.Value = "netFteo.Spatial.TPolygon";
                     block.AttributeDefinitions.Add(attdefType);
 
 

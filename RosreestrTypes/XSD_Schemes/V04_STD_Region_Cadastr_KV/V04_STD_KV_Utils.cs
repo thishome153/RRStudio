@@ -9,9 +9,9 @@ namespace RRTypes
     {
 
         #region-----------------Конвертация из ОИПД КВЗУ в ОИПД Fteo.Spatial
-        public static netFteo.Spatial.TMyPolygon AddEntSpatKVZU04(string Definition, RRTypes.STD_KV04.Entity_Spatial ES)
+        public static netFteo.Spatial.TPolygon AddEntSpatKVZU04(string Definition, RRTypes.STD_KV04.Entity_Spatial ES)
         {
-            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             EntSpat.Definition = Definition;
             if (ES == null) { return EntSpat; }
 

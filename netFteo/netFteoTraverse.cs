@@ -54,7 +54,7 @@ namespace netFteo.Spatial
                 this.BeginOrientir.Status = 4;
             }
             if (begOrient != null & BeginPoint != null)
-            BegindirectAngle = Geodethic.Atan(begOrient.x, begOrient.y,BeginPoint.x, BeginPoint.y);
+            BegindirectAngle = Geodethics.Geodethic.Atan(begOrient.x, begOrient.y,BeginPoint.x, BeginPoint.y);
        }
         private void SetTraverseEnd(TPoint EPoint, TPoint EOrient) //Установить начало хода
         {
@@ -124,7 +124,7 @@ namespace netFteo.Spatial
             TPoint backst = this.SourcePoints.GetPointbyName(ST.BackStation);
             TPoint thisst = this.SourcePoints.GetPointbyName(ST.StationName);
             if (backst != null & thisst != null)
-             V.DirectionalAngle = Geodethic.Atan(backst.x, backst.y, thisst.x, thisst.y);    
+             V.DirectionalAngle = Geodethics.Geodethic.Atan(backst.x, backst.y, thisst.x, thisst.y);    
             this.VertexList.Add(V);
       
         }
@@ -154,7 +154,7 @@ namespace netFteo.Spatial
             if (vx_index == 0) //Вначале хода дир. угол из опорных точек
                 this.VertexList[vx_index].DirectionalAngle = BegindirectAngle;
               else
-                this.VertexList[vx_index].DirectionalAngle = Geodethic.Atan(this.VertexList[vx_index - 1].Station.x, this.VertexList[vx_index - 1].Station.y, this.VertexList[vx_index].Station.x, this.VertexList[vx_index].Station.y);
+                this.VertexList[vx_index].DirectionalAngle = Geodethics.Geodethic.Atan(this.VertexList[vx_index - 1].Station.x, this.VertexList[vx_index - 1].Station.y, this.VertexList[vx_index].Station.x, this.VertexList[vx_index].Station.y);
             
                 this.VertexList[vx_index + 1].Station.x = Math.Round(this.VertexList[vx_index].NextX(), 3);
                 this.VertexList[vx_index + 1].Station.y = Math.Round(this.VertexList[vx_index].NextY(), 3);
@@ -214,7 +214,7 @@ namespace netFteo.Spatial
         {
             get
             {
-                return Geodethic.RadiantoStr(this.DirectionalAngle);
+                return Geodethics.Geodethic.RadiantoStr(this.DirectionalAngle);
             }
         }
         public TRawObservation NextVertex;
@@ -312,14 +312,14 @@ namespace netFteo.Spatial
         {
             get
             {
-                return Geodethic.RadiantoStr(Geodethic.AngleTo360(this.NextVertex.HA_rad - this.Station.BSHA_rad));
+                return  Geodethics.Geodethic.RadiantoStr(Geodethics.Geodethic.AngleTo360(this.NextVertex.HA_rad - this.Station.BSHA_rad));
             }
         }
         /// <summary>
         /// Отсчет по горизонтальному кругу на заднюю точку.
         /// </summary>
         public string BSHA
-        { get { return Geodethic.RadiantoStr(this.Station.BSHA_rad); } }
+        { get { return Geodethics.Geodethic.RadiantoStr(this.Station.BSHA_rad); } }
 
        
 

@@ -147,7 +147,7 @@ namespace netFteo
         }
 
 
-        public static void ListEntSpat(TreeNode NodeTo, Spatial.TMyPolygon ES, string NodeName, string Definition, int Status)
+        public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolygon ES, string NodeName, string Definition, int Status)
         {
             if (ES == null) return;
             TreeNode Node = /* NodeTo; */ NodeTo.Nodes.Add(NodeName + ES.id.ToString(), Definition); 
@@ -229,10 +229,10 @@ namespace netFteo
 			{
 				if (feature.LayerHandle == LayerHandle)
 				{
-					if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+					if (feature.TypeName == "netFteo.Spatial.TPolygon")
 					{
-						if (((Spatial.TMyPolygon)feature).PointCount > 0)
-							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TMyPolygon)feature, "SPElem.", ((Spatial.TMyPolygon)feature).Definition, 6);
+						if (((Spatial.TPolygon)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolygon)feature, "SPElem.", ((Spatial.TPolygon)feature).Definition, 6);
 					}
 
 					if (feature.TypeName == "netFteo.Spatial.TPolyLine")
@@ -304,7 +304,7 @@ namespace netFteo
 			}
 		}
 		
-		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TMyPolygon ES)
+		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TPolygon ES)
 		{
 
 			if (ES == null) return null;

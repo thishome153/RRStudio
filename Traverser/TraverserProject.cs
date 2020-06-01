@@ -18,14 +18,14 @@ namespace Traverser
         public TNikonRaw Raw;
         public TTraverse Travers;
         public PointList Points;
-        public TMyPolygon Polygon; // Для отладки, тестовый полигон, в чтение #Fixosoft NumXYZD data format V201
+        public TPolygon Polygon; // Для отладки, тестовый полигон, в чтение #Fixosoft NumXYZD data format V201
         public TEntitySpatial ES; // Для отладки, тестовый полигон, в чтение #Fixosoft NumXYZD data format V201
         public TraverserProject()
         {
             this.Raw = new TNikonRaw();
             this.Travers = new TTraverse();
             this.Points = new PointList();
-            this.Polygon = new TMyPolygon();
+            this.Polygon = new TPolygon();
             this.ES = new TEntitySpatial();
             this.CreateDatetime = DateTime.Now.ToString();
         }

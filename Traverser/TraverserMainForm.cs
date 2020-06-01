@@ -23,7 +23,7 @@ using System.Threading;
 
 using netFteo.NikonRaw;
 using netFteo.Spatial;
-
+using netFteo.Geodethics;
 using netDxf;
 using netDxf.Blocks;
 using netDxf.Collections;
@@ -691,7 +691,7 @@ namespace Traverser
 
             PointsdataGridView.DataSource = null; //выключим грид с точками
             listBox1.Items.Clear();
-            listBox1.Items.Add("Сумма углов " + Geodethic.RadiantoStr(this.Project.Travers.AngleSumm()));
+            listBox1.Items.Add("Сумма углов " +  Geodethic.RadiantoStr(this.Project.Travers.AngleSumm()));
             listBox1.Items.Add("Угловая невязка: " +Geodethic.RadiantoStr(this.Project.Travers.AngleError()));
 
             for (int i = 0; i <= this.Project.Travers.VertexList.Count - 1; i++)

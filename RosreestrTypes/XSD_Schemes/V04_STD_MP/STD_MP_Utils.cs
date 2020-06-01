@@ -20,9 +20,9 @@ namespace RRTypes
     public static class  STD_MP_Utils
     {
         #region-----------------Конвертация из ОИПД Межевого плана в ОИПД Fteo.Spatial
-        public static netFteo.Spatial.TMyPolygon AddEntSpatSTDMP4(string Definition, RRTypes.STD_MPV04.Entity_Spatial ES)
+        public static netFteo.Spatial.TPolygon AddEntSpatSTDMP4(string Definition, RRTypes.STD_MPV04.Entity_Spatial ES)
         {
-            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             EntSpat.Definition = Definition;
 
             
@@ -58,7 +58,7 @@ namespace RRTypes
         }
         public static RetResult CheckESMP4(RRTypes.STD_MPV04.Entity_Spatial ES)
         {
-            //netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            //netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             RetResult res = new RetResult();
             
             //Проверка замыкания во внешнем контуре в текстовом виде
@@ -94,9 +94,9 @@ namespace RRTypes
 
         }
 
-        public static netFteo.Spatial.TMyPolygon AddSubParcelESTDMP4(string Definition, RRTypes.STD_MPV04.tNewSubParcelEntity_Spatial ES)
+        public static netFteo.Spatial.TPolygon AddSubParcelESTDMP4(string Definition, RRTypes.STD_MPV04.tNewSubParcelEntity_Spatial ES)
         {
-            netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             EntSpat.Definition = Definition;
 
 

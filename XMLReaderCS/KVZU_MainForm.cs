@@ -727,32 +727,32 @@ namespace XMLReaderCS
         #endregion
 
 
-        private void Parse_Polygon(TMyPolygon xmlPolygon)
+        private void Parse_Polygon(TPolygon xmlPolygon)
         {
 
         }
 
-        private void ParseTMyPolygon(TMyPolygon xmlPolygon)
+        private void ParseTPolygon(TPolygon xmlPolygon)
         {
             TCadastralBlock Bl = new TCadastralBlock();
             if (xmlPolygon.Definition != null)
                 Bl.CN = xmlPolygon.Definition;
             else Bl.CN = "Polygon";
-            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(xmlPolygon.Definition, "nefteo::TMyPolygon"));
+            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(xmlPolygon.Definition, "nefteo::TPolygon"));
             MainObj.EntSpat.Add(xmlPolygon);
             this.DocInfo.MyBlocks.Blocks.Add(Bl);
             ListMyCoolections(this.DocInfo.MyBlocks);
         }
 
         /*
-		private void ParseTMyPolygon(TPolygonCollection xmlPolygons)
+		private void ParseTPolygon(TPolygonCollection xmlPolygons)
 		{
 			TMyCadastralBlock Bl = new TMyCadastralBlock();
 			Bl.CN = xmlPolygons.Defintion;// "imported xml polygons";
 
 			for (int i = 0; i <= xmlPolygons.Count - 1; i++)
 			{
-				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TMyPolygon"));
+				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TPolygon"));
 				MainObj.EntitySpatial = xmlPolygons[i];
 			}
 			this.DocInfo.MyBlocks.Blocks.Add(Bl);
@@ -826,7 +826,7 @@ namespace XMLReaderCS
                     this.DocInfo.MifPolygons.Add(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial));
-                    TMyPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                    TPolygon NewCont = MainObj.Contours.AddPolygon(RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial));
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -863,7 +863,7 @@ namespace XMLReaderCS
                      
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TMyPolygon SlEs = RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord, kp.Parcel.SubParcels[i].EntitySpatial);
+                        TPolygon SlEs = RRTypes.KPZU_v05Utils.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord, kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.EntSpat.ImportPolygon(SlEs);
                         this.DocInfo.MifPolygons.Add(SlEs);
                     }
@@ -932,7 +932,7 @@ namespace XMLReaderCS
                 //Constructions.Address = KPT_v09Utils.AddrKPT09(kv.Realty.Construction.Address);
                 Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -1017,7 +1017,7 @@ namespace XMLReaderCS
                     }
 
                 Bl.AddOKS(Bld);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -1032,7 +1032,7 @@ namespace XMLReaderCS
                 Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
                 Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Bl.AddOKS(Constructions);
-                //MifOKSPolygons.AddPolygon((TMyPolygon) Constructions.ES);
+                //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
                 this.DocInfo.MyBlocks.Blocks.Add(Bl);
             }
 
@@ -1377,7 +1377,7 @@ namespace XMLReaderCS
                         // TreeNode EntrSNode = PNode.Nodes.Add("EntryNode." + Parcel.CompozitionEZ[i].Layer_id.ToString(), 
                         //                                                   Parcel.CompozitionEZ[i].Definition); 
                         IGeometry spatialofEntry = Parcel.GetEs(Parcel.CompozitionEZ[i].Spatial_ID);
-                        netFteo.ObjectLister.ListEntSpat(EntrysNode, (TMyPolygon)spatialofEntry, "SPElem.", Parcel.CompozitionEZ[i].CN, Parcel.CompozitionEZ[i].State);
+                        netFteo.ObjectLister.ListEntSpat(EntrysNode, (TPolygon)spatialofEntry, "SPElem.", Parcel.CompozitionEZ[i].CN, Parcel.CompozitionEZ[i].State);
                     }
                 }
 
@@ -1646,7 +1646,7 @@ namespace XMLReaderCS
         /*
 		 * 
 		 * 	// Листинг отрезков границ в ListView
-		private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
+		private void PointList_asBordersToListView(ListView LV, netFteo.Spatial.TPolygon PList)
 		{
 			if (PList.Count == 0) return;
 			string BName;
@@ -1702,9 +1702,9 @@ LV.EndUpdate();
 return res; // вернем первую строчку Items
 }
 
-// Листинг точек TmyPolygon в ListView
+// Листинг точек TPolygon в ListView
 
-private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TMyPolygon PList)
+private ListViewItem PointListToListView(ListView LV, netFteo.Spatial.TPolygon PList)
 {
 if (PList.Count == 0) return null;
 LV.Items.Clear();
@@ -2446,9 +2446,9 @@ return res;
                     }
                 }
 
-                if (Obj.ToString() == "netFteo.Spatial.TMyPolygon")
+                if (Obj.ToString() == "netFteo.Spatial.TPolygon")
                 {
-                    TMyPolygon Poly = (TMyPolygon)Obj;
+                    TPolygon Poly = (TPolygon)Obj;
                     LV.Items.Clear();
                     ListViewItem LVip = new ListViewItem();
                     LVip.Text = "Площадь граф. [1.." + Poly.PointCount.ToString() + "]";
@@ -3082,7 +3082,7 @@ LV.Items.Add(LVipP);
 
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
             {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
                     saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
@@ -3225,7 +3225,7 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("SPElem."))
             {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(7)));
                 if (Pl != null)
                 {
                     TEntitySpatial PC = new TEntitySpatial();
@@ -3384,7 +3384,7 @@ LV.Items.Add(LVipP);
 					//Для отдельного ОИПД выгружаем:
 					if (TV_Parcels.SelectedNode.Name.Contains("SPElem"))
 					{
-						TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+						TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
 						if (Pl != null)
 						{
 							saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
@@ -3641,7 +3641,7 @@ LV.Items.Add(LVipP);
              
           if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
-                TMyPolygon Pl = (TMyPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                TPolygon Pl = (TPolygon) this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
                     saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
@@ -4112,13 +4112,13 @@ LV.Items.Add(LVipP);
 
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
                     saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
                     if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                     {
-                        XmlSerializer serializer = new XmlSerializer(typeof(TMyPolygon));
+                        XmlSerializer serializer = new XmlSerializer(typeof(TPolygon));
                         TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
                         serializer.Serialize(writer, Pl);
                         writer.Close();
@@ -4303,7 +4303,7 @@ LV.Items.Add(LVipP);
             /*
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
-                TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
                     if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
@@ -4802,19 +4802,19 @@ LV.Items.Add(LVipP);
                 }
 
                 /*
-                TMyPolygon Poly1 = new TMyPolygon("One");
+                TPolygon Poly1 = new TPolygon("One");
             Poly1.AddPoint(new Point(   0, 0, "11"));
             Poly1.AddPoint(new Point(1000, 0, "12"));
             Poly1.AddPoint(new Point(1000, 1000, "13"));
             Poly1.AddPoint(new Point(   0, 1000, "14"));
 
-            TMyPolygon Poly2 = new TMyPolygon("Second");
+            TPolygon Poly2 = new TPolygon("Second");
             Poly2.AddPoint(new Point( 500, 500, "21"));
             Poly2.AddPoint(new Point(1500, 500, "22"));
             Poly2.AddPoint(new Point(1500, 1500, "23"));
             Poly2.AddPoint(new Point( 500, 1500, "24"));
 
-            TMyPolygon res = new TMyPolygon("Sect test unit #1");
+            TPolygon res = new TPolygon("Sect test unit #1");
             res.AppendPoints( Poly1.FindSectES(Poly2));
 
             int cchk = res.PointCount;
@@ -4884,7 +4884,7 @@ LV.Items.Add(LVipP);
                 FeatureType Featuretype = MiApi.mitab_c_get_type(FeaturePtr);
                 if (Featuretype == FeatureType.TABFC_Region)
                 {
-                    TMyPolygon Poly = new TMyPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
+                    TPolygon Poly = new TPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
 
                     int RingCount = MiApi.mitab_c_get_parts(FeaturePtr);
 
@@ -4930,7 +4930,7 @@ LV.Items.Add(LVipP);
 
                 if (Featuretype == FeatureType.TABFC_Ellipse)
                 {
-                    TMyPolygon Poly = new TMyPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
+                    TPolygon Poly = new TPolygon(MiApi.mitab_c_get_field_as_string(FeaturePtr, 0));
                     Poly.Name = "TABFC_Ellipse";
                     int vertexCount = MiApi.mitab_c_get_vertex_count(FeaturePtr, 0);
                     for (int iVertex = 0; iVertex <= vertexCount - 1; iVertex++)
@@ -5114,7 +5114,7 @@ LV.Items.Add(LVipP);
                 (Feature.TypeName == "netFteo.Spatial.TPolyLine")
                 )
             {
-                TMyPolygon NewFeature = new TMyPolygon((TPolyLine)Feature);
+                TPolygon NewFeature = new TPolygon((TPolyLine)Feature);
                 NewFeature.LayerHandle = Feature.LayerHandle;
                 NewFeature.Definition = Feature.Definition + "*";
                 this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
@@ -5130,7 +5130,7 @@ LV.Items.Add(LVipP);
                     (Feature.TypeName == "netFteo.Spatial.PointList")
                     )
             {
-                TMyPolygon NewFeature = new TMyPolygon((PointList)Feature);
+                TPolygon NewFeature = new TPolygon((PointList)Feature);
                 NewFeature.LayerHandle = Feature.LayerHandle;
                 NewFeature.Definition = Feature.Definition + "*";
                 this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
@@ -5141,10 +5141,10 @@ LV.Items.Add(LVipP);
             }
 
             if ((Feature != null) &&
-                (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                (Feature.TypeName == "netFteo.Spatial.TPolygon")
                 )
             {
-                TMyPolygon NewFeature = (TMyPolygon)Feature;
+                TPolygon NewFeature = (TPolygon)Feature;
                 NewFeature.Close();
                 NewFeature.ShowasListItems(listView1, true);
             }
@@ -5172,7 +5172,7 @@ LV.Items.Add(LVipP);
 
 
             /*
-			TMyPolygon Pl = (TMyPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+			TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
 			if (Pl != null)
 			{
 				Pl.Reverse_Points();

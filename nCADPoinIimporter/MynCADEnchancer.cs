@@ -97,7 +97,7 @@
                         foreach(IGeometry Feature in FteoFile)
                             {
 							
-							if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
+							if (Feature.TypeName == "netFteo.Spatial.TPolygon")
                                 CreatePolygonFull(ucsMatrix, btr, tr, ltPolyid, ltPId, ltId, ltCirId, ltColorid, Feature);
                             }
 
@@ -608,7 +608,7 @@
             tr.AddNewlyCreatedDBObject(polyline, true);
             return Pline_id;
         }
-                private ObjectId Create3dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
+                private ObjectId Create3dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TPolygon Layer)
                 {
 
                     DBText PolygonName = new DBText();
@@ -630,7 +630,7 @@
 
                     return res;
                 }
-                private ObjectId Create2dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TMyPolygon Layer)
+                private ObjectId Create2dPolygonFull(Matrix3d ucsMatrix, BlockTableRecord btr, Transaction tr, ObjectId ltPolyid, ObjectId ltPId, ObjectId ltId, netFteo.Spatial.TPolygon Layer)
                 {
 
                     DBText PolygonName = new DBText();
@@ -664,7 +664,7 @@
                                                            ObjectId ltId,
                                                            ObjectId ltCircleId, ObjectId ltColorsId, netFteo.Spatial.IGeometry Layerfeature)
         {
-			TMyPolygon Layer = (TMyPolygon)Layerfeature;
+			TPolygon Layer = (TPolygon)Layerfeature;
             DBText PolygonName = new DBText();
             PolygonName.TextString = Layer.Definition;
             PolygonName.Height = 2;

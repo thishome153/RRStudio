@@ -13,11 +13,11 @@ namespace RRTypes
   public static class KPT_v10Utils
     {
 
-      public static TMyPolygon KPT10OKSEntSpatToFteo(string Definition, tEntitySpatialOKSOut ES)
+      public static TPolygon KPT10OKSEntSpatToFteo(string Definition, tEntitySpatialOKSOut ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
 
 
@@ -53,11 +53,11 @@ namespace RRTypes
         }
 
 
-		public static TMyPolygon KPT10LandEntSpatToFteo(string Definition, tEntitySpatialLandOut ES)
+		public static TPolygon KPT10LandEntSpatToFteo(string Definition, tEntitySpatialLandOut ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
                 //Первый (внешний) контур
                 for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
@@ -91,10 +91,10 @@ namespace RRTypes
         }
 
    
-        public static TMyPolygon AddEntSpatKPT10(string Definition, tEntitySpatialZUOut ES)
+        public static TPolygon AddEntSpatKPT10(string Definition, tEntitySpatialZUOut ES)
         {
             {
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
                // Random gen = new Random();
               //  EntSpat.Layer_id = gen.Next();

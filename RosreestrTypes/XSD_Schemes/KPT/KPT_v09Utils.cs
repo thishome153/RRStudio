@@ -13,11 +13,11 @@ namespace RRTypes
     public static class KPT_v09Utils
     {
 
-        public static TMyPolygon     KPT09OKSEntSpatToFteo(string Definition, tEntitySpatialOKSOut ES)
+        public static TPolygon     KPT09OKSEntSpatToFteo(string Definition, tEntitySpatialOKSOut ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
 
 
@@ -51,11 +51,11 @@ namespace RRTypes
 
             }
         }
-		public static TMyPolygon KPT09LandEntSpatToFteo(string Definition, tEntitySpatialLandOut ES)
+		public static TPolygon KPT09LandEntSpatToFteo(string Definition, tEntitySpatialLandOut ES)
         {
             {
                 if (ES == null) return null;
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
 
 
@@ -89,10 +89,10 @@ namespace RRTypes
 
             }
         }
-        public static TMyPolygon AddEntSpatKPT09(string Definition, tEntitySpatialZUOut ES)
+        public static TPolygon AddEntSpatKPT09(string Definition, tEntitySpatialZUOut ES)
         {
             {
-                TMyPolygon EntSpat = new TMyPolygon();
+                TPolygon EntSpat = new TPolygon();
                 EntSpat.Definition = Definition;
                 // Random gen = new Random();
                 //  EntSpat.Layer_id = gen.Next();

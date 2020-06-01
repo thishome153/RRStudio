@@ -1,6 +1,7 @@
 ﻿using System;
+using netFteo.Spatial;
 
-namespace netFteo.Spatial
+namespace netFteo.Geodethics
 {
     #region static Класс Geodethic - Функции Математики, Геодезии
 
@@ -278,13 +279,12 @@ namespace netFteo.Spatial
 
 
 }
+#endregion
 
-namespace netFteo
-{
-    /// <summary>
-    /// Класс Geodethic - функции Математики
-    /// </summary>
-    public static class MathExt
+/// <summary>
+/// Класс Geodethic - функции Математики
+/// </summary>
+public static class MathExt
     {
 
         /// <summary>
@@ -326,5 +326,4 @@ namespace netFteo
             return (int) Math.Round(Mod(a,b));
         }
     }
-}
-#endregion
+

@@ -86,7 +86,7 @@ namespace RRTypes.MP_V06
                 tst.Spatial = spatial;
                 tst.Edge = new tLength();
                 tst.Edge.LengthSpecified = true;
-                tst.Edge.Length =Convert.ToDecimal( netFteo.Spatial.Geodethic.lent(layer[i].x, layer[i].y, layer[i + 1].x, layer[i + 1].y).ToString("0.00"));
+                tst.Edge.Length =Convert.ToDecimal( netFteo.Geodethics.Geodethic.lent(layer[i].x, layer[i].y, layer[i + 1].x, layer[i + 1].y).ToString("0.00"));
                 res.Add(tst);
             }
             /* // Последнее неверно - в списке точек обязательно замыкающая (начальная)
@@ -109,7 +109,7 @@ namespace RRTypes.MP_V06
             return res;
         }
 
-        private static tEntitySpatialOldNew CastES(netFteo.Spatial.TMyPolygon entryES)
+        private static tEntitySpatialOldNew CastES(netFteo.Spatial.TPolygon entryES)
         {
             tEntitySpatialOldNew res = new tEntitySpatialOldNew();
             res.EntSys = EntSysDefault;
@@ -138,7 +138,7 @@ namespace RRTypes.MP_V06
             return res;
         }
 
-        private static tExistEZEntryParcel CastEntry (netFteo.Spatial.TMyPolygon entry)
+        private static tExistEZEntryParcel CastEntry (netFteo.Spatial.TPolygon entry)
         {
             tExistEZEntryParcel res = new tExistEZEntryParcel();
             res.CadastralNumber = entry.Definition;

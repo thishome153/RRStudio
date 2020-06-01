@@ -370,9 +370,9 @@ namespace RRTypes
        }
      
        #region-----------------Конвертация из ОИПД КВЗУ в ОИПД Fteo.Spatial
-       public static netFteo.Spatial.TMyPolygon AddEntSpatKVZU06(string Definition, RRTypes.kvzu.tEntitySpatialBordersZUOut ES)
+       public static netFteo.Spatial.TPolygon AddEntSpatKVZU06(string Definition, RRTypes.kvzu.tEntitySpatialBordersZUOut ES)
        {
-           netFteo.Spatial.TMyPolygon EntSpat = new netFteo.Spatial.TMyPolygon();
+           netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
            EntSpat.Definition = Definition;
            if (ES == null) { return EntSpat; }
 

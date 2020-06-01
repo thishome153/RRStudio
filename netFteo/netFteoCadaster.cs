@@ -161,12 +161,12 @@ namespace netFteo
                 foreach (IGeometry item in this.ParsedSpatial)
                 {
 
-                    if (item is TMyPolygon)
+                    if (item is TPolygon)
                     {
-                        TPoint pt = ((TMyPolygon)item).GetPoint(Item_id);
+                        TPoint pt = ((TPolygon)item).GetPoint(Item_id);
                         if (pt != null) return pt;
 
-                        foreach (TRing child in ((TMyPolygon)item).Childs)
+                        foreach (TRing child in ((TPolygon)item).Childs)
                         {
                             TPoint pt1 = child.GetPoint(Item_id);
                             if (pt1 != null) return pt1;
@@ -389,7 +389,7 @@ namespace netFteo
             /// </summary>
             public long Parent_id;
             public bool HasParcels;
-            public TMyPolygon Entity_Spatial;
+            public TPolygon Entity_Spatial;
             public TParcels Parcels;
 
             /// <summary>
@@ -410,7 +410,7 @@ namespace netFteo
                 ObjectRealtys = new TRealtys();
                 GKNBounds = new TBoundsList();
                 GKNZones = new TZonesList();
-                Entity_Spatial = new TMyPolygon();
+                Entity_Spatial = new TPolygon();
                 KPTXmlBodyList = new TFiles();
             }
             public TCadastralBlock(string cn) : this() // call constructor with ()
@@ -719,9 +719,9 @@ namespace netFteo
                 switch (Name)
                 {
                     /*
-                    case "Землепользование": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
-                    case "Обособленный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
-                    case "Условный участок": { this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                    case "Землепользование": { this.EntitySpatial = new TPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                    case "Обособленный участок": { this.EntitySpatial = new TPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                    case "Условный участок": { this.EntitySpatial = new TPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                     case "Многоконтурный участок": { this.Contours = new TEntitySpatial(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                         */
                     case "Единое землепользование": // "Item02": //
@@ -732,7 +732,7 @@ namespace netFteo
                         }
                     case "Значение отсутствует": return;
                     default: return;
-                        //	{ this.EntitySpatial = new TMyPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
+                        //	{ this.EntitySpatial = new TPolygon(); this.Name = netFteo.Rosreestr.dParcelsv01.ItemToName(name); return; }
                 }
             }
 
@@ -754,7 +754,7 @@ namespace netFteo
             */
 
 
-            public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TMyPolygon ESs)
+            public void AddEntry(string entrynumber, decimal areaEntry, decimal Inaccuracy, int state, TPolygon ESs)
             {
                 if (ESs == null) return;
                 EZPEntry entry = new EZPEntry();
@@ -821,7 +821,7 @@ namespace netFteo
             /// </summary>
             /// <param name="Layer_id"></param>
             /// <returns></returns>
-            public PointList CheckEs(TMyPolygon ES)
+            public PointList CheckEs(TPolygon ES)
             {
                 switch (this.Name)
                 {
@@ -898,11 +898,11 @@ namespace netFteo
 
             public string AreaGKN;
             public netFteo.Rosreestr.TMyEncumbrances Encumbrances;
-            public TMyPolygon EntSpat;
+            public TPolygon EntSpat;
             public TEntitySpatial Contours;
             public TSlot()
             {
-                this.EntSpat = new TMyPolygon();
+                this.EntSpat = new TPolygon();
                 this.Contours = new TEntitySpatial();
                 this.Encumbrances = new Rosreestr.TMyEncumbrances();
                 this.Fid = Gen_id.newId;
@@ -915,7 +915,7 @@ namespace netFteo
 
         public class TSlots : BindingList<TSlot>
         {
-            public TMyPolygon GetEs(long Layer_id)
+            public TPolygon GetEs(long Layer_id)
             {
                 for (int i = 0; i <= this.Items.Count - 1; i++)
                 {
@@ -924,7 +924,7 @@ namespace netFteo
 
                     for (int ic = 0; ic <= this.Items[i].Contours.Count - 1; ic++)
                         if (this.Items[i].Contours[ic].id == Layer_id)
-                            return (TMyPolygon)this.Items[i].Contours[ic];
+                            return (TPolygon)this.Items[i].Contours[ic];
                 }
 
 
@@ -970,9 +970,9 @@ namespace netFteo
                                         return ES[il];
                             }
 
-                            if (this[i].Building.ES.GetType().Name == "TMyPolygon")
-                                if (((TMyPolygon)this[i].Building.ES).id == Layer_id)
-                                    return (TMyPolygon)this[i].Building.ES;
+                            if (this[i].Building.ES.GetType().Name == "TPolygon")
+                                if (((TPolygon)this[i].Building.ES).id == Layer_id)
+                                    return (TPolygon)this[i].Building.ES;
                         }
 
 
@@ -996,9 +996,9 @@ namespace netFteo
                                         return ES[il];
                             }
 
-                            if (this[i].Construction.ES.GetType().Name == "TMyPolygon")
-                                if (((TMyPolygon)this[i].Construction.ES).Layer_id == Layer_id)
-                                    return (TMyPolygon)this[i].Construction.ES;
+                            if (this[i].Construction.ES.GetType().Name == "TPolygon")
+                                if (((TPolygon)this[i].Construction.ES).Layer_id == Layer_id)
+                                    return (TPolygon)this[i].Construction.ES;
                         }
 
 
@@ -1021,9 +1021,9 @@ namespace netFteo
                                         return ES[il];
                             }
 
-                            if (this[i].Uncompleted.ES.GetType().Name == "TMyPolygon")
-                                if (((TMyPolygon)this[i].Uncompleted.ES).id == Layer_id)
-                                    return (TMyPolygon)this[i].Uncompleted.ES;
+                            if (this[i].Uncompleted.ES.GetType().Name == "TPolygon")
+                                if (((TPolygon)this[i].Uncompleted.ES).id == Layer_id)
+                                    return (TPolygon)this[i].Uncompleted.ES;
                                         */
 
                     //again for ES2 (common spatial data collection)
@@ -1048,9 +1048,9 @@ namespace netFteo
                                     return (TPolyLine)feature;
                             }
 
-                            if (feature.GetType().Name == "TMyPolygon")
-                                if (((TMyPolygon)feature).id == Layer_id)
-                                    return (TMyPolygon)feature;
+                            if (feature.GetType().Name == "TPolygon")
+                                if (((TPolygon)feature).id == Layer_id)
+                                    return (TPolygon)feature;
                         }
 
                     }
@@ -1320,7 +1320,7 @@ namespace netFteo
         {
             private Object fEntitySpatial; //Может быть многоконтурным???
             public string AssignationName;  // Назначение сооружения; 
-                                            //public TMyPolygon EntitySpatial; //Может быть многоконтурным???
+                                            //public TPolygon EntitySpatial; //Может быть многоконтурным???
             public TKeyParameters KeyParameters; // 
                                                  /*
                                                  public Object ES
@@ -1331,8 +1331,8 @@ namespace netFteo
                                                          if (value == null) return;
                                                          string test = value.GetType().Name;
 
-                                                         if (value.GetType().Name == "TMyPolygon")
-                                                             this.fEntitySpatial = (TMyPolygon)value;
+                                                         if (value.GetType().Name == "TPolygon")
+                                                             this.fEntitySpatial = (TPolygon)value;
 
                                                          if (value.GetType().Name == "TPolyLines")
                                                              this.fEntitySpatial = (TPolyLines)value;
@@ -1366,8 +1366,8 @@ namespace netFteo
                             if (value == null) return;
                             string test = value.GetType().Name;
 
-                            if (value.GetType().Name == "TMyPolygon")
-                                this.fEntitySpatial = (TMyPolygon)value;
+                            if (value.GetType().Name == "TPolygon")
+                                this.fEntitySpatial = (TPolygon)value;
 
                             if (value.GetType().Name == "TPolyLines")
                                 this.fEntitySpatial = (TPolyLines)value;
@@ -1393,7 +1393,7 @@ namespace netFteo
 
             public TBuilding()
             {
-                //this.fEntitySpatial = new TMyPolygon();
+                //this.fEntitySpatial = new TPolygon();
                 this.KeyParameters = new TKeyParameters();
                 this.Flats = new TFlats();//new List<TFlat>();
             }
@@ -1515,7 +1515,7 @@ namespace netFteo
                 this.TypeName = typename;
                 this.id = Gen_id.newId;
             }
-            public TMyPolygon EntitySpatial;
+            public TPolygon EntitySpatial;
         }
 
         public class TZone
@@ -1528,7 +1528,7 @@ namespace netFteo
             public string ContentRestrictions; // SpecialZone
             public List<string> PermittedUses;
             public List<TDocument> Documents;
-            public TMyPolygon EntitySpatial; //TODO: Spatials may be multi ?
+            public TPolygon EntitySpatial; //TODO: Spatials may be multi ?
             public TZone(string accountnumber)
             {
                 this.AccountNumber = accountnumber;
@@ -1578,7 +1578,7 @@ namespace netFteo
                 }
                 return Res;
             }
-            public TMyPolygon GetEsId(int Layer_id)
+            public TPolygon GetEsId(int Layer_id)
             {
                 for (int i = 0; i <= this.Count - 1; i++)
                 {
@@ -1602,7 +1602,7 @@ namespace netFteo
 
         public class TBoundsList : List<TBound>
         {
-            public TMyPolygon GetEs(int Layer_id)
+            public TPolygon GetEs(int Layer_id)
             {
                 for (int i = 0; i <= this.Count - 1; i++)
                 {
@@ -1627,7 +1627,7 @@ namespace netFteo
             public decimal AreaEntry;
         }
 
-        public class TCompozitionEZ : List<EZPEntry>// : List<TMyPolygon>
+        public class TCompozitionEZ : List<EZPEntry>// : List<TPolygon>
         {
             public TCadastralNumbers DeleteEntryParcels;
             public TCadastralNumbers TransformationEntryParcel;
@@ -1650,7 +1650,7 @@ namespace netFteo
                 get
                 {
                     double pery = 0;
-                    foreach (TMyPolygon poly in this)
+                    foreach (TPolygon poly in this)
                         pery += poly.Length;
                     return pery;
                 }

@@ -159,9 +159,9 @@ namespace netFteo
 						foreach (IGeometry feature in TotalES)
 						{
 							label2.Content = feature.Definition;
-							if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+							if (feature.TypeName == "netFteo.Spatial.TPolygon")
 							{
-								TMyPolygon polygon = (TMyPolygon)feature;
+								TPolygon polygon = (TPolygon)feature;
 								foreach (UIElement el in CreateCanvasPolygons(polygon))
 									canvas1.Children.Add(el);
 							}
@@ -187,9 +187,9 @@ namespace netFteo
 					}
 				}
 
-				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
+				if (fSpatial.GetType().ToString() == "netFteo.Spatial.TPolygon")
                 {
-                    TMyPolygon polygon = (TMyPolygon)Spatial;
+                    TPolygon polygon = (TPolygon)Spatial;
 					this.AverageCenter = polygon.AverageCenter;
                     label2.Content = polygon.Definition;
                     label1_Canvas_Sizes.Content = "Площадь " + polygon.AreaSpatialFmt("0.00");
@@ -464,7 +464,7 @@ namespace netFteo
 			return WPFPolyLine;
 		}
 
-		private List<UIElement> CreateCanvasPolygons(TMyPolygon polygon)
+		private List<UIElement> CreateCanvasPolygons(TPolygon polygon)
         {
             List<UIElement> res = new List<UIElement>();
             List<PointCollection> polys =   PolygonToWindowsShape(polygon, true);
@@ -599,7 +599,7 @@ namespace netFteo
         /// Конвертация полигона netfteo в список точек PointCollection
         /// TODO - отображение двойного полигона - для old newOrd?
         /// </summary>
-        private List<PointCollection> PolygonToWindowsShape(TMyPolygon polygon, bool newOnly)
+        private List<PointCollection> PolygonToWindowsShape(TPolygon polygon, bool newOnly)
         {
             List<PointCollection> res = new List<PointCollection>();
             PointCollection winPoints = new PointCollection();
@@ -726,9 +726,9 @@ namespace netFteo
                                        */
 			label_DirectXMode.Content = "";
 			if (Spatial == null) return;
-			if (Spatial.TypeName == "netFteo.Spatial.TMyPolygon")
+			if (Spatial.TypeName == "netFteo.Spatial.TPolygon")
 			{
-				netFteo.Spatial.TMyPolygon polygon = (netFteo.Spatial.TMyPolygon)Spatial;
+				netFteo.Spatial.TPolygon polygon = (netFteo.Spatial.TPolygon)Spatial;
 				if (polygon != null)
 					label_DirectXMode.Content = String.Format(" {0:F3}, {1:F3} ",
 																WindowsPointsToPoints(e.GetPosition(canvas1).X,

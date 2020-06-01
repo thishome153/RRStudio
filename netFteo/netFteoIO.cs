@@ -174,15 +174,24 @@ namespace netFteo.IO
             {
                 FilePoint.x = StringUtils.TryDouble(src[5]);
                 FilePoint.y = StringUtils.TryDouble(src[6]);
-                FilePoint.Mt = StringUtils.TryDouble(src[10]);
             }
             catch (FormatException ex)
             {
                 FilePoint.Description = ex.Message;
                 FilePoint.x = Double.NaN;
                 FilePoint.y = Double.NaN;
+            }
+
+            try
+            {
+                FilePoint.Mt = StringUtils.TryDouble(src[10]);
+            }
+            
+            catch (FormatException ex)
+            {
                 FilePoint.Mt = Double.NaN;
             }
+
 
             try
             {
@@ -191,7 +200,6 @@ namespace netFteo.IO
             }
             catch (FormatException ex)
             {
-                //FilePoint.Description = ex.Message;
                 FilePoint.oldX = Double.NaN;
                 FilePoint.oldY = Double.NaN;
             }
@@ -272,7 +280,7 @@ namespace netFteo.IO
 
                         if (points_of_current.First().Definition == points_of_current.Last().Definition)
                         {  //closed - here polygon
-                            TMyPolygon poly = new TMyPolygon(points_of_current.Definition);
+                            TPolygon poly = new TPolygon(points_of_current.Definition);
                             poly.ImportObjects(points_of_current);
                             var child_items_of_current = items.Where(pos => pos[0].Contains(CurrentFeature.Replace(']', '.')));// filter List by parent [1.
                             foreach (string[] childString in child_items_of_current)
@@ -425,11 +433,11 @@ namespace netFteo.IO
             reader.Close();
 
             TEntitySpatial res = new TEntitySpatial();
-            if (XMLDocFromFile.DocumentElement.Name == "TMyPolygon")
+            if (XMLDocFromFile.DocumentElement.Name == "TPolygon")
             {
                 reader = new System.IO.StreamReader(Fname);
-                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TMyPolygon));
-                TMyPolygon xmlPolygon = (TMyPolygon)serializer.Deserialize(reader);
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TPolygon));
+                TPolygon xmlPolygon = (TPolygon)serializer.Deserialize(reader);
                 res.Add(xmlPolygon);
             }
 
@@ -528,11 +536,11 @@ namespace netFteo.IO
             }
         }
 
-        private TMyPolygon ImportNXYZDFile2014(string Fname)
+        private TPolygon ImportNXYZDFile2014(string Fname)
         {
             try
             {
-                TMyPolygon resPoly = new TMyPolygon(0, Fname);
+                TPolygon resPoly = new TPolygon(0, Fname);
                 // this.ClearItems();
                 //this.Childs.RemoveAll(<TmySlot>);
                 string line = null;
@@ -609,7 +617,7 @@ namespace netFteo.IO
 
                         if (line.Contains("Polygon"))
                         {
-                            TMyPolygon resPoly = new TMyPolygon(line.Substring(7));
+                            TPolygon resPoly = new TPolygon(line.Substring(7));
                             line = readFile.ReadLine();
                             while (!line.Contains("EndPolygon"))
                             {
@@ -694,7 +702,7 @@ namespace netFteo.IO
 
                         if (line.Contains("Polygon"))
                         {
-                            TMyPolygon resPoly = new TMyPolygon(line.Substring(7));
+                            TPolygon resPoly = new TPolygon(line.Substring(7));
                             line = readFile.ReadLine();
                             while (!line.Contains("EndPolygon"))
                             {
@@ -848,7 +856,7 @@ namespace netFteo.IO
                         if (line.Contains("Polygon"))
                         {
                             string[] SplittedStr = line.Split(TabDelimiter.ToCharArray());
-                            TMyPolygon resPoly = new TMyPolygon(SplittedStr[1]);//   line.Substring(7));
+                            TPolygon resPoly = new TPolygon(SplittedStr[1]);//   line.Substring(7));
 
                             line = readFile.ReadLine();
                             while (!line.Contains("EndPolygon"))
@@ -1022,7 +1030,7 @@ namespace netFteo.IO
         public const string FixosoftFileSign5 = "#Fixosoft spatial text file V2018";//"#Fixosoft Num oldx oldy XY MtD data format V2018";
 
         /*
-		public void SaveAsFixosoftTXT2015(string FileName, TMyPolygon ES)
+		public void SaveAsFixosoftTXT2015(string FileName, TPolygon ES)
 		{
 			if (ES.PointCount == 0) return;
 			System.IO.TextWriter writer = new StreamWriter(FileName);
@@ -1096,7 +1104,7 @@ namespace netFteo.IO
 			writer.Close();
 		}
 
-				public void SaveAsFixosoftTXT2016(string FileName, TMyPolygon ES)
+				public void SaveAsFixosoftTXT2016(string FileName, TPolygon ES)
 				{
 					TPolygonCollection pl = new TPolygonCollection(ES.Parent_Id);
 					pl.AddPolygon(ES);
@@ -1143,14 +1151,14 @@ namespace netFteo.IO
 					TPolygonCollection items = new TPolygonCollection();
 					foreach (IGeometry feature in ES)
 					{
-						if (feature.GetType().ToString() == "TMyPolygon")
-							items.Add((TMyPolygon)feature);
+						if (feature.GetType().ToString() == "TPolygon")
+							items.Add((TPolygon)feature);
 					}
 
 					SaveAsFixosoftTXT2018(FileName, items, encoding);
 				}
 
-				public void SaveAsFixosoftTXT2018(string FileName, TMyPolygon ES, Encoding encoding)
+				public void SaveAsFixosoftTXT2018(string FileName, TPolygon ES, Encoding encoding)
 				{
 					TPolygonCollection items = new TPolygonCollection();
 					items.AddPolygon(ES);
@@ -1197,9 +1205,9 @@ namespace netFteo.IO
                     writer.WriteLine("EndPointList");
                 }
 
-                if (feature.GetType().ToString() == "netFteo.Spatial.TMyPolygon")
+                if (feature.GetType().ToString() == "netFteo.Spatial.TPolygon")
                 {
-                    TMyPolygon Poly = (TMyPolygon)feature;
+                    TPolygon Poly = (TPolygon)feature;
                     writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;    Погрешность;    Описание закрепления");
                     writer.WriteLine("Polygon" + "\t" + (Poly.Definition));
 
@@ -1328,7 +1336,7 @@ namespace netFteo.IO
             }
         }
 
-        private void WriteEs2csv(System.IO.TextWriter writer, TMyPolygon ES, int EsNumber)
+        private void WriteEs2csv(System.IO.TextWriter writer, TPolygon ES, int EsNumber)
         {
 
             writer.WriteLine(";;;;;;;;;;;");
@@ -1378,8 +1386,8 @@ namespace netFteo.IO
             int EsNumber = 0;
             foreach (IGeometry Feature in ES)
             {
-                if (Feature.TypeName == "netFteo.Spatial.TMyPolygon")
-                    WriteEs2csv(writer, (TMyPolygon)Feature, ++EsNumber);
+                if (Feature.TypeName == "netFteo.Spatial.TPolygon")
+                    WriteEs2csv(writer, (TPolygon)Feature, ++EsNumber);
                 if (Feature.TypeName == "netFteo.Spatial.TPolyLine")
                     WriteEs2csv(writer, (TPolyLine)Feature, ++EsNumber);
             }
@@ -1387,7 +1395,7 @@ namespace netFteo.IO
         }
 
         /*
-		public void SaveAsTexnoCADCSV(string FileName, TMyPolygon ES)
+		public void SaveAsTexnoCADCSV(string FileName, TPolygon ES)
 		{
 			if (ES.PointCount == 0) return;
 			System.IO.Stream file = new System.IO.FileStream(FileName, FileMode.Create);
@@ -1444,7 +1452,7 @@ namespace netFteo.IO
             }
         }
 
-        private string WriteMifRegion(TMyPolygon Poly)
+        private string WriteMifRegion(TPolygon Poly)
         {
             string res = "";
             res += "Region " + Convert.ToString(Poly.Childs.Count + 1);
@@ -1473,7 +1481,7 @@ namespace netFteo.IO
             return res;
         }
 
-        private void WriteMifRegion(System.IO.TextWriter writer, System.IO.TextWriter writerMIDA, TMyPolygon Poly)
+        private void WriteMifRegion(System.IO.TextWriter writer, System.IO.TextWriter writerMIDA, TPolygon Poly)
         {
             writer.WriteLine("Region " + Convert.ToString(Poly.Childs.Count + 1));
             writer.WriteLine(Poly.Count.ToString());
@@ -1521,8 +1529,8 @@ namespace netFteo.IO
 			foreach (IGeometry feature in ES)
 			{
 				
-				if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
-					items.Add((TMyPolygon)feature);
+				if (feature.TypeName == "netFteo.Spatial.TPolygon")
+					items.Add((TPolygon)feature);
 			}
 
 			SaveAsmif(FileName, items);
@@ -1535,7 +1543,7 @@ namespace netFteo.IO
         /// <param name="writer"></param>
         /// <param name="Points"></param>
         /*
-       public void SaveAsmif(string FileName, TMyPolygon ES)
+       public void SaveAsmif(string FileName, TPolygon ES)
            {
                TPolygonCollection pls = new TPolygonCollection(ES.Parent_Id);
                pls.AddPolygon(ES);
@@ -1597,9 +1605,9 @@ namespace netFteo.IO
 
                 foreach (IGeometry feature in ES)
                 {
-                    if (feature.TypeName == "netFteo.Spatial.TMyPolygon")
+                    if (feature.TypeName == "netFteo.Spatial.TPolygon")
                     {
-                        TMyPolygon poly = (TMyPolygon)feature;
+                        TPolygon poly = (TPolygon)feature;
                         WriteMifPoints(writer, writerMID, poly);
                         // точки вгграниц:
                         for (int cc = 0; cc <= poly.Childs.Count - 1; cc++)
@@ -1755,7 +1763,7 @@ namespace netFteo.IO
                     if (Double.TryParse(EllipseLine[3], out y2))
                         if (Double.TryParse(EllipseLine[4], out x2))
                         {
-                            double LineAB = netFteo.Spatial.Geodethic.lent(x1, y1, x2, y2);
+                            double LineAB = netFteo.Geodethics.Geodethic.lent(x1, y1, x2, y2);
                             double Radius = LineAB / 2;
                             // TODO : 
 
@@ -1769,7 +1777,7 @@ namespace netFteo.IO
                             //System.Drawing.RectangleF rect = new System.Drawing.RectangleF();
 
                             //simple round rectangle - ortogonally orient
-                            TMyPolygon CircleBoundRect = new TMyPolygon("CircleRect");
+                            TPolygon CircleBoundRect = new TPolygon("CircleRect");
                             CircleBoundRect.AddPoint("1", x1, y1, "V");
                             CircleBoundRect.AddPoint("2", x1, y2, "*");
                             CircleBoundRect.AddPoint("3", x2, y2, "V");
@@ -1814,10 +1822,10 @@ namespace netFteo.IO
 
         }
 
-        private TMyPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
+        private TPolygon MIF_ParseRegion(System.IO.TextReader readFile, int ringCount)
         {
             string line;
-            TMyPolygon res = new TMyPolygon("REGION " + ringCount.ToString());
+            TPolygon res = new TPolygon("REGION " + ringCount.ToString());
             try
             {
                 while (readFile.Peek() != -1)

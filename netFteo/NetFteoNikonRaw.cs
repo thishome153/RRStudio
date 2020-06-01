@@ -227,9 +227,9 @@ namespace netFteo.NikonRaw
         public double BSAzim, StationHeight;
         public double BSHA; // Отсчет по гор. кругу при наведении на ЗТ
         public double BSHA_rad // Отсчет по гор. кругу при наведении на ЗТ
-        { get { return Geodethic.RawAngleToRadians(this.BSHA); } }
+        { get { return Geodethics.Geodethic.RawAngleToRadians(this.BSHA); } }
         public double BSAzim_rad
-        { get { return Geodethic.RawAngleToRadians(this.BSAzim); } }
+        { get { return Geodethics.Geodethic.RawAngleToRadians(this.BSAzim); } }
         public bool HaSetinQuickStation; // проверить по инструкции. если в QuickStation азимут назад всегда ноль ??
         public string StationName
         {
@@ -302,7 +302,7 @@ namespace netFteo.NikonRaw
 
       public double HA_rad
       {
-          get { return Geodethic.RawAngleToRadians(this.fHA); }
+          get { return Geodethics.Geodethic.RawAngleToRadians(this.fHA); }
           
       }
       /// <summary>
@@ -318,7 +318,7 @@ namespace netFteo.NikonRaw
       /// </summary>
       public double VA_r
       {
-          get { return Geodethic.RawAngleToRadians ( this.fVA); }
+          get { return  Geodethics.Geodethic.RawAngleToRadians ( this.fVA); }
           
       }
       public bool isTravVertex
@@ -355,10 +355,10 @@ namespace netFteo.NikonRaw
           {
               if (Properties == null) return 0;
               if (Properties.Zero_VA == TNikonRawProperties.Zero_VA_Zenith)
-                  return Math.Round(Math.Cos(Math.PI / 2 - Geodethic.RawAngleToRadians(this.VA_degree)) * SlopeDistantion,3); // проверить место нуля?
+                  return Math.Round(Math.Cos(Math.PI / 2 - Geodethics.Geodethic.RawAngleToRadians(this.VA_degree)) * SlopeDistantion,3); // проверить место нуля?
               //ZERO_VA  = VAHorizontal
               else
-                  return Math.Round(Math.Cos(Geodethic.RawAngleToRadians(this.VA_degree)) * SlopeDistantion,3); // 
+                  return Math.Round(Math.Cos(Geodethics.Geodethic.RawAngleToRadians(this.VA_degree)) * SlopeDistantion,3); // 
 
           }
       }
