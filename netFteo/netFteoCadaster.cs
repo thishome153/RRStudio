@@ -1318,7 +1318,7 @@ namespace netFteo
 
         public class TConstruction : TCadasterItem2
         {
-            private Object fEntitySpatial; //Может быть многоконтурным???
+            //private Object fEntitySpatial; 
             public string AssignationName;  // Назначение сооружения; 
                                             //public TPolygon EntitySpatial; //Может быть многоконтурным???
             public TKeyParameters KeyParameters; // 

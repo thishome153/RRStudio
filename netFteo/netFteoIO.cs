@@ -186,7 +186,7 @@ namespace netFteo.IO
             {
                 FilePoint.Mt = StringUtils.TryDouble(src[10]);
             }
-            
+           
             catch (FormatException ex)
             {
                 FilePoint.Mt = Double.NaN;
@@ -1724,11 +1724,7 @@ namespace netFteo.IO
         {
             TPoint res = new TPoint();
             res.Definition = pointName;
-            double Y = Double.NaN; double X = Double.NaN;
-            //	if (Double.TryParse(line.Substring(0, line.IndexOf(' ')), out Y)) res.y = Y;
-            //string ss = line.Substring(line.IndexOf(' ') + 1, line.Length - line.IndexOf(' ') - 1);
-            //if (Double.TryParse(ss, out X)) res.x = X;
-
+            double Y = Double.NaN;
             string[] SplString = line.Split(' ');
             foreach (string Item in SplString)
             {

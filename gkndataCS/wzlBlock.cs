@@ -25,7 +25,7 @@ namespace GKNData
         public TCadastralBlock ITEM;
         private DataTable data;
         private MySqlDataAdapter da;
-        private MySqlCommandBuilder cb;
+       // private MySqlCommandBuilder cb;
         public ConnectorForm CF = new ConnectorForm();
         public MySqlConnection conn;
         public TFileHistory BlockHistory;
