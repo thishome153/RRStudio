@@ -34,9 +34,9 @@
             System.Windows.Forms.Label codeLabel;
             System.Windows.Forms.Label oldXLabel;
             System.Windows.Forms.Label oldYLabel;
-            System.Windows.Forms.Label prefLabel;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPointEditor));
             this.textBox_x = new System.Windows.Forms.TextBox();
+            this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.textBox_z = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,15 +55,16 @@
             this.oldXTextBox = new System.Windows.Forms.TextBox();
             this.oldYTextBox = new System.Windows.Forms.TextBox();
             this.prefTextBox = new System.Windows.Forms.TextBox();
-            this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             placeLabel = new System.Windows.Forms.Label();
             descriptionLabel = new System.Windows.Forms.Label();
             codeLabel = new System.Windows.Forms.Label();
             oldXLabel = new System.Windows.Forms.Label();
             oldYLabel = new System.Windows.Forms.Label();
-            prefLabel = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // placeLabel
@@ -96,7 +97,7 @@
             // oldXLabel
             // 
             oldXLabel.AutoSize = true;
-            oldXLabel.Location = new System.Drawing.Point(177, 69);
+            oldXLabel.Location = new System.Drawing.Point(139, 69);
             oldXLabel.Name = "oldXLabel";
             oldXLabel.Size = new System.Drawing.Size(17, 17);
             oldXLabel.TabIndex = 27;
@@ -105,20 +106,11 @@
             // oldYLabel
             // 
             oldYLabel.AutoSize = true;
-            oldYLabel.Location = new System.Drawing.Point(177, 102);
+            oldYLabel.Location = new System.Drawing.Point(139, 102);
             oldYLabel.Name = "oldYLabel";
             oldYLabel.Size = new System.Drawing.Size(17, 17);
             oldYLabel.TabIndex = 28;
             oldYLabel.Text = "Y";
-            // 
-            // prefLabel
-            // 
-            prefLabel.AutoSize = true;
-            prefLabel.Location = new System.Drawing.Point(4, 13);
-            prefLabel.Name = "prefLabel";
-            prefLabel.Size = new System.Drawing.Size(67, 17);
-            prefLabel.TabIndex = 29;
-            prefLabel.Text = "Префикс";
             // 
             // textBox_x
             // 
@@ -128,6 +120,10 @@
             this.textBox_x.Name = "textBox_x";
             this.textBox_x.Size = new System.Drawing.Size(153, 23);
             this.textBox_x.TabIndex = 2;
+            // 
+            // tPointBindingSource
+            // 
+            this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
             // 
             // textBox_z
             // 
@@ -141,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(233, 40);
+            this.label2.Location = new System.Drawing.Point(195, 40);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(108, 17);
@@ -226,7 +222,7 @@
             // textBox_Name
             // 
             this.textBox_Name.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "NumGeopointA", true));
-            this.textBox_Name.Location = new System.Drawing.Point(182, 13);
+            this.textBox_Name.Location = new System.Drawing.Point(236, 12);
             this.textBox_Name.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Name.Name = "textBox_Name";
             this.textBox_Name.Size = new System.Drawing.Size(133, 23);
@@ -235,7 +231,7 @@
             // label_Name
             // 
             this.label_Name.AutoSize = true;
-            this.label_Name.Location = new System.Drawing.Point(139, 13);
+            this.label_Name.Location = new System.Drawing.Point(193, 12);
             this.label_Name.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_Name.Name = "label_Name";
             this.label_Name.Size = new System.Drawing.Size(35, 17);
@@ -269,7 +265,7 @@
             // yTextBox
             // 
             this.yTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "y", true));
-            this.yTextBox.Location = new System.Drawing.Point(370, 97);
+            this.yTextBox.Location = new System.Drawing.Point(370, 96);
             this.yTextBox.Name = "yTextBox";
             this.yTextBox.Size = new System.Drawing.Size(153, 23);
             this.yTextBox.TabIndex = 27;
@@ -277,7 +273,7 @@
             // oldXTextBox
             // 
             this.oldXTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "oldX", true));
-            this.oldXTextBox.Location = new System.Drawing.Point(212, 66);
+            this.oldXTextBox.Location = new System.Drawing.Point(174, 66);
             this.oldXTextBox.Name = "oldXTextBox";
             this.oldXTextBox.Size = new System.Drawing.Size(153, 23);
             this.oldXTextBox.TabIndex = 28;
@@ -285,7 +281,7 @@
             // oldYTextBox
             // 
             this.oldYTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "oldY", true));
-            this.oldYTextBox.Location = new System.Drawing.Point(212, 96);
+            this.oldYTextBox.Location = new System.Drawing.Point(174, 96);
             this.oldYTextBox.Name = "oldYTextBox";
             this.oldYTextBox.Size = new System.Drawing.Size(153, 23);
             this.oldYTextBox.TabIndex = 29;
@@ -293,21 +289,53 @@
             // prefTextBox
             // 
             this.prefTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Pref", true));
-            this.prefTextBox.Location = new System.Drawing.Point(77, 13);
+            this.prefTextBox.Location = new System.Drawing.Point(125, 12);
             this.prefTextBox.Name = "prefTextBox";
             this.prefTextBox.Size = new System.Drawing.Size(46, 23);
             this.prefTextBox.TabIndex = 30;
             // 
-            // tPointBindingSource
+            // button3
             // 
-            this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Image = global::Traverser.Properties.Resources.cross;
+            this.button3.Location = new System.Drawing.Point(333, 66);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(23, 23);
+            this.button3.TabIndex = 31;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Image = global::Traverser.Properties.Resources.cross;
+            this.button4.Location = new System.Drawing.Point(333, 96);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(23, 23);
+            this.button4.TabIndex = 32;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Location = new System.Drawing.Point(6, 12);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(113, 24);
+            this.button5.TabIndex = 33;
+            this.button5.Text = "Префикс";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.Button5_Click);
             // 
             // frmPointEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 339);
-            this.Controls.Add(prefLabel);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.prefTextBox);
             this.Controls.Add(oldYLabel);
             this.Controls.Add(this.oldYTextBox);
@@ -339,8 +367,8 @@
             this.Name = "frmPointEditor";
             this.ShowInTaskbar = false;
             this.Text = "Редактор Точка";
-            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -367,5 +395,8 @@
         private System.Windows.Forms.TextBox oldXTextBox;
         private System.Windows.Forms.TextBox oldYTextBox;
         private System.Windows.Forms.TextBox prefTextBox;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }

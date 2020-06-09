@@ -17,6 +17,7 @@ public static class NetFteoTypes
     public static string Parcel = new netFteo.Cadaster.TParcel().GetType().ToString();
     public static string RealEstate = new netFteo.Cadaster.TRealEstate().GetType().ToString();
     public static string Block = new netFteo.Cadaster.TCadastralBlock().GetType().ToString();
+    public static string Point = new netFteo.Spatial.TPoint().GetType().ToString();
     public static string District = new netFteo.Cadaster.TCadastralDistrict().GetType().ToString();
     public static string SubRf = new netFteo.Cadaster.TCadastralSubject().GetType().ToString();
 }
