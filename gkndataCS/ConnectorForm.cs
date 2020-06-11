@@ -84,8 +84,8 @@ namespace GKNData
 //        public string TypeName_District;
 //        public string TypeName_Block; //  =   "netFteo.Cadaster.TCadastralBlock";
 //        public string TypeName_Parcel;// =   "netFteo.Cadaster.TParcel";
-        public string Item_TypeName;
-        public string Item_NameExt;
+        string _Item_TypeName;
+        string _Item_NameExt;
         public long Item_id;
         public TreeNode SelectedNode;
         public ListViewItem SelectedItem;
@@ -96,6 +96,19 @@ namespace GKNData
           //  TypeName_Block = (new netFteo.Cadaster.TCadastralBlock()).GetType().ToString();
           //  TypeName_Parcel = (new netFteo.Cadaster.TParcel()).GetType().ToString();
         }
+
+        public string Item_TypeName
+        {
+            get ;
+            set ;
+        }
+
+        public string Item_NameExt
+        {
+            get;
+            set;
+        }
+
 
         public bool isDistrict
         {

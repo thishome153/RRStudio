@@ -28,14 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox_Number = new System.Windows.Forms.TextBox();
+            this.textBox_CN = new System.Windows.Forms.TextBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_FileName = new System.Windows.Forms.TextBox();
             this.label_Filename = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -61,6 +64,7 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Отмена";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // button1
             // 
@@ -76,15 +80,20 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // textBox_Number
+            // textBox_CN
             // 
-            this.textBox_Number.BackColor = System.Drawing.SystemColors.Info;
-            this.textBox_Number.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox_Number.Location = new System.Drawing.Point(140, 28);
-            this.textBox_Number.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox_Number.Name = "textBox_Number";
-            this.textBox_Number.Size = new System.Drawing.Size(75, 23);
-            this.textBox_Number.TabIndex = 12;
+            this.textBox_CN.BackColor = System.Drawing.SystemColors.Info;
+            this.textBox_CN.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox_CN.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource1, "Item_NameExt", true));
+            this.textBox_CN.Location = new System.Drawing.Point(140, 28);
+            this.textBox_CN.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox_CN.Name = "textBox_CN";
+            this.textBox_CN.Size = new System.Drawing.Size(75, 23);
+            this.textBox_CN.TabIndex = 12;
+            // 
+            // bindingSource1
+            // 
+            this.bindingSource1.DataSource = typeof(GKNData.TCurrentItem);
             // 
             // label3
             // 
@@ -100,6 +109,7 @@
             // 
             this.textBox_FileName.BackColor = System.Drawing.SystemColors.Info;
             this.textBox_FileName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox_FileName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource1, "Item_TypeName", true));
             this.textBox_FileName.Location = new System.Drawing.Point(140, 73);
             this.textBox_FileName.Margin = new System.Windows.Forms.Padding(5);
             this.textBox_FileName.Name = "textBox_FileName";
@@ -122,7 +132,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(635, 205);
-            this.Controls.Add(this.textBox_Number);
+            this.Controls.Add(this.textBox_CN);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_FileName);
             this.Controls.Add(this.label_Filename);
@@ -134,6 +144,7 @@
             this.Text = "Редактор кадастрового района";
             this.Shown += new System.EventHandler(this.WzDistrict_Shown);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,9 +155,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox_Number;
+        private System.Windows.Forms.TextBox textBox_CN;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_FileName;
         private System.Windows.Forms.Label label_Filename;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }

@@ -493,8 +493,8 @@ namespace GKNData
                 TCurrentItem DistrictFake = LoadDistrict(Item.Item_id, CF.conn);
                 if (DistrictFake != null)
                 {
-                    wzDistrict wzDistrictFrm = new wzDistrict();
-                    wzDistrictFrm.Item = DistrictFake;
+                    wzDistrict wzDistrictFrm = new wzDistrict(DistrictFake);
+                    //wzDistrictFrm.Item = DistrictFake;
                     if (wzDistrictFrm.ShowDialog(this) == DialogResult.OK)
                     {
                         StatusLabel_AllMessages.Text = "Update district.... ";

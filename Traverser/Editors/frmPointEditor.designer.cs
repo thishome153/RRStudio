@@ -45,7 +45,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_OK = new System.Windows.Forms.Button();
             this.textBox_Name = new System.Windows.Forms.TextBox();
             this.label_Name = new System.Windows.Forms.Label();
             this.placeTextBox = new System.Windows.Forms.TextBox();
@@ -58,6 +58,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             placeLabel = new System.Windows.Forms.Label();
             descriptionLabel = new System.Windows.Forms.Label();
             codeLabel = new System.Windows.Forms.Label();
@@ -70,29 +72,29 @@
             // placeLabel
             // 
             placeLabel.AutoSize = true;
-            placeLabel.Location = new System.Drawing.Point(17, 226);
+            placeLabel.Location = new System.Drawing.Point(17, 235);
             placeLabel.Name = "placeLabel";
-            placeLabel.Size = new System.Drawing.Size(47, 17);
+            placeLabel.Size = new System.Drawing.Size(126, 17);
             placeLabel.TabIndex = 22;
-            placeLabel.Text = "Place:";
+            placeLabel.Text = "Местоположение:";
             // 
             // descriptionLabel
             // 
             descriptionLabel.AutoSize = true;
-            descriptionLabel.Location = new System.Drawing.Point(4, 192);
+            descriptionLabel.Location = new System.Drawing.Point(5, 160);
             descriptionLabel.Name = "descriptionLabel";
-            descriptionLabel.Size = new System.Drawing.Size(83, 17);
+            descriptionLabel.Size = new System.Drawing.Size(78, 17);
             descriptionLabel.TabIndex = 23;
-            descriptionLabel.Text = "Description:";
+            descriptionLabel.Text = "Описание:";
             // 
             // codeLabel
             // 
             codeLabel.AutoSize = true;
-            codeLabel.Location = new System.Drawing.Point(296, 192);
+            codeLabel.Location = new System.Drawing.Point(330, 235);
             codeLabel.Name = "codeLabel";
-            codeLabel.Size = new System.Drawing.Size(45, 17);
+            codeLabel.Size = new System.Drawing.Size(37, 17);
             codeLabel.TabIndex = 25;
-            codeLabel.Text = "Code:";
+            codeLabel.Text = "Код:";
             // 
             // oldXLabel
             // 
@@ -128,7 +130,7 @@
             // textBox_z
             // 
             this.textBox_z.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "z", true));
-            this.textBox_z.Location = new System.Drawing.Point(370, 128);
+            this.textBox_z.Location = new System.Drawing.Point(370, 202);
             this.textBox_z.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_z.Name = "textBox_z";
             this.textBox_z.Size = new System.Drawing.Size(153, 23);
@@ -147,7 +149,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(367, 40);
+            this.label3.Location = new System.Drawing.Point(370, 40);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(51, 17);
@@ -157,7 +159,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(303, 129);
+            this.label5.Location = new System.Drawing.Point(326, 204);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 17);
@@ -167,7 +169,7 @@
             // textBox_Mt
             // 
             this.textBox_Mt.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Mt", true));
-            this.textBox_Mt.Location = new System.Drawing.Point(370, 159);
+            this.textBox_Mt.Location = new System.Drawing.Point(370, 128);
             this.textBox_Mt.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Mt.Name = "textBox_Mt";
             this.textBox_Mt.Size = new System.Drawing.Size(153, 23);
@@ -176,7 +178,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(303, 160);
+            this.label6.Location = new System.Drawing.Point(326, 130);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(44, 17);
@@ -187,7 +189,7 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.button_OK);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 269);
             this.panel1.Name = "panel1";
@@ -206,23 +208,23 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
-            // button1
+            // button_OK
             // 
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(107, 12);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(163, 43);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Ok";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.button_OK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.button_OK.Location = new System.Drawing.Point(107, 12);
+            this.button_OK.Margin = new System.Windows.Forms.Padding(4);
+            this.button_OK.Name = "button_OK";
+            this.button_OK.Size = new System.Drawing.Size(163, 43);
+            this.button_OK.TabIndex = 9;
+            this.button_OK.Text = "Ok";
+            this.button_OK.UseVisualStyleBackColor = true;
+            this.button_OK.Click += new System.EventHandler(this.Button_OK_Click);
             // 
             // textBox_Name
             // 
             this.textBox_Name.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "NumGeopointA", true));
-            this.textBox_Name.Location = new System.Drawing.Point(236, 12);
+            this.textBox_Name.Location = new System.Drawing.Point(309, 12);
             this.textBox_Name.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Name.Name = "textBox_Name";
             this.textBox_Name.Size = new System.Drawing.Size(133, 23);
@@ -231,7 +233,7 @@
             // label_Name
             // 
             this.label_Name.AutoSize = true;
-            this.label_Name.Location = new System.Drawing.Point(193, 12);
+            this.label_Name.Location = new System.Drawing.Point(270, 12);
             this.label_Name.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_Name.Name = "label_Name";
             this.label_Name.Size = new System.Drawing.Size(35, 17);
@@ -241,7 +243,7 @@
             // placeTextBox
             // 
             this.placeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Place", true));
-            this.placeTextBox.Location = new System.Drawing.Point(94, 226);
+            this.placeTextBox.Location = new System.Drawing.Point(149, 232);
             this.placeTextBox.Name = "placeTextBox";
             this.placeTextBox.Size = new System.Drawing.Size(177, 23);
             this.placeTextBox.TabIndex = 23;
@@ -249,15 +251,15 @@
             // descriptionTextBox
             // 
             this.descriptionTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Description", true));
-            this.descriptionTextBox.Location = new System.Drawing.Point(93, 192);
+            this.descriptionTextBox.Location = new System.Drawing.Point(94, 158);
             this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(177, 23);
+            this.descriptionTextBox.Size = new System.Drawing.Size(400, 23);
             this.descriptionTextBox.TabIndex = 24;
             // 
             // codeTextBox
             // 
             this.codeTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Code", true));
-            this.codeTextBox.Location = new System.Drawing.Point(370, 190);
+            this.codeTextBox.Location = new System.Drawing.Point(370, 232);
             this.codeTextBox.Name = "codeTextBox";
             this.codeTextBox.Size = new System.Drawing.Size(153, 23);
             this.codeTextBox.TabIndex = 26;
@@ -289,7 +291,7 @@
             // prefTextBox
             // 
             this.prefTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.tPointBindingSource, "Pref", true));
-            this.prefTextBox.Location = new System.Drawing.Point(125, 12);
+            this.prefTextBox.Location = new System.Drawing.Point(213, 12);
             this.prefTextBox.Name = "prefTextBox";
             this.prefTextBox.Size = new System.Drawing.Size(46, 23);
             this.prefTextBox.TabIndex = 30;
@@ -320,19 +322,41 @@
             // 
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(6, 12);
+            this.button5.Location = new System.Drawing.Point(118, 12);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(113, 24);
+            this.button5.Size = new System.Drawing.Size(85, 24);
             this.button5.TabIndex = 33;
             this.button5.Text = "Префикс";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.Button5_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 40);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 17);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "Координаты";
+            // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Image = global::Traverser.Properties.Resources.cross;
+            this.button1.Location = new System.Drawing.Point(500, 158);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 35;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // frmPointEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 339);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -384,7 +408,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_OK;
         private System.Windows.Forms.TextBox textBox_Name;
         private System.Windows.Forms.Label label_Name;
         private System.Windows.Forms.BindingSource tPointBindingSource;
@@ -398,5 +422,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }
