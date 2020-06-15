@@ -1782,12 +1782,6 @@ return res;
             return null;
         }
 
-        /// <summary>
-        /// Вывод списка строк в ListView
-        /// Вот порнография по  листингу строчки: split . Требует полной переработки!!! Позор 
-        /// </summary>
-        /// <param name="LV">Listview для отображения</param>
-        /// <param name="list">список строк с разделителем "\t"</param>
         private void ListToListView(ListView LV, List<string> list)
         {
             if (list.Count == 0) return;

@@ -308,6 +308,7 @@ namespace netFteo
 		{
 
 			if (ES == null) return null;
+
 			ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
 			res.Add("");
 			res.Add("Отрезки границ:");
@@ -318,9 +319,16 @@ namespace netFteo
 			for (int i = 0; i <= Borders.Count - 1; i++)
 			{
 				ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
-				LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
-				LVb.SubItems.Add(Borders[i].Definition);
-				res.Add(LVb);
+                LVb.UseItemStyleForSubItems = true;
+                LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
+                LVb.SubItems.Add(Borders[i].Definition);
+                if (Borders[i].Length == 0)
+                {
+                    LVb.ForeColor = System.Drawing.Color.Red;
+                }
+                //else ItemLength.ForeColor = System.Drawing.Color.;
+
+                res.Add(LVb);
 			}
 
 
