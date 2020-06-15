@@ -3558,7 +3558,7 @@ namespace netFteo.Spatial
         {
             get
             {
-                double res = -1; // default empty value
+                double res = 0; // default value
                 foreach (IGeometry feature in this)
                 {
                     if (feature.TypeName == "netFteo.Spatial.TPolygon")
