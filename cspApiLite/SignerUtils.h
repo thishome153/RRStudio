@@ -49,6 +49,7 @@ namespace SignerUtils {
 		std::vector<CSPItem> EnumProvidersTypes();
 		std::vector<std::string>  EnumAllProviders(); //function retrieve in sequence all of the CSPs
 		std::vector<std::string>  EnumAllContainers(); //function retrieve in sequence all of the CSPs
+		CHAR* GetSertSerial(PCCERT_CONTEXT ret);
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat);// Издатель сертификата
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat);
 		CHAR* GetLastErrorText(CHAR* pBuf, ULONG bufSize);

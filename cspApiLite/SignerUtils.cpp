@@ -289,7 +289,7 @@ namespace SignerUtils {
 			ALG_ID      aiAlgid;
 			DWORD       dwBits;
 			DWORD       dwNameLen;
-			CHAR        szName[1024];//[NAME_LENGTH]; // –аспределены динамически
+	//		CHAR        szName[1024];//[NAME_LENGTH]; // –аспределены динамически
 			BYTE        pbData[1024];// –аспределены динамически
 			DWORD       cbData = 1024;
 			DWORD       dwIncrement = sizeof(DWORD);
@@ -370,12 +370,38 @@ namespace SignerUtils {
 			return Containers;
 		}
 
-		//Func uses private key
+		char* PBYTEToChar(PBYTE x, const int cb)
+		{
+			char* str = NULL;
+			str = new char[2 * cb + 1]; // массив нужен в два раза длиньше? один байт в HEX -это FF, к примеру - два символа.
+			str[cb - 1] = '\0';
+			int cntr = cb;
+			for (int i = 0; i <= cb - 1; i++) {
+				cntr--;
+				sprintf(str + i * 2, "%02x", x[cntr]);
+			}
+			return str;
+		}
+
+		CHAR* GetSertSerial(PCCERT_CONTEXT ret)
+		{
+			if (ret)
+			{
+				PBYTE serial = ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).pbData;
+				char* CharSerial = PBYTEToChar(serial, ((CRYPT_INTEGER_BLOB)ret->pCertInfo->SerialNumber).cbData);
+				return CharSerial;
+			}
+			else return NULL;
+		}
+
+
+		//Fake func uses private key
 		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert)
 		{
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
 			DWORD dwKeySpecSender;
 			HCRYPTKEY hKey;
+			
 			//obtains the private key for a certificate
 			if (CryptAcquireCertificatePrivateKey(SignerCert,
 				0,
@@ -457,12 +483,12 @@ namespace SignerUtils {
 				NULL,
 				0)))
 			{
-				return (LPTSTR)"CertGetName 1 failed.";
+				return (LPTSTR)L"CertGetName 1 failed.";
 			}
 
 			if (!(pszName = (LPTSTR)malloc(cbSize * sizeof(TCHAR))))
 			{
-				return (LPTSTR)"Memory allocation failed.";
+				return (LPTSTR)L"Memory allocation failed.";
 			}
 
 			if (CertGetNameString(
@@ -481,7 +507,7 @@ namespace SignerUtils {
 			}
 			else
 			{
-				return (LPTSTR)"CertGetName failed.";
+				return (LPTSTR)L"CertGetName failed.";
 			}
 		}
 
@@ -498,14 +524,14 @@ namespace SignerUtils {
 				NULL,
 				0)))
 			{
-				return (LPTSTR)"CertGetName 1 failed.";
+				return (LPTSTR)L"CertGetName 1 failed.";
 			}
 			if (cbSize <= 1) { //Bad e-mail
-				return (LPTSTR)"-";
+				return (LPTSTR)L"-";
 			}
 			if (!(pszName = (LPTSTR)malloc(cbSize * sizeof(TCHAR))))
 			{
-				return (LPTSTR)"Memory allocation failed.";
+				return (LPTSTR)L"Memory allocation failed.";
 			}
 
 			if (CertGetNameString(
@@ -525,7 +551,7 @@ namespace SignerUtils {
 			else
 			{
 
-				return (LPTSTR)"CertGetName failed.";
+				return (LPTSTR)L"CertGetName failed.";
 			}
 		}
 		/*
