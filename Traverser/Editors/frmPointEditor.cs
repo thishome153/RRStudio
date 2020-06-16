@@ -55,5 +55,11 @@ namespace XMLReaderCS
             tPointBindingSource.EndEdit();
             this.Close();
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            ((netFteo.Spatial.TPoint)tPointBindingSource.List[0]).Description = "";
+            tPointBindingSource.ResetBindings(true);
+        }
     }
 }

@@ -31,12 +31,9 @@ namespace XMLReaderCS
 {
 
     public partial class KVZU_Form : Form
-    { // Глобальные объекты:
+    { 
         IntPtr Ptr;
         string TextDefault; // Текст заголовока по умолчанию
-
-        //KILL: RRTypes.kvoks_v02.KVOKS KVoks02 = new RRTypes.kvoks_v02.KVOKS();
-        //KILL: RRTypes.kpoks_v03.KPOKS KPoks03 = new RRTypes.kpoks_v03.KPOKS();
 
         MyWindowEx ESwindow;
         netFteo.EntityViewer ViewWindow; // xaml WPF control
@@ -726,39 +723,35 @@ namespace XMLReaderCS
         }
         #endregion
 
-
-        private void Parse_Polygon(TPolygon xmlPolygon)
-        {
-
-        }
-
-        private void ParseTPolygon(TPolygon xmlPolygon)
-        {
-            TCadastralBlock Bl = new TCadastralBlock();
-            if (xmlPolygon.Definition != null)
-                Bl.CN = xmlPolygon.Definition;
-            else Bl.CN = "Polygon";
-            TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(xmlPolygon.Definition, "nefteo::TPolygon"));
-            MainObj.EntSpat.Add(xmlPolygon);
-            this.DocInfo.MyBlocks.Blocks.Add(Bl);
-            ListMyCoolections(this.DocInfo.MyBlocks);
-        }
-
         /*
-		private void ParseTPolygon(TPolygonCollection xmlPolygons)
-		{
-			TMyCadastralBlock Bl = new TMyCadastralBlock();
-			Bl.CN = xmlPolygons.Defintion;// "imported xml polygons";
 
-			for (int i = 0; i <= xmlPolygons.Count - 1; i++)
-			{
-				TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TPolygon"));
-				MainObj.EntitySpatial = xmlPolygons[i];
-			}
-			this.DocInfo.MyBlocks.Blocks.Add(Bl);
-			ListMyCoolections(this.DocInfo.MyBlocks);
-		}
-		*/
+       private void ParseTPolygon(TPolygon xmlPolygon)
+       {
+           TCadastralBlock Bl = new TCadastralBlock();
+           if (xmlPolygon.Definition != null)
+               Bl.CN = xmlPolygon.Definition;
+           else Bl.CN = "Polygon";
+           TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(xmlPolygon.Definition, "nefteo::TPolygon"));
+           MainObj.EntSpat.Add(xmlPolygon);
+           this.DocInfo.MyBlocks.Blocks.Add(Bl);
+           ListMyCoolections(this.DocInfo.MyBlocks);
+       }
+
+
+       private void ParseTPolygon(TPolygonCollection xmlPolygons)
+       {
+           TMyCadastralBlock Bl = new TMyCadastralBlock();
+           Bl.CN = xmlPolygons.Defintion;// "imported xml polygons";
+
+           for (int i = 0; i <= xmlPolygons.Count - 1; i++)
+           {
+               TMyParcel MainObj = Bl.Parcels.AddParcel(new TMyParcel(xmlPolygons[i].Definition, "nefteo::TPolygon"));
+               MainObj.EntitySpatial = xmlPolygons[i];
+           }
+           this.DocInfo.MyBlocks.Blocks.Add(Bl);
+           ListMyCoolections(this.DocInfo.MyBlocks);
+       }
+       */
 
         #region разбор Кадастрового паспорта  KPZU V05
         /*
@@ -3299,7 +3292,7 @@ LV.Items.Add(LVipP);
 
 
 
-        #region Херня всякая, не каждодневная
+        #region Some funcs..
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {

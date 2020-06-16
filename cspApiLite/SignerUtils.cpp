@@ -139,6 +139,7 @@ namespace SignerUtils {
 			DWORD dwKeySpecSender;
 			HCRYPTKEY hKey;
 			//obtains the private key for a certificate
+
 			if (CryptAcquireCertificatePrivateKey(SignerCert,
 				0,
 				NULL,
@@ -369,6 +370,7 @@ namespace SignerUtils {
 			return Containers;
 		}
 
+		//Func uses private key
 		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert)
 		{
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
