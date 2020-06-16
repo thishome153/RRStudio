@@ -5334,6 +5334,11 @@ LV.Items.Add(LVipP);
             KVZU_Form frm2 = new KVZU_Form();
             frm2.Show(this);
         }
+
+        private void ПроверкаГеометрииустановкаЕГРНТочекToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopoCheck(TV_Parcels.SelectedNode);
+        }
     }
 }
 
