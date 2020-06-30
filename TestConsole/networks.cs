@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
+using System.Net.Sockets;
+
 
 namespace TestConsole
 {
@@ -131,7 +134,7 @@ namespace TestConsole
     {
         static Utilities()
         {
-           System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
         }
 
         // <summary>
@@ -171,4 +174,55 @@ namespace TestConsole
         }
     }
 
+    public class BackendServer
+    {
+        public void DoWork()
+        {
+            const int port = 8888;
+            TcpListener server = null;
+            try
+            {
+                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+                server = new TcpListener(localAddr, port);
+
+                // запуск слушателя
+                server.Start();
+
+                while (true)
+                {
+                    Console.WriteLine("Server listen :8888 ");
+
+                    // получаем входящее подключение
+                    TcpClient client = server.AcceptTcpClient();
+                    
+                    Console.WriteLine("Подключен клиент. Выполнение запроса...");
+
+                    // получаем сетевой поток для чтения и записи
+                    NetworkStream stream = client.GetStream();
+
+                   // string response = "Привет мир";
+                    string responseFake = "{'Servicename': 'nodeapi' }";
+                    // преобразуем сообщение в массив байтов
+                    byte[] data = Encoding.UTF8.GetBytes(responseFake);
+
+                    // отправка сообщения
+                    stream.Write(data, 0, data.Length);
+                    Console.WriteLine("Response: {0}", responseFake);
+                    // закрываем поток
+                    stream.Close();
+                    // закрываем подключение
+                    client.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                if (server != null)
+                    server.Stop();
+            }
+        }
+    }
 }

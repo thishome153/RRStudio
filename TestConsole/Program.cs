@@ -10,10 +10,19 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
-          ///TODO kill  System.Web.Script.Serialization.JavaScriptSerializer sr;
+            ///TODO kill  System.Web.Script.Serialization.JavaScriptSerializer sr;
 
-            var instances = Utilities.GetNetworkInterfaces();
+            /*
+            System.Net.IPAddress addr = new System.Net.IPAddress(new byte[] { 127, 0, 0, 1 });
+            System.Net.Sockets.TcpListener srv = new System.Net.Sockets.TcpListener(addr, 3307);
+            srv.Start();
+            Console.WriteLine("TCP internal server started:\n" + srv.Server.Connected.ToString() + "\n\n");
+            */
+            BackendServer srv2 = new BackendServer();
+            srv2.DoWork();
+
             Console.WriteLine("All available network interfaces:\n");
+            var instances = Utilities.GetNetworkInterfaces();
 
             for (var i = 0; i < instances.Count; i++)
             {
@@ -21,11 +30,7 @@ namespace TestConsole
             }
 
 
-            System.Net.IPAddress addr = new System.Net.IPAddress(new byte[] { 127, 0, 0, 1 });
-            System.Net.Sockets.TcpListener srv = new System.Net.Sockets.TcpListener(addr, 3306);
-            srv.Start();
-            Console.WriteLine("TCP internal server started:\n" + srv.Server.Connected.ToString() + "\n\n");
-
+  
 
             var choice = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Selected network interface:\n" + instances[choice] + "\n\n");
