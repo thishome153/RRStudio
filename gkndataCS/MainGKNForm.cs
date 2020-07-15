@@ -115,17 +115,19 @@ namespace GKNData
             var last = netFteo.Runtime.UserInput.GetLastInputTime();
             var ms = TIMEOUT_DONE - last;
 
-            //StatusLabel_AllMessages.Text = "wait... " + (ms / 1000) + " last " + (last);
+            StatusLabel_AllMessages.Text = "wait... " + (ms / 1000) + " last " + (last);
             if (last < 1000) toolStripProgressBar1.Value = toolStripProgressBar1.Maximum; // reset bar
 
             if (ms < 0)
             {
-                this.Close();
+                //this.Close();
+                StatusLabel_AllMessages.Text = "will close.." + ms.ToString() ;
             }
 
             else if (ms < 5000)
             {
-                GoDisconnect();
+                //GoDisconnect();
+                StatusLabel_AllMessages.Text = "disconnect by timeout.." + ms.ToString();
             }
             else
             {
@@ -171,7 +173,6 @@ namespace GKNData
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Color = SystemColors.Highlight;
             loadingCircleToolStripMenuItem1.Visible = true;
             loadingCircleToolStripMenuItem1.LoadingCircleControl.Active = true;
-
             TIMEOUT_DONE = Convert.ToInt16(CF.Cfg.IddleTimeOut);
             {
                 if (CF.conn != null)

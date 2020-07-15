@@ -31,7 +31,7 @@ namespace GKNData
             this.Cfg.DatabaseName = comboBox_Database.Text;
             this.Cfg.UserName = comboBox_UserName.Text;
             this.Cfg.UserPwrd = textBox_pswrd.Text;
-
+            this.Cfg.IddleTimeOut = this.textBox_TimeOut.Text;
             this.Cfg.CfgWrite();
             this.Cfg.Result = button1.DialogResult;
         }
