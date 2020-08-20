@@ -1286,7 +1286,7 @@ namespace netFteo.IO
             System.IO.TextWriter writer = new StreamWriter(FileName);
             foreach (IGeometry feature in ES)
             {
-                if (feature.GetType().ToString() == "netFteo.Spatial.PointList")
+                if (feature.GetType().ToString() == NetFteoTypes.PointList)
                 {
                     PointList Poly = (PointList)feature;
                     for (int i = 0; i <= Poly.PointCount - 1; i++)
@@ -1297,20 +1297,27 @@ namespace netFteo.IO
                             writer.WriteLine(Poly[i].Description + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
                     }
                 }
+                
+                if (feature.GetType().ToString() == NetFteoTypes.Polygon)
+                {
+                    TPolygon Poly = (TPolygon)feature;
+                    for (int i = 0; i <= Poly.PointCount - 1; i++)
+                    {
+                        if (Poly[i].Code != null)
+                            writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s + "," + Poly[i].Code);
+                        else
+                        if (Poly[i].Description != null)
+                            writer.WriteLine(Poly[i].Description + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
+                        else
+                            writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
+                    }
+                }
             }
             writer.Close();
         }
 
 
-        //Формат csv файла Техно Кад (наверное экспресс....замедленнный)
-        /*Контур;Префикс номера;Номер;Старый X;Старый Y;Новый X;Новый Y;Метод определения;Формула;Радиус;Погрешность;Описание закрепления
-        // [1];н;1;;;531645,96;1262377,82;;;;0,00;626003000000
-                 ;;;;;;;;;;;
-             [1.1];н;4;;;530684,92;1262376,38;;;;0,00;626003000000
-             [1.1];н;5;;;530512,62;1262933,02;;;;0,00;626003000000
-             [1.1];н;6;;;531640,58;1262945,68;;;;0,00;626003000000
-             [1.1];н;4;;;530684,92;1262376,38;;;;0,00;626003000000
-          */
+       
 
         private void WriteEs2csv(System.IO.TextWriter writer, TPolyLine ES, int EsNumber)
         {
@@ -1319,7 +1326,7 @@ namespace netFteo.IO
             for (int i = 0; i <= ES.PointCount - 1; i++)
             {
                 writer.WriteLine("[" + EsNumber.ToString() + "];" +
-                              ES[i].Pref + ";" + ES[i].NumGeopointA + ";" +
+                              ES[i].Pref + ";" + ES[i].Definition + ";" +
                               //oldx;oldx+
                               ES[i].oldX_s + ";" +
                               ES[i].oldY_s + ";" +
@@ -1343,7 +1350,7 @@ namespace netFteo.IO
             for (int i = 0; i <= ES.PointCount - 1; i++)
             {
                 writer.WriteLine("[" + EsNumber.ToString() + "];" +
-                              ES[i].Pref + ";" + ES[i].NumGeopointA + ";" +
+                              ES[i].Pref + ";" + ES[i].Definition + ";" +
                               //oldx;oldx+
                               ES[i].oldX_s + ";" +
                               ES[i].oldY_s + ";" +
@@ -1361,7 +1368,7 @@ namespace netFteo.IO
                 writer.WriteLine(";;;;;;;;;;;");
                 for (int ici = 0; ici <= ES.Childs[ich].PointCount - 1; ici++)
                     writer.WriteLine("[" + EsNumber.ToString() + "." + (ich + 1).ToString() + "];" +
-                             ES.Childs[ich][ici].Pref + ";" + ES.Childs[ich][ici].NumGeopointA + ";" +
+                             ES.Childs[ich][ici].Pref + ";" + ES.Childs[ich][ici].Definition+ ";" +
                              //oldx;oldx+
                              ES.Childs[ich][ici].oldX_s + ";" +
                              ES.Childs[ich][ici].oldY_s + ";" +
