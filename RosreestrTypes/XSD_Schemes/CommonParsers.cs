@@ -3179,6 +3179,8 @@ namespace RRTypes.CommonParsers
                         OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(bld.Address);
                         OKS.CadastralBlock = bld.CadastralBlocks[0];
                         OKS.ParentCadastralNumbers.AddRange(bld.ParentCadastralNumbers);
+                        if (bld.ElementsConstruct != null)
+                        OKS.ElementsConstruct.Add(new TElementConstruct(bld.ElementsConstruct[0].Wall.ToString()));
                         OKS.Building.Area = bld.Area;
                         OKS.Building.AssignationBuilding = bld.AssignationBuilding.ToString(); ;
                         OKS.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2("", bld.EntitySpatial);// RRTypes.CommonCast.CasterOKS.ES_OKS("", bld.EntitySpatial);
@@ -3193,6 +3195,8 @@ namespace RRTypes.CommonParsers
                     OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.NewApartHouse.NewBuilding.Address);
                     OKS.CadastralBlock = TP.Building.Package.NewApartHouse.NewBuilding.CadastralBlocks[0];
                     OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.NewApartHouse.NewBuilding.ParentCadastralNumbers);
+                    if (TP.Building.Package.NewApartHouse.NewBuilding.ElementsConstruct != null)
+                        OKS.ElementsConstruct.Add(new TElementConstruct(TP.Building.Package.NewApartHouse.NewBuilding.ElementsConstruct[0].Wall.ToString()));
                     OKS.Building.Area = TP.Building.Package.NewApartHouse.NewBuilding.Area;
                     OKS.Building.AssignationBuilding = TP.Building.Package.NewApartHouse.NewBuilding.AssignationBuilding.ToString();
                     OKS.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2("", TP.Building.Package.NewApartHouse.NewBuilding.EntitySpatial);
@@ -3230,6 +3234,9 @@ namespace RRTypes.CommonParsers
                     OKS.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(TP.Building.Package.ExistBuilding.Address);
                     OKS.CadastralBlock = TP.Building.Package.ExistBuilding.CadastralBlocks[0];
                     OKS.ParentCadastralNumbers.AddRange(TP.Building.Package.ExistBuilding.ParentCadastralNumbers);
+                    if (TP.Building.Package.ExistBuilding.ElementsConstruct!= null)
+                        OKS.ElementsConstruct.Add(new TElementConstruct(TP.Building.Package.ExistBuilding.ElementsConstruct[0].Wall.ToString()));
+                    OKS.Floors = TP.Building.Package.ExistBuilding.Floors.Floors;
                     OKS.Building.Area = TP.Building.Package.ExistBuilding.Area;
                     if (TP.Building.Package.ExistBuilding.AssignationBuildingSpecified)
                         OKS.Building.AssignationBuilding = TP.Building.Package.ExistBuilding.AssignationBuilding.ToString();
@@ -6552,6 +6559,8 @@ namespace RRTypes.CommonParsers
                     Bld.ParentCadastralNumbers.AddRange(kv.Realty.Building.ParentCadastralNumbers);
                 Bld.Building.AssignationBuilding = kv.Realty.Building.AssignationBuilding.ToString();
                 Bld.Name = kv.Realty.Building.Name;
+                if (kv.Realty.Building.ElementsConstruct != null)
+                    Bld.ElementsConstruct.Add(new TElementConstruct(kv.Realty.Building.ElementsConstruct[0].Wall.ToString()));
                 Bld.Location.Address = RRTypes.CommonCast.CasterOKS.CastAddress(kv.Realty.Building.Address);
                 Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bld.Building.Area = kv.Realty.Building.Area;
@@ -6609,6 +6618,9 @@ namespace RRTypes.CommonParsers
                 Unc.EntSpat = CommonCast.CasterOKS.ES_OKS2(kv.Realty.Uncompleted.CadastralNumber, kv.Realty.Uncompleted.EntitySpatial);
                 Unc.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Uncompleted.ObjectType);
                 Unc.Uncompleted.DegreeReadiness = kv.Realty.Uncompleted.DegreeReadiness.ToString();
+                foreach (kvoks_v07.tKeyParameter param in kv.Realty.Uncompleted.KeyParameters)
+                    Unc.KeyParameters.AddParameter(param.Type.ToString(), param.Value.ToString());
+
                 Unc.Rights = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
                 Unc.Notes = kv.Realty.Uncompleted.Notes;
 

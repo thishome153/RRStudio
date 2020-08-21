@@ -77,6 +77,7 @@ namespace XMLReaderCS
         netFteo.XML.XSDFile dRegionsRF_v01;
         netFteo.XML.XSDFile dCategories_v01;
         netFteo.XML.XSDFile dStates_v01;
+        netFteo.XML.XSDFile dWall_v01;
         netFteo.XML.XSDFile dLocationLevel1_v01;//.xsd;
         string dLocationLevel2_v01;
         public string MP_06_schema;
@@ -514,6 +515,7 @@ namespace XMLReaderCS
             dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
             dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
             dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
+            dWall_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dWall_v01.xsd");
             dLocationLevel1_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dLocationLevel1_v01.xsd");
             dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
             MP_06_schema = folder_xsd + "\\V06_MP" + "\\MP_v06.xsd";
@@ -2249,8 +2251,6 @@ return res;
                             LV.Items.Add(LViFlatsLive);
                         }
                     }
-
-
                 }
 
                 
@@ -2309,8 +2309,6 @@ return res;
                             LViAr.SubItems.Add(" кв.м.");
                             LV.Items.Add(LViAr);
                         }
-
-
                     }
 
                     //{netFteo.Spatial.TFlat}
@@ -2337,8 +2335,6 @@ return res;
                         */
                         // AdressToListView(LV, P.Address);
                     }
-
-
 
                     if (P.Construction != null)
                     {
@@ -2368,6 +2364,14 @@ return res;
                         LV.Items.Add(LViAr);
                     }
 
+                    if (P.ElementsConstruct.Count() == 1)
+                    {
+                        ListViewItem LViAr = new ListViewItem();
+                        LViAr.Text = "Конструкт. элем. - материал стен";
+                        LViAr.SubItems.Add(this.dWall_v01.Item2Annotation(P.ElementsConstruct[0].WallMaterial));
+                        LV.Items.Add(LViAr);
+                    }
+
                     if (P.Floors != null)
                     {
                         ListViewItem LViFloors = new ListViewItem();
@@ -2378,8 +2382,10 @@ return res;
                         LV.Items.Add(LViFloors);
                     }
 
+
                     GeometryToSpatialView(listView1, P.EntSpat);
                     KeyParametersToListView(LV, P.KeyParameters);
+
                     if (P.CadastralCost > 0)
                     {
                         ListViewItem LViPurp = new ListViewItem();
@@ -4443,6 +4449,7 @@ LV.Items.Add(LVipP);
             frmoptions.dRegionsRF_v01 = this.dRegionsRF_v01;
             frmoptions.dCategories_v01 = this.dCategories_v01;
             frmoptions.dStates_v01 = this.dStates_v01;
+            frmoptions.dWall_v01 = this.dWall_v01;
             frmoptions.dLocationLevel1_v01 = this.dLocationLevel1_v01;
             frmoptions.dLocationLevel2_v01 = this.dLocationLevel2_v01;
             frmoptions.MP_06_schema = this.MP_06_schema;

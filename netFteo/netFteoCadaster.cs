@@ -1072,6 +1072,7 @@ namespace netFteo
             public string Type;
             public string Floors;
             public string UndergroundFloors;
+            public List<TElementConstruct> ElementsConstruct;
             public Rosreestr.TMyRights Rights; // как бы ГКН-Права
             public Rosreestr.TMyRights EGRN;
             public TEntitySpatial EntSpat; //Spatial data
@@ -1094,6 +1095,7 @@ namespace netFteo
                 this.ParentCadastralNumbers = new List<string>();
                 this.Location = new Rosreestr.TLocation();
                 this.EntSpat = new TEntitySpatial();
+                ElementsConstruct = new List<TElementConstruct>();
             }
 
             public TRealEstate(string cn) : this()
@@ -1109,7 +1111,6 @@ namespace netFteo
                     case Rosreestr.dRealty_v03.Помещение: { this.Flat = new TFlat(cn); break; }
                     case Rosreestr.dRealty_v03.Сооружение: { this.Construction = new TConstruction(); break; }
                     case Rosreestr.dRealty_v03.Объект_незавершённого_строительства: { this.Uncompleted = new TUncompleted(); break; }
-
                     default: this.Building = new TBuilding(); break;
                 }
             }
@@ -1183,8 +1184,8 @@ namespace netFteo
         //Для оксов отдельный кадастровый юнит, №2
         public class TCadasterItem2 : TCadasterItem
         {
-            public TKeyParameters OldNumbers; //Кадастровые номера земельных участков, из которых образован
-                                              //    public TKeyParameters KeyParameters; // для всех оКСОв, и для зданий  -в них этажность будем вносить И разную хуйню
+            public TKeyParameters OldNumbers;
+            // TP/Building/Package/NewBuildings/NewBuilding/ElementsConstruct/Material/@Wall
             public decimal Area;
             public string Notes; // Особые отметки
                                  //      public Rosreestr.TAddress Address;
@@ -1405,7 +1406,14 @@ namespace netFteo
             }
         }
 
-
+        public class TElementConstruct
+        {
+            public string WallMaterial;
+            public TElementConstruct(string pWallMaterial)
+            {
+                WallMaterial = pWallMaterial;
+            }
+        }
         /// <summary>
         /// Расположение на плане
         /// </summary>

@@ -13,21 +13,22 @@ namespace XMLReaderCS
 {
     public partial class frmOptions : Form
     {
-     public netFteo.XML.XSDFile dutilizations_v01;
-	 public netFteo.XML.XSDFile dAllowedUse_v02;
-     public netFteo.XML.XSDFile dRegionsRF_v01;
-     public netFteo.XML.XSDFile dStates_v01;
-     public netFteo.XML.XSDFile dCategories_v01;
-     public netFteo.XML.XSDFile dLocationLevel1_v01;
-     public string dLocationLevel2_v01;
-     public string MP_06_schema;
-     public netFteo.XML.SchemaSet schemas;
+        public netFteo.XML.XSDFile dutilizations_v01;
+        public netFteo.XML.XSDFile dAllowedUse_v02;
+        public netFteo.XML.XSDFile dRegionsRF_v01;
+        public netFteo.XML.XSDFile dStates_v01;
+        public netFteo.XML.XSDFile dWall_v01;
+        public netFteo.XML.XSDFile dCategories_v01;
+        public netFteo.XML.XSDFile dLocationLevel1_v01;
+        public string dLocationLevel2_v01;
+        public string MP_06_schema;
+        public netFteo.XML.SchemaSet schemas;
 
         public frmOptions()
         {
             this.DoubleBuffered = true;
             InitializeComponent();
-       }
+        }
 
         private void frmOptions_Load(object sender, EventArgs e)
         {
@@ -42,9 +43,10 @@ namespace XMLReaderCS
             schemas = new netFteo.XML.SchemaSet();
 
             schemas.AddSchema(dutilizations_v01.XSDFileName);
-			schemas.AddSchema(dAllowedUse_v02.XSDFileName);
-			schemas.AddSchema(dRegionsRF_v01.XSDFileName);
+            schemas.AddSchema(dAllowedUse_v02.XSDFileName);
+            schemas.AddSchema(dRegionsRF_v01.XSDFileName);
             schemas.AddSchema(dStates_v01.XSDFileName);
+            schemas.AddSchema(dWall_v01.XSDFileName);
             schemas.AddSchema(dLocationLevel1_v01.XSDFileName); // already declared ???  !!!
             schemas.AddSchema(dCategories_v01.XSDFileName); // already declared ???  !!!
             schemas.AddSchema(dLocationLevel2_v01);
@@ -57,7 +59,7 @@ namespace XMLReaderCS
                 //Uri uri = new Uri(sc.SourceUri);
                 //netFteo.XML.XSDFile xsd = new netFteo.XML.XSDFile(uri.LocalPath);
                 netFteo.XML.XSDFile xsd = new netFteo.XML.XSDFile(sc);
-                if (xsd.EnumerationPresent) 
+                if (xsd.EnumerationPresent)
                 {
                     XSDSchemasList(xsd, false);
                     rootName = xsd.SimpleTypeNamesAnoSafeFirst;
@@ -127,15 +129,15 @@ namespace XMLReaderCS
 
         }
 
-      
+
         private void listBox1_Click(object sender, EventArgs e)
         {
-        
+
         }
 
         private void listBox1_KeyUp(object sender, KeyEventArgs e)
         {
-        
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -173,7 +175,7 @@ namespace XMLReaderCS
 
         private void listView_Schemas_MouseClick(object sender, MouseEventArgs e)
         {
-          
+
         }
 
         private void listView_Schemas_change(object sender)
@@ -187,13 +189,13 @@ namespace XMLReaderCS
                 LV_SchemaDisAssembly.Items.Add("Elements of schema");
                 foreach (XmlSchemaElement elt in sch.Elements.Values)
                 {
-                   ListViewItem el_item = LV_SchemaDisAssembly.Items.Add(elt.Name);
+                    ListViewItem el_item = LV_SchemaDisAssembly.Items.Add(elt.Name);
                     if (elt.Annotation != null)
                         foreach (XmlSchemaDocumentation s in elt.Annotation.Items)
                         {
-                            el_item.SubItems.Add( s.Markup[0].Value);
+                            el_item.SubItems.Add(s.Markup[0].Value);
                         }
-                
+
                 }
 
                 LV_SchemaDisAssembly.Items.Add("Types of schema");
@@ -211,7 +213,7 @@ namespace XMLReaderCS
                     else el_item.SubItems.Add("-");
                     el_item.SubItems.Add(sct.SourceUri);
 
-                    
+
                 }
 
 
