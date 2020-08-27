@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!--Общие простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--Классификатор "Типы ранее присвоенного номера"-->
 	<xs:include schemaLocation="dOldNumber_v02.xsd"/>
-	<!--Повторно используемая подсхема "Ранее присвоенные номера"-->
+	<!--Подсхема "Ранее присвоенные номера"-->
 	<xs:complexType name="tOldNumber">
 		<xs:annotation>
 			<xs:documentation>Ранее присвоенный номер</xs:documentation>

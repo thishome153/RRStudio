@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<!--Простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v01.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v14.xsd"/>
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--КЛАССИФИКАТОРЫ И СПРАВОЧНИКИ:-->
 	<xs:include schemaLocation="dGeopointOpred_v01.xsd"/>
-	<!--Версия 6:-->
+	<!--Версия 8:-->
 	<!--====================================-->
 	<!--Система координат-->
 	<xs:complexType name="tCoordSystems">
@@ -178,17 +176,17 @@
 		<xs:annotation>
 			<xs:documentation>Обозначение части границы (от точки до точки)</xs:documentation>
 		</xs:annotation>
-		<xs:attribute name="Spatial" type="p22Min1" use="required">
+		<xs:attribute name="Spatial" type="p22" use="required">
 			<xs:annotation>
 				<xs:documentation>Порядковый номер элемента контура</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Point1" type="p22Min1" use="required">
+		<xs:attribute name="Point1" type="p22" use="required">
 			<xs:annotation>
 				<xs:documentation>Порядковый номер точки1 в элементе</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Point2" type="p22Min1" use="required">
+		<xs:attribute name="Point2" type="p22" use="required">
 			<xs:annotation>
 				<xs:documentation>Порядковый номер точки2 в элементе</xs:documentation>
 			</xs:annotation>
@@ -1279,12 +1277,12 @@
 			<xs:documentation>Расстояние от специальной метки до характерной точки границы машино-места</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="NumberMark" type="p22Min1">
+			<xs:element name="NumberMark" type="p22">
 				<xs:annotation>
 					<xs:documentation>Номер специальной метки</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NumberPoint" type="p22Min1">
+			<xs:element name="NumberPoint" type="p22">
 				<xs:annotation>
 					<xs:documentation>Номер характерной точки границы машино-места</xs:documentation>
 				</xs:annotation>
@@ -1313,12 +1311,12 @@
 			<xs:documentation>Расстояние от точки до точки</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="NumberPoint1" type="p22Min1">
+			<xs:element name="NumberPoint1" type="p22">
 				<xs:annotation>
 					<xs:documentation>Номер характерной точки</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NumberPoint2" type="p22Min1">
+			<xs:element name="NumberPoint2" type="p22">
 				<xs:annotation>
 					<xs:documentation>Номер характерной точки</xs:documentation>
 				</xs:annotation>

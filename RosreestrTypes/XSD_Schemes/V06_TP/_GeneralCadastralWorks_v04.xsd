@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<!--Простые типы данных-->
-	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
 	<!--Подсхемы:-->
 	<!--ДОКУМЕНТ-->
-	<xs:include schemaLocation="_Document_v08.xsd"/>
+	<xs:include schemaLocation="_Document_v09.xsd"/>
 	<!--АДРЕС-->
-	<xs:include schemaLocation="_AddressInp_v08.xsd"/>
+	<xs:include schemaLocation="_AddressInp_v09.xsd"/>
 	<!--КАДАСТРОВЫЙ ИНЖЕНЕР-->
 	<xs:include schemaLocation="_CadastralEngineer_v07.xsd"/>
 	<!--ВЕРСИЯ 4:-->
@@ -121,7 +119,7 @@
 							<xs:sequence>
 								<xs:element name="Address" type="tAddress">
 									<xs:annotation>
-										<xs:documentation>Адрес</xs:documentation>
+										<xs:documentation>Адрес постоянного места жительства или преимущественного пребывания</xs:documentation>
 									</xs:annotation>
 								</xs:element>
 								<xs:element name="Document" type="tDocumentWithoutAppliedFile">

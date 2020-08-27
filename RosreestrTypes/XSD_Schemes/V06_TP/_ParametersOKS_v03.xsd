@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<!--Все простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v04.xsd"/>
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
+	<!--КЛАССИФИКАТОРЫ И СПРАВОЧНИКИ:-->
 	<!--Перечень наименований материалов наружных стен здания, применяемый при ведении Единого государственного реестра объектов капитального строительства-->
 	<xs:include schemaLocation="dWall_v01.xsd"/>
 	<!--Справочник типов основных параметров-->
@@ -38,7 +38,7 @@
 		</xs:attribute>
 		<xs:attribute name="YearUsed" type="i4" use="optional">
 			<xs:annotation>
-				<xs:documentation>Год ввода в эксплуатацию по завершении его строительства</xs:documentation>
+				<xs:documentation>Год ввода в эксплуатацию по завершении строительства</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -78,7 +78,7 @@
 				<xs:documentation>Тип характеристики</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="Value" type="d23_1" use="required">
+		<xs:attribute name="Value" type="dPos23_1" use="required">
 			<xs:annotation>
 				<xs:documentation>Значение (величина в метрах (кв. метрах для площади, куб. метрах для объема))</xs:documentation>
 			</xs:annotation>
@@ -103,18 +103,20 @@
 		</xs:annotation>
 		<xs:attribute name="Type" use="required">
 			<xs:annotation>
-				<xs:documentation>Тип характеристики (протяженность, площадь)</xs:documentation>
+				<xs:documentation>Тип характеристики (протяженность, объем, площадь, площадь застройки)</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="dTypeParameter">
 					<xs:pattern value="01"/>
+					<xs:pattern value="03"/>
 					<xs:pattern value="05"/>
+					<xs:pattern value="06"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="Value" type="d23_1" use="required">
+		<xs:attribute name="Value" type="dPos23_1" use="required">
 			<xs:annotation>
-				<xs:documentation>Значение (величина в метрах для протяженности, кв. метрах для площади)</xs:documentation>
+				<xs:documentation>Значение (величина в метрах для протяженности, кубических метрах для объема, кв. метрах для площади, площади застройки)</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

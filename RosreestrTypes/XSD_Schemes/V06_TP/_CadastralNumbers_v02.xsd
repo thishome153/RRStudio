@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!--Общие простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v01.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v11.xsd"/>
-	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--Кадастровые номера-->
 	<xs:complexType name="tCadastralRegions">
 		<xs:annotation>
@@ -35,16 +32,10 @@
 			<xs:documentation>Номера кадастровых кварталов</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralBlock" maxOccurs="unbounded">
+			<xs:element name="CadastralBlock" type="sCadastralBlockTypeNull" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Номер кадастрового квартала</xs:documentation>
 				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:pattern value="\d{2}:\d{2}:\d{6,7}"/>
-						<xs:pattern value="0:0:0"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<!--Простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v04.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v07.xsd"/>
-	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--КАДАСТРОВЫЙ ИНЖЕНЕР-->
-	<!--ВЕРСИЯ 6:-->
+	<!--ВЕРСИЯ 7:-->
 	<xs:complexType name="tEngineer">
 		<xs:annotation>
 			<xs:documentation>Кадастровый инженер</xs:documentation>

@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-	attributeFormDefault="unqualified">
-	<!--Все простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="smev-supplementary-commons-1.0.1.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v11.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v12.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v13.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v14.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--ПОДСХЕМЫ:-->
 	<!--Общие сведения о кадастровых работах-->
-	<xs:include schemaLocation="_GeneralCadastralWorks_v05.xsd"/>
+	<xs:include schemaLocation="_GeneralCadastralWorks_v04.xsd"/>
 	<!--Ранее присвоенные номера-->
 	<xs:include schemaLocation="_NumbersInp_v03.xsd"/>
 	<!--Кадастровые номера-->
@@ -18,7 +12,7 @@
 	<!--Описание местоположения границ-->
 	<xs:include schemaLocation="_Spatial_v08.xsd"/>
 	<!--Характеристики объектов капитального строительства-->
-	<xs:include schemaLocation="_ParametersOKS_v02.xsd"/>
+	<xs:include schemaLocation="_ParametersOKS_v03.xsd"/>
 	<!--Назначение и вид помещения-->
 	<xs:include schemaLocation="_AssignationFlat_v02.xsd"/>
 	<!--КЛАССИФИКАТОРЫ И СПРАВОЧНИКИ:-->
@@ -39,8 +33,8 @@
 			<xs:documentation>Технический план здания, сооружения, объекта незавершенного строительства, помещения, машино-места, единого недвижимого комплекса</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:choice>
-				<xs:element name="Building">
+			<xs:sequence>
+				<xs:element name="Building" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план здания</xs:documentation>
 					</xs:annotation>
@@ -58,12 +52,11 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewBuilding" type="tNewBuilding"
-												maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание или образование здания</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewBuilding" type="tNewBuilding" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание или образование здания</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
@@ -73,23 +66,21 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewBuilding"
-												type="tNewApartHouse">
-												<xs:annotation>
-												<xs:documentation>Государственный кадастровый учет здания - многоквартирного дома</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="Flats" type="tFlats">
-												<xs:annotation>
-												<xs:documentation>Помещения, расположенные в многоквартирном доме</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="CarParkingSpaces"
-												type="tCarParkingSpaces" minOccurs="0">
-												<xs:annotation>
-												<xs:documentation>Машино-места, расположенные в многоквартирном доме</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewBuilding" type="tNewApartHouse">
+														<xs:annotation>
+															<xs:documentation>Государственный кадастровый учет здания - многоквартирного дома</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Flats" type="tFlats">
+														<xs:annotation>
+															<xs:documentation>Помещения, расположенные в многоквартирном доме</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="CarParkingSpaces" type="tCarParkingSpaces" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Машино-места, расположенные в многоквартирном доме</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
@@ -98,8 +89,7 @@
 												<xs:documentation>Изменение сведений о здании</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="SubBuildings"
-											type="tExclusiveSubBuildings">
+										<xs:element name="SubBuildings" type="tExclusiveSubBuildings">
 											<xs:annotation>
 												<xs:documentation>Образование (изменение) части (частей) здания</xs:documentation>
 											</xs:annotation>
@@ -107,8 +97,7 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="GeneralCadastralWorks"
-								type="tGeneralCadastralWorksFull">
+							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 								</xs:annotation>
@@ -123,20 +112,17 @@
 									<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-								maxOccurs="unbounded">
+							<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема геодезических построений</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема расположения здания (части (частей) здания) на земельном участке</xs:documentation>
 								</xs:annotation>
@@ -154,7 +140,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Construction">
+				<xs:element name="Construction" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план сооружения</xs:documentation>
 					</xs:annotation>
@@ -172,23 +158,20 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewConstruction"
-												type="tNewConstruction" maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание или образование сооружения</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewConstruction" type="tNewConstruction" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание или образование сооружения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="ExistConstruction"
-											type="tExistConstruction">
+										<xs:element name="ExistConstruction" type="tExistConstruction">
 											<xs:annotation>
 												<xs:documentation>Изменение сведений о сооружении</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="SubConstructions"
-											type="tExclusiveSubConstructions">
+										<xs:element name="SubConstructions" type="tExclusiveSubConstructions">
 											<xs:annotation>
 												<xs:documentation>Образование (изменение) части (частей) сооружения</xs:documentation>
 											</xs:annotation>
@@ -196,8 +179,7 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="GeneralCadastralWorks"
-								type="tGeneralCadastralWorksFull">
+							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 								</xs:annotation>
@@ -212,20 +194,17 @@
 									<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-								maxOccurs="unbounded">
+							<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема геодезических построений</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема расположения сооружения (части (частей) сооружения) на земельном участке</xs:documentation>
 								</xs:annotation>
@@ -243,7 +222,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Uncompleted">
+				<xs:element name="Uncompleted" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план объекта незавершенного строительства</xs:documentation>
 					</xs:annotation>
@@ -261,12 +240,11 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewUncompleted"
-												type="tNewUncompleted" maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание или образование объекта незавершенного строительства</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewUncompleted" type="tNewUncompleted" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание или образование объекта незавершенного строительства</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
@@ -278,8 +256,7 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="GeneralCadastralWorks"
-								type="tGeneralCadastralWorksFull">
+							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 								</xs:annotation>
@@ -294,20 +271,17 @@
 									<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-								maxOccurs="unbounded">
+							<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема геодезических построений</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeDisposition" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема расположения объекта незавершенного строительства на земельном участке</xs:documentation>
 								</xs:annotation>
@@ -325,7 +299,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Flat">
+				<xs:element name="Flat" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план помещения</xs:documentation>
 					</xs:annotation>
@@ -343,12 +317,11 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewFlat" type="tNewFlat"
-												maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание или образование помещения</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewFlat" type="tNewFlat" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание или образование помещения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
@@ -365,8 +338,7 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="GeneralCadastralWorks"
-								type="tGeneralCadastralWorksFull">
+							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 								</xs:annotation>
@@ -383,17 +355,15 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="Document" type="tDocument"
-												maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Документ</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="Document" type="tDocument" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Документ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="MeansSurvey" type="tMeansSurvey"
-											minOccurs="0">
+										<xs:element name="MeansSurvey" type="tMeansSurvey" minOccurs="0">
 											<xs:annotation>
 												<xs:documentation>Сведения о средствах измерений</xs:documentation>
 											</xs:annotation>
@@ -401,8 +371,7 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-								maxOccurs="unbounded">
+							<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 								</xs:annotation>
@@ -415,7 +384,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="CarParkingSpace">
+				<xs:element name="CarParkingSpace" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план машино-места</xs:documentation>
 					</xs:annotation>
@@ -433,17 +402,15 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="NewCarParkingSpace"
-												type="tNewCarParkingSpace" maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание или образование машино-места</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewCarParkingSpace" type="tNewCarParkingSpace" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание или образование машино-места</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="ExistCarParkingSpace"
-											type="tExistCarParkingSpace">
+										<xs:element name="ExistCarParkingSpace" type="tExistCarParkingSpace">
 											<xs:annotation>
 												<xs:documentation>Изменение сведений о машино-месте</xs:documentation>
 											</xs:annotation>
@@ -451,8 +418,7 @@
 									</xs:choice>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="GeneralCadastralWorks"
-								type="tGeneralCadastralWorksFull">
+							<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 								<xs:annotation>
 									<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 								</xs:annotation>
@@ -467,14 +433,12 @@
 									<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-								maxOccurs="unbounded">
+							<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF"
-								minOccurs="0">
+							<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilesPDF" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>Схема геодезических построений</xs:documentation>
 								</xs:annotation>
@@ -487,7 +451,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="UnifiedRealEstateComplex">
+				<xs:element name="UnifiedRealEstateComplex" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Технический план единого недвижимого комплекса</xs:documentation>
 					</xs:annotation>
@@ -505,29 +469,25 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:choice>
-												<xs:element name="NewUnifiedComplex"
-												type="tNewUnifiedComplex" maxOccurs="unbounded">
-												<xs:annotation>
-												<xs:documentation>Создание (образование) единого недвижимого комплекса (ЕНК)</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="ExistUnifiedComplex"
-												type="tExistUnifiedComplex">
-												<xs:annotation>
-												<xs:documentation>Изменение сведений о едином недвижимом комплексе (ЕНК)</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="SubUnifiedComplex"
-												type="tExclusiveSubUnifiedComplex">
-												<xs:annotation>
-												<xs:documentation>Образование (изменение) части (частей) единого недвижимого комплекса</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="NewUnifiedComplex" type="tNewUnifiedComplex" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Создание (образование) единого недвижимого комплекса (ЕНК)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ExistUnifiedComplex" type="tExistUnifiedComplex">
+														<xs:annotation>
+															<xs:documentation>Изменение сведений о едином недвижимом комплексе (ЕНК)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SubUnifiedComplex" type="tExclusiveSubUnifiedComplex">
+														<xs:annotation>
+															<xs:documentation>Образование (изменение) части (частей) единого недвижимого комплекса</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:choice>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="GeneralCadastralWorks"
-											type="tGeneralCadastralWorksFull">
+										<xs:element name="GeneralCadastralWorks" type="tGeneralCadastralWorksFull">
 											<xs:annotation>
 												<xs:documentation>Общие сведения о кадастровых работах</xs:documentation>
 											</xs:annotation>
@@ -537,19 +497,17 @@
 												<xs:documentation>Исходные данные</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="Survey" type="tSurveyAndSubObject">
+										<xs:element name="Survey" type="tSurveyAndSubObject" minOccurs="0">
 											<xs:annotation>
 												<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="Conclusion" type="xs:string" minOccurs="0"
-											maxOccurs="unbounded">
+										<xs:element name="Conclusion" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 											<xs:annotation>
 												<xs:documentation>Заключение кадастрового инженера</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="SchemeDisposition" type="tAppliedFilesPDF"
-											minOccurs="0">
+										<xs:element name="SchemeDisposition" type="tAppliedFilesPDF" minOccurs="0">
 											<xs:annotation>
 												<xs:documentation>Схема расположения объекта недвижимости, части (частей) объекта недвижимости на земельном участке</xs:documentation>
 											</xs:annotation>
@@ -574,86 +532,75 @@
 											</xs:annotation>
 											<xs:complexType>
 												<xs:sequence>
-												<xs:element name="Package">
-												<xs:annotation>
-												<xs:documentation>Пакет информации</xs:documentation>
-												</xs:annotation>
-												<xs:complexType>
-												<xs:choice>
-												<xs:element name="NewBuilding" type="tNewBuilding">
-												<xs:annotation>
-												<xs:documentation>Создание (образование) здания</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="NewConstruction"
-												type="tNewConstruction">
-												<xs:annotation>
-												<xs:documentation>Создание (образование) сооружения</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="ExistBuilding"
-												type="tExistBuilding">
-												<xs:annotation>
-												<xs:documentation>Изменяемое  (включаемое) учтенное в ЕГРН здание</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="ExistConstruction"
-												type="tExistConstruction">
-												<xs:annotation>
-												<xs:documentation>Изменяемое  (включаемое) учтенное в ЕГРН сооружение</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="SubEntryUnifiedComplex"
-												type="tExclusiveSubEntryUnifiedComplex">
-												<xs:annotation>
-												<xs:documentation>Образование (изменение) части (частей) учтенных в ЕГРН зданий и (или) сооружений, входящих в состав ЕНК</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												</xs:choice>
-												</xs:complexType>
-												</xs:element>
-												<xs:element name="InputData"
-												type="tInputDataBuildingConstruction">
-												<xs:annotation>
-												<xs:documentation>Исходные данные</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="Survey"
-												type="tSurveyAndSubObject">
-												<xs:annotation>
-												<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="Conclusion" type="xs:string"
-												minOccurs="0">
-												<xs:annotation>
-												<xs:documentation>Заключение кадастрового инженера</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="SchemeGeodesicPlotting"
-												type="tAppliedFilePDF" minOccurs="0">
-												<xs:annotation>
-												<xs:documentation>Схема геодезических построений</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="SchemeDisposition"
-												type="tAppliedFilePDF" minOccurs="0">
-												<xs:annotation>
-												<xs:documentation>Схема расположения объекта недвижимости, части (частей) объекта недвижимости на земельном участке</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="DiagramContour"
-												type="tAppliedFilePDF">
-												<xs:annotation>
-												<xs:documentation>Чертеж контура объекта недвижимости (части (частей) объекта недвижимости)</xs:documentation>
-												</xs:annotation>
-												</xs:element>
-												<xs:element name="Appendix" type="tAppendixAnd3D"
-												minOccurs="0">
-												<xs:annotation>
-												<xs:documentation>Приложения</xs:documentation>
-												</xs:annotation>
-												</xs:element>
+													<xs:element name="Package">
+														<xs:annotation>
+															<xs:documentation>Пакет информации</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:choice>
+																<xs:element name="NewBuilding" type="tNewBuilding">
+																	<xs:annotation>
+																		<xs:documentation>Создание (образование) здания</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="NewConstruction" type="tNewConstruction">
+																	<xs:annotation>
+																		<xs:documentation>Создание (образование) сооружения</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ExistBuilding" type="tExistBuilding">
+																	<xs:annotation>
+																		<xs:documentation>Изменяемое  (включаемое) учтенное в ЕГРН здание</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ExistConstruction" type="tExistConstruction">
+																	<xs:annotation>
+																		<xs:documentation>Изменяемое  (включаемое) учтенное в ЕГРН сооружение</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="SubEntryUnifiedComplex" type="tExclusiveSubEntryUnifiedComplex">
+																	<xs:annotation>
+																		<xs:documentation>Образование (изменение) части (частей) учтенных в ЕГРН зданий и (или) сооружений, входящих в состав ЕНК</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:choice>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="InputData" type="tInputDataBuildingConstruction">
+														<xs:annotation>
+															<xs:documentation>Исходные данные</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Survey" type="tSurveyAndSubObject" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Conclusion" type="xs:string" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Заключение кадастрового инженера</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SchemeGeodesicPlotting" type="tAppliedFilePDF" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Схема геодезических построений</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SchemeDisposition" type="tAppliedFilePDF" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Схема расположения объекта недвижимости, части (частей) объекта недвижимости на земельном участке</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DiagramContour" type="tAppliedFilePDF">
+														<xs:annotation>
+															<xs:documentation>Чертеж контура объекта недвижимости (части (частей) объекта недвижимости)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Appendix" type="tAppendixAnd3D" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Приложения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
@@ -663,7 +610,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-			</xs:choice>
+			</xs:sequence>
 			<xs:attribute name="GUID" type="sGUID" use="required">
 				<xs:annotation>
 					<xs:documentation>Глобальный уникальный идентификатор пакета</xs:documentation>
@@ -684,7 +631,7 @@
 		<xs:sequence>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocks">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположено здание</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположено здание</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -748,24 +695,15 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours">
+				<xs:element name="Contours" type="tNewContours">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Контур объекта недвижимости</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="ObjectPermittedUses" type="tObjectPermittedUses" minOccurs="0">
@@ -788,29 +726,19 @@
 					<xs:documentation>Планы (планы всех этажей, при отсутствии этажности - план здания)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubBuildings" minOccurs="0">
+			<xs:element name="SubBuildings" type="tNewSubBuildings" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях здания</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubBuilding" type="tNewSubBuilding"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Сведения о части здания</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element name="MaximumDepthHeight" type="tMaximumDepthHeight" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов здания, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура здания с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -822,7 +750,7 @@
 		<xs:sequence>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocks" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположено здание</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположено здание</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -876,48 +804,15 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist" minOccurs="0">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours" minOccurs="0">
+				<xs:element name="Contours" type="tExistContours" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Новый контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="ExistContour" type="tExistContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Существующий (уточняемый, изменяемый) контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="DeleteAllBorder" minOccurs="0" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Исключение границы контура (исключение контура полностью)</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:complexContent>
-										<xs:extension base="tDeleteAllBorder">
-											<xs:attribute name="NumberRecord" type="p10"
-												use="required">
-												<xs:annotation>
-												<xs:documentation>Учетный номер контура</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-										</xs:extension>
-									</xs:complexContent>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="ObjectPermittedUses" type="tObjectPermittedUses" minOccurs="0">
@@ -930,35 +825,19 @@
 					<xs:documentation>Планы (планы всех этажей, при отсутствии этажности - план здания)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubBuildings" minOccurs="0">
+			<xs:element name="SubBuildings" type="tExistSubBuildings" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях здания</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubBuilding" type="tNewSubBuilding" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Образуемая часть здания</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="ExistSubBuilding" type="tExistSubBuilding" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Изменяемая часть здания</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element name="MaximumDepthHeight" type="tMaximumDepthHeight" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов здания, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура здания с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -980,7 +859,7 @@
 			</xs:element>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположено сооружение</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -993,8 +872,7 @@
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull"
-				minOccurs="0">
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
@@ -1049,24 +927,15 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours">
+				<xs:element name="Contours" type="tNewContours">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Контур объекта недвижимости</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="ObjectPermittedUses" type="tObjectPermittedUses" minOccurs="0">
@@ -1089,29 +958,19 @@
 					<xs:documentation>Планы (планы всех этажей, при отсутствии этажности - план сооружения)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubConstructions" minOccurs="0">
+			<xs:element name="SubConstructions" type="tNewSubConstructions" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях сооружения</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubConstruction" type="tNewSubObject"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Сведения о части сооружения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element name="MaximumDepthHeight" type="tMaximumDepthHeight" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов сооружения, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура сооружения с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов сооружения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1128,7 +987,7 @@
 			</xs:element>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположено сооружение</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -1141,10 +1000,9 @@
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull"
-				minOccurs="0">
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположен объект недвижимости</xs:documentation>
+					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено сооружение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="AssignationName" type="s250" minOccurs="0">
@@ -1187,48 +1045,15 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist" minOccurs="0">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours" minOccurs="0">
+				<xs:element name="Contours" type="tExistContours" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Новый контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="ExistContour" type="tExistContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Существующий (уточняемый, изменяемый) контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="DeleteAllBorder" minOccurs="0" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Исключение границы контура (исключение контура полностью)</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:complexContent>
-										<xs:extension base="tDeleteAllBorder">
-											<xs:attribute name="NumberRecord" type="p10"
-												use="required">
-												<xs:annotation>
-												<xs:documentation>Учетный номер контура</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-										</xs:extension>
-									</xs:complexContent>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="ObjectPermittedUses" type="tObjectPermittedUses" minOccurs="0">
@@ -1241,35 +1066,19 @@
 					<xs:documentation>Планы (планы всех этажей, при отсутствии этажности - план объекта недвижимости)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubConstructions" minOccurs="0">
+			<xs:element name="SubConstructions" type="tExistSubConstructions" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях сооружения</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubConstruction" type="tNewSubObject" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Образуемая часть сооружения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="ExistSubConstruction" type="tExistSubObject" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Изменяемая часть сооружения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element name="MaximumDepthHeight" type="tMaximumDepthHeight" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов объекта недвижимости, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура объекта недвижимости с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов сооружения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1286,12 +1095,12 @@
 		<xs:sequence>
 			<xs:element name="CadastralRegions" type="tCadastralRegions" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номера кадастровых округов, в пределах которых расположено линейное сооружение</xs:documentation>
+					<xs:documentation>Номера кадастровых округов, в пределах которых расположено линейное сооружение, строительство которого не завершено</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -1304,10 +1113,9 @@
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull"
-				minOccurs="0">
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumberNull" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
+					<xs:documentation>Кадастровый номер иного объекта недвижимости, в пределах которого расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Method" type="dMethodFormation" minOccurs="0">
@@ -1350,24 +1158,15 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours">
+				<xs:element name="Contours" type="tNewContours">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Новый контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="DegreeReadiness" type="i_Min1Max99">
@@ -1385,9 +1184,9 @@
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов объекта незавершенного строительства, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура объекта незавершенного строительства с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов объекта незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1399,12 +1198,12 @@
 		<xs:sequence>
 			<xs:element name="CadastralRegions" type="tCadastralRegions" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номера кадастровых округов, в пределах которых расположено линейное сооружение</xs:documentation>
+					<xs:documentation>Номера кадастровых округов, в пределах которых расположено линейное сооружение, строительство которого не завершено</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -1417,15 +1216,14 @@
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull"
-				minOccurs="0">
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersNull" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположен объект незавершенного строительства</xs:documentation>
+					<xs:documentation>Кадастровый номер иного объекта недвижимости, в пределах которого расположен объект незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="AssignationName" type="s250" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Проектируемое назначение объекта незавершенного строительства, являющегося сооружением</xs:documentation>
+					<xs:documentation>Проектируемое назначение объекта незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Name" type="s1000" minOccurs="0">
@@ -1453,48 +1251,15 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist" minOccurs="0">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours" minOccurs="0">
+				<xs:element name="Contours" type="tExistContours" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Новый контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="ExistContour" type="tExistContour" minOccurs="0"
-								maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Существующий (уточняемый, изменяемый) контур</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-							<xs:element name="DeleteAllBorder" minOccurs="0" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Исключение границы контура (исключение контура полностью)</xs:documentation>
-								</xs:annotation>
-								<xs:complexType>
-									<xs:complexContent>
-										<xs:extension base="tDeleteAllBorder">
-											<xs:attribute name="NumberRecord" type="p10"
-												use="required">
-												<xs:annotation>
-												<xs:documentation>Учетный номер контура</xs:documentation>
-												</xs:annotation>
-											</xs:attribute>
-										</xs:extension>
-									</xs:complexContent>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="DegreeReadiness" type="i_Min1Max99">
@@ -1512,9 +1277,9 @@
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов объекта незавершенного строительства, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура объекта незавершенного строительства с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов объекта незавершенного строительства</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1539,9 +1304,14 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера помещения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tParentCadastralNumberFlat">
+			<xs:element name="ParentCadastralNumber" type="tParentCadastralNumberFlat">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, в пределах которого (которых) расположено помещение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено помещение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Method" type="dMethodFormation" minOccurs="0">
@@ -1551,7 +1321,7 @@
 			</xs:element>
 			<xs:element name="PrevCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, из которого (которых) было образовано помещение</xs:documentation>
+					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, из которого (которых) образовано помещение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Assignation" type="tAssignationFlatFull">
@@ -1584,19 +1354,10 @@
 					<xs:documentation>Вид (виды) разрешенного использования</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubFlats" minOccurs="0">
+			<xs:element name="SubFlats" type="tNewSubFlats" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях помещения</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubFlat" type="tNewSubFlat" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Сведения о части помещения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -1615,10 +1376,14 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера помещения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tParentCadastralNumberFlat"
-				minOccurs="0">
+			<xs:element name="ParentCadastralNumber" type="tParentCadastralNumberFlat" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, в пределах которого (которых) расположено помещение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено помещение</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Assignation" type="tAssignationFlatFull" minOccurs="0">
@@ -1651,26 +1416,10 @@
 					<xs:documentation>Вид (виды) разрешенного использования</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubFlats" minOccurs="0">
+			<xs:element name="SubFlats" type="tExistSubFlats" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях помещения</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubFlat" type="tNewSubFlat" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Образуемая часть помещения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="ExistSubFlat" type="tExistSubFlat" minOccurs="0"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Изменяемая часть помещения</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="CadastralNumber" type="CadastralNumberType" use="required">
@@ -1686,7 +1435,7 @@
 		<xs:sequence>
 			<xs:element name="CadastralBlocks" type="tCadastralBlocks">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположено здание</xs:documentation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположено здание</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -1755,24 +1504,15 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:choice>
-				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+				<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 					<xs:annotation>
 						<xs:documentation>Описание местоположения контура</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="Contours">
+				<xs:element name="Contours" type="tNewContours">
 					<xs:annotation>
 						<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров</xs:documentation>
 					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NewContour" type="tNewContour" maxOccurs="unbounded">
-								<xs:annotation>
-									<xs:documentation>Контур объекта недвижимости</xs:documentation>
-								</xs:annotation>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="ObjectPermittedUses" type="tObjectPermittedUses" minOccurs="0">
@@ -1785,29 +1525,19 @@
 					<xs:documentation>Планы (планы всех этажей, при отсутствии этажности - план здания)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubBuildings" minOccurs="0">
+			<xs:element name="SubBuildings" type="tNewSubBuildings" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о частях здания</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="NewSubBuilding" type="tNewSubBuilding"
-							maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>Сведения о части здания</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 			<xs:element name="MaximumDepthHeight" type="tMaximumDepthHeight" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов здания, в метрах</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionPoints" type="tEntitySpatialIntersection" minOccurs="0">
+			<xs:element name="IntersectionPoints" type="tIntersectionPoints" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Список характерных точек пересечения контура здания с контуром (контурами) иных зданий, сооружений, объектов незавершенного строительства</xs:documentation>
+					<xs:documentation>Дополнительное пространственное описание конструктивных элементов здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1827,9 +1557,14 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersInp">
+			<xs:element name="ParentCadastralNumber" type="tParentCadastralNumberOKS" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, в пределах которого (которых) расположено машино-место</xs:documentation>
+					<xs:documentation>Кадастровый номер здания или сооружения, в пределах которого расположено машино-место</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено машино-место</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Method" type="dMethodFormation" minOccurs="0">
@@ -1839,7 +1574,7 @@
 			</xs:element>
 			<xs:element name="PrevCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, из которого (которых) было образовано машино-место</xs:documentation>
+					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, из которого (которых) образовано машино-место</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Area" type="dPos21_1">
@@ -1857,36 +1592,10 @@
 					<xs:documentation>Расположение в пределах объекта недвижимости, имеющего или не имеющего этажи (и при необходимости - планы)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SpecificLocation" minOccurs="0">
+			<xs:element name="SpecificLocation" type="tNewSpecificLocation" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Описание местоположения машино-места</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="SpecificMarkDistances" type="tSpecificMarkDistances">
-							<xs:annotation>
-								<xs:documentation>Сведения о расстояниях от специальных меток до характерных точек границ машино-места</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="CharacterPointDistances" type="tCharacterPointDistances">
-							<xs:annotation>
-								<xs:documentation>Сведения о расстояниях между характерными точками границ машино-места</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="SpecificMarksLocation" type="tSpecificMarksLocation"
-							minOccurs="0">
-							<xs:annotation>
-								<xs:documentation>Сведения о координатах специальных меток</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="ContoursLocationFlat" type="tContoursLocationFlat"
-							minOccurs="0">
-							<xs:annotation>
-								<xs:documentation>Сведения о характерных точках границ помещения, в котором расположено машино-место</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -1905,9 +1614,14 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="ParentCadastralNumber" type="tParentCadastralNumberOKS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер здания или сооружения, в пределах которого расположено машино-место</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="OtherParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер объекта (объектов) недвижимости, в пределах которого (которых) расположено машино-место</xs:documentation>
+					<xs:documentation>Кадастровый номер иного объекта (объектов) недвижимости, в пределах которого (которых) расположено машино-место</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Area" type="dPos21_1" minOccurs="0">
@@ -1925,36 +1639,10 @@
 					<xs:documentation>Расположение в пределах объекта недвижимости, имеющего или не имеющего этажи (и при необходимости - планы)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SpecificLocation" minOccurs="0">
+			<xs:element name="SpecificLocation" type="tExistSpecificLocation" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Описание местоположения машино-места</xs:documentation>
 				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="SpecificMarkDistances" type="tSpecificMarkDistances">
-							<xs:annotation>
-								<xs:documentation>Сведения о расстояниях от специальных меток до характерных точек границ машино-места</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="CharacterPointDistances" type="tCharacterPointDistances">
-							<xs:annotation>
-								<xs:documentation>Сведения о расстояниях между характерными точками границ машино-места</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="SpecificMarksLocation" type="tSpecificMarksLocation"
-							minOccurs="0">
-							<xs:annotation>
-								<xs:documentation>Сведения о координатах специальных меток</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-						<xs:element name="ContoursLocationFlat" type="tContoursLocationFlat"
-							minOccurs="0">
-							<xs:annotation>
-								<xs:documentation>Сведения о характерных точках границ помещения, в котором расположено машино-место</xs:documentation>
-							</xs:annotation>
-						</xs:element>
-					</xs:sequence>
-				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="CadastralNumber" type="CadastralNumberType" use="required">
@@ -1977,35 +1665,85 @@
 	</xs:complexType>
 	<xs:complexType name="tParentCadastralNumberFlat">
 		<xs:annotation>
-			<xs:documentation>Кадастровый (или ранее присвоенный) номер объекта недвижимости (или адрес (описание местоположения) объекта недвижимости), в котором расположено помещение</xs:documentation>
+			<xs:documentation>Кадастровый номер объекта недвижимости, в котором расположено помещение</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="CadastralNumberOKS" type="CadastralNumberType">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер здания или сооружения, в котором расположено помещение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralNumberFlat" type="CadastralNumberType">
+				<xs:annotation>
+					<xs:documentation>Кадастровый номер квартиры, в которой расположена комната</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="tParentCadastralNumberOKS">
+		<xs:annotation>
+			<xs:documentation>Кадастровый номер здания или сооружения</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:choice>
-				<xs:element name="CadastralNumberOKS" type="CadastralNumberType">
-					<xs:annotation>
-						<xs:documentation>Кадастровый номер здания или сооружения, в котором расположено помещение</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-				<xs:element name="CadastralNumberFlat" type="CadastralNumberType">
-					<xs:annotation>
-						<xs:documentation>Кадастровый номер квартиры, в которой расположена комната</xs:documentation>
-					</xs:annotation>
-				</xs:element>
-			</xs:choice>
-			<xs:element name="CadastralNumber" type="CadastralNumberType" minOccurs="0">
+			<xs:element name="CadastralNumberOKS" type="CadastralNumberType">
 				<xs:annotation>
-					<xs:documentation>Кадастровый номер единого недвижимого комплекса или предприятия как имущественного комплекса, если помещение входит в состав такого объекта недвижимости</xs:documentation>
+					<xs:documentation>Кадастровый номер здания или сооружения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<!--Сведения о контурах ОКС-->
+	<xs:complexType name="tNewContours">
+		<xs:annotation>
+			<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров (при создании (образовании ОН))</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewContour" type="tNewContour" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Контур объекта недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tExistContours">
+		<xs:annotation>
+			<xs:documentation>Контур объекта недвижимости, представляющий собой совокупность отдельных контуров (при изменении сведений об ОН)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewContour" type="tNewContour" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Новый контур</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExistContour" type="tExistContour" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Существующий (уточняемый, изменяемый) контур</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeleteAllBorder" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Исключение границы контура (исключение контура полностью)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tDeleteAllBorder">
+							<xs:attribute name="NumberRecord" type="p10" use="required">
+								<xs:annotation>
+									<xs:documentation>Учетный номер контура</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="tNewContour">
 		<xs:annotation>
 			<xs:documentation>Новый контур</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+			<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 				<xs:annotation>
 					<xs:documentation>Описание местоположения контура</xs:documentation>
 				</xs:annotation>
@@ -2022,7 +1760,7 @@
 			<xs:documentation>Существующий (изменяемый) контур</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="EntitySpatial" type="tEntitySpatialOKSInpDist">
+			<xs:element name="EntitySpatial" type="tEntitySpatialOKSInp">
 				<xs:annotation>
 					<xs:documentation>Описание местоположения контура</xs:documentation>
 				</xs:annotation>
@@ -2090,7 +1828,7 @@
 				</xs:element>
 				<xs:element name="PrevCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>Кадастровый номер помещения (помещений), из которого (которых) было образовано данное помещение</xs:documentation>
+						<xs:documentation>Кадастровый номер исходного помещения (помещений), из которого (которых) образовано данное помещение</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 				<xs:element name="Assignation" type="tAssignationFlatFull">
@@ -2155,6 +1893,11 @@
 						<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element name="PrevCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Кадастровый номер исходного объекта (объектов) недвижимости, из которого (которых) было образовано данное машино-место</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element name="Address" type="tAddressInpFullLocation">
 					<xs:annotation>
 						<xs:documentation>Адрес (местоположение) машино-места</xs:documentation>
@@ -2179,9 +1922,14 @@
 			<xs:documentation>Единый недвижимый комплекс (ЕНК) (Создание (образование))</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralBlocks" type="tCadastralBlocks">
+			<xs:element name="CadastralRegions" type="tCadastralRegions" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположен единый недвижимый комплекс</xs:documentation>
+					<xs:documentation>Номера кадастровых округов, в пределах которых расположен единый недвижимый комплекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull">
+				<xs:annotation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположен единый недвижимый комплекс</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -2189,7 +1937,7 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+			<xs:element name="ParentCadastralNumbers" type="tCadastralNumbersNull" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен единый недвижимый комплекс</xs:documentation>
 				</xs:annotation>
@@ -2234,8 +1982,7 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex"
-							maxOccurs="unbounded">
+						<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex" maxOccurs="unbounded">
 							<xs:annotation>
 								<xs:documentation>Сведения о части единого недвижимого комплекса</xs:documentation>
 							</xs:annotation>
@@ -2264,9 +2011,14 @@
 			<xs:documentation>Единый недвижимый комплекс (ЕНК) (Изменение сведений)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralBlocks" type="tCadastralBlocks" minOccurs="0">
+			<xs:element name="CadastralRegions" type="tCadastralRegions" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов) в пределах которого (которых) расположен ЕНК</xs:documentation>
+					<xs:documentation>Номера кадастровых округов, в пределах которых расположен единый недвижимый комплекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CadastralBlocks" type="tCadastralBlocksNull" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер (номера) кадастрового квартала (кадастровых кварталов), в пределах которого (которых) расположен ЕНК</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="OldNumbers" type="tOldNumbersExt" minOccurs="0">
@@ -2274,7 +2026,7 @@
 					<xs:documentation>Ранее присвоенные государственные учетные номера</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ParentCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
+			<xs:element name="ParentCadastralNumbers" type="tCadastralNumbersNull" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер земельного участка (земельных участков), в пределах которого (которых) расположен ЕНК</xs:documentation>
 				</xs:annotation>
@@ -2309,14 +2061,12 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex"
-							minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex" minOccurs="0" maxOccurs="unbounded">
 							<xs:annotation>
 								<xs:documentation>Образуемая часть единого недвижимого комплекса</xs:documentation>
 							</xs:annotation>
 						</xs:element>
-						<xs:element name="ExistSubUnifiedComplex" type="tExistSubUnifiedComplex"
-							minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ExistSubUnifiedComplex" type="tExistSubUnifiedComplex" minOccurs="0" maxOccurs="unbounded">
 							<xs:annotation>
 								<xs:documentation>Изменяемая часть единого недвижимого комплекса</xs:documentation>
 							</xs:annotation>
@@ -2330,10 +2080,9 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="InsertEntryObjects" type="tInsertEntryObjects"
-							minOccurs="0">
+						<xs:element name="InsertEntryObjects" type="tInsertEntryObjects" minOccurs="0">
 							<xs:annotation>
-								<xs:documentation>Включаемые в состав ЕНК объекты недвижимости (которых до уточнения не было в составе данного ЕНК)</xs:documentation>
+								<xs:documentation>Включаемые в состав ЕНК объекты недвижимости (которых  ранее не было в составе данного ЕНК)</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 						<xs:element name="DeletedEntryObjects" minOccurs="0">
@@ -2342,8 +2091,7 @@
 							</xs:annotation>
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="DeleteEntryObject"
-										type="tCadastralNumberObject" maxOccurs="unbounded">
+									<xs:element name="DeleteEntryObject" type="tCadastralNumberObject" maxOccurs="unbounded">
 										<xs:annotation>
 											<xs:documentation>Исключаемый из состава ЕНК объект недвижимости</xs:documentation>
 										</xs:annotation>
@@ -2355,7 +2103,7 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="CadastralNumber" type="CadastralNumberType" use="required">
+		<xs:attribute name="CadastralNumber" type="CadastralNumberNull" use="required">
 			<xs:annotation>
 				<xs:documentation>Кадастровый номер</xs:documentation>
 			</xs:annotation>
@@ -2394,7 +2142,7 @@
 		<xs:complexContent>
 			<xs:extension base="tObjectType">
 				<xs:sequence>
-					<xs:element name="CadastralNumber" type="CadastralNumberType">
+					<xs:element name="CadastralNumber" type="CadastralNumberNull">
 						<xs:annotation>
 							<xs:documentation>Кадастровый номер</xs:documentation>
 						</xs:annotation>
@@ -2416,7 +2164,7 @@
 			<xs:documentation>Объект недвижимости, учтенный в ЕГРН</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralNumber" type="CadastralNumberType">
+			<xs:element name="CadastralNumber" type="CadastralNumberNull">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер</xs:documentation>
 				</xs:annotation>
@@ -2436,8 +2184,7 @@
 					<xs:complexContent>
 						<xs:extension base="tObjectType">
 							<xs:sequence>
-								<xs:element name="CadastralNumber" type="CadastralNumberType"
-									minOccurs="0">
+								<xs:element name="CadastralNumber" type="CadastralNumberNull" minOccurs="0">
 									<xs:annotation>
 										<xs:documentation>Кадастровый номер</xs:documentation>
 									</xs:annotation>
@@ -2478,14 +2225,12 @@
 					<xs:documentation>Кадастровый номер здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NewSubBuilding" type="tNewSubBuilding" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="NewSubBuilding" type="tNewSubBuilding" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Образование части здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ExistSubBuilding" type="tExistSubBuilding" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="ExistSubBuilding" type="tExistSubBuilding" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Изменение части здания</xs:documentation>
 				</xs:annotation>
@@ -2502,14 +2247,12 @@
 					<xs:documentation>Кадастровый номер сооружения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NewSubConstruction" type="tNewSubObject" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="NewSubConstruction" type="tNewSubConstruction" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Образование части сооружения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ExistSubConstruction" type="tExistSubObject" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="ExistSubConstruction" type="tExistSubConstruction" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Изменение части сооружения</xs:documentation>
 				</xs:annotation>
@@ -2543,19 +2286,17 @@
 			<xs:documentation>Образование (изменение) части (частей) ЕНК (и при этом одновременно не выполнялись кадастровые работы в связи с созданием ЕНК либо образованием ЕНК либо изменением сведений о ЕНК)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralNumberUnifiedComplex" type="CadastralNumberType">
+			<xs:element name="CadastralNumberUnifiedComplex" type="CadastralNumberNull">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер единого недвижимого комплекса</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="NewSubUnifiedComplex" type="tNewSubUnifiedComplex" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Образуемая часть единого недвижимого комплекса</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ExistSubUnifiedComplex" type="tExistSubUnifiedComplex" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="ExistSubUnifiedComplex" type="tExistSubUnifiedComplex" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Изменяемая часть единого недвижимого комплекса</xs:documentation>
 				</xs:annotation>
@@ -2567,14 +2308,12 @@
 			<xs:documentation>Образование (изменение) части (частей) учтенных в ЕГРН зданий и (или) сооружений, входящих в состав ЕНК (и при этом одновременно не выполнялись кадастровые работы в связи с созданием зданий и (или) сооружений либо образованием зданий и (или) сооружений либо изменением сведений о зданий и (или) сооружений)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SubBuildings" type="tExclusiveSubBuildings" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="SubBuildings" type="tExclusiveSubBuildings" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Образование (изменение) части (частей) здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubConstructions" type="tExclusiveSubConstructions" minOccurs="0"
-				maxOccurs="unbounded">
+			<xs:element name="SubConstructions" type="tExclusiveSubConstructions" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Образование (изменение) части (частей) сооружения</xs:documentation>
 				</xs:annotation>
@@ -2583,7 +2322,7 @@
 	</xs:complexType>
 	<xs:complexType name="tSubBuilding">
 		<xs:annotation>
-			<xs:documentation>Сведения о части здания</xs:documentation>
+			<xs:documentation>Сведения о части здания (базовый тип)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Area" type="dPos21_1">
@@ -2608,7 +2347,7 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:choice>
-			<xs:element name="Encumbrance" type="sNe4000">
+			<xs:element name="Encumbrance" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Содержание ограничения (обременения) прав</xs:documentation>
 				</xs:annotation>
@@ -2616,6 +2355,35 @@
 			<xs:element name="Description" type="s4000" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Иное описание местоположения части</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNewSubBuildings">
+		<xs:annotation>
+			<xs:documentation>Сведения о частях созданного (образованного) здания</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubBuilding" type="tNewSubBuilding" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Сведения о части здания</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tExistSubBuildings">
+		<xs:annotation>
+			<xs:documentation>Сведения о частях здания, сведения о котором изменяются</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubBuilding" type="tNewSubBuilding" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Образуемая часть здания</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExistSubBuilding" type="tExistSubBuilding" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Изменяемая часть здания</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -2674,14 +2442,43 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="tSubObject">
+	<xs:complexType name="tNewSubConstructions">
 		<xs:annotation>
-			<xs:documentation>Сведения о части сооружения</xs:documentation>
+			<xs:documentation>Сведения о частях созданного (образованного) сооружения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubConstruction" type="tNewSubConstruction" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Сведения о части сооружения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tExistSubConstructions">
+		<xs:annotation>
+			<xs:documentation>Сведения о частях сооружения, сведения о котором изменяются</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubConstruction" type="tNewSubConstruction" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Образуемая часть сооружения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExistSubConstruction" type="tExistSubConstruction" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Изменяемая часть сооружения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tSubConstruction">
+		<xs:annotation>
+			<xs:documentation>Сведения о части сооружения (базовый тип)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="KeyParameterSubObject" type="tKeyParameterSubObject">
 				<xs:annotation>
-					<xs:documentation>Основная характеристика части (протяженность, площадь)</xs:documentation>
+					<xs:documentation>Основная характеристика части (протяженность, объем, площадь, площадь застройки)</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:choice>
@@ -2701,7 +2498,7 @@
 					</xs:annotation>
 				</xs:element>
 			</xs:choice>
-			<xs:element name="Encumbrance" type="sNe4000">
+			<xs:element name="Encumbrance" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Содержание ограничения (обременения) прав</xs:documentation>
 				</xs:annotation>
@@ -2713,12 +2510,12 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="tNewSubObject">
+	<xs:complexType name="tNewSubConstruction">
 		<xs:annotation>
 			<xs:documentation>Образуемая часть сооружения</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tSubObject">
+			<xs:extension base="tSubConstruction">
 				<xs:attribute name="Definition" type="sNe50" use="required">
 					<xs:annotation>
 						<xs:documentation>Обозначение части</xs:documentation>
@@ -2727,12 +2524,12 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="tExistSubObject">
+	<xs:complexType name="tExistSubConstruction">
 		<xs:annotation>
-			<xs:documentation>Изменяемая часть сооружения, единого недвижимого комплекса</xs:documentation>
+			<xs:documentation>Изменяемая часть сооружения</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tSubObject">
+			<xs:extension base="tSubConstruction">
 				<xs:attribute name="NumberRecord" type="p10" use="required">
 					<xs:annotation>
 						<xs:documentation>Учетный номер части</xs:documentation>
@@ -2741,9 +2538,38 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="tNewSubFlats">
+		<xs:annotation>
+			<xs:documentation>Сведения о частях созданного (образованного) помещения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubFlat" type="tNewSubFlat" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Сведения о части помещения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tExistSubFlats">
+		<xs:annotation>
+			<xs:documentation>Сведения о частях помещения, сведения о котором изменяются</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NewSubFlat" type="tNewSubFlat" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Образуемая часть помещения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExistSubFlat" type="tExistSubFlat" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Изменяемая часть помещения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="tSubFlat">
 		<xs:annotation>
-			<xs:documentation>Сведения о части помещения</xs:documentation>
+			<xs:documentation>Сведения о части помещения (базовый тип)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Area" type="dPos21_1">
@@ -2756,7 +2582,7 @@
 					<xs:documentation>Расположение в пределах объекта недвижимости, имеющего или не имеющего этажи</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Encumbrance" type="sNe4000">
+			<xs:element name="Encumbrance" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>Содержание ограничения (обременения) прав</xs:documentation>
 				</xs:annotation>
@@ -2801,7 +2627,7 @@
 			<xs:documentation>Образуемая часть единого недвижимого комплекса</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralNumber" type="CadastralNumberType" minOccurs="0">
+			<xs:element name="CadastralNumber" type="CadastralNumberNull" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер здания или сооружения, на которое распространяется ограничение (обременение) права</xs:documentation>
 				</xs:annotation>
@@ -2818,7 +2644,7 @@
 			<xs:documentation>Изменяемая часть единого недвижимого комплекса</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CadastralNumber" type="CadastralNumberType">
+			<xs:element name="CadastralNumber" type="CadastralNumberNull">
 				<xs:annotation>
 					<xs:documentation>Кадастровый номер здания или сооружения, на которое распространяется ограничение (обременение) права</xs:documentation>
 				</xs:annotation>
@@ -2833,7 +2659,7 @@
 	<!--Исходные данные, измерения и расчеты-->
 	<xs:complexType name="tInputDataBuildingConstruction">
 		<xs:annotation>
-			<xs:documentation>Исходные данные (и сведения об учтенных в ЕГРН помещениях, расположенных в здании, сооружении)</xs:documentation>
+			<xs:documentation>Исходные данные (и сведения об учтенных в ЕГРН помещениях, машино-местах, расположенных в здании, сооружении)</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="tInputData">
@@ -3090,17 +2916,17 @@
 	</xs:complexType>
 	<xs:complexType name="tSurvey">
 		<xs:annotation>
-			<xs:documentation>Сведения о выполненных измерениях и расчетах (контура объекта недвижимости)</xs:documentation>
+			<xs:documentation>Сведения о выполненных измерениях и расчетах</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="GeopointsOpred" type="tGeopointsOpred">
 				<xs:annotation>
-					<xs:documentation>Метод определения координат характерных точек контура</xs:documentation>
+					<xs:documentation>Метод определения координат</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="TochnGeopointsObject" type="tTochnGeopointsObject" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Точность определения координат характерных точек контура объекта недвижимости</xs:documentation>
+					<xs:documentation>Точность определения координат</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -3112,8 +2938,7 @@
 		<xs:complexContent>
 			<xs:extension base="tSurvey">
 				<xs:sequence>
-					<xs:element name="TochnGeopointsSubObject" type="tTochnGeopointsSubObject"
-						minOccurs="0">
+					<xs:element name="TochnGeopointsSubObject" type="tTochnGeopointsSubObject" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>Точность определения координат характерных точек контура части (частей) объекта недвижимости</xs:documentation>
 						</xs:annotation>
@@ -3124,7 +2949,7 @@
 	</xs:complexType>
 	<xs:complexType name="tGeopointsOpred">
 		<xs:annotation>
-			<xs:documentation>Метод определения координат характерных точек контура</xs:documentation>
+			<xs:documentation>Метод определения координат</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Element" maxOccurs="unbounded">
@@ -3149,7 +2974,7 @@
 	</xs:complexType>
 	<xs:complexType name="tTochnGeopointsObject">
 		<xs:annotation>
-			<xs:documentation>Точность определения координат характерных точек контура объекта недвижимости</xs:documentation>
+			<xs:documentation>Точность определения координат</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Element" type="tTochnGeopoints" maxOccurs="unbounded">
@@ -3184,14 +3009,14 @@
 	</xs:complexType>
 	<xs:complexType name="tTochnGeopoints">
 		<xs:annotation>
-			<xs:documentation>Точность определения координат характерных точек контура</xs:documentation>
+			<xs:documentation>Точность определения координат</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="tElement">
 				<xs:sequence>
 					<xs:element name="Formula" type="sNe4000">
 						<xs:annotation>
-							<xs:documentation>Формулы, примененные для расчета средней квадратической погрешности определения координат характерных точек контура</xs:documentation>
+							<xs:documentation>Формулы, примененные для расчета средней квадратической погрешности определения координат</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -3200,7 +3025,7 @@
 	</xs:complexType>
 	<xs:complexType name="tElement">
 		<xs:annotation>
-			<xs:documentation>Элемент</xs:documentation>
+			<xs:documentation>Элемент (номер контура, номера точек)</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="Number" type="s255">
 			<xs:annotation>
@@ -3209,26 +3034,9 @@
 		</xs:attribute>
 		<xs:attribute name="NumGeopoint" type="sNe1000" use="required">
 			<xs:annotation>
-				<xs:documentation>Номера характерных точек контура</xs:documentation>
+				<xs:documentation>Номера точек</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-	</xs:complexType>
-	<xs:complexType name="tMaximumDepthHeight">
-		<xs:annotation>
-			<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов объекта недвижимости, в метрах</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="Depth" type="d23_1">
-				<xs:annotation>
-					<xs:documentation>Предельная глубина в метрах</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Height" type="d23_1">
-				<xs:annotation>
-					<xs:documentation>Предельная высота в метрах</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
 	</xs:complexType>
 	<!--Расположение в пределах объекта капитального строительства-->
 	<xs:complexType name="tPositionInObject">
@@ -3428,14 +3236,115 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<!--Список точек пересечения-->
+	<xs:complexType name="tExistSpecificLocation">
+		<xs:annotation>
+			<xs:documentation>Описание местоположения машино-места</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SpecificMarkDistances" type="tSpecificMarkDistances" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о расстояниях от специальных меток до характерных точек границ машино-места</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CharacterPointDistances" type="tCharacterPointDistances" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о расстояниях между характерными точками границ машино-места</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SpecificMarksLocation" type="tSpecificMarksLocation" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о координатах специальных меток</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContoursLocationFlat" type="tContoursLocationFlat" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о характерных точках границ помещения, в котором расположено машино-место</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tNewSpecificLocation">
+		<xs:annotation>
+			<xs:documentation>Описание местоположения машино-места</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SpecificMarkDistances" type="tSpecificMarkDistances">
+				<xs:annotation>
+					<xs:documentation>Сведения о расстояниях от специальных меток до характерных точек границ машино-места</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CharacterPointDistances" type="tCharacterPointDistances">
+				<xs:annotation>
+					<xs:documentation>Сведения о расстояниях между характерными точками границ машино-места</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SpecificMarksLocation" type="tSpecificMarksLocation" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о координатах специальных меток</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContoursLocationFlat" type="tContoursLocationFlat" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сведения о характерных точках границ помещения, в котором расположено машино-место</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Дополнительное пространственное описание конструктивных элементов-->
+	<xs:complexType name="tMaximumDepthHeight">
+		<xs:annotation>
+			<xs:documentation>Сведения о предельных высоте и глубине конструктивных элементов объекта недвижимости, в метрах</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Depth" type="d23_1">
+				<xs:annotation>
+					<xs:documentation>Предельная глубина в метрах</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Height" type="d23_1">
+				<xs:annotation>
+					<xs:documentation>Предельная высота в метрах</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tIntersectionPoints">
+		<xs:annotation>
+			<xs:documentation>Дополнительное пространственное описание конструктивных элементов объекта недвижимости</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IntersectionPoint" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Пространственное описание конструктивных элементов объекта недвижимости</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EntitySpatialIntersection" type="tEntitySpatialIntersection">
+							<xs:annotation>
+								<xs:documentation>Характерные точки пересечения</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="Definition" type="sNe50">
+						<xs:annotation>
+							<xs:documentation>Обозначение (порядковый номер) контура</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="NumberRecord" type="p10">
+						<xs:annotation>
+							<xs:documentation>Учетный (порядковый) номер контура</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="tEntitySpatialIntersection">
 		<xs:annotation>
 			<xs:documentation>Описание элементов контура (характерных точек пересечения)</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SpatialElement" type="tSpatialElementIntersection"
-				maxOccurs="unbounded">
+			<xs:element name="SpatialElementIntersection" type="tSpatialElementIntersection" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Элемент контура</xs:documentation>
 				</xs:annotation>
@@ -3457,7 +3366,7 @@
 			<xs:documentation>Элемент контура</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SpelementUnit" type="tSpelementUnitIntersection" maxOccurs="unbounded">
+			<xs:element name="SpelementUnitIntersection" type="tSpelementUnitIntersection" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation>Точка пересечения</xs:documentation>
 				</xs:annotation>
@@ -3478,16 +3387,15 @@
 	</xs:complexType>
 	<xs:complexType name="tSpelementUnitIntersection">
 		<xs:annotation>
-			<xs:documentation>Часть элемента (точка)</xs:documentation>
+			<xs:documentation>Точка пересечения</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Ordinate" type="tOrdinateInpDist">
+			<xs:element name="OrdinateIntersection" type="tOrdinateInpDist">
 				<xs:annotation>
 					<xs:documentation>Координата точки пересечения</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="IntersectionCadastralNumbers" type="tCadastralNumbersInp"
-				minOccurs="0">
+			<xs:element name="IntersectionCadastralNumbers" type="tCadastralNumbersInp" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Кадастровые номера зданий, сооружений, объектов незавершенного строительства, контур которых пересекает объект недвижимости в данной характерной точке</xs:documentation>
 				</xs:annotation>

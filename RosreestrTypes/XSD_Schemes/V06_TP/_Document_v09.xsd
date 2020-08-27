@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<!--Простые типы данных-->
-	<xs:include schemaLocation="P_CommonSimpleType_v01.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v02.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v04.xsd"/>
-	<xs:include schemaLocation="P_CommonSimpleType_v12.xsd"/>
+	<!--Общие простые типы данных-->
+	<xs:include schemaLocation="P_CommonSimpleTypeAll_v01.xsd"/>
 	<!--Справочник Все документы-->
-	<xs:include schemaLocation="dAllDocuments_v04.xsd"/>
+	<xs:include schemaLocation="dAllDocuments_v05.xsd"/>
 	<!--Справочник Виды приложенных файлов-->
 	<xs:include schemaLocation="dAppliedFiles_v01.xsd"/>
-	<!--ВЕРСИЯ 8:-->
+	<!--ВЕРСИЯ 9:-->
 	<!--Подсхема "Документ"-->
 	<xs:complexType name="tDocumentWithoutAppliedFile">
 		<xs:annotation>
@@ -272,19 +269,4 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:simpleType name="sName500FormatAnd3D">
-		<xs:annotation>
-			<xs:documentation>Относительный путь к файлу\Имя файла</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:maxLength value="500"/>
-			<xs:pattern value=".+\.[p|P][d|D][f|F]"/>
-			<xs:pattern value=".+\.[x|X][m|M][l|L]"/>
-			<xs:pattern value=".+\.[z|Z][i|I][p|P]"/>
-			<xs:pattern value=".+\.[d|D][x|X][f|F]"/>
-			<xs:pattern value=".+\.[r|R][v|V][t|T]"/>
-			<xs:pattern value=".+\.[p|P][l|L][n|N]"/>
-			<xs:pattern value=".+\.[s|S][k|K][p|P]"/>
-		</xs:restriction>
-	</xs:simpleType>
 </xs:schema>

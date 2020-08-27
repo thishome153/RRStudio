@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<!--Классификатор назначений помещений-->
-	<xs:include schemaLocation="dAssFlat_v01.xsd"/>
+	<xs:include schemaLocation="dAssFlat_v02.xsd"/>
 	<!--Классификатор назначений видов жилого помещения-->
 	<xs:include schemaLocation="dAssFlatType_v01.xsd"/>
 	<!--Вид жилого помещения специализированного жилищного фонда-->

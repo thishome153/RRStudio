@@ -1280,6 +1280,21 @@
 					<xs:documentation>Документ, воспроизводящий сведения, содержащиеся в решении об установлении или изменении границ территории опережающего социально-экономического развития</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="558288000000">
+				<xs:annotation>
+					<xs:documentation>Документ, воспроизводящий сведения, содержащиеся в решении об отнесении жилого помещения к определенному виду жилых помещений специализированного жилищного фонда, к жилым помещениям наемного дома социального использования или наемного дома коммерческого использования</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558289000000">
+				<xs:annotation>
+					<xs:documentation>Документ, воспроизводящий сведения о результатах проверки, осуществленной в рамках государственного земельного надзора о выявленном нарушении земельного законодательства Российской Федерации</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558290000000">
+				<xs:annotation>
+					<xs:documentation>Декларация об объектах недвижимости, в том числе о земельных участках, относящихся к имуществу Вооруженных Сил Российской Федерации и подведомственных Министерству обороны Российской Федерации организаций, имуществу органов федеральной службы безопасности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="558299000000">
 				<xs:annotation>
 					<xs:documentation>Иной документ, содержащий описание объекта</xs:documentation>
@@ -2430,6 +2445,11 @@
 					<xs:documentation>Иной документ</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="558503000100">
+				<xs:annotation>
+					<xs:documentation>Расписка в получении документов на государственный кадастровый учет и (или) государственную регистрацию прав</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="558600000000">
 				<xs:annotation>
 					<xs:documentation>Заявления и запросы ЕГРН</xs:documentation>
@@ -2495,6 +2515,11 @@
 					<xs:documentation>Дополнительные документы, представляемые заявителем, в том числе с целью устранения причин, приведших к приостановлению государственного кадастрового учета и (или) государственной регистрации прав (статья 29 Закона)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="558610900000">
+				<xs:annotation>
+					<xs:documentation>Заявление о возобновлении государственного кадастрового учета и (или) государственной регистрации, ранее приостановленных в заявительном порядке</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="558620000000">
 				<xs:annotation>
 					<xs:documentation>Заявления на внесение сведений в ЕГРН</xs:documentation>
@@ -2540,6 +2565,21 @@
 					<xs:documentation>Иные документы, принимаемые (представляемых, поступающих) в целях осуществления государственного кадастрового учета и (или) государственной регистрации прав на соответствующие объекты недвижимости, внесения сведений в реестр границ и для внесения в ЕГРН иных предусмотренных Законом сведений</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="558620900000">
+				<xs:annotation>
+					<xs:documentation>Заявление о принятии вновь имущества во владение, пользование или распоряжение</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558621000000">
+				<xs:annotation>
+					<xs:documentation>Заявление о том, что собственник объекта недвижимости не совершал действий, направленные на отказ от права собственности</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558621100000">
+				<xs:annotation>
+					<xs:documentation>Заявление о внесении изменений в записи реестра прав, ограничений прав и обременений недвижимого имущества Единого государственного реестра недвижимости</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="558630000000">
 				<xs:annotation>
 					<xs:documentation>Запросы, связанные с выдачей сведений из ЕГРН</xs:documentation>
@@ -2563,11 +2603,6 @@
 			<xs:enumeration value="558630400000">
 				<xs:annotation>
 					<xs:documentation>Запрос о предоставлении сведений, содержащихся в ЕГРН, о территории кадастрового квартала, о зоне с особыми условиями использования территорий, территориальной зоне, территории объекта культурного наследия, территории опережающего социально-экономического развития, зоне территориального развития в Российской Федерации, об игорной зоне, о лесничестве, лесопарке, об особо охраняемой природной территории, особой экономической зоне, охотничьих угодьях, об административно-территориальном делении, о береговой линии (границе водного объекта)</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="558630500000">
-				<xs:annotation>
-					<xs:documentation>Запрос на предоставление общедоступных сведений</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="558699000000">
@@ -2643,6 +2678,16 @@
 			<xs:enumeration value="558713000000">
 				<xs:annotation>
 					<xs:documentation>Об отказе в изменении сведений ЕГРН</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558714000000">
+				<xs:annotation>
+					<xs:documentation>О принятии на учет бесхозяйного объекта недвижимого имущества</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="558715000000">
+				<xs:annotation>
+					<xs:documentation>Об отказе во включении сведений о ранее учтенном объекте недвижимости в ЕГРН</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="558800000000">
