@@ -58,6 +58,7 @@ namespace netFteo.Rosreestr
         public static string KPT05    = "urn://fake/kpt/5.0.0";
         public static string KPT06    = "urn://fake/kpt/6.0.0";
         public static string KPT07    = "urn://fake/kpt/7.0.0";
+        public static string TP06 = "urn://fake/TP/6.0.0";
         public static string KPT08    = "urn://fake/kpt/8.0.0";
         public static string KPT09    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/9.0.3";
         public static string KPT10    = "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1";

@@ -2991,6 +2991,64 @@ namespace RRTypes.CommonParsers
         }
         #endregion
 
+
+        private void ParseGeneralCadastralWorksTP06(netFteo.IO.FileInfo fi, XmlNode cadworks, string Conclusion)
+        {
+            // TP / Building / GeneralCadastralWorks / @DateCadastral
+            fi.Date = cadworks.Attributes.GetNamedItem("DateCadastral").Value;
+
+            fi.AppointmentFIO = cadworks.SelectSingleNode("Contractor/FamilyName").FirstChild.Value + " " +
+                cadworks.SelectSingleNode("Contractor/FirstName").FirstChild.Value + "  " +
+                cadworks.SelectSingleNode("Contractor/Patronymic").FirstChild.Value + "  " +
+                cadworks.SelectSingleNode("Contractor/CadastralEngineerRegistryNumber").FirstChild.Value;
+            fi.Appointment = cadworks.SelectSingleNode("Contractor/Email").FirstChild.Value + " " +
+                    cadworks.SelectSingleNode("Contractor/Telephone").FirstChild.Value;
+            fi.Appointment += "\n " + cadworks.SelectSingleNode("Contractor/Address").FirstChild.Value;
+
+            fi.Cert_Doc_Organization = "СНИЛС " + cadworks.SelectSingleNode("Contractor/SNILS").FirstChild.Value +
+                                        " Номер в реестре " + cadworks.SelectSingleNode("Contractor/CadastralEngineerRegistryNumber").FirstChild.Value + "\n" +
+                                        "СРО:" + cadworks.SelectSingleNode("Contractor/SelfRegulatoryOrganization").FirstChild.Value;
+            fi.Comments += ("\n");
+            fi.Comments += ("<br>_______________________________________ТИТУЛЬНЫЙ ЛИСТ ___________________________________");
+            fi.Comments += ("<br> Технический план подготовлен в результате выполнения кадастровых работ в связи с:");
+            fi.Comments += ("\n");
+            fi.Comments += cadworks.SelectSingleNode("Reason").FirstChild.Value;
+
+            if (Conclusion != null)
+            {
+                fi.Comments += ("<br>");
+                fi.Comments += ("\n______________________________________ЗАКЛЮЧЕНИЕ_____________________________________");
+                fi.Comments += ("\n");
+                fi.Comments += (Conclusion);
+            }
+
+            /*
+            / TP / Building / GeneralCadastralWorks / Clients / Client / Person / FamilyName
+            / TP / Building / GeneralCadastralWorks / Clients / Client / Person / FirstName
+            / TP / Building / GeneralCadastralWorks / Clients / Client / Person / Patronymic
+            / TP / Building / GeneralCadastralWorks / Clients / Client / Person / SNILS
+            */
+            if (cadworks.SelectSingleNode("Clients").ChildNodes.Count == 1)
+            {
+                XmlNode Client = cadworks.SelectSingleNode("Clients/Client");
+                if (Client.SelectSingleNode("Person") != null)
+                {
+                    fi.ReceivName = Client.SelectSingleNode("Person/FamilyName").FirstChild.Value + " " +
+                        Client.SelectSingleNode("Person/FirstName").FirstChild.Value + " " +
+                        Client.SelectSingleNode("Person/Patronymic").FirstChild.Value;
+                    fi.RequeryNumber = Client.SelectSingleNode("Person/SNILS").FirstChild.Value;
+                }
+
+                /*
+             if (client.Organization != null)
+                    {
+                        res.ReceivName = client.Organization.Name;
+                        res.RequeryNumber = client.Organization.INN + ", " + client.Organization.OGRN;
+                    }
+                 */
+            }
+        }
+
         #region  Разбор TP 02/03
         private void ParseGeneralCadastralWorks(netFteo.IO.FileInfo fi, RRTypes.V03_TP.tGeneralCadastralWorks GW, string Conclusion)
         {
@@ -3071,6 +3129,8 @@ namespace RRTypes.CommonParsers
 
         }
 
+
+
         private PointList ParseInputData(V03_TP.tInputData inpData)
         {
             PointList res = new PointList();
@@ -3086,20 +3146,6 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        public netFteo.IO.FileInfo ParseTP_V06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
-        {
-            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
-            res.DocType = "Технический план";
-            res.DocTypeNick = "ТП";
-            res.Version = "06";
-            //res.Number = TP.GUID;
-            res.CommentsType = "Заключение КИ";
-            //TODO : 
-            /*
-			 * waiting for example of xml instance 
-			 * */
-            return res;
-        }
 
         public netFteo.IO.FileInfo ParseSTDTPV02(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
         {
@@ -3147,6 +3193,57 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
+        public netFteo.IO.FileInfo ParseTP_V06(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        {
+            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            res.DocType = "Технический план";
+            res.DocTypeNick = "ТП";
+            res.Version = fi.Version;
+            res.Namespace = NameSpaces.TP06;
+            if (xmldoc.DocumentElement.Attributes.GetNamedItem("GUID") != null) 
+                res.Number = xmldoc.DocumentElement.Attributes.GetNamedItem("GUID").Value;
+            res.CommentsType = "Заключение КИ";
+            //TODO : 
+            /*
+			 * waiting for example of xml instance 
+			 * 
+			 */
+            if (xmldoc.DocumentElement.SelectSingleNode("Building") != null)
+            {
+                XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Building");
+                ParseGeneralCadastralWorksTP06(res, xmldoc.DocumentElement.SelectSingleNode("Building/GeneralCadastralWorks"), xmldoc.DocumentElement.SelectSingleNode("Building/Conclusion").FirstChild.Value);
+            }
+
+            if (xmldoc.DocumentElement.SelectSingleNode("Construction") != null)
+            {
+
+            }
+
+            if (xmldoc.DocumentElement.SelectSingleNode("Uncompleted") != null)
+            {
+
+            }
+
+            if (xmldoc.DocumentElement.SelectSingleNode("Flat") != null)
+            {
+
+            }
+
+            if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
+            {
+
+            }
+
+            if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
+            {
+
+            }
+            XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
+            /* 
+            * */
+            return res;
+        }
+            
         public netFteo.IO.FileInfo ParseTP_V03(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)//RRTypes.V03_TP.TP TP)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
@@ -3295,8 +3392,6 @@ namespace RRTypes.CommonParsers
                 res.MyBlocks.Blocks.Add(Bl);
             }
             // end construction
-
-
 
             if (TP.Flat != null)
             {
@@ -7297,13 +7392,19 @@ namespace RRTypes.CommonParsers
             }
 
             //TP
-            if (DocInfo.DocRootName == "TP")
+            if ((DocInfo.DocRootName == "TP") && (DocInfo.Version == "03"))
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
                 DocInfo = parser.ParseTP_V03(DocInfo, xmldoc);
             }
 
- FinalPoint: xmlStream.Dispose();
+            if ((DocInfo.DocRootName == "TP") && (DocInfo.Version == "06"))
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseTP_V06(DocInfo, xmldoc);
+            }
+
+        FinalPoint: xmlStream.Dispose();
             xmldoc = null;
             GC.Collect(); //start mem garbage 
             return DocInfo;
