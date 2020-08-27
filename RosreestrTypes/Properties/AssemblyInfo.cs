@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
 [assembly: AssemblyTitle("RosreestrTypes")]
-[assembly: AssemblyDescription("KPT_V011 entering")]
+[assembly: AssemblyDescription("TP_v06 entering")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Horns & Hooves")]
 [assembly: AssemblyProduct("RosreestrTypes")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.114")]
-[assembly: AssemblyFileVersion("1.0.0.114")]
+[assembly: AssemblyVersion("1.0.0.115")]
+[assembly: AssemblyFileVersion("1.0.0.115")]
