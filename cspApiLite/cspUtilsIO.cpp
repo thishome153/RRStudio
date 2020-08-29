@@ -1,13 +1,14 @@
 #include "Stdafx.h"
 #include "cspUtilsIO.h"
 #include <vector>
+#include <iterator>
 //#include <ctime>
 
 namespace cspUtils {
 
 	namespace IO {
 		/*----------------------------------------------------------------------*/
-		/* Чтение файла в буфер - get_file_data_pointer*/
+		/* Р§С‚РµРЅРёРµ С„Р°Р№Р»Р° РІ Р±СѓС„РµСЂ - get_file_data_pointer*/
 		int read_file(LPCSTR infile, size_t *len, LPVOID *buffer)
 		{
 			DWORD dwSize;
@@ -20,7 +21,7 @@ namespace cspUtils {
 				//fprintf (stderr, "Invalid argument specified\n");
 				return 0;
 			}
-			// Используем ANSI версию
+			// РСЃРїРѕР»СЊР·СѓРµРј ANSI РІРµСЂСЃРёСЋ
 			hFile = CreateFileA(infile, GENERIC_READ, FILE_SHARE_READ,
 				NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN,
 				NULL);
@@ -48,7 +49,9 @@ namespace cspUtils {
 			*buffer = pStart;
 			return 1;
 		}
-		// чтения в vector. Вычитывается весь файл целиком.
+
+
+		// С‡С‚РµРЅРёСЏ РІ vector. Р’С‹С‡РёС‚С‹РІР°РµС‚СЃСЏ РІРµСЃСЊ С„Р°Р№Р» С†РµР»РёРєРѕРј.
 		int read_file_to_vector(const char* filename, std::vector<unsigned char>& buffer)
 		{
 			enum { bytesSize = 512 };
@@ -70,17 +73,16 @@ namespace cspUtils {
 
 				if (bytesSize != bytesRead && ferror(f))
 					return -1;
-
-				std::copy(buf, buf + bytesRead, back_inserter(buffer));
+				//here we got fakeUp: backinsterted failed
+				std::copy(buf, buf + bytesRead, std::back_inserter(buffer));
 			}
 			fclose(f);
-
 			return 0;
 		}
 
 
 		/*----------------------------------------------------------------------*/
-		/* Запись в файл*/
+		/* Р—Р°РїРёСЃСЊ РІ С„Р°Р№Р»*/
 		int write_file(const char *file, long len, const unsigned char *buffer)
 		{
 			FILE *f = NULL;

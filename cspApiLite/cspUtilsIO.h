@@ -1,8 +1,8 @@
 #pragma once
-#ifndef _cspUtilsIO_h_INCLUDED // типа защита от множественного включения
+#ifndef _cspUtilsIO_h_INCLUDED // С‚РёРїР° Р·Р°С‰РёС‚Р° РѕС‚ РјРЅРѕР¶РµСЃС‚РІРµРЅРЅРѕРіРѕ РІРєР»СЋС‡РµРЅРёСЏ
 #define _cspUtilsIO_h_INCLUDED
 
-#include <windows.h>  //типы основные
+#include <windows.h>  //С‚РёРїС‹ РѕСЃРЅРѕРІРЅС‹Рµ
 #include <string>
 #include <vector>
 

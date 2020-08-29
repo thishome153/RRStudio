@@ -2,7 +2,7 @@
 #include "SignerUtils.h"
 #include "cspUtilsIO.h"
 #include <wincrypt.h>
-#include "WinCryptEx.h"// Интерфейс КриптоПро CSP, добавление к WinCrypt.h
+#include "WinCryptEx.h"// РРЅС‚РµСЂС„РµР№СЃ РљСЂРёРїС‚РѕРџСЂРѕ CSP, РґРѕР±Р°РІР»РµРЅРёРµ Рє WinCrypt.h
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -41,7 +41,7 @@ namespace SignerUtils {
 			LPVOID	    mem_tbs = NULL;
 			size_t	    mem_len = 0;
 			DWORD		signed_len = 0;
-			BYTE* signed_mem = NULL;  // Буффер с подписью
+			BYTE* signed_mem = NULL;  // Р‘СѓС„С„РµСЂ СЃ РїРѕРґРїРёСЃСЊСЋ
 			//LPCSTR FileName = (LPCSTR)StringtoChar(FileToSign);
 			std::string fname(FileName);
 			//char* OutFileName =  StringtoChar(Path::GetFileName(FileToSign) + ".sig");
@@ -57,10 +57,10 @@ namespace SignerUtils {
 				MessageSizeArray[0] = mem_len;
 
 
-				/* Установим параметры*/
-				/* Обязательно нужно обнулить все поля структуры. */
-				/* Иначе это может привести к access violation в функциях CryptoAPI*/
-				/* В примере из MSDN это отсутствует*/
+				/* РЈСЃС‚Р°РЅРѕРІРёРј РїР°СЂР°РјРµС‚СЂС‹*/
+				/* РћР±СЏР·Р°С‚РµР»СЊРЅРѕ РЅСѓР¶РЅРѕ РѕР±РЅСѓР»РёС‚СЊ РІСЃРµ РїРѕР»СЏ СЃС‚СЂСѓРєС‚СѓСЂС‹. */
+				/* РРЅР°С‡Рµ СЌС‚Рѕ РјРѕР¶РµС‚ РїСЂРёРІРµСЃС‚Рё Рє access violation РІ С„СѓРЅРєС†РёСЏС… CryptoAPI*/
+				/* Р’ РїСЂРёРјРµСЂРµ РёР· MSDN СЌС‚Рѕ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚*/
 				memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
 				param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
 				param.dwMsgEncodingType = TYPE_DER; //X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
@@ -73,10 +73,10 @@ namespace SignerUtils {
 				param.rgpMsgCert = &SignerCert; // NULL;
 				param.cAuthAttr = 0;
 				param.dwInnerContentType = 0;
-				param.cMsgCrl = 0;  // Cписки отзыва
+				param.cMsgCrl = 0;  // CРїРёСЃРєРё РѕС‚Р·С‹РІР°
 				param.cUnauthAttr = 0;
 				param.dwFlags = 0; //
-				param.pvHashAuxInfo = NULL;	/* не используется*/
+				param.pvHashAuxInfo = NULL;	/* РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ*/
 				param.rgAuthAttr = NULL;
 
 				/*  cades here :) ?!
@@ -241,15 +241,15 @@ namespace SignerUtils {
 			dwIndex = 0;
 			while (CryptEnumProviderTypes(
 				dwIndex,     // in -- dwIndex
-				NULL,        // in -- pdwReserved- устанавливается в NULL
-				0,           // in -- dwFlags -- устанавливается в ноль
+				NULL,        // in -- pdwReserved- СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ NULL
+				0,           // in -- dwFlags -- СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ РЅРѕР»СЊ
 				&dwType,     // out -- pdwProvType
-				NULL,        // out -- pszProvName -- NULL при первом вызове
+				NULL,        // out -- pszProvName -- NULL РїСЂРё РїРµСЂРІРѕРј РІС‹Р·РѕРІРµ
 				&cbName      // in, out -- pcbProvName
 			))
 			{
-				//  cbName - длина имени следующего типа провайдера.
-				//  Распределение памяти в буфере для восстановления этого имени.
+				//  cbName - РґР»РёРЅР° РёРјРµРЅРё СЃР»РµРґСѓСЋС‰РµРіРѕ С‚РёРїР° РїСЂРѕРІР°Р№РґРµСЂР°.
+				//  Р Р°СЃРїСЂРµРґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РІ Р±СѓС„РµСЂРµ РґР»СЏ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЌС‚РѕРіРѕ РёРјРµРЅРё.
 				pszName = (LPTSTR)malloc(cbName);
 				if (!pszName)
 					//HandleError("ERROR - malloc failed!");
@@ -257,7 +257,7 @@ namespace SignerUtils {
 					memset(pszName, 0, cbName);
 
 				//--------------------------------------------------------------------
-				//  Получение имени типа провайдера.
+				//  РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё С‚РёРїР° РїСЂРѕРІР°Р№РґРµСЂР°.
 
 				if (CryptEnumProviderTypes(
 					dwIndex++,
@@ -289,8 +289,8 @@ namespace SignerUtils {
 			ALG_ID      aiAlgid;
 			DWORD       dwBits;
 			DWORD       dwNameLen;
-	//		CHAR        szName[1024];//[NAME_LENGTH]; // Распределены динамически
-			BYTE        pbData[1024];// Распределены динамически
+	//		CHAR        szName[1024];//[NAME_LENGTH]; // Р Р°СЃРїСЂРµРґРµР»РµРЅС‹ РґРёРЅР°РјРёС‡РµСЃРєРё
+			BYTE        pbData[1024];// Р Р°СЃРїСЂРµРґРµР»РµРЅС‹ РґРёРЅР°РјРёС‡РµСЃРєРё
 			DWORD       cbData = 1024;
 			DWORD       dwIncrement = sizeof(DWORD);
 			DWORD       dwFlags = CRYPT_FIRST;
@@ -304,29 +304,29 @@ namespace SignerUtils {
 			dwIndex = 0;
 			while (CryptEnumProviders(
 				dwIndex,     // in -- dwIndex
-				NULL,        // in -- pdwReserved- устанавливается в NULL
-				0,           // in -- dwFlags -- устанавливается в ноль
+				NULL,        // in -- pdwReserved- СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ NULL
+				0,           // in -- dwFlags -- СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ РЅРѕР»СЊ
 				&dwType,     // out -- pdwProvType
-				NULL,        // out -- pszProvName -- NULL при первом вызове
+				NULL,        // out -- pszProvName -- NULL РїСЂРё РїРµСЂРІРѕРј РІС‹Р·РѕРІРµ
 				&cbName      // in, out -- pcbProvName
 			))
 			{
-				//  cbName - длина имени следующего провайдера.
-				//  Распределение памяти в буфере для восстановления этого имени.
+				//  cbName - РґР»РёРЅР° РёРјРµРЅРё СЃР»РµРґСѓСЋС‰РµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР°.
+				//  Р Р°СЃРїСЂРµРґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РІ Р±СѓС„РµСЂРµ РґР»СЏ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЌС‚РѕРіРѕ РёРјРµРЅРё.
 				pszName = (LPTSTR)malloc(cbName);
 				if (!pszName)
 					//	HandleError("ERROR - malloc failed!");
 
 					memset(pszName, 0, cbName);
 
-				//  Получение имени провайдера.
+				//  РџРѕР»СѓС‡РµРЅРёРµ РёРјРµРЅРё РїСЂРѕРІР°Р№РґРµСЂР°.
 				if (CryptEnumProviders(
 					dwIndex++,
 					NULL,
 					0,
 					&dwType,
 					pszName,
-					&cbName     // pcbProvName -- длина pszName
+					&cbName     // pcbProvName -- РґР»РёРЅР° pszName
 				))
 				{
 					std::string std_sName;
@@ -373,7 +373,7 @@ namespace SignerUtils {
 		char* PBYTEToChar(PBYTE x, const int cb)
 		{
 			char* str = NULL;
-			str = new char[2 * cb + 1]; // массив нужен в два раза длиньше? один байт в HEX -это FF, к примеру - два символа.
+			str = new char[2 * cb + 1]; // РјР°СЃСЃРёРІ РЅСѓР¶РµРЅ РІ РґРІР° СЂР°Р·Р° РґР»РёРЅСЊС€Рµ? РѕРґРёРЅ Р±Р°Р№С‚ РІ HEX -СЌС‚Рѕ FF, Рє РїСЂРёРјРµСЂСѓ - РґРІР° СЃРёРјРІРѕР»Р°.
 			str[cb - 1] = '\0';
 			int cntr = cb;
 			for (int i = 0; i <= cb - 1; i++) {
@@ -447,12 +447,12 @@ namespace SignerUtils {
 			PCCERT_CONTEXT  ret = NULL;
 			HANDLE	    hCertStore = 0;
 
-			/*   //для случая поиска CERT_FIND_SUBJECT_NAME:
+			/*   //РґР»СЏ СЃР»СѓС‡Р°СЏ РїРѕРёСЃРєР° CERT_FIND_SUBJECT_NAME:
 			PCERT_NAME_BLOB FindName =(PCERT_NAME_BLOB) malloc(sizeof(CERT_NAME_BLOB));
 			FindName->cbData =sizeof(StringtoChar(CertName));
 			FindName->pbData =(BYTE *) (StringtoChar(CertName));
 			*/
-			//LPCSTR lpszCertSubject = SubjectName.c_str();  //(LPCSTR)StringtoChar(SubjectName); //для случая поиска CERT_FIND_SUBJECT_STR
+			//LPCSTR lpszCertSubject = SubjectName.c_str();  //(LPCSTR)StringtoChar(SubjectName); //РґР»СЏ СЃР»СѓС‡Р°СЏ РїРѕРёСЃРєР° CERT_FIND_SUBJECT_STR
 
 			hCertStore = CertOpenStore(
 				CERT_STORE_PROV_SYSTEM, /* LPCSTR lpszStoreProvider*/
@@ -465,7 +465,7 @@ namespace SignerUtils {
 			ret = CertFindCertificateInStore(hCertStore,
 				TYPE_DER,
 				0,
-				CERT_FIND_SUBJECT_STR_A, // Искать как Unicode?
+				CERT_FIND_SUBJECT_STR_A, // РСЃРєР°С‚СЊ РєР°Рє Unicode?
 				lpszCertSubject,
 				NULL);
 			return ret;
@@ -628,7 +628,7 @@ namespace SignerUtils {
 
 
 	namespace cades {
-		//Поиск описания ошибки CADES по её коду
+		//РџРѕРёСЃРє РѕРїРёСЃР°РЅРёСЏ РѕС€РёР±РєРё CADES РїРѕ РµС‘ РєРѕРґСѓ
 
 		LPTSTR Error2Message(DWORD dwErr)
 		{
@@ -655,9 +655,9 @@ namespace SignerUtils {
 	namespace examples {
 
 		/**************************************************************************************
-		/* Создание подписи CRypto Pro (упрощённые функции):
+		/* РЎРѕР·РґР°РЅРёРµ РїРѕРґРїРёСЃРё CRypto Pro (СѓРїСЂРѕС‰С‘РЅРЅС‹Рµ С„СѓРЅРєС†РёРё):
 		 **************************************************************************************/
-		 // Из примера Cpdn: подпись строки цифр - тест провайдера
+		 // РР· РїСЂРёРјРµСЂР° Cpdn: РїРѕРґРїРёСЃСЊ СЃС‚СЂРѕРєРё С†РёС„СЂ - С‚РµСЃС‚ РїСЂРѕРІР°Р№РґРµСЂР°
 		int  SignCadesExample(PCCERT_CONTEXT CertToSign)
 		{
 			CRYPT_SIGN_MESSAGE_PARA signpara = { sizeof(signpara) };
@@ -669,10 +669,10 @@ namespace SignerUtils {
 			para.pSignMessagePara = &signpara;
 
 			std::vector<BYTE> data(10, 25);
-			const BYTE* pbToBeSigned[] = { &data[0] };			 // буффер
+			const BYTE* pbToBeSigned[] = { &data[0] };			 // Р±СѓС„С„РµСЂ
 			DWORD rgcbToBeSigned[] = { (DWORD)data.size() };
 
-			PCRYPT_DATA_BLOB pSignedMessage = 0; // зануляем.....
+			PCRYPT_DATA_BLOB pSignedMessage = 0; // Р·Р°РЅСѓР»СЏРµРј.....
 			if (!CadesSignMessage(&para, FALSE, 1, pbToBeSigned, rgcbToBeSigned, &pSignedMessage))
 			{
 				int err = GetLastError();
@@ -700,7 +700,7 @@ namespace SignerUtils {
 			LPVOID	    mem_tbs = NULL;
 			size_t	    mem_len = 0;
 			DWORD		signed_len = 0;
-			BYTE* signed_mem = NULL;  // Буффер с подписью
+			BYTE* signed_mem = NULL;  // Р‘СѓС„С„РµСЂ СЃ РїРѕРґРїРёСЃСЊСЋ
 			//LPCWSTR FileName =L"c:\\TEMP\\work.txt";// *StringtoChar(FileToSign);
 			LPCSTR FileName = (LPCSTR)StringtoChar(FileToSign);
 			char* OutFileName = StringtoChar(Path::GetFileName(FileToSign) + ".sig");
@@ -710,28 +710,28 @@ namespace SignerUtils {
 			int retFile = cspUtils::IO::read_file(FileName, &mem_len, &mem_tbs);
 			if (retFile = 0) goto err;
 
-			/* Установим параметры*/
+			/* РЈСЃС‚Р°РЅРѕРІРёРј РїР°СЂР°РјРµС‚СЂС‹*/
 			CRYPT_SIGN_MESSAGE_PARA param = { sizeof(param) };
-			/* Обязательно нужно обнулить все поля структуры. */
-			/* Иначе это может привести к access violation в функциях CryptoAPI*/
-			/* В примере из MSDN это отсутствует*/
+			/* РћР±СЏР·Р°С‚РµР»СЊРЅРѕ РЅСѓР¶РЅРѕ РѕР±РЅСѓР»РёС‚СЊ РІСЃРµ РїРѕР»СЏ СЃС‚СЂСѓРєС‚СѓСЂС‹. */
+			/* РРЅР°С‡Рµ СЌС‚Рѕ РјРѕР¶РµС‚ РїСЂРёРІРµСЃС‚Рё Рє access violation РІ С„СѓРЅРєС†РёСЏС… CryptoAPI*/
+			/* Р’ РїСЂРёРјРµСЂРµ РёР· MSDN СЌС‚Рѕ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚*/
 			memset(&param, 0, sizeof(CRYPT_SIGN_MESSAGE_PARA));
 			param.cbSize = sizeof(CRYPT_SIGN_MESSAGE_PARA);
 			param.dwMsgEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING; // TYPE_DER;
-			param.pSigningCert = CertToSign;// Выберем сертификат!! //pUserCert;
+			param.pSigningCert = CertToSign;// Р’С‹Р±РµСЂРµРј СЃРµСЂС‚РёС„РёРєР°С‚!! //pUserCert;
 			//char *OID;
-					//char    AlgOID[64] = szOID_CP_GOST_R3411; //CRYPT_HASH_ALG_OID_ Алгоритм функции хэширования по ГОСТ Р 34.11-94 установлен по умоланию
+					//char    AlgOID[64] = szOID_CP_GOST_R3411; //CRYPT_HASH_ALG_OID_ РђР»РіРѕСЂРёС‚Рј С„СѓРЅРєС†РёРё С…СЌС€РёСЂРѕРІР°РЅРёСЏ РїРѕ Р“РћРЎРў Р  34.11-94 СѓСЃС‚Р°РЅРѕРІР»РµРЅ РїРѕ СѓРјРѕР»Р°РЅРёСЋ
 					//char    AlgOID[64] = szOID_RSA_SHA512RSA;
 					 //#define szOID_RSA_SHA512RSA     "1.2.840.113549.1.1.13"
 			param.HashAlgorithm.pszObjId = szOID_OIWSEC_sha1;
 			param.HashAlgorithm.Parameters.cbData = 0;
 			param.HashAlgorithm.Parameters.pbData = NULL;
-			param.pvHashAuxInfo = NULL;	/* не используется*/
-			param.cMsgCert = 1;		/* 0 -не включаем сертификат отправителя*/ /*If set to zero no certificates are included in the signed message*/
+			param.pvHashAuxInfo = NULL;	/* РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ*/
+			param.cMsgCert = 1;		/* 0 -РЅРµ РІРєР»СЋС‡Р°РµРј СЃРµСЂС‚РёС„РёРєР°С‚ РѕС‚РїСЂР°РІРёС‚РµР»СЏ*/ /*If set to zero no certificates are included in the signed message*/
 			param.rgpMsgCert = &CertToSign; // NULL;
 			param.cAuthAttr = 0;
 			param.dwInnerContentType = 0;
-			param.cMsgCrl = 0;  // Cписки отзыва
+			param.cMsgCrl = 0;  // CРїРёСЃРєРё РѕС‚Р·С‹РІР°
 			param.cUnauthAttr = 0;
 			param.dwFlags = 0; //
 
@@ -755,8 +755,8 @@ namespace SignerUtils {
 			CadesParams.dwSize = CadesParams.pSignMessagePara->cbSize + CadesParams.pCadesSignPara->dwSize;
 
 			PCRYPT_DATA_BLOB pSignedMessage = 0;
-			/* Определение длины подписанного сообщения:
-			//Данную функцию нужно вызывать только один раз(в отличие от функции CryptSignMessage */
+			/* РћРїСЂРµРґРµР»РµРЅРёРµ РґР»РёРЅС‹ РїРѕРґРїРёСЃР°РЅРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ:
+			//Р”Р°РЅРЅСѓСЋ С„СѓРЅРєС†РёСЋ РЅСѓР¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРёРЅ СЂР°Р·(РІ РѕС‚Р»РёС‡РёРµ РѕС‚ С„СѓРЅРєС†РёРё CryptSignMessage */
 			if (CadesSignMessage(&CadesParams, detached, 1, MessageArray, MessageSizeArray, &pSignedMessage))
 				/*
 				   __in BOOL fDetachedSignature,
@@ -780,11 +780,11 @@ namespace SignerUtils {
 				return 25;//HandleErrorFL("Signature creation error");
 			}
 			/*--------------------------------------------------------------------*/
-			/* Формирование подписанного сообщения*/
-			/* Длина оказалась 1024 */
+			/* Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїРѕРґРїРёСЃР°РЅРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ*/
+			/* Р”Р»РёРЅР° РѕРєР°Р·Р°Р»Р°СЃСЊ 1024 */
 			if (CadesSignMessage(&CadesParams, detached, 1, MessageArray, MessageSizeArray, &pSignedMessage))
 				;
-			// дописать запись в файл: write_file (OutFileName, signed_len, &pSignedMessage)
+			// РґРѕРїРёСЃР°С‚СЊ Р·Р°РїРёСЃСЊ РІ С„Р°Р№Р»: write_file (OutFileName, signed_len, &pSignedMessage)
 			else
 			{
 				return 26;//HandleErrorFL("Signature creation error");
@@ -800,10 +800,10 @@ namespace SignerUtils {
 
 		*/
 			/**************************************************************************************
-			/* Создание подписи CRypto Pro (упрощённые функции): Пример cpdn.
+			/* РЎРѕР·РґР°РЅРёРµ РїРѕРґРїРёСЃРё CRypto Pro (СѓРїСЂРѕС‰С‘РЅРЅС‹Рµ С„СѓРЅРєС†РёРё): РџСЂРёРјРµСЂ cpdn.
 			/*
-			/* Cоздание подписи CAdES - BES с помощью упрощённых функций
-			/* Входные данные - файл
+			/* CРѕР·РґР°РЅРёРµ РїРѕРґРїРёСЃРё CAdES - BES СЃ РїРѕРјРѕС‰СЊСЋ СѓРїСЂРѕС‰С‘РЅРЅС‹С… С„СѓРЅРєС†РёР№
+			/* Р’С…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ - С„Р°Р№Р»
 			*/
 			*/
 			DWORD SignCAdES_Example_01(System::String ^ FileToSign, PCCERT_CONTEXT CertToSign)
@@ -831,7 +831,7 @@ namespace SignerUtils {
 				// std::cout << "CadesSignMessage() failed" << std::endl;
 				 //DWORD Err = 		GetLastError();
 
-				 //Получаем 2147944005,0x80070645,Warning,Win32,,,,"This action is only valid for products that are currently installed."
+				 //РџРѕР»СѓС‡Р°РµРј 2147944005,0x80070645,Warning,Win32,,,,"This action is only valid for products that are currently installed."
 				return 25;
 			}
 

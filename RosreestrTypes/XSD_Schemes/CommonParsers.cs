@@ -3211,27 +3211,31 @@ namespace RRTypes.CommonParsers
             if (xmldoc.DocumentElement.SelectSingleNode("Building") != null)
             {
                 XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Building");
-                ParseGeneralCadastralWorksTP06(res, xmldoc.DocumentElement.SelectSingleNode("Building/GeneralCadastralWorks"), xmldoc.DocumentElement.SelectSingleNode("Building/Conclusion").FirstChild.Value);
+                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("Construction") != null)
             {
-
+                XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Construction");
+                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("Uncompleted") != null)
             {
-
+                XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Uncompleted");
+                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("Flat") != null)
             {
-
+                XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Flat");
+                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
             {
-
+                XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace");
+                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
