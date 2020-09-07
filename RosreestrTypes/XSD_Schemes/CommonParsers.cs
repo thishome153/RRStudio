@@ -3244,10 +3244,13 @@ namespace RRTypes.CommonParsers
                     // /TP/Building/InputData
                     Bl.OMSPoints = ParseInputDataTP06(BuildNode.SelectSingleNode("InputData"));
 
-                    // / TP / Building / CoordSystems / CoordSystem / @Name
-                    ;
-                    res.MyBlocks.CSs.Add(new TCoordSystem(BuildNode.SelectSingleNode("InputData/CoordSystems/CoordSystem").Attributes.GetNamedItem("Name").Value,
-                        BuildNode.SelectSingleNode("InputData/CoordSystems/CoordSystem").Attributes.GetNamedItem("CsId").Value));
+                    // TP / Building / CoordSystems / CoordSystem / @Name
+                    // TP / Building / Package / ExistBuilding / EntitySpatial / @Name
+                    //XmlNodeList CSNode = BuildNode.SelectNodes("CoordSystems");
+                    /*
+                    res.MyBlocks.CSs.Add(new TCoordSystem(BuildNode.SelectSingleNode("CoordSystems/CoordSystem").Attributes.GetNamedItem("Name").Value,
+                        BuildNode.SelectSingleNode("CoordSystems/CoordSystem").Attributes.GetNamedItem("CsId").Value));
+                    */
                 }
             }
 
