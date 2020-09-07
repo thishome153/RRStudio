@@ -159,10 +159,15 @@ namespace SignerUtils {
 						pbData = (BYTE*)malloc(pdwDataLen); //The pbData parameter is a pointer to a DWORD value 
 															//that receives the permission flags for the key
 						//retrieves data that governs the operations of a key
+
+						//Got here:  DWORD Params 1116568 - Export Disabled
+						//			 DWORD Params 1116572 - Export Enabled	CRYPT_EXPORT            0x0004  // Allow key to be exported
+
 						if (CryptGetKeyParam(hKey, KP_PERMISSIONS, pbData, &pdwDataLen, 0))
 						{
 							DWORD Permissions_Flags = 0;
-							memcpy(&Permissions_Flags, &pbData[0], pdwDataLen);
+							memcpy(&Permissions_Flags, pbData, pdwDataLen);
+
 
 							for (DWORD i = 0; i < pdwDataLen; i++)
 							{

@@ -3131,6 +3131,30 @@ namespace RRTypes.CommonParsers
 
 
 
+        private PointList ParseInputDataTP06(XmlNode InputDataNode)
+        {
+            PointList res = new PointList();
+            /*
+             // TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PName/#text
+
+            if (inpData.GeodesicBases != null)
+                foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
+                {
+            // TP/Building/InputData/GeodesicBases/GeodesicBase[1]/OrdX/#text
+            / /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/OrdY
+                    TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
+            // /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PName
+                    pt.Definition = oms.PName;
+            // /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PKind/#text ...1Б
+            / /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PKlass/#text
+                    pt.Description = oms.PKlass;
+                    pt.Code = oms.PName;
+                    res.AddPoint(pt);
+                }
+            */
+            return res;
+        }
+
         private PointList ParseInputData(V03_TP.tInputData inpData)
         {
             PointList res = new PointList();
@@ -3211,7 +3235,20 @@ namespace RRTypes.CommonParsers
             if (xmldoc.DocumentElement.SelectSingleNode("Building") != null)
             {
                 XmlNode BuildNode = xmldoc.DocumentElement.SelectSingleNode("Building");
-                ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
+                if (BuildNode != null)
+                {
+                    ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
+                    TCadastralBlock Bl = new TCadastralBlock();
+                    Bl.CN = "ТП v6";
+                    TRealEstate OKS = null;
+                    // /TP/Building/InputData
+                    Bl.OMSPoints = ParseInputDataTP06(BuildNode.SelectSingleNode("InputData"));
+
+                    // / TP / Building / CoordSystems / CoordSystem / @Name
+                    ;
+                    res.MyBlocks.CSs.Add(new TCoordSystem(BuildNode.SelectSingleNode("InputData/CoordSystems/CoordSystem").Attributes.GetNamedItem("Name").Value,
+                        BuildNode.SelectSingleNode("InputData/CoordSystems/CoordSystem").Attributes.GetNamedItem("CsId").Value));
+                }
             }
 
             if (xmldoc.DocumentElement.SelectSingleNode("Construction") != null)
