@@ -994,15 +994,25 @@ namespace netFteo.IO
 
                         TPoint FilePoint = new TPoint();
                         FilePoint.Definition = SplittedStr[0].ToString();
-                        FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
-                        FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
+
+                        try
+                        {
+                            FilePoint.x = Convert.ToDouble(SplittedStr[1].ToString());
+                            FilePoint.y = Convert.ToDouble(SplittedStr[2].ToString());
+                        }
+                        catch (FormatException ex)
+                        {
+
+                        }
+
                         FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
+
                         if (SplittedStr.Length == 5)
                         {
                             FilePoint.Code = SplittedStr[4].ToString();
                             FilePoint.Description = SplittedStr[4].ToString();
                         }
-                         resPoly.AddPoint(FilePoint);
+                        resPoly.AddPoint(FilePoint);
                         //resPolys.Add(FilePoint);
                         //line = readFile.ReadLine();
                     }
