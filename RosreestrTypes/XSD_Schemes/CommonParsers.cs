@@ -4896,9 +4896,9 @@ namespace RRTypes.CommonParsers
                     for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
                         TPoint OMS = new TPoint();
-                        OMS.Definition = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;
-                        OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;
-                        OMS.Description = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;
+                        OMS.Definition = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;       //94873
+                        OMS.Description = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;    //Класс ОМС – "; Система координат - МСК-26 от СК-95, зона 1
+                        OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;            //OMZ-117; 1Б; Труновский р-н, с. Донское, на пересечении ул. Кооперативная и ул. Ленина.
                         OMS.x = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdX;
                         OMS.y = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdY;
                         Bl.AddOmsPoint(OMS);
@@ -5049,6 +5049,7 @@ namespace RRTypes.CommonParsers
             return null;
         }
 
+        /*
         public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, null);
@@ -5253,6 +5254,7 @@ namespace RRTypes.CommonParsers
 
             return res;
         }
+        */
         #endregion
 
         #region  Разбор КПТ 11
@@ -7526,7 +7528,7 @@ namespace RRTypes.CommonParsers
             if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
             {
                 //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
-                DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
+                //DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
             }
 
 

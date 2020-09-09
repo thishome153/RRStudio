@@ -443,7 +443,7 @@ namespace netFteo.IO
             if (point.Definition == null)
                 PointName.Value = "-";
             else PointName.Value = point.Definition;
-            PointName.Height = 2;
+            PointName.Height = 0.75;
             PointName.Position = new Vector3(point.y, point.x, point.z);
             PointName.Layer = LayerText;
             block.Entities.Add(PointName);
@@ -466,20 +466,24 @@ namespace netFteo.IO
             attdefElev.Value = point.z_s;
             block.AttributeDefinitions.Add(attdefElev);
 
-            netDxf.Entities.Text PointZ= new Text();
-                PointZ.Height = 1;
-                PointZ.Position = new Vector3(point.y + 2, point.x + 2.5, point.z);
+            
+            if ( ! Double.IsNaN(point.z))
+            {
+                netDxf.Entities.Text PointZ = new Text();
+                PointZ.Height = 0.3;
+                PointZ.Position = new Vector3(point.y + 0.45, point.x + 0.85, point.z);
                 PointZ.Layer = LayerText;
-            PointZ.Value = point.z.ToString("0.00");
-            block.Entities.Add(PointZ);
-            //    dxfDoc.AddEntity(PointZ);
+                PointZ.Value = point.z.ToString("0.00");
+                block.Entities.Add(PointZ);
+            }
+            
 
 
             if (point.Code != null)
             {
                 netDxf.Entities.Text PointCode = new Text();
-                PointCode.Height = 0.5;
-                PointCode.Position = new Vector3(point.y + 2, point.x - 1, point.z);
+                PointCode.Height = 0.3;
+                PointCode.Position = new Vector3(point.y + 0.45, point.x - 0.6, point.z);
                 PointCode.Layer = LayerText;
                 PointCode.Value = point.Code;
                 //dxfDoc.AddEntity(PointCode);

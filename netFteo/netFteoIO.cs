@@ -1274,7 +1274,7 @@ namespace netFteo.IO
             for (int i = 0; i <= ES.Count - 1; i++)
             {
                 writer.WriteLine(ES[i].Code + ":");
-                writer.WriteLine("Номер на плане \t" + ES[i].NumGeopointA);
+                writer.WriteLine("Номер на плане \t" + ES[i].Definition);
                 writer.WriteLine("\t x \t" + ES[i].x_s);
                 writer.WriteLine("\t y \t" + ES[i].y_s);
                 writer.WriteLine("Класс сети");

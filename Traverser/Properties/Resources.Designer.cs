@@ -73,6 +73,26 @@ namespace Traverser.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MapInfo16_16 {
+            get {
+                object obj = ResourceManager.GetObject("MapInfo16-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Nanocad_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("Nanocad_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Ris_quest5 {
             get {
                 object obj = ResourceManager.GetObject("Ris_quest5", resourceCulture);

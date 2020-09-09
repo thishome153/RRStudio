@@ -771,29 +771,19 @@ namespace Traverser
             this.Project.Raw.SetAllVertex(true);
         }
 
-        private void txtToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAsFixosoftTXT();
-         }
-
-        private void SaveAsFixosoftTXT()
-        {
-            saveFileDialog1.FilterIndex =3;
-            /*
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                
-                this.Project.Points..WriteTxtFile(saveFileDialog1.FileName);
-          */
-          
-        }
+    
 
 
         private void SaveAsmif()
         {
             saveFileDialog1.FilterIndex = 4;
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)    ;
-
-
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                netFteo.IO.TextWriter Wr = new netFteo.IO.TextWriter();
+                TEntitySpatial es = new TEntitySpatial();
+                es.AddPolygon(Project.Polygon);
+                Wr.SaveAsmif(saveFileDialog1.FileName, es);
+            }
         }
 
         private void mifToolStripMenuItem_Click(object sender, EventArgs e)
@@ -827,10 +817,12 @@ namespace Traverser
             saveFileDialog1.FilterIndex = 3;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                /*
+                
                 netFteo.IO.TextWriter Wr = new netFteo.IO.TextWriter();
-                Wr.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, (TEntitySpatial )this.Project.Polygon, Encoding.Default);
-                */
+                TEntitySpatial es = new TEntitySpatial();
+                es.AddPolygon(Project.Polygon);
+                Wr.SaveAsFixosoftTXT2018(saveFileDialog1.FileName, es, Encoding.Default);
+                
             }
         }
 

@@ -57,7 +57,6 @@
             this.mifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dxfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.текстовыйФайлNXYZD2015ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.RAWBodyrichTextBox = new System.Windows.Forms.RichTextBox();
@@ -284,7 +283,7 @@
             this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton5.Size = new System.Drawing.Size(23, 4);
             this.toolStripButton5.Text = "Точки на прямой";
             this.toolStripButton5.ToolTipText = "Точки на прямой (разбивка прямой)";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
@@ -368,7 +367,7 @@
             this.contextMenu_SaveAS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сохранитьКакToolStripMenuItem1});
             this.contextMenu_SaveAS.Name = "contextMenuStrip1";
-            this.contextMenu_SaveAS.Size = new System.Drawing.Size(166, 26);
+            this.contextMenu_SaveAS.Size = new System.Drawing.Size(181, 48);
             // 
             // сохранитьКакToolStripMenuItem1
             // 
@@ -376,45 +375,41 @@
             this.mifToolStripMenuItem,
             this.dxfToolStripMenuItem,
             this.xmlToolStripMenuItem,
-            this.txtToolStripMenuItem,
             this.текстовыйФайлNXYZD2015ToolStripMenuItem});
             this.сохранитьКакToolStripMenuItem1.Name = "сохранитьКакToolStripMenuItem1";
-            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(165, 22);
+            this.сохранитьКакToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.сохранитьКакToolStripMenuItem1.Text = "Сохранить как....";
             // 
             // mifToolStripMenuItem
             // 
+            this.mifToolStripMenuItem.Image = global::Traverser.Properties.Resources.MapInfo16_16;
             this.mifToolStripMenuItem.Name = "mifToolStripMenuItem";
-            this.mifToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.mifToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.mifToolStripMenuItem.Text = "mif";
             this.mifToolStripMenuItem.Click += new System.EventHandler(this.mifToolStripMenuItem_Click);
             // 
             // dxfToolStripMenuItem
             // 
+            this.dxfToolStripMenuItem.Image = global::Traverser.Properties.Resources.Nanocad_16x16;
             this.dxfToolStripMenuItem.Name = "dxfToolStripMenuItem";
-            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.dxfToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dxfToolStripMenuItem.Text = "dxf";
             this.dxfToolStripMenuItem.Click += new System.EventHandler(this.dxfToolStripMenuItem_Click);
             // 
             // xmlToolStripMenuItem
             // 
             this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
-            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.xmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.xmlToolStripMenuItem.Text = "xml";
             this.xmlToolStripMenuItem.Click += new System.EventHandler(this.xmlToolStripMenuItem_Click);
             // 
-            // txtToolStripMenuItem
-            // 
-            this.txtToolStripMenuItem.Name = "txtToolStripMenuItem";
-            this.txtToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.txtToolStripMenuItem.Text = "Текстовый файл NXYZD 2014";
-            this.txtToolStripMenuItem.Click += new System.EventHandler(this.txtToolStripMenuItem_Click);
-            // 
             // текстовыйФайлNXYZD2015ToolStripMenuItem
             // 
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.AutoToolTip = true;
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Name = "текстовыйФайлNXYZD2015ToolStripMenuItem";
-            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Text = "Текстовый файл NXYZD 2015";
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.Text = "Текстовый файл";
+            this.текстовыйФайлNXYZD2015ToolStripMenuItem.ToolTipText = "NXYZD 2018";
             this.текстовыйФайлNXYZD2015ToolStripMenuItem.Click += new System.EventHandler(this.текстовыйФайлNXYZD2015ToolStripMenuItem_Click);
             // 
             // tabPage4
@@ -940,7 +935,6 @@
         private System.Windows.Forms.ToolStripMenuItem mifToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dxfToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xmlToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem txtToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;

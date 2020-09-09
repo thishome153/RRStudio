@@ -213,6 +213,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Copy of FIXOSOft 2002  вариант 2.ico" />
+    <None Include="Resources\MapInfo16-16.bmp" />
+    <None Include="Resources\Nanocad_16x16.bmp" />
     <None Include="Resources\cross.png" />
     <None Include="Resources\Normal.bmp" />
     <None Include="Resources\Ris_quest5.jpg" />
