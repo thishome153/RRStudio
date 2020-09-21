@@ -3278,10 +3278,7 @@ namespace RRTypes.CommonParsers
                 ParseGeneralCadastralWorksTP06(res, BuildNode.SelectSingleNode("GeneralCadastralWorks"), BuildNode.SelectSingleNode("Conclusion").FirstChild.Value);
             }
 
-            if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
-            {
 
-            }
             XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
             /* 
             * */

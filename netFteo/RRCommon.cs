@@ -582,6 +582,139 @@ public enum dParcelsv01_enum
        }
    }
 
+    public class Contractor
+    {        /// <summary />
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null))
+            {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+        //string FamilyName;
+        //   string Patronymic;
+        /// string Telephone;
+        //string Email;
+        //  string SNILS;
+
+        private string familyNameField;
+        private string firstNameField;
+        private string patronymicField;
+        private string SNILSField;
+        private string EmailField;
+        private string TelephoneField;
+        private string nCertificateField;
+        private string addressField;
+
+        public string FamilyName
+        {
+            get
+            {
+                return this.familyNameField;
+            }
+            set
+            {
+                this.familyNameField = value;
+                this.RaisePropertyChanged("FamilyName");
+            }
+        }
+        public string FirstName
+        {
+            get
+            {
+                return this.firstNameField;
+            }
+            set
+            {
+                this.firstNameField = value;
+                this.RaisePropertyChanged("FirstName");
+            }
+        }
+        public string Patronymic
+        {
+            get
+            {
+                return this.patronymicField;
+            }
+            set
+            {
+                this.patronymicField = value;
+                this.RaisePropertyChanged("Patronymic");
+            }
+        }
+        public string SNILS
+        {
+            get
+            {
+                return this.SNILSField;
+            }
+            set
+            {
+                this.SNILSField = value;
+                this.RaisePropertyChanged("SNILS");
+            }
+        }
+        public string Email
+        {
+            get
+            {
+                return this.EmailField;
+            }
+            set
+            {
+                this.EmailField = value;
+                this.RaisePropertyChanged("Email");
+            }
+        }
+        public string Telephone
+        {
+            get
+            {
+                return this.TelephoneField;
+            }
+            set
+            {
+                this.TelephoneField = value;
+                this.RaisePropertyChanged("Telephone");
+            }
+        }
+        public string NCertificate
+        {
+            get
+            {
+                return this.nCertificateField;
+            }
+            set
+            {
+                this.nCertificateField = value;
+                this.RaisePropertyChanged("NCertificate");
+            }
+        }
+        public string Address
+        {
+            get
+            {
+                return this.addressField;
+            }
+            set
+            {
+                this.addressField = value;
+                this.RaisePropertyChanged("Address");
+            }
+        }
+    }
+
+
+
+    public class GeneralCadWorks
+    {
+        public Contractor Contractor;
+        public string DateCadastral;
+    }
+
    public class TRight
    {
        private string FType;

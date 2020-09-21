@@ -55,7 +55,6 @@
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.вставитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.картапланToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,8 +72,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBox_OrgName = new System.Windows.Forms.LinkLabel();
             this.textBox_Appointment = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
@@ -101,26 +98,9 @@
             this.contextMenuStrip_SaveAs = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.сохранитьКакToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.csvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mifфайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.списокТочекФайлNikonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dxfфайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m1500ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m11000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m5000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m110000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m133333ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.xmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.найтиНаПККбровзерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMI_ShowES = new System.Windows.Forms.ToolStripMenuItem();
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьПДКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьГеометриюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imList_dStates = new System.Windows.Forms.ImageList(this.components);
             this.listView1 = new System.Windows.Forms.ListView();
@@ -139,10 +119,8 @@
             this.перенумероватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.фиксироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.замкнутьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.listView_Properties = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -150,8 +128,6 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.fteoImage = new netFteo.Drawing.FteoImage();
-            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.cXmlTreeView2 = new XMLReaderCS.CXmlTreeView();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -173,26 +149,49 @@
             this.toolStripLabel_Counts = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.Button_CloseReader = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.csvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mifфайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списокТочекФайлNikonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dxfфайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m1500ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m11000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m5000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m110000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m133333ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.найтиНаПККбровзерToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMI_ShowES = new System.Windows.Forms.ToolStripMenuItem();
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.добавитьПДКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.документToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.онлайнЗапросToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьГеометриюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fteoImage = new netFteo.Drawing.FteoImage();
+            this.pkk5Viewer1 = new RRTypes.pkk5.pkk5Viewer();
+            this.Button_CloseReader = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_VisualizerToggle = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
+            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.документToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.онлайнЗапросToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contractorEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -202,13 +201,15 @@
             this.contextMenuStrip_SaveAs.SuspendLayout();
             this.contextMenuStrip_OIPD.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenu_pkk5Tree.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -284,14 +285,6 @@
             this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(157, 22);
             this.копироватьToolStripMenuItem3.Text = "Копировать";
             // 
-            // удалитьToolStripMenuItem1
-            // 
-            this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
-            this.удалитьToolStripMenuItem1.Text = "Удалить";
-            this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
-            // 
             // вставитьToolStripMenuItem
             // 
             this.вставитьToolStripMenuItem.Enabled = false;
@@ -309,7 +302,8 @@
             this.просмотрToolStripMenuItem,
             this.validateToolStripMenuItem,
             this.traverserToolStripMenuItem,
-            this.проверкаГеометрииустановкаЕГРНТочекToolStripMenuItem});
+            this.проверкаГеометрииустановкаЕГРНТочекToolStripMenuItem,
+            this.contractorEditorToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(79, 22);
             this.toolStripMenuItem1.Text = "Утилиты";
@@ -451,24 +445,6 @@
             this.tabPage2.Text = "Документ";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 113);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(700, 1);
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 290);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(700, 1);
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
             // 
             // textBox_OrgName
             // 
@@ -791,7 +767,7 @@
             this.debugToolStripMenuItem,
             this.поискToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 142);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 120);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -814,78 +790,6 @@
             this.toolStripMenuItem2.Text = "Текстовый файл";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click_1);
             // 
-            // csvStripMenuItem
-            // 
-            this.csvStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.technoCAD_Express;
-            this.csvStripMenuItem.Name = "csvStripMenuItem";
-            this.csvStripMenuItem.Size = new System.Drawing.Size(224, 22);
-            this.csvStripMenuItem.Text = "csv-файл (ТЭ)";
-            this.csvStripMenuItem.Click += new System.EventHandler(this.csvStripMenuItem_Click);
-            // 
-            // mifфайлToolStripMenuItem
-            // 
-            this.mifфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.MapInfo16_16;
-            this.mifфайлToolStripMenuItem.Name = "mifфайлToolStripMenuItem";
-            this.mifфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
-            this.mifфайлToolStripMenuItem.Text = "mif-файл";
-            this.mifфайлToolStripMenuItem.Click += new System.EventHandler(this.mifКПТToolStripMenuItem_Click);
-            // 
-            // списокТочекФайлNikonToolStripMenuItem
-            // 
-            this.списокТочекФайлNikonToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.tripod;
-            this.списокТочекФайлNikonToolStripMenuItem.Name = "списокТочекФайлNikonToolStripMenuItem";
-            this.списокТочекФайлNikonToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
-            this.списокТочекФайлNikonToolStripMenuItem.Text = "Список точек - файл Nikon";
-            this.списокТочекФайлNikonToolStripMenuItem.Click += new System.EventHandler(this.списокТочекФайлNikonToolStripMenuItem_Click);
-            // 
-            // dxfфайлToolStripMenuItem
-            // 
-            this.dxfфайлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m1500ToolStripMenuItem,
-            this.m11000ToolStripMenuItem,
-            this.m5000ToolStripMenuItem,
-            this.m110000ToolStripMenuItem,
-            this.m133333ToolStripMenuItem});
-            this.dxfфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Nanocad_16x16;
-            this.dxfфайлToolStripMenuItem.Name = "dxfфайлToolStripMenuItem";
-            this.dxfфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
-            this.dxfфайлToolStripMenuItem.Text = "dxf-файл";
-            // 
-            // m1500ToolStripMenuItem
-            // 
-            this.m1500ToolStripMenuItem.Name = "m1500ToolStripMenuItem";
-            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.m1500ToolStripMenuItem.Text = "M 1 :500";
-            this.m1500ToolStripMenuItem.Click += new System.EventHandler(this.m1500ToolStripMenuItem_Click);
-            // 
-            // m11000ToolStripMenuItem
-            // 
-            this.m11000ToolStripMenuItem.Name = "m11000ToolStripMenuItem";
-            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.m11000ToolStripMenuItem.Text = "M 1:1000";
-            this.m11000ToolStripMenuItem.Click += new System.EventHandler(this.m11000ToolStripMenuItem_Click);
-            // 
-            // m5000ToolStripMenuItem
-            // 
-            this.m5000ToolStripMenuItem.Name = "m5000ToolStripMenuItem";
-            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.m5000ToolStripMenuItem.Text = "M 1:5000";
-            this.m5000ToolStripMenuItem.Click += new System.EventHandler(this.m5000ToolStripMenuItem_Click);
-            // 
-            // m110000ToolStripMenuItem
-            // 
-            this.m110000ToolStripMenuItem.Name = "m110000ToolStripMenuItem";
-            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.m110000ToolStripMenuItem.Text = "M 1:10000";
-            this.m110000ToolStripMenuItem.Click += new System.EventHandler(this.m110000ToolStripMenuItem_Click);
-            // 
-            // m133333ToolStripMenuItem
-            // 
-            this.m133333ToolStripMenuItem.Name = "m133333ToolStripMenuItem";
-            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.m133333ToolStripMenuItem.Text = "M 1:33333";
-            this.m133333ToolStripMenuItem.Click += new System.EventHandler(this.m133333ToolStripMenuItem_Click);
-            // 
             // xmlToolStripMenuItem
             // 
             this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
@@ -901,76 +805,10 @@
             this.копироватьToolStripMenuItem.Text = "Копировать";
             this.копироватьToolStripMenuItem.Click += new System.EventHandler(this.копироватьToolStripMenuItem_Click);
             // 
-            // найтиНаПККбровзерToolStripMenuItem
-            // 
-            this.найтиНаПККбровзерToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Rosreestr;
-            this.найтиНаПККбровзерToolStripMenuItem.Name = "найтиНаПККбровзерToolStripMenuItem";
-            this.найтиНаПККбровзерToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.найтиНаПККбровзерToolStripMenuItem.Text = "Найти на ПКК (бровзер)";
-            this.найтиНаПККбровзерToolStripMenuItem.Click += new System.EventHandler(this.найтиНаПККбровзерToolStripMenuItem_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(203, 6);
-            // 
-            // debugToolStripMenuItem
-            // 
-            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMI_ShowES,
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem,
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem,
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem,
-            this.добавитьПДКПТToolStripMenuItem,
-            this.документToolStripMenuItem,
-            this.онлайнЗапросToolStripMenuItem,
-            this.удалитьГеометриюToolStripMenuItem});
-            this.debugToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.page_white_csharp;
-            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.debugToolStripMenuItem.Text = "Debug";
-            // 
-            // toolStripMI_ShowES
-            // 
-            this.toolStripMI_ShowES.Name = "toolStripMI_ShowES";
-            this.toolStripMI_ShowES.Size = new System.Drawing.Size(296, 22);
-            this.toolStripMI_ShowES.Text = "Визуализация ПД (WPF {xaml})";
-            this.toolStripMI_ShowES.Click += new System.EventHandler(this.toolStripMI_ShowES_Click);
-            // 
-            // eSViewerlibmcvcdllF1ToolStripMenuItem
-            // 
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Name = "eSViewerlibmcvcdllF1ToolStripMenuItem";
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Text = "MSVC::ESChecker Testlibrary";
-            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Click += new System.EventHandler(this.eSViewerlibmcvcdllF1ToolStripMenuItem_Click);
-            // 
-            // mSVCESCheckerFunc2Int1975ToolStripMenuItem
-            // 
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Name = "mSVCESCheckerFunc2Int1975ToolStripMenuItem";
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Text = "MSVC::ESChecker_Func2( int 1975)";
-            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Click += new System.EventHandler(this.mSVCESCheckerFunc2Int1975ToolStripMenuItem_Click);
-            // 
-            // writeDXFSingleEntitydxfPointToolStripMenuItem
-            // 
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Name = "writeDXFSingleEntitydxfPointToolStripMenuItem";
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
-            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
-            // 
-            // добавитьПДКПТToolStripMenuItem
-            // 
-            this.добавитьПДКПТToolStripMenuItem.Name = "добавитьПДКПТToolStripMenuItem";
-            this.добавитьПДКПТToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.добавитьПДКПТToolStripMenuItem.Text = "Добавить ПД ( КПТ)";
-            // 
-            // удалитьГеометриюToolStripMenuItem
-            // 
-            this.удалитьГеометриюToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьГеометриюToolStripMenuItem.Name = "удалитьГеометриюToolStripMenuItem";
-            this.удалитьГеометриюToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.удалитьГеометриюToolStripMenuItem.Text = "Удалить геометрию";
-            this.удалитьГеометриюToolStripMenuItem.Click += new System.EventHandler(this.удалитьГеометриюToolStripMenuItem_Click);
             // 
             // поискToolStripMenuItem
             // 
@@ -1126,14 +964,6 @@
             this.фиксироватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.фиксироватьToolStripMenuItem.Text = "Фиксировать";
             // 
-            // изменитьToolStripMenuItem
-            // 
-            this.изменитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.application_edit;
-            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.изменитьToolStripMenuItem.Text = "Изменить";
-            this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.ИзменитьToolStripMenuItem_Click);
-            // 
             // замкнутьToolStripMenuItem
             // 
             this.замкнутьToolStripMenuItem.Name = "замкнутьToolStripMenuItem";
@@ -1147,14 +977,6 @@
             this.обратныйПорядокToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.обратныйПорядокToolStripMenuItem.Text = "Обратный порядок";
             this.обратныйПорядокToolStripMenuItem.Click += new System.EventHandler(this.обратныйПорядокToolStripMenuItem_Click);
-            // 
-            // удалитьToolStripMenuItem
-            // 
-            this.удалитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
-            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
             // splitter1
             // 
@@ -1231,30 +1053,6 @@
             this.tabPage4.Text = "ПКК-Онлайн";
             this.tabPage4.UseVisualStyleBackColor = true;
             this.tabPage4.Enter += new System.EventHandler(this.tabPage4_Enter);
-            // 
-            // fteoImage
-            // 
-            this.fteoImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.fteoImage.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage.Image")));
-            this.fteoImage.Location = new System.Drawing.Point(832, 0);
-            this.fteoImage.Name = "fteoImage";
-            this.fteoImage.Size = new System.Drawing.Size(135, 134);
-            this.fteoImage.TabIndex = 5;
-            this.fteoImage.TabStop = false;
-            // 
-            // pkk5Viewer1
-            // 
-            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
-            this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
-            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
-            this.pkk5Viewer1.Name = "pkk5Viewer1";
-            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
-            this.pkk5Viewer1.QueryValue = "26:05:043433:7";
-            this.pkk5Viewer1.Size = new System.Drawing.Size(944, 510);
-            this.pkk5Viewer1.TabIndex = 4;
-            this.pkk5Viewer1.TabStop = false;
-            this.pkk5Viewer1.Click += new System.EventHandler(this.pkk5Viewer1_Click);
             // 
             // tabPage5
             // 
@@ -1476,6 +1274,260 @@
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.AutoSize = false;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(15, 25);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.AutoSize = false;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(25, 25);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // PreloaderMenuItem
+            // 
+            this.PreloaderMenuItem.AutoSize = false;
+            // 
+            // PreloaderMenuItem
+            // 
+            this.PreloaderMenuItem.LoadingCircleControl.AccessibleName = "PreloaderMenuItem";
+            this.PreloaderMenuItem.LoadingCircleControl.Active = false;
+            this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
+            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
+            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(222, 1);
+            this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
+            this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
+            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
+            this.PreloaderMenuItem.LoadingCircleControl.RotationSpeed = 100;
+            this.PreloaderMenuItem.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
+            this.PreloaderMenuItem.LoadingCircleControl.SpokeThickness = 2;
+            this.PreloaderMenuItem.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
+            this.PreloaderMenuItem.LoadingCircleControl.TabIndex = 1;
+            this.PreloaderMenuItem.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
+            this.PreloaderMenuItem.Name = "PreloaderMenuItem";
+            this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
+            this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 113);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(700, 1);
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 290);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(700, 1);
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            // 
+            // csvStripMenuItem
+            // 
+            this.csvStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.technoCAD_Express;
+            this.csvStripMenuItem.Name = "csvStripMenuItem";
+            this.csvStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.csvStripMenuItem.Text = "csv-файл (ТЭ)";
+            this.csvStripMenuItem.Click += new System.EventHandler(this.csvStripMenuItem_Click);
+            // 
+            // mifфайлToolStripMenuItem
+            // 
+            this.mifфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.MapInfo16_16;
+            this.mifфайлToolStripMenuItem.Name = "mifфайлToolStripMenuItem";
+            this.mifфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.mifфайлToolStripMenuItem.Text = "mif-файл";
+            this.mifфайлToolStripMenuItem.Click += new System.EventHandler(this.mifКПТToolStripMenuItem_Click);
+            // 
+            // списокТочекФайлNikonToolStripMenuItem
+            // 
+            this.списокТочекФайлNikonToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.tripod;
+            this.списокТочекФайлNikonToolStripMenuItem.Name = "списокТочекФайлNikonToolStripMenuItem";
+            this.списокТочекФайлNikonToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.списокТочекФайлNikonToolStripMenuItem.Text = "Список точек - файл Nikon";
+            this.списокТочекФайлNikonToolStripMenuItem.Click += new System.EventHandler(this.списокТочекФайлNikonToolStripMenuItem_Click);
+            // 
+            // dxfфайлToolStripMenuItem
+            // 
+            this.dxfфайлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m1500ToolStripMenuItem,
+            this.m11000ToolStripMenuItem,
+            this.m5000ToolStripMenuItem,
+            this.m110000ToolStripMenuItem,
+            this.m133333ToolStripMenuItem});
+            this.dxfфайлToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Nanocad_16x16;
+            this.dxfфайлToolStripMenuItem.Name = "dxfфайлToolStripMenuItem";
+            this.dxfфайлToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.dxfфайлToolStripMenuItem.Text = "dxf-файл";
+            // 
+            // m1500ToolStripMenuItem
+            // 
+            this.m1500ToolStripMenuItem.Name = "m1500ToolStripMenuItem";
+            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m1500ToolStripMenuItem.Text = "M 1 :500";
+            this.m1500ToolStripMenuItem.Click += new System.EventHandler(this.m1500ToolStripMenuItem_Click);
+            // 
+            // m11000ToolStripMenuItem
+            // 
+            this.m11000ToolStripMenuItem.Name = "m11000ToolStripMenuItem";
+            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m11000ToolStripMenuItem.Text = "M 1:1000";
+            this.m11000ToolStripMenuItem.Click += new System.EventHandler(this.m11000ToolStripMenuItem_Click);
+            // 
+            // m5000ToolStripMenuItem
+            // 
+            this.m5000ToolStripMenuItem.Name = "m5000ToolStripMenuItem";
+            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m5000ToolStripMenuItem.Text = "M 1:5000";
+            this.m5000ToolStripMenuItem.Click += new System.EventHandler(this.m5000ToolStripMenuItem_Click);
+            // 
+            // m110000ToolStripMenuItem
+            // 
+            this.m110000ToolStripMenuItem.Name = "m110000ToolStripMenuItem";
+            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m110000ToolStripMenuItem.Text = "M 1:10000";
+            this.m110000ToolStripMenuItem.Click += new System.EventHandler(this.m110000ToolStripMenuItem_Click);
+            // 
+            // m133333ToolStripMenuItem
+            // 
+            this.m133333ToolStripMenuItem.Name = "m133333ToolStripMenuItem";
+            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m133333ToolStripMenuItem.Text = "M 1:33333";
+            this.m133333ToolStripMenuItem.Click += new System.EventHandler(this.m133333ToolStripMenuItem_Click);
+            // 
+            // найтиНаПККбровзерToolStripMenuItem
+            // 
+            this.найтиНаПККбровзерToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.Rosreestr;
+            this.найтиНаПККбровзерToolStripMenuItem.Name = "найтиНаПККбровзерToolStripMenuItem";
+            this.найтиНаПККбровзерToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.найтиНаПККбровзерToolStripMenuItem.Text = "Найти на ПКК (бровзер)";
+            this.найтиНаПККбровзерToolStripMenuItem.Click += new System.EventHandler(this.найтиНаПККбровзерToolStripMenuItem_Click);
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMI_ShowES,
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem,
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem,
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem,
+            this.добавитьПДКПТToolStripMenuItem,
+            this.документToolStripMenuItem,
+            this.онлайнЗапросToolStripMenuItem,
+            this.удалитьГеометриюToolStripMenuItem});
+            this.debugToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.page_white_csharp;
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.debugToolStripMenuItem.Text = "Debug";
+            // 
+            // toolStripMI_ShowES
+            // 
+            this.toolStripMI_ShowES.Name = "toolStripMI_ShowES";
+            this.toolStripMI_ShowES.Size = new System.Drawing.Size(296, 22);
+            this.toolStripMI_ShowES.Text = "Визуализация ПД (WPF {xaml})";
+            this.toolStripMI_ShowES.Click += new System.EventHandler(this.toolStripMI_ShowES_Click);
+            // 
+            // eSViewerlibmcvcdllF1ToolStripMenuItem
+            // 
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Name = "eSViewerlibmcvcdllF1ToolStripMenuItem";
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Text = "MSVC::ESChecker Testlibrary";
+            this.eSViewerlibmcvcdllF1ToolStripMenuItem.Click += new System.EventHandler(this.eSViewerlibmcvcdllF1ToolStripMenuItem_Click);
+            // 
+            // mSVCESCheckerFunc2Int1975ToolStripMenuItem
+            // 
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Name = "mSVCESCheckerFunc2Int1975ToolStripMenuItem";
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Text = "MSVC::ESChecker_Func2( int 1975)";
+            this.mSVCESCheckerFunc2Int1975ToolStripMenuItem.Click += new System.EventHandler(this.mSVCESCheckerFunc2Int1975ToolStripMenuItem_Click);
+            // 
+            // writeDXFSingleEntitydxfPointToolStripMenuItem
+            // 
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Name = "writeDXFSingleEntitydxfPointToolStripMenuItem";
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
+            this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
+            // 
+            // добавитьПДКПТToolStripMenuItem
+            // 
+            this.добавитьПДКПТToolStripMenuItem.Name = "добавитьПДКПТToolStripMenuItem";
+            this.добавитьПДКПТToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.добавитьПДКПТToolStripMenuItem.Text = "Добавить ПД ( КПТ)";
+            // 
+            // документToolStripMenuItem
+            // 
+            this.документToolStripMenuItem.Name = "документToolStripMenuItem";
+            this.документToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.документToolStripMenuItem.Text = "Показать в человекочитаемом формате";
+            // 
+            // онлайнЗапросToolStripMenuItem
+            // 
+            this.онлайнЗапросToolStripMenuItem.Name = "онлайнЗапросToolStripMenuItem";
+            this.онлайнЗапросToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.онлайнЗапросToolStripMenuItem.Text = "ПКК-Онлайн";
+            // 
+            // удалитьГеометриюToolStripMenuItem
+            // 
+            this.удалитьГеометриюToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьГеометриюToolStripMenuItem.Name = "удалитьГеометриюToolStripMenuItem";
+            this.удалитьГеометриюToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.удалитьГеометриюToolStripMenuItem.Text = "Удалить геометрию";
+            this.удалитьГеометриюToolStripMenuItem.Click += new System.EventHandler(this.удалитьГеометриюToolStripMenuItem_Click);
+            // 
+            // изменитьToolStripMenuItem
+            // 
+            this.изменитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.application_edit;
+            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.изменитьToolStripMenuItem.Text = "Изменить";
+            this.изменитьToolStripMenuItem.Click += new System.EventHandler(this.ИзменитьToolStripMenuItem_Click);
+            // 
+            // удалитьToolStripMenuItem
+            // 
+            this.удалитьToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.удалитьToolStripMenuItem.Text = "Удалить";
+            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+            // 
+            // fteoImage
+            // 
+            this.fteoImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.fteoImage.Image = ((System.Drawing.Image)(resources.GetObject("fteoImage.Image")));
+            this.fteoImage.Location = new System.Drawing.Point(832, 0);
+            this.fteoImage.Name = "fteoImage";
+            this.fteoImage.Size = new System.Drawing.Size(135, 134);
+            this.fteoImage.TabIndex = 5;
+            this.fteoImage.TabStop = false;
+            // 
+            // pkk5Viewer1
+            // 
+            this.pkk5Viewer1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pkk5Viewer1.Image = ((System.Drawing.Image)(resources.GetObject("pkk5Viewer1.Image")));
+            this.pkk5Viewer1.Location = new System.Drawing.Point(3, 3);
+            this.pkk5Viewer1.Mode = RRTypes.pkk5.ServiceMode.pkk5;
+            this.pkk5Viewer1.Name = "pkk5Viewer1";
+            this.pkk5Viewer1.QueryObjectType = RRTypes.pkk5.pkk5_Types.Parcel;
+            this.pkk5Viewer1.QueryValue = "26:05:043433:7";
+            this.pkk5Viewer1.Size = new System.Drawing.Size(944, 510);
+            this.pkk5Viewer1.TabIndex = 4;
+            this.pkk5Viewer1.TabStop = false;
+            this.pkk5Viewer1.Click += new System.EventHandler(this.pkk5Viewer1_Click);
+            // 
             // Button_CloseReader
             // 
             this.Button_CloseReader.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1485,12 +1537,6 @@
             this.Button_CloseReader.Size = new System.Drawing.Size(23, 22);
             this.Button_CloseReader.Text = "Выход";
             this.Button_CloseReader.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.AutoSize = false;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(15, 25);
             // 
             // toolStripButton1
             // 
@@ -1524,12 +1570,6 @@
             this.toolStripButton5.ToolTipText = "CSV TechnoKAD";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.AutoSize = false;
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(25, 25);
-            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1552,11 +1592,6 @@
             this.toolStripButton_VisualizerToggle.ToolTipText = "Визуализация";
             this.toolStripButton_VisualizerToggle.Click += new System.EventHandler(this.toolStripButton2_Click_1);
             // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripButton3
             // 
             this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1567,50 +1602,24 @@
             this.toolStripButton3.Text = "О про";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
-            // toolStripSeparator4
+            // удалитьToolStripMenuItem1
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // PreloaderMenuItem
-            // 
-            this.PreloaderMenuItem.AutoSize = false;
-            // 
-            // PreloaderMenuItem
-            // 
-            this.PreloaderMenuItem.LoadingCircleControl.AccessibleName = "PreloaderMenuItem";
-            this.PreloaderMenuItem.LoadingCircleControl.Active = false;
-            this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
-            this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
-            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(222, 1);
-            this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
-            this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
-            this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
-            this.PreloaderMenuItem.LoadingCircleControl.RotationSpeed = 100;
-            this.PreloaderMenuItem.LoadingCircleControl.Size = new System.Drawing.Size(26, 22);
-            this.PreloaderMenuItem.LoadingCircleControl.SpokeThickness = 2;
-            this.PreloaderMenuItem.LoadingCircleControl.StylePreset = MRG.Controls.UI.LoadingCircle.StylePresets.MacOSX;
-            this.PreloaderMenuItem.LoadingCircleControl.TabIndex = 1;
-            this.PreloaderMenuItem.LoadingCircleControl.Text = "loadingCircleToolStripMenuItem1";
-            this.PreloaderMenuItem.Name = "PreloaderMenuItem";
-            this.PreloaderMenuItem.Size = new System.Drawing.Size(26, 22);
-            this.PreloaderMenuItem.Text = "loadingCircleToolStripMenuItem1";
+            this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
+            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
+            this.удалитьToolStripMenuItem1.Text = "Удалить";
+            this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
             // 
             // tPointBindingSource
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
             // 
-            // документToolStripMenuItem
+            // contractorEditorToolStripMenuItem
             // 
-            this.документToolStripMenuItem.Name = "документToolStripMenuItem";
-            this.документToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.документToolStripMenuItem.Text = "Показать в человекочитаемом формате";
-            // 
-            // онлайнЗапросToolStripMenuItem
-            // 
-            this.онлайнЗапросToolStripMenuItem.Name = "онлайнЗапросToolStripMenuItem";
-            this.онлайнЗапросToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.онлайнЗапросToolStripMenuItem.Text = "ПКК-Онлайн";
+            this.contractorEditorToolStripMenuItem.Name = "contractorEditorToolStripMenuItem";
+            this.contractorEditorToolStripMenuItem.Size = new System.Drawing.Size(388, 22);
+            this.contractorEditorToolStripMenuItem.Text = "Contractor editor";
+            this.contractorEditorToolStripMenuItem.Click += new System.EventHandler(this.contractorEditorToolStripMenuItem_Click);
             // 
             // KVZU_Form
             // 
@@ -1644,8 +1653,6 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1656,8 +1663,6 @@
             this.contextMenuStrip_SaveAs.ResumeLayout(false);
             this.contextMenuStrip_OIPD.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -1666,6 +1671,10 @@
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fteoImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pkk5Viewer1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tPointBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1818,6 +1827,7 @@
         private System.Windows.Forms.ToolStripMenuItem проверкаГеометрииустановкаЕГРНТочекToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem документToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem онлайнЗапросToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem contractorEditorToolStripMenuItem;
     }
 }
 

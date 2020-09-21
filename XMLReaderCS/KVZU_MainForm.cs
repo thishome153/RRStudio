@@ -5346,6 +5346,12 @@ LV.Items.Add(LVipP);
         {
             TopoCheck(TV_Parcels.SelectedNode);
         }
+
+        private void contractorEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmContractor Cntr = new frmContractor();
+            Cntr.Show();
+        }
     }
 }
 
