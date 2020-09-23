@@ -376,19 +376,20 @@ namespace netFteo.Spatial
             LV.Columns[6].Text = "-";
             LV.View = View.Details;
 
-
             //LV.Tag = PList.Parent_Id;
             if (SetTag) LV.Tag = id;
             //ListViewItem res = null; ;
             BName = this.Pref + this.Definition + this.OrdIdent;
             ListViewItem LVi = new ListViewItem();
             LVi.Text = BName;
-            LVi.Tag = id;
+            //LVi.Tag = id;
+            LVi.Tag = "TPoint." + id;
             LVi.SubItems.Add(x_s);
             LVi.SubItems.Add(y_s);
             LVi.SubItems.Add(z_s);
             LVi.SubItems.Add(Mt_s);
             LVi.SubItems.Add(Description);
+            LVi.SubItems.Add(Code);
             if (Pref == "н")
                 LVi.ForeColor = System.Drawing.Color.Red;
             else LVi.ForeColor = System.Drawing.Color.Black;

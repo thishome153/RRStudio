@@ -5332,6 +5332,7 @@ LV.Items.Add(LVipP);
         {
             if (((ListView)sender).SelectedItems.Count == 1)
             {
+                if (((ListView)sender).SelectedItems[0].Tag is string)
                 EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
             }
         }

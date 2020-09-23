@@ -54,7 +54,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Email" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">ooozem@mail.ru</Value>
     </Setting>
     <Setting Name="Organization_AddressOrganization" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

@@ -230,7 +230,7 @@ namespace XMLReaderCS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ooozem@mail.ru")]
         public string Email {
             get {
                 return ((string)(this["Email"]));

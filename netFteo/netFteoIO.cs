@@ -866,11 +866,11 @@ namespace netFteo.IO
                                 SplittedStr = line.Split(TabDelimiter.ToCharArray()); //Сплпиттер по tab (\t)
                                 TPoint FilePoint = new TPoint();
                                 //FilePoint.id = StrCounter;
-                                FilePoint.NumGeopointA = SplittedStr[0].ToString();
-                                if (FilePoint.NumGeopointA.Substring(0, 1) == "н")
+                                FilePoint.Definition = SplittedStr[0].ToString();
+                                if (FilePoint.Definition.Substring(0, 1) == "н")
                                 {
                                     FilePoint.Pref = "н";
-                                    FilePoint.NumGeopointA = FilePoint.NumGeopointA.Substring(1);
+                                    FilePoint.Definition = FilePoint.Definition.Substring(1);
                                 }
 
                                 if (!SplittedStr[1].Contains("-"))
@@ -893,7 +893,8 @@ namespace netFteo.IO
                                 {
                                     FilePoint.Mt = Convert.ToDouble(SplittedStr[5].ToString());
                                 }
-                                if (SplittedStr.Count() > 6)
+                                if ((SplittedStr.Count() > 6)&&(SplittedStr[6].Length >0))
+
                                     FilePoint.Description = SplittedStr[6].ToString();
                                 resPoly.AddPoint(FilePoint);
                                 //Внутренние границы
@@ -983,7 +984,7 @@ namespace netFteo.IO
 
                         string[] SplittedStr = line.Split(CommaDelimiter.ToCharArray());
 
-                        if (SplittedStr.Length < 5)
+                        if (SplittedStr.Length < 4)
                         {
                             goto next;
                         };
@@ -1007,11 +1008,11 @@ namespace netFteo.IO
 
                         FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
 
-                        if (SplittedStr.Length == 5)
+                        if ((SplittedStr.Length == 5) && (SplittedStr[4].Length > 0))
                         {
                             FilePoint.Code = SplittedStr[4].ToString();
-                            FilePoint.Description = "NikonXY";//SplittedStr[4].ToString();
                         }
+                        FilePoint.Description = "NikonXY";//SplittedStr[4].ToString();
                         //resPoly.AddPoint(FilePoint); - not list
                         resPolys.Add(FilePoint); // just points
                     }
@@ -1315,7 +1316,7 @@ namespace netFteo.IO
                         if (Poly[i].Code != null)
                             writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s + "," + Poly[i].Code);
                         else
-                        if (Poly[i].Description != null)
+                        if (Poly[i].Description != null) 
                             writer.WriteLine(Poly[i].Description + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
                         else
                             writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
