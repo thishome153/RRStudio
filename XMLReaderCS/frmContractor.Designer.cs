@@ -44,6 +44,7 @@
             this.toolButton_Replace_Contractor = new System.Windows.Forms.ToolStripButton();
             this.toolButton_Save = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -74,7 +75,6 @@
             this.textBox22 = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.textBox24 = new System.Windows.Forms.TextBox();
@@ -198,6 +198,7 @@
             // toolButton_Replace_Contractor
             // 
             this.toolButton_Replace_Contractor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolButton_Replace_Contractor.Enabled = false;
             this.toolButton_Replace_Contractor.Image = global::XMLReaderCS.Properties.Resources.arrow_switch;
             this.toolButton_Replace_Contractor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolButton_Replace_Contractor.Name = "toolButton_Replace_Contractor";
@@ -221,6 +222,17 @@
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::XMLReaderCS.Properties.Resources.tick;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolButton_SettingsSave";
+            this.toolStripButton1.ToolTipText = "Settings save";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // label9
             // 
@@ -446,17 +458,6 @@
             // 
             this.saveFileDialog1.DefaultExt = "xml";
             this.saveFileDialog1.Filter = "xml|*.xml";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::XMLReaderCS.Properties.Resources.tick;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolButton_SettingsSave";
-            this.toolStripButton1.ToolTipText = "Settings save";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // label14
             // 

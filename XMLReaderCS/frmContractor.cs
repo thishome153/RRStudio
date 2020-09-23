@@ -46,45 +46,53 @@ namespace XMLReaderCS
                 xmldoc.Load(xmlStream);
 
                 if ((netFteo.XML.XMLWrapper.XMLReader_GetRoot(xmlStream) == "TP") &&
-                    (netFteo.XML.XMLWrapper.XMLReader_GetRootAtrr(xmlStream, "Version")=="06"))
+                    (netFteo.XML.XMLWrapper.XMLReader_GetRootAtrr(xmlStream, "Version") == "06"))
                 {
 
-                    if (xmldoc.DocumentElement.SelectSingleNode("Building") != null)
+
+                    BuildNode = xmldoc.DocumentElement.SelectSingleNode("Building");
+                    if (BuildNode == null)
+                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Construction");
+                    if (BuildNode == null)
+                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Uncompleted");
+                    if (BuildNode == null)
+                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Flat");
+                    if (BuildNode == null)
+                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace");
+
+                    if (BuildNode != null)
                     {
-                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Building");
-                        if (BuildNode != null)
-                        {
-                            CadWorksNode = BuildNode.SelectSingleNode("GeneralCadastralWorks");
-                            ParseGeneralCadastralWorksTP06(CadWorksNode);
-                        }
+                        CadWorksNode = BuildNode.SelectSingleNode("GeneralCadastralWorks");
+                        toolButton_Replace_Contractor.Enabled = true;
+                        ParseGeneralCadastralWorksTP06(CadWorksNode);
                     }
 
+                    /*
                     if (xmldoc.DocumentElement.SelectSingleNode("Construction") != null)
                     {
-                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Construction");
+                        
                         ParseGeneralCadastralWorksTP06(BuildNode.SelectSingleNode("GeneralCadastralWorks"));
                     }
 
                     if (xmldoc.DocumentElement.SelectSingleNode("Uncompleted") != null)
                     {
-                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Uncompleted");
+                        
                         ParseGeneralCadastralWorksTP06(BuildNode.SelectSingleNode("GeneralCadastralWorks"));
                     }
 
                     if (xmldoc.DocumentElement.SelectSingleNode("Flat") != null)
                     {
-                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("Flat");
+
                         ParseGeneralCadastralWorksTP06(BuildNode.SelectSingleNode("GeneralCadastralWorks"));
                     }
 
                     if (xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace") != null)
                     {
-                        BuildNode = xmldoc.DocumentElement.SelectSingleNode("CarParkingSpace");
+
                         ParseGeneralCadastralWorksTP06(BuildNode.SelectSingleNode("GeneralCadastralWorks"));
                     }
-
+                    */
                 }
-
                 xmlStream.Dispose();
             }
         }
@@ -133,6 +141,7 @@ namespace XMLReaderCS
             cw.Contractor.Telephone = XMLReaderCS.Properties.Settings.Default.Telephone;
             cw.Contractor.Email = XMLReaderCS.Properties.Settings.Default.Email;
             cw.Contractor.Address = XMLReaderCS.Properties.Settings.Default.Address;
+            cw.Contractor.SNILS = XMLReaderCS.Properties.Settings.Default.SNILS;
         }
 
    

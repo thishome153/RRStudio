@@ -713,6 +713,7 @@ public enum dParcelsv01_enum
     {
         public Contractor Contractor;
         public string DateCadastral;
+        public GeneralCadWorks() => Contractor = new Contractor();
     }
 
    public class TRight

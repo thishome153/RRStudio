@@ -597,30 +597,9 @@ namespace netFteo.IO
                 if (feature.TypeName == "netFteo.Spatial.PointList")
                 {
                     PointList Plines = (PointList)feature;
-         
                     foreach (TPoint pt in Plines)
                     {
-                        /*
-                        netDxf.Blocks.Block block = new netDxf.Blocks.Block("PointList" + ic++.ToString());
-                        AttributeDefinition attdef = new AttributeDefinition("Code"); // без пробелов!!!
-                        attdef.Text = "Point code";///Contours.Items[ic].Definition;
-                        attdef.Value = pt.Code;
-                        attdef.Flags = AttributeFlags.Hidden;
-                        block.AttributeDefinitions.Add(attdef);
-
-                        AttributeDefinition attdefType = new AttributeDefinition("Definition"); // 
-                        attdefType.Flags = AttributeFlags.Hidden;
-                        attdefType.Value = pt.Definition;
-                        block.AttributeDefinitions.Add(attdefType);
-                        block.Entities.Add(CreatePoint(dxfDoc, LayerPoints, LayerText, pt));
-                        
-                        Insert insDm = new Insert(block);
-                        insDm.Layer = LayerPoints;
-                        dxfDoc.AddEntity(insDm);
-                        */
-
-
-                        CreatePointZ(dxfDoc, LayerPoints, LayerText, pt);
+                       CreatePointZ(dxfDoc, LayerPoints, LayerText, pt);
                     }
                 }
 
@@ -692,7 +671,8 @@ namespace netFteo.IO
                 if (feature.TypeName == "netFteo.Spatial.TPoint")
                 {
                     TPoint pt = (TPoint)feature;
-                    CreatePoint(dxfDoc, LayerPoints, LayerText, pt);
+                    //CreatePoint(dxfDoc, LayerPoints, LayerText, pt);
+                    CreatePointZ(dxfDoc, LayerPoints, LayerText, pt);
                 }
 
             }

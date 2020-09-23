@@ -1010,11 +1010,10 @@ namespace netFteo.IO
                         if (SplittedStr.Length == 5)
                         {
                             FilePoint.Code = SplittedStr[4].ToString();
-                            FilePoint.Description = SplittedStr[4].ToString();
+                            FilePoint.Description = "NikonXY";//SplittedStr[4].ToString();
                         }
-                        resPoly.AddPoint(FilePoint);
-                        //resPolys.Add(FilePoint);
-                        //line = readFile.ReadLine();
+                        //resPoly.AddPoint(FilePoint); - not list
+                        resPolys.Add(FilePoint); // just points
                     }
                 next:;
                 }
