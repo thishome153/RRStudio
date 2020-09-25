@@ -426,7 +426,7 @@ namespace netFteo.IO
         /// <param name="LayerText"></param>
         /// <param name="point"></param>
         /// <returns></returns>
-        private EntityObject CreatePointZ(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, netDxf.Tables.Layer LayerText, netFteo.Spatial.TPoint point)
+        private EntityObject CreatePointZ(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, Layer LayerText, Layer LayerTextZ, netFteo.Spatial.TPoint point)
         {
 
 
@@ -472,7 +472,7 @@ namespace netFteo.IO
                 netDxf.Entities.Text PointZ = new Text();
                 PointZ.Height = 0.3;
                 PointZ.Position = new Vector3(point.y + 0.45, point.x + 0.85, point.z);
-                PointZ.Layer = LayerText;
+                PointZ.Layer = LayerTextZ;
                 PointZ.Value = point.z.ToString("0.00");
                 block.Entities.Add(PointZ);
             }
@@ -516,10 +516,17 @@ namespace netFteo.IO
                                                                                     //netDxf.Matrix3 ucsMatrix = new Matrix3();
             netDxf.Tables.Layer LayerHatches = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Штриховки");
             netDxf.Tables.Layer LayerText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " ТочкиНомер");
-            netDxf.Tables.Layer LayerPoints = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Точки");
-            netDxf.Tables.Layer LayerCN = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " КН");
-            netDxf.Tables.Layer LayerPoly = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Полигоны");
-            netDxf.Tables.Layer LayerCircle = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Окр.");
+
+            /// <summary>
+            /// Elevation labels layer
+            /// </summary>
+            /// <param name="args"></param>
+            Layer LayerElevText = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Отметки");
+            Layer LayerPoints = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Точки");
+
+            Layer LayerCN = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " КН");
+            Layer LayerPoly = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Полигоны");
+            Layer LayerCircle = new netDxf.Tables.Layer(Path.GetFileNameWithoutExtension(Filename) + " Окр.");
             LayerPoly.Color = AciColor.Magenta;
             LayerCN.Color = AciColor.Blue;
             LayerCN.IsVisible = false;
@@ -527,6 +534,7 @@ namespace netFteo.IO
             LayerText.IsVisible = false; LayerHatches.IsVisible = false;
             dxfDoc.Layers.Add(LayerHatches);
             dxfDoc.Layers.Add(LayerText);
+            dxfDoc.Layers.Add(LayerElevText);
             dxfDoc.Layers.Add(LayerPoints);
             dxfDoc.Layers.Add(LayerCN);
             dxfDoc.Layers.Add(LayerPoly);
@@ -547,8 +555,6 @@ namespace netFteo.IO
                     ContourDef.Position = new Vector3(Math.Abs(polygon.CentroidMassive.y), Math.Abs(polygon.CentroidMassive.x), polygon.CentroidMassive.z);
                     ContourDef.Layer = LayerCN;
                     dxfDoc.AddEntity(ContourDef); // если в блок то не надо - дважды Entity не вставтляется
-
-
                     netDxf.Blocks.Block block = new netDxf.Blocks.Block("Polygon" + ic++.ToString());
                     //block.Layer = LayerPoly;// new netDxf.Tables.Layer("BlockSample");
                     //block.Position = new Vector3(Math.Abs(Contours.Items[ic].Centroid.y), Math.Abs(Contours.Items[ic].Centroid.x), Contours.Items[ic].Centroid.z);
@@ -599,7 +605,7 @@ namespace netFteo.IO
                     PointList Plines = (PointList)feature;
                     foreach (TPoint pt in Plines)
                     {
-                       CreatePointZ(dxfDoc, LayerPoints, LayerText, pt);
+                       CreatePointZ(dxfDoc, LayerPoints, LayerText,LayerElevText, pt);
                     }
                 }
 
@@ -672,7 +678,7 @@ namespace netFteo.IO
                 {
                     TPoint pt = (TPoint)feature;
                     //CreatePoint(dxfDoc, LayerPoints, LayerText, pt);
-                    CreatePointZ(dxfDoc, LayerPoints, LayerText, pt);
+                    CreatePointZ(dxfDoc, LayerPoints, LayerText, LayerElevText, pt);
                 }
 
             }
