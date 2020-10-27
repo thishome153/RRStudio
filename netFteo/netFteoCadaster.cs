@@ -897,13 +897,19 @@ namespace netFteo
             public string NumberRecord;
 
             public string AreaGKN;
-            public netFteo.Rosreestr.TMyEncumbrances Encumbrances;
-            public TPolygon EntSpat;
-            public TEntitySpatial Contours;
+            public Rosreestr.TMyEncumbrances Encumbrances;
+            /// <summary>
+            /// Just Polygon
+            /// </summary>
+            public TPolygon SpatialElement;
+            /// <summary>
+            /// Anything spatial features
+            /// </summary>
+            public TEntitySpatial ES;
             public TSlot()
             {
-                this.EntSpat = new TPolygon();
-                this.Contours = new TEntitySpatial();
+                this.SpatialElement = new TPolygon();
+                this.ES = new TEntitySpatial();
                 this.Encumbrances = new Rosreestr.TMyEncumbrances();
                 this.Fid = Gen_id.newId;
             }
@@ -919,12 +925,13 @@ namespace netFteo
             {
                 for (int i = 0; i <= this.Items.Count - 1; i++)
                 {
-                    if (this.Items[i].EntSpat.id == Layer_id)
-                        return this.Items[i].EntSpat;
+                    if (this.Items[i].SpatialElement.id == Layer_id)
+                        return this.Items[i].SpatialElement;
 
-                    for (int ic = 0; ic <= this.Items[i].Contours.Count - 1; ic++)
-                        if (this.Items[i].Contours[ic].id == Layer_id)
-                            return (TPolygon)this.Items[i].Contours[ic];
+                    for (int ic = 0; ic <= this.Items[i].ES.Count - 1; ic++)
+                        if ((this.Items[i].ES[ic].id == Layer_id) &&
+                                (this.Items[i].ES[ic].TypeName == NetFteoTypes.Polygon))
+                            return (TPolygon)this.Items[i].ES[ic];
                 }
 
 

@@ -152,8 +152,9 @@ namespace RRTypes
        {
            netFteo.Rosreestr.TMyEncumbrance MyEnc = new netFteo.Rosreestr.TMyEncumbrance();
            MyEnc.Name = Encumfrom.Name;
-
-             if (Encumfrom.AccountNumber != null)
+            MyEnc.EncumbranceVersion = netFteo.Rosreestr.EncumbranceVersion.v03;
+            MyEnc.Type = Encumfrom.Type.ToString();
+            if (Encumfrom.AccountNumber != null)
             MyEnc.AccountNumber = Encumfrom.AccountNumber;
 
              if (Encumfrom.CadastralNumberRestriction != null)
@@ -165,7 +166,7 @@ namespace RRTypes
                if (Encumfrom.Registration.RegNumber != null)
                MyEnc.RegNumber = Encumfrom.Registration.RegNumber.ToString();
            }
-           MyEnc.Type = Encumfrom.Type.ToString();
+
            for (int io = 0; io <= Encumfrom.OwnersRestrictionInFavorem.Count - 1; io++)
            {
                if (Encumfrom.OwnersRestrictionInFavorem[io].Person != null)
@@ -200,7 +201,9 @@ namespace RRTypes
        public static netFteo.Rosreestr.TMyEncumbrance KVZUEncumtoFteoEncum(kvzu07.tEncumbranceZU Encumfrom)
        {
            netFteo.Rosreestr.TMyEncumbrance MyEnc = new netFteo.Rosreestr.TMyEncumbrance();
-           MyEnc.Name = Encumfrom.Name;
+            MyEnc.EncumbranceVersion = netFteo.Rosreestr.EncumbranceVersion.v03; // for kvzu07 v03
+            MyEnc.Type = Encumfrom.Type.ToString(); // Type not translated.
+            MyEnc.Name = Encumfrom.Name;
 
            if (Encumfrom.AccountNumber != null)
                MyEnc.AccountNumber = Encumfrom.AccountNumber;
@@ -214,7 +217,9 @@ namespace RRTypes
                if (Encumfrom.Registration.RegNumber != null)
                    MyEnc.RegNumber = Encumfrom.Registration.RegNumber.ToString();
            }
-           MyEnc.Type = Encumfrom.Type.ToString();
+
+
+
            for (int io = 0; io <= Encumfrom.OwnersRestrictionInFavorem.Count - 1; io++)
            {
                if (Encumfrom.OwnersRestrictionInFavorem[io].Person != null)

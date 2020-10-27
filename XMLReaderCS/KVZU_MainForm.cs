@@ -74,6 +74,7 @@ namespace XMLReaderCS
         /// Классификатор видов разрешенного использования земельных участков
         /// </summary>
         netFteo.XML.XSDFile dAllowedUse_v02;
+        netFteo.XML.XSDFile dEncumbrances_v03;
         netFteo.XML.XSDFile dRegionsRF_v01;
         netFteo.XML.XSDFile dCategories_v01;
         netFteo.XML.XSDFile dStates_v01;
@@ -512,10 +513,12 @@ namespace XMLReaderCS
         {
             dutilizations_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dUtilizations_v01.xsd");
             dAllowedUse_v02 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dAllowedUse_v02.xsd");
+            dEncumbrances_v03 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dEncumbrances_v03.xsd");
             dRegionsRF_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dRegionsRF_v01.xsd");
             dCategories_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dCategories_v01.xsd");
             dStates_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dStates_v01.xsd");
             dWall_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dWall_v01.xsd");
+
             dLocationLevel1_v01 = new netFteo.XML.XSDFile(folder_xsd + "\\SchemaCommon" + "\\dLocationLevel1_v01.xsd");
             dLocationLevel2_v01 = folder_xsd + "\\SchemaCommon" + "\\dLocationLevel2_v01.xsd";
             MP_06_schema = folder_xsd + "\\V06_MP" + "\\MP_v06.xsd";
@@ -1412,22 +1415,22 @@ namespace XMLReaderCS
                         {
                             ListEncums(SlotNode, Parcel.SubParcels[i].Encumbrances);
                         }
-                        if (Parcel.SubParcels[i].EntSpat != null)
-                            if (Parcel.SubParcels[i].EntSpat.PointCount > 0)
+                        if (Parcel.SubParcels[i].SpatialElement != null)
+                            if (Parcel.SubParcels[i].SpatialElement.PointCount > 0)
                             {
                                 //TreeNode SlotESNode = SlotNode.Nodes.Add("SPElem." + Parcel.SubParcels[i].EntSpat.Layer_id.ToString(), "Границы");
                                 // netFteo.ObjectLister.ListEntSpat(SlotESNode, Parcel.SubParcels[i].EntSpat);
 
                                 netFteo.ObjectLister.ListEntSpat(SlotNode,
-                                                                 Parcel.SubParcels[i].EntSpat,
+                                                                 Parcel.SubParcels[i].SpatialElement,
                                                                  "SPElem.",
                                                                  "Границы", 6);
                             }
 
-                        if (Parcel.SubParcels[i].Contours != null)
-                            if (Parcel.SubParcels[i].Contours.Count > 0)
+                        if (Parcel.SubParcels[i].ES != null)
+                            if (Parcel.SubParcels[i].ES.Count > 0)
                             {
-                                netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].Contours);
+                                netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].ES);
                             }
                     }
                 }
@@ -2396,7 +2399,7 @@ return res;
                 }
 
                 //  Если это часть: 
-                
+           
                 if (Obj.ToString() == "netFteo.Cadaster.TSlot")
                 {
                     TSlot P = (TSlot)Obj;
@@ -2408,8 +2411,11 @@ return res;
 
                     ListViewItem LVipg = new ListViewItem();
                     LVipg.Text = "Площадь (коорд.)";
-                    LVipg.SubItems.Add(P.EntSpat.AreaSpatialFmt("#0.00"));
-                    LVipg.SubItems.Add("кв.м.");
+                    if (P.SpatialElement.Area > 0)
+                        LVipg.SubItems.Add(P.SpatialElement.AreaSpatialFmt("#0.00"));
+                    else
+                        LVipg.SubItems.Add(P.ES.AreaSpatialFmt("#0.00", true));
+                        LVipg.SubItems.Add("кв.м.");
                     LV.Items.Add(LVipg);
 
                     ListViewItem LVip = new ListViewItem();
@@ -2427,7 +2433,7 @@ return res;
 
                         ListViewItem LViCatE = new ListViewItem();
                         LViCatE.Text = "Тип";
-                        LViCatE.SubItems.Add(P.Encumbrances[0].Type);
+                        LViCatE.SubItems.Add(this.dEncumbrances_v03.Item2Annotation(P.Encumbrances[0].Type));
                         LV.Items.Add(LViCatE);
 
                         ListViewItem LViDoc = new ListViewItem();
@@ -2972,7 +2978,7 @@ LV.Items.Add(LVipP);
             string EncType = Encums.Type;
             //if (Encums.Type == null) EncType = "Обременение";
 
-            TreeNode RNameNode = Rnode.Nodes.Add("RencNode", (Encums.Type != null ? Encums.Type : "Обременение"));
+            TreeNode RNameNode = Rnode.Nodes.Add("RencNode", (Encums.Type != null ? this.dEncumbrances_v03.Item2Annotation(Encums.Type) : "Обременение"));
 
             if (Encums.Name != null)
                 RNameNode.Nodes.Add(Encums.Name);
