@@ -1405,7 +1405,7 @@ namespace netFteo.Spatial
             return res;
         }
 
-
+/*
         /// <summary>
         /// Проверка принадлежности точки фигуре. Трассировка лучом
         /// </summary>
@@ -1452,7 +1452,8 @@ namespace netFteo.Spatial
             }
             return (CountP & 1) == 1;    // & - BITWISE operation ??!!
         }
-
+*/
+/*
         private void PoininTest()
         {
             this.AddPoint(new TPoint(0, 0, "11"));
@@ -1463,7 +1464,8 @@ namespace netFteo.Spatial
             flag = Pointin(new TPoint(999.99, 999.99)); // in
             flag = Pointin(new TPoint(1000.001, 1000.0001)); // on border (on ring, on anus...)
         }
-
+        */
+/*
         /// <summary>
         /// Проверка принадлежности набора (списка etc) точек фигуре
         /// </summary>
@@ -1480,6 +1482,7 @@ namespace netFteo.Spatial
             else return null; //зануляем свободные концы"-: Денисюк И..
         }
 
+        */
 
         /// <summary>
         /// Поиск общих точек
@@ -1858,9 +1861,54 @@ namespace netFteo.Spatial
         }
 
 
+        /// <summary>
+        /// Check if the point is within the polyline
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="pt"></param>
+        /// <returns></returns>
+        public  bool InsideRing(TPoint pt)
+        {
+            int n = this.PointCount;// polygon.NumberOfVertices;
+            double angle = 0;
+            TPoint pt1 = new TPoint();
+            TPoint pt2 = new TPoint();
 
+            for (int i = 0; i < n; i++)
+            {
+                pt1.x = this[i].x - pt.x;
+                pt1.y = this[i].y - pt.y;
+                pt2.x = this[(i + 1) % n].x - pt.x;
+                pt2.y = this[(i + 1) % n].y - pt.y;
+                angle += Geodethics.Geodethic.Angle2D(pt1.x, pt1.y, pt2.x, pt2.y);
+            }
 
+            if (Math.Abs(angle) < Math.PI)
+                return false;
+            else
+                return true;
+        }
 
+        /// <summary>
+        /// Check if the point is within the polyline.
+        /// </summary>
+        /// <param name="ring"></param>
+        /// <returns>if value equal vertex count of test ring - full overlapping (incoming)</returns>
+        public int InsideRing(TRing ring)
+        {
+            int retCount = 0;
+
+            foreach(TPoint pt in ring)
+            {
+                if (this.InsideRing(pt))
+                    ++retCount;
+            }
+            return retCount;
+        }
+
+   
+
+  
 
     }
     #endregion
@@ -2209,8 +2257,6 @@ namespace netFteo.Spatial
         }
         */
 
-
-
         public PointList FindCommonPoints(TPolygon ES)
         {
             PointList ResLayer = new PointList();
@@ -2234,7 +2280,7 @@ namespace netFteo.Spatial
             PointList res = new PointList();
             foreach (TPoint pt in ES)
             {
-                if (this.Pointin(pt))
+                if (this.InsideRing(pt))
                 {
                     bool inchildFlag = false;
                     //childs .... 
@@ -2243,7 +2289,7 @@ namespace netFteo.Spatial
                     // принадлежность внешнему и отсутствие принадлежности всем детям
                     foreach (TRing child in this.Childs)
                     {
-                        inchildFlag = child.Pointin(pt);
+                        inchildFlag = child.InsideRing(pt);
                     }
                     if (!inchildFlag) // если не попало ни в одну дырку
                         res.AddPoint(pt);
@@ -3280,13 +3326,31 @@ namespace netFteo.Spatial
         /// <summary>
         /// Most used instead Add, due check fake(empty) Features collection
         /// </summary>
-        /// <param name="Features"></param>
+        /// <param name="ES">Source  spatial collection</param>
+        /// <returns></returns>
+        public bool AddES(TEntitySpatial ES)
+        {
+            if (ES.Count > 0)
+            {
+                this.Add(ES);
+                return true;
+            }
+            else return false;
+        }
+
+        /// <summary>
+        /// Insert each feature as item
+        /// </summary>
+        /// <param name="Features">Source  spatial collection</param>
         /// <returns></returns>
         public bool AddFeatures(TEntitySpatial Features)
         {
             if (Features.Count > 0)
             {
-                this.Add(Features);
+                foreach (IGeometry feature in Features)
+                {
+                    this.Add(feature);
+                }
                 return true;
             }
             else return false;

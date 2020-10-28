@@ -2029,6 +2029,7 @@ namespace RRTypes.CommonCast
             EntSpat.Definition = Definition;
             EntSpat.ImportRing(AllRings[0]); //First ring (possible outer)
             */
+            int RingCount = 0;
             foreach (TRing OuterCandidate in AllRings)
             {
                 if (OuterCandidate.State == 0)
@@ -2042,6 +2043,9 @@ namespace RRTypes.CommonCast
                     {
                         PointList ControlPoints = EntSpat.PointsIn(ring);
                         if ((ControlPoints != null) && (ControlPoints.Count == ring.Count))
+                            /*
+                        if (EntSpat.InsideRing(ring) == ring.Count)
+                                */
                         {
                             TRing InLayer = EntSpat.AddChild();
                             {
@@ -2049,8 +2053,25 @@ namespace RRTypes.CommonCast
                                 ring.State = 04;// already linked flag
                             }
                         }
+                        /*
+                        //viseversa:
+                        PointList ControlPointsRev = ring.Pointin(EntSpat);
+                        if ((ControlPointsRev != null) && (ControlPointsRev.Count == EntSpat.Count))
+                        {
+                        //    TRing InLayer = EntSpat.AddChild();
+                            {
+                          //      InLayer.AppendPoints(ring);
+                                ring.State = 04;// already linked flag
+                            }
+                        }
+                        */
                     }
-                    ESParsed.AddPolygon(EntSpat);
+                    //insert only not child inserted instead parent:
+                    if (EntSpat.State == 0)
+                    {
+                        EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
+                        ESParsed.AddPolygon(EntSpat);
+                    }
                 }
 
             }
@@ -4976,8 +4997,10 @@ namespace RRTypes.CommonParsers
                         TZone ZoneItem;
                         ZoneItem = new TZone(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
+                        //TODO: wrong contours detection and parsing:
                         ZoneItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
-                        res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
+                        KPT_v10Utils.KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
+                        // res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
                         if (KPT10.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt10_un.tDocumentWithoutAppliedFile doc in KPT10.CadastralBlocks[i].Zones[iP].Documents)
                             {
@@ -6285,7 +6308,7 @@ namespace RRTypes.CommonParsers
             MainObj.DateCreated = kv.Parcels.Parcel.DateCreated.ToString("dd.MM.yyyy");
             if (kv.Parcels.Parcel.CadastralCost != null)
                 MainObj.CadastralCost = kv.Parcels.Parcel.CadastralCost.Value;
-            //Землепользование
+            //Single spatial
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
@@ -6295,14 +6318,15 @@ namespace RRTypes.CommonParsers
                     MainObj.EntSpat.Add(ents);
                 }
 
-            //Многоконтурный
+            //MultiContour spatial:
             if (kv.Parcels.Parcel.Contours != null)
             {
-                // ??? MainObj.Contours.Parent_id = MainObj.id;
                 for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
                 {
+                    /* Does not affect, due .SpatialData is readonly property:
                     res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
+                    */
                     TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
@@ -6341,12 +6365,8 @@ namespace RRTypes.CommonParsers
                     if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
                     {
                         TEntitySpatial SlEs = CommonCast.CasterZU.ParseES_KVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
-                        Sl.ES = SlEs ;
-                        foreach (IGeometry feature in SlEs)
-                        {
-                            if (feature.TypeName == NetFteoTypes.Polygon)
-                            res.MyBlocks.SpatialData.Add((TPolygon)feature);
-                        }
+                        Sl.ES.AddFeatures(SlEs);
+
 /*
                         foreach (kvzu07.tEntitySpatialZUOutSpatialElement spatEl in kv.Parcels.Parcel.SubParcels[i].EntitySpatial.SpatialElement)
                         {

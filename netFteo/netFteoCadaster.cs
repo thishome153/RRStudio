@@ -77,10 +77,10 @@ namespace netFteo
                 {
                     TEntitySpatial res = new TEntitySpatial();
                     //Realtys
-                    res.AddFeatures(this.GetRealtyEs());
+                    res.AddES(this.GetRealtyEs());
 
                     //Parcels
-                    res.AddFeatures(this.GetParcelsEs());
+                    res.AddES(this.GetParcelsEs());
                     //Zones
                     //Bound
                     return res;
@@ -812,7 +812,9 @@ namespace netFteo
                 if (this.EntSpat.id == Layer_id)
                     return this.EntSpat;
 
-                if (this.SubParcels != null) if (this.SubParcels.GetEs(Layer_id) != null) return this.SubParcels.GetEs(Layer_id);
+                if (this.SubParcels != null) 
+                    if (this.SubParcels.GetEs(Layer_id) != null) 
+                        return this.SubParcels.GetEs(Layer_id);
                 return null;
             }
 
@@ -921,21 +923,21 @@ namespace netFteo
 
         public class TSlots : BindingList<TSlot>
         {
-            public TPolygon GetEs(long Layer_id)
+            public IGeometry GetEs(long Layer_id)
             {
                 for (int i = 0; i <= this.Items.Count - 1; i++)
                 {
                     if (this.Items[i].SpatialElement.id == Layer_id)
                         return this.Items[i].SpatialElement;
+                    //otherwise, multicontour spatial slot:
+                    if (this.Items[i].ES.id == Layer_id)
+                        return this.Items[i].ES;
 
                     for (int ic = 0; ic <= this.Items[i].ES.Count - 1; ic++)
                         if ((this.Items[i].ES[ic].id == Layer_id) &&
                                 (this.Items[i].ES[ic].TypeName == NetFteoTypes.Polygon))
-                            return (TPolygon)this.Items[i].ES[ic];
+                            return this.Items[i].ES[ic];
                 }
-
-
-
                 return null;
             }
         }

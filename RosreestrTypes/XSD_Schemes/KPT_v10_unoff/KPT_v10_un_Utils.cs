@@ -52,7 +52,12 @@ namespace RRTypes
             }
         }
 
-
+        /// <summary>
+        /// TODO : develop here like 
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
 		public static TPolygon KPT10LandEntSpatToFteo(string Definition, tEntitySpatialLandOut ES)
         {
             {
@@ -86,11 +91,49 @@ namespace RRTypes
                     }
                 }
                 return EntSpat;
-
             }
         }
 
-   
+        public static TEntitySpatial KPT10LandES(string Definition, tEntitySpatialLandOut ES)
+        {
+
+            TEntitySpatial ResES = new TEntitySpatial();
+            /*
+            if (ES == null) return null;
+            TPolygon EntSpat = new TPolygon();
+            EntSpat.Definition = Definition;
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                TPoint Point = new TPoint();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    TPoint Point = new TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }
+        */
+            return ResES;
+        }
+
         public static TPolygon AddEntSpatKPT10(string Definition, tEntitySpatialZUOut ES)
         {
             {

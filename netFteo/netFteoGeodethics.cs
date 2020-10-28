@@ -154,7 +154,33 @@ namespace netFteo.Geodethics
             AngleTo360(TanValue); // нормализуем угол
             return TanValue;
         }
-        
+
+        /// <summary>
+        /// Return the angle between two vectors on a plane
+        /// The angle is from vector 1 to vector 2, positive anticlockwise
+        /// The result is between -pi -> pi
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <returns></returns>
+        public static double Angle2D(double x1, double y1, double x2, double y2)
+        {
+            double dtheta, theta1, theta2;
+
+            theta1 = Math.Atan2(y1, x1);
+            theta2 = Math.Atan2(y2, x2);
+            dtheta = theta2 - theta1;
+            while (dtheta > Math.PI)
+                dtheta -= (Math.PI * 2);
+            while (dtheta < -Math.PI)
+                dtheta += (Math.PI * 2);
+            return (dtheta);
+        }
+
+
+
         /// <summary>
         /// Древнее произведение вычисление горизонтального проложения (GPR...)
         /// </summary>
@@ -197,7 +223,7 @@ namespace netFteo.Geodethics
     if (interval > 0  )
       for (int n = 0; n <=  PointCount-1;n++)
        {
-       res.AddPoint(A.NumGeopointA+"-"+B.NumGeopointA+"."+n.ToString(),
+       res.AddPoint(A.Definition+"-"+B.Definition+"."+n.ToString(),
                        A.x +Math.Cos(u)*(interval*(n+1)),
                        A.y +Math.Sin(u)*(interval*(n+1)),
                        "Разбивка прямой на точки. Количество "+ PointCount.ToString());
