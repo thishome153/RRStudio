@@ -141,7 +141,7 @@ namespace netFteo
                 {
                     //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
                     //ListEntSpat(ESNode,  Zone.EntitySpatial);
-                    ListEntSpat(PNode, Zone.EntitySpatial, "SPElem.", "Границы", 0);
+                    ListEntSpat(PNode, Zone.SpatialElement, "SPElem.", "Границы", 0);
 
                 }
         }

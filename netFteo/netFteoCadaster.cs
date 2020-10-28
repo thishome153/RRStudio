@@ -1545,11 +1545,16 @@ namespace netFteo
             public string ContentRestrictions; // SpecialZone
             public List<string> PermittedUses;
             public List<TDocument> Documents;
-            public TPolygon EntitySpatial; //TODO: Spatials may be multi ?
+            public TEntitySpatial EntitySpatial; //TODO: Spatials may be multi ?
+            /// <summary>
+            /// As single geometry - polygon
+            /// </summary>
+            public TPolygon SpatialElement; //TODO: Spatials may be multi ?
             public TZone(string accountnumber)
             {
                 this.AccountNumber = accountnumber;
                 this.Documents = new List<TDocument>();
+                EntitySpatial = new TEntitySpatial();
                 this.id = Gen_id.newId;
             }
 
@@ -1595,16 +1600,19 @@ namespace netFteo
                 }
                 return Res;
             }
+
             public TPolygon GetEsId(int Layer_id)
             {
+
                 for (int i = 0; i <= this.Count - 1; i++)
                 {
-                    if (this[i].EntitySpatial.id == Layer_id)
-                        return this[i].EntitySpatial;
+                    if (this[i].SpatialElement.id == Layer_id)
+                        return this[i].SpatialElement;
                 }
 
                 return null;
             }
+
             public void AddZone(TZone zone, string contentrestrictions)
             {
                 this.Add(zone);

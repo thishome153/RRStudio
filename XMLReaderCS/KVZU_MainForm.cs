@@ -2805,13 +2805,12 @@ LV.Items.Add(LVipP);
                 }
                 else
                     LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
+                GeometryToSpatialView(listView1, ((TZone)O).EntitySpatial);
                 PropertiesToListView(listView_Properties, O);
             }
 
-            if ((STrN.Name.Contains("SpecNotes")) ||
-                (STrN.Name.Contains("AdrNote"))
-                )
-
+            if (STrN.Name.Contains("SpecNotes") ||
+                STrN.Name.Contains("AdrNote"))
             {
                 LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
             }

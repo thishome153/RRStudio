@@ -7,6 +7,7 @@ using netFteo.Spatial;
 using netFteo.Cadaster;
 using netFteo.Rosreestr;
 using System.Collections.Generic;
+using RRTypes.CommonCast;
 
 namespace RRTypes.CommonCast
 {
@@ -1595,7 +1596,7 @@ namespace RRTypes.CommonCast
 				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
 				//Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
 				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+				Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
 				EntSpat.AddPoint(Point);
 			}
 			//Внутренние контура
@@ -1844,8 +1845,7 @@ namespace RRTypes.CommonCast
 			Point.Status = 4;
 			if (unit.Ordinate.DeltaGeopointSpecified)
 				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.NumGeopointA = unit.SuNmb;
-
+			Point.Definition = unit.SuNmb;
 			return Point;
 		}
 
@@ -1869,9 +1869,7 @@ namespace RRTypes.CommonCast
 
 		public static TPoint GetUnit(kpt10_un.tSpelementUnitZUOut unit)
 		{
-
-			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-
+			TPoint Point = new TPoint();
 			Point.x = Convert.ToDouble(unit.Ordinate.X);
 			Point.y = Convert.ToDouble(unit.Ordinate.Y);
 			// Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
@@ -1880,16 +1878,30 @@ namespace RRTypes.CommonCast
 			Point.Status = 4;
 			if (unit.Ordinate.DeltaGeopointSpecified)
 				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.NumGeopointA = unit.SuNmb;
-
+			Point.Definition = unit.SuNmb;
 			return Point;
 		}
-		#endregion
+
+        public static TPoint GetUnit(kpt10_un.tSpelementUnitLandOut unit)
+        {
+            TPoint Point = new TPoint();
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.Definition = unit.SuNmb;
+            return Point;
+        }
+        #endregion
 
 
 
-		#region-----------------Конвертация из ОИПД КПЗУ в ОИПД Fteo.Spatial
-		public static netFteo.Spatial.TPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
+        #region-----------------Конвертация из ОИПД КПЗУ в ОИПД Fteo.Spatial
+        public static netFteo.Spatial.TPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
 		{
 			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
 			EntSpat.Definition = Definition;
@@ -2001,7 +2013,7 @@ namespace RRTypes.CommonCast
 		}
 
         /// <summary>
-        /// In develop : parse some case for Slot with multiborders (MK Slot)
+        /// parse some case for Slot with multiborders (MC Slot)
         /// </summary>
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
@@ -2041,11 +2053,13 @@ namespace RRTypes.CommonCast
                     // Scan source list for incoming rings (that covered by first/current)
                     foreach (TRing ring in AllRings)
                     {
+                        /*
                         PointList ControlPoints = EntSpat.PointsIn(ring);
                         if ((ControlPoints != null) && (ControlPoints.Count == ring.Count))
                             /*
+                             */
                         if (EntSpat.InsideRing(ring) == ring.Count)
-                                */
+                               
                         {
                             TRing InLayer = EntSpat.AddChild();
                             {
@@ -2053,18 +2067,7 @@ namespace RRTypes.CommonCast
                                 ring.State = 04;// already linked flag
                             }
                         }
-                        /*
-                        //viseversa:
-                        PointList ControlPointsRev = ring.Pointin(EntSpat);
-                        if ((ControlPointsRev != null) && (ControlPointsRev.Count == EntSpat.Count))
-                        {
-                        //    TRing InLayer = EntSpat.AddChild();
-                            {
-                          //      InLayer.AppendPoints(ring);
-                                ring.State = 04;// already linked flag
-                            }
-                        }
-                        */
+       
                     }
                     //insert only not child inserted instead parent:
                     if (EntSpat.State == 0)
@@ -2098,9 +2101,134 @@ namespace RRTypes.CommonCast
             return ESParsed;
         }
 
-        #endregion
 
-    }
+        /// <summary>
+        /// KPT_09: parse some case for Zones with multiborders (like MC Zone)
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TEntitySpatial ParseES_KPT09LandES(string Definition, kpt09.tEntitySpatialLandOut ES)
+        {
+            TEntitySpatial ESParsed = new TEntitySpatial();
+            ESParsed.Definition = Definition;
+            if (ES == null) { return ESParsed; }
+
+            List<TRing> AllRings = new List<TRing>();
+            //Parse all present rings:
+            for (int iES = 0; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                TRing InLayer = new TRing();
+
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+                AllRings.Add(InLayer);
+            }
+
+            int RingCount = 0;
+            foreach (TRing OuterCandidate in AllRings)
+            {
+                if (OuterCandidate.State == 0)
+                {
+                    TPolygon EntSpat = new TPolygon();
+                    EntSpat.Definition = Definition;
+                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
+
+                    // Scan source list for incoming rings (that covered by first/current)
+                    foreach (TRing ring in AllRings)
+                    {
+                        if (EntSpat.InsideRing(ring) == ring.Count)
+
+                        {
+                            TRing InLayer = EntSpat.AddChild();
+                            {
+                                InLayer.AppendPoints(ring);
+                                ring.State = 04;// set "already linked" flag
+                            }
+                        }
+
+                    }
+                    //insert only not child inserted instead parent:
+                    if (EntSpat.State == 0)
+                    {
+                        EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
+                        ESParsed.AddPolygon(EntSpat);
+                    }
+                }
+
+            }
+            return ESParsed;
+        }
+
+        /// <summary>
+        /// parse some case for Zones with multiborders (like MC Zone)
+        /// scanning and tracing contours occupied too long time...
+        /// so these routine in progress of develop
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TEntitySpatial ParseES_KPT10LandES(string Definition, kpt10_un.tEntitySpatialLandOut ES)
+        {
+            TEntitySpatial ESParsed = new TEntitySpatial();
+            ESParsed.Definition = Definition;
+            if (ES == null) { return ESParsed; }
+
+            List<TRing> AllRings = new List<TRing>();
+            //Parse all present rings:
+            for (int iES = 0; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                TRing InLayer = new TRing();
+
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+                AllRings.Add(InLayer);
+            }
+            int AmountPoints = 0;
+            foreach (TRing OuterCandidate in AllRings)
+            {
+                AmountPoints += OuterCandidate.PointCount;
+            }
+                int RingCount = 0;
+            foreach (TRing OuterCandidate in AllRings)
+            {
+                if (OuterCandidate.State == 0)
+                {
+                    TPolygon EntSpat = new TPolygon();
+                    EntSpat.Definition = Definition;
+                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
+
+                    // Scan source list for incoming rings (that covered by first/current)
+                    foreach (TRing ring in AllRings)
+                    {
+                        if (EntSpat.InsideRing(ring) == ring.Count)
+
+                        {
+                            TRing InLayer = EntSpat.AddChild();
+                            {
+                                InLayer.AppendPoints(ring);
+                                ring.State = 04;// set "already linked" flag
+                            }
+                        }
+
+                    }
+                    //insert only not child inserted instead parent:
+                    if (EntSpat.State == 0)
+                    {
+                        EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
+                        ESParsed.AddPolygon(EntSpat);
+                    }
+                }
+            }
+            return ESParsed;
+        }
+            #endregion
+
+        }
 
 
     
@@ -3742,7 +3870,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode zone = zones.ChildNodes[iP];
                         ZoneItem = new TZone(zone.SelectSingleNode("AccountNumber").FirstChild.Value);
                         //ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        ZoneItem.SpatialElement = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                             zone.SelectSingleNode("Entity_Spatial"));
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
@@ -3919,7 +4047,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode zone = zones.ChildNodes[iP];
                         ZoneItem = new TZone(zone.SelectSingleNode("AccountNumber").FirstChild.Value);
                         //ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        ZoneItem.SpatialElement = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                             zone.SelectSingleNode("Entity_Spatial"));
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
@@ -4094,7 +4222,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode zone = zones.ChildNodes[iP];
                         ZoneItem = new TZone(zone.SelectSingleNode("AccountNumber").FirstChild.Value);
                         //ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        ZoneItem.SpatialElement = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                             zone.SelectSingleNode("Entity_Spatial"));
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
@@ -4268,7 +4396,7 @@ namespace RRTypes.CommonParsers
                         System.Xml.XmlNode zone = zones.ChildNodes[iP];
                         ZoneItem = new TZone(zone.SelectSingleNode("AccountNumber").FirstChild.Value);
                         //ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        ZoneItem.SpatialElement = KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                             zone.SelectSingleNode("Entity_Spatial"));
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
@@ -4747,9 +4875,6 @@ namespace RRTypes.CommonParsers
                 }
                 //ОИПД Квартала:
                 //Виртуальный OIPD типа "Квартал":
-                //TPolygon BlockSpat = new TPolygon();
-                //BlockSpat = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].CadastralNumber,KPT09.CadastralBlocks[i].SpatialData.EntitySpatial);
-                //this.DocInfo.MifPolygons.Items.Add(BlockSpat);
                 Bl.Entity_Spatial.ImportPolygon(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].CadastralNumber, KPT09.CadastralBlocks[i].SpatialData.EntitySpatial));
                 Bl.Entity_Spatial.Definition = "гр" + KPT09.CadastralBlocks[i].CadastralNumber;
                 //Пункты в Квартале
@@ -4758,7 +4883,7 @@ namespace RRTypes.CommonParsers
                     for (int iP = 0; iP <= KPT09.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
                         TPoint OMS = new TPoint();
-                        OMS.NumGeopointA = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
+                        OMS.Definition = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
                         OMS.Code = KPT09.CadastralBlocks[i].OMSPoints[iP].PKlass;
                         OMS.Description = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
                         OMS.x = (double)KPT09.CadastralBlocks[i].OMSPoints[iP].OrdX;
@@ -4779,8 +4904,7 @@ namespace RRTypes.CommonParsers
                         TZone ZoneItem;
                         ZoneItem = new TZone(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT09.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial);
-                        res.MyBlocks.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
+                        ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT09LandES(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
 
                         if (KPT09.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt09.tDocumentWithoutAppliedFile doc in KPT09.CadastralBlocks[i].Zones[iP].Documents)
@@ -4998,9 +5122,10 @@ namespace RRTypes.CommonParsers
                         ZoneItem = new TZone(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
                         //TODO: wrong contours detection and parsing:
-                        ZoneItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
-                        KPT_v10Utils.KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
-                        // res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
+                        //ZoneItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
+                      //TODO open too long time occured, when scanning:  
+                        ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
+
                         if (KPT10.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt10_un.tDocumentWithoutAppliedFile doc in KPT10.CadastralBlocks[i].Zones[iP].Documents)
                             {
@@ -5515,7 +5640,7 @@ namespace RRTypes.CommonParsers
                         ZoneItem.Description = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/b_object/type_boundary/value") + " " +
                                                netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/number");
                         ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value");
-                        ZoneItem.EntitySpatial = KPT11LandEntSpatToFteo(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                        ZoneItem.SpatialElement = KPT11LandEntSpatToFteo(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                         Bl.AddZone(ZoneItem);
                     }
 

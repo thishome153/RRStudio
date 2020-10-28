@@ -86,19 +86,19 @@ namespace RRTypes
                         Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                         Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                         Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                        Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                        Point.Definition = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
                         InLayer.AddPoint(Point);
                     }
                 }
                 return EntSpat;
             }
         }
-
+             /*
         public static TEntitySpatial KPT10LandES(string Definition, tEntitySpatialLandOut ES)
         {
 
             TEntitySpatial ResES = new TEntitySpatial();
-            /*
+       
             if (ES == null) return null;
             TPolygon EntSpat = new TPolygon();
             EntSpat.Definition = Definition;
@@ -130,10 +130,10 @@ namespace RRTypes
             }
             return EntSpat;
         }
-        */
+      
             return ResES;
         }
-
+    */
         public static TPolygon AddEntSpatKPT10(string Definition, tEntitySpatialZUOut ES)
         {
             {

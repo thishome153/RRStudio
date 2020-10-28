@@ -3345,6 +3345,7 @@ namespace netFteo.Spatial
         /// <returns></returns>
         public bool AddFeatures(TEntitySpatial Features)
         {
+            if (Features == null) return false;
             if (Features.Count > 0)
             {
                 foreach (IGeometry feature in Features)
