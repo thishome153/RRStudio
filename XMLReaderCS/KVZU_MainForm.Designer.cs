@@ -803,7 +803,7 @@
             this.поискToolStripMenuItem,
             this.обновитьToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 142);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 164);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -952,6 +952,7 @@
             // 
             // разобратьПДToolStripMenuItem
             // 
+            this.разобратьПДToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
             this.разобратьПДToolStripMenuItem.Name = "разобратьПДToolStripMenuItem";
             this.разобратьПДToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
             this.разобратьПДToolStripMenuItem.Text = "Разобрать ПД (Parse spatial)";
@@ -1039,6 +1040,7 @@
             this.imList_dStates.Images.SetKeyName(12, "sitemap_off.BMP");
             this.imList_dStates.Images.SetKeyName(13, "PolyLine16x16.bmp");
             this.imList_dStates.Images.SetKeyName(14, "geoidquestion.gif");
+            this.imList_dStates.Images.SetKeyName(15, "shape_square_error.png");
             // 
             // listView1
             // 

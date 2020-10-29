@@ -1309,7 +1309,7 @@ namespace XMLReaderCS
             if (BlockList.Blocks.Count == 0)
             {
                 if (BlockList.ParsedSpatial != null)
-                    netFteo.ObjectLister.ListEntSpat(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial);
+                    netFteo.ObjectLister.ListES(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial);
             }
 
             if (TopNode_ != null) TopNode_.Expand();
@@ -1400,7 +1400,7 @@ namespace XMLReaderCS
             }
 
             else
-                netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntSpat);
+                netFteo.ObjectLister.ListES(PNode, Parcel.EntSpat);
 
 
             if (Parcel.SubParcels != null)
@@ -1430,7 +1430,7 @@ namespace XMLReaderCS
                         if (Parcel.SubParcels[i].ES != null)
                             if (Parcel.SubParcels[i].ES.Count > 0)
                             {
-                                netFteo.ObjectLister.ListEntSpat(SlotNode, Parcel.SubParcels[i].ES);
+                                netFteo.ObjectLister.ListES(SlotNode, Parcel.SubParcels[i].ES);
                             }
                     }
                 }
@@ -1575,7 +1575,7 @@ namespace XMLReaderCS
                     flatsnodes.Nodes.Add(s, s);
             }
 
-            netFteo.ObjectLister.ListEntSpat(PNode, oks.EntSpat);
+            netFteo.ObjectLister.ListES(PNode, oks.EntSpat);
             ListRights(PNode, oks.Rights, oks.id, "Права", "Rights");
             ListRights(PNode, oks.EGRN, oks.id, "ЕГРН", "EGRNRight"); // и права из "приписочки /..../ReestrExtract"
         }
@@ -2622,266 +2622,7 @@ LV.Items.Add(LVipP);
         }
 
 
-        //--------------Проверим ноду--------------
-        private void ListSelectedNode(TreeNode STrN)
-        {
-            if (STrN == null) return;
-            toolStripStatusLabel2.Text = STrN.Name;
-            //clear items in any case:
-            listView1.Items.Clear();
-            listView1.Controls.Clear();
-            listView1.View = View.Details;
-
-            listView_Properties.Items.Clear();
-            listView_Properties.Controls.Clear();
-            GeometryToSpatialView(listView1, null);
-
-            if (STrN.Name.Contains("ES."))
-            {
-
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            //Show features by whole layer 
-            if (STrN.Name.Contains("Layer."))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.GetFeatures(STrN.Name.Substring(6));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("SPElem."))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("TPolyLine."))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("PointList."))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                }
-            }
-
-            if (STrN.Name.Contains("PNode")) // this is Parcel - list all about stuf
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                
-                if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
-                {
-                    TParcel parcel = (TParcel)O;
-                    GeometryToSpatialView(listView1, parcel.EntSpat);
-                    parcel.EntSpat.ShowasListItems(listView1, true);
-                }
-
-                
-                if (O.GetType().ToString().Equals("netFteo.Cadaster.TRealEstate"))
-                {
-                    TRealEstate parcel = (TRealEstate)O;
-                    GeometryToSpatialView(listView1, parcel.EntSpat);
-                    parcel.EntSpat.ShowasListItems(listView1, true);
-                }
-
-                PropertiesToListView(listView_Properties, O);
-            }
-
-            if (STrN.Name.Contains("ParcelsNode"))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetParcelsEs();
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("OKSsNode"))
-            {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetRealtyEs();
-                if (Entity != null)
-                {
-                    GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, Entity);
-                }
-            }
-
-            if (STrN.Name.Contains("TopNode"))
-            {
-                TEntitySpatial TopES = new TEntitySpatial();
-                TopES.AddRange(this.DocInfo.MyBlocks.GetRealtyEs());
-                TopES.AddRange(this.DocInfo.MyBlocks.GetParcelsEs());
-                if (TopES != null)
-                {
-                    GeometryToSpatialView(listView1, TopES);
-                    TopES.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, TopES);
-                }
-            }
-
-
-            if (STrN.Name.Contains("EntrysNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                
-                if (O.ToString() == "netFteo.Cadaster.TParcel")
-                {
-                    TParcel P = (TParcel)O;
-                    //TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
-                    GeometryToSpatialView(listView1, P.EntSpat);
-                    P.EntSpat.ShowasListItems(listView1, true);
-                    PropertiesToListView(listView_Properties, P.CompozitionEZ);
-                }
-            }
-
-            if (STrN.Name.Contains("Contours"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O != null)
-                    if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
-                    {
-                        netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
-                        EZPEntryListToListView(listView1, P.AsList());
-                        PropertiesToListView(listView_Properties, P);
-                    }
-            }
-
-            if (STrN.Name.Contains("OMSPoints"))
-            {
-                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
-            }
-
-            if (STrN.Name.Contains("ZNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (((TZone)O).TypeName == "Территориальная зона")
-                {
-                    PermittedUsesToListView(listView1, ((TZone)O).PermittedUses, ((TZone)O).AccountNumber);
-                }
-                else
-                    LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
-                GeometryToSpatialView(listView1, ((TZone)O).EntitySpatial);
-                PropertiesToListView(listView_Properties, O);
-            }
-
-            if (STrN.Name.Contains("SpecNotes") ||
-                STrN.Name.Contains("AdrNote"))
-            {
-                LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
-            }
-
-            if (STrN.Name.Contains("SlotNode"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                PropertiesToListView(listView_Properties, O);
-            }
-
-
-            if (STrN.Name.Contains("Rights"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Cadaster.TParcel")
-                {
-                    TParcel P = (TParcel)O;
-                    PropertiesToListView(listView_Properties, P.Rights);
-                    if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
-                }
-            }
-
-            if (STrN.Name.Contains("EGRNRight"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                if (O.ToString() == "netFteo.Cadaster.TParcel")
-                {
-                    TParcel P = (TParcel)O;
-                    PropertiesToListView(listView_Properties, P.EGRN);
-                    if (P.EGRN != null) RightsToListView(listView1, P.EGRN.AsList());
-                }
-            }
-
-
-            if (STrN.Name.Contains("Flats"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                
-                if (O.ToString() == "netFteo.Cadaster.TRealEstate")
-                {
-                    TRealEstate P = (TRealEstate)O;
-                    if (P.Building != null)
-                        if (P.Building.Flats.Count > 0)
-                        {
-                            FlatsToListView(listView1, P.Building.Flats);
-                            PropertiesToListView(listView_Properties, P.Building);
-                        }
-                }
-            }
-
-            if (STrN.Name.Contains("FlatItem"))
-            {
-                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
-                
-                if (O.ToString() == "netFteo.Cadaster.TFlat")
-                {
-                    TFlat P = (TFlat)O;
-                    if (P != null)
-                    {
-                        PropertiesToListView(listView_Properties, P);
-                        FlatToListView(listView1, P);
-                    }
-                }
-            }
-        }
-
+  
 
         private enum NodeGeometryTypes
         {
@@ -3303,6 +3044,265 @@ LV.Items.Add(LVipP);
                 return this.DocInfo.MyBlocks.OMSPoints;
             }
             return null;
+        }
+        //--------------Проверим ноду--------------
+        private void ListSelectedNode(TreeNode STrN)
+        {
+            if (STrN == null) return;
+            toolStripStatusLabel2.Text = STrN.Name;
+            //clear items in any case:
+            listView1.Items.Clear();
+            listView1.Controls.Clear();
+            listView1.View = View.Details;
+
+            listView_Properties.Items.Clear();
+            listView_Properties.Controls.Clear();
+            GeometryToSpatialView(listView1, null);
+
+            if (STrN.Name.Contains("ES."))
+            {
+
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            //Show features by whole layer 
+            if (STrN.Name.Contains("Layer."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.GetFeatures(STrN.Name.Substring(6));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("SPElem."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("TPolyLine."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("PointList."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                }
+            }
+
+            if (STrN.Name.Contains("PNode")) // this is Parcel - list all about stuf
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
+                {
+                    TParcel parcel = (TParcel)O;
+                    GeometryToSpatialView(listView1, parcel.EntSpat);
+                    parcel.EntSpat.ShowasListItems(listView1, true);
+                }
+
+
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TRealEstate"))
+                {
+                    TRealEstate parcel = (TRealEstate)O;
+                    GeometryToSpatialView(listView1, parcel.EntSpat);
+                    parcel.EntSpat.ShowasListItems(listView1, true);
+                }
+
+                PropertiesToListView(listView_Properties, O);
+            }
+
+            if (STrN.Name.Contains("ParcelsNode"))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetParcelsEs();
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("OKSsNode"))
+            {
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetRealtyEs();
+                if (Entity != null)
+                {
+                    GeometryToSpatialView(listView1, Entity);
+                    Entity.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, Entity);
+                }
+            }
+
+            if (STrN.Name.Contains("TopNode"))
+            {
+                TEntitySpatial TopES = new TEntitySpatial();
+                TopES.AddRange(this.DocInfo.MyBlocks.GetRealtyEs());
+                TopES.AddRange(this.DocInfo.MyBlocks.GetParcelsEs());
+                if (TopES != null)
+                {
+                    GeometryToSpatialView(listView1, TopES);
+                    TopES.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, TopES);
+                }
+            }
+
+
+            if (STrN.Name.Contains("EntrysNode"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
+                {
+                    TParcel P = (TParcel)O;
+                    //TODO : EZPEntryListToListView(listView1, P.CompozitionEZ.AsList());
+                    GeometryToSpatialView(listView1, P.EntSpat);
+                    P.EntSpat.ShowasListItems(listView1, true);
+                    PropertiesToListView(listView_Properties, P.CompozitionEZ);
+                }
+            }
+
+            if (STrN.Name.Contains("Contours"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+                if (O != null)
+                    if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
+                    {
+                        netFteo.Spatial.TPolygonCollection P = (netFteo.Spatial.TPolygonCollection)O;
+                        EZPEntryListToListView(listView1, P.AsList());
+                        PropertiesToListView(listView_Properties, P);
+                    }
+            }
+
+            if (STrN.Name.Contains("OMSPoints"))
+            {
+                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
+            }
+
+            if (STrN.Name.Contains("ZNode"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+                if (((TZone)O).TypeName == "Территориальная зона")
+                {
+                    PermittedUsesToListView(listView1, ((TZone)O).PermittedUses, ((TZone)O).AccountNumber);
+                }
+                else
+                    LongTextToListView(listView1, ((TZone)O).ContentRestrictions, "Ограничения");
+                GeometryToSpatialView(listView1, ((TZone)O).EntitySpatial);
+                PropertiesToListView(listView_Properties, O);
+            }
+
+            if (STrN.Name.Contains("SpecNotes") ||
+                STrN.Name.Contains("AdrNote"))
+            {
+                LongTextToListView(listView1, STrN.Nodes[0].Text, "Особые отметки");
+            }
+
+            if (STrN.Name.Contains("SlotNode"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+                PropertiesToListView(listView_Properties, O);
+            }
+
+
+            if (STrN.Name.Contains("Rights"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
+                {
+                    TParcel P = (TParcel)O;
+                    PropertiesToListView(listView_Properties, P.Rights);
+                    if (P.Rights != null) RightsToListView(listView1, P.Rights.AsList());
+                }
+            }
+
+            if (STrN.Name.Contains("EGRNRight"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+                if (O.ToString() == "netFteo.Cadaster.TParcel")
+                {
+                    TParcel P = (TParcel)O;
+                    PropertiesToListView(listView_Properties, P.EGRN);
+                    if (P.EGRN != null) RightsToListView(listView1, P.EGRN.AsList());
+                }
+            }
+
+
+            if (STrN.Name.Contains("Flats"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+
+                if (O.ToString() == "netFteo.Cadaster.TRealEstate")
+                {
+                    TRealEstate P = (TRealEstate)O;
+                    if (P.Building != null)
+                        if (P.Building.Flats.Count > 0)
+                        {
+                            FlatsToListView(listView1, P.Building.Flats);
+                            PropertiesToListView(listView_Properties, P.Building);
+                        }
+                }
+            }
+
+            if (STrN.Name.Contains("FlatItem"))
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+
+                if (O.ToString() == "netFteo.Cadaster.TFlat")
+                {
+                    TFlat P = (TFlat)O;
+                    if (P != null)
+                    {
+                        PropertiesToListView(listView_Properties, P);
+                        FlatToListView(listView1, P);
+                    }
+                }
+            }
         }
 
 
@@ -5372,7 +5372,11 @@ LV.Items.Add(LVipP);
 
             if (Es != null)
             {
-                Es.ParseSpatial();
+                if (Es.ParseSpatial())
+                {
+                    netFteo.ObjectLister.ListES(TV_Parcels.SelectedNode.Parent, Es);
+                    TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
+                }
             }
         }
 

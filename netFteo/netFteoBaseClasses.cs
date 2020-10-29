@@ -3303,9 +3303,10 @@ namespace netFteo.Spatial
         {
 
             if (poly_ == null) return null;
-            if ((poly_.GetType().ToString().Equals("netFteo.Spatial.TPolygon")) &&
+            if (poly_.GetType().ToString().Equals("netFteo.Spatial.TPolygon") &&
                 (((TPolygon)poly_).PointCount > 0))
             {
+
                 this.Add((TPolygon)poly_);
                 return (TPolygon)poly_;
             }
@@ -3967,9 +3968,9 @@ namespace netFteo.Spatial
         /// Parse spatial, detect parent and childs
         /// and create complete polygons with child rings
         /// </summary>
-        public void ParseSpatial()
+        public bool ParseSpatial()
         {
-            if (State == 200) return;// already parsed
+            if (State == 200) return false;// already parsed
             List<TRing> AllRings = new List<TRing>();
             int OuterRingCount = 0;
             //Collect all present rings:
@@ -3986,17 +3987,17 @@ namespace netFteo.Spatial
             {
                 if (OuterCandidate.State == 0)
                 {
-                    TPolygon EntSpat = new TPolygon();
-                    EntSpat.Definition = Definition;
-                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
+                    TPolygon ParentPolygon = new TPolygon();
+                    ParentPolygon.Definition = OuterCandidate.Definition;
+                    ParentPolygon.ImportRing(OuterCandidate); //First ring (possible outer)
 
                     // Scan source list for incoming rings (that covered by first/current)
                     foreach (TRing ring in AllRings)
                     {
-                        if (EntSpat.InsideRing(ring) == ring.Count)
+                        if (ParentPolygon.InsideRing(ring) == ring.Count)
 
                         {
-                            TRing InLayer = EntSpat.AddChild();
+                            TRing InLayer = ParentPolygon.AddChild();
                             {
                                 InLayer.AppendPoints(ring);
                                 ring.State = 04;// set "already linked" flag
@@ -4004,16 +4005,22 @@ namespace netFteo.Spatial
                         }
                     }
                     //insert only not child inserted instead parent:
-                    if (EntSpat.State == 0)
+                    if (ParentPolygon.State == 0)
                     {
+                        ++OuterRingCount;
                         if (OuterRingCount > 0)  //add () marker for multicontours
-                            EntSpat.Definition += EntSpat.Definition + "(" + (++OuterRingCount).ToString() + ")";
-                        this.AddPolygon(EntSpat);
+                            ParentPolygon.Definition = "(" + (OuterRingCount).ToString() + ")" + " [1.." + ParentPolygon.PolygonPointCount.ToString()+"]";
+                        ParentPolygon.State = 200;//complete
+                        this.AddPolygon(ParentPolygon);
                     }
                 }
             }
-
-            this.State = 200;// ok, parsed
+            if (OuterRingCount > 0)
+            {
+                State = 200;// ok, parsed
+                return true;
+            }
+            else return false;//nothing happend
         }
     }
 

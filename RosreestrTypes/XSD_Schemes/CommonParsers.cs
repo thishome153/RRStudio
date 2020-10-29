@@ -4916,7 +4916,7 @@ namespace RRTypes.CommonParsers
                         ZoneItem = new TZone(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT09.CadastralBlocks[i].Zones[iP].Description;
                         ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT09LandES(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
-
+                        ZoneItem.EntitySpatial.State = 200; //complete, not need to  reparse
                         if (KPT09.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt09.tDocumentWithoutAppliedFile doc in KPT09.CadastralBlocks[i].Zones[iP].Documents)
                             {

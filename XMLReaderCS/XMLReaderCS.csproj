@@ -484,6 +484,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Copy of FIXOSOft 2002  вариант 2.ico" />
+    <None Include="Resources\geoidquestion.gif" />
     <None Include="Resources\film_save.png" />
     <None Include="Resources\exclamation.png" />
     <None Include="Resources\Exclamation2.png" />
@@ -587,7 +588,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildAction="ReBuild" BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2014/1/25" />
+      <UserProperties BuildVersion_StartDate="2014/1/25" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildAction="ReBuild" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

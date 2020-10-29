@@ -136,9 +136,8 @@ namespace netFteo
 			}
 			//list both spatial fileds. For Further deprecations
 				ListEntSpat(PNode, Zone.SpatialElement, "SPElem.", "Границы", 0);
-				ListEntSpat(PNode, Zone.EntitySpatial);
+				ListES(PNode, Zone.EntitySpatial);
 		}
-
 
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolygon ES, string NodeName, string Definition, int Status)
         {
@@ -154,7 +153,6 @@ namespace netFteo
             Node.SelectedImageIndex = 3;
             Node.Tag = ES.id;//
         }
-    
 
 		public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolyLines ES, string NodeName, string Definition, int Status)
 		{
@@ -214,11 +212,52 @@ namespace netFteo
 			Node.Tag = ES.id;
 		}
 
-		private static void ListFeature(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
+		
+		/// <summary>
+		/// List spatial collection in given TreeNode
+		/// </summary>
+		/// <param name="NodeES">Target node</param>
+		/// <param name="ES"></param>
+		public static void  ListES(TreeNode NodeES, Spatial.TEntitySpatial ES)
 		{
-           // TreeNode Node = NodeTo;
-            //if (ES.Count >1 ) { NodeTo = NodeTo.Nodes.Add(NodeTo.Text); }
-            foreach (Spatial.IGeometry feature in ES)
+			if ((ES == null) || (ES.Count == 0)) return;
+
+			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
+			NodeTo.Tag = ES.id;
+			//Show layers of ES
+			if (ES.Layers.Count == 1)
+			{
+				NodeTo.Text = "Границы";// + ES.Count().ToString();
+				if (ES.State == 200) //parsed, complete spatial
+				{
+					NodeTo.ImageIndex = 3;
+					NodeTo.SelectedImageIndex = 3;
+				}
+
+				if (ES.State == 14) //raw spatial
+				{
+					NodeTo.ImageIndex = 14; //raw spatial
+					NodeTo.SelectedImageIndex = 14; //raw spatial
+					NodeTo.ToolTipText = "Raw spatial data, need parsed";
+				}
+
+				ListESbyLayer(ES, NodeTo, ES.Layers[0].LayerHandle);
+			}
+
+			else
+				foreach (netFteo.Spatial.TLayer layer in ES.Layers)
+				{
+					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
+					//TODO Filter features by Inumerable selects : 
+					//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
+					ListESbyLayer(ES, LayerNode, layer.LayerHandle);
+				}
+		}
+		private static void ListESbyLayer(Spatial.TEntitySpatial ES, TreeNode NodeTo, string LayerHandle)
+		{
+			// TreeNode Node = NodeTo;
+			//if (ES.Count >1 ) { NodeTo = NodeTo.Nodes.Add(NodeTo.Text); }
+			foreach (Spatial.IGeometry feature in ES)
 			{
 				if (feature.LayerHandle == LayerHandle)
 				{
@@ -233,14 +272,14 @@ namespace netFteo
 						if (((Spatial.TPolyLine)feature).PointCount > 0)
 							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TPolyLine)feature, "SPElem.", ((Spatial.TPolyLine)feature).Definition, 6);
 					}
-                    
-                    if (feature.TypeName == "netFteo.Spatial.PointList")
-                    {
-                        if (((Spatial.PointList)feature).PointCount > 0)
-                            netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.PointList)feature, "SPElem.", ((Spatial.PointList)feature).Definition, 6);
-                    }
 
-                    if (feature.TypeName == "netFteo.Spatial.TCircle")
+					if (feature.TypeName == "netFteo.Spatial.PointList")
+					{
+						if (((Spatial.PointList)feature).PointCount > 0)
+							netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.PointList)feature, "SPElem.", ((Spatial.PointList)feature).Definition, 6);
+					}
+
+					if (feature.TypeName == "netFteo.Spatial.TCircle")
 					{
 						netFteo.ObjectLister.ListEntSpat(NodeTo, (Spatial.TCircle)feature, ((Spatial.TCircle)feature).Definition, 6);
 					}
@@ -253,64 +292,8 @@ namespace netFteo
 				}
 			}
 		}
-
-		public static void ListEntSpat(TreeNode NodeES, Spatial.TEntitySpatial ES)
-		{
-			if ((ES == null) || (ES.Count == 0)) return;
-
-			TreeNode NodeTo = NodeES.Nodes.Add("ES." + ES.id.ToString(), "Слои");
-			NodeTo.Tag = ES.id;
-			//Show layers of ES
-			if (ES.Layers.Count == 1)
-			{
-				NodeTo.Text = "Границы";
-				if (ES.State == 200) //parsed, complete spatial
-				{
-					NodeTo.ImageIndex = 3;
-					NodeTo.SelectedImageIndex = 3;
-				}
-
-				if (ES.State == 14) //raw spatial
-				{
-					NodeTo.ImageIndex = 14; //raw spatial
-					NodeTo.SelectedImageIndex = 14; //raw spatial
-				}
-
-				ListFeature(ES, NodeTo, ES.Layers[0].LayerHandle);
-			}
-
-			else
-				foreach (netFteo.Spatial.TLayer layer in ES.Layers)
-				{
-					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
-					//TODO Filter features by Inumerable selects : 
-					//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
-					ListFeature(ES, LayerNode, layer.LayerHandle);
-				}
-		}
-	
-		public static void ListEntSpat(TreeNode NodeES, List<Spatial.TEntitySpatial> ES, int Status)
-		{
-			if (ES == null) return;
-			foreach (Spatial.TEntitySpatial es in ES)
-			{
-				ListEntSpat(NodeES, es);
-				/*
-				TreeNode NodeTo = NodeES.Nodes.Add("ES." + es.id.ToString(), "Слои");
-				NodeTo.Tag = es.id;
-				//Show layers of ES
-				foreach (netFteo.Spatial.TLayer layer in es.Layers)
-				{
-					TreeNode LayerNode = NodeTo.Nodes.Add("Layer." + layer.LayerHandle, layer.Name);
-					//TODO Filter features by Inumerable selects : 
-					//Spatial.TEntitySpatial LayerFeatures = ES.Select<Spatial.TEntitySpatial, Spatial.TEntitySpatial>(res = new Spatial.Geometry); //xd => xd.LayerHandle == layer.LayerHandle);
-					ListFeature(es, LayerNode, layer.LayerHandle);
-				}
-				*/
-			}
-		}
-		
-		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TPolygon ES)
+				
+		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, Spatial.TPolygon ES)
 		{
 
 			if (ES == null) return null;
@@ -358,7 +341,7 @@ namespace netFteo
 			return res;
 		}
 
-		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, netFteo.Spatial.TPolyLine ES)
+		public static ListView.ListViewItemCollection EStoListViewCollection(ListView owner, Spatial.TPolyLine ES)
 		{
 			if (ES == null) return null;
 			ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
