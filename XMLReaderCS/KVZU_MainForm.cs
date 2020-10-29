@@ -3220,6 +3220,15 @@ LV.Items.Add(LVipP);
                 }
             }
 
+            if (NodeName.Contains("ES."))
+            {
+
+                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(3)));
+                if (Entity != null)
+                {
+                    return (TEntitySpatial)Entity;
+                }
+            }
 
             if (NodeName.Contains("SPElem."))
             {
@@ -3258,12 +3267,10 @@ LV.Items.Add(LVipP);
             //Не Все зоны - только территориальные, ==(1) ??
             if (NodeName.Contains("ZonesNode"))
             {
-                TPolygonCollection Plc = this.DocInfo.MyBlocks.GetZonesEs(1);
+                TEntitySpatial Plc = this.DocInfo.MyBlocks.GetZonesEs(1);
                 if (Plc != null)
                 {
-                    TEntitySpatial PC = new TEntitySpatial();
-                    PC.AddRange(Plc);
-                    return PC;
+                    return Plc;
                 }
             }
 
@@ -5357,6 +5364,22 @@ LV.Items.Add(LVipP);
         {
             frmContractor Cntr = new frmContractor();
             Cntr.Show();
+        }
+
+        private void разобратьПДToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TEntitySpatial Es = GetES(TV_Parcels.SelectedNode.Name);
+
+            if (Es != null)
+            {
+                Es.ParseSpatial();
+            }
+        }
+
+        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TV_Parcels.Nodes.Clear();
+            ListMyCoolections(this.DocInfo.MyBlocks);
         }
     }
 }

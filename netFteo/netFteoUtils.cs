@@ -89,62 +89,55 @@ namespace netFteo
 	}
     public static class ObjectLister
     {
-        public static void ListZone(TreeNode Node, Cadaster.TZone Zone)
-        {
-            string CN = Zone.Description;
-            TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
-            if (Zone.TypeName == "Территориальная зона")
-            {
-                PNode.ImageIndex = 1;
-                PNode.SelectedImageIndex = 1;
-            }
-            else
-            {
-                Node.ImageIndex = 6;
-                PNode.SelectedImageIndex = 6;
-            }
+		public static void ListZone(TreeNode Node, Cadaster.TZone Zone)
+		{
+			string CN = Zone.Description;
+			TreeNode PNode = Node.Nodes.Add("ZNode" + Zone.id, Zone.AccountNumber);
+			if (Zone.TypeName == "Территориальная зона")
+			{
+				PNode.ImageIndex = 1;
+				PNode.SelectedImageIndex = 1;
+			}
+			else
+			{
+				Node.ImageIndex = 6;
+				PNode.SelectedImageIndex = 6;
+			}
 
-            //  
-            if (Zone.PermittedUses != null)
-            {
-                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
-                foreach (string item in Zone.PermittedUses)
-                {
-                    PuNode.Nodes.Add(item);
-                }
-                //PNode.ImageIndex = 7;
-                //PNode.SelectedImageIndex = 7;
-            }
-
-
-            if (Zone.Documents.Count > 0)
-            {
-                TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
-                foreach (Spatial.TDocument doc in Zone.Documents)
-                {
-
-                    if (doc.Name != null)
-                    {
-                        TreeNode PutNode = PuNode.Nodes.Add(doc.Name);
-
-                        if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
-                        if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
-                        if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
-                        if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
-                    }
-                }
-            }
+			//  
+			if (Zone.PermittedUses != null)
+			{
+				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "ВРИ");
+				foreach (string item in Zone.PermittedUses)
+				{
+					PuNode.Nodes.Add(item);
+				}
+				//PNode.ImageIndex = 7;
+				//PNode.SelectedImageIndex = 7;
+			}
 
 
-            if (Zone.EntitySpatial != null)
-                if (Zone.EntitySpatial.Count > 0)
-                {
-                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Zone.EntitySpatial.Layer_id.ToString(), "Границы");
-                    //ListEntSpat(ESNode,  Zone.EntitySpatial);
-                    ListEntSpat(PNode, Zone.SpatialElement, "SPElem.", "Границы", 0);
+			if (Zone.Documents.Count > 0)
+			{
+				TreeNode PuNode = PNode.Nodes.Add("ZonePuNode", "Документы-основания");
+				foreach (Spatial.TDocument doc in Zone.Documents)
+				{
 
-                }
-        }
+					if (doc.Name != null)
+					{
+						TreeNode PutNode = PuNode.Nodes.Add(doc.Name);
+
+						if (doc.Number != null) PutNode.Nodes.Add(doc.Number);
+						if (doc.Doc_Date != null) PutNode.Nodes.Add(doc.Doc_Date);
+						if (doc.IssueOrgan != null) PutNode.Nodes.Add(doc.IssueOrgan);
+						if (doc.Serial != null) PutNode.Nodes.Add(doc.Serial);
+					}
+				}
+			}
+			//list both spatial fileds. For Further deprecations
+				ListEntSpat(PNode, Zone.SpatialElement, "SPElem.", "Границы", 0);
+				ListEntSpat(PNode, Zone.EntitySpatial);
+		}
 
 
         public static void ListEntSpat(TreeNode NodeTo, Spatial.TPolygon ES, string NodeName, string Definition, int Status)
@@ -271,8 +264,21 @@ namespace netFteo
 			if (ES.Layers.Count == 1)
 			{
 				NodeTo.Text = "Границы";
+				if (ES.State == 200) //parsed, complete spatial
+				{
+					NodeTo.ImageIndex = 3;
+					NodeTo.SelectedImageIndex = 3;
+				}
+
+				if (ES.State == 14) //raw spatial
+				{
+					NodeTo.ImageIndex = 14; //raw spatial
+					NodeTo.SelectedImageIndex = 14; //raw spatial
+				}
+
 				ListFeature(ES, NodeTo, ES.Layers[0].LayerHandle);
 			}
+
 			else
 				foreach (netFteo.Spatial.TLayer layer in ES.Layers)
 				{

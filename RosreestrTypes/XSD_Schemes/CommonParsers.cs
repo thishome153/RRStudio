@@ -11,189 +11,189 @@ using RRTypes.CommonCast;
 
 namespace RRTypes.CommonCast
 {
-	/// <summary>
-	/// Общий класс утилит для кастинга разных версий схем ОКС
-	/// </summary>
-	public static class CasterOKS
-	{
-		/// <summary>
-		/// ES manipulation routines
-		/// </summary>
-		/// <param name="Address"></param>
-		/// <returns></returns>
+    /// <summary>
+    /// Общий класс утилит для кастинга разных версий схем ОКС
+    /// </summary>
+    public static class CasterOKS
+    {
+        /// <summary>
+        /// ES manipulation routines
+        /// </summary>
+        /// <param name="Address"></param>
+        /// <returns></returns>
 
 
-		public static TEntitySpatial ES_OKS2(string Definition, STD_TPV02.Entity_Spatial ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
+        public static TEntitySpatial ES_OKS2(string Definition, STD_TPV02.Entity_Spatial ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
 
-			for (int i = 0; i <= ES.Spatial_Element.Count - 1; i++)
-			{
-				if (ES.Spatial_Element[i].Spelement_Unit[0].Ordinate[0].X == ES.Spatial_Element[i].Spelement_Unit[ES.Spatial_Element[i].Spelement_Unit.Count() - 1].Ordinate[0].X)
-				{
-					TPolygon Polygon = new TPolygon();
-					Polygon.Definition = ES.Spatial_Element[i].Number;
-					//OUT ring
-					for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
-					{
-						TPoint P = new TPoint();
-						P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
-						P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
-						P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
-						P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
-						Polygon.AddPoint(P);
-					}
+            for (int i = 0; i <= ES.Spatial_Element.Count - 1; i++)
+            {
+                if (ES.Spatial_Element[i].Spelement_Unit[0].Ordinate[0].X == ES.Spatial_Element[i].Spelement_Unit[ES.Spatial_Element[i].Spelement_Unit.Count() - 1].Ordinate[0].X)
+                {
+                    TPolygon Polygon = new TPolygon();
+                    Polygon.Definition = ES.Spatial_Element[i].Number;
+                    //OUT ring
+                    for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
+                    {
+                        TPoint P = new TPoint();
+                        P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
+                        P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
+                        P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
+                        P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
+                        Polygon.AddPoint(P);
+                    }
 
 
-					//childs inner ring
-					for (int ii = 1; ii <= ES.Spatial_Element.Count - 1; ii++)
-					{
-						TRing ESch = Polygon.AddChild();
+                    //childs inner ring
+                    for (int ii = 1; ii <= ES.Spatial_Element.Count - 1; ii++)
+                    {
+                        TRing ESch = Polygon.AddChild();
 
-						for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
-						{
-							netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-							P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
-							P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
-							P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
-							P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
-							ESch.AddPoint(P);
-						}
-					}
-					res.Add(Polygon);
-				}
-			}
-			return res;
-		}
+                        for (int ip = 0; ip <= ES.Spatial_Element[i].Spelement_Unit.Count - 1; ip++)
+                        {
+                            netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
+                            P.x = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].X);
+                            P.y = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Y);
+                            P.NumGeopointA = ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Num_Geopoint;
+                            P.Mt = Convert.ToDouble(ES.Spatial_Element[i].Spelement_Unit[ip].Ordinate[0].Delta_Geopoint);
+                            ESch.AddPoint(P);
+                        }
+                    }
+                    res.Add(Polygon);
+                }
+            }
+            return res;
+        }
 
-		public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
+        public static TEntitySpatial ES_OKS2(string Definition, V03_TP.tEntitySpatialOKSInp ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
 
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == V03_TP.tSpelementUnitOKSInpTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = ES.SpatialElement[i].Number;
-					res.Add(fES);
-				}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == V03_TP.tSpelementUnitOKSInpTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = ES.SpatialElement[i].Number;
+                    res.Add(fES);
+                }
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == V03_TP.tSpelementUnitOKSInpTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						//may be already included as some child ??? used prdeicate (lambda ops):
-						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
-						{
-							TPolygon Polygon = new TPolygon();
-							Polygon.Definition = ES.SpatialElement[i].Number;
-							//OUT ring
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								TPoint P = new TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								Polygon.AddPoint(P);
-							}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == V03_TP.tSpelementUnitOKSInpTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        //may be already included as some child ??? used prdeicate (lambda ops):
+                        if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
+                        {
+                            TPolygon Polygon = new TPolygon();
+                            Polygon.Definition = ES.SpatialElement[i].Number;
+                            //OUT ring
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                TPoint P = new TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                Polygon.AddPoint(P);
+                            }
 
-							// find other elements with same Number - childs
-							//childs inner ring
-							//TODO: howto detect childs rings ???
+                            // find other elements with same Number - childs
+                            //childs inner ring
+                            //TODO: howto detect childs rings ???
 
-							for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
-							{
-								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
-									(i != ii))
-								{
-									TRing ESch = Polygon.AddChild();
-									for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
-									{
-										TPoint P = new TPoint();
-										P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
-										P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
-										P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
-										P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-										ESch.AddPoint(P);
-									}
-								}
-							}
-							res.Add(Polygon);
-						}
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = ES.SpatialElement[i].Number;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
+                            for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
+                            {
+                                if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
+                                    (i != ii))
+                                {
+                                    TRing ESch = Polygon.AddChild();
+                                    for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
+                                    {
+                                        TPoint P = new TPoint();
+                                        P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
+                                        P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
+                                        P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                        P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                        ESch.AddPoint(P);
+                                    }
+                                }
+                            }
+                            res.Add(Polygon);
+                        }
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = ES.SpatialElement[i].Number;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
 
-		public static TEntitySpatial ES_OKS2(string Definition, kpt09.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
+        public static TEntitySpatial ES_OKS2(string Definition, kpt09.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
 
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
 
-				//if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt09.tSpelementUnitZUOutTypeUnit.Окружность)
-				if ((ES.SpatialElement[i].SpelementUnit.Count == 1) &&
-					(ES.SpatialElement[i].SpelementUnit[0].RSpecified))
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-					goto NextElement; // skip to next, as here circle element
-				}
+                //if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt09.tSpelementUnitZUOutTypeUnit.Окружность)
+                if ((ES.SpatialElement[i].SpelementUnit.Count == 1) &&
+                    (ES.SpatialElement[i].SpelementUnit[0].RSpecified))
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                    goto NextElement; // skip to next, as here circle element
+                }
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt09.tSpelementUnitZUOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						//may be already included as some child ??? used prdeicate (lambda ops):
-						//if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
-						{
-							TPolygon Polygon = new TPolygon();
-							Polygon.Definition = Definition;
-							//OUT ring
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								TPoint P = new TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								Polygon.AddPoint(P);
-							}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt09.tSpelementUnitZUOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        //may be already included as some child ??? used prdeicate (lambda ops):
+                        //if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
+                        {
+                            TPolygon Polygon = new TPolygon();
+                            Polygon.Definition = Definition;
+                            //OUT ring
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                TPoint P = new TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                Polygon.AddPoint(P);
+                            }
 
-							// find other elements with same Number - childs !!! not specified NAME!!!
-							//childs inner ring
-							//TODO: howto detect childs rings ???
-							/*
+                            // find other elements with same Number - childs !!! not specified NAME!!!
+                            //childs inner ring
+                            //TODO: howto detect childs rings ???
+                            /*
 							for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
 							{
 								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
@@ -211,751 +211,751 @@ namespace RRTypes.CommonCast
 									}
 								}
 							} */
-							res.Add(Polygon);
-						}
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition;
-						line.id = Gen_id.newId;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			NextElement:;
-			}
-			return res;
-		}
+                            res.Add(Polygon);
+                        }
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition;
+                        line.id = Gen_id.newId;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            NextElement:;
+            }
+            return res;
+        }
 
-		public static TEntitySpatial ES_OKS2(string Definition, kpt10_un.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
+        public static TEntitySpatial ES_OKS2(string Definition, kpt10_un.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = Definition + "." + ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-				}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = Definition + "." + ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                }
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						//may be already included as some child ??? used prdeicate (lambda ops):
-						if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
-						{
-							TPolygon Polygon = new TPolygon();
-							Polygon.Definition = Definition+ "." + ES.SpatialElement[i].Number;
-							Polygon.LayerHandle =  res.Layers[0].LayerHandle; //  "FFFF"; //default
-																			   //OUT ring
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								TPoint P = new TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								Polygon.AddPoint(P);
-							}
-
-
-							//childs inner ring
-							for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-							{
-								if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
-									(i != ii))
-								{
-									TRing ESch = Polygon.AddChild();
-
-									for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-									{
-										netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-										P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-										P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-										P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-										P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-										ESch.AddPoint(P);
-									}
-								}
-							}
-							res.Add(Polygon);
-						}
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition + "."+ES.SpatialElement[i].Number;
-						line.id = Gen_id.newId;
-						line.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
-
-		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
-
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-				}
-
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						TPolygon Polygon = new TPolygon();
-						Polygon.Definition = Definition;
-						//OUT ring
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = new TPoint();
-							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-							Polygon.AddPoint(P);
-						}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpt10_un.tSpelementUnitZUOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        //may be already included as some child ??? used prdeicate (lambda ops):
+                        if (!res.Exists(predicate_lambda_stuff => predicate_lambda_stuff.Definition == ES.SpatialElement[i].Number))
+                        {
+                            TPolygon Polygon = new TPolygon();
+                            Polygon.Definition = Definition + "." + ES.SpatialElement[i].Number;
+                            Polygon.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
+                                                                             //OUT ring
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                TPoint P = new TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                Polygon.AddPoint(P);
+                            }
 
 
-						//childs inner ring
-						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-						{
-							TRing ESch = Polygon.AddChild();
+                            //childs inner ring
+                            for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+                            {
+                                if ((ES.SpatialElement[ii].Number == Polygon.Definition) &&  //find childs
+                                    (i != ii))
+                                {
+                                    TRing ESch = Polygon.AddChild();
 
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								ESch.AddPoint(P);
-							}
-						}
-						res.Add(Polygon);
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition;
-						line.id = Gen_id.newId;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
+                                    for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                                    {
+                                        netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
+                                        P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                        P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                        P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                        P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                        ESch.AddPoint(P);
+                                    }
+                                }
+                            }
+                            res.Add(Polygon);
+                        }
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition + "." + ES.SpatialElement[i].Number;
+                        line.id = Gen_id.newId;
+                        line.LayerHandle = res.Layers[0].LayerHandle; //  "FFFF"; //default
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
 
-		public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
+        public static TEntitySpatial ES_OKS2(string Definition, kpoks_v03.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit ==  kpoks_v04.tSpelementUnitZUOutTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-				}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                }
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v04.tSpelementUnitZUOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						TPolygon Polygon = new TPolygon();
-						Polygon.Definition = Definition;
-						//OUT ring
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = new TPoint();
-							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-							Polygon.AddPoint(P);
-						}
-
-
-						//childs inner ring
-						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-						{
-							TRing ESch = Polygon.AddChild();
-
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								ESch.AddPoint(P);
-							}
-						}
-						res.Add(Polygon);
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition;
-						line.id = Gen_id.newId;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
-
-		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
-
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = Definition;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-				}
-
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						TPolygon Polygon = new TPolygon();
-						Polygon.Definition = Definition;
-						//OUT ring
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = new TPoint();
-							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-							Polygon.AddPoint(P);
-						}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v03.tSpelementUnitOKSOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        TPolygon Polygon = new TPolygon();
+                        Polygon.Definition = Definition;
+                        //OUT ring
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = new TPoint();
+                            P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                            P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                            Polygon.AddPoint(P);
+                        }
 
 
-						//childs inner ring
-						for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
-						{
-							TRing ESch = Polygon.AddChild();
+                        //childs inner ring
+                        for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+                        {
+                            TRing ESch = Polygon.AddChild();
 
-							for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-							{
-								netFteo.Spatial.TPoint P = new TPoint();
-								P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-								P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-								P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-								P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-								ESch.AddPoint(P);
-							}
-						}
-						res.Add(Polygon);
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition;
-						line.id = Gen_id.newId;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                ESch.AddPoint(P);
+                            }
+                        }
+                        res.Add(Polygon);
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition;
+                        line.id = Gen_id.newId;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
 
-		public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			if (ES == null) return res;
-			for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
-			{
+        public static TEntitySpatial ES_OKS2(string Definition, kpoks_v04.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Окружность)
-				{
-					TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
-											  ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
-											  ES.SpatialElement[i].SpelementUnit[0].R);
-					fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
-					fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
-					fES.Definition = Definition;
-					res.Add(fES);
-				}
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v04.tSpelementUnitZUOutTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                }
 
-				if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Точка)
-				{
-					if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
-					{
-						TPolygon Polygon = new TPolygon();
-						Polygon.Definition = Definition;
-
-						//OUT ring
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = new TPoint();
-							P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
-							P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-							Polygon.AddPoint(P);
-						}
-
-
-						//childs (inner) ring //Full SHIT 
-						//TODO:  howto detect childs ???
-						// if next ring incoming in current ???
-						for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
-						{
-							if (ii != i) // not self
-							{
-								TRing TestRing = new TRing();
-								for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
-								{
-									netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
-									P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
-									P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
-									P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
-									P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-									TestRing.AddPoint(P);
-								}
-
-								Polygon.AddChild(TestRing);
-							}
-						}
-						res.Add(Polygon);
-					}
-					else
-					{   //unclosed line - polyline
-						TPolyLine line = new TPolyLine();
-						line.Definition = Definition;
-						line.id = Gen_id.newId;
-						for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
-						{
-							TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
-																	   Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
-							P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
-							P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
-						}
-						res.Add(line);
-					}
-				}
-			}
-			return res;
-		}
-
-		/// <summary>
-		/// Adress manipulation routines
-		/// </summary>
-		/// <param name="Address"></param>
-		/// <returns></returns>
-		public static TAddress CastAddress(kvoks_v07.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			// dRegionsRF:  
-			// Namespace = "urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1"
-			// Here we will use netFteo.XML.XSDEnumFile
-			// 1. Need placement of xsd file
-			// 2. Get Namespace
-			//netFteo.XML.XSDEnumFile xsdenum = new netFteo.XML.XSDEnumFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase) + "\\Schema\\SchemaCommon\\dRegionsRF_v01.xsd");
-			//List<string> enumAnnot = xsdenum.Item2Annotation(Address.Region, xsdenum.SimpleTypeNames.First());
-			//Adr.Region = Address.Region.GetType().ToString();
-
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-		public static TAddress CastAddress(kpoks_v03.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			Adr.Region = Address.Region.ToString();
-
-			return Adr;
-		}
-		public static TAddress CastAddress(kpoks_v04.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			Adr.Other = Address.Other;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-
-		public static TAddress CastAddress(V03_TP.tAddressInpFull Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			if (Address.Other != null) 				Adr.Other = Address.Other;
-			if (Address.Note != null)				Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
-
-			if (Address.Level3 != null)
-				Adr.Level2 = Address.Level3.Type + " " + Address.Level3.Value;
-
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-
-		public static string ObjectTypeToStr(string s)
-		{
-			//002001002000
-			if (!s.Contains("Item")) s = "Item" + s;
-			if (s == "Item002001002000") return "Здание";
-			if (s == "Item002001003000") return "Помещение";
-			if (s == "Item002001004000") return "Сооружение";
-			if (s == "Item002001005000") return "Объект незавершённого строительства";
-			return null;
-		}
-		public static string ObjectTypeToStr(kpt09.tBuildingObjectType OT)
-		{
-			return ObjectTypeToStr(OT.ToString());
-		}
-		public static string ObjectTypeToStr(kpoks_v03.tBuildingObjectType OT)
-		{
-			return ObjectTypeToStr(OT.ToString());
-		}
-		public static string ObjectTypeToStr(kpoks_v04.tBuildingObjectType OT)
-		{
-			return ObjectTypeToStr(OT.ToString());
-		}
-		public static string ObjectTypeToStr(kvoks_v07.tBuildingObjectType OT)
-		{
-			return ObjectTypeToStr(OT.ToString());
-		}
-		public static string ObjectTypeToStr(kpt10_un.tBuildingObjectType OT)
-		{
-			return ObjectTypeToStr(OT.ToString());
-		}
-
-	}
-
-	/// <summary>
-	/// Общий класс утилит для кастинга ЕГРП (/ReestrExtract) - также и "прикрученных к KVOKS/KVZU.
-	/// Читаем xml без XSD, через  XPath.
-	/// </summary>
-	public static class CasterEGRP
-	{
-
-		public static netFteo.Rosreestr.TMyRights ParseKPSOKSRights(System.Xml.XmlDocument xmldoc)
-		{
-			// Add the namespace.
-			System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
-			nsmgr.AddNamespace("kpoks", xmldoc.DocumentElement.NamespaceURI);
-
-			System.Xml.XmlNodeList lst = xmldoc.DocumentElement.SelectNodes("/kpoks:KPOKS/kpoks:Realty/kpoks:Flat/kpoks:Rights/kpoks:Right", nsmgr);
-
-			netFteo.Rosreestr.TMyRights rs = new netFteo.Rosreestr.TMyRights();
-
-			foreach (System.Xml.XmlNode cd in lst)
-			{
-
-				netFteo.Rosreestr.TRight rt = new netFteo.Rosreestr.TRight();
-				rt.Name = cd.SelectSingleNode("kpoks:Name", nsmgr).FirstChild.Value;
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kpoks_v04.tSpelementUnitZUOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        TPolygon Polygon = new TPolygon();
+                        Polygon.Definition = Definition;
+                        //OUT ring
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = new TPoint();
+                            P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                            P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                            Polygon.AddPoint(P);
+                        }
 
 
-				System.Xml.XmlNodeList ownlst = cd.SelectNodes("kpoks:Owners/kpoks:Owner", nsmgr);
+                        //childs inner ring
+                        for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+                        {
+                            TRing ESch = Polygon.AddChild();
 
-				foreach (System.Xml.XmlNode ownitem in ownlst)
-				{
-					netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
-					if (ownitem.SelectSingleNode("kpoks:Person", nsmgr) != null)
-					{ ///KPOKS/Realty/Flat/Rights/Right/Owners/Owner/Person/FamilyName
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                ESch.AddPoint(P);
+                            }
+                        }
+                        res.Add(Polygon);
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition;
+                        line.id = Gen_id.newId;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
+
+        public static TEntitySpatial ES_OKS2(string Definition, kvoks_v02.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
+
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = Definition;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                }
+
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v02.tSpelementUnitOKSOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        TPolygon Polygon = new TPolygon();
+                        Polygon.Definition = Definition;
+                        //OUT ring
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = new TPoint();
+                            P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                            P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                            Polygon.AddPoint(P);
+                        }
+
+
+                        //childs inner ring
+                        for (int ii = 1; ii <= ES.SpatialElement.Count - 1; ii++)
+                        {
+                            TRing ESch = Polygon.AddChild();
+
+                            for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                            {
+                                netFteo.Spatial.TPoint P = new TPoint();
+                                P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                                P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                                P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                ESch.AddPoint(P);
+                            }
+                        }
+                        res.Add(Polygon);
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition;
+                        line.id = Gen_id.newId;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
+
+        public static TEntitySpatial ES_OKS2(string Definition, kvoks_v07.tEntitySpatialOKSOut ES)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            if (ES == null) return res;
+            for (int i = 0; i <= ES.SpatialElement.Count - 1; i++)
+            {
+
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Окружность)
+                {
+                    TCircle fES = new TCircle(ES.SpatialElement[i].SpelementUnit[0].Ordinate.X,
+                                              ES.SpatialElement[i].SpelementUnit[0].Ordinate.Y,
+                                              ES.SpatialElement[i].SpelementUnit[0].R);
+                    fES.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[0].Ordinate.DeltaGeopoint);
+                    fES.NumGeopointA = ES.SpatialElement[i].Number;//.SpelementUnit[0].Ordinate.NumGeopoint;
+                    fES.Definition = Definition;
+                    res.Add(fES);
+                }
+
+                if (ES.SpatialElement[i].SpelementUnit[0].TypeUnit == kvoks_v07.tSpelementUnitZUOutTypeUnit.Точка)
+                {
+                    if (ES.SpatialElement[i].SpelementUnit[0].Ordinate.X == ES.SpatialElement[i].SpelementUnit[ES.SpatialElement[i].SpelementUnit.Count() - 1].Ordinate.X)
+                    {
+                        TPolygon Polygon = new TPolygon();
+                        Polygon.Definition = Definition;
+
+                        //OUT ring
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = new TPoint();
+                            P.x = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X);
+                            P.y = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y);
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                            Polygon.AddPoint(P);
+                        }
+
+
+                        //childs (inner) ring //Full SHIT 
+                        //TODO:  howto detect childs ???
+                        // if next ring incoming in current ???
+                        for (int ii = 0; ii <= ES.SpatialElement.Count - 1; ii++)
+                        {
+                            if (ii != i) // not self
+                            {
+                                TRing TestRing = new TRing();
+                                for (int ip = 0; ip <= ES.SpatialElement[ii].SpelementUnit.Count - 1; ip++)
+                                {
+                                    netFteo.Spatial.TPoint P = new netFteo.Spatial.TPoint();
+                                    P.x = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.X);
+                                    P.y = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.Y);
+                                    P.NumGeopointA = ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.NumGeopoint;
+                                    P.Mt = Convert.ToDouble(ES.SpatialElement[ii].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                                    TestRing.AddPoint(P);
+                                }
+
+                                Polygon.AddChild(TestRing);
+                            }
+                        }
+                        res.Add(Polygon);
+                    }
+                    else
+                    {   //unclosed line - polyline
+                        TPolyLine line = new TPolyLine();
+                        line.Definition = Definition;
+                        line.id = Gen_id.newId;
+                        for (int ip = 0; ip <= ES.SpatialElement[i].SpelementUnit.Count - 1; ip++)
+                        {
+                            TPoint P = line.AddPoint((i + 1).ToString(), Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.X),
+                                                                       Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.Y), "");
+                            P.NumGeopointA = ES.SpatialElement[i].SpelementUnit[ip].Ordinate.NumGeopoint;
+                            P.Mt = Convert.ToDouble(ES.SpatialElement[i].SpelementUnit[ip].Ordinate.DeltaGeopoint);
+                        }
+                        res.Add(line);
+                    }
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Adress manipulation routines
+        /// </summary>
+        /// <param name="Address"></param>
+        /// <returns></returns>
+        public static TAddress CastAddress(kvoks_v07.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            // dRegionsRF:  
+            // Namespace = "urn://x-artefacts-rosreestr-ru/commons/directories/regions/1.0.1"
+            // Here we will use netFteo.XML.XSDEnumFile
+            // 1. Need placement of xsd file
+            // 2. Get Namespace
+            //netFteo.XML.XSDEnumFile xsdenum = new netFteo.XML.XSDEnumFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase) + "\\Schema\\SchemaCommon\\dRegionsRF_v01.xsd");
+            //List<string> enumAnnot = xsdenum.Item2Annotation(Address.Region, xsdenum.SimpleTypeNames.First());
+            //Adr.Region = Address.Region.GetType().ToString();
+
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+        public static TAddress CastAddress(kpoks_v03.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            Adr.Region = Address.Region.ToString();
+
+            return Adr;
+        }
+        public static TAddress CastAddress(kpoks_v04.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            Adr.Other = Address.Other;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+
+        public static TAddress CastAddress(V03_TP.tAddressInpFull Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            if (Address.Other != null) Adr.Other = Address.Other;
+            if (Address.Note != null) Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Level3 != null)
+                Adr.Level2 = Address.Level3.Type + " " + Address.Level3.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+
+        public static string ObjectTypeToStr(string s)
+        {
+            //002001002000
+            if (!s.Contains("Item")) s = "Item" + s;
+            if (s == "Item002001002000") return "Здание";
+            if (s == "Item002001003000") return "Помещение";
+            if (s == "Item002001004000") return "Сооружение";
+            if (s == "Item002001005000") return "Объект незавершённого строительства";
+            return null;
+        }
+        public static string ObjectTypeToStr(kpt09.tBuildingObjectType OT)
+        {
+            return ObjectTypeToStr(OT.ToString());
+        }
+        public static string ObjectTypeToStr(kpoks_v03.tBuildingObjectType OT)
+        {
+            return ObjectTypeToStr(OT.ToString());
+        }
+        public static string ObjectTypeToStr(kpoks_v04.tBuildingObjectType OT)
+        {
+            return ObjectTypeToStr(OT.ToString());
+        }
+        public static string ObjectTypeToStr(kvoks_v07.tBuildingObjectType OT)
+        {
+            return ObjectTypeToStr(OT.ToString());
+        }
+        public static string ObjectTypeToStr(kpt10_un.tBuildingObjectType OT)
+        {
+            return ObjectTypeToStr(OT.ToString());
+        }
+
+    }
+
+    /// <summary>
+    /// Общий класс утилит для кастинга ЕГРП (/ReestrExtract) - также и "прикрученных к KVOKS/KVZU.
+    /// Читаем xml без XSD, через  XPath.
+    /// </summary>
+    public static class CasterEGRP
+    {
+
+        public static netFteo.Rosreestr.TMyRights ParseKPSOKSRights(System.Xml.XmlDocument xmldoc)
+        {
+            // Add the namespace.
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("kpoks", xmldoc.DocumentElement.NamespaceURI);
+
+            System.Xml.XmlNodeList lst = xmldoc.DocumentElement.SelectNodes("/kpoks:KPOKS/kpoks:Realty/kpoks:Flat/kpoks:Rights/kpoks:Right", nsmgr);
+
+            netFteo.Rosreestr.TMyRights rs = new netFteo.Rosreestr.TMyRights();
+
+            foreach (System.Xml.XmlNode cd in lst)
+            {
+
+                netFteo.Rosreestr.TRight rt = new netFteo.Rosreestr.TRight();
+                rt.Name = cd.SelectSingleNode("kpoks:Name", nsmgr).FirstChild.Value;
+
+
+                System.Xml.XmlNodeList ownlst = cd.SelectNodes("kpoks:Owners/kpoks:Owner", nsmgr);
+
+                foreach (System.Xml.XmlNode ownitem in ownlst)
+                {
+                    netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
+                    if (ownitem.SelectSingleNode("kpoks:Person", nsmgr) != null)
+                    { ///KPOKS/Realty/Flat/Rights/Right/Owners/Owner/Person/FamilyName
 						own.OwnerName += ownitem.SelectSingleNode("kpoks:Person/kpoks:FamilyName", nsmgr).FirstChild.Value + " ";
-						own.OwnerName += ownitem.SelectSingleNode("kpoks:Person/kpoks:FirstName", nsmgr).FirstChild.Value + " ";
-						if (ownitem.SelectSingleNode("kpoks:Person/kpoks:Patronymic", nsmgr) != null)
-							own.OwnerName += ownitem.SelectSingleNode("kpoks:Person/kpoks:Patronymic", nsmgr).FirstChild.Value;
-					}
+                        own.OwnerName += ownitem.SelectSingleNode("kpoks:Person/kpoks:FirstName", nsmgr).FirstChild.Value + " ";
+                        if (ownitem.SelectSingleNode("kpoks:Person/kpoks:Patronymic", nsmgr) != null)
+                            own.OwnerName += ownitem.SelectSingleNode("kpoks:Person/kpoks:Patronymic", nsmgr).FirstChild.Value;
+                    }
 
-					if (ownitem.SelectSingleNode("kpoks:Organization", nsmgr) != null)
-					{
-						System.Xml.XmlNode ownrOrg = ownitem.SelectSingleNode("kpoks:Organization/kpoks:Name", nsmgr);
-						own.OwnerName = ownrOrg.LastChild.Value;
-					}
+                    if (ownitem.SelectSingleNode("kpoks:Organization", nsmgr) != null)
+                    {
+                        System.Xml.XmlNode ownrOrg = ownitem.SelectSingleNode("kpoks:Organization/kpoks:Name", nsmgr);
+                        own.OwnerName = ownrOrg.LastChild.Value;
+                    }
 
-					if (ownitem.SelectSingleNode("kpoks:Governance", nsmgr) != null)
-					{
-						System.Xml.XmlNode ownrOrg = ownitem.SelectSingleNode("kpoks:Governance/kpoks:Name", nsmgr);
-						own.OwnerName = ownrOrg.LastChild.Value;
-					}
-					rt.Owners.Add(own);
-				}
+                    if (ownitem.SelectSingleNode("kpoks:Governance", nsmgr) != null)
+                    {
+                        System.Xml.XmlNode ownrOrg = ownitem.SelectSingleNode("kpoks:Governance/kpoks:Name", nsmgr);
+                        own.OwnerName = ownrOrg.LastChild.Value;
+                    }
+                    rt.Owners.Add(own);
+                }
 
-				// /KPOKS/Realty/Flat/Rights/Right/Registration
-				rt.RegNumber = cd.SelectSingleNode("kpoks:Registration/kpoks:RegNumber", nsmgr).FirstChild.Value;
-				//rt.Name = cd.SelectSingleNode("kpoks:Registration/kpoks:Name", nsmgr).FirstChild.Value;
-				rt.RegDate = cd.SelectSingleNode("kpoks:Registration/kpoks:RegDate", nsmgr).FirstChild.Value;
-				//rt.Type = cd.SelectSingleNode("kpoks:Registration/kpoks:Type", nsmgr).FirstChild.Value;
+                // /KPOKS/Realty/Flat/Rights/Right/Registration
+                rt.RegNumber = cd.SelectSingleNode("kpoks:Registration/kpoks:RegNumber", nsmgr).FirstChild.Value;
+                //rt.Name = cd.SelectSingleNode("kpoks:Registration/kpoks:Name", nsmgr).FirstChild.Value;
+                rt.RegDate = cd.SelectSingleNode("kpoks:Registration/kpoks:RegDate", nsmgr).FirstChild.Value;
+                //rt.Type = cd.SelectSingleNode("kpoks:Registration/kpoks:Type", nsmgr).FirstChild.Value;
 
-				if (cd.SelectSingleNode("kpoks:Registration/kpoks:ShareText", nsmgr) != null)
-					rt.Desc = cd.SelectSingleNode("kpoks:Registration/kpoks:ShareText", nsmgr).FirstChild.Value;
+                if (cd.SelectSingleNode("kpoks:Registration/kpoks:ShareText", nsmgr) != null)
+                    rt.Desc = cd.SelectSingleNode("kpoks:Registration/kpoks:ShareText", nsmgr).FirstChild.Value;
 
-				rs.Add(rt);
-			}
-			return rs;
-		}
-
-
-		public static netFteo.Rosreestr.TMyRights ParseEGRNRights(System.Xml.XmlDocument xmldoc)
-		{
-			// Add the namespace.
-			System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
-			nsmgr.AddNamespace("docns", xmldoc.DocumentElement.NamespaceURI);
-			string RootName = xmldoc.DocumentElement.Name; //Корни документа могут быть разными - KPZU, KVZU etc. Получим по факту из документа
-
-			System.Xml.XmlNodeList Rights = xmldoc.DocumentElement.SelectNodes("/docns:" + RootName + "/docns:ReestrExtract/docns:ExtractObjectRight/docns:ExtractObject/docns:ObjectRight/docns:Right", nsmgr);
+                rs.Add(rt);
+            }
+            return rs;
+        }
 
 
-			netFteo.Rosreestr.TMyRights rs = new netFteo.Rosreestr.TMyRights();
-			foreach (System.Xml.XmlNode cd in Rights)
-			{
-				netFteo.Rosreestr.TRight rt = new netFteo.Rosreestr.TRight();
+        public static netFteo.Rosreestr.TMyRights ParseEGRNRights(System.Xml.XmlDocument xmldoc)
+        {
+            // Add the namespace.
+            System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
+            nsmgr.AddNamespace("docns", xmldoc.DocumentElement.NamespaceURI);
+            string RootName = xmldoc.DocumentElement.Name; //Корни документа могут быть разными - KPZU, KVZU etc. Получим по факту из документа
 
-				foreach (System.Xml.XmlNode child in cd.ChildNodes)
-				{
-					if (child.Name == "Owner")
-					{
-						netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
-						if (child.SelectSingleNode("docns:Person", nsmgr) != null)
-						{
-							own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Surname", nsmgr).FirstChild.Value + " ";
-							own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:First", nsmgr).FirstChild.Value + " ";
-							if (child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr) != null)
-								own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr).FirstChild.Value + " ";
-						}
-
-						if (child.SelectSingleNode("docns:Organization", nsmgr) != null)
-						{
-							System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Organization/docns:Name", nsmgr);
-							own.OwnerName = ownrOrg.LastChild.Value;
-						}
-
-						if (child.SelectSingleNode("docns:Governance", nsmgr) != null)
-						{
-							System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Governance/docns:Name", nsmgr);
-							own.OwnerName = ownrOrg.LastChild.Value;
-						}
-
-						if (child.SelectSingleNode("docns:ContactOwner", nsmgr) != null)
-							own.ContactOwner = child.SelectSingleNode("docns:ContactOwner/docns:Address", nsmgr).FirstChild.Value;
+            System.Xml.XmlNodeList Rights = xmldoc.DocumentElement.SelectNodes("/docns:" + RootName + "/docns:ReestrExtract/docns:ExtractObjectRight/docns:ExtractObject/docns:ObjectRight/docns:Right", nsmgr);
 
 
-						rt.Owners.Add(own);
-					}
+            netFteo.Rosreestr.TMyRights rs = new netFteo.Rosreestr.TMyRights();
+            foreach (System.Xml.XmlNode cd in Rights)
+            {
+                netFteo.Rosreestr.TRight rt = new netFteo.Rosreestr.TRight();
 
-					if (child.Name == "NoOwner")
-					{
-						rt.Name = child.FirstChild.Value;
-					}
+                foreach (System.Xml.XmlNode child in cd.ChildNodes)
+                {
+                    if (child.Name == "Owner")
+                    {
+                        netFteo.Rosreestr.TMyOwner own = new netFteo.Rosreestr.TMyOwner("");
+                        if (child.SelectSingleNode("docns:Person", nsmgr) != null)
+                        {
+                            own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Surname", nsmgr).FirstChild.Value + " ";
+                            own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:First", nsmgr).FirstChild.Value + " ";
+                            if (child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr) != null)
+                                own.OwnerName += child.SelectSingleNode("docns:Person/docns:FIO/docns:Patronymic", nsmgr).FirstChild.Value + " ";
+                        }
 
-					if (child.Name == "Registration")
-					{
-						if (child.SelectSingleNode("docns:RegNumber", nsmgr) != null)
-						{
-							rt.RegNumber = child.SelectSingleNode("docns:RegNumber", nsmgr).FirstChild.Value;
-							rt.Name = child.SelectSingleNode("docns:Name", nsmgr).FirstChild.Value;
-							if (child.SelectSingleNode("docns:Desc", nsmgr) != null)
-								rt.Name = child.SelectSingleNode("docns:Desc", nsmgr).FirstChild.Value;
-							rt.RegDate = child.SelectSingleNode("docns:RegDate", nsmgr).FirstChild.Value;
-							rt.Type = child.SelectSingleNode("docns:Type", nsmgr).FirstChild.Value;
-						}
+                        if (child.SelectSingleNode("docns:Organization", nsmgr) != null)
+                        {
+                            System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Organization/docns:Name", nsmgr);
+                            own.OwnerName = ownrOrg.LastChild.Value;
+                        }
 
-						if (child.SelectSingleNode("docns:ShareText", nsmgr) != null)
-							rt.ShareText = child.SelectSingleNode("docns:ShareText", nsmgr).FirstChild.Value;
+                        if (child.SelectSingleNode("docns:Governance", nsmgr) != null)
+                        {
+                            System.Xml.XmlNode ownrOrg = child.SelectSingleNode("docns:Governance/docns:Name", nsmgr);
+                            own.OwnerName = ownrOrg.LastChild.Value;
+                        }
 
-						if (child.SelectSingleNode("docns:Share", nsmgr) != null) //Здесь дробь в атрибутах:
-							rt.ShareText = child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Numerator").Value +
-								"//" + child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Denominator").Value;
-
-				
-
-					}
-				}
-					//old case: TODO reee
-					if (cd.SelectSingleNode("docns:NoOwner", nsmgr) == null)
-					{
-					System.Xml.XmlNodeList enclst = cd.SelectNodes("docns:Encumbrance", nsmgr);
-					foreach (System.Xml.XmlNode enc_node in enclst)
-					{
-						//-  /KVZU/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[413]/Encumbrance[1]/Name
-						if (enc_node.SelectSingleNode("docns:Name", nsmgr) != null)
-						{
-							netFteo.Rosreestr.TMyEncumbrance MyEnc = new netFteo.Rosreestr.TMyEncumbrance();
-							MyEnc.Name = enc_node.SelectSingleNode("docns:Name", nsmgr).FirstChild.Value;
-							if (enc_node.SelectSingleNode("docns:ShareText", nsmgr) != null)
-								MyEnc.Desc = enc_node.SelectSingleNode("docns:ShareText", nsmgr).FirstChild.Value;
-
-							if (enc_node.SelectSingleNode("docns:Owner/docns:Organization/docns:Name", nsmgr) != null)
-
-							// /...root.../ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[413]/Encumbrance[1]/Owner/Organization/Name
-							{
-								netFteo.Rosreestr.TMyOwner ow = new netFteo.Rosreestr.TMyOwner(enc_node.SelectSingleNode("docns:Owner/docns:Organization/docns:Name", nsmgr).FirstChild.Value);
-								MyEnc.Owners.Add(ow);
-							}
-							rt.Encumbrances.Add(MyEnc);
-						}
+                        if (child.SelectSingleNode("docns:ContactOwner", nsmgr) != null)
+                            own.ContactOwner = child.SelectSingleNode("docns:ContactOwner/docns:Address", nsmgr).FirstChild.Value;
 
 
-					}
+                        rt.Owners.Add(own);
+                    }
 
-					/*
+                    if (child.Name == "NoOwner")
+                    {
+                        rt.Name = child.FirstChild.Value;
+                    }
+
+                    if (child.Name == "Registration")
+                    {
+                        if (child.SelectSingleNode("docns:RegNumber", nsmgr) != null)
+                        {
+                            rt.RegNumber = child.SelectSingleNode("docns:RegNumber", nsmgr).FirstChild.Value;
+                            rt.Name = child.SelectSingleNode("docns:Name", nsmgr).FirstChild.Value;
+                            if (child.SelectSingleNode("docns:Desc", nsmgr) != null)
+                                rt.Name = child.SelectSingleNode("docns:Desc", nsmgr).FirstChild.Value;
+                            rt.RegDate = child.SelectSingleNode("docns:RegDate", nsmgr).FirstChild.Value;
+                            rt.Type = child.SelectSingleNode("docns:Type", nsmgr).FirstChild.Value;
+                        }
+
+                        if (child.SelectSingleNode("docns:ShareText", nsmgr) != null)
+                            rt.ShareText = child.SelectSingleNode("docns:ShareText", nsmgr).FirstChild.Value;
+
+                        if (child.SelectSingleNode("docns:Share", nsmgr) != null) //Здесь дробь в атрибутах:
+                            rt.ShareText = child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Numerator").Value +
+                                "//" + child.SelectSingleNode("docns:Share", nsmgr).Attributes.GetNamedItem("Denominator").Value;
+
+
+
+                    }
+                }
+                //old case: TODO reee
+                if (cd.SelectSingleNode("docns:NoOwner", nsmgr) == null)
+                {
+                    System.Xml.XmlNodeList enclst = cd.SelectNodes("docns:Encumbrance", nsmgr);
+                    foreach (System.Xml.XmlNode enc_node in enclst)
+                    {
+                        //-  /KVZU/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[413]/Encumbrance[1]/Name
+                        if (enc_node.SelectSingleNode("docns:Name", nsmgr) != null)
+                        {
+                            netFteo.Rosreestr.TMyEncumbrance MyEnc = new netFteo.Rosreestr.TMyEncumbrance();
+                            MyEnc.Name = enc_node.SelectSingleNode("docns:Name", nsmgr).FirstChild.Value;
+                            if (enc_node.SelectSingleNode("docns:ShareText", nsmgr) != null)
+                                MyEnc.Desc = enc_node.SelectSingleNode("docns:ShareText", nsmgr).FirstChild.Value;
+
+                            if (enc_node.SelectSingleNode("docns:Owner/docns:Organization/docns:Name", nsmgr) != null)
+
+                            // /...root.../ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/Right[413]/Encumbrance[1]/Owner/Organization/Name
+                            {
+                                netFteo.Rosreestr.TMyOwner ow = new netFteo.Rosreestr.TMyOwner(enc_node.SelectSingleNode("docns:Owner/docns:Organization/docns:Name", nsmgr).FirstChild.Value);
+                                MyEnc.Owners.Add(ow);
+                            }
+                            rt.Encumbrances.Add(MyEnc);
+                        }
+
+
+                    }
+
+                    /*
 
 			
 						*/
 
-				}
-					/*
-					else
-						rt.Name = cd.SelectSingleNode("docns:NoOwner", nsmgr).FirstChild.Value;
-					*/
-				
-				rs.Add(rt);
-			}
-			return rs;
-		}
+                }
+                /*
+                else
+                    rt.Name = cd.SelectSingleNode("docns:NoOwner", nsmgr).FirstChild.Value;
+                */
+
+                rs.Add(rt);
+            }
+            return rs;
+        }
 
 
-		/// <summary>
-		/// Разбор node - значение первого дочернего элемента
-		/// </summary>
-		/// <param name="xmldoc"></param>
-		/// <returns></returns>
-		/*
+        /// <summary>
+        /// Разбор node - значение первого дочернего элемента
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        /*
         public static string Parse_Recipient(System.Xml.XmlDocument xmldoc)
         {
            return netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "/ReestrExtract/DeclarAttribute/ReceivName");
         }
   */
 
-		/// <summary>
-		/// Parse  /KPZU/eDocument/Sender
-		/// </summary>
-		/// <param name="xmldoc">Типа XMlDocument</param>
-		/// <returns></returns>
-		/*
+        /// <summary>
+        /// Parse  /KPZU/eDocument/Sender
+        /// </summary>
+        /// <param name="xmldoc">Типа XMlDocument</param>
+        /// <returns></returns>
+        /*
         public static string Parse_SenderAppointment(System.Xml.XmlDocument xmldoc)
         {
            return RRTypes.CommonCast.CasterEGRP.Parse_Attribute(xmldoc, "Appointment", "/eDocument/Sender");
@@ -966,579 +966,579 @@ namespace RRTypes.CommonCast
 
 
 
-		/// <summary>
-		/// Разбор ветви ReestrExtract в документах Росреестра - дописочки от
-		/// регистраторов, содержащей сведения о документе
-		/// </summary>
-		/// <param name="xmldoc"></param>
-		/// <param name="res"></param>
-		public static void Parse_DocumentProperties(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
-		{
+        /// <summary>
+        /// Разбор ветви ReestrExtract в документах Росреестра - дописочки от
+        /// регистраторов, содержащей сведения о документе
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <param name="res"></param>
+        public static void Parse_DocumentProperties(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
+        {
 
-			if (netFteo.XML.XMLWrapper.NodeExist(xmldoc, "ReestrExtract"))
-			//            if (xmldoc.DocumentElement.SelectSingleNode("ReestrExtract") != null)
-			{
-				res.DocType = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractTypeText", "ReestrExtract/DeclarAttribute");
-				res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "eDocument");
-				res.Number = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractNumber", "ReestrExtract/DeclarAttribute");
-				res.Date = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractDate", "ReestrExtract/DeclarAttribute");
-				res.RequeryNumber = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "RequeryNumber", "ReestrExtract/DeclarAttribute");
-				res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Name", "eDocument/Sender");
-				res.Appointment = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Appointment", "eDocument/Sender");
-				res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Registrator", "ReestrExtract/DeclarAttribute");
-				res.ReceivName = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivName");
-				res.ReceivAdress = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivAdress");
-			}
-			else
-			{
-				// if ReestrExtract no present, try to read '/CertificationDoc'
-				//if present node with namespace
-				// TODO - malfunction of reading :
-				/*in case with namespaces save for further:
+            if (netFteo.XML.XMLWrapper.NodeExist(xmldoc, "ReestrExtract"))
+            //            if (xmldoc.DocumentElement.SelectSingleNode("ReestrExtract") != null)
+            {
+                res.DocType = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractTypeText", "ReestrExtract/DeclarAttribute");
+                res.Version = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Version", "eDocument");
+                res.Number = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractNumber", "ReestrExtract/DeclarAttribute");
+                res.Date = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "ExtractDate", "ReestrExtract/DeclarAttribute");
+                res.RequeryNumber = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "RequeryNumber", "ReestrExtract/DeclarAttribute");
+                res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Name", "eDocument/Sender");
+                res.Appointment = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Appointment", "eDocument/Sender");
+                res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_Attribute(xmldoc, "Registrator", "ReestrExtract/DeclarAttribute");
+                res.ReceivName = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivName");
+                res.ReceivAdress = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "ReestrExtract/DeclarAttribute/ReceivAdress");
+            }
+            else
+            {
+                // if ReestrExtract no present, try to read '/CertificationDoc'
+                //if present node with namespace
+                // TODO - malfunction of reading :
+                /*in case with namespaces save for further:
                 System.Xml.XmlNamespaceManager nsmgr = new System.Xml.XmlNamespaceManager(xmldoc.NameTable);
                 nsmgr.AddNamespace("parseNS", xmldoc.DocumentElement.NamespaceURI);
                 */
-				//case v 6.09
-				System.Xml.XmlNode CertificationDoc = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "CertificationDoc");
-				if (CertificationDoc != null)
-				{
-					res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Number");
-					res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Date");
-					res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Organization");
-					res.Appointment = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "CertificationDoc/Official/Appointment");
-					res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "CertificationDoc/Official/FamilyName");
-				}
+                //case v 6.09
+                System.Xml.XmlNode CertificationDoc = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "CertificationDoc");
+                if (CertificationDoc != null)
+                {
+                    res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Number");
+                    res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Date");
+                    res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc, "Organization");
+                    res.Appointment = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "CertificationDoc/Official/Appointment");
+                    res.AppointmentFIO = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "CertificationDoc/Official/FamilyName");
+                }
 
 
-				// vidimus 04/05 not use Namespaces:
-				System.Xml.XmlNode CertificationDoc4 = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "Package/Certification_Doc");// xmldoc.SelectSingleNode(netFteo.XML.XMLWrapper.NS_Xpath(xmldoc, "/Package/Certification_Doc"));
-				if (CertificationDoc4 != null)
-				{
-					res.DocType = "Кадастровая выписка о земельном участке";
-					res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Number");
-					res.Appointment = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Appointment");
-					res.AppointmentFIO = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "FIO");
-					res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Date");
-					res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Organization");
-				}
+                // vidimus 04/05 not use Namespaces:
+                System.Xml.XmlNode CertificationDoc4 = netFteo.XML.XMLWrapper.Parse_Node(xmldoc, "Package/Certification_Doc");// xmldoc.SelectSingleNode(netFteo.XML.XMLWrapper.NS_Xpath(xmldoc, "/Package/Certification_Doc"));
+                if (CertificationDoc4 != null)
+                {
+                    res.DocType = "Кадастровая выписка о земельном участке";
+                    res.Number = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Number");
+                    res.Appointment = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Appointment");
+                    res.AppointmentFIO = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "FIO");
+                    res.Date = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Date");
+                    res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.SelectNodeChildValue(CertificationDoc4, "Organization");
+                }
 
-				if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument") != null) &&
-					(xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version") != null))
-					res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version").Value;
-
-
-
-			}
-		}
+                if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument") != null) &&
+                    (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version") != null))
+                    res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version").Value;
 
 
-	}
 
-	/// <summary>
-	/// Общий класс утилит для кастинга разных версий схем ZU
-	/// </summary>
-	public static class CasterZU
-	{
+            }
+        }
 
-		public static TAddress CastAddress(kpzu.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
 
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+    }
 
-			Adr.Region = Address.Region.ToString();
+    /// <summary>
+    /// Общий класс утилит для кастинга разных версий схем ZU
+    /// </summary>
+    public static class CasterZU
+    {
 
-			return Adr;
-		}
-		public static TAddress CastAddress(kpzu06.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+        public static TAddress CastAddress(kpzu.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
 
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
 
-			Adr.Region = Address.Region.ToString();
-			return Adr;
-		}
+            Adr.Region = Address.Region.ToString();
 
-		public static TAddress CastAddress(kvzu.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+            return Adr;
+        }
+        public static TAddress CastAddress(kpzu06.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
 
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
 
-			Adr.Region = Address.Region.ToString();
+            Adr.Region = Address.Region.ToString();
+            return Adr;
+        }
 
-			return Adr;
-		}
-		public static TAddress CastAddress(kvzu07.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			/*здесь большая фича по кастингу произошла, VS2015 сама создала (предложила)
+        public static TAddress CastAddress(kvzu.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString();
+
+            return Adr;
+        }
+        public static TAddress CastAddress(kvzu07.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            /*здесь большая фича по кастингу произошла, VS2015 сама создала (предложила)
              * такую весчь в классе kpzu.tAddress:
                 public static explicit operator tAddressOut(kvzu07.tAddressOut v)
                 {
                     throw new NotImplementedException();
                 }
             */
-			/*
+            /*
           TAddress Adr = CastAddress((kpzu.tAddressOut)Address);
 
           return Adr; */
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
-
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-		public static TAddress CastAddress(kpt09.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
-
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-		public static TAddress CastAddress(kpt10_un.tAddressOut Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Note;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
-
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4);
-
-			return Adr;
-		}
-		public static TAddress CastAddress(MP_V06.tNewParcelAddress Address)
-		{
-			if (Address == null) return null;
-			TAddress Adr = new TAddress();
-			Adr.KLADR = Address.KLADR;
-			Adr.Note = Address.Other;
-			if (Address.City != null)
-				Adr.City = Address.City.Type + " " + Address.City.Name;
-			if (Address.District != null)
-				Adr.District = Address.District.Type + " " + Address.District.Name;
-			if (Address.Locality != null)
-				Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
-			if (Address.Street != null)
-				Adr.Street = Address.Street.Type + " " + Address.Street.Name;
-			if (Address.Level1 != null)
-				Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
-			if (Address.Level2 != null)
-				Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
-
-			if (Address.Apartment != null)
-				Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
-
-			Adr.Region = Address.Region.ToString().Substring(4); // supress 'Item'
-
-			return Adr;
-		}
-
-		public static TLocation CastLocation(kvzu07.tLocation location)
-		{
-
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-
-
-				loc.Inbounds = location.inBounds.ToString();
-
-			return loc;
-		}
-		public static TLocation CastLocation(kvzu.tLocation location)
-		{
-
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-
-				loc.Inbounds = location.inBounds.ToString();
-
-			return loc;
-		}
-		public static TLocation CastLocation(kpzu.tLocation location)
-		{
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-				loc.Inbounds = location.inBounds.ToString();
-
-			return loc;
-		}
-		public static TLocation CastLocation(kpzu06.tLocation location)
-		{
-
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-				loc.Inbounds = location.inBounds.ToString();
-
-			return loc;
-		}
-
-		public static TLocation CastLocation(kpt09.tLocation location)
-		{
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-
-				loc.Inbounds = location.inBounds.ToString();
-
-			return loc;
-		}
-		public static TLocation CastLocation(kpt10_un.tLocation location)
-		{
-			if (location == null) return null;
-			TLocation loc = new TLocation();
-			loc.Address = CastAddress(location.Address);
-			if (location.Elaboration != null)
-			{
-				if (location.Elaboration.Direction != null)
-					loc.Elaboration.Direction = location.Elaboration.Direction;
-
-				if (location.Elaboration.Distance != null)
-					loc.Elaboration.Distance = location.Elaboration.Distance;
-
-				if (location.Elaboration.ReferenceMark != null)
-					loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
-			}
-			else
-				loc.Inbounds = location.inBounds.ToString();
-			return loc;
-		}
-
-
-		#region Cast MP V05
-		/// <summary>
-		/// ES manipulation routines
-		/// </summary>
-		/// <param name="Address"></param>
-		/// <returns></returns>
-		/// 
-
-		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
-		{
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-
-
-
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
-				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-
-			return EntSpat;
-		}
-		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialZUInp ES)
-		{
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-
-
-
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
-				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-
-			return EntSpat;
-		}
-		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialOldNew ES)
-		{
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-
-
-
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
-				Point.Description = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.GeopointZacrep;
-				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.PointPref;
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-
-			return EntSpat;
-		}
-		public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tContoursSubParcelContour ES)
-		{
-
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-
-
-
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				Point.Description = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
-				Point.Pref = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-
-			return EntSpat;
-		}
-		public static TEntitySpatial AddContoursMP5(string Definition, MP_V05.tContoursSubParcelContourCollection cs)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			foreach (MP_V05.tContoursSubParcelContour item in cs)
-				res.Add(AddEntSpatMP5(item.Number, item));
-			return res;
-		}
-		#endregion
-
-		#region Cast MP V06
-		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
-		{
-			/*
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+        public static TAddress CastAddress(kpt09.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+        public static TAddress CastAddress(kpt10_un.tAddressOut Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Note;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4);
+
+            return Adr;
+        }
+        public static TAddress CastAddress(MP_V06.tNewParcelAddress Address)
+        {
+            if (Address == null) return null;
+            TAddress Adr = new TAddress();
+            Adr.KLADR = Address.KLADR;
+            Adr.Note = Address.Other;
+            if (Address.City != null)
+                Adr.City = Address.City.Type + " " + Address.City.Name;
+            if (Address.District != null)
+                Adr.District = Address.District.Type + " " + Address.District.Name;
+            if (Address.Locality != null)
+                Adr.Locality = Address.Locality.Type + " " + Address.Locality.Name;
+            if (Address.Street != null)
+                Adr.Street = Address.Street.Type + " " + Address.Street.Name;
+            if (Address.Level1 != null)
+                Adr.Level1 = Address.Level1.Type + " " + Address.Level1.Value;
+            if (Address.Level2 != null)
+                Adr.Level2 = Address.Level2.Type + " " + Address.Level2.Value;
+
+            if (Address.Apartment != null)
+                Adr.Apartment = Address.Apartment.Type + " " + Address.Apartment.Value;
+
+            Adr.Region = Address.Region.ToString().Substring(4); // supress 'Item'
+
+            return Adr;
+        }
+
+        public static TLocation CastLocation(kvzu07.tLocation location)
+        {
+
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+
+
+            loc.Inbounds = location.inBounds.ToString();
+
+            return loc;
+        }
+        public static TLocation CastLocation(kvzu.tLocation location)
+        {
+
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+
+            loc.Inbounds = location.inBounds.ToString();
+
+            return loc;
+        }
+        public static TLocation CastLocation(kpzu.tLocation location)
+        {
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+            loc.Inbounds = location.inBounds.ToString();
+
+            return loc;
+        }
+        public static TLocation CastLocation(kpzu06.tLocation location)
+        {
+
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+            loc.Inbounds = location.inBounds.ToString();
+
+            return loc;
+        }
+
+        public static TLocation CastLocation(kpt09.tLocation location)
+        {
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+
+            loc.Inbounds = location.inBounds.ToString();
+
+            return loc;
+        }
+        public static TLocation CastLocation(kpt10_un.tLocation location)
+        {
+            if (location == null) return null;
+            TLocation loc = new TLocation();
+            loc.Address = CastAddress(location.Address);
+            if (location.Elaboration != null)
+            {
+                if (location.Elaboration.Direction != null)
+                    loc.Elaboration.Direction = location.Elaboration.Direction;
+
+                if (location.Elaboration.Distance != null)
+                    loc.Elaboration.Distance = location.Elaboration.Distance;
+
+                if (location.Elaboration.ReferenceMark != null)
+                    loc.Elaboration.ReferenceMark = location.Elaboration.ReferenceMark;
+            }
+            else
+                loc.Inbounds = location.inBounds.ToString();
+            return loc;
+        }
+
+
+        #region Cast MP V05
+        /// <summary>
+        /// ES manipulation routines
+        /// </summary>
+        /// <param name="Address"></param>
+        /// <returns></returns>
+        /// 
+
+        public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialBordersZUInp ES)
+        {
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
+                Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+
+            return EntSpat;
+        }
+        public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialZUInp ES)
+        {
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
+                Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+
+            return EntSpat;
+        }
+        public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tEntitySpatialOldNew ES)
+        {
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
+                Point.Description = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.GeopointZacrep;
+                Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.PointPref;
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].NewOrdinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].NewOrdinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+
+            return EntSpat;
+        }
+        public static netFteo.Spatial.TPolygon AddEntSpatMP5(string Definition, MP_V05.tContoursSubParcelContour ES)
+        {
+
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.Description = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
+                Point.Pref = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.NumGeopointA = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+
+            return EntSpat;
+        }
+        public static TEntitySpatial AddContoursMP5(string Definition, MP_V05.tContoursSubParcelContourCollection cs)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            foreach (MP_V05.tContoursSubParcelContour item in cs)
+                res.Add(AddEntSpatMP5(item.Number, item));
+            return res;
+        }
+        #endregion
+
+        #region Cast MP V06
+        public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUOut ES)
+        {
+            /*
             netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
             EntSpat.Definition = Definition;
             //Первый (внешний) контур
@@ -1572,315 +1572,315 @@ namespace RRTypes.CommonCast
             }
             return EntSpat;
             */
-			return null;
-		}
-		/// <summary>
-		/// Кастинг ОИПД для МП6. Подсхема _Spatial_v03
-		/// </summary>
-		/// <param name="Definition"></param>
-		/// <param name="ES"></param>
-		/// <returns></returns>
-		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialZUInp ES)
-		{
+            return null;
+        }
+        /// <summary>
+        /// Кастинг ОИПД для МП6. Подсхема _Spatial_v03
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialZUInp ES)
+        {
 
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
 
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				//Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
-				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
+                Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
 
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-			return EntSpat;
-		}/// 
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }/// 
 
-		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUInp ES)
-		{
+        public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialBordersZUInp ES)
+        {
 
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
 
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4;
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				//Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
-				Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.Status = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4;
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
+                Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
 
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-			return EntSpat;
-		}
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.Status = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.PointPref == "н" ? 0 : 4; // Ordinate.PointPref.Equals("н") fail if PointPref null
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }
 
-		//TODO Check for MP6 adding of contours
-		public static System.Collections.Generic.List<IGeometry> ES_ZU(MP_V06.tNewContourCollection ESs)
-		{
-			System.Collections.Generic.List<IGeometry> res = new System.Collections.Generic.List<IGeometry>();
-			foreach (MP_V06.tNewContour item in ESs)
-			{
-				TPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
-				//collItem.ResetOrdinates(); // because is only new tNewContour
-				collItem.State = 0; // tNewContour
-				collItem.AreaValue = item.Area.Area;
-				if (item.Area.InaccuracySpecified)
-					collItem.AreaInaccuracy = item.Area.Inaccuracy.ToString();
-				res.Add(collItem);
-			}
-			return res;
-		}
+        //TODO Check for MP6 adding of contours
+        public static System.Collections.Generic.List<IGeometry> ES_ZU(MP_V06.tNewContourCollection ESs)
+        {
+            System.Collections.Generic.List<IGeometry> res = new System.Collections.Generic.List<IGeometry>();
+            foreach (MP_V06.tNewContour item in ESs)
+            {
+                TPolygon collItem = ES_ZU(item.Definition, item.EntitySpatial);
+                //collItem.ResetOrdinates(); // because is only new tNewContour
+                collItem.State = 0; // tNewContour
+                collItem.AreaValue = item.Area.Area;
+                if (item.Area.InaccuracySpecified)
+                    collItem.AreaInaccuracy = item.Area.Inaccuracy.ToString();
+                res.Add(collItem);
+            }
+            return res;
+        }
 
-		
-	
 
-		/// <summary>
-		/// Разбор юнита (например  - Точки) 
-		/// </summary>
-		/// <param name="unit"></param>
-		/// <returns></returns>
-		private static TPoint GetUnit(MP_V06.tSpelementUnitOldNew unit)
-		{
 
-			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-			if (unit.NewOrdinate != null)
-			{
-				//  " н "
-				//Если указаны только новая - точка создается
-				if (unit.OldOrdinate == null)
-				{
-					Point.Status = 0;
-				}
-				// уточ / сущ.
-				//Если указаны обе - точка существует либо уточняется
-				if (unit.OldOrdinate != null)
-				{
-					Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
-					Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
-					Point.Status = 4;
-				}
+        /// <summary>
+        /// Разбор юнита (например  - Точки) 
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        private static TPoint GetUnit(MP_V06.tSpelementUnitOldNew unit)
+        {
 
-				if (unit.NewOrdinate != null)
-				{
-					Point.x = Convert.ToDouble(unit.NewOrdinate.X);
-					Point.y = Convert.ToDouble(unit.NewOrdinate.Y);
-				}
+            netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-				Point.Mt = Convert.ToDouble(unit.NewOrdinate.DeltaGeopoint);
-				//Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
-				Point.Pref = unit.NewOrdinate.PointPref;
-				Point.NumGeopointA = unit.NewOrdinate.NumGeopoint;
-			}
+            if (unit.NewOrdinate != null)
+            {
+                //  " н "
+                //Если указаны только новая - точка создается
+                if (unit.OldOrdinate == null)
+                {
+                    Point.Status = 0;
+                }
+                // уточ / сущ.
+                //Если указаны обе - точка существует либо уточняется
+                if (unit.OldOrdinate != null)
+                {
+                    Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
+                    Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
+                    Point.Status = 4;
+                }
 
-			// " л "     TODO:
-			//Если указаны только старая - точка ликвидируется. И это грабли всего дерева классов
-			// Точка имеет два набора координат - фактически две границы - существующую в ЕГРН и новую
-			if ((unit.OldOrdinate != null) && (unit.NewOrdinate == null))
-			{
-				Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
-				Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
-				bool empt = Point.Empty;
-				Point.NumGeopointA = "л " + unit.OldOrdinate.NumGeopoint;
-				Point.Status = 6;
-			}
-			return Point;
-		}
+                if (unit.NewOrdinate != null)
+                {
+                    Point.x = Convert.ToDouble(unit.NewOrdinate.X);
+                    Point.y = Convert.ToDouble(unit.NewOrdinate.Y);
+                }
 
-		/// <summary>
-		/// Разбор Пространственных данных МП V 06
-		/// </summary>
-		/// <param name="Definition"></param>
-		/// <param name="ES"></param>
-		/// <returns></returns>
-		public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
-		{
-			if (ES.SpatialElement.Count == 0) return null;
+                Point.Mt = Convert.ToDouble(unit.NewOrdinate.DeltaGeopoint);
+                //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
+                Point.Pref = unit.NewOrdinate.PointPref;
+                Point.NumGeopointA = unit.NewOrdinate.NumGeopoint;
+            }
 
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
+            // " л "     TODO:
+            //Если указаны только старая - точка ликвидируется. И это грабли всего дерева классов
+            // Точка имеет два набора координат - фактически две границы - существующую в ЕГРН и новую
+            if ((unit.OldOrdinate != null) && (unit.NewOrdinate == null))
+            {
+                Point.oldX = Convert.ToDouble(unit.OldOrdinate.X);
+                Point.oldY = Convert.ToDouble(unit.OldOrdinate.Y);
+                bool empt = Point.Empty;
+                Point.NumGeopointA = "л " + unit.OldOrdinate.NumGeopoint;
+                Point.Status = 6;
+            }
+            return Point;
+        }
 
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{  //TODO 
-			   // if ((ES.SpatialElement[0].SpelementUnit[iord]).NewOrdinate != null) 
-			   // только точки с новыми/уточняемымыи/сущесствующими коорд
-				EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
-			}
+        /// <summary>
+        /// Разбор Пространственных данных МП V 06
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TPolygon ES_ZU(string Definition, MP_V06.tEntitySpatialOldNew ES)
+        {
+            if (ES.SpatialElement.Count == 0) return null;
 
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
 
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-					//TODO
-					// только точки с новыми/уточняемымыи/сущесствующими коорд
-					//if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) 
-					InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
-				}
-			}
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {  //TODO 
+               // if ((ES.SpatialElement[0].SpelementUnit[iord]).NewOrdinate != null) 
+               // только точки с новыми/уточняемымыи/сущесствующими коорд
+                EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+            }
 
-			if (EntSpat.HasChanges == "*") EntSpat.State = 0; else EntSpat.State = 4;
-			return EntSpat;
-		}
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
 
-		public static TPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
-		{
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    //TODO
+                    // только точки с новыми/уточняемымыи/сущесствующими коорд
+                    //if ((ES.SpatialElement[iES].SpelementUnit[iord]).NewOrdinate != null) 
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+            }
 
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
+            if (EntSpat.HasChanges == "*") EntSpat.State = 0; else EntSpat.State = 4;
+            return EntSpat;
+        }
 
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+        public static TPolygon ES_ZU(string Definition, MP_V06.tContoursSubParcelContour ES)
+        {
 
-				Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				//Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
-				Point.Pref = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-				Point.NumGeopointA = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
 
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
-					InLayer.AddPoint(Point);
-				}
-			}
-			return EntSpat;
-		}
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-		public static TEntitySpatial ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
-		{
-			TEntitySpatial res = new TEntitySpatial();
-			foreach (MP_V06.tContoursSubParcelContour item in cs)
-				res.Add(ES_ZU(item.Number, item));
-			return res;
-		}
-		#endregion
+                Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                //Point.Description = ES.SpatialElement[0].Spelement_Unit[iord].Ordinate[0].Geopoint_Zacrep;
+                Point.Pref = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
+                Point.NumGeopointA = ES.EntitySpatial.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.EntitySpatial.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.EntitySpatial.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
 
-		#region SpelementUnitZUOut parsers
-		private static TPoint GetUnit(kpzu06.tSpelementUnitZUOut unit)
-		{
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.EntitySpatial.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }
 
-			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+        public static TEntitySpatial ES_SubParcels(MP_V06.tContoursSubParcelContourCollection cs)
+        {
+            TEntitySpatial res = new TEntitySpatial();
+            foreach (MP_V06.tContoursSubParcelContour item in cs)
+                res.Add(ES_ZU(item.Number, item));
+            return res;
+        }
+        #endregion
 
-			Point.x = Convert.ToDouble(unit.Ordinate.X);
-			Point.y = Convert.ToDouble(unit.Ordinate.Y);
-			// Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
-			Point.oldX = Point.x;
-			Point.oldY = Point.y;
-			Point.Status = 4;
-			if (unit.Ordinate.DeltaGeopointSpecified)
-				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.NumGeopointA = unit.SuNmb;
+        #region SpelementUnitZUOut parsers
+        private static TPoint GetUnit(kpzu06.tSpelementUnitZUOut unit)
+        {
 
-			return Point;
-		}
+            netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-		private static TPoint GetUnit(kvzu07.tSpelementUnitZUOut unit)
-		{
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
 
-			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+            return Point;
+        }
 
-			Point.x = Convert.ToDouble(unit.Ordinate.X);
-			Point.y = Convert.ToDouble(unit.Ordinate.Y);
-			// Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
-			Point.oldX = Point.x;
-			Point.oldY = Point.y;
-			Point.Status = 4;
-			if (unit.Ordinate.DeltaGeopointSpecified)
-				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.Definition = unit.SuNmb;
-			return Point;
-		}
+        private static TPoint GetUnit(kvzu07.tSpelementUnitZUOut unit)
+        {
 
-		public static TPoint GetUnit(kpt09.tSpelementUnitZUOut unit)
-		{
+            netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-			netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.Definition = unit.SuNmb;
+            return Point;
+        }
 
-			Point.x = Convert.ToDouble(unit.Ordinate.X);
-			Point.y = Convert.ToDouble(unit.Ordinate.Y);
-			// Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
-			Point.oldX = Point.x;
-			Point.oldY = Point.y;
-			Point.Status = 4;
-			if (unit.Ordinate.DeltaGeopointSpecified)
-				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.NumGeopointA = unit.SuNmb;
+        public static TPoint GetUnit(kpt09.tSpelementUnitZUOut unit)
+        {
 
-			return Point;
-		}
+            netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
 
-		public static TPoint GetUnit(kpt10_un.tSpelementUnitZUOut unit)
-		{
-			TPoint Point = new TPoint();
-			Point.x = Convert.ToDouble(unit.Ordinate.X);
-			Point.y = Convert.ToDouble(unit.Ordinate.Y);
-			// Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
-			Point.oldX = Point.x;
-			Point.oldY = Point.y;
-			Point.Status = 4;
-			if (unit.Ordinate.DeltaGeopointSpecified)
-				Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
-			Point.Definition = unit.SuNmb;
-			return Point;
-		}
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.NumGeopointA = unit.SuNmb;
+
+            return Point;
+        }
+
+        public static TPoint GetUnit(kpt10_un.tSpelementUnitZUOut unit)
+        {
+            TPoint Point = new TPoint();
+            Point.x = Convert.ToDouble(unit.Ordinate.X);
+            Point.y = Convert.ToDouble(unit.Ordinate.Y);
+            // Заполним также и старые ординаты, чтобы не вызывать появление флага "*"
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Status = 4;
+            if (unit.Ordinate.DeltaGeopointSpecified)
+                Point.Mt = Convert.ToDouble(unit.Ordinate.DeltaGeopoint);
+            Point.Definition = unit.SuNmb;
+            return Point;
+        }
 
         public static TPoint GetUnit(kpt10_un.tSpelementUnitLandOut unit)
         {
@@ -1902,115 +1902,115 @@ namespace RRTypes.CommonCast
 
         #region-----------------Конвертация из ОИПД КПЗУ в ОИПД Fteo.Spatial
         public static netFteo.Spatial.TPolygon AddEntSpatKPZU05(string Definition, RRTypes.kpzu.tEntitySpatialZUOut ES)
-		{
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-			if (ES == null) { return EntSpat; }
+        {
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
 
 
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
 
-				netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-				Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
-				Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
-				Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-				Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
-				EntSpat.AddPoint(Point);
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
+                netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                Point.x = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.X);
+                Point.y = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.Y);
+                Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].SuNmb;
+                EntSpat.AddPoint(Point);
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
 
-					netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
-					Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-					Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-					Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-					Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
-					InLayer.AddPoint(Point);
-				}
-			}
-			return EntSpat;
-		}
-
-
-		#endregion
+                    netFteo.Spatial.TPoint Point = new netFteo.Spatial.TPoint();
+                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
+                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
+                    Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
+                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;
+                    InLayer.AddPoint(Point);
+                }
+            }
+            return EntSpat;
+        }
 
 
-		#region Cast KPZU V06
-
-		//TODO - перенос в CommonUtils
-		/// <summary>
-		/// Разбор ПД KPZU V06
-		/// </summary>
-		/// <param name="Definition"></param>
-		/// <param name="ES"></param>
-		/// <returns></returns>
-		public static netFteo.Spatial.TPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
-		{
-			netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
-			EntSpat.Definition = Definition;
-			if (ES == null) { return EntSpat; }
+        #endregion
 
 
-			//Первый (внешний) контур
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-				EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
-			}
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-					/*
+        #region Cast KPZU V06
+
+        //TODO - перенос в CommonUtils
+        /// <summary>
+        /// Разбор ПД KPZU V06
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static netFteo.Spatial.TPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
+        {
+            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
+
+
+            //Первый (внешний) контур
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+                EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+            }
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    /*
                     netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
                     Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                     Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                     if (ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopointSpecified)
                         Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
                     Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;*/
-					InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
-				}
-			}
-			return EntSpat;
-		}
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+            }
+            return EntSpat;
+        }
 
-		/// <summary>
-		/// Разбор ПД KVZU V07
-		/// </summary>
-		/// <param name="Definition"></param>
-		/// <param name="ES"></param>
-		/// <returns></returns>
-		public static TPolygon AddEntSpatKVZU07(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
-		{
+        /// <summary>
+        /// Разбор ПД KVZU V07
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TPolygon AddEntSpatKVZU07(string Definition, RRTypes.kvzu07.tEntitySpatialBordersZUOut ES)
+        {
 
-			TPolygon EntSpat = new TPolygon();
-			EntSpat.Definition = Definition;
-			if (ES == null) { return EntSpat; }
+            TPolygon EntSpat = new TPolygon();
+            EntSpat.Definition = Definition;
+            if (ES == null) { return EntSpat; }
 
-			//First ring (possible outer)
-			for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
-			{
-				EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
-			}
+            //First ring (possible outer)
+            for (int iord = 0; iord <= ES.SpatialElement[0].SpelementUnit.Count - 1; iord++)
+            {
+                EntSpat.AddPoint(GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+            }
 
-			//Внутренние контура
-			for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
-			{
-				TRing InLayer = EntSpat.AddChild();
-				for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-				{
-					InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
-				}
-			}
-			return EntSpat;
-		}
+            //Внутренние контура
+            for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                TRing InLayer = EntSpat.AddChild();
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+            }
+            return EntSpat;
+        }
 
         /// <summary>
         /// parse some case for Slot with multiborders (MC Slot)
@@ -2023,13 +2023,13 @@ namespace RRTypes.CommonCast
             TEntitySpatial ESParsed = new TEntitySpatial();
             ESParsed.Definition = Definition;
             if (ES == null) { return ESParsed; }
-            
+
             List<TRing> AllRings = new List<TRing>();
             //Parse all present rings:
             for (int iES = 0; iES <= ES.SpatialElement.Count - 1; iES++)
             {
                 TRing InLayer = new TRing();
-                
+
                 for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                 {
                     InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
@@ -2059,7 +2059,7 @@ namespace RRTypes.CommonCast
                             /*
                              */
                         if (EntSpat.InsideRing(ring) == ring.Count)
-                               
+
                         {
                             TRing InLayer = EntSpat.AddChild();
                             {
@@ -2067,7 +2067,7 @@ namespace RRTypes.CommonCast
                                 ring.State = 04;// already linked flag
                             }
                         }
-       
+
                     }
                     //insert only not child inserted instead parent:
                     if (EntSpat.State == 0)
@@ -2169,12 +2169,10 @@ namespace RRTypes.CommonCast
         /// </summary>
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
-        /// <returns></returns>
-        public static TEntitySpatial ParseES_KPT10LandES(string Definition, kpt10_un.tEntitySpatialLandOut ES)
+        /// <returns>Returned raw spatial, without parsing childs and parents</returns>
+        public static TEntitySpatial ParseES_KPT10LandES( string Definition, kpt10_un.tEntitySpatialLandOut ES)
         {
-            TEntitySpatial ESParsed = new TEntitySpatial();
-            ESParsed.Definition = Definition;
-            if (ES == null) { return ESParsed; }
+            if (ES == null) { return null; }
 
             List<TRing> AllRings = new List<TRing>();
             //Parse all present rings:
@@ -2188,50 +2186,63 @@ namespace RRTypes.CommonCast
                 }
                 AllRings.Add(InLayer);
             }
-            int AmountPoints = 0;
-            foreach (TRing OuterCandidate in AllRings)
+
+            TEntitySpatial ESParsed = new TEntitySpatial();
+            ESParsed.Definition = Definition;
+            ESParsed.State = 14; //raw spatial
+            /*
+            if (Parse)
             {
-                AmountPoints += OuterCandidate.PointCount;
-            }
-                int RingCount = 0;
-            foreach (TRing OuterCandidate in AllRings)
-            {
-                if (OuterCandidate.State == 0)
+                int AmountPoints = 0;
+                foreach (TRing OuterCandidate in AllRings)
                 {
-                    TPolygon EntSpat = new TPolygon();
-                    EntSpat.Definition = Definition;
-                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
-
-                    // Scan source list for incoming rings (that covered by first/current)
-                    foreach (TRing ring in AllRings)
+                    AmountPoints += OuterCandidate.PointCount;
+                }
+                int RingCount = 0;
+                foreach (TRing OuterCandidate in AllRings)
+                {
+                    if (OuterCandidate.State == 0)
                     {
-                        if (EntSpat.InsideRing(ring) == ring.Count)
+                        TPolygon EntSpat = new TPolygon();
+                        EntSpat.Definition = Definition;
+                        EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
 
+                        // Scan source list for incoming rings (that covered by first/current)
+                        foreach (TRing ring in AllRings)
                         {
-                            TRing InLayer = EntSpat.AddChild();
-                            {
-                                InLayer.AppendPoints(ring);
-                                ring.State = 04;// set "already linked" flag
-                            }
-                        }
+                            if (EntSpat.InsideRing(ring) == ring.Count)
 
-                    }
-                    //insert only not child inserted instead parent:
-                    if (EntSpat.State == 0)
-                    {
-                        EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
-                        ESParsed.AddPolygon(EntSpat);
+                            {
+                                TRing InLayer = EntSpat.AddChild();
+                                {
+                                    InLayer.AppendPoints(ring);
+                                    ring.State = 04;// set "already linked" flag
+                                }
+                            }
+
+                        }
+                        //insert only not child inserted instead parent:
+                        if (EntSpat.State == 0)
+                        {
+                            EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
+                            ESParsed.AddPolygon(EntSpat);
+                        }
                     }
                 }
             }
+            else
+            */
+            {
+                ESParsed.AddRange(AllRings); //returned raw spatial, without parsing childs and parents
+            }
             return ESParsed;
         }
-            #endregion
+        #endregion
 
-        }
+    }
 
 
-    
+
 }
 
 
@@ -5121,11 +5132,10 @@ namespace RRTypes.CommonParsers
                         TZone ZoneItem;
                         ZoneItem = new TZone(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        //TODO: wrong contours detection and parsing:
-                        //ZoneItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial);
-                      //TODO open too long time occured, when scanning:  
                         ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
-
+                        ZoneItem.EntitySpatial.State = 14; // raw spatial
+                        //TODO open too long time occured, when scanning:  
+                        // ZoneItem.EntitySpatial.ParseSpatial();
                         if (KPT10.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt10_un.tDocumentWithoutAppliedFile doc in KPT10.CadastralBlocks[i].Zones[iP].Documents)
                             {

@@ -3260,6 +3260,7 @@ namespace netFteo.Spatial
             get { return this.fState; }
             set { this.fState = value; }
         }
+
         private string fLayerHandle;
         public string LayerHandle
         {
@@ -3447,8 +3448,6 @@ namespace netFteo.Spatial
             }
             return res;
         }
-
-
 
         private void EsChekerProc(string sender, int process, byte[] Data)
         {
@@ -3677,8 +3676,6 @@ namespace netFteo.Spatial
                 return res + " [" + resCount.ToString() + "]";
             }
         }
-
-
 
         public void ShowasListItems(ListView LV, bool SetTag)
         {
@@ -3962,7 +3959,61 @@ namespace netFteo.Spatial
 
         public void Close()
         {
-            // nothing to
+            // nothing to do ?
+        }
+
+
+        /// <summary>
+        /// Parse spatial, detect parent and childs
+        /// and create complete polygons with child rings
+        /// </summary>
+        public void ParseSpatial()
+        {
+            if (State == 200) return;// already parsed
+            List<TRing> AllRings = new List<TRing>();
+            int OuterRingCount = 0;
+            //Collect all present rings:
+            foreach (IGeometry item in this)
+            {
+
+                AllRings.Add((TRing)item);
+            }
+
+            Clear(); //reset collection
+            this.State = 0;//clear
+            //now scan collection:
+            foreach (TRing OuterCandidate in AllRings)
+            {
+                if (OuterCandidate.State == 0)
+                {
+                    TPolygon EntSpat = new TPolygon();
+                    EntSpat.Definition = Definition;
+                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
+
+                    // Scan source list for incoming rings (that covered by first/current)
+                    foreach (TRing ring in AllRings)
+                    {
+                        if (EntSpat.InsideRing(ring) == ring.Count)
+
+                        {
+                            TRing InLayer = EntSpat.AddChild();
+                            {
+                                InLayer.AppendPoints(ring);
+                                ring.State = 04;// set "already linked" flag
+                            }
+                        }
+                    }
+                    //insert only not child inserted instead parent:
+                    if (EntSpat.State == 0)
+                    {
+                        if (OuterRingCount > 0)  //add () marker for multicontours
+                            EntSpat.Definition += EntSpat.Definition + "(" + (++OuterRingCount).ToString() + ")";
+                        this.AddPolygon(EntSpat);
+                    }
+                }
+            }
+
+            this.State = 200;// ok, parsed
         }
     }
 

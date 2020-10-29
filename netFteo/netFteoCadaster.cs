@@ -82,6 +82,7 @@ namespace netFteo
                     //Parcels
                     res.AddES(this.GetParcelsEs());
                     //Zones
+                    res.AddES(this.GetZonesEs());
                     //Bound
                     return res;
                 }
@@ -250,9 +251,9 @@ namespace netFteo
             /// </summary>
             /// <param name="ZoneType">"1 - тер. зоны"</param>
             /// <returns></returns>
-            public TPolygonCollection GetZonesEs(int ZoneType)
+            public TEntitySpatial GetZonesEs(int ZoneType =1)
             {
-                TPolygonCollection Res = new TPolygonCollection();
+                TEntitySpatial Res = new TEntitySpatial();
                 for (int i = 0; i <= this.Blocks.Count - 1; i++)
                     for (int iz = 0; iz <= this.Blocks[i].GKNZones.Count - 1; iz++)
                     {
@@ -264,7 +265,7 @@ namespace netFteo
                         {
                             if (this.Blocks[i].GKNZones[iz].EntitySpatial != null)
 
-                                Res.AddPolygon(this.Blocks[i].GKNZones[iz].EntitySpatial);
+                                Res.AddFeatures(this.Blocks[i].GKNZones[iz].EntitySpatial);
                         }
 
                     }
@@ -1547,8 +1548,9 @@ namespace netFteo
             public List<TDocument> Documents;
             public TEntitySpatial EntitySpatial; //TODO: Spatials may be multi ?
             /// <summary>
-            /// As single geometry - polygon
+            /// As single geometry - polygon, obsolete field. Instead use EntitySpatial
             /// </summary>
+            [Obsolete]
             public TPolygon SpatialElement; //TODO: Spatials may be multi ?
             public TZone(string accountnumber)
             {
@@ -1601,15 +1603,18 @@ namespace netFteo
                 return Res;
             }
 
-            public TPolygon GetEsId(int Layer_id)
+            public Object GetEsId(int Layer_id)
             {
 
                 for (int i = 0; i <= this.Count - 1; i++)
                 {
-                    if (this[i].SpatialElement.id == Layer_id)
+                    if ((this[i].SpatialElement != null) && (this[i].SpatialElement.id == Layer_id))
                         return this[i].SpatialElement;
+                    if ((this[i].EntitySpatial != null) && (this[i].EntitySpatial.FeatureExists(Layer_id)))
+                        return this[i].EntitySpatial.GetFeature(Layer_id);
+                    if ((this[i].EntitySpatial != null) && (this[i].EntitySpatial.id == Layer_id))
+                        return this[i].EntitySpatial;
                 }
-
                 return null;
             }
 
