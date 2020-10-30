@@ -185,12 +185,15 @@
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.ParsetoolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_VisualizerToggle = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ParsetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -275,7 +278,9 @@
             this.правкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.копироватьToolStripMenuItem3,
             this.удалитьToolStripMenuItem1,
-            this.вставитьToolStripMenuItem});
+            this.вставитьToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.ParsetoolStripMenuItem});
             this.правкаToolStripMenuItem.Name = "правкаToolStripMenuItem";
             this.правкаToolStripMenuItem.Size = new System.Drawing.Size(69, 22);
             this.правкаToolStripMenuItem.Text = "Правка";
@@ -284,14 +289,14 @@
             // 
             this.копироватьToolStripMenuItem3.Enabled = false;
             this.копироватьToolStripMenuItem3.Name = "копироватьToolStripMenuItem3";
-            this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(157, 22);
+            this.копироватьToolStripMenuItem3.Size = new System.Drawing.Size(270, 22);
             this.копироватьToolStripMenuItem3.Text = "Копировать";
             // 
             // удалитьToolStripMenuItem1
             // 
             this.удалитьToolStripMenuItem1.Image = global::XMLReaderCS.Properties.Resources.cross;
             this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(157, 22);
+            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(270, 22);
             this.удалитьToolStripMenuItem1.Text = "Удалить";
             this.удалитьToolStripMenuItem1.Click += new System.EventHandler(this.удалитьToolStripMenuItem1_Click);
             // 
@@ -299,7 +304,7 @@
             // 
             this.вставитьToolStripMenuItem.Enabled = false;
             this.вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
-            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
             this.вставитьToolStripMenuItem.Text = "Вставить";
             // 
             // toolStripMenuItem1
@@ -803,7 +808,7 @@
             this.поискToolStripMenuItem,
             this.обновитьToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 164);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 142);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -1508,6 +1513,7 @@
             this.toolStripButton5,
             this.toolStripSeparator2,
             this.toolStripButton2,
+            this.ParsetoolStripButton,
             this.toolStripButton_VisualizerToggle,
             this.toolStripSeparator5,
             this.toolStripButton3,
@@ -1584,6 +1590,17 @@
             this.toolStripButton2.ToolTipText = "Проверка геометрии";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click_2);
             // 
+            // ParsetoolStripButton
+            // 
+            this.ParsetoolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ParsetoolStripButton.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
+            this.ParsetoolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ParsetoolStripButton.Name = "ParsetoolStripButton";
+            this.ParsetoolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.ParsetoolStripButton.Text = "toolStripButton6";
+            this.ParsetoolStripButton.ToolTipText = "Разобрать ПД (Parse spatial)";
+            this.ParsetoolStripButton.Click += new System.EventHandler(this.ParsetoolStripButton_Click);
+            // 
             // toolStripButton_VisualizerToggle
             // 
             this.toolStripButton_VisualizerToggle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1625,7 +1642,7 @@
             this.PreloaderMenuItem.LoadingCircleControl.Active = false;
             this.PreloaderMenuItem.LoadingCircleControl.Color = System.Drawing.Color.RoyalBlue;
             this.PreloaderMenuItem.LoadingCircleControl.InnerCircleRadius = 5;
-            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(222, 1);
+            this.PreloaderMenuItem.LoadingCircleControl.Location = new System.Drawing.Point(245, 1);
             this.PreloaderMenuItem.LoadingCircleControl.Name = "PreloaderMenuItem";
             this.PreloaderMenuItem.LoadingCircleControl.NumberSpoke = 12;
             this.PreloaderMenuItem.LoadingCircleControl.OuterCircleRadius = 11;
@@ -1642,6 +1659,19 @@
             // tPointBindingSource
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
+            // 
+            // ParsetoolStripMenuItem
+            // 
+            this.ParsetoolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
+            this.ParsetoolStripMenuItem.Name = "ParsetoolStripMenuItem";
+            this.ParsetoolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+            this.ParsetoolStripMenuItem.Text = "Разобрать ПД (Parse spatial)";
+            this.ParsetoolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(267, 6);
             // 
             // KVZU_Form
             // 
@@ -1852,6 +1882,9 @@
         private System.Windows.Forms.ToolStripMenuItem contractorEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem разобратьПДToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem обновитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton ParsetoolStripButton;
+        private System.Windows.Forms.ToolStripMenuItem ParsetoolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 

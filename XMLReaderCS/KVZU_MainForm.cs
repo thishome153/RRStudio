@@ -243,6 +243,7 @@ namespace XMLReaderCS
             listView1.Items.Clear();
             listView_Properties.Items.Clear();
             contextMenuStrip_SaveAs.Enabled = false;
+            ParsetoolStripButton.Enabled = false;
             listView_Contractors.Items.Clear();
             cXmlTreeView2.Clear();
             TV_Parcels.ImageIndex = imList_dStates.Images.Count;
@@ -3045,7 +3046,11 @@ LV.Items.Add(LVipP);
             }
             return null;
         }
-        //--------------Проверим ноду--------------
+        
+        /// <summary>
+        /// Called in case keyup, mouse click etc. When changed context (treeview node)
+        /// </summary>
+        /// <param name="STrN"></param>
         private void ListSelectedNode(TreeNode STrN)
         {
             if (STrN == null) return;
@@ -3054,17 +3059,22 @@ LV.Items.Add(LVipP);
             listView1.Items.Clear();
             listView1.Controls.Clear();
             listView1.View = View.Details;
-
+            ParsetoolStripButton.Enabled = false;
+            ParsetoolStripMenuItem.Enabled = false;
             listView_Properties.Items.Clear();
             listView_Properties.Controls.Clear();
             GeometryToSpatialView(listView1, null);
 
             if (STrN.Name.Contains("ES."))
             {
-
                 IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
                 if (Entity != null)
                 {
+                    if (Entity.State  == 14)
+                    {
+                        ParsetoolStripButton.Enabled = true;
+                        ParsetoolStripMenuItem.Enabled = true;
+                    }
                     GeometryToSpatialView(listView1, Entity);
                     Entity.ShowasListItems(listView1, true);
                     PropertiesToListView(listView_Properties, Entity);
@@ -5368,6 +5378,8 @@ LV.Items.Add(LVipP);
 
         private void разобратьПДToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
+            /*
             TEntitySpatial Es = GetES(TV_Parcels.SelectedNode.Name);
 
             if (Es != null)
@@ -5378,12 +5390,44 @@ LV.Items.Add(LVipP);
                     TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
                 }
             }
+            */
+        }
+
+        private void ParseClick(TreeNode Node, TreeView TV)
+        {
+            if (Node != null)
+            {
+                TEntitySpatial Es = GetES(Node.Name);
+                if (Es != null)
+                {
+                    if (Es.ParseSpatial())
+                    {
+                        netFteo.ObjectLister.ListES(Node.Parent, Es);
+                        TV.Nodes.Remove(Node);
+                    }
+                }
+            }
         }
 
         private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TV_Parcels.Nodes.Clear();
             ListMyCoolections(this.DocInfo.MyBlocks);
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ParsetoolStripButton_Click(object sender, EventArgs e)
+        {
+            ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
         }
     }
 }
