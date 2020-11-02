@@ -2544,7 +2544,7 @@ namespace RRTypes.CommonParsers
                 {
                     STD_MPV04.STD_MP MP = (STD_MPV04.STD_MP)Desearialize<STD_MPV04.STD_MP>(xmldoc);
                     res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
-                    if (MP.eDocument.CodeType == RRTypes.STD_MPV04.STD_MPEDocumentCodeType.Item014)
+                    if (MP.eDocument.CodeType ==STD_MPV04.STD_MPEDocumentCodeType.Item014)
                     {
                         //  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
                         if (MP.Package.FormParcels != null)
@@ -2610,6 +2610,9 @@ namespace RRTypes.CommonParsers
                                 if (MP.Package.SpecifyParcel.ExistParcel.Entity_Spatial != null)
                                 {
                                     TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber, "Item01"));
+                                    MainObj.EntSpat.AddPolygon(STD_MP_Utils.AddEntSpatSTDMP4(MP.Package.SpecifyParcel.ExistParcel.CadastralNumber,
+                                                                              MP.Package.SpecifyParcel.ExistParcel.Entity_Spatial));
+
                                 }
 
                                 if (MP.Package.SpecifyParcel.ExistParcel.Contours != null)

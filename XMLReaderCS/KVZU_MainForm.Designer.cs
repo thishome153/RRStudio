@@ -57,6 +57,8 @@
             this.копироватьToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.вставитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.ParsetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.картапланToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +119,6 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMI_ShowES = new System.Windows.Forms.ToolStripMenuItem();
-            this.разобратьПДToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eSViewerlibmcvcdllF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -192,8 +193,6 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.ParsetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -306,6 +305,19 @@
             this.вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
             this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(270, 22);
             this.вставитьToolStripMenuItem.Text = "Вставить";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(267, 6);
+            // 
+            // ParsetoolStripMenuItem
+            // 
+            this.ParsetoolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
+            this.ParsetoolStripMenuItem.Name = "ParsetoolStripMenuItem";
+            this.ParsetoolStripMenuItem.Size = new System.Drawing.Size(270, 22);
+            this.ParsetoolStripMenuItem.Text = "Разобрать ПД (Parse spatial)";
+            this.ParsetoolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -808,7 +820,7 @@
             this.поискToolStripMenuItem,
             this.обновитьToolStripMenuItem});
             this.contextMenuStrip_SaveAs.Name = "contextMenuStrip1";
-            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 142);
+            this.contextMenuStrip_SaveAs.Size = new System.Drawing.Size(207, 164);
             this.contextMenuStrip_SaveAs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_SaveAs_Opening);
             // 
             // сохранитьКакToolStripMenuItem
@@ -935,7 +947,6 @@
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMI_ShowES,
-            this.разобратьПДToolStripMenuItem,
             this.eSViewerlibmcvcdllF1ToolStripMenuItem,
             this.mSVCESCheckerFunc2Int1975ToolStripMenuItem,
             this.writeDXFSingleEntitydxfPointToolStripMenuItem,
@@ -954,14 +965,6 @@
             this.toolStripMI_ShowES.Size = new System.Drawing.Size(296, 22);
             this.toolStripMI_ShowES.Text = "Визуализация ПД (WPF {xaml})";
             this.toolStripMI_ShowES.Click += new System.EventHandler(this.toolStripMI_ShowES_Click);
-            // 
-            // разобратьПДToolStripMenuItem
-            // 
-            this.разобратьПДToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
-            this.разобратьПДToolStripMenuItem.Name = "разобратьПДToolStripMenuItem";
-            this.разобратьПДToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.разобратьПДToolStripMenuItem.Text = "Разобрать ПД (Parse spatial)";
-            this.разобратьПДToolStripMenuItem.Click += new System.EventHandler(this.разобратьПДToolStripMenuItem_Click);
             // 
             // eSViewerlibmcvcdllF1ToolStripMenuItem
             // 
@@ -1660,19 +1663,6 @@
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
             // 
-            // ParsetoolStripMenuItem
-            // 
-            this.ParsetoolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.geoidquestion;
-            this.ParsetoolStripMenuItem.Name = "ParsetoolStripMenuItem";
-            this.ParsetoolStripMenuItem.Size = new System.Drawing.Size(270, 22);
-            this.ParsetoolStripMenuItem.Text = "Разобрать ПД (Parse spatial)";
-            this.ParsetoolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(267, 6);
-            // 
             // KVZU_Form
             // 
             this.AllowDrop = true;
@@ -1880,7 +1870,6 @@
         private System.Windows.Forms.ToolStripMenuItem документToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem онлайнЗапросToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contractorEditorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem разобратьПДToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem обновитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton ParsetoolStripButton;
         private System.Windows.Forms.ToolStripMenuItem ParsetoolStripMenuItem;
