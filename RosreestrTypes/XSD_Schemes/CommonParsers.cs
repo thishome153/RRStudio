@@ -1950,9 +1950,9 @@ namespace RRTypes.CommonCast
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
         /// <returns></returns>
-        public static netFteo.Spatial.TPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
+        public static TPolygon AddEntSpatKPZU06(string Definition, RRTypes.kpzu06.tEntitySpatialZUOut ES)
         {
-            netFteo.Spatial.TPolygon EntSpat = new netFteo.Spatial.TPolygon();
+            TPolygon EntSpat = new TPolygon();
             EntSpat.Definition = Definition;
             if (ES == null) { return EntSpat; }
 
@@ -1968,17 +1968,64 @@ namespace RRTypes.CommonCast
                 netFteo.Spatial.TRing InLayer = EntSpat.AddChild();
                 for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                 {
-                    /*
-                    netFteo.Spatial.Point Point = new netFteo.Spatial.Point();
-                    Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
-                    Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
-                    if (ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopointSpecified)
-                        Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].SuNmb;*/
                     InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                 }
             }
             return EntSpat;
+        }
+
+        public static TEntitySpatial ParseES_KPZU06(string Definition, kpzu06.tEntitySpatialZUOut ES)
+        {
+            TEntitySpatial ESParsed = new TEntitySpatial();
+            ESParsed.Definition = Definition;
+            if (ES == null) { return ESParsed; }
+
+            List<TRing> AllRings = new List<TRing>();
+            //Parse all present rings:
+            for (int iES = 0; iES <= ES.SpatialElement.Count - 1; iES++)
+            {
+                TRing InLayer = new TRing();
+
+                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
+                {
+                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                }
+                AllRings.Add(InLayer);
+            }
+ 
+            int RingCount = 0;
+            foreach (TRing OuterCandidate in AllRings)
+            {
+                if (OuterCandidate.State == 0)
+                {
+                    TPolygon EntSpat = new TPolygon();
+                    EntSpat.Definition = Definition;
+                    EntSpat.ImportRing(OuterCandidate); //First ring (possible outer)
+
+                    // Scan source list for incoming rings (that covered by first/current)
+                    foreach (TRing ring in AllRings)
+                    {
+                          if (EntSpat.InsideRing(ring) == ring.Count)
+
+                        {
+                            TRing InLayer = EntSpat.AddChild();
+                            {
+                                InLayer.AppendPoints(ring);
+                                ring.State = 04;// already linked flag
+                            }
+                        }
+
+                    }
+                    //insert only not child inserted instead parent:
+                    if (EntSpat.State == 0)
+                    {
+                        EntSpat.Definition += EntSpat.Definition + "(" + (++RingCount).ToString() + ")";
+                        ESParsed.AddPolygon(EntSpat);
+                    }
+                }
+
+            }
+            return ESParsed;
         }
 
         /// <summary>
@@ -5994,11 +6041,17 @@ namespace RRTypes.CommonParsers
 
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord,
+                        Sl.ES.AddFeatures(CasterZU.ParseES_KPZU06(kp.Parcel.SubParcels[i].NumberRecord,
+                                                                               kp.Parcel.SubParcels[i].EntitySpatial));
+                    }
+                    /*
+                    {
+                        TPolygon SlEs = CasterZU.AddEntSpatKPZU06(kp.Parcel.SubParcels[i].NumberRecord,
                                                                                kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.SpatialElement.ImportPolygon(SlEs);
                         res.MyBlocks.SpatialData.Add(SlEs);
                     }
+                    */
 
                 }
             }
