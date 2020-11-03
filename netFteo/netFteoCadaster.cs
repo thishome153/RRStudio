@@ -1546,12 +1546,15 @@ namespace netFteo
             public string ContentRestrictions; // SpecialZone
             public List<string> PermittedUses;
             public List<TDocument> Documents;
+
             public TEntitySpatial EntitySpatial; //TODO: Spatials may be multi ?
+
             /// <summary>
             /// As single geometry - polygon, obsolete field. Instead use EntitySpatial
             /// </summary>
             [Obsolete]
             public TPolygon SpatialElement; //TODO: Spatials may be multi ?
+            
             public TZone(string accountnumber)
             {
                 this.AccountNumber = accountnumber;

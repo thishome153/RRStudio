@@ -3299,6 +3299,11 @@ namespace netFteo.Spatial
             this.LoadExceptions = new List<string>();
         }
 
+        public TEntitySpatial(string Definition): this()
+        {
+            this.Definition = Definition;
+        }
+
         public TPolygon AddPolygon(object poly_)
         {
 
