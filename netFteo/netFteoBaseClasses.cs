@@ -814,6 +814,16 @@ namespace netFteo.Spatial
         void ResetOrdinates();
         void ResetStatus(string Prefix);
         void ExchangeOrdinates();
+
+        /// <summary>
+        /// Rebuild list from specified point
+        /// </summary>
+        /// <param name="Point_id">First point id</param>
+        void MakeFirstPoint(long Point_id);
+        
+        /// <summary>
+        /// Установка "ГКН" точек
+        /// </summary>
         void DetectSpins(IPointList src);
         int ReorderPoints(int StartNumber);
 
@@ -860,11 +870,7 @@ namespace netFteo.Spatial
             get { return this.fDefinition; }
             set { this.fDefinition = value; }
         }
-
-
-        /// <summary>
-        /// Установка "ГКН" точек
-        /// </summary>
+ 
         public void DetectSpins(IPointList src)
         {
             PointList Detectors = (PointList)src;
@@ -892,6 +898,38 @@ namespace netFteo.Spatial
                 this[i].y = dx;
             }
         }
+    
+        public void MakeFirstPoint(long Point_id)
+        {
+            //get point index in this
+            int StartPointIndex = this.IndexOf(GetPoint(Point_id));
+            if (StartPointIndex == 0) return;// it already begin point
+            PointList Reciever = new PointList();
+            //TODO:
+            //first part - from index to last item
+            //....
+            for (int i = StartPointIndex; i <= this.Count - 1; i++)
+            {
+                if (! Reciever.Contains(this[i])) //prevent doublicates
+                Reciever.AddPoint(this[i]);
+            }
+
+            //second part - from first item to index, before them
+            for (int i = 0; i <= StartPointIndex - 1; i++)
+            {
+                if (!Reciever.Contains(this[i])) //prevent doublicates
+                    Reciever.AddPoint(this[i]);
+            }
+
+            //auto closing list?
+          //  Reciever.Add(GetPoint(Point_id)); // last point, closing etc
+
+            this.Clear();
+            foreach (TPoint pt in Reciever)
+                this.Add(pt);
+        }
+
+
 
         private string fLayerHandle;
         public string LayerHandle

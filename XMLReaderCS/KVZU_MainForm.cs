@@ -5177,25 +5177,7 @@ LV.Items.Add(LVipP);
             }
         }
 
-        private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-            if (Feature != null)
-            {
-                Feature.ReversePoints();
-                Feature.ShowasListItems(listView1, true);
-            }
 
-
-            /*
-			TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-			if (Pl != null)
-			{
-				Pl.Reverse_Points();
-				PointListToListView(listView1, Pl);
-			}
-			*/
-        }
 
 
 
@@ -5262,7 +5244,12 @@ LV.Items.Add(LVipP);
         }
 
 
-
+        /// <summary>
+        /// Check if item selected and return item id as ItemTag
+        /// </summary>
+        /// <param name="lv"></param>
+        /// <param name="ItemTag">out parameter, if function true   </param>
+        /// <returns></returns>
         private bool ListView_ItemSelected(ListView lv, out string ItemTag)
         {
             if (lv.SelectedItems.Count == 1)
@@ -5290,7 +5277,7 @@ LV.Items.Add(LVipP);
             }
         }
 
-        //Удалить току/геометрию
+        //Удалить то4ку/геометрию
         private void удалитьToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (RemoveGeometryNode(TV_Parcels.SelectedNode.Name))
@@ -5379,18 +5366,7 @@ LV.Items.Add(LVipP);
         private void разобратьПДToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
-            /*
-            TEntitySpatial Es = GetES(TV_Parcels.SelectedNode.Name);
-
-            if (Es != null)
-            {
-                if (Es.ParseSpatial())
-                {
-                    netFteo.ObjectLister.ListES(TV_Parcels.SelectedNode.Parent, Es);
-                    TV_Parcels.Nodes.Remove(TV_Parcels.SelectedNode);
-                }
-            }
-            */
+   
         }
 
         private void ParseClick(TreeNode Node, TreeView TV)
@@ -5428,6 +5404,60 @@ LV.Items.Add(LVipP);
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
+        }
+
+
+        private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Feature != null)
+            {
+                Feature.ReversePoints();
+                Feature.ShowasListItems(listView1, true);
+            }
+
+        }
+
+        private void сделатьПервойВершинойToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
+            if (ListView_ItemSelected((ListView)parent, out string tag))
+            {
+                IGeometry Feature = GetNodeGeometry(tag);
+                if (Feature != null)
+                {
+                    if (Feature.TypeName == "netFteo.Spatial.TPoint")
+                    {
+                        TPoint pt = (TPoint)Feature;
+                        //now get current list . Listview.Tag stored its id:
+                        IPointList CurrentPointList = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+                        CurrentPointList.MakeFirstPoint(pt.id);
+                        CurrentPointList.ShowasListItems(listView1, true);
+
+                    }
+                }
+            }
+
+                   // IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+
+            /*
+               Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
+            if (ListView_ItemSelected((ListView)parent, out string tag))
+            {
+                EditGeometryNode((ListView)parent, tag);
+            }
+             */
+
+            /*
+             IGeometry Feature = GetNodeGeometry(Tag);
+            if (Feature != null)
+            {
+                if (Feature.TypeName == "netFteo.Spatial.TPoint")
+                {
+                    TPoint pt = (TPoint)Feature;
+             * */
+
         }
     }
 }

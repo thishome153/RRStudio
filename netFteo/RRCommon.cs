@@ -51,6 +51,7 @@ namespace netFteo.Rosreestr
         public static string KVZU_05 = "urn://fake/kvzu/5.0.0";
         public static string KVZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
         public static string KVZU_07  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
+        public static string KVZU_08 = "urn://fake/ir_egrn/kvzu/8.0.0";
         public static string KPZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
         public static string KPZU_05 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/5.0.8";
         public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
