@@ -794,6 +794,7 @@ namespace GKNData
             Cfg.CfgWrite(); //save them
             CadBloksList = LoadBlockList(CF.conn, CF.conn2, District_id);
             ListBlockListTreeView(CadBloksList, tv);
+            Button_Import.Enabled = true;
         }
 
 
@@ -1148,9 +1149,28 @@ namespace GKNData
                     if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
                         TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
-                        wzlBlockEd blEd = new wzlBlockEd();
-                        //blEd.ImportXMLKPT(FileName, block, CF.conn);
-
+                        if (block.Parcels.Count() == 0) //may be not loaded, but present in DB
+                        {
+                            TParcels reloadP = LoadParcelsList(CF.conn, (block.id));
+                            block.Parcels.AddParcels(reloadP);
+                        }
+                        wzParcelfrm ParcelEd = new wzParcelfrm();
+                        ParcelEd.CF.conn = CF.conn;
+                        if (ParsedDoc.MyBlocks.Blocks[0].Parcels.Count() == 1)
+                        {
+                            string ParcelCN = ParsedDoc.MyBlocks.Blocks[0].Parcels[0].CN;
+                            if (block.ParcelExist(ParcelCN))
+                            {
+                                TParcel TargetParcel = block.GetParcel(ParcelCN);
+                                ParcelEd.ImportXMLVidimus(FileName, TargetParcel);
+                            }
+                            else
+                            {
+                                //no parcels exist, create new:
+                                TParcel TargetParcel = block.Parcels.AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
+                                ParcelEd.ImportXMLVidimus(FileName, TargetParcel);
+                            }
+                        }
                     }
                     else
                     {
@@ -1158,8 +1178,6 @@ namespace GKNData
                         TCadastralBlock block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
                         block.Parent_id = CF.Cfg.District_id;
                     }
-                    //TODO : unsert doc and upload:........
-
                 }
             }
 
@@ -1429,12 +1447,15 @@ namespace GKNData
 
         private void Button_Import_Click(object sender, EventArgs e)
         {
-            OpenFileDialog od = new OpenFileDialog();
-            od.Filter = "Документы xml|*.xml";
-            od.FileName = "";
-            if (od.ShowDialog() == DialogResult.OK)
+            if (CF.Cfg.ViewLevel == ViewLevel.vlBlocks)
             {
-                OpenFile(od.FileName);
+                OpenFileDialog od = new OpenFileDialog();
+                od.Filter = "Документы xml|*.xml";
+                od.FileName = "";
+                if (od.ShowDialog() == DialogResult.OK)
+                {
+                    OpenFile(od.FileName);
+                }
             }
         }
         private void импортToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1613,7 +1634,10 @@ namespace GKNData
             {
                 try
                 {
-                    OpenFile(filename);
+                    if (CF.Cfg.ViewLevel == ViewLevel.vlBlocks)
+                    {
+                        OpenFile(filename);
+                    }
                     Application.DoEvents();
                 }
                 catch (Exception ex)
@@ -1628,7 +1652,6 @@ namespace GKNData
                     //return;
                 }
             }
-
         }
 
 
@@ -1645,6 +1668,7 @@ namespace GKNData
             Explorer_listView.Dock = DockStyle.Fill;
             Explorer_listView.View = View.LargeIcon;
             Explorer_listView.Items.Clear();
+            Button_Import.Enabled = false;
             ClearFiles();
         }
 

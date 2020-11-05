@@ -1025,21 +1025,222 @@ namespace RRTypes.CommonCast
                 if ((xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument") != null) &&
                     (xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version") != null))
                     res.Version = xmldoc.SelectSingleNode(xmldoc.DocumentElement.Name + "eDocument").Attributes.GetNamedItem("Version").Value;
+            }
+        }
+    }
+
+    #region Cast KPT v11 , KVZU 8
+    public static class CasterKPT11
+    {
+        public static void Parse_KTP11Info(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
+        {
+            res.Version = "11";
+            res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/date_formation");
+            res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/registration_number");
+            res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/organ_registr_rights");
+        }
+        //TODO types 1, 2, 0
+
+        public static string BoundToName(string Boundtype)
+        {
+            switch (Boundtype)
+            {
+                case "3": return "Граница муниципального образования";
+            }
+            // if (GKNBound.SubjectsBoundary != null) return "Граница между субъектами Российской Федерации";
+            // if (GKNBound.InhabitedLocalityBoundary != null) return "Граница населенного пункта";
+            return null;
+        }
 
 
+        /// <summary>
+        /// KPT 11 Location parser
+        /// </summary>
+        /// <param name="xmllocation"></param>
+        /// <returns></returns>
+        public static TLocation Parse_Location(System.Xml.XmlNode xmllocation)
+        {
+            if (xmllocation == null) return null;
+            TLocation loc = new TLocation();
+            XmlNode Address = netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "address");
+            if (Address != null)
+            {
+                TAddress Adr = new TAddress();
+                Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "readable_address");
 
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/level_settlement/city") != null)
+                    Adr.City = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/type_city") + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/name_city");
+
+                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/street/type_street") != null)
+                {
+                    Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/type_street") + " " +
+                        netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/name_street");
+                }
+
+
+                //if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/level1") != null)
+                {
+
+                    Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/type_level1") + " " +
+                                 netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/name_level1");
+                }
+
+                Adr.Region = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/region/code");
+                loc.Address = Adr;
+            }
+            return loc;
+        }
+
+        public static TParcel Parse_Parcel(XmlNode parcel)
+        {
+            TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
+              netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
+            MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
+            MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
+            if (parcel.SelectSingleNode("params/permitted_use") != null)
+                MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("params/permitted_use/permitted_use_established/by_document").FirstChild.Value;
+            MainObj.Utilization.Untilization = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "params/permitted_use/permitted_use_established/land_use/code");
+            MainObj.Location = Parse_Location(parcel.SelectSingleNode("address_location"));
+            if (parcel.SelectSingleNode("cost/value") != null)
+                MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("cost/value").FirstChild.Value);
+            //in case of 'KPT' document date not specified. So check, if exist
+            if (parcel.SelectSingleNode("record_info/registration_date") != null)
+                MainObj.DateCreated = parcel.SelectSingleNode("record_info/registration_date").FirstChild.Value;// .ToString("dd.MM.yyyy") 
+            if (parcel.SelectSingleNode("special_notes") != null)
+                MainObj.SpecialNote = parcel.SelectSingleNode("special_notes").FirstChild.Value;
+
+            //SignleSpatial
+            if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
+            {
+                TPolygon ents = CasterKPT11.LandEntSpatToFteo(MainObj.CN,
+                                                      parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial"));
+
+                ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
+                ents.Parent_Id = MainObj.id;
+                ents.Definition = MainObj.CN;
+                MainObj.EntSpat.Add(ents);
+            }
+
+            //TODO:
+            //Многоконтурный TODO: нет примеров
+            // contours_location
+            if (parcel.SelectSingleNode("Contours") != null)
+            {
+                //26:04:090203:258
+                System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
+                string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
+                for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+                {
+                    /*
+                    TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
+                                                          parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
+                                                          contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
+                    */
+                    MainObj.EntSpat.Add(new TPolygon("TODO Same empty feature"));
+                }
+            }
+            return MainObj;
+        }
+        //Разбор ordinate KPT11
+        private static TPoint ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
+        {
+            TPoint Point = new TPoint();
+            Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("x").FirstChild.Value);
+            Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("y").FirstChild.Value);
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Definition = netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "num_geopoint");
+            if (netFteo.XML.XMLWrapper.SelectNodeChild(Spelement_Unit, "delta_geopoint") != null)
+                Point.Mt = Convert.ToDouble(netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "delta_geopoint"));
+            return Point;
+        }
+
+        /// <summary>
+        /// Разбор Entity_Spatial KPT_V11
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TPolygon LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
+        {
+            {
+                if (ES == null) return null;
+                TPolygon EntSpat = new TPolygon();
+                EntSpat.Definition = Definition;
+
+                System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
+
+                //Первый Spatial_Element - внешний контур ( 0 )
+                System.Xml.XmlNode OuterRing = ESEntSpat[0].SelectSingleNode("ordinates");
+
+
+                for (int iSpelement = 0; iSpelement <= OuterRing.ChildNodes.Count - 1; iSpelement++)
+                {
+                    EntSpat.AddPoint(ParseOrdinate(OuterRing.ChildNodes[iSpelement]));
+                }
+
+                //Второй и след. Spatial_Element - Внутренние контура
+                if (ESEntSpat.Count > 1)
+                {
+                    for (int ring = 1; ring <= ESEntSpat.Count - 1; ring++)
+                    {
+                        System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
+
+                        TRing InLayer = EntSpat.AddChild();
+
+                        for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
+                        {
+                            InLayer.AddPoint(ParseOrdinate(childRing.ChildNodes[iSpelement]));
+                        }
+                    }
+                }
+                return EntSpat;
             }
         }
 
 
+        /// <summary>
+        /// Parse only into raw spatial (State == 14). Todo, spatial need be parsed
+        /// </summary>
+        /// <param name="Definition"></param>
+        /// <param name="ES"></param>
+        /// <returns></returns>
+        public static TEntitySpatial LandEntSpatToES2(string Definition, System.Xml.XmlNode ES)
+        {
+            if (ES == null) return null;
+            System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
+            List<TRing> AllRings = new List<TRing>();
+            //Read all present rings:
+            for (int ring = 0; ring <= ESEntSpat.Count - 1; ring++)
+            {
+                System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
+
+                TRing InLayer = new TRing();
+
+                for (int iSpelement = 0; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
+                {
+                    InLayer.AddPoint(ParseOrdinate(childRing.ChildNodes[iSpelement]));
+                }
+                AllRings.Add(InLayer);
+            }
+            TEntitySpatial ESParsed = new TEntitySpatial(Definition);
+            ESParsed.State = 14; //raw spatial
+            ESParsed.AddRange(AllRings); //returned raw spatial, without parsing childs and parents
+            return ESParsed;
+        }
+
+
+
     }
+
+    #endregion
 
     /// <summary>
     /// Общий класс утилит для кастинга разных версий схем ZU
     /// </summary>
     public static class CasterZU
     {
-
         public static TAddress CastAddress(kpzu.tAddressOut Address)
         {
             if (Address == null) return null;
@@ -1365,6 +1566,12 @@ namespace RRTypes.CommonCast
         }
 
 
+   
+
+    }
+
+    public static class CasterSpatial
+    {
         #region Cast MP V05
         /// <summary>
         /// ES manipulation routines
@@ -1390,7 +1597,7 @@ namespace RRTypes.CommonCast
                 Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
                 Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
                 Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
                 EntSpat.AddPoint(Point);
             }
             //Внутренние контура
@@ -1404,7 +1611,7 @@ namespace RRTypes.CommonCast
                     Point.x = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.X);
                     Point.y = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.Y);
                     Point.Mt = Convert.ToDouble(ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.DeltaGeopoint);
-                    Point.NumGeopointA = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
+                    Point.Definition = ES.SpatialElement[iES].SpelementUnit[iord].Ordinate.NumGeopoint;
                     InLayer.AddPoint(Point);
                 }
             }
@@ -1428,7 +1635,7 @@ namespace RRTypes.CommonCast
                 Point.Mt = Convert.ToDouble(ES.SpatialElement[0].SpelementUnit[iord].Ordinate.DeltaGeopoint);
                 Point.Description = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.GeopointZacrep;
                 Point.Pref = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.PointPref;
-                Point.NumGeopointA = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
+                Point.Definition = ES.SpatialElement[0].SpelementUnit[iord].Ordinate.NumGeopoint;
                 EntSpat.AddPoint(Point);
             }
             //Внутренние контура
@@ -1896,7 +2103,10 @@ namespace RRTypes.CommonCast
             Point.Definition = unit.SuNmb;
             return Point;
         }
+
+
         #endregion
+
 
 
 
@@ -1941,7 +2151,7 @@ namespace RRTypes.CommonCast
         #endregion
 
 
-        #region Cast KPZU V06
+        #region Cast Spatial data
 
         //TODO - перенос в CommonUtils
         /// <summary>
@@ -2094,7 +2304,7 @@ namespace RRTypes.CommonCast
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
         /// <returns>Returned raw spatial, without parsing childs and parents</returns>
-        public static TEntitySpatial ParseES_KPT10LandES( string Definition, kpt10_un.tEntitySpatialLandOut ES)
+        public static TEntitySpatial ParseES_KPT10LandES(string Definition, kpt10_un.tEntitySpatialLandOut ES)
         {
             if (ES == null) { return null; }
 
@@ -2116,10 +2326,29 @@ namespace RRTypes.CommonCast
             ESParsed.AddRange(AllRings); //returned raw spatial, without parsing childs and parents
             return ESParsed;
         }
+
+
+        /*
+        //Разбор ordinate KPT11
+        private static TPoint KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
+        {
+            TPoint Point = new TPoint();
+            Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("x").FirstChild.Value);
+            Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("y").FirstChild.Value);
+            Point.oldX = Point.x;
+            Point.oldY = Point.y;
+            Point.Definition = netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "num_geopoint");
+            if (netFteo.XML.XMLWrapper.SelectNodeChild(Spelement_Unit, "delta_geopoint") != null)
+                Point.Mt = Convert.ToDouble(netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "delta_geopoint"));
+            return Point;
+        }
+        */
+
+     
+
         #endregion
 
     }
-
 
 
 }
@@ -2639,13 +2868,13 @@ namespace RRTypes.CommonParsers
                         MainObj.Utilization.Untilization = MP.Package.FormParcels.NewParcel[i].Utilization.Utilization.ToString();
                         if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
                         {
-                            MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
+                            MainObj.EntSpat.Add(CasterSpatial.AddEntSpatMP5("", MP.Package.FormParcels.NewParcel[i].EntitySpatial));
                         }
 
                         if (MP.Package.FormParcels.NewParcel[i].Contours != null)
                             for (int ic = 0; ic <= MP.Package.FormParcels.NewParcel[i].Contours.Count - 1; ic++)
                             {
-                                MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
+                                MainObj.EntSpat.Add(CasterSpatial.AddEntSpatMP5(MP.Package.FormParcels.NewParcel[i].Contours[ic].Definition,
                                                                                 MP.Package.FormParcels.NewParcel[i].Contours[ic].EntitySpatial));
                             }
                     }
@@ -2674,19 +2903,19 @@ namespace RRTypes.CommonParsers
                         {
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
                             {
-                                MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+                                MainObj.EntSpat.Add(CasterSpatial.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial));
 
                             }
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
                             {
-                                MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+                                MainObj.EntSpat.Add(CasterSpatial.AddEntSpatMP5(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial));
                             }
                         }
 
                         if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
-                            MainObj.EntSpat.Add(RRTypes.CommonCast.CasterZU.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
+                            MainObj.EntSpat.Add(CasterSpatial.AddEntSpatMP5("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
 
                     }
                     // Уточнение ЕЗП
@@ -2710,9 +2939,9 @@ namespace RRTypes.CommonParsers
                             Sl.Encumbrances.Add(new netFteo.Rosreestr.TMyEncumbrance() { Name = MP.Package.SubParcels.NewSubParcel[ii].Encumbrance.Name });
                             Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
                             if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
-                                Sl.SpatialElement.ImportPolygon(RRTypes.CommonCast.CasterZU.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
+                                Sl.SpatialElement.ImportPolygon(CasterSpatial.AddEntSpatMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
                             if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
-                                Sl.ES = RRTypes.CommonCast.CasterZU.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].Contours);
+                                Sl.ES = CasterSpatial.AddContoursMP5(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].Contours);
 
 
                             MainObj.SubParcels.Add(Sl);
@@ -2844,10 +3073,10 @@ namespace RRTypes.CommonParsers
                         if (MP.Package.FormParcels.NewParcel[i].LandUse != null)
                             MainObj.Landuse.Land_Use = MP.Package.FormParcels.NewParcel[i].LandUse.LandUse.ToString();
                         if (MP.Package.FormParcels.NewParcel[i].Contours != null & MP.Package.FormParcels.NewParcel[i].Contours.Count > 0)
-                            MainObj.EntSpat.AddRange(CommonCast.CasterZU.ES_ZU(MP.Package.FormParcels.NewParcel[i].Contours));
+                            MainObj.EntSpat.AddRange(CasterSpatial.ES_ZU(MP.Package.FormParcels.NewParcel[i].Contours));
                         if (MP.Package.FormParcels.NewParcel[i].EntitySpatial != null)
                         {
-                            MainObj.EntSpat.Add(CommonCast.CasterZU.ES_ZU(MainObj.CN, MP.Package.FormParcels.NewParcel[i].EntitySpatial));
+                            MainObj.EntSpat.Add(CasterSpatial.ES_ZU(MainObj.CN, MP.Package.FormParcels.NewParcel[i].EntitySpatial));
                         }
 
                         if (MP.Package.FormParcels.NewParcel[i].ObjectRealty != null)
@@ -2906,7 +3135,7 @@ namespace RRTypes.CommonParsers
                         {
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour.Count - 1; ic++)
                             {
-                                TPolygon NewCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
+                                TPolygon NewCont = CasterSpatial.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Definition,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].EntitySpatial);
                                 NewCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.NewContour[ic].Area.Area;
                                 MainObj.EntSpat.Add(NewCont);
@@ -2914,7 +3143,7 @@ namespace RRTypes.CommonParsers
 
                             for (int ic = 0; ic <= MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour.Count - 1; ic++)
                             {
-                                TPolygon ExistCont = CommonCast.CasterZU.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
+                                TPolygon ExistCont = CasterSpatial.ES_ZU(MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].NumberRecord,
                                                                                 MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].EntitySpatial);
                                 ExistCont.AreaValue = MP.Package.SpecifyParcel.ExistParcel.Contours.ExistContour[ic].Area.Area;
                                 MainObj.EntSpat.Add(ExistCont);
@@ -2922,7 +3151,7 @@ namespace RRTypes.CommonParsers
                         }
 
                         if (MP.Package.SpecifyParcel.ExistParcel.EntitySpatial != null)
-                            MainObj.EntSpat.Add(CommonCast.CasterZU.ES_ZU("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
+                            MainObj.EntSpat.Add(CasterSpatial.ES_ZU("", MP.Package.SpecifyParcel.ExistParcel.EntitySpatial));
 
                     }
 
@@ -2961,7 +3190,7 @@ namespace RRTypes.CommonParsers
                                                            entry.Area.Inaccuracy,
                                                            6, // для межевого плана входящие только учтеные
 
-                                                          CommonCast.CasterZU.ES_ZU(entry.CadastralNumber,
+                                                          CasterSpatial.ES_ZU(entry.CadastralNumber,
                                                           entry.EntitySpatial));
                         }
                     }
@@ -2985,9 +3214,9 @@ namespace RRTypes.CommonParsers
 
                             Sl.AreaGKN = MP.Package.SubParcels.NewSubParcel[ii].Area.Area;
                             if (MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial != null) //Если одноконтурная чзу
-                                Sl.SpatialElement.ImportPolygon(RRTypes.CommonCast.CasterZU.ES_ZU(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
+                                Sl.SpatialElement.ImportPolygon(CasterSpatial.ES_ZU(MP.Package.SubParcels.NewSubParcel[ii].Definition, MP.Package.SubParcels.NewSubParcel[ii].EntitySpatial));
                             if (MP.Package.SubParcels.NewSubParcel[ii].Contours != null)
-                                Sl.ES = CommonCast.CasterZU.ES_SubParcels(MP.Package.SubParcels.NewSubParcel[ii].Contours);
+                                Sl.ES = CasterSpatial.ES_SubParcels(MP.Package.SubParcels.NewSubParcel[ii].Contours);
                             MainObj.SubParcels.Add(Sl);
                         }
                 }
@@ -4370,19 +4599,7 @@ namespace RRTypes.CommonParsers
             return Point;
         }
 
-        //Разбор ordinate KPT11
-        private static TPoint KPT11_ES_ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
-        {
-            TPoint Point = new TPoint();
-            Point.x = Convert.ToDouble(Spelement_Unit.SelectSingleNode("x").FirstChild.Value);
-            Point.y = Convert.ToDouble(Spelement_Unit.SelectSingleNode("y").FirstChild.Value);
-            Point.oldX = Point.x;
-            Point.oldY = Point.y;
-            Point.Definition = netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "num_geopoint");
-            if (netFteo.XML.XMLWrapper.SelectNodeChild(Spelement_Unit, "delta_geopoint") != null)
-                Point.Mt = Convert.ToDouble(netFteo.XML.XMLWrapper.SelectNodeChildValue(Spelement_Unit, "delta_geopoint"));
-            return Point;
-        }
+
 
 
 
@@ -4464,170 +4681,9 @@ namespace RRTypes.CommonParsers
                 return EntSpat;
             }
         }
-        /// <summary>
-        /// Разбор Entity_Spatial KPT_V11
-        /// </summary>
-        /// <param name="Definition"></param>
-        /// <param name="ES"></param>
-        /// <returns></returns>
-        private static TPolygon KPT11LandEntSpatToFteo(string Definition, System.Xml.XmlNode ES)
-        {
-            {
-                if (ES == null) return null;
-                TPolygon EntSpat = new TPolygon();
-                EntSpat.Definition = Definition;
-
-                System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
-
-                //Первый Spatial_Element - внешний контур ( 0 )
-                System.Xml.XmlNode OuterRing = ESEntSpat[0].SelectSingleNode("ordinates");
-
-
-                for (int iSpelement = 0; iSpelement <= OuterRing.ChildNodes.Count - 1; iSpelement++)
-                {
-                    EntSpat.AddPoint(KPT11_ES_ParseOrdinate(OuterRing.ChildNodes[iSpelement]));
-                }
-
-                //Второй и след. Spatial_Element - Внутренние контура
-                if (ESEntSpat.Count > 1)
-                {
-                    for (int ring = 1; ring <= ESEntSpat.Count - 1; ring++)
-                    {
-                        System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
-
-                        TRing InLayer = EntSpat.AddChild();
-
-                        for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
-                        {
-                            InLayer.AddPoint(KPT11_ES_ParseOrdinate(childRing.ChildNodes[iSpelement]));
-                        }
-                    }
-                }
-                return EntSpat;
-            }
-        }
-
-        /// <summary>
-        /// Parse only into raw spatial (State == 14). Todo, spatial need be parsed
-        /// </summary>
-        /// <param name="Definition"></param>
-        /// <param name="ES"></param>
-        /// <returns></returns>
-       private static TEntitySpatial KPT11LandEntSpatToES2(string Definition, System.Xml.XmlNode ES)
-        {
-            if (ES == null) return null;
-            /*
-            TEntitySpatial res = new TEntitySpatial();
-            TPolygon EntSpat = new TPolygon();
-            EntSpat.Definition = Definition;
-            */
-            System.Xml.XmlNodeList ESEntSpat = ES.SelectNodes("spatials_elements/spatial_element");
-
-
-            /*
-            //Первый Spatial_Element - внешний контур ( 0 )
-            System.Xml.XmlNode OuterRing = ESEntSpat[0].SelectSingleNode("ordinates");
-
-
-            for (int iSpelement = 0; iSpelement <= OuterRing.ChildNodes.Count - 1; iSpelement++)
-            {
-                EntSpat.AddPoint(KPT11_ES_ParseOrdinate(OuterRing.ChildNodes[iSpelement]));
-            }
-
-            
-            //Второй и след. Spatial_Element - Внутренние контура
-            if (ESEntSpat.Count > 1)
-            {
-                for (int ring = 1; ring <= ESEntSpat.Count - 1; ring++)
-                {
-                    System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
-
-                    TRing InLayer = EntSpat.AddChild();
-
-                    for (int iSpelement = 1; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
-                    {
-                        InLayer.AddPoint(KPT11_ES_ParseOrdinate(childRing.ChildNodes[iSpelement]));
-                    }
-                }
-            }
-            res.Add(EntSpat);
-            return res;
-            */
-
-
-
-            List<TRing> AllRings = new List<TRing>();
-            //Parse all present rings:
-
-
-            for (int ring = 0; ring <= ESEntSpat.Count - 1; ring++)
-            {
-                System.Xml.XmlNode childRing = ESEntSpat[ring].SelectSingleNode("ordinates");
-
-                TRing InLayer = new TRing();
-
-                for (int iSpelement = 0; iSpelement <= childRing.ChildNodes.Count - 1; iSpelement++)
-                {
-                    InLayer.AddPoint(KPT11_ES_ParseOrdinate(childRing.ChildNodes[iSpelement]));
-                }
-                AllRings.Add(InLayer);
-            }
-            /*
-            for (int iES = 0; iES <= ES.SpatialElement.Count - 1; iES++)
-            {
-                TRing InLayer = new TRing();
-
-                for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
-                {
-                    InLayer.AddPoint(GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
-                }
-                AllRings.Add(InLayer);
-            }
-            */
-            TEntitySpatial ESParsed = new TEntitySpatial(Definition);
-            ESParsed.State = 14; //raw spatial
-            ESParsed.AddRange(AllRings); //returned raw spatial, without parsing childs and parents
-            return ESParsed;
-        }
-
-        /// <summary>
-        /// KPT 11 Location parser
-        /// </summary>
-        /// <param name="xmllocation"></param>
-        /// <returns></returns>
-        private TLocation Parse_LocationKPT11(System.Xml.XmlNode xmllocation)
-        {
-            if (xmllocation == null) return null;
-            TLocation loc = new TLocation();
-            XmlNode Address = netFteo.XML.XMLWrapper.SelectNodeChild(xmllocation, "address");
-            if (Address != null)
-            {
-                TAddress Adr = new TAddress();
-                Adr.Note = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "readable_address");
-
-                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/level_settlement/city") != null)
-                    Adr.City = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/type_city") + " " +
-                        netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/city/name_city");
-
-                if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/street/type_street") != null)
-                {
-                    Adr.Street = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/type_street") + " " +
-                        netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/street/name_street");
-                }
-
-
-                //if (netFteo.XML.XMLWrapper.SelectNodeChild(Address, "address_fias/detailed_level/level1") != null)
-                {
-
-                    Adr.Level1 = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/type_level1") + " " +
-                                 netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/detailed_level/level1/name_level1");
-                }
-
-                Adr.Region = netFteo.XML.XMLWrapper.SelectNodeChildValue(Address, "address_fias/level_settlement/region/code");
-                loc.Address = Adr;
-            }
-            return loc;
-        }
+ 
+  
+        
 
         private TLocation Parse_Location(System.Xml.XmlNode xmllocation)
         {
@@ -4731,74 +4787,7 @@ namespace RRTypes.CommonParsers
             res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "Package/Certification_Doc/Organization");
         }
 
-        private  TParcel Parse_KTP11Parcel(XmlNode parcel)
-        {
-            TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
-              netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
-            MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
-            MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
-            if (parcel.SelectSingleNode("params/permitted_use") != null)
-                MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("params/permitted_use/permitted_use_established/by_document").FirstChild.Value;
-            MainObj.Utilization.Untilization = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "params/permitted_use/permitted_use_established/land_use/code");
-            MainObj.Location = Parse_LocationKPT11(parcel.SelectSingleNode("address_location"));
-            if (parcel.SelectSingleNode("cost/value") != null)
-                MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("cost/value").FirstChild.Value);
-            //in case of 'KPT' document date not specified. So check, if exist
-            if (parcel.SelectSingleNode("record_info/registration_date") != null)
-                MainObj.DateCreated = parcel.SelectSingleNode("record_info/registration_date").FirstChild.Value;// .ToString("dd.MM.yyyy") 
-            if (parcel.SelectSingleNode("special_notes") != null)
-            MainObj.SpecialNote = parcel.SelectSingleNode("special_notes").FirstChild.Value;
-
-            //SignleSpatial
-            if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
-            {
-                TPolygon ents = KPT11LandEntSpatToFteo(MainObj.CN,
-                                                      parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial"));
-
-                ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
-                ents.Parent_Id = MainObj.id;
-                ents.Definition = MainObj.CN;
-                MainObj.EntSpat.Add(ents);
-            }
-
-            //TODO:
-            //Многоконтурный TODO: нет примеров
-            // contours_location
-            if (parcel.SelectSingleNode("Contours") != null)
-            {
-                //26:04:090203:258
-                System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
-                string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
-                for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
-                {
-                    TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
-                                                          parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
-                                                          contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
-                    MainObj.EntSpat.Add(NewCont);
-                }
-            }
-            return MainObj;
-        }
-
-        private static void Parse_KTP11Info(System.Xml.XmlDocument xmldoc, netFteo.IO.FileInfo res)
-        {
-            res.Version = "11";
-            res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/date_formation");
-            res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/registration_number");
-            res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/organ_registr_rights");
-        }
-        //TODO types 1, 2, 0
-
-        public static string BoundToName(string Boundtype)
-        {
-            switch (Boundtype)
-            {
-                case "3": return "Граница муниципального образования";
-            }
-            // if (GKNBound.SubjectsBoundary != null) return "Граница между субъектами Российской Федерации";
-            // if (GKNBound.InhabitedLocalityBoundary != null) return "Граница населенного пункта";
-            return null;
-        }
+ 
 
 
 
@@ -4892,7 +4881,7 @@ namespace RRTypes.CommonParsers
                         TZone ZoneItem;
                         ZoneItem = new TZone(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT09.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT09LandES(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
+                        ZoneItem.EntitySpatial.AddFeatures(CasterSpatial.ParseES_KPT09LandES(KPT09.CadastralBlocks[i].Zones[iP].AccountNumber, KPT09.CadastralBlocks[i].Zones[iP].EntitySpatial));
                         ZoneItem.EntitySpatial.State = 200; //complete, not need to  reparse
                         if (KPT09.CadastralBlocks[i].Zones[iP].Documents != null)
                             foreach (RRTypes.kpt09.tDocumentWithoutAppliedFile doc in KPT09.CadastralBlocks[i].Zones[iP].Documents)
@@ -5109,7 +5098,7 @@ namespace RRTypes.CommonParsers
                         TZone ZoneItem;
                         ZoneItem = new TZone(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
                         ZoneItem.Description = KPT10.CadastralBlocks[i].Zones[iP].Description;
-                        ZoneItem.EntitySpatial.AddFeatures(CasterZU.ParseES_KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
+                        ZoneItem.EntitySpatial.AddFeatures(CasterSpatial.ParseES_KPT10LandES(KPT10.CadastralBlocks[i].Zones[iP].AccountNumber, KPT10.CadastralBlocks[i].Zones[iP].EntitySpatial));
                         ZoneItem.EntitySpatial.State = 14; // raw spatial
                         //TODO open too long time occured, when scanning:  
                         // ZoneItem.EntitySpatial.ParseSpatial();
@@ -5465,13 +5454,13 @@ namespace RRTypes.CommonParsers
             res.DocType = "Выписка ФГИС (ир) ЕГРН";
             res.DocTypeNick = "КВ";
             res.Namespace = NameSpaces.KVZU_08;
-            Parse_KTP11Info(xmldoc, res);
+            CasterKPT11.Parse_KTP11Info(xmldoc, res);
             res.Version = "8";
             XmlNode parcel = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name 
                                         + "/land_record");
             //parse Parcel nodes:
             TCadastralBlock Bl = new TCadastralBlock(parcel.SelectSingleNode("object/common_data/quarter_cad_number").FirstChild.Value);
-            Bl.Parcels.AddParcel(Parse_KTP11Parcel(parcel));
+            Bl.Parcels.AddParcel(CasterKPT11.Parse_Parcel(parcel));
             res.MyBlocks.Blocks.Add(Bl);
             return res;
         }
@@ -5492,7 +5481,7 @@ namespace RRTypes.CommonParsers
             res.DocTypeNick = "КПТ";
             res.Namespace = NameSpaces.KPT11;
             res.Version = "11";
-            Parse_KTP11Info(xmldoc, res);
+            CasterKPT11.Parse_KTP11Info(xmldoc, res);
 
             XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
             if (Blocksnodes != null)
@@ -5536,7 +5525,7 @@ namespace RRTypes.CommonParsers
                         for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
                         {
                             XMLParsingProc("xml", ++FileParsePosition, null);
-                            Bl.Parcels.AddParcel(Parse_KTP11Parcel(parcels.ChildNodes[iP]));
+                            Bl.Parcels.AddParcel(CasterKPT11.Parse_Parcel(parcels.ChildNodes[iP]));
                         }
                     }
 
@@ -5550,12 +5539,12 @@ namespace RRTypes.CommonParsers
 
                             //Также параллельное TmyOKS
                             TRealEstate Building = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
-                            Building.Location = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
+                            Building.Location = CasterKPT11.Parse_Location(build.SelectSingleNode("address_location"));
                             if (build.SelectSingleNode("cost/value") != null)
                                 Building.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
                             if (build.SelectSingleNode("contours/contour/entity_spatial") != null)
                             {
-                                Building.EntSpat = KPT11LandEntSpatToES2(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
+                                Building.EntSpat = CasterKPT11.LandEntSpatToES2(Building.CN, build.SelectSingleNode("contours/contour/entity_spatial"));
                                 Building.EntSpat.ParseSpatial();
                             }
 
@@ -5579,7 +5568,7 @@ namespace RRTypes.CommonParsers
                             if (build.SelectSingleNode("cost/value") != null)
                                 Construct.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
 
-                            Construct.Location = Parse_LocationKPT11(build.SelectSingleNode("address_location"));
+                            Construct.Location = CasterKPT11.Parse_Location(build.SelectSingleNode("address_location"));
                             Bl.AddOKS(Construct);
                             XMLParsingProc("xml", ++FileParsePosition, null);
                         }
@@ -5592,7 +5581,7 @@ namespace RRTypes.CommonParsers
                             System.Xml.XmlNode under = under_constr_records.ChildNodes[iP];
                             //   object/common_data/cad_number
                             TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
-                            UnderConstruct.Location = Parse_LocationKPT11(under.SelectSingleNode("address_location"));
+                            UnderConstruct.Location = CasterKPT11.Parse_Location(under.SelectSingleNode("address_location"));
                             if (under.SelectSingleNode("cost/value") != null)
                                 UnderConstruct.CadastralCost = Convert.ToDecimal(under.SelectSingleNode("cost/value").FirstChild.Value);
 
@@ -5607,9 +5596,9 @@ namespace RRTypes.CommonParsers
                         {
                             System.Xml.XmlNode bound = boundary.ChildNodes[iP];
                             TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_municipal_boundary/b_object/reg_numb_border").FirstChild.Value,
-                                BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
+                                CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
                             //TODO - spatial detecting:
-                            BoundItem.EntitySpatial = KPT11LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                             res.MyBlocks.SpatialData.AddRange(BoundItem.EntitySpatial);
                             Bl.AddBound(BoundItem);
                         }
@@ -5628,8 +5617,7 @@ namespace RRTypes.CommonParsers
                             ZoneItem.Description = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/b_object/type_boundary/value") + " " +
                                                    netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/number");
                             ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value");
-                            ZoneItem.EntitySpatial = KPT11LandEntSpatToES2(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
-                            //ZoneItem.SpatialElement = KPT11LandEntSpatToFteo(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            ZoneItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                             Bl.AddZone(ZoneItem);
                         }
                     }
@@ -5639,7 +5627,7 @@ namespace RRTypes.CommonParsers
                     if (Blocksnodes[i].SelectSingleNode("spatial_data") != null)
 
                     {
-                        Bl.Entity_Spatial.ImportPolygon(KPT11LandEntSpatToFteo(Bl.CN,
+                        Bl.Entity_Spatial.ImportPolygon(CasterKPT11.LandEntSpatToFteo(Bl.CN,
                                                                                Blocksnodes[i].SelectSingleNode("spatial_data/entity_spatial")));
                         Bl.Entity_Spatial.Definition = "гр" + Bl.CN;
                     }
@@ -5799,8 +5787,7 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.EntitySpatial != null)
                 if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    MainObj.EntSpat.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
-                    res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+                    MainObj.EntSpat.Add(CasterSpatial.AddEntSpatKPZU05(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
                 }
 
             //Многоконтурный
@@ -5814,7 +5801,7 @@ namespace RRTypes.CommonParsers
 														 kp.Parcel.Contours[ic].NumberRecord + ")",
 														 kp.Parcel.Contours[ic].EntitySpatial));
 					*/
-                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
+                    TPolygon NewCont = CasterSpatial.AddEntSpatKPZU05(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -5830,7 +5817,7 @@ namespace RRTypes.CommonParsers
                         kp.Parcel.CompositionEZ[i].Area.Area,
                         0,
                         6, //для сведений ЕГРН это всегда "учтеный"
-                        CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                        CasterSpatial.AddEntSpatKPZU05(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
 
                     /*
@@ -5851,10 +5838,9 @@ namespace RRTypes.CommonParsers
                         Sl.Encumbrances.Add(KPZU_v05Utils.KVZUEncumtoFteoEncum(kp.Parcel.SubParcels[i].Encumbrance));
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TPolygon SlEs = CommonCast.CasterZU.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
+                        TPolygon SlEs = CasterSpatial.AddEntSpatKPZU05(kp.Parcel.SubParcels[i].NumberRecord,
                                                                                kp.Parcel.SubParcels[i].EntitySpatial);
                         Sl.SpatialElement.ImportPolygon(SlEs);
-                        res.MyBlocks.SpatialData.Add(SlEs);
                     }
 
                 }
@@ -5922,7 +5908,7 @@ namespace RRTypes.CommonParsers
             if (kp.Parcel.EntitySpatial != null)
                 if (kp.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    MainObj.EntSpat.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
+                    MainObj.EntSpat.Add(CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber, kp.Parcel.EntitySpatial));
                 }
             //Многоконтурный
             if (kp.Parcel.Contours != null)
@@ -5930,10 +5916,10 @@ namespace RRTypes.CommonParsers
 
                 for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
                 {
-                    res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
+                    res.MyBlocks.SpatialData.Add(CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                          kp.Parcel.Contours[ic].NumberRecord + ")",
                                                          kp.Parcel.Contours[ic].EntitySpatial));
-                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
+                    TPolygon NewCont = CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                           kp.Parcel.Contours[ic].NumberRecord + ")",
                                                           kp.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kp.Parcel.Contours[ic].Area.Area;
@@ -5949,7 +5935,7 @@ namespace RRTypes.CommonParsers
                         kp.Parcel.CompositionEZ[i].Area.Area,
                         0,
                         6, //для сведений ЕГРН это всегда "учтеный"
-                        CommonCast.CasterZU.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
+                        CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CompositionEZ[i].CadastralNumber,
                                                                      kp.Parcel.CompositionEZ[i].EntitySpatial));
 
                     /*
@@ -5971,7 +5957,7 @@ namespace RRTypes.CommonParsers
 
                     if (kp.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        Sl.ES.AddFeatures(CasterZU.ParseES_KPZU06(kp.Parcel.SubParcels[i].NumberRecord,
+                        Sl.ES.AddFeatures(CasterSpatial.ParseES_KPZU06(kp.Parcel.SubParcels[i].NumberRecord,
                                                                                kp.Parcel.SubParcels[i].EntitySpatial));
                     }
                     /*
@@ -6430,7 +6416,7 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
-                    TPolygon ents = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
+                    TPolygon ents = CasterSpatial.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial);
                     ents.Parent_Id = MainObj.id;
                     MainObj.EntSpat.Add(ents);
@@ -6445,7 +6431,7 @@ namespace RRTypes.CommonParsers
                     res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
                     */
-                    TPolygon NewCont = CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    TPolygon NewCont = CasterSpatial.AddEntSpatKVZU07(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial);
                     NewCont.AreaValue = kv.Parcels.Parcel.Contours[ic].Area.Area;
                     MainObj.EntSpat.Add(NewCont);
@@ -6460,7 +6446,7 @@ namespace RRTypes.CommonParsers
                     MainObj.AddEntry(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
                                                    kv.Parcels.Parcel.CompositionEZ[i].Area.Area, -1,
                                                   KVZU_v06Utils.KVZUState(kv.Parcels.Parcel.CompositionEZ[i].State),
-                    CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
+                    CasterSpatial.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
                                                                                          kv.Parcels.Parcel.CompositionEZ[i].EntitySpatial));
                     /*
 					res.MyBlocks.SpatialData.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.Parcel.CompositionEZ[i].CadastralNumber,
@@ -6482,7 +6468,7 @@ namespace RRTypes.CommonParsers
 
                     if (kv.Parcels.Parcel.SubParcels[i].EntitySpatial != null)
                     {
-                        TEntitySpatial SlEs = CommonCast.CasterZU.ParseES_KVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
+                        TEntitySpatial SlEs = CasterSpatial.ParseES_KVZU07(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
                         Sl.ES.AddFeatures(SlEs);
 
 /*
@@ -6516,7 +6502,7 @@ namespace RRTypes.CommonParsers
                 for (int i = 0; i <= kv.Parcels.OffspringParcel.Count() - 1; i++)
                 {
                     TParcel OffObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.OffspringParcel[i].CadastralNumber, i + 1));
-                    OffObj.EntSpat.Add(CommonCast.CasterZU.AddEntSpatKVZU07(kv.Parcels.OffspringParcel[i].CadastralNumber,
+                    OffObj.EntSpat.Add(CasterSpatial.AddEntSpatKVZU07(kv.Parcels.OffspringParcel[i].CadastralNumber,
                                                                                   kv.Parcels.OffspringParcel[i].EntitySpatial));
                     OffObj.State = "Item05";
                 }

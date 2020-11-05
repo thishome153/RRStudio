@@ -484,6 +484,16 @@ namespace netFteo
                 return false;
             }
 
+            public TParcel GetParcel(string CN)
+            {
+                for (int i = 0; i <= this.Parcels.Count - 1; i++)
+                {
+                    if (this.Parcels[i].CN == CN)
+                        return this.Parcels[i];
+                }
+                return null;
+            }
+
             public object GetObject(long id)
             {
                 for (int i = 0; i <= this.Parcels.Count - 1; i++)

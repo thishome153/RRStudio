@@ -146,7 +146,7 @@ namespace RRTypes
                 {
                    
                     
-                    EntSpat.AddPoint(CommonCast.CasterZU.GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
+                    EntSpat.AddPoint(CommonCast.CasterSpatial.GetUnit(ES.SpatialElement[0].SpelementUnit[iord]));
                 }
                 //Внутренние контура
                 for (int iES = 1; iES <= ES.SpatialElement.Count - 1; iES++)
@@ -157,7 +157,7 @@ namespace RRTypes
                     for (int iord = 0; iord <= ES.SpatialElement[iES].SpelementUnit.Count - 1; iord++)
                     {
                        
-                        InLayer.AddPoint(CommonCast.CasterZU.GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
+                        InLayer.AddPoint(CommonCast.CasterSpatial.GetUnit(ES.SpatialElement[iES].SpelementUnit[iord]));
                     }
                 }
                 return EntSpat;

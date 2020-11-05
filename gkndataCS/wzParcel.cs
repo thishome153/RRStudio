@@ -254,14 +254,17 @@ namespace GKNData
             od.FileName = "";
             if (od.ShowDialog() == DialogResult.OK)
             {
-                ImportXMLVidimus(od.FileName);
+                if (ImportXMLVidimus(od.FileName, this.ITEM))
+                {
+                    //TParcel Parcel = new TParcel(0);
+                    ListFiles();
+                }
             }
         }
 
 
-        public void ImportXMLVidimus(string FileName)
+        public bool ImportXMLVidimus(string FileName, TParcel Item)
         {
-
             FileInfo fi = new FileInfo(FileName);
             TFile xmlUploaded = new TFile();
             xmlUploaded.FileName = fi.Name;
@@ -269,7 +272,7 @@ namespace GKNData
             xmlUploaded.File_BLOB = File.ReadAllBytes(FileName);
 
             //parse XMlDocument:
-            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument( xmlUploaded.File_BLOB_Stream);
+            netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(xmlUploaded.File_BLOB_Stream);
 
             xmlUploaded.xmlns = ParsedDoc.Namespace;
             xmlUploaded.Number = ParsedDoc.Number;
@@ -278,27 +281,27 @@ namespace GKNData
 
 
             //wich type of XML accquried:? 
-            if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_07) ||
+            if ((xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_08) ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_07) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_06) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_05) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVZU_04) ||
-                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPZU_05)  ||
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPZU_05) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPZU_06) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KVOKS_07) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.KPOKS_04) ||
                 (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.EGRP_04) ||
-                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.EGRP_06) 
-                    )
-
+                (xmlUploaded.Type == netFteo.Rosreestr.dFileTypes.EGRP_06))
             {
-                if (DBWrapper.DB_AddParcel_Vidimus(ITEM.id, xmlUploaded, CF.conn) > 0)             //KPT11
+                if
+                 (DBWrapper.DB_AddParcel_Vidimus(Item.id, xmlUploaded, CF.conn) > 0)             //KPT11
                 {
-                    ITEM.XmlBodyList.Add(xmlUploaded);
-                    ListFiles();
+                    Item.XmlBodyList.Add(xmlUploaded);
+                    return true;
                 }
+                else return false;
             }
-
-        
+            return false;
         }
 
         private void ToolStripButton2_Click(object sender, EventArgs e)
