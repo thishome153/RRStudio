@@ -815,11 +815,6 @@ namespace netFteo.Spatial
         void ResetStatus(string Prefix);
         void ExchangeOrdinates();
 
-        /// <summary>
-        /// Rebuild list from specified point
-        /// </summary>
-        /// <param name="Point_id">First point id</param>
-        void MakeFirstPoint(long Point_id);
         
         /// <summary>
         /// Установка "ГКН" точек
@@ -899,36 +894,6 @@ namespace netFteo.Spatial
             }
         }
     
-        public void MakeFirstPoint(long Point_id)
-        {
-            //get point index in this
-            int StartPointIndex = this.IndexOf(GetPoint(Point_id));
-            if (StartPointIndex == 0) return;// it already begin point
-            PointList Reciever = new PointList();
-            //TODO:
-            //first part - from index to last item
-            //....
-            for (int i = StartPointIndex; i <= this.Count - 1; i++)
-            {
-                if (! Reciever.Contains(this[i])) //prevent doublicates
-                Reciever.AddPoint(this[i]);
-            }
-
-            //second part - from first item to index, before them
-            for (int i = 0; i <= StartPointIndex - 1; i++)
-            {
-                if (!Reciever.Contains(this[i])) //prevent doublicates
-                    Reciever.AddPoint(this[i]);
-            }
-
-            //auto closing list?
-          //  Reciever.Add(GetPoint(Point_id)); // last point, closing etc
-
-            this.Clear();
-            foreach (TPoint pt in Reciever)
-                this.Add(pt);
-        }
-
 
 
         private string fLayerHandle;
@@ -1865,14 +1830,11 @@ namespace netFteo.Spatial
 
             canvasX = canvas_width / 2 - (this.AverageCenter.y - this.CentroidMassive.y) / scale;
             canvasY = canvas_height / 2 - (this.AverageCenter.x - this.CentroidMassive.x) / scale;
-            pt.NumGeopointA = "CanvasCentroid";
+            pt.Definition = "CanvasCentroid";
             pt.x = canvasX;
             pt.y = canvasY;
             return pt;
         }
-
-
-
 
 
         /// <summary>
@@ -1900,12 +1862,49 @@ namespace netFteo.Spatial
 
 
         /// <summary>
+        /// Rebuild point list to begin from specified point
+        /// </summary>
+        /// <param name="Point_id">First point id</param>
+        public void MakeFirstPoint(long Point_id)
+        {
+            //get point index in this
+            int StartPointIndex = this.IndexOf(GetPoint(Point_id));
+            if (StartPointIndex == 0) return;// it already begin point
+            PointList Reciever = new PointList();
+            //TODO:
+            //first part - from index to prev-last (Count-2) item
+            //....
+            for (int i = StartPointIndex; i <= this.Count - 2; i++)
+            {
+                if (!Reciever.Contains(this[i])) //prevent doublicates
+                    Reciever.AddPoint(this[i]);
+            }
+
+            //second part - from first item to index, before them
+            for (int i = 0; i <= StartPointIndex - 1; i++)
+            {
+                if (!Reciever.Contains(this[i])) //prevent doublicates
+                    Reciever.AddPoint(this[i]);
+            }
+
+            //auto closing list
+            Reciever.Add(GetPoint(Point_id)); // last point, closing etc
+
+            this.Clear();
+            foreach (TPoint pt in Reciever)
+                this.Add(pt);
+            Reciever.Clear();
+        }
+
+
+
+        /// <summary>
         /// Check if the point is within the polyline
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="pt"></param>
         /// <returns></returns>
-        public  bool InsideRing(TPoint pt)
+        public bool InsideRing(TPoint pt)
         {
             int n = this.PointCount;// polygon.NumberOfVertices;
             double angle = 0;

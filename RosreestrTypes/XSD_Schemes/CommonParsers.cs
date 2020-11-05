@@ -5475,16 +5475,16 @@ namespace RRTypes.CommonParsers
             res.MyBlocks.Blocks.Add(Bl);
             return res;
         }
-            #endregion
+        #endregion
 
-            #region  Разбор КПТ 11
-            /// <summary>
-            /// Parse XMLDocument. Types not used, also deserializations no needed
-            /// </summary>
-            /// <param name="fi"></param>
-            /// <param name="xmldoc"></param>
-            /// <returns></returns>
-            public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+        #region  Разбор КПТ 11
+        /// <summary>
+        /// Parse XMLDocument. Types not used, also deserializations no needed
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";
@@ -6877,7 +6877,6 @@ namespace RRTypes.CommonParsers
             return res;
         }
         #endregion
-
 
         #region  Разбор KVOKS 3.0.1. (как бы ЕГРН V07)
         // С Наступающим 2018! Где взять KVOKS 3.0.1  - ОКС v07 (KVOKS 3.0.1)????

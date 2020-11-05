@@ -802,20 +802,44 @@ namespace netFteo
                 }
             }
 
-            public IGeometry GetEs(long Layer_id)
+            public IGeometry GetEs(long Feature_id)
             {
+                //same ES
+                if (this.EntSpat.id == Feature_id)
+                    return this.EntSpat;
+                //same feature in ES
                 foreach (IGeometry Feauture in this.EntSpat)
                 {
-                    if (Feauture.id == Layer_id)
+                    if (Feauture.id == Feature_id)
                         return Feauture;
                 }
 
-                if (this.EntSpat.id == Layer_id)
-                    return this.EntSpat;
+                //Same point in ES:
+                foreach (IGeometry item in this.EntSpat)
+                {
 
+                    if (item is TPolygon)
+                    {
+                        TPoint pt = ((TPolygon)item).GetPoint(Feature_id);
+                        if (pt != null) return pt;
+
+                        foreach (TRing child in ((TPolygon)item).Childs)
+                        {
+                            TPoint pt1 = child.GetPoint(Feature_id);
+                            if (pt1 != null) return pt1;
+                        }
+                    }
+
+                    if (item is IPointList)
+                    {
+                        TPoint pt = ((IPointList)item).GetPoint(Feature_id);
+                        if (pt != null) return pt;
+                    }
+                }
+                //From Slot(s)
                 if (this.SubParcels != null) 
-                    if (this.SubParcels.GetEs(Layer_id) != null) 
-                        return this.SubParcels.GetEs(Layer_id);
+                    if (this.SubParcels.GetEs(Feature_id) != null) 
+                        return this.SubParcels.GetEs(Feature_id);
                 return null;
             }
 

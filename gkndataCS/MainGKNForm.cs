@@ -1141,8 +1141,27 @@ namespace GKNData
                         }
                     }
                 }
-            }
 
+                //case 2 - KVZU_08 (FGIS ir EGRN, motherfuka etc)
+                if (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KVZU_08)
+                {
+                    if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
+                    {
+                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
+                        wzlBlockEd blEd = new wzlBlockEd();
+                        //blEd.ImportXMLKPT(FileName, block, CF.conn);
+
+                    }
+                    else
+                    {
+                        // Need new Block
+                        TCadastralBlock block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        block.Parent_id = CF.Cfg.District_id;
+                    }
+                    //TODO : unsert doc and upload:........
+
+                }
+            }
 
             //may be here packet with RR response: zip archive, containing xml with detached signature
             if (EXTention.Equals(".ZIP"))

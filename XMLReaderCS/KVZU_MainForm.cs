@@ -5431,33 +5431,13 @@ LV.Items.Add(LVipP);
                     {
                         TPoint pt = (TPoint)Feature;
                         //now get current list . Listview.Tag stored its id:
-                        IPointList CurrentPointList = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+                        TRing CurrentPointList = (TRing)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
                         CurrentPointList.MakeFirstPoint(pt.id);
                         CurrentPointList.ShowasListItems(listView1, true);
 
                     }
                 }
             }
-
-                   // IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
-
-            /*
-               Control parent = ((ContextMenuStrip)((ToolStripMenuItem)sender).Owner).SourceControl;
-            if (ListView_ItemSelected((ListView)parent, out string tag))
-            {
-                EditGeometryNode((ListView)parent, tag);
-            }
-             */
-
-            /*
-             IGeometry Feature = GetNodeGeometry(Tag);
-            if (Feature != null)
-            {
-                if (Feature.TypeName == "netFteo.Spatial.TPoint")
-                {
-                    TPoint pt = (TPoint)Feature;
-             * */
-
         }
     }
 }

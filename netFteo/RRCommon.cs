@@ -30,6 +30,7 @@ namespace netFteo.Rosreestr
         KVZU_05 = 205,
         KVZU_06 = 206,
         KVZU_07 = 207,
+        KVZU_08 = 208,
 
         EGRP_04 = 304,
         EGRP_06 = 306,
@@ -75,6 +76,7 @@ namespace netFteo.Rosreestr
             {
               { dFileTypes.KVZU_06,KVZU_06},
               { dFileTypes.KVZU_07,KVZU_07},
+              { dFileTypes.KVZU_08,KVZU_08},
               { dFileTypes.KPZU_06,KPZU_06},
               { dFileTypes.KVOKS_07,KVOKS_07},
               { dFileTypes.KPZU_06,KPZU_06},
@@ -102,8 +104,10 @@ namespace netFteo.Rosreestr
               { KVZU_05,dFileTypes.KVZU_05},
               { KVZU_06,dFileTypes.KVZU_06},
               { KVZU_07,dFileTypes.KVZU_07},
+              { KVZU_08,dFileTypes.KVZU_08},
               { KPZU_05,dFileTypes.KPZU_05},
               { KPZU_06,dFileTypes.KPZU_06},
+
               { KVOKS_07,dFileTypes.KVOKS_07},
               { KPOKS_03,dFileTypes.KPOKS_03},
               { KPOKS_04,dFileTypes.KPOKS_04},
