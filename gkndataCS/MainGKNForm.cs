@@ -150,7 +150,7 @@ namespace GKNData
             CF.Cfg.ViewLevel = ViewLevel.vlBlocks;
             DBWrapper.Config = CF.Cfg;
             string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, 200, "Connect App V" + ver, CF.conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_Connect, -1, DBLogRecordStatus.it_Connect, "Connect App V" + ver, CF.conn);
             toolStripButton_Connect.Enabled = false;
             MenuItem_Connect.Enabled = false;
             button4.Enabled = true;

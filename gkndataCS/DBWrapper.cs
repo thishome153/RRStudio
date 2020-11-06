@@ -67,7 +67,7 @@ namespace GKNData
         /// <param name="conn2"></param>
         /// <param name="distr_id"></param>
         /// <returns></returns>
-        public static int DB_AppendHistory(ItemTypes item_type, long item_id, int Status, string Comment,//;Config:TAppCfgRecord);
+        public static int DB_AppendHistory(ItemTypes item_type, long item_id, DBLogRecordStatus Status, string Comment,//;Config:TAppCfgRecord);
             MySqlConnection conn)
         {
             if (conn == null) return -1; if (conn.State != System.Data.ConnectionState.Open) return 1;
@@ -189,7 +189,7 @@ namespace GKNData
             }
             long last_id = cmd.LastInsertedId;
             district.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_District, last_id, 50, last_id.ToString() + " " + district.CN + "++", conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_District, last_id, DBLogRecordStatus.it_Insert, last_id.ToString() + " " + district.CN + "++", conn);
             return last_id;
         }
 
@@ -214,7 +214,7 @@ namespace GKNData
             cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = parcel.CadastralBlock_id;
             cmd.ExecuteNonQuery();
             long last_id = cmd.LastInsertedId;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_Lot, last_id, 50, last_id.ToString() + " " + parcel.CN + "++", conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_Lot, last_id, DBLogRecordStatus.it_Insert, last_id.ToString() + " " + parcel.CN + "++", conn);
             return last_id;
         }
 
@@ -244,7 +244,7 @@ namespace GKNData
 
             int last_id = (int)cmd.LastInsertedId; // crop them to INT
             block.id = last_id; // update
-            DBWrapper.DB_AppendHistory(ItemTypes.it_Block, last_id, 50, last_id.ToString() + " " + block.CN + "++", conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_Block, last_id, DBLogRecordStatus.it_Insert, last_id.ToString() + " " + block.CN + "++", conn);
             return last_id;
         }
 
@@ -371,15 +371,14 @@ namespace GKNData
             return true;
         }
 
-        public static bool EraseVidimus(long id, MySqlConnection conn)
+        public static bool EraseVidimus(long vidimus_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != ConnectionState.Open) return false;
             try
             {
                 MySqlCommand cmd = new MySqlCommand(
                  "DELETE FROM vidimus WHERE `vidimus_id`= ?vidimus_id", conn);
-
-                cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = id;//
+                cmd.Parameters.Add("?vidimus_id", MySqlDbType.Int32).Value = vidimus_id;//
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -457,7 +456,7 @@ namespace GKNData
 
             long last_id = cmd.LastInsertedId;
             KPT.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id,DBLogRecordStatus.it_InsertKPT, "kpt++." + last_id.ToString(), conn);
             return last_id;
         }
 
@@ -570,7 +569,7 @@ namespace GKNData
 
             long last_id = cmd.LastInsertedId;
             KPT.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, 111, "kpt++." + last_id.ToString(), conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, DBLogRecordStatus.it_InsertKPT, "kpt++." + last_id.ToString(), conn);
             return last_id;
             return -1;
         }
@@ -610,7 +609,7 @@ namespace GKNData
 
             long last_id = cmd.LastInsertedId;
             Vidimus.id = last_id;
-            DBWrapper.DB_AppendHistory(ItemTypes.it_vidimus, parcel_id, 111, "kpt++." + last_id.ToString(), conn);
+            DBWrapper.DB_AppendHistory(ItemTypes.it_vidimus, parcel_id, DBLogRecordStatus.it_InsertKPT, "xml++. id: " + last_id.ToString(), conn);
             return last_id;
         }
 

@@ -277,4 +277,12 @@ namespace GKNData
         it_Connect = 200,
         it_Update = 205
     }
+
+    public enum DBLogRecordStatus
+    {
+        it_Connect = 200,
+        it_Erase  = 112,
+        it_InsertKPT = 111,
+        it_Insert = 50
+    }
 }

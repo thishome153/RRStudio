@@ -304,27 +304,34 @@ namespace GKNData
             return false;
         }
 
+        /// <summary>
+        /// Erase vidimus file record
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ToolStripButton2_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 1)
             {
                 string message = "Удалить запись " + listView1.SelectedItems[0].SubItems[1].Text;
                 const string caption = "Подтвердите";
-               if ( MessageBox.Show(message, caption,
-                                             MessageBoxButtons.YesNo,
-                                             MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(message, caption,
+                                              MessageBoxButtons.YesNo,
+                                              MessageBoxIcon.Question) == DialogResult.Yes)
 
-                if (listView1.SelectedItems.Count == 1)
-                {
+                    if (listView1.SelectedItems.Count == 1)
+                    {
                         if (DBWrapper.EraseVidimus((long)listView1.SelectedItems[0].Tag, CF.conn))
                         {
+                            DBWrapper.DB_AppendHistory(ItemTypes.it_vidimus, ITEM.id, DBLogRecordStatus.it_Erase, "erase xml. id: " + ((long)listView1.SelectedItems[0].Tag).ToString(), CF.conn);
                             if (ITEM.XmlBodyList.Remove(ITEM.XmlBodyList.GetFile((long)listView1.SelectedItems[0].Tag)))
                                 listView1.Items.Remove(listView1.SelectedItems[0]);
-                        }
-                        else
-                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
 
-                }
+                            ListHistory();
+                        }
+                    }
+                    else
+                        MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
             }
         }
 
