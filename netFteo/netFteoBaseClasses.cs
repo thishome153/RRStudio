@@ -505,7 +505,7 @@ namespace netFteo.Spatial
             get
             {
                 if (!Double.IsNaN(this.z)) return Convert.ToString(this.z);
-                else return "0.00"; // ??
+                else return "_._"; // ??
             }
 
         }

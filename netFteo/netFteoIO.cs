@@ -1006,8 +1006,15 @@ namespace netFteo.IO
 
                         }
 
-                        FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
-
+                        try
+                        {
+                            FilePoint.z = Convert.ToDouble(SplittedStr[3].ToString());
+                        }
+                        catch (FormatException e)
+                        {
+                            FilePoint.z = Coordinate.NullOrdinate;
+                        }
+                        
                         if ((SplittedStr.Length == 5) && (SplittedStr[4].Length > 0))
                         {
                             FilePoint.Code = SplittedStr[4].ToString();
