@@ -384,7 +384,7 @@ namespace netFteo
 
         public class TCadastralBlock
         {
-            public int id;
+            public long id;
             /// <summary>
             /// District id
             /// </summary>

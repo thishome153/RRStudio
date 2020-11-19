@@ -7651,7 +7651,6 @@ namespace RRTypes.CommonParsers
             }
 
         FinalPoint: xmlStream.Dispose();
-            xmldoc = null;
             GC.Collect(); //start mem garbage 
             return DocInfo;
         }

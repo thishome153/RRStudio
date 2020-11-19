@@ -409,8 +409,9 @@ namespace GKNData
                                         if (DBWrapper.DB_AppendBlock(Block, CF.conn) > 0)
                                         {
                                             CadBloksList.AddBlock(Block);
-                                            wzlBlockEd blEd = new wzlBlockEd();
+                                            //wzlBlockEd blEd = new wzlBlockEd();
                                             insertItem(Block, treeView1);
+                                            StatusLabel_AllMessages.Text =Block.CN +  " добавлен ";
                                         }
                                         else
                                             MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -438,11 +439,11 @@ namespace GKNData
                                 {
                                     if (!bl.ParcelExist(parcel.CN))
                                     {
-                                        if (AddParcel(parcel))
+                                        if (AddParcel(parcel,bl, Item.SelectedNode))
                                         {
-                                            bl.Parcels.AddParcel(parcel);
-                                            //populate new node by new item
-                                            insertItem(parcel, Item.SelectedNode);
+                                        //    bl.Parcels.AddParcel(parcel);
+                                        //populate new node by new item
+                                        //insertItem(parcel, Item.SelectedNode);
                                         }
                                     }
                                 }
@@ -471,20 +472,45 @@ namespace GKNData
         {
             item.id = DBWrapper.DB_AppendDistrict(item, CF.conn);
             if (item.id > 0)
+            {
+                StatusLabel_AllMessages.Text = item.CN + " добавлен ";
                 return true;
+            }
             else return false;
         }
 
-        /// <summary>
-        /// Add parcel record into database only
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        private bool AddParcel(TParcel item)
+        private bool AddBlock(TCadastralBlock Block, TCadastralDistrict District, TreeView tv)
         {
+            Block.id = DBWrapper.DB_AppendBlock(Block, CF.conn);
+            if (Block.id> 0)
+            {
+                District.AddBlock(Block);
+                //wzlBlockEd blEd = new wzlBlockEd();
+                TreeNode NewBlockNode = insertItem(Block, tv);
+                StatusLabel_AllMessages.Text = Block.CN + " добавлен ";
+                return true;
+            }
+            else return false;
+        }
+            /// <summary>
+            /// Add parcel record into database,
+            /// next into Block parcels collection
+            /// and at end onto treeview
+            /// </summary>
+            /// <param name="item"></param>
+            /// <returns></returns>
+            private bool AddParcel(TParcel item, TCadastralBlock Block, TreeNode itemViewNode)
+        {
+            item.CadastralBlock_id = Block.id;
             item.id = DBWrapper.DB_AppendParcel(item, CF.conn);
             if (item.id > 0)
+            {
+                Block.Parcels.AddParcel(item);
+                //populate new node by new item, TODO find item:
+                insertItem(item, itemViewNode);
+                StatusLabel_AllMessages.Text = item.CN + " добавлен ";
                 return true;
+            }
             else return false;
         }
         //-------------------------------- Edititng -------------------------------
@@ -669,7 +695,7 @@ namespace GKNData
             return false;
         }
 
-        private TParcels LoadParcelsList(MySqlConnection conn, int block_id)
+        private TParcels LoadParcelsList(MySqlConnection conn, long block_id)
         {
             if (conn == null) return null; if (conn.State != ConnectionState.Open) return null;
             StatusLabel_SubRf_CN.Text = "Загрузка участков.... ";
@@ -791,11 +817,8 @@ namespace GKNData
         {
             //change id
             Cfg.District_id = District_id; //((netFteo.TreeNodeTag)lvItem.Tag).Item_id;
-            //CfgRec.District_KN = DistrSelectfrm.district_kn;
             Cfg.District_Name = District_Name; //((netFteo.TreeNodeTag)lvItem.Tag).Name;
-            //StatusLabel_SubRf_CN.Text = Cfg.SubRF_Name + " " + Cfg.District_Name;
             CF.Cfg.ViewLevel = ViewLevel.vlBlocks;
-            //CF.Cfg.ViewMode = ViewMode.vmBlockList;
             Cfg.CfgWrite(); //save them
             CadBloksList = LoadBlockList(CF.conn, CF.conn2, District_id);
             ListBlockListTreeView(CadBloksList, tv);
@@ -858,6 +881,7 @@ namespace GKNData
         private void LoadDistricts(short subrf_id, MySqlConnection conn, ListView lv)
         {
             treeView1.Visible = false;
+            Button_Import.Enabled = false;
             treeView1.Dock = DockStyle.None;
             lv.Visible = true;
             lv.Dock = DockStyle.Fill;
@@ -875,13 +899,6 @@ namespace GKNData
                     string commandString = "SELECT * FROM districts where 	districts.subrf_id = " + subrf_id;
                     command.CommandText = commandString;
                     command.Connection = conn;
-                    /*
-                    ListViewItem subRFItemTop = new ListViewItem("Верх");
-                    subRFItemTop.Tag = -1;
-                    subRFItemTop.ToolTipText = "Top";
-                    subRFItemTop.ImageIndex = 4;
-                    lv.Items.Add(subRFItemTop);
-                    */
                     Byte cnt = 0;
                     try
                     {
@@ -1090,7 +1107,10 @@ namespace GKNData
             return nn;
         }
 
-
+        /// <summary>
+        /// Open file and if it of parsed types, insert it into DB
+        /// </summary>
+        /// <param name="FileName"></param>
         private void OpenFile(string FileName)
         {
             if (!File.Exists(FileName)) return;
@@ -1118,10 +1138,13 @@ namespace GKNData
                 netFteo.IO.FileInfo ParsedDoc = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(new MemoryStream(File.ReadAllBytes(FileName)));
                 //so go on:
                 //case 1  - got KPT kind:
-                if (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10)
+                if ((netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10) ||
+                    (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT11))
+
                 {
                     if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
+                        SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
                         TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
                         wzlBlockEd blEd = new wzlBlockEd();
                         blEd.ImportXMLKPT(FileName, block, CF.conn);
@@ -1140,6 +1163,7 @@ namespace GKNData
                                 wzlBlockEd blEd = new wzlBlockEd();
                                 blEd.ImportXMLKPT(FileName, block, CF.conn);
                                 insertItem(block, treeView1);
+                                SearchInTreeNodes(block.CN, treeView1);
                                 //treeView1.SelectedNode.ToolTipText = block.Comments;
                                 //treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
                             }
@@ -1154,10 +1178,11 @@ namespace GKNData
                 {
                     if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
+                        SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
                         TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
                         if (block.Parcels.Count() == 0) //may be not loaded, but present in DB
                         {
-                            TParcels reloadP = LoadParcelsList(CF.conn, (block.id));
+                            TParcels reloadP = LoadParcelsList(CF.conn, block.id);
                             block.Parcels.AddParcels(reloadP);
                         }
                         wzParcelfrm ParcelEd = new wzParcelfrm();
@@ -1168,18 +1193,24 @@ namespace GKNData
                             if (block.ParcelExist(ParcelCN))
                             {
                                 TParcel TargetParcel = block.GetParcel(ParcelCN);
-                                ParcelEd.ImportXMLVidimus(FileName, TargetParcel);
+                                if (ParcelEd.ImportXMLVidimus(FileName, TargetParcel))
+                                {
+                                    StatusLabel_DBName.Text = ParcelCN;
+                                    StatusLabel_AllMessages.Text = "Файл добавлен ";
+                                }
                             }
                             else
                             {
-                                //no parcels exist, create new:
-
-                                if (AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]))
+                                //no parcels exist in the block, create new:
+                                TreeNode ParentNode = SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
+                                if (AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0], block, ParentNode))
                                 {
-                                    block.Parcels.AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
-                                    //populate new node by new item, TODO find item:
-                                    insertItem(ParsedDoc.MyBlocks.Blocks[0].Parcels[0], null);
-                                    ParcelEd.ImportXMLVidimus(FileName, ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
+                                    if (
+                                    ParcelEd.ImportXMLVidimus(FileName, ParsedDoc.MyBlocks.Blocks[0].Parcels[0]))
+                                    {
+                                        StatusLabel_DBName.Text = ParcelCN;
+                                        StatusLabel_AllMessages.Text = "Файл добавлен ";
+                                    }
                                 }
                             }
                         }
@@ -1191,21 +1222,17 @@ namespace GKNData
                         Block.Parent_id = CF.Cfg.District_id;
                         wzParcelfrm ParcelEd = new wzParcelfrm();
                         ParcelEd.CF.conn = CF.conn;
-
-                        if (DBWrapper.DB_AppendBlock(Block, CF.conn) > 0)
+                        if (AddBlock(Block, CadBloksList, treeView1))
                         {
-                            CadBloksList.AddBlock(Block);
-                            wzlBlockEd blEd = new wzlBlockEd();
-                            TreeNode NewBlockNode = insertItem(Block, treeView1);
-
+                            TreeNode NewBlockNode = SearchInTreeNodes(Block.CN, treeView1);
                             foreach (TParcel item in ParsedDoc.MyBlocks.Blocks[0].Parcels)
                             {
-                                if (AddParcel(item))
+                                if (AddParcel(item, Block, NewBlockNode))
                                 {
-                                    Block.Parcels.AddParcel(item);
+                                    //Block.Parcels.AddParcel(item);
                                     //populate new node by new item
-                                    insertItem(item, NewBlockNode);
-                                    string ParcelCN = item.CN;
+                                    //insertItem(item, NewBlockNode);
+                                    //string ParcelCN = item.CN;
                                     ParcelEd.ImportXMLVidimus(FileName, item);
                                 }
                             }
@@ -1458,11 +1485,7 @@ namespace GKNData
             MySqlCommand cmd = new MySqlCommand(Query, conn);
             MySqlDataReader re = cmd.ExecuteReader();
             re.Close();
-
         }
-
-
-
 
         #endregion
 
@@ -1587,18 +1610,16 @@ namespace GKNData
 
         private void SearchWithTree(object sender, EventArgs e)
         {
-            TextBox searchtbox = (TextBox)sender;
-            if (searchtbox.Visible)
+            TextBox SearchTbox = (TextBox)sender;
+            if (SearchTbox.Visible)
             {   // начинаем с высшей ноды:
+                /*
                 if (searchtbox.Text == "")
                 {
                     treeView1.SelectedNode = treeView1.Nodes[0]; // hi root node, seek to begin
-                    //treeView1.ForeColor = SystemColors.WindowText;
                     treeView1.CollapseAll();
                     treeView1.Update();
                 }
-                //FindNode не ходит далее одного root элемента:
-                //FindNode(treeView1.Nodes[0], searchtbox.Text.ToUpper(), false);
                 TreeNode res = TreeViewFinder.SearchNodes(treeView1.Nodes[0], searchtbox.Text.ToUpper());
 
                 if (res != null)
@@ -1610,17 +1631,42 @@ namespace GKNData
                     TCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
                     if (block != null)
                         PrepareNode(treeView1.SelectedNode, res.Tag);
-                    //treeView1.Focus();
-                    //treeView1.SelectedNode.BackColor = SystemColors.Highlight;
-                    //treeView1.SelectedNode.ForeColor =  SystemColors.MenuHighlight;
                     treeView1.SelectedNode.EnsureVisible();
                     treeView1.Update();
                     treeView1.EndUpdate();
                 }
-                searchtbox.Focus();
+                */
+                SearchInTreeNodes(SearchTbox.Text, treeView1);
+                SearchTbox.Focus();
             }
         }
+        private TreeNode SearchInTreeNodes(string Text, TreeView TV)
+        {
+            if (Text == "")
+            {
+                TV.SelectedNode = TV.Nodes[0]; // hi root node, seek to begin
+                TV.CollapseAll();
+                TV.Update();
+            }
+            TreeNode res = TreeViewFinder.SearchNodes(TV.Nodes[0], Text.ToUpper());
 
+            if (res != null)
+            {
+                TV.BeginUpdate();
+                TV.SelectedNode = res;
+                //TODO:  
+                //В случае поиска до раскрытия нод, для которых еще недогружены дочерние
+                TCadastralBlock block = CadBloksList.GetBlock(((netFteo.TreeNodeTag)res.Tag).Item_id);
+                if (block != null)
+                    PrepareNode(TV.SelectedNode, res.Tag);
+                TV.SelectedNode.EnsureVisible();
+                TV.Update();
+                TV.EndUpdate();
+                return res;
+            }
+            return null;
+        }
+    
         private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
             SearchWithTree(sender, e);

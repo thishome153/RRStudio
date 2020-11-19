@@ -210,6 +210,13 @@ namespace GKNData
             cmd.Parameters.Add("?lot_kn", MySqlDbType.VarChar).Value = parcel.CN;
             cmd.Parameters.Add("?lot_small_kn", MySqlDbType.VarChar).Value = lot_small_kn;
             cmd.Parameters.Add("?lotname", MySqlDbType.VarChar).Value = "-";
+            if (parcel.SpecialNote != null)
+            {
+                if (parcel.SpecialNote.Length > 128)
+                    cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote.Substring(0, 64) + "...";
+                else
+                    cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote;
+            }
             cmd.Parameters.Add("?Code_KLADR", MySqlDbType.VarChar).Value = "-";
             cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = parcel.CadastralBlock_id;
             cmd.ExecuteNonQuery();
@@ -303,7 +310,11 @@ namespace GKNData
             cmd.Parameters.Add("?lot_kn", MySqlDbType.VarChar).Value = parcel.CN;
             cmd.Parameters.Add("?lot_small_kn", MySqlDbType.VarChar).Value = lot_small_kn;
             cmd.Parameters.Add("?lotname", MySqlDbType.VarChar).Value = parcel.Name;
-            cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote;
+            if (parcel.SpecialNote != null)
+                if (parcel.SpecialNote.Length > 128)
+                    cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote.Substring(0, 64) + "...";
+                else
+                    cmd.Parameters.Add("?lot_comment", MySqlDbType.VarChar).Value = parcel.SpecialNote;
 
             //cmd.Parameters.Add("?Code_KLADR", MySqlDbType.VarChar).Value = parcel.;
             //cmd.Parameters.Add("?block_id", MySqlDbType.Int32).Value = parcel.CadastralBlock_id;
@@ -313,7 +324,7 @@ namespace GKNData
             return true;
         }
 
-        public static bool EraseBlock(int block_id, MySqlConnection conn)
+        public static bool EraseBlock(long block_id, MySqlConnection conn)
         {
             if (conn == null) return false; if (conn.State != System.Data.ConnectionState.Open) return false;
             try
@@ -571,7 +582,6 @@ namespace GKNData
             KPT.id = last_id;
             DBWrapper.DB_AppendHistory(ItemTypes.it_kpt, block_id, DBLogRecordStatus.it_InsertKPT, "kpt++." + last_id.ToString(), conn);
             return last_id;
-            return -1;
         }
 
         public static long DB_AddParcel_Vidimus(long parcel_id, TFile Vidimus, MySqlConnection conn)
