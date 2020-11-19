@@ -475,6 +475,11 @@ namespace GKNData
             else return false;
         }
 
+        /// <summary>
+        /// Add parcel record into database only
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private bool AddParcel(TParcel item)
         {
             item.id = DBWrapper.DB_AppendParcel(item, CF.conn);
@@ -971,7 +976,7 @@ namespace GKNData
         /// </summary>
         /// <param name="item">CadastralBlock</param>
         /// <param name="hParent">Target Treeview</param>
-        private void insertItem(TCadastralBlock item, TreeView hParent)
+        private TreeNode insertItem(TCadastralBlock item, TreeView hParent)
         {
             TreeNode nn = hParent.Nodes.Add(item.CN);//nodeName);
             if (item.Name != null)
@@ -987,13 +992,14 @@ namespace GKNData
             }
             nn.NodeFont = Font_Arial12;// new Font("Arial", 12);
             nn.ImageIndex = 0; nn.SelectedImageIndex = 0;
-            //return nn;
+            return nn;
         }
 
         //Добавление участка(объекта недвижимости)
-        private TreeNode insertItem(TParcel item, TreeNode hParent)
+        private TreeNode insertItem(TParcel item, TreeNode hParentBlock)
         {
-            TreeNode nn = hParent.Nodes.Add(item.CN);
+            if (hParentBlock == null) return null;
+            TreeNode nn = hParentBlock.Nodes.Add(item.CN);
             //nn.Tag = node;
             //instead of putting full object insert just smaller:
             nn.Tag = new netFteo.TreeNodeTag(item.id, item.GetType().ToString());
@@ -1167,16 +1173,45 @@ namespace GKNData
                             else
                             {
                                 //no parcels exist, create new:
-                                TParcel TargetParcel = block.Parcels.AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
-                                ParcelEd.ImportXMLVidimus(FileName, TargetParcel);
+
+                                if (AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]))
+                                {
+                                    block.Parcels.AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
+                                    //populate new node by new item, TODO find item:
+                                    insertItem(ParsedDoc.MyBlocks.Blocks[0].Parcels[0], null);
+                                    ParcelEd.ImportXMLVidimus(FileName, ParsedDoc.MyBlocks.Blocks[0].Parcels[0]);
+                                }
                             }
                         }
                     }
                     else
                     {
                         // Need new Block
-                        TCadastralBlock block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
-                        block.Parent_id = CF.Cfg.District_id;
+                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        Block.Parent_id = CF.Cfg.District_id;
+                        wzParcelfrm ParcelEd = new wzParcelfrm();
+                        ParcelEd.CF.conn = CF.conn;
+
+                        if (DBWrapper.DB_AppendBlock(Block, CF.conn) > 0)
+                        {
+                            CadBloksList.AddBlock(Block);
+                            wzlBlockEd blEd = new wzlBlockEd();
+                            TreeNode NewBlockNode = insertItem(Block, treeView1);
+
+                            foreach (TParcel item in ParsedDoc.MyBlocks.Blocks[0].Parcels)
+                            {
+                                if (AddParcel(item))
+                                {
+                                    Block.Parcels.AddParcel(item);
+                                    //populate new node by new item
+                                    insertItem(item, NewBlockNode);
+                                    string ParcelCN = item.CN;
+                                    ParcelEd.ImportXMLVidimus(FileName, item);
+                                }
+                            }
+                        }
+                        else
+                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
                     }
                 }
             }

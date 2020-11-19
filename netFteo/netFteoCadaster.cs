@@ -576,6 +576,11 @@ namespace netFteo
 
             }
 
+            /// <summary>
+            /// Add item to collection
+            /// </summary>
+            /// <param name="Parcel"></param>
+            /// <returns></returns>
             public TParcel AddParcel(TParcel Parcel)
             {
                 this.Add(Parcel);
