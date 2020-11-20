@@ -387,33 +387,32 @@ public enum dParcelsv01_enum
         public string Level3;    // Строение
         public string Apartment; // Квартира, помещение
 
-        public string AsString()
-        {
-            return this.City + " " + this.District + " " + this.Locality +
-                               " " + this.Street + " " + this.Level1 + " " + this.Level2 +
-                               " " + this.Level3 +
-                               " " + this.Apartment;
-        }
-        /*
-         * //Встроенный явный оператор для кастинга:
-        public static explicit operator TAddress( kvzu07.tAddressOut v)
-        {
-            tAddressOut adr = new tAddressOut();
-            adr.Apartment.Value = v.Apartment.Value;
-            adr.Note = v.Note;
-            return adr;
 
 
-            //throw new NotImplementedException();
+
+        /// <summary>
+        /// Get structured address as single string
+        /// </summary>
+        /// <returns></returns>
+        public string AsString(bool NoteOnly)
+        {
+            if (NoteOnly) { return this.Note; }
+            else
+            {
+                return this.City + " " + this.District + " " + this.Locality +
+                                   " " + this.Street + " " + this.Level1 + " " + this.Level2 +
+                                   " " + this.Level3 +
+                                   " " + this.Apartment;
+            }
         }
-        */
-		public bool Empty
-		{
-			get
-			{
-				return ((this.Region == null) && (this.City == null) && (this.District == null));
-			}
-				}
+
+        public bool Empty
+        {
+            get
+            {
+                return ((this.Region == null) && (this.City == null) && (this.District == null));
+            }
+        }
     }
 
     /// <summary>

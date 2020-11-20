@@ -1149,17 +1149,17 @@ namespace GKNData
                 if ((netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10) ||
                     (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT11))
                 {
-                    if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
+                    if (CadBloksList.BlockExist(ParsedDoc.District.SingleCN))
                     {
-                        SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
-                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
+                        SearchInTreeNodes(ParsedDoc.District.SingleCN, treeView1);
+                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.District.SingleCN);
                         wzlBlockEd blEd = new wzlBlockEd();
                         blEd.ImportXMLKPT(FileName, block, CF.conn);
                     }
                     else
                     {
                         // Need new Block
-                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.District.SingleCN);
                         Block.Parent_id = CF.Cfg.District_id;
                         wzParcelfrm ParcelEd = new wzParcelfrm();
                         ParcelEd.CF.conn = CF.conn;
@@ -1178,10 +1178,10 @@ namespace GKNData
                 //case 2 - KVZU_08 (FGIS ir EGRN, motherfuka etc)
                 if (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KVZU_08)
                 {
-                    if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
+                    if (CadBloksList.BlockExist(ParsedDoc.District.SingleCN))
                     {
-                        SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
-                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.MyBlocks.SingleCN);
+                        SearchInTreeNodes(ParsedDoc.District.SingleCN, treeView1);
+                        TCadastralBlock block = CadBloksList.GetBlock(ParsedDoc.District.SingleCN);
                         if (block.Parcels.Count() == 0) //may be not loaded, but present in DB
                         {
                             TParcels reloadP = LoadParcelsList(CF.conn, block.id);
@@ -1189,9 +1189,9 @@ namespace GKNData
                         }
                         wzParcelfrm ParcelEd = new wzParcelfrm();
                         ParcelEd.CF.conn = CF.conn;
-                        if (ParsedDoc.MyBlocks.Blocks[0].Parcels.Count() == 1)
+                        if (ParsedDoc.District.Blocks[0].Parcels.Count() == 1)
                         {
-                            string ParcelCN = ParsedDoc.MyBlocks.Blocks[0].Parcels[0].CN;
+                            string ParcelCN = ParsedDoc.District.Blocks[0].Parcels[0].CN;
                             if (block.ParcelExist(ParcelCN))
                             {
                                 TParcel TargetParcel = block.GetParcel(ParcelCN);
@@ -1204,11 +1204,11 @@ namespace GKNData
                             else
                             {
                                 //no parcels exist in the block, create new:
-                                TreeNode ParentNode = SearchInTreeNodes(ParsedDoc.MyBlocks.SingleCN, treeView1);
-                                if (AddParcel(ParsedDoc.MyBlocks.Blocks[0].Parcels[0], block, ParentNode))
+                                TreeNode ParentNode = SearchInTreeNodes(ParsedDoc.District.SingleCN, treeView1);
+                                if (AddParcel(ParsedDoc.District.Blocks[0].Parcels[0], block, ParentNode))
                                 {
                                     if (
-                                    ParcelEd.ImportXMLVidimus(FileName, ParsedDoc.MyBlocks.Blocks[0].Parcels[0]))
+                                    ParcelEd.ImportXMLVidimus(FileName, ParsedDoc.District.Blocks[0].Parcels[0]))
                                     {
                                         StatusLabel_DBName.Text = ParcelCN;
                                         StatusLabel_AllMessages.Text = "Файл добавлен ";
@@ -1220,14 +1220,14 @@ namespace GKNData
                     else
                     {
                         // Need new Block
-                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.District.SingleCN);
                         Block.Parent_id = CF.Cfg.District_id;
                         wzParcelfrm ParcelEd = new wzParcelfrm();
                         ParcelEd.CF.conn = CF.conn;
                         if (AddBlock(Block, CadBloksList, treeView1))
                         {
                             TreeNode NewBlockNode = SearchInTreeNodes(Block.CN, treeView1);
-                            foreach (TParcel item in ParsedDoc.MyBlocks.Blocks[0].Parcels)
+                            foreach (TParcel item in ParsedDoc.District.Blocks[0].Parcels)
                             {
                                 if (AddParcel(item, Block, NewBlockNode))
                                 {
@@ -1383,8 +1383,8 @@ namespace GKNData
             {
                 netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
                 /// DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
-                if (DocInfo.MyBlocks.Blocks.Count() == 1)
-                    return DocInfo.MyBlocks.SingleCN;
+                if (DocInfo.District.Blocks.Count() == 1)
+                    return DocInfo.District.SingleCN;
             }
             return "FILE TYPE WRONG";
         }

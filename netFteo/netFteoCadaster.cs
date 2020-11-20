@@ -272,6 +272,27 @@ namespace netFteo
                 return Res;
             }
 
+            /// <summary>
+            /// Show parcels collection as list (like KPT table)
+            /// </summary>
+            /// <param name="LV"></param>
+            /// <param name="SetTag"></param>
+            public void ParcelsToList(System.Windows.Forms.ListView LV, bool SetTag)
+            {
+                foreach (TCadastralBlock block in this.Blocks)
+                {
+                    block.Parcels.ShowasListItems(LV, SetTag);
+                }
+            }
+
+            public void ObjectRealtysToList(System.Windows.Forms.ListView LV, bool SetTag)
+            {
+                foreach (TCadastralBlock block in this.Blocks)
+                {
+                    block.ObjectRealtys.ShowasListItems(LV, SetTag);
+                }
+            }
+
             public TEntitySpatial GetParcelsEs()
             {
                 TEntitySpatial Res = new TEntitySpatial();
@@ -606,7 +627,39 @@ namespace netFteo
                 }
                 return null;
             }
+
+            public void ShowasListItems(System.Windows.Forms.ListView LV, bool SetTag)
+            {
+                //if (PointCount == 0) return;
+                LV.BeginUpdate();
+                LV.Items.Clear();
+                LV.Controls.Clear();
+                LV.View = System.Windows.Forms.View.Details;
+                LV.Columns[0].Text = "КН";
+                LV.Columns[1].Text = "Address";
+                LV.Columns[2].Text = "Площадь м.";
+                LV.Columns[3].Text = "Площадь граф.";
+                LV.Columns[4].Text = "-";
+                LV.Columns[5].Text = "-";
+                LV.Columns[6].Text = "-";
+                // if (SetTag) LV.Tag = id;
+
+                foreach (TParcel Parcel in this)
+                {
+                    System.Windows.Forms.ListViewItem LViItem = new System.Windows.Forms.ListViewItem();
+                    LViItem.Text = Parcel.CN;
+                    LV.Items.Add(LViItem);
+                    LViItem.SubItems.Add(Parcel.Location.Address.AsString(true));
+                    LViItem.SubItems.Add(Parcel.AreaGKN);
+                    LViItem.SubItems.Add(Parcel.EntSpat.AreaSpatialFmt("0", false));
+                    LViItem.SubItems.Add(Parcel.Utilization.UtilbyDoc);
+                   //need xsd enums: LViItem.SubItems.Add(Parcel.Utilization.Untilization);
+                }
+                LV.EndUpdate();
+            }
+
         }
+    
 
         /// <summary>
         /// Земельный участок
@@ -1106,6 +1159,40 @@ namespace netFteo
 
                 }
                 return null;
+            }
+            public void ShowasListItems(System.Windows.Forms.ListView LV, bool SetTag)
+            {
+                //if (PointCount == 0) return;
+                LV.BeginUpdate();
+                LV.Items.Clear();
+                LV.Controls.Clear();
+                LV.View = System.Windows.Forms.View.Details;
+                LV.Columns[0].Text = "КН";
+                LV.Columns[1].Text = "Address";
+                LV.Columns[2].Text = "-";
+                LV.Columns[3].Text = "-";
+                LV.Columns[4].Text = "-";
+                LV.Columns[5].Text = "-";
+                LV.Columns[6].Text = "-";
+                // if (SetTag) LV.Tag = id;
+
+                foreach (TRealEstate Parcel in this)
+                {
+                    System.Windows.Forms.ListViewItem LViItem = new System.Windows.Forms.ListViewItem();
+                    LViItem.Text = Parcel.CN;
+                    LV.Items.Add(LViItem);
+                    LViItem.SubItems.Add(Parcel.Location.Address.AsString(true));
+                    LViItem.SubItems.Add(Parcel.ObjectType);
+                    if (Parcel.Building != null)
+                        LViItem.SubItems.Add(Parcel.Building.AssignationBuilding);
+                    if (Parcel.Construction != null)
+                        LViItem.SubItems.Add(Parcel.Construction.AssignationName);
+                    if (Parcel.Uncompleted != null)
+                        LViItem.SubItems.Add(Parcel.Uncompleted.AssignationName);
+                    if (Parcel.Name != "")
+                        LViItem.SubItems.Add(Parcel.Name);
+                }
+                LV.EndUpdate();
             }
         }
 

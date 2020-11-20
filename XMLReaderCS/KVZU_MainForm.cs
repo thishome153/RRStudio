@@ -258,7 +258,7 @@ namespace XMLReaderCS
                 this.DocInfo.Version = null;
                 this.DocInfo.Number = null;
                 this.DocInfo.Date = null;
-                this.DocInfo.MyBlocks.Blocks.Clear();
+                this.DocInfo.District.Blocks.Clear();
             }
             TV_Parcels.Nodes.Clear();
 
@@ -391,8 +391,8 @@ namespace XMLReaderCS
 
                 if (ES_from_CSV != null)
                 {
-                    DocInfo.MyBlocks.ParsedSpatial.Clear();
-                    DocInfo.MyBlocks.ParsedSpatial = ES_from_CSV;
+                    DocInfo.District.ParsedSpatial.Clear();
+                    DocInfo.District.ParsedSpatial = ES_from_CSV;
                     this.DocInfo.DocTypeNick = "Текстовый файл";
                     this.DocInfo.CommentsType = "CSV";
                     this.DocInfo.Comments = CSVReader.Body;
@@ -414,8 +414,8 @@ namespace XMLReaderCS
 #else
                 //LV_SchemaDisAssembly.Visible = false;                      
 #endif
-                this.DocInfo.MyBlocks.SpatialData.Definition = Path.GetFileName(FileName);
-                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(netFteo.StringUtils.ReplaceComma(this.DocInfo.MyBlocks.SpatialData.Definition));
+                this.DocInfo.District.SpatialData.Definition = Path.GetFileName(FileName);
+                saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(netFteo.StringUtils.ReplaceComma(this.DocInfo.District.SpatialData.Definition));
                 //На пся крев просидел два дня....  SaveOpenedFileInfo(DocInfo, FileName);
             }
 
@@ -463,7 +463,7 @@ namespace XMLReaderCS
 
             if (NeedListing)
             {
-                ListMyCoolections(this.DocInfo.MyBlocks);
+                ListMyCoolections(this.DocInfo.District);
                 ListFileInfo(DocInfo);
             }
             PreloaderMenuItem.LoadingCircleControl.Active = false;
@@ -902,7 +902,7 @@ namespace XMLReaderCS
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                this.DocInfo.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
 
@@ -932,7 +932,7 @@ namespace XMLReaderCS
                 Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bl.AddOKS(Bld);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.District.Blocks.Add(Bl);
             }
 
 
@@ -948,10 +948,10 @@ namespace XMLReaderCS
                 foreach (RRTypes.kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
                     Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number });
                 Bl.AddOKS(Constructions);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.District.Blocks.Add(Bl);
             }
 
-            ListMyCoolections(this.DocInfo.MyBlocks);
+            ListMyCoolections(this.DocInfo.District);
         }
 
 
@@ -975,7 +975,7 @@ namespace XMLReaderCS
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                this.DocInfo.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
 
@@ -1017,7 +1017,7 @@ namespace XMLReaderCS
 
                 Bl.AddOKS(Bld);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.District.Blocks.Add(Bl);
             }
 
 
@@ -1032,10 +1032,10 @@ namespace XMLReaderCS
                 Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Bl.AddOKS(Constructions);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                this.DocInfo.District.Blocks.Add(Bl);
             }
 
-            ListMyCoolections(this.DocInfo.MyBlocks);
+            ListMyCoolections(this.DocInfo.District);
         }
 
 
@@ -1051,7 +1051,7 @@ namespace XMLReaderCS
             {
 
                 richTextBox1.AppendText(TP.Construction.Conclusion);
-                this.DocInfo.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.Coord_Systems[0].Name, TP.Construction.Coord_Systems[0].Cs_Id));
+                this.DocInfo.District.CSs.Add(new TCoordSystem(TP.Construction.Coord_Systems[0].Name, TP.Construction.Coord_Systems[0].Cs_Id));
                 ListViewItem LVi = new ListViewItem();
                 LVi.Text = TP.Construction.Contractor.Date.ToString();
                 LVi.SubItems.Add(TP.Construction.Contractor.Cadastral_Engineer.FIO.Surname + " " + TP.Construction.Contractor.Cadastral_Engineer.FIO.First +
@@ -1075,11 +1075,11 @@ namespace XMLReaderCS
                     Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
                                                                                      TP.Construction.Package.New_Construction[0].Entity_Spatial);
                     Bl.AddOKS(Constructions);
-                    this.DocInfo.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
-                    this.DocInfo.MyBlocks.Blocks.Add(Bl);
+                    this.DocInfo.District.SpatialData.AddRange(Constructions.EntSpat);
+                    this.DocInfo.District.Blocks.Add(Bl);
                 }
 
-                ListMyCoolections(this.DocInfo.MyBlocks);
+                ListMyCoolections(this.DocInfo.District);
 
             }
         }
@@ -1953,7 +1953,7 @@ return res;
                     LVi.SubItems.Add(fl.CN);
                 }
                 LVi.SubItems.Add(fl.Area.ToString());
-                LVi.SubItems.Add(fl.Location.Address.AsString());//Adress
+                LVi.SubItems.Add(fl.Location.Address.AsString(false));//Adress
                 if (fl.Location.Address.Other != null)
                     LVi.SubItems.Add(fl.Location.Address.Other);
                 if (fl.Location.Address.Note != null)
@@ -2055,7 +2055,7 @@ return res;
                 //  {
                 ListViewItem LViAssgn2 = new ListViewItem();
                 LViAssgn2.Text = "Адрес (структ.)";
-                LViAssgn2.SubItems.Add(this.dRegionsRF_v01.Item2Annotation(Address.Region) + " " + Address.AsString());
+                LViAssgn2.SubItems.Add(this.dRegionsRF_v01.Item2Annotation(Address.Region) + " " + Address.AsString(false));
                 LV.Items.Add(LViAssgn2);
                 //  }
             }
@@ -2651,7 +2651,7 @@ LV.Items.Add(LVipP);
             int id = GetNodeGeometryID(GeometryTagID);
             if (id != -1)
             {
-                Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(id);
+                Entity = (IGeometry)this.DocInfo.District.GetEs(id);
                 return Entity;
             }
             else return null;
@@ -2663,7 +2663,7 @@ LV.Items.Add(LVipP);
 
             if (Entity != null)
             {
-                return this.DocInfo.MyBlocks.RemoveGeometry(Entity.id);
+                return this.DocInfo.District.RemoveGeometry(Entity.id);
             }
             return false;
         }
@@ -2857,7 +2857,7 @@ LV.Items.Add(LVipP);
                         {
                             netFteo.IO.TextWriter TR = new netFteo.IO.TextWriter();
                             saveFileDialog1.FilterIndex = 1; // mif
-                            ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
+                            ES.RemoveParentCN(DocInfo.District.SingleCN);
                             if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                                 TR.SaveAsmif(saveFileDialog1.FileName, ES);
                             break;
@@ -2925,7 +2925,7 @@ LV.Items.Add(LVipP);
                             saveFileDialog1.FilterIndex = 3;
                             if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                             {
-                                ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
+                                ES.RemoveParentCN(DocInfo.District.SingleCN);
                                 wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, ScaleRaduis);
                             }
                             break;
@@ -2938,11 +2938,11 @@ LV.Items.Add(LVipP);
         private TEntitySpatial GetES(string NodeName)
         {
             if (NodeName == "TopNode")
-                return this.DocInfo.MyBlocks.SpatialData;
+                return this.DocInfo.District.SpatialData;
 
             if (NodeName.Contains("Contours"))
             {
-                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(8)));
+                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(8)));
                 if (Pl != null)
                 {
                     TEntitySpatial res = new TEntitySpatial();
@@ -2953,7 +2953,7 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("EntrysNode"))
             {
-                TParcel Lot = (TParcel)this.DocInfo.MyBlocks.GetObject(Convert.ToInt32(NodeName.Substring(10)));
+                TParcel Lot = (TParcel)this.DocInfo.District.GetObject(Convert.ToInt32(NodeName.Substring(10)));
                 if (Lot != null)
                 {
                     TEntitySpatial res = new TEntitySpatial();
@@ -2965,7 +2965,7 @@ LV.Items.Add(LVipP);
             if (NodeName.Contains("ES."))
             {
 
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(3)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(3)));
                 if (Entity != null)
                 {
                     return (TEntitySpatial)Entity;
@@ -2974,7 +2974,7 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("SPElem."))
             {
-                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(7)));
                 if (Pl != null)
                 {
                     TEntitySpatial PC = new TEntitySpatial();
@@ -2985,7 +2985,7 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("TPolyLine."))
             {
-                TPolyLine Pl = (TPolyLine)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
+                TPolyLine Pl = (TPolyLine)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(10)));
                 if (Pl != null)
                 {
                     TEntitySpatial PC = new TEntitySpatial();
@@ -2997,7 +2997,7 @@ LV.Items.Add(LVipP);
             
             if (NodeName.Contains("PointList."))
             {
-                PointList Pl = (PointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(10)));
+                PointList Pl = (PointList)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(10)));
                 if (Pl != null)
                 {
                     TEntitySpatial PC = new TEntitySpatial();
@@ -3009,7 +3009,7 @@ LV.Items.Add(LVipP);
             //Не Все зоны - только территориальные, ==(1) ??
             if (NodeName.Contains("ZonesNode"))
             {
-                TEntitySpatial Plc = this.DocInfo.MyBlocks.GetZonesEs(1);
+                TEntitySpatial Plc = this.DocInfo.District.GetZonesEs(1);
                 if (Plc != null)
                 {
                     return Plc;
@@ -3018,17 +3018,17 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("OKSsNode"))
             {
-                return this.DocInfo.MyBlocks.GetRealtyEs(); // TODO All data
+                return this.DocInfo.District.GetRealtyEs(); // TODO All data
             }
 
             if (NodeName.Contains("ParcelsNode"))
             {
-                return this.DocInfo.MyBlocks.GetParcelsEs(); // TODO All data
+                return this.DocInfo.District.GetParcelsEs(); // TODO All data
             }
 
             if (NodeName.Contains("ES."))
             {
-                var es = this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(NodeName.Substring(3)));
+                var es = this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(3)));
                 return (TEntitySpatial)es;
             }
 
@@ -3036,13 +3036,13 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("Layer."))
             {
-                return (TEntitySpatial)this.DocInfo.MyBlocks.GetEs(NodeName.Substring(6));
+                return (TEntitySpatial)this.DocInfo.District.GetEs(NodeName.Substring(6));
 
             }
 
             if (NodeName.Contains("OMSPoints"))
             {
-                return this.DocInfo.MyBlocks.OMSPoints;
+                return this.DocInfo.District.OMSPoints;
             }
             return null;
         }
@@ -3067,7 +3067,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("ES."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
                 if (Entity != null)
                 {
                     if (Entity.State  == 14)
@@ -3084,7 +3084,7 @@ LV.Items.Add(LVipP);
             //Show features by whole layer 
             if (STrN.Name.Contains("Layer."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.ParsedSpatial.GetFeatures(STrN.Name.Substring(6));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.ParsedSpatial.GetFeatures(STrN.Name.Substring(6));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3095,7 +3095,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("SPElem."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3106,7 +3106,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("TPolyLine."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3117,7 +3117,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("PointList."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(10)));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3128,7 +3128,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("Circle.") || STrN.Name.Contains("TPoint."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(7)));
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
@@ -3140,7 +3140,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("Adrss")) // this is Parcel adress nodes top node
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
 
                 if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
                 {
@@ -3158,7 +3158,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("PNode")) // this is Parcel - list all about stuf
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
 
                 if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
                 {
@@ -3180,22 +3180,24 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("ParcelsNode"))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetParcelsEs();
+                DocInfo.District.ParcelsToList(listView1, true);
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetParcelsEs();
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
+                   // Entity.ShowasListItems(listView1, true);
                     PropertiesToListView(listView_Properties, Entity);
                 }
             }
 
             if (STrN.Name.Contains("OKSsNode"))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetRealtyEs();
+                DocInfo.District.ObjectRealtysToList(listView1, true);
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetRealtyEs();
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
-                    Entity.ShowasListItems(listView1, true);
+                    //Entity.ShowasListItems(listView1, true);
                     PropertiesToListView(listView_Properties, Entity);
                 }
             }
@@ -3203,8 +3205,8 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("TopNode"))
             {
                 TEntitySpatial TopES = new TEntitySpatial();
-                TopES.AddRange(this.DocInfo.MyBlocks.GetRealtyEs());
-                TopES.AddRange(this.DocInfo.MyBlocks.GetParcelsEs());
+                TopES.AddRange(this.DocInfo.District.GetRealtyEs());
+                TopES.AddRange(this.DocInfo.District.GetParcelsEs());
                 if (TopES != null)
                 {
                     GeometryToSpatialView(listView1, TopES);
@@ -3217,7 +3219,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("EntrysNode"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
 
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
@@ -3232,7 +3234,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("Contours"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 if (O != null)
                     if (O.ToString() == "netFteo.Spatial.TPolygonCollection")
                     {
@@ -3244,13 +3246,13 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("OMSPoints"))
             {
-                OMSPointsToListView(listView1, this.DocInfo.MyBlocks.OMSPoints.AsPointList);
+                OMSPointsToListView(listView1, this.DocInfo.District.OMSPoints.AsPointList);
             }
 
             if (STrN.Name.Contains("ZNode"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 if (((TZone)O).TypeName == "Территориальная зона")
                 {
                     PermittedUsesToListView(listView1, ((TZone)O).PermittedUses, ((TZone)O).AccountNumber);
@@ -3270,7 +3272,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("SlotNode"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 PropertiesToListView(listView_Properties, O);
             }
 
@@ -3278,7 +3280,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("Rights"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(6));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
@@ -3290,7 +3292,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("EGRNRight"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(9));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
@@ -3303,7 +3305,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("Flats"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
 
                 if (O.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
@@ -3320,7 +3322,7 @@ LV.Items.Add(LVipP);
             if (STrN.Name.Contains("FlatItem"))
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(8));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
 
                 if (O.ToString() == "netFteo.Cadaster.TFlat")
                 {
@@ -3731,7 +3733,7 @@ LV.Items.Add(LVipP);
             if (TV_Parcels.SelectedNode.Name.Contains("Rights"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
@@ -3747,7 +3749,7 @@ LV.Items.Add(LVipP);
             if (TV_Parcels.SelectedNode.Name.Contains("EGRNRight"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(9));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
@@ -3984,7 +3986,7 @@ LV.Items.Add(LVipP);
             //if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
             //{
             Int32 id = ConvertToInt32(TV_Parcels.SelectedNode.Name); // PNode CNNode
-            object O = this.DocInfo.MyBlocks.GetObject(id);
+            object O = this.DocInfo.District.GetObject(id);
             if (O != null)
             {
                 if (O.ToString() == "netFteo.Cadaster.TParcel") //Пока только для ЗУ, ПКК5 пока все равно не обрабатывает оксы
@@ -4037,9 +4039,9 @@ LV.Items.Add(LVipP);
             if (TV_Parcels.SelectedNode.Name.Contains("TopNode")) // Квартал
             {
                 //Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
-                if (this.DocInfo.MyBlocks.Blocks.Count == 1)
+                if (this.DocInfo.District.Blocks.Count == 1)
                 {
-                    cn = this.DocInfo.MyBlocks.Blocks[0].CN;
+                    cn = this.DocInfo.District.Blocks[0].CN;
                     pkk5Viewer1.Start(cn, pkk5_Types.Block);
                 }
             }
@@ -4088,7 +4090,7 @@ LV.Items.Add(LVipP);
             if (TV_Parcels.SelectedNode.Name.Contains("PNode"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
@@ -4114,14 +4116,14 @@ LV.Items.Add(LVipP);
             saveFileDialog1.FilterIndex = 5; // xml
 
 
-            if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.MyBlocks.SpatialData != null))
+            if ((TV_Parcels.SelectedNode.Name == "TopNode") && (this.DocInfo.District.SpatialData != null))
                 if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
                 {
                     //Заменить в полигонах CN квартала
-                    netFteo.StringUtils.RemoveParentCN(this.DocInfo.MyBlocks.SingleCN, this.DocInfo.MyBlocks.SpatialData);
+                    netFteo.StringUtils.RemoveParentCN(this.DocInfo.District.SingleCN, this.DocInfo.District.SpatialData);
                     XmlSerializer serializer = new XmlSerializer(typeof(TPolygonCollection));
                     TextWriter writer = new StreamWriter(saveFileDialog1.FileName);
-                    serializer.Serialize(writer, this.DocInfo.MyBlocks.SpatialData);
+                    serializer.Serialize(writer, this.DocInfo.District.SpatialData);
                     writer.Close();
                 }
 
@@ -4129,7 +4131,7 @@ LV.Items.Add(LVipP);
 
             if (TV_Parcels.SelectedNode.Name.Contains("Contours"))
             {
-                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
+                TPolygonCollection Pl = (TPolygonCollection)this.DocInfo.District.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(8)));
                 if (Pl != null)
                 {
                     saveFileDialog1.FileName = "Contours_" + Pl.Defintion;
@@ -4146,7 +4148,7 @@ LV.Items.Add(LVipP);
 
             if (TV_Parcels.SelectedNode.Name.Contains("SPElem."))
             {
-                TPolygon Pl = (TPolygon)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
+                TPolygon Pl = (TPolygon)this.DocInfo.District.GetEs(Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(7)));
                 if (Pl != null)
                 {
                     saveFileDialog1.FileName = netFteo.StringUtils.ReplaceSlash(Pl.Definition);
@@ -4166,7 +4168,7 @@ LV.Items.Add(LVipP);
             if (TV_Parcels.SelectedNode.Name.Contains("EntrysNode"))
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10));
-                object O = this.DocInfo.MyBlocks.GetObject(id);
+                object O = this.DocInfo.District.GetObject(id);
                 
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
@@ -4779,7 +4781,7 @@ LV.Items.Add(LVipP);
                 if (STrN.Name.Contains("EntrysNode"))
                 {
                     Int32 id = Convert.ToInt32(STrN.Name.Substring(10));
-                    object O = this.DocInfo.MyBlocks.GetObject(id);
+                    object O = this.DocInfo.District.GetObject(id);
                     if (O.ToString() == "netFteo.Cadaster.TParcel")
                     {
                         TParcel P = (TParcel)O;
@@ -4865,7 +4867,7 @@ LV.Items.Add(LVipP);
         {
             if (STrN.Name.Contains("ES."))
             {
-                IGeometry Entity = (IGeometry)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
+                IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
                 if (Entity != null)
                     if (Entity.TypeName == "netFteo.Spatial.TEntitySpatial")
                     {
@@ -4988,7 +4990,7 @@ LV.Items.Add(LVipP);
                 richTextBox1.AppendText("\r\n");
             }
 
-            this.DocInfo.MyBlocks.ParsedSpatial = ES;
+            this.DocInfo.District.ParsedSpatial = ES;
             this.DocInfo.DocTypeNick = "Mapinfo tab";
             this.DocInfo.CommentsType = "TAB";
             //res.Comments = mifreader.Body;//.GetType().ToString() + " file info \r Blocked LWPOLYLINE.Count = " + mifreader.PolygonsCount().ToString() + " \rFileBody:\r" + mifreader.Body;
@@ -5048,7 +5050,7 @@ LV.Items.Add(LVipP);
                 else toolStripStatusLabel3.Text = "Нет аргументов";
             }
             //anyway - MyBlocks must be exist at this point:
-            ListMyCoolections(this.DocInfo.MyBlocks);
+            ListMyCoolections(this.DocInfo.District);
             ListFileInfo(DocInfo);
             this.TextDefault = this.Text;
             ClearFiles();
@@ -5115,7 +5117,7 @@ LV.Items.Add(LVipP);
         // Format points for cadastral usage
         private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
             if (Feature != null)
             {
                 Feature.Fraq("0.00");
@@ -5128,7 +5130,7 @@ LV.Items.Add(LVipP);
 
         private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
             if (Feature != null)
             {
                 Feature.ReorderPoints(1);
@@ -5143,7 +5145,7 @@ LV.Items.Add(LVipP);
         /// <param name="e"></param>
         private void замкнутьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
 
             if ((Feature != null) &&
                 (Feature.TypeName == "netFteo.Spatial.TPolyLine")
@@ -5152,7 +5154,7 @@ LV.Items.Add(LVipP);
                 TPolygon NewFeature = new TPolygon((TPolyLine)Feature);
                 NewFeature.LayerHandle = Feature.LayerHandle;
                 NewFeature.Definition = Feature.Definition + "*";
-                this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
+                this.DocInfo.District.ParsedSpatial.Add(NewFeature);
                 //Insert new node:
                 netFteo.ObjectLister.ListEntSpat(TV_Parcels.SelectedNode.Parent, NewFeature, "SPElem.", NewFeature.Definition, NewFeature.State);
                 //ListMyCoolections(this.DocInfo.MyBlocks);
@@ -5168,7 +5170,7 @@ LV.Items.Add(LVipP);
                 TPolygon NewFeature = new TPolygon((PointList)Feature);
                 NewFeature.LayerHandle = Feature.LayerHandle;
                 NewFeature.Definition = Feature.Definition + "*";
-                this.DocInfo.MyBlocks.ParsedSpatial.Add(NewFeature);
+                this.DocInfo.District.ParsedSpatial.Add(NewFeature);
                 //Insert new node:
                 netFteo.ObjectLister.ListEntSpat(TV_Parcels.SelectedNode.Parent, NewFeature, "SPElem.", NewFeature.Definition, NewFeature.State);
                 //ListMyCoolections(this.DocInfo.MyBlocks);
@@ -5188,7 +5190,7 @@ LV.Items.Add(LVipP);
 
         private void ChangeXYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
             if (Feature != null)
             {
                 Feature.ExchangeOrdinates();
@@ -5223,7 +5225,7 @@ LV.Items.Add(LVipP);
                 netFteo.Spatial.TEntitySpatial ES = new TEntitySpatial();
                 TPoint Pt = new TPoint(1000, 1000);
                 ES.Add(Pt);
-                ES.RemoveParentCN(DocInfo.MyBlocks.SingleCN);
+                ES.RemoveParentCN(DocInfo.District.SingleCN);
                 wr.SaveAsDxfScale(saveFileDialog1.FileName, ES, 1);
             }
         }
@@ -5407,7 +5409,7 @@ LV.Items.Add(LVipP);
         private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TV_Parcels.Nodes.Clear();
-            ListMyCoolections(this.DocInfo.MyBlocks);
+            ListMyCoolections(this.DocInfo.District);
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
@@ -5428,7 +5430,7 @@ LV.Items.Add(LVipP);
 
         private void обратныйПорядокToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IPointList Feature = (IPointList)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
             if (Feature != null)
             {
                 Feature.ReversePoints();
@@ -5450,7 +5452,7 @@ LV.Items.Add(LVipP);
                     {
                         TPoint pt = (TPoint)Feature;
                         //now get current list . Listview.Tag stored its id:
-                        TRing CurrentPointList = (TRing)this.DocInfo.MyBlocks.GetEs(Convert.ToInt32(listView1.Tag));
+                        TRing CurrentPointList = (TRing)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
                         CurrentPointList.MakeFirstPoint(pt.id);
                         CurrentPointList.ShowasListItems(listView1, true);
 

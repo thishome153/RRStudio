@@ -86,14 +86,14 @@ namespace netFteo.IO
 
         public string CommentsType; // Conclusion, Notes
 
-        public TCadastralDistrict MyBlocks;
+        public TCadastralDistrict District;
         //   public Spatial.TEntitySpatial MifOKSSpatialCollection;
         //    public Spatial.TEntitySpatial MifPolygons;
         public FileInfo()
         {
             //  this.MifPolygons = new netFteo.Spatial.TEntitySpatial();
             //  this.MifOKSSpatialCollection = new Spatial.TEntitySpatial();
-            this.MyBlocks = new TCadastralDistrict();
+            this.District = new TCadastralDistrict();
             this.Contractors = new List<Rosreestr.TEngineerOut>();
             this.DocType = "-";
             this.Version = "";
@@ -348,28 +348,28 @@ namespace netFteo.IO
                     {
                         TEntitySpatial rets = new TEntitySpatial();
                         rets.Add(ImportNXYZDFile2014(Fname));
-                        DocInfo.MyBlocks.ParsedSpatial = rets;// not Add, need assume to update Layers
+                        DocInfo.District.ParsedSpatial = rets;// not Add, need assume to update Layers
                         DocInfo.DocType = "Fixosoft NumXYZD data format V2014";
                         return DocInfo;
                     }
 
                     if (line.Contains("#Fixosoft NumXYZD data format V2015"))
                     {
-                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2015(Fname);
+                        DocInfo.District.ParsedSpatial = ImportNXYZDFile2015(Fname);
                         DocInfo.DocType = "Fixosoft NumXYZD data format V2015";
                         return DocInfo;
                     }
 
                     if (line.Contains("#Fixosoft NumXYZD data format V2016"))
                     {
-                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2016(Fname);
+                        DocInfo.District.ParsedSpatial = ImportNXYZDFile2016(Fname);
                         DocInfo.DocType = "Fixosoft NumXYZD data format V2016";
                         return DocInfo;
                     }
 
                     if (line.Equals("#Fixosoft spatial text file V2018"))
                     {
-                        DocInfo.MyBlocks.ParsedSpatial = ImportNXYZDFile2018(Fname);
+                        DocInfo.District.ParsedSpatial = ImportNXYZDFile2018(Fname);
                         DocInfo.DocType = "Fixosoft spatial text file V2018";
                         return DocInfo;
                     }
@@ -389,14 +389,14 @@ namespace netFteo.IO
 
                     {
                         DocInfo.DocType = "Nikon XYZ file";
-                        DocInfo.MyBlocks.ParsedSpatial = ImportXYZDNikon(Fname);
+                        DocInfo.District.ParsedSpatial = ImportXYZDNikon(Fname);
                         return DocInfo;
                     }
 
                     NikonString = line.Split(TabDelimiter.ToCharArray());
                     if (NikonString.Length == 2)
                     {
-                        DocInfo.MyBlocks.ParsedSpatial = ImportPKZO(Fname);
+                        DocInfo.District.ParsedSpatial = ImportPKZO(Fname);
                         DocInfo.DocType = "X tab Y ";
                     }
                 }

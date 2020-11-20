@@ -491,7 +491,7 @@ namespace Traverser
                         }
                      * */
                     netFteo.IO.TextReader TR = new netFteo.IO.TextReader(openFileDialog1.FileName);
-                    this.Project.ES = TR.ImportTxtFile(openFileDialog1.FileName).MyBlocks.ParsedSpatial;
+                    this.Project.ES = TR.ImportTxtFile(openFileDialog1.FileName).District.ParsedSpatial;
                     this.Project.Points.AppendPoints(this.Project.ES.AsPointList);
                     this.ListNumTxtPolygons(this.Project.ES);
                     toolStripStatusLabel1.Text = Path.GetFileName(openFileDialog1.FileName);

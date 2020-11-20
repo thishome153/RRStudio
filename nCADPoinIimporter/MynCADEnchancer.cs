@@ -242,7 +242,7 @@
                         TEntitySpatial fteofile = new TEntitySpatial();
                         IO.TextReader TR = new IO.TextReader(sourceFileName.StringResult);
                         netFteo.IO.FileInfo fi = TR.ImportTxtFile(sourceFileName.StringResult);
-                        ParseData(dm,ed,sourceFileName, fi.MyBlocks.ParsedSpatial);
+                        ParseData(dm,ed,sourceFileName, fi.District.ParsedSpatial);
                     }
                     catch (PlatformDb.Runtime.Exception ex)
                     {

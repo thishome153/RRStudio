@@ -3401,8 +3401,12 @@ namespace netFteo.Spatial
         /// <returns></returns>
         public string AreaSpatialFmt(string format, bool ReturnCount)
         {
-            if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
-            else return AreaSpatial.ToString(format);
+            if (AreaSpatial > 0)
+            {
+                if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
+                else return AreaSpatial.ToString(format);
+            }
+            else return "";
         }
 
         public bool EmptySpatial

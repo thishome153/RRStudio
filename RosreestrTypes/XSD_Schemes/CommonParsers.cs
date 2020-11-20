@@ -2604,7 +2604,7 @@ namespace RRTypes.CommonParsers
                 if (res.Version == "04")
                 {
                     STD_MPV04.STD_MP MP = (STD_MPV04.STD_MP)Desearialize<STD_MPV04.STD_MP>(xmldoc);
-                    res.MyBlocks.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
+                    res.District.CSs.Add(new TCoordSystem(MP.Coord_Systems.Coord_System.Name, MP.Coord_Systems.Coord_System.Cs_Id));
                     if (MP.eDocument.CodeType ==STD_MPV04.STD_MPEDocumentCodeType.Item014)
                     {
                         //  richTextBox1.AppendText("\n014 - Пакет информации c заявлением о постановке на учет: \n");
@@ -2763,7 +2763,7 @@ namespace RRTypes.CommonParsers
 
                 }
 
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
                 res.Comments += ("\n");
                 res.Comments += ("<br>_______________________________________ТИТУЛЬНЫЙ ЛИСТ ___________________________________");
                 res.Comments += ("<br> Межевой план подготовлен в результате выполнения кадастровых работ в связи с:");
@@ -3024,7 +3024,7 @@ namespace RRTypes.CommonParsers
                         pt.Code = oms.PKlass; // NetWork class
                         Bl.AddOmsPoint(pt);
                     }
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
             catch (Exception ex)
             {
@@ -3048,7 +3048,7 @@ namespace RRTypes.CommonParsers
                 res.Number = MP.GUID;
                 for (int i = 0; i <= MP.CoordSystems.Count - 1; i++)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(MP.CoordSystems[i].Name, MP.CoordSystems[i].CsId));
+                    res.District.CSs.Add(new TCoordSystem(MP.CoordSystems[i].Name, MP.CoordSystems[i].CsId));
 
                 }
                 TCadastralBlock Bl = new TCadastralBlock();
@@ -3220,7 +3220,7 @@ namespace RRTypes.CommonParsers
                             MainObj.SubParcels.Add(Sl);
                         }
                 }
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
                 /*
                 if (MP.GeneralCadastralWorks.Clients.Count == 1)
                 {
@@ -3542,8 +3542,8 @@ namespace RRTypes.CommonParsers
                     Constructions.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(TP.Construction.Package.New_Construction[0].Assignation_Name,
                                                                                      TP.Construction.Package.New_Construction[0].Entity_Spatial);
                     Bl.AddOKS(Constructions);
-                    res.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
-                    res.MyBlocks.Blocks.Add(Bl);
+                    res.District.SpatialData.AddRange(Constructions.EntSpat);
+                    res.District.Blocks.Add(Bl);
                 }
             }
             return res;
@@ -3634,7 +3634,7 @@ namespace RRTypes.CommonParsers
                 TRealEstate OKS = null;
                 Bl.OMSPoints = ParseInputData(TP.Building.InputData);
                 ParseGeneralCadastralWorks(res, TP.Building.GeneralCadastralWorks, TP.Building.Conclusion);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
+                res.District.CSs.Add(new TCoordSystem(TP.Building.CoordSystems[0].Name, TP.Building.CoordSystems[0].CsId));
 
                 //Здание, постановка на ГКУ
                 if (TP.Building.Package.NewBuildings != null)
@@ -3714,7 +3714,7 @@ namespace RRTypes.CommonParsers
                 }
                 Bl.CN = OKS.CadastralBlock;
                 Bl.AddOKS(OKS);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             //construction:
@@ -3725,7 +3725,7 @@ namespace RRTypes.CommonParsers
                 TRealEstate OKS = null;
                 ParseGeneralCadastralWorks(res, TP.Construction.GeneralCadastralWorks, TP.Construction.Conclusion);
                 Bl.OMSPoints = ParseInputData(TP.Construction.InputData);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Construction.CoordSystems[0].Name, TP.Construction.CoordSystems[0].CsId));
+                res.District.CSs.Add(new TCoordSystem(TP.Construction.CoordSystems[0].Name, TP.Construction.CoordSystems[0].CsId));
                 //Сооружение, постановка на ГКУ
                 if (TP.Construction.Package.NewConstructions != null)
                 {
@@ -3762,7 +3762,7 @@ namespace RRTypes.CommonParsers
 
                 Bl.CN = OKS.CadastralBlock;
                 Bl.AddOKS(OKS);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
             // end construction
 
@@ -3791,7 +3791,7 @@ namespace RRTypes.CommonParsers
                     OKS.Flat.PositionInObject.Levels.Add(lvl);
                     Bl.CN = OKS.CadastralBlock;
                     Bl.AddOKS(OKS);
-                    res.MyBlocks.Blocks.Add(Bl);
+                    res.District.Blocks.Add(Bl);
                 }
 
 
@@ -3818,7 +3818,7 @@ namespace RRTypes.CommonParsers
                         Bl.AddOKS(OKS);
                     }
 
-                    res.MyBlocks.Blocks.Add(Bl);
+                    res.District.Blocks.Add(Bl);
                 }
             }
 
@@ -3829,7 +3829,7 @@ namespace RRTypes.CommonParsers
                 TRealEstate OKS = null;
                 Bl.OMSPoints = ParseInputData(TP.Uncompleted.InputData);
                 ParseGeneralCadastralWorks(res, TP.Uncompleted.GeneralCadastralWorks, TP.Uncompleted.Conclusion);
-                res.MyBlocks.CSs.Add(new TCoordSystem(TP.Uncompleted.CoordSystems[0].Name, TP.Uncompleted.CoordSystems[0].CsId));
+                res.District.CSs.Add(new TCoordSystem(TP.Uncompleted.CoordSystems[0].Name, TP.Uncompleted.CoordSystems[0].CsId));
                 //Здание, постановка на ГКУ
                 if (TP.Uncompleted != null)
                 {
@@ -3864,7 +3864,7 @@ namespace RRTypes.CommonParsers
                 }
                 Bl.CN = OKS.CadastralBlock;
                 Bl.AddOKS(OKS);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
             return res;
         }
@@ -3997,7 +3997,7 @@ namespace RRTypes.CommonParsers
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 																   zone.SelectSingleNode("Entity_Spatial"))); */
-                        res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        res.District.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                                                                    zone.SelectSingleNode("Entity_Spatial")));
                         if (zone.SelectSingleNode("Documents") != null)
                             foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
@@ -4034,13 +4034,13 @@ namespace RRTypes.CommonParsers
 
                 if (Blocksnodes[i].SelectSingleNode("Coord_System") != null)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
+                    res.District.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
                         Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Cs_Id").Value));
                 }
 
                 res.RequeryNumber = (Blocksnodes[i].SelectSingleNode("Note") != null) ?
                     Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value : "";
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             // end TODO
@@ -4174,7 +4174,7 @@ namespace RRTypes.CommonParsers
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 																   zone.SelectSingleNode("Entity_Spatial"))); */
-                        res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        res.District.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                                                                    zone.SelectSingleNode("Entity_Spatial")));
                         if (zone.SelectSingleNode("Documents") != null)
                             foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
@@ -4211,13 +4211,13 @@ namespace RRTypes.CommonParsers
 
                 if (Blocksnodes[i].SelectSingleNode("Coord_System") != null)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
+                    res.District.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
                         Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Cs_Id").Value));
                 }
                 if (Blocksnodes[i].SelectSingleNode("Note") != null)
                     res.RequeryNumber = (Blocksnodes[i].SelectSingleNode("Note").FirstChild != null) ?
                         Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value : "";
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             // end TODO
@@ -4349,7 +4349,7 @@ namespace RRTypes.CommonParsers
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 																   zone.SelectSingleNode("Entity_Spatial"))); */
-                        res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        res.District.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                                                                    zone.SelectSingleNode("Entity_Spatial")));
                         if (zone.SelectSingleNode("Documents") != null)
                             foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
@@ -4386,13 +4386,13 @@ namespace RRTypes.CommonParsers
 
                 if (Blocksnodes[i].SelectSingleNode("Coord_System") != null)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
+                    res.District.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
                         Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Cs_Id").Value));
                 }
 
                 res.RequeryNumber = (Blocksnodes[i].SelectSingleNode("Note") != null) ?
                     Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value : "";
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             // end TODO
@@ -4523,7 +4523,7 @@ namespace RRTypes.CommonParsers
                         /*
 						res.MifPolygons.Add(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
 																   zone.SelectSingleNode("Entity_Spatial"))); */
-                        res.MyBlocks.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
+                        res.District.SpatialData.AddRange(KPT08LandEntSpatToFteo(zone.SelectSingleNode("AccountNumber").FirstChild.Value,
                                                                    zone.SelectSingleNode("Entity_Spatial")));
                         if (zone.SelectSingleNode("Documents") != null)
                             foreach (System.Xml.XmlNode doc in zone.SelectSingleNode("Documents"))
@@ -4560,13 +4560,13 @@ namespace RRTypes.CommonParsers
 
                 if (Blocksnodes[i].SelectSingleNode("Coord_System") != null)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
+                    res.District.CSs.Add(new TCoordSystem(Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Name").Value,
                         Blocksnodes[i].SelectSingleNode("Coord_System").Attributes.GetNamedItem("Cs_Id").Value));
                 }
 
                 res.RequeryNumber = (Blocksnodes[i].SelectSingleNode("Note") != null) ?
                     Blocksnodes[i].SelectSingleNode("Note").FirstChild.Value : "";
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             // end TODO
@@ -4870,7 +4870,7 @@ namespace RRTypes.CommonParsers
                 }
                 for (int ics = 0; ics <= KPT09.CadastralBlocks[i].CoordSystems.Count - 1; ics++)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(KPT09.CadastralBlocks[i].CoordSystems[ics].Name, KPT09.CadastralBlocks[i].CoordSystems[ics].CsId));
+                    res.District.CSs.Add(new TCoordSystem(KPT09.CadastralBlocks[i].CoordSystems[ics].Name, KPT09.CadastralBlocks[i].CoordSystems[ics].CsId));
 
                 }
                 //Zones:
@@ -4911,7 +4911,7 @@ namespace RRTypes.CommonParsers
                         for (int ibb = 0; ibb <= KPT09.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
                         {
                             BoundItem.EntitySpatial = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
-                            res.MyBlocks.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
+                            res.District.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
                         }
                         Bl.AddBound(BoundItem);
                     }
@@ -4969,7 +4969,7 @@ namespace RRTypes.CommonParsers
                                                                                              KPT09.CadastralBlocks[i].ObjectsRealty[iP].Construction.EntitySpatial);
                             Bl.AddOKS(Constructions);
                             if (Constructions.EntSpat != null)
-                                res.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
+                                res.District.SpatialData.AddRange(Constructions.EntSpat);
                         }
 
                         if (KPT09.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
@@ -4989,7 +4989,7 @@ namespace RRTypes.CommonParsers
                     }
                 }
 
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             res.Number = KPT09.CertificationDoc.Number;
@@ -5087,7 +5087,7 @@ namespace RRTypes.CommonParsers
 
                 for (int ics = 0; ics <= KPT10.CadastralBlocks[i].CoordSystems.Count - 1; ics++)
                 {
-                    res.MyBlocks.CSs.Add(new TCoordSystem(KPT10.CadastralBlocks[i].CoordSystems[ics].Name, KPT10.CadastralBlocks[i].CoordSystems[ics].CsId));
+                    res.District.CSs.Add(new TCoordSystem(KPT10.CadastralBlocks[i].CoordSystems[ics].Name, KPT10.CadastralBlocks[i].CoordSystems[ics].CsId));
 
                 }
                 //Zones:
@@ -5134,7 +5134,7 @@ namespace RRTypes.CommonParsers
                         for (int ibb = 0; ibb <= KPT10.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
                         {
                             BoundItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
-                            res.MyBlocks.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
+                            res.District.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
                         }
                         Bl.AddBound(BoundItem);
                     }
@@ -5199,7 +5199,7 @@ namespace RRTypes.CommonParsers
                     }
                 }
 
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
             res.Number = KPT10.CertificationDoc.Number;
             res.Date = KPT10.CertificationDoc.Date.ToString("dd.MM.yyyy");
@@ -5461,7 +5461,7 @@ namespace RRTypes.CommonParsers
             //parse Parcel nodes:
             TCadastralBlock Bl = new TCadastralBlock(parcel.SelectSingleNode("object/common_data/quarter_cad_number").FirstChild.Value);
             Bl.Parcels.AddParcel(CasterKPT11.Parse_Parcel(parcel));
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             return res;
         }
         #endregion
@@ -5599,7 +5599,7 @@ namespace RRTypes.CommonParsers
                                 CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
                             //TODO - spatial detecting:
                             BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
-                            res.MyBlocks.SpatialData.AddRange(BoundItem.EntitySpatial);
+                            res.District.SpatialData.AddRange(BoundItem.EntitySpatial);
                             Bl.AddBound(BoundItem);
                         }
                     }
@@ -5634,10 +5634,10 @@ namespace RRTypes.CommonParsers
 
                     if (Blocksnodes[i].SelectSingleNode("spatial_data/entity_spatial/sk_id") != null)
                     {
-                        res.MyBlocks.CSs.Add(new TCoordSystem("СК",
+                        res.District.CSs.Add(new TCoordSystem("СК",
                             Blocksnodes[i].SelectSingleNode("spatial_data/entity_spatial/sk_id").FirstChild.Value));
                     }
-                    res.MyBlocks.Blocks.Add(Bl);
+                    res.District.Blocks.Add(Bl);
                 }
             }
             return res;
@@ -5732,7 +5732,7 @@ namespace RRTypes.CommonParsers
                                 MainObj.EntSpat.Add(NewCont);
                             }
                         }
-                        res.MyBlocks.Blocks.Add(Bl);
+                        res.District.Blocks.Add(Bl);
                     }
                 }
             }
@@ -5753,7 +5753,7 @@ namespace RRTypes.CommonParsers
             for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
             {
 
-                res.MyBlocks.CSs.Add(new TCoordSystem(kp.CoordSystems[i].Name, kp.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kp.CoordSystems[i].Name, kp.CoordSystems[i].CsId));
 
             }
 
@@ -5848,7 +5848,7 @@ namespace RRTypes.CommonParsers
 
             //Прикрутим сюды парсинг через XPATH ЕГРН
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             res.DocTypeNick = "КПЗУ";
             res.DocType = "Кадастровый паспорт земельного участка";
             res.Version = "5.0.8";
@@ -5875,7 +5875,7 @@ namespace RRTypes.CommonParsers
             for (int i = 0; i <= kp.CoordSystems.Count - 1; i++)
             {
 
-                res.MyBlocks.CSs.Add(new TCoordSystem(kp.CoordSystems[i].Name, kp.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kp.CoordSystems[i].Name, kp.CoordSystems[i].CsId));
 
             }
 
@@ -5916,7 +5916,7 @@ namespace RRTypes.CommonParsers
 
                 for (int ic = 0; ic <= kp.Parcel.Contours.Count - 1; ic++)
                 {
-                    res.MyBlocks.SpatialData.Add(CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
+                    res.District.SpatialData.Add(CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
                                                          kp.Parcel.Contours[ic].NumberRecord + ")",
                                                          kp.Parcel.Contours[ic].EntitySpatial));
                     TPolygon NewCont = CasterSpatial.AddEntSpatKPZU06(kp.Parcel.CadastralNumber + "(" +
@@ -5974,7 +5974,7 @@ namespace RRTypes.CommonParsers
 
             //Прикрутим сюды парсинг через XPATH ЕГРН
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             res.DocType = "Кадастровый паспорт земельного участка";
             res.DocTypeNick = "ЕГРН";
             res.Version = "6.0.1";
@@ -5997,7 +5997,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.Coord_Systems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.Coord_Systems[i].Name, kv.Coord_Systems[i].Cs_Id));
+                res.District.CSs.Add(new TCoordSystem(kv.Coord_Systems[i].Name, kv.Coord_Systems[i].Cs_Id));
             }
 
             Parse_Contractors(xmldoc, res);
@@ -6038,7 +6038,7 @@ namespace RRTypes.CommonParsers
                                 //   if (MainObj.Contours == null) MainObj.Contours = new TPolygonCollection(MainObj.id);
                                 for (int ic = 0; ic <= parcel.Contours.Count - 1; ic++)
                                 {
-                                    res.MyBlocks.SpatialData.Add(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
+                                    res.District.SpatialData.Add(KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
                                                                                                  parcel.Contours[ic].Entity_Spatial));
                                     TPolygon NewCont = KV04_Utils.AddEntSpatKVZU04(parcel.Contours[ic].Number_PP,
                                                                                                                             parcel.Contours[ic].Entity_Spatial);
@@ -6059,7 +6059,7 @@ namespace RRTypes.CommonParsers
                                         if (parcel.SubParcels[i].Object_Entry != null)
                                         {
                                             MainObj.AddEntry(parcel.SubParcels[i].Object_Entry.CadastralNumber, -1, -1, 6, SlEs);
-                                            res.MyBlocks.SpatialData.Add(SlEs);
+                                            res.District.SpatialData.Add(SlEs);
                                         }
                                     }
                                 }
@@ -6088,7 +6088,7 @@ namespace RRTypes.CommonParsers
                                             TPolygon SlEs = KV04_Utils.AddEntSpatKVZU04(parcel.SubParcels[i].Number_PP,
                                                 parcel.SubParcels[i].Entity_Spatial);
                                             Sl.SpatialElement.ImportPolygon(SlEs);
-                                            res.MyBlocks.SpatialData.Add(SlEs);
+                                            res.District.SpatialData.Add(SlEs);
                                         }
                                     }
 
@@ -6097,7 +6097,7 @@ namespace RRTypes.CommonParsers
 
                             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
                         }
-                        res.MyBlocks.Blocks.Add(Bl);
+                        res.District.Blocks.Add(Bl);
                     }
             //Прикрутим сюды парсинг Прав ветки ЕГРП через XPATH ЕГРН
 
@@ -6207,7 +6207,7 @@ namespace RRTypes.CommonParsers
 
 
 
-                    res.MyBlocks.Blocks.Add(Bl);
+                    res.District.Blocks.Add(Bl);
                 }
             }
 
@@ -6232,7 +6232,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
             TParcel MainObj = Bl.Parcels.AddParcel(new TParcel(kv.Parcels.Parcel.CadastralNumber, kv.Parcels.Parcel.Name.ToString()));
@@ -6266,7 +6266,7 @@ namespace RRTypes.CommonParsers
                 //   if (MainObj.Contours == null) MainObj.Contours = new TPolygonCollection(MainObj.id);
                 for (int ic = 0; ic <= kv.Parcels.Parcel.Contours.Count - 1; ic++)
                 {
-                    res.MyBlocks.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
+                    res.District.SpatialData.Add(RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                  kv.Parcels.Parcel.Contours[ic].EntitySpatial));
                     TPolygon NewCont = KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.Contours[ic].NumberRecord,
                                                                                                             kv.Parcels.Parcel.Contours[ic].EntitySpatial);
@@ -6304,7 +6304,7 @@ namespace RRTypes.CommonParsers
                     {
                         TPolygon SlEs = RRTypes.KVZU_v06Utils.AddEntSpatKVZU06(kv.Parcels.Parcel.SubParcels[i].NumberRecord, kv.Parcels.Parcel.SubParcels[i].EntitySpatial);
                         Sl.SpatialElement.ImportPolygon(SlEs);
-                        res.MyBlocks.SpatialData.Add(SlEs);
+                        res.District.SpatialData.Add(SlEs);
                     }
 
                 }
@@ -6334,7 +6334,7 @@ namespace RRTypes.CommonParsers
 
             //Прикрутим сюды парсинг Прав ветки ЕГРП через XPATH ЕГРН
             MainObj.EGRN = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
             res.DocType = "Кадастровая выписка о земельном участке";
             res.Version = "06";
@@ -6384,7 +6384,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
 
@@ -6509,7 +6509,7 @@ namespace RRTypes.CommonParsers
 
             //Прикрутим сюды парсинг Прав ветки ЕГРП через XPATH ЕГРН
             MainObj.EGRN = CommonCast.CasterEGRP.ParseEGRNRights(xmldoc); // мдаааа!!!
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             res.DocTypeNick = "КВЗУ";
             res.DocType = "Кадастровая выписка о земельном участке";
             res.Version = "07";
@@ -6535,7 +6535,7 @@ namespace RRTypes.CommonParsers
             kpoks_v03.KPOKS kv = (kpoks_v03.KPOKS)Desearialize<kpoks_v03.KPOKS>(xmldoc);
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
             }
 
             /*
@@ -6596,7 +6596,7 @@ namespace RRTypes.CommonParsers
 
                 Bl.AddOKS(Bld);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
 
@@ -6611,7 +6611,7 @@ namespace RRTypes.CommonParsers
                 Constructions.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Bl.AddOKS(Constructions);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             return res;
@@ -6654,7 +6654,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
             }
 
             if (kv.Realty.Building != null)
@@ -6696,7 +6696,7 @@ namespace RRTypes.CommonParsers
                     }
 
                 Bl.AddOKS(Bld);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
 
             }
 
@@ -6738,7 +6738,7 @@ namespace RRTypes.CommonParsers
 
                 res.CommentsType = "Особые отметки";
                 //res.Comments = flat.Notes;
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             if (kv.Realty.Construction != null)
@@ -6751,11 +6751,11 @@ namespace RRTypes.CommonParsers
                 Constructions.ObjectType = CommonCast.CasterOKS.ObjectTypeToStr(kv.Realty.Construction.ObjectType);
                 Constructions.Location.Address = CommonCast.CasterOKS.CastAddress(kv.Realty.Construction.Address);
                 Constructions.EntSpat = CommonCast.CasterOKS.ES_OKS2(kv.Realty.Construction.CadastralNumber, kv.Realty.Construction.EntitySpatial);
-                res.MyBlocks.SpatialData.AddRange(Constructions.EntSpat);
+                res.District.SpatialData.AddRange(Constructions.EntSpat);
                 res.CommentsType = "Особые отметки";
                 res.Comments = Constructions.Notes;
                 Bl.AddOKS(Constructions);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
             /*
                         res.Number = kv.CertificationDoc.Number;
@@ -6785,7 +6785,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
             //TMyCadastralBlock Bl = new TMyCadastralBlock();
@@ -6838,7 +6838,7 @@ namespace RRTypes.CommonParsers
                 Bld.EntSpat = RRTypes.CommonCast.CasterOKS.ES_OKS2(kv.Realty.Building.CadastralNumber, kv.Realty.Building.EntitySpatial);
                 Bl.AddOKS(Bld);
                 //MifOKSPolygons.AddPolygon((TPolygon) Constructions.ES);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
 
@@ -6854,7 +6854,7 @@ namespace RRTypes.CommonParsers
                 foreach (kvoks_v02.tOldNumber n in kv.Realty.Construction.OldNumbers)
                     Constructions.Construction.OldNumbers.Add(new TKeyParameter() { Type = n.Type.ToString(), Value = n.Number });
                 Bl.AddOKS(Constructions);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             res.DocTypeNick = "КВОКС";
@@ -6881,7 +6881,7 @@ namespace RRTypes.CommonParsers
 
             for (int i = 0; i <= kv.CoordSystems.Count - 1; i++)
             {
-                res.MyBlocks.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
+                res.District.CSs.Add(new TCoordSystem(kv.CoordSystems[i].Name, kv.CoordSystems[i].CsId));
 
             }
 
@@ -6937,7 +6937,7 @@ namespace RRTypes.CommonParsers
                     }
                 }
                 Bl.AddOKS(Bld);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             //Uncompleted
@@ -6965,7 +6965,7 @@ namespace RRTypes.CommonParsers
                 res.CommentsType = " Особые отметки";
                 res.Comments = Unc.Notes;
                 Bl.AddOKS(Unc);
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
             if (kv.Realty.Construction != null)
@@ -6995,7 +6995,7 @@ namespace RRTypes.CommonParsers
                 res.Comments = Constructions.Notes;
                 Constructions.Rights = RRTypes.CommonCast.CasterEGRP.ParseEGRNRights(xmldoc);
 
-                res.MyBlocks.Blocks.Add(Bl);
+                res.District.Blocks.Add(Bl);
             }
 
 
@@ -7068,7 +7068,7 @@ namespace RRTypes.CommonParsers
                     MainObj.EGRN = EGRP_v60Utils.ParseEGRRights(xmldoc); // мдаааа!!!
                 }
             }
-            res.MyBlocks.Blocks.Add(Bl);
+            res.District.Blocks.Add(Bl);
             return res;
         }
         #endregion
@@ -7088,7 +7088,7 @@ namespace RRTypes.CommonParsers
             if (DXfEntitys != null)
             {
                 // TODO where place for results ??? : 
-                res.MyBlocks.ParsedSpatial = DXfEntitys;
+                res.District.ParsedSpatial = DXfEntitys;
             }
 
             res.DocTypeNick = "dxf";
@@ -7124,7 +7124,7 @@ namespace RRTypes.CommonParsers
             if (Entitys != null)
             {
                 // TODO where place for results ??? : 
-                res.MyBlocks.ParsedSpatial = Entitys; // not Add, need assume to update Layers
+                res.District.ParsedSpatial = Entitys; // not Add, need assume to update Layers
             }
 
             res.DocTypeNick = "Mapinfo mif";
