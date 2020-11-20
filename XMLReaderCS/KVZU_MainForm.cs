@@ -3136,6 +3136,25 @@ LV.Items.Add(LVipP);
                 }
             }
 
+
+            if (STrN.Name.Contains("Adrss")) // this is Parcel adress nodes top node
+            {
+                Int32 id = Convert.ToInt32(STrN.Name.Substring(5));
+                object O = this.DocInfo.MyBlocks.GetObject(id);
+
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TParcel"))
+                {
+                    TParcel parcel = (TParcel)O;
+                    LongTextToListView(listView1, parcel.Location.Address.Note, "Особые отметки");
+                }
+
+                if (O.GetType().ToString().Equals("netFteo.Cadaster.TRealEstate"))
+                {
+                    TRealEstate parcel = (TRealEstate)O;
+                    LongTextToListView(listView1, parcel.Location.Address.Note, "Особые отметки");
+                }
+            }
+
             if (STrN.Name.Contains("PNode")) // this is Parcel - list all about stuf
             {
                 Int32 id = Convert.ToInt32(STrN.Name.Substring(5));

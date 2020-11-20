@@ -78,7 +78,7 @@ Global
 		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.Release|x86.ActiveCfg = Release|x86
 		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.Release|x86.Build.0 = Release|x86
 		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.WinXP Release|x64.ActiveCfg = WinXP Release|Any CPU
-		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.WinXP Release|x64.Build.0 = WinXP Release|x64
+		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.WinXP Release|x64.Build.0 = WinXP Release|Any CPU
 		{96DE829D-FEF9-41AF-A9E6-3BE517088B64}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
 		{74804E3D-6616-4C37-A181-9A97C4DBBB81}.Debug|x64.ActiveCfg = Debug|x64
 		{74804E3D-6616-4C37-A181-9A97C4DBBB81}.Debug|x86.ActiveCfg = Debug|x86
@@ -101,7 +101,7 @@ Global
 		{892AA96D-187B-43D4-A31D-538F6E0B840D}.Release|x86.ActiveCfg = Release|x86
 		{892AA96D-187B-43D4-A31D-538F6E0B840D}.Release|x86.Build.0 = Release|x86
 		{892AA96D-187B-43D4-A31D-538F6E0B840D}.WinXP Release|x64.ActiveCfg = WinXP Release|Any CPU
-		{892AA96D-187B-43D4-A31D-538F6E0B840D}.WinXP Release|x64.Build.0 = WinXP Release|x64
+		{892AA96D-187B-43D4-A31D-538F6E0B840D}.WinXP Release|x64.Build.0 = WinXP Release|Any CPU
 		{892AA96D-187B-43D4-A31D-538F6E0B840D}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
 		{84103EB6-3282-4374-B296-33188B1A436E}.Debug|x64.ActiveCfg = Debug|x64
 		{84103EB6-3282-4374-B296-33188B1A436E}.Debug|x64.Build.0 = Debug|x64
@@ -112,7 +112,7 @@ Global
 		{84103EB6-3282-4374-B296-33188B1A436E}.Release|x86.ActiveCfg = Release|x86
 		{84103EB6-3282-4374-B296-33188B1A436E}.Release|x86.Build.0 = Release|x86
 		{84103EB6-3282-4374-B296-33188B1A436E}.WinXP Release|x64.ActiveCfg = WinXP Release|Any CPU
-		{84103EB6-3282-4374-B296-33188B1A436E}.WinXP Release|x64.Build.0 = WinXP Release|x64
+		{84103EB6-3282-4374-B296-33188B1A436E}.WinXP Release|x64.Build.0 = WinXP Release|Any CPU
 		{84103EB6-3282-4374-B296-33188B1A436E}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.Debug|x64.Build.0 = Debug|Any CPU
@@ -123,7 +123,7 @@ Global
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.Release|x86.ActiveCfg = Release|x86
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.Release|x86.Build.0 = Release|x86
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.WinXP Release|x64.ActiveCfg = WinXP Release|Any CPU
-		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.WinXP Release|x64.Build.0 = WinXP Release|x64
+		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.WinXP Release|x64.Build.0 = WinXP Release|Any CPU
 		{BDDDE705-8B45-43F2-9CC3-EC84CB2FB976}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x64.ActiveCfg = Debug|x64
 		{94326139-3FB8-47B4-AEEA-610EFE6C4491}.Debug|x64.Build.0 = Debug|x64
@@ -144,7 +144,7 @@ Global
 		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.Release|x86.ActiveCfg = Release|x86
 		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.Release|x86.Build.0 = Release|x86
 		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.WinXP Release|x64.ActiveCfg = WinXP Release|Any CPU
-		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.WinXP Release|x64.Build.0 = WinXP Release|x64
+		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.WinXP Release|x64.Build.0 = WinXP Release|Any CPU
 		{BFF2C2F7-E131-4F04-9351-BC30B964B7AA}.WinXP Release|x86.ActiveCfg = WinXP Release|x86
 		{930BCD50-4F0B-42E9-A472-366948D35D01}.Debug|x64.ActiveCfg = Debug|x64
 		{930BCD50-4F0B-42E9-A472-366948D35D01}.Debug|x64.Build.0 = Debug|x64
@@ -205,11 +205,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildAction = ReBuild
-		BuildVersion_UseGlobalSettings = False
-		BuildVersion_StartDate = 2014/1/25
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_UpdateAssemblyVersion = False
 		SolutionGuid = {A9239932-DE09-4BC7-8400-0F1F5BCA8935}
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_StartDate = 2014/1/25
+		BuildVersion_UseGlobalSettings = False
+		BuildVersion_BuildAction = ReBuild
 	EndGlobalSection
 EndGlobal

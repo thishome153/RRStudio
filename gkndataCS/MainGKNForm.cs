@@ -479,8 +479,16 @@ namespace GKNData
             else return false;
         }
 
+        /// <summary>
+        /// Add block record into database,
+        /// next into blocks collection of district
+        /// and at end onto treeview
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private bool AddBlock(TCadastralBlock Block, TCadastralDistrict District, TreeView tv)
         {
+            // ??? Block.Parent_id ????
             Block.id = DBWrapper.DB_AppendBlock(Block, CF.conn);
             if (Block.id> 0)
             {
@@ -492,6 +500,7 @@ namespace GKNData
             }
             else return false;
         }
+
             /// <summary>
             /// Add parcel record into database,
             /// next into Block parcels collection
@@ -890,7 +899,6 @@ namespace GKNData
             Hide_SearchTextBox(SearchTextBox);
             CF.Cfg.ViewLevel = ViewLevel.vlExploreDistricts;
             CF.Cfg.Subrf_id = subrf_id;
-
             if (conn != null)
                 if (conn.State == ConnectionState.Open)
                 {
@@ -1140,7 +1148,6 @@ namespace GKNData
                 //case 1  - got KPT kind:
                 if ((netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT10) ||
                     (netFteo.Rosreestr.NameSpaces.NStoFileType(ParsedDoc.Namespace) == netFteo.Rosreestr.dFileTypes.KPT11))
-
                 {
                     if (CadBloksList.BlockExist(ParsedDoc.MyBlocks.SingleCN))
                     {
@@ -1152,24 +1159,19 @@ namespace GKNData
                     else
                     {
                         // Need new Block
-                        TCadastralBlock block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
-                        block.Parent_id = CF.Cfg.District_id;
-
-                        //if (Edit(block)) //if user OK, insert item into DB and collctions TODO set TAG for detect behavior : "onInsert on onEdit"
+                        TCadastralBlock Block = new TCadastralBlock(ParsedDoc.MyBlocks.SingleCN);
+                        Block.Parent_id = CF.Cfg.District_id;
+                        wzParcelfrm ParcelEd = new wzParcelfrm();
+                        ParcelEd.CF.conn = CF.conn;
+                        if (AddBlock(Block, CadBloksList, treeView1))
                         {
-                            if (DBWrapper.DB_AppendBlock(block, CF.conn) > 0)
-                            {
-                                CadBloksList.AddBlock(block);
-                                wzlBlockEd blEd = new wzlBlockEd();
-                                blEd.ImportXMLKPT(FileName, block, CF.conn);
-                                insertItem(block, treeView1);
-                                SearchInTreeNodes(block.CN, treeView1);
-                                //treeView1.SelectedNode.ToolTipText = block.Comments;
-                                //treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
-                            }
-                            else
-                                MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                            TreeNode NewBlockNode = SearchInTreeNodes(Block.CN, treeView1);
+                            wzlBlockEd blEd = new wzlBlockEd();
+                            blEd.ImportXMLKPT(FileName, Block, CF.conn);
+                            insertItem(Block, treeView1);
                         }
+                        else
+                            MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
                     }
                 }
 
@@ -1229,10 +1231,6 @@ namespace GKNData
                             {
                                 if (AddParcel(item, Block, NewBlockNode))
                                 {
-                                    //Block.Parcels.AddParcel(item);
-                                    //populate new node by new item
-                                    //insertItem(item, NewBlockNode);
-                                    //string ParcelCN = item.CN;
                                     ParcelEd.ImportXMLVidimus(FileName, item);
                                 }
                             }
@@ -1895,10 +1893,18 @@ namespace GKNData
                 ListView.SelectedListViewItemCollection items = senderList.SelectedItems;
                 ListViewItem lvItem = items[0];
                 if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "subrf")
-                LoadDistricts(Convert.ToByte(((netFteo.TreeNodeTag)lvItem.Tag).Item_id), CF.conn, Explorer_listView);
+                {
+                    CF.Cfg.SubRF_Name = ((netFteo.TreeNodeTag)lvItem.Tag).Name;
+                    CF.Cfg.SubRF_KN = ((netFteo.TreeNodeTag)lvItem.Tag).NameExt;
+                    CF.Cfg.District_KN = "*";
+                    CF.Cfg.District_Name = "*";
+                    LoadDistricts(Convert.ToByte(((netFteo.TreeNodeTag)lvItem.Tag).Item_id), CF.conn, Explorer_listView);
+                }
                 if (((netFteo.TreeNodeTag)lvItem.Tag).Type == "netFteo.Cadaster.TCadastralDistrict")
                 {
-                    LoadBlocks(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.Cfg, treeView1, ((netFteo.TreeNodeTag)lvItem.Tag).Name);
+                    CF.Cfg.District_Name = ((netFteo.TreeNodeTag)lvItem.Tag).Name;
+                    CF.Cfg.District_KN = ((netFteo.TreeNodeTag)lvItem.Tag).NameExt;
+                    LoadBlocks(((netFteo.TreeNodeTag)lvItem.Tag).Item_id, CF.Cfg, treeView1,CF.Cfg.District_Name );
                     StatusLabel_SubRf_CN.Text = CF.Cfg.SubRF_Name + " " + CF.Cfg.District_Name;
                     Explorer_listView.Visible = false;
                     Explorer_listView.Dock = DockStyle.None;
