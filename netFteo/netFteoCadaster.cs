@@ -285,11 +285,11 @@ namespace netFteo
                 }
             }
 
-            public void ObjectRealtysToList(System.Windows.Forms.ListView LV, bool SetTag)
+            public void ObjectRealtysToList(System.Windows.Forms.ListView LV, bool SetTag, bool ClearItems = false)
             {
                 foreach (TCadastralBlock block in this.Blocks)
                 {
-                    block.ObjectRealtys.ShowasListItems(LV, SetTag);
+                    block.ObjectRealtys.ShowasListItems(LV, SetTag,ClearItems);
                 }
             }
 
@@ -637,7 +637,7 @@ namespace netFteo
                 LV.View = System.Windows.Forms.View.Details;
                 LV.Columns[0].Text = "КН";
                 LV.Columns[1].Text = "Address";
-                LV.Columns[2].Text = "Площадь м.";
+                LV.Columns[2].Text = "Площадь";
                 LV.Columns[3].Text = "Площадь граф.";
                 LV.Columns[4].Text = "-";
                 LV.Columns[5].Text = "-";
@@ -1160,20 +1160,21 @@ namespace netFteo
                 }
                 return null;
             }
-            public void ShowasListItems(System.Windows.Forms.ListView LV, bool SetTag)
+            public void ShowasListItems(System.Windows.Forms.ListView LV, bool SetTag, bool ClearItems = false)
             {
                 //if (PointCount == 0) return;
                 LV.BeginUpdate();
+                if (ClearItems)
                 LV.Items.Clear();
                 LV.Controls.Clear();
                 LV.View = System.Windows.Forms.View.Details;
                 LV.Columns[0].Text = "КН";
                 LV.Columns[1].Text = "Address";
-                LV.Columns[2].Text = "-";
-                LV.Columns[3].Text = "-";
-                LV.Columns[4].Text = "-";
-                LV.Columns[5].Text = "-";
-                LV.Columns[6].Text = "-";
+               // LV.Columns[2].Text = "-";
+               // LV.Columns[3].Text = "-";
+               // LV.Columns[4].Text = "-";
+               // LV.Columns[5].Text = "-";
+               // LV.Columns[6].Text = "-";
                 // if (SetTag) LV.Tag = id;
 
                 foreach (TRealEstate Parcel in this)
@@ -1182,6 +1183,7 @@ namespace netFteo
                     LViItem.Text = Parcel.CN;
                     LV.Items.Add(LViItem);
                     LViItem.SubItems.Add(Parcel.Location.Address.AsString(true));
+     
                     LViItem.SubItems.Add(Parcel.ObjectType);
                     if (Parcel.Building != null)
                         LViItem.SubItems.Add(Parcel.Building.AssignationBuilding);
@@ -1191,6 +1193,11 @@ namespace netFteo
                         LViItem.SubItems.Add(Parcel.Uncompleted.AssignationName);
                     if (Parcel.Name != "")
                         LViItem.SubItems.Add(Parcel.Name);
+                    if (Parcel.KeyParameters.Count > 0)
+                    {
+                        LViItem.SubItems.Add(Parcel.KeyParameters[0].Type); //Keyparams ?
+                        LViItem.SubItems.Add(Parcel.KeyParameters[0].Value); //Keyparams ?
+                    }
                 }
                 LV.EndUpdate();
             }
@@ -1221,7 +1228,21 @@ namespace netFteo
             public string ObjectType
             {
                 set { this.fObjectType = value; }
-                get { return this.fObjectType; }
+                get
+                {
+                    switch (this.fObjectType)
+                    {
+                        case "002001002000":
+                            {
+                                return "Здание";
+                            }
+                        case "002001004000":
+                            return "Сооружение";
+                        case "002001005000":
+                            return "ОНС";
+                        default: return this.fObjectType; 
+                    }
+                }
             }
 
             // public Rosreestr.TAddress Address;

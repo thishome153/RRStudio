@@ -3204,13 +3204,15 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("TopNode"))
             {
+                DocInfo.District.ParcelsToList(listView1, true);
+                DocInfo.District.ObjectRealtysToList(listView1, true, false);
                 TEntitySpatial TopES = new TEntitySpatial();
                 TopES.AddRange(this.DocInfo.District.GetRealtyEs());
                 TopES.AddRange(this.DocInfo.District.GetParcelsEs());
                 if (TopES != null)
                 {
                     GeometryToSpatialView(listView1, TopES);
-                    TopES.ShowasListItems(listView1, true);
+                    //TopES.ShowasListItems(listView1, true);
                     PropertiesToListView(listView_Properties, TopES);
                 }
             }

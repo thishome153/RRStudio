@@ -5185,7 +5185,7 @@ namespace RRTypes.CommonParsers
 
                         if (KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted != null)
                         {
-                            TRealEstate Uncompleted = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, netFteo.Rosreestr.dRealty_v03.Объект_незавершённого_строительства);
+                            TRealEstate Uncompleted = new TRealEstate(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.CadastralNumber, dRealty_v03.Объект_незавершённого_строительства);
                             Uncompleted.Uncompleted.AssignationName = KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.AssignationName;
                             Uncompleted.ObjectType = RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.ObjectType);
                             Uncompleted.Location = KPT_v10Utils.LocAddrKPT10(KPT10.CadastralBlocks[i].ObjectsRealty[iP].Uncompleted.Address);
@@ -5218,6 +5218,7 @@ namespace RRTypes.CommonParsers
 
         public netFteo.IO.FileInfo ParseKPT10WithReader(netFteo.IO.FileInfo fi, Stream xmlStream)
         {
+            
             using (XmlReader reader = XmlReader.Create(xmlStream))
             {
                 while (reader.Read())
@@ -5538,7 +5539,9 @@ namespace RRTypes.CommonParsers
                             //   object/common_data/cad_number
 
                             //Также параллельное TmyOKS
-                            TRealEstate Building = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                            //TRealEstate Building = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                            TRealEstate Building = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code"));
+                            Building.Building.AssignationBuilding = build.SelectSingleNode("params/purpose/value").FirstChild.Value;
                             Building.Location = CasterKPT11.Parse_Location(build.SelectSingleNode("address_location"));
                             if (build.SelectSingleNode("cost/value") != null)
                                 Building.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
@@ -5564,10 +5567,13 @@ namespace RRTypes.CommonParsers
                         {
                             System.Xml.XmlNode build = construction_records.ChildNodes[iP];
                             //   object/common_data/cad_number
-                            TRealEstate Construct = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                            //TRealEstate Construct = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code")));
+                            TRealEstate Construct = new TRealEstate(build.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, netFteo.XML.XMLWrapper.SelectNodeChildValue(build, "object/common_data/type/code"));
                             if (build.SelectSingleNode("cost/value") != null)
                                 Construct.CadastralCost = Convert.ToDecimal(build.SelectSingleNode("cost/value").FirstChild.Value);
 
+                            if (build.SelectSingleNode("params/purpose") != null)
+                                Construct.Construction.AssignationName = build.SelectSingleNode("params/purpose").FirstChild.Value;
                             Construct.Location = CasterKPT11.Parse_Location(build.SelectSingleNode("address_location"));
                             Bl.AddOKS(Construct);
                             XMLParsingProc("xml", ++FileParsePosition, null);
@@ -5580,11 +5586,13 @@ namespace RRTypes.CommonParsers
                         {
                             System.Xml.XmlNode under = under_constr_records.ChildNodes[iP];
                             //   object/common_data/cad_number
-                            TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
+                            //TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
+                            TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code"));
                             UnderConstruct.Location = CasterKPT11.Parse_Location(under.SelectSingleNode("address_location"));
                             if (under.SelectSingleNode("cost/value") != null)
                                 UnderConstruct.CadastralCost = Convert.ToDecimal(under.SelectSingleNode("cost/value").FirstChild.Value);
-
+                            if (under.SelectSingleNode("params/purpose") != null)
+                            UnderConstruct.Uncompleted.AssignationName = under.SelectSingleNode("params/purpose").FirstChild.Value;
                             Bl.AddOKS(UnderConstruct);
                             XMLParsingProc("xml", ++FileParsePosition, null);
                         }
