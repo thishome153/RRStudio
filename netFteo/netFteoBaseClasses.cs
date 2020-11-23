@@ -19,6 +19,9 @@ public static class NetFteoTypes
     public static string Block = new netFteo.Cadaster.TCadastralBlock().GetType().ToString();
     public static string Point = new netFteo.Spatial.TPoint().GetType().ToString();
     public static string PointList = new netFteo.Spatial.PointList().GetType().ToString();
+    public static string Border = new netFteo.Spatial.TBorder("fake border", 3.14).GetType().ToString();//  "netFteo.Spatial.TBorder";
+    public static string BorderLength = "Length";
+    //public static string Border = new netFteo.Spatial.TBorder.GetType().ToString();
     public static string Polygon = new netFteo.Spatial.TPolygon().GetType().ToString();
     public static string District = new netFteo.Cadaster.TCadastralDistrict().GetType().ToString();
     public static string SubRf = new netFteo.Cadaster.TCadastralSubject().GetType().ToString();
@@ -1925,26 +1928,33 @@ namespace netFteo.Spatial
     #endregion
 
     #region Отрезки границ
-    public class TBorder
+    public class TBorder : Geometry
     {
-        private int fid;
+        //private int fid;
         double fLength;
-        public string Definition;
+        //public string Definition;
+        
+        /// <summary>
+        /// Contains names of point "from a" "to b"
+        /// </summary>
         public string PointNames;
         public double Length
         {
             get { return this.fLength; }
         }
+
+        /*
         public double id
         {
             get { return this.fid; }
         }
 
+        */
         public TBorder(string definition, double length)
         {
             this.fLength = length;
             this.Definition = definition;
-            this.fid = Gen_id.newId;
+            //this.id = Gen_id.newId;
         }
     }
 

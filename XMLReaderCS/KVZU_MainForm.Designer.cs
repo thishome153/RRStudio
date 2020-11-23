@@ -147,6 +147,7 @@
             this.фиксироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.замкнутьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сделатьПервойВершинойToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обратныйПорядокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -193,7 +194,6 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.сделатьПервойВершинойToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1136,7 +1136,7 @@
             this.обратныйПорядокToolStripMenuItem,
             this.удалитьToolStripMenuItem});
             this.contextMenuStrip_OIPD.Name = "contextMenuStrip_OIPD";
-            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(223, 268);
+            this.contextMenuStrip_OIPD.Size = new System.Drawing.Size(223, 246);
             this.contextMenuStrip_OIPD.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_OIPD_Opening);
             // 
             // ChangeXYToolStripMenuItem
@@ -1194,6 +1194,13 @@
             this.замкнутьToolStripMenuItem.Text = "Замкнуть";
             this.замкнутьToolStripMenuItem.Click += new System.EventHandler(this.замкнутьToolStripMenuItem_Click);
             // 
+            // сделатьПервойВершинойToolStripMenuItem
+            // 
+            this.сделатьПервойВершинойToolStripMenuItem.Name = "сделатьПервойВершинойToolStripMenuItem";
+            this.сделатьПервойВершинойToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.сделатьПервойВершинойToolStripMenuItem.Text = "Сделать первой вершиной";
+            this.сделатьПервойВершинойToolStripMenuItem.Click += new System.EventHandler(this.сделатьПервойВершинойToolStripMenuItem_Click);
+            // 
             // обратныйПорядокToolStripMenuItem
             // 
             this.обратныйПорядокToolStripMenuItem.Name = "обратныйПорядокToolStripMenuItem";
@@ -1243,7 +1250,6 @@
             listViewItem5,
             listViewItem6});
             this.listView_Properties.Location = new System.Drawing.Point(0, 300);
-            this.listView_Properties.MultiSelect = false;
             this.listView_Properties.Name = "listView_Properties";
             this.listView_Properties.Size = new System.Drawing.Size(682, 208);
             this.listView_Properties.TabIndex = 1;
@@ -1664,13 +1670,6 @@
             // tPointBindingSource
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
-            // 
-            // сделатьПервойВершинойToolStripMenuItem
-            // 
-            this.сделатьПервойВершинойToolStripMenuItem.Name = "сделатьПервойВершинойToolStripMenuItem";
-            this.сделатьПервойВершинойToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.сделатьПервойВершинойToolStripMenuItem.Text = "Сделать первой вершиной";
-            this.сделатьПервойВершинойToolStripMenuItem.Click += new System.EventHandler(this.сделатьПервойВершинойToolStripMenuItem_Click);
             // 
             // KVZU_Form
             // 

@@ -3602,7 +3602,31 @@ LV.Items.Add(LVipP);
             if (sender != listView_Properties) return;
 
             if (e.Control && e.KeyCode == Keys.C)
-                CopySelectedValuesToClipboard(listView_Properties);
+                CopySelectedValuesToClipboard((ListView)sender);
+
+            //if (ListView_ItemSelected((ListView)sender, out string tag))
+            {
+                //if (tag == NetFteoTypes.Border)
+                {
+                    Double BordersSum = 0;
+                    foreach (ListViewItem item in ((ListView)sender).SelectedItems)
+                        if ((item.Tag != null) && (item.Tag.ToString() == NetFteoTypes.Border))
+                        {
+                            foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
+                            {
+                                if ((sub.Tag != null) &&
+                                 (sub.Tag.ToString() == NetFteoTypes.BorderLength))
+                                {
+                                    BordersSum += Convert.ToDouble(sub.Text);
+                                }
+                            }
+                        }
+                    if (BordersSum > 0)
+                    {
+                        toolStripStatusLabel3.Text = BordersSum.ToString("0.00");
+                    }
+                }
+            }
         }
 
         private void CopySelectedValuesToClipboard(ListView LV)

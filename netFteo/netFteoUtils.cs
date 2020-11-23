@@ -301,24 +301,27 @@ namespace netFteo
 			ListView.ListViewItemCollection res = new ListView.ListViewItemCollection(owner);
 			res.Add("");
 			res.Add("Отрезки границ:");
-			netFteo.Spatial.BrdList Borders = new Spatial.BrdList();
+			Spatial.BrdList Borders = new Spatial.BrdList();
 			Borders.AddItems("", ES);
 			int OutCount = Borders.Count;
 			owner.BeginUpdate();
 			for (int i = 0; i <= Borders.Count - 1; i++)
 			{
 				ListViewItem LVb = new ListViewItem(Borders[i].PointNames);
-                ListViewItem.ListViewSubItem subLen =  LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
-                LVb.SubItems.Add(Borders[i].Definition);
-                if (Borders[i].Length == 0)
-                {
+				LVb.Tag = NetFteoTypes.Border;
+				ListViewItem.ListViewSubItem subLen = LVb.SubItems.Add(Borders[i].Length.ToString("0.00"));
+				subLen.Tag = NetFteoTypes.BorderLength;
 
-                    LVb.UseItemStyleForSubItems = false;
-                    subLen.BackColor = System.Drawing.Color.LightPink;
-                    subLen.Font = new System.Drawing.Font(
-                          "Arial", 10, System.Drawing.FontStyle.Italic);
-                }
-                res.Add(LVb);
+				LVb.SubItems.Add(Borders[i].Definition);
+				if (Borders[i].Length == 0)
+				{
+
+					LVb.UseItemStyleForSubItems = false;
+					subLen.BackColor = System.Drawing.Color.LightPink;
+					subLen.Font = new System.Drawing.Font(
+						  "Arial", 10, System.Drawing.FontStyle.Italic);
+				}
+				res.Add(LVb);
 			}
 
 
