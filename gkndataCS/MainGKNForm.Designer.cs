@@ -92,6 +92,8 @@ namespace GKNData
             this.panel3 = new System.Windows.Forms.Panel();
             this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.SearchPrevButton = new System.Windows.Forms.Button();
+            this.History_ListBox = new System.Windows.Forms.ListBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -504,6 +506,7 @@ namespace GKNData
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.SearchPrevButton);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.SearchTextBox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -527,8 +530,16 @@ namespace GKNData
             // 
             // SearchTextBox
             // 
+            this.SearchTextBox.AutoCompleteCustomSource.AddRange(new string[] {
+            "26",
+            "26:",
+            "26:05",
+            "26:05:",
+            "26:05:04"});
+            this.SearchTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.SearchTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.SearchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SearchTextBox.Location = new System.Drawing.Point(12, 6);
+            this.SearchTextBox.Location = new System.Drawing.Point(34, 5);
             this.SearchTextBox.Name = "SearchTextBox";
             this.SearchTextBox.Size = new System.Drawing.Size(171, 23);
             this.SearchTextBox.TabIndex = 11;
@@ -625,6 +636,7 @@ namespace GKNData
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.History_ListBox);
             this.panel3.Controls.Add(this.Explorer_listView);
             this.panel3.Controls.Add(this.treeView1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -680,6 +692,33 @@ namespace GKNData
             this.treeView1.Enter += new System.EventHandler(this.TreeView1_Enter);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
+            // 
+            // SearchPrevButton
+            // 
+            this.SearchPrevButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.SearchPrevButton.FlatAppearance.BorderSize = 10;
+            this.SearchPrevButton.Image = global::GKNData.Properties.Resources.arrow_left;
+            this.SearchPrevButton.Location = new System.Drawing.Point(5, 5);
+            this.SearchPrevButton.Name = "SearchPrevButton";
+            this.SearchPrevButton.Size = new System.Drawing.Size(23, 23);
+            this.SearchPrevButton.TabIndex = 12;
+            this.SearchPrevButton.UseVisualStyleBackColor = true;
+            // 
+            // History_ListBox
+            // 
+            this.History_ListBox.FormattingEnabled = true;
+            this.History_ListBox.Items.AddRange(new object[] {
+            "hgnhn.h",
+            "",
+            "hn",
+            "n",
+            "n",
+            "n",
+            "x"});
+            this.History_ListBox.Location = new System.Drawing.Point(35, 262);
+            this.History_ListBox.Name = "History_ListBox";
+            this.History_ListBox.Size = new System.Drawing.Size(159, 134);
+            this.History_ListBox.TabIndex = 5;
             // 
             // MainGKNForm
             // 
@@ -776,6 +815,8 @@ namespace GKNData
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.Button SearchPrevButton;
+        private System.Windows.Forms.ListBox History_ListBox;
     }
 }
 

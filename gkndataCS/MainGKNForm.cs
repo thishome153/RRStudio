@@ -40,12 +40,13 @@ namespace GKNData
         /// </summary>
         string Archive_Folder;
 
-
+        AutoCompleteStringCollection SearchAutoComplete = new AutoCompleteStringCollection();
 
         /// <summary>
         /// List of files, dragged on to form
         /// </summary>
         string[] DraggedFiles;
+
         string CurrentDraggedFile;
 
         Font Font_Arial10, Font_Arial12;
@@ -556,6 +557,9 @@ namespace GKNData
                     treeView1.SelectedNode.ToolTipText = block.Comments;
                     treeView1.SelectedNode.Text = block.CN + " " + block.Name;// ((TMyCadastralBlock)treeView1.SelectedNode.Tag).CN;
                 }
+                //anyway save to history
+                History_ListBox.Items.Add(block.CN);
+                SearchAutoComplete.Add(block.CN);
             }
 
             if (Item.isParcel)
@@ -1634,10 +1638,17 @@ namespace GKNData
                     treeView1.EndUpdate();
                 }
                 */
-                SearchInTreeNodes(SearchTbox.Text, treeView1);
-                SearchTbox.Focus();
+                if (SearchInTreeNodes(SearchTbox.Text, treeView1) != null)
+                {
+                    //SearchAutoComplete.Add(SearchTextBox.Text);
+                    /*
+                    foreach(string item in SearchAutoComplete)
+                    listBox1.Items.Add(item);*/
+                }
+               // SearchTbox.Focus();
             }
         }
+
         private TreeNode SearchInTreeNodes(string Text, TreeView TV)
         {
             if (Text == "")
@@ -1747,7 +1758,11 @@ namespace GKNData
             Explorer_listView.Dock = DockStyle.Fill;
             Explorer_listView.View = View.LargeIcon;
             Explorer_listView.Items.Clear();
+            History_ListBox.Visible = false;
+            History_ListBox.Dock = DockStyle.None;
+            History_ListBox.Items.Clear();
             Button_Import.Enabled = false;
+            SearchTextBox.AutoCompleteCustomSource = SearchAutoComplete;
             ClearFiles();
         }
 
@@ -1785,6 +1800,8 @@ namespace GKNData
         {
             Explorer_listView.Visible = false;
             Explorer_listView.Dock = DockStyle.None;
+            History_ListBox.Visible = false;
+            History_ListBox.Dock = DockStyle.None;
             treeView1.Visible = true;
             treeView1.Dock = DockStyle.Fill;
             Hide_SearchTextBox(SearchTextBox);
@@ -1798,6 +1815,8 @@ namespace GKNData
             treeView1.Visible = false;
             treeView1.Dock = DockStyle.None;
             CF.Cfg.ViewLevel = ViewLevel.vlHistory;
+            History_ListBox.Visible = true;
+            History_ListBox.Dock = DockStyle.Fill;
             //CF.Cfg.ViewMode = ViewMode.vmHistory;
         }
 

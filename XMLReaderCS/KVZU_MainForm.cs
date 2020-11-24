@@ -3604,28 +3604,22 @@ LV.Items.Add(LVipP);
             if (e.Control && e.KeyCode == Keys.C)
                 CopySelectedValuesToClipboard((ListView)sender);
 
-            //if (ListView_ItemSelected((ListView)sender, out string tag))
-            {
-                //if (tag == NetFteoTypes.Border)
+            Double BordersSum = 0;
+            foreach (ListViewItem item in ((ListView)sender).SelectedItems)
+                if ((item.Tag != null) && (item.Tag.ToString() == NetFteoTypes.Border))
                 {
-                    Double BordersSum = 0;
-                    foreach (ListViewItem item in ((ListView)sender).SelectedItems)
-                        if ((item.Tag != null) && (item.Tag.ToString() == NetFteoTypes.Border))
-                        {
-                            foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
-                            {
-                                if ((sub.Tag != null) &&
-                                 (sub.Tag.ToString() == NetFteoTypes.BorderLength))
-                                {
-                                    BordersSum += Convert.ToDouble(sub.Text);
-                                }
-                            }
-                        }
-                    if (BordersSum > 0)
+                    foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
                     {
-                        toolStripStatusLabel3.Text = BordersSum.ToString("0.00");
+                        if ((sub.Tag != null) &&
+                         (sub.Tag.ToString() == NetFteoTypes.BorderLength))
+                        {
+                            BordersSum += Convert.ToDouble(sub.Text);
+                        }
                     }
                 }
+            if (BordersSum > 0)
+            {
+                toolStripStatusLabel3.Text = BordersSum.ToString("0.00");
             }
         }
 
@@ -3635,7 +3629,6 @@ LV.Items.Add(LVipP);
             foreach (ListViewItem item in LV.SelectedItems)
                 foreach (ListViewItem.ListViewSubItem sub in item.SubItems)
                     builder.AppendLine(sub.Text + "\t");
-
             Clipboard.SetText(builder.ToString());
         }
 
