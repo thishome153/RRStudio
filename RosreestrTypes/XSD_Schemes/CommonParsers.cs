@@ -2239,7 +2239,7 @@ namespace RRTypes.CommonCast
         }
 
         /// <summary>
-        /// parse some case for Slot with multiborders (MC Slot)
+        /// Parse spatial as possible multiborders (MC Slot, Parcel)
         /// </summary>
         /// <param name="Definition"></param>
         /// <param name="ES"></param>
@@ -6424,10 +6424,17 @@ namespace RRTypes.CommonParsers
             if (kv.Parcels.Parcel.EntitySpatial != null)
                 if (kv.Parcels.Parcel.EntitySpatial.SpatialElement.Count > 0)
                 {
+                    /*
                     TPolygon ents = CasterSpatial.AddEntSpatKVZU07(kv.Parcels.Parcel.CadastralNumber,
                                                            kv.Parcels.Parcel.EntitySpatial);
                     ents.Parent_Id = MainObj.id;
                     MainObj.EntSpat.Add(ents);
+                    */
+
+                    //Due happend case, in wich "kv.Parcels.Parcel.EntitySpatial" contains contours
+                    //So, parse it as possible multicountoured:
+                    MainObj.EntSpat.AddFeatures(CasterSpatial.ParseES_KVZU07(kv.Parcels.Parcel.CadastralNumber,
+                                                           kv.Parcels.Parcel.EntitySpatial));
                 }
 
             //MultiContour spatial:
