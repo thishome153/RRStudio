@@ -3998,7 +3998,7 @@ namespace netFteo.Spatial
         /// Parse spatial, detect parent and childs
         /// and create complete polygons with child rings
         /// </summary>
-        public bool ParseSpatial()
+        public bool ParseSpatial(string DefExt = "")
         {
             if (State == 200) return false;// already parsed
             List<TRing> AllRings = new List<TRing>();
@@ -4018,7 +4018,7 @@ namespace netFteo.Spatial
                 if (OuterCandidate.State == 0)
                 {
                     TPolygon ParentPolygon = new TPolygon();
-                    ParentPolygon.Definition = OuterCandidate.Definition;
+                    ParentPolygon.Definition = DefExt + OuterCandidate.Definition;
                     ParentPolygon.ImportRing(OuterCandidate); //First ring (possible outer)
 
                     // Scan source list for incoming rings (that covered by first/current)
@@ -4039,7 +4039,7 @@ namespace netFteo.Spatial
                     {
                         ++OuterRingCount;
                         if (OuterRingCount > 0)  //add () marker for multicontours
-                            ParentPolygon.Definition = "(" + (OuterRingCount).ToString() + ")" + " [1.." + ParentPolygon.PolygonPointCount.ToString()+"]";
+                            ParentPolygon.Definition = DefExt + "(" + (OuterRingCount).ToString() + ")" + " [1.." + ParentPolygon.PolygonPointCount.ToString()+"]";
                         ParentPolygon.State = 200;//complete
                         this.AddPolygon(ParentPolygon);
                     }

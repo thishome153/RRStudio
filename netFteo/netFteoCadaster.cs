@@ -255,17 +255,17 @@ namespace netFteo
             {
                 TEntitySpatial Res = new TEntitySpatial();
                 for (int i = 0; i <= this.Blocks.Count - 1; i++)
-                    for (int iz = 0; iz <= this.Blocks[i].GKNZones.Count - 1; iz++)
+                    for (int iz = 0; iz <= this.Blocks[i].Zones.Count - 1; iz++)
                     {
-                        if (((this.Blocks[i].GKNZones[iz].PermittedUses != null) &&
+                        if (((this.Blocks[i].Zones[iz].PermittedUses != null) &&
                             (ZoneType == 1)) ||
-                            ((this.Blocks[i].GKNZones[iz].PermittedUses == null) &&
+                            ((this.Blocks[i].Zones[iz].PermittedUses == null) &&
                             (ZoneType != 1))
                             )
                         {
-                            if (this.Blocks[i].GKNZones[iz].EntitySpatial != null)
+                            if (this.Blocks[i].Zones[iz].EntitySpatial != null)
 
-                                Res.AddFeatures(this.Blocks[i].GKNZones[iz].EntitySpatial);
+                                Res.AddFeatures(this.Blocks[i].Zones[iz].EntitySpatial);
                         }
 
                     }
@@ -420,7 +420,7 @@ namespace netFteo
             public TRealtys ObjectRealtys;
             public PointList OMSPoints;
             public TBoundsList GKNBounds;
-            public TZonesList GKNZones;
+            public TZonesList Zones;
             public TFiles KPTXmlBodyList;
             public string CN;
             public string Name;
@@ -431,7 +431,7 @@ namespace netFteo
                 Parcels = new TParcels();
                 ObjectRealtys = new TRealtys();
                 GKNBounds = new TBoundsList();
-                GKNZones = new TZonesList();
+                Zones = new TZonesList();
                 Entity_Spatial = new TPolygon();
                 KPTXmlBodyList = new TFiles();
             }
@@ -468,8 +468,8 @@ namespace netFteo
             }
             public TZone AddZone(TZone zone)
             {
-                this.GKNZones.Add(zone);
-                return this.GKNZones[this.GKNZones.Count - 1];
+                this.Zones.Add(zone);
+                return this.Zones[this.Zones.Count - 1];
 
             }
 
@@ -482,8 +482,8 @@ namespace netFteo
                 if (this.GKNBounds.GetEs(Layer_id) != null)
                     return this.GKNBounds.GetEs(Layer_id);
 
-                if (this.GKNZones.GetEsId(Layer_id) != null)
-                    return this.GKNZones.GetEsId(Layer_id);
+                if (this.Zones.GetEsId(Layer_id) != null)
+                    return this.Zones.GetEsId(Layer_id);
 
                 if (this.ObjectRealtys.GetEs(Layer_id) != null)
                     return this.ObjectRealtys.GetEs(Layer_id);
@@ -571,10 +571,10 @@ namespace netFteo
                         return this.ObjectRealtys[i];
                 }
 
-                for (int i = 0; i <= this.GKNZones.Count - 1; i++)
+                for (int i = 0; i <= this.Zones.Count - 1; i++)
                 {
-                    if (this.GKNZones[i].id == id)
-                        return this.GKNZones[i];
+                    if (this.Zones[i].id == id)
+                        return this.Zones[i];
                 }
 
                 for (int i = 0; i <= this.GKNBounds.Count - 1; i++)
@@ -1742,6 +1742,7 @@ namespace netFteo
 
         public class TZonesList : List<TZone>
         {
+            /*
             public TPolygonCollection GetEs()
             {
                 TPolygonCollection Res = new TPolygonCollection();
@@ -1752,7 +1753,7 @@ namespace netFteo
                 }
                 return Res;
             }
-
+            */
             public Object GetEsId(int Layer_id)
             {
 
@@ -1777,6 +1778,19 @@ namespace netFteo
             {
                 this.Add(zone);
                 zone.PermittedUses.AddRange(PermittedUses);
+            }
+
+            /// <summary>
+            /// Parse spatial data for all items in collection
+            /// </summary>
+            public void ParseSpatial()
+            {
+                foreach(TZone item in this)
+                {
+                    //item.EntitySpatial.Definition = ;
+                    item.EntitySpatial.ParseSpatial(item.AccountNumber);
+                    
+                }
             }
         }
 

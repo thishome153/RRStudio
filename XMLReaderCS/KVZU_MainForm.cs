@@ -1261,12 +1261,12 @@ namespace XMLReaderCS
                     }
                 }
 
-                if (BlockList.Blocks[bc].GKNZones.Count > 0)
+                if (BlockList.Blocks[bc].Zones.Count > 0)
                 {
                     TreeNode BNDsNode_ = TopNode_.Nodes.Add("ZonesNode", "Объекты землеустройства-зоны");
-                    for (int i = 0; i <= BlockList.Blocks[bc].GKNZones.Count - 1; i++)
+                    for (int i = 0; i <= BlockList.Blocks[bc].Zones.Count - 1; i++)
                     {
-                        ListZone(BNDsNode_, BlockList.Blocks[bc].GKNZones[i]);
+                        ListZone(BNDsNode_, BlockList.Blocks[bc].Zones[i]);
                     }
                 }
 
@@ -3006,10 +3006,11 @@ LV.Items.Add(LVipP);
                 }
             }
 
-            //Не Все зоны - только территориальные, ==(1) ??
+
             if (NodeName.Contains("ZonesNode"))
             {
-                TEntitySpatial Plc = this.DocInfo.District.GetZonesEs(1);
+                this.DocInfo.District.Blocks[0].Zones.ParseSpatial();
+                TEntitySpatial Plc = this.DocInfo.District.GetZonesEs(1);  //Не Все зоны - только территориальные, ==(1) ??
                 if (Plc != null)
                 {
                     return Plc;
