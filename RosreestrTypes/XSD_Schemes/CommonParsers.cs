@@ -3018,10 +3018,12 @@ namespace RRTypes.CommonParsers
                 if (MP.InputData.GeodesicBases != null)
                     foreach (MP_V05.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
-                        TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
-                        pt.NumGeopointA = oms.PName;
-                        pt.Description = oms.PKind; //Type
-                        pt.Code = oms.PKlass; // NetWork class
+                        GeodesicBase pt = new GeodesicBase(); 
+                        pt.x = oms.OrdX;
+                        pt.y = oms.OrdY;
+                        pt.PName = oms.PName;
+                        pt.PKind = oms.PKind; //Type
+                        pt.PKlass = oms.PKlass; // NetWork class
                         Bl.AddOmsPoint(pt);
                     }
                 res.District.Blocks.Add(Bl);
@@ -5075,10 +5077,10 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
-                        OMS.Definition = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;       //94873
-                        OMS.Description = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;    //Класс ОМС – "; Система координат - МСК-26 от СК-95, зона 1
-                        OMS.Code = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;            //OMZ-117; 1Б; Труновский р-н, с. Донское, на пересечении ул. Кооперативная и ул. Ленина.
+                        GeodesicBase OMS = new GeodesicBase();
+                        OMS.PNmb = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;       //94873
+                        OMS.PKlass = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;    //Класс ОМС – "; Система координат - МСК-26 от СК-95, зона 1
+                        OMS.PName = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;            //OMZ-117; 1Б; Труновский р-н, с. Донское, на пересечении ул. Кооперативная и ул. Ленина.
                         OMS.x = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdX;
                         OMS.y = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdY;
                         Bl.AddOmsPoint(OMS);

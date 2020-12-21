@@ -250,6 +250,35 @@ namespace netFteo.Spatial
         //ICoordinateSequence CoordinateSequence { get; }
     }
 
+
+    public class GeodesicBase : Geometry, IGeometry
+    {
+        private Coordinate Ord;
+        public double x { 
+            get { return this.Ord.X; }
+            set { this.Ord.X = value; }
+        }
+
+        public double y
+        {
+            get { return this.Ord.Y; }
+            set { this.Ord.Y = value; }
+        }
+
+        public double Z
+        {
+            get { return this.Ord.Z; }
+            set { this.Ord.Z = value; }
+        }
+        public string PNmb; //OMZ-172
+        public string PName; //OMZ-172
+        public string PKind; //1Б
+        public string PKlass;//-
+
+        public double Mt { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    }
+
+
     public class TPoint : Geometry, IPoint, IGeometry, IEditableObject  //port из  FteoClasses.pas
     {
         //implementation of interface method Clone():
