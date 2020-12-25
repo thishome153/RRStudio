@@ -250,10 +250,25 @@ namespace netFteo.Spatial
         //ICoordinateSequence CoordinateSequence { get; }
     }
 
-
+    /// <summary>
+    /// Special class for geodetics point - OMS...etc
+    /// </summary>
     public class GeodesicBase : Geometry, IGeometry
     {
         private Coordinate Ord;
+
+        public GeodesicBase()
+        {
+            this.Ord = new Coordinate();
+        }
+        
+        public GeodesicBase(double x, double y)
+        {
+            this.Ord = new Coordinate();
+            this.x = x;
+            this.y = y;
+        }
+
         public double x { 
             get { return this.Ord.X; }
             set { this.Ord.X = value; }
@@ -278,6 +293,25 @@ namespace netFteo.Spatial
         public double Mt { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
+    public class GeodethicBases : List<GeodesicBase>
+    {
+        /// <summary>
+        /// Present oms points as spatial points (ordinates prior)
+        /// </summary>
+        public TEntitySpatial ES
+        {
+            get
+            {
+                TEntitySpatial res = new TEntitySpatial();
+                foreach (GeodesicBase point in this)
+                {
+                    res.Add(point);
+                }
+                return res;
+            }
+
+        }
+    }
 
     public class TPoint : Geometry, IPoint, IGeometry, IEditableObject  //port из  FteoClasses.pas
     {
@@ -3888,10 +3922,8 @@ namespace netFteo.Spatial
                         res.AppendPoints(((TPolygon)feature).AsPointList());
 
                     if (feature.TypeName == "netFteo.Spatial.PointList")
-                        res.AppendPoints(((PointList)feature));
+                        res.AppendPoints((PointList)feature);
 
-                    if (feature.TypeName == "netFteo.Spatial.OMSPoints")
-                        res.AppendPoints(((PointList)feature));
                 }
 
 

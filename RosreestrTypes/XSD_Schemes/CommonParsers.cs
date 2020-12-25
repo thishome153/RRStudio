@@ -3019,8 +3019,8 @@ namespace RRTypes.CommonParsers
                     foreach (MP_V05.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
                         GeodesicBase pt = new GeodesicBase(); 
-                        pt.x = oms.OrdX;
-                        pt.y = oms.OrdY;
+                        pt.x = Convert.ToDouble(oms.OrdX);
+                        pt.y = Convert.ToDouble(oms.OrdY);
                         pt.PName = oms.PName;
                         pt.PKind = oms.PKind; //Type
                         pt.PKlass = oms.PKlass; // NetWork class
@@ -3307,10 +3307,10 @@ namespace RRTypes.CommonParsers
                 if (MP.InputData.GeodesicBases != null)
                     foreach (MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
-                        TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
-                        pt.Definition = oms.PName;
-                        pt.Description = oms.PKind; //Type
-                        pt.Code = oms.PKlass; // NetWork class
+                        GeodesicBase pt = new GeodesicBase((double)oms.OrdX, (double)oms.OrdY);
+                        pt.PName = oms.PName;
+                        pt.PKind = oms.PKind; //Type
+                        pt.PKlass = oms.PKlass; // NetWork class
                         Bl.AddOmsPoint(pt);
                     }
 
@@ -3465,9 +3465,9 @@ namespace RRTypes.CommonParsers
 
 
 
-        private PointList ParseInputDataTP06(XmlNode InputDataNode)
+        private List<GeodesicBase> ParseInputDataTP06(XmlNode InputDataNode)
         {
-            PointList res = new PointList();
+            List<GeodesicBase> res = new List<GeodesicBase>();
             /*
              // TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PName/#text
 
@@ -3489,17 +3489,17 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        private PointList ParseInputData(V03_TP.tInputData inpData)
+        private List<GeodesicBase> ParseInputData(V03_TP.tInputData inpData)
         {
-            PointList res = new PointList();
+            List<GeodesicBase> res = new List<GeodesicBase>();
             if (inpData.GeodesicBases != null)
                 foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
                 {
-                    TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
-                    pt.Definition = oms.PName;
-                    pt.Description = oms.PKlass;
-                    pt.Code = oms.PName;
-                    res.AddPoint(pt);
+                    GeodesicBase pt = new GeodesicBase((double)oms.OrdX, (double)oms.OrdY);
+                    pt.PName = oms.PName;
+                    pt.PKlass = oms.PKlass;
+                    pt.PName = oms.PName;
+                    res.Add(pt);
                 }
             return res;
         }
@@ -3972,11 +3972,11 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
+                        GeodesicBase OMS = new GeodesicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
-                        OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
-                        OMS.Code = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
-                        OMS.Description = xmloms.SelectSingleNode("PName").FirstChild.Value;
+                        OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
+                        OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
+                        OMS.PName = xmloms.SelectSingleNode("PName").FirstChild.Value;
                         OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
                         OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
                         Bl.AddOmsPoint(OMS);
@@ -4149,11 +4149,11 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
+                        GeodesicBase OMS = new GeodesicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
-                        OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
-                        OMS.Code = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
-                        OMS.Description = xmloms.SelectSingleNode("PName").FirstChild.Value;
+                        OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
+                        OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
+                        OMS.PName = xmloms.SelectSingleNode("PName").FirstChild.Value;
                         OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
                         OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
                         Bl.AddOmsPoint(OMS);
@@ -4324,11 +4324,11 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
+                        GeodesicBase OMS = new GeodesicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
-                        OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
-                        OMS.Code = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
-                        OMS.Description = xmloms.SelectSingleNode("PName").FirstChild.Value;
+                        OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
+                        OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
+                        OMS.PName = xmloms.SelectSingleNode("PName").FirstChild.Value;
                         OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
                         OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
                         Bl.AddOmsPoint(OMS);
@@ -4498,11 +4498,11 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
+                        GeodesicBase OMS = new GeodesicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
-                        OMS.NumGeopointA = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
-                        OMS.Code = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
-                        OMS.Description = xmloms.SelectSingleNode("PName").FirstChild.Value;
+                        OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
+                        OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
+                        OMS.PName = xmloms.SelectSingleNode("PName").FirstChild.Value;
                         OMS.x = Convert.ToDouble(xmloms.SelectSingleNode("OrdX").FirstChild.Value);
                         OMS.y = Convert.ToDouble(xmloms.SelectSingleNode("OrdY").FirstChild.Value);
                         Bl.AddOmsPoint(OMS);
@@ -4861,10 +4861,10 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= KPT09.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
-                        TPoint OMS = new TPoint();
-                        OMS.Definition = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
-                        OMS.Code = KPT09.CadastralBlocks[i].OMSPoints[iP].PKlass;
-                        OMS.Description = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
+                        GeodesicBase OMS = new GeodesicBase();
+                        OMS.PNmb = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
+                        OMS.PKlass = KPT09.CadastralBlocks[i].OMSPoints[iP].PKlass;
+                        OMS.PName = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
                         OMS.x = (double)KPT09.CadastralBlocks[i].OMSPoints[iP].OrdX;
                         OMS.y = (double)KPT09.CadastralBlocks[i].OMSPoints[iP].OrdY;
                         Bl.AddOmsPoint(OMS);

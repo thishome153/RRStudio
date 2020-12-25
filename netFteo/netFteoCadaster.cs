@@ -57,14 +57,28 @@ namespace netFteo
 
             public List<TCadastralBlock> Blocks;
             
+            /*
             public TEntitySpatial OMSPoints
             {
+               
                 get
                 {
                     TEntitySpatial res = new TEntitySpatial();
                     foreach (TCadastralBlock bl in Blocks)
                         foreach(GeodesicBase basePoint in bl.OMSPoints)
                         res.Add(basePoint);
+                    return res;
+                }
+                */
+
+            public GeodethicBases OMSPoints
+            {
+                get
+                {
+                    GeodethicBases res = new GeodethicBases();
+                    foreach (TCadastralBlock bl in Blocks)
+                        foreach (GeodesicBase basePoint in bl.OMSPoints)
+                            res.Add(basePoint);
                     return res;
                 }
             }

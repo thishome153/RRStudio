@@ -1271,12 +1271,12 @@ namespace XMLReaderCS
                 }
 
                 //ОМС: все  в один,,,.
-                if ((BlockList.OMSPoints.AsPointList.Count) > 0)
+                if ((BlockList.OMSPoints.Count()) > 0)
                 {
                     TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС");
                     OMSNode.SelectedImageIndex = 5;
                     OMSNode.ImageIndex = 5;
-                    ListPointList(OMSNode, BlockList.OMSPoints.AsPointList, 0);
+                    ListGeoBases(OMSNode, BlockList.OMSPoints);
                 }
 
                 //ОИПД Квартала
@@ -1883,9 +1883,9 @@ return res;
         }
 
 
-        private void OMSPointsToListView(ListView LV, PointList list)
+        private void OMSPointsToListView(ListView LV, GeodethicBases list)
         {
-            if (list.PointCount == 0) return;
+            if (list.Count() == 0) return;
             LV.BeginUpdate();
             LV.Items.Clear();
             LV.Columns[0].Text = "#";
@@ -1897,14 +1897,14 @@ return res;
 
 
             List<string> lst = new List<string>();
-            for (int i = 0; i <= list.PointCount - 1; i++)
+            for (int i = 0; i <= list.Count() - 1; i++)
             {
-                string flat_string = (i + 1).ToString();
-                flat_string += "\t" + list[i].Definition + "\t" +
-                                      list[i].x_s + "\t" +
-                                      list[i].y_s + "\t" +
-                                      list[i].Description + "\t" +
-                                      list[i].Code;
+                string flat_string = list[i].PName;
+                flat_string += "\t" + list[i].PNmb + "\t" +
+                                      list[i].x.ToString() + "\t" +
+                                      list[i].y.ToString() + "\t" +
+                                      list[i].PKind + "\t" +
+                                      list[i].PKlass;
                 lst.Add(flat_string);
             }
             ListToListView(LV, lst);
@@ -2599,27 +2599,22 @@ LV.Items.Add(LVipP);
         }
 
         //--------------Листинг ОМС --------------
-        private void ListPointList(TreeNode Node, netFteo.Spatial.PointList PList, int InternalNumber)
+        private void ListGeoBases(TreeNode Node, List<GeodesicBase> PList)
         {
             if (PList.Count == 0) return;
             string BName;
             for (int i = 0; i <= PList.Count - 1; i++)
             {
-                if (InternalNumber == 0)
-                {
-                    BName = PList[i].Definition;
-                }
-                else BName = PList[i].Definition + "." + Convert.ToString(InternalNumber);
-                TreeNode PNode = Node.Nodes.Add("PointNode", BName);
+                TreeNode PNode = Node.Nodes.Add("PointNode", PList[i].PName);
                 PNode.ToolTipText = "Номер пункта опорной межевой сети на плане";
-                PNode.Nodes.Add("Ordinate", PList[i].x_s);
-                PNode.Nodes.Add("Ordinate", PList[i].y_s);
-                if (PList[i].Mt_s != null)
-                    if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
-                if (PList[i].Description != null) PNode.Nodes.Add("Ordinate", PList[i].Description);
-                if (PList[i].Code != null) { PNode.Nodes.Add("Code", PList[i].Code).ToolTipText = "Номер, тип пункта опорной межевой сети"; }
+                PNode.Nodes.Add("Ordinate","x="+ PList[i].x.ToString());
+                PNode.Nodes.Add("Ordinate", "y="+PList[i].y.ToString());
+               // if (PList[i].Mt_s != null)
+                 //   if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
+                if (PList[i].PKlass != null) PNode.Nodes.Add("Pklass", PList[i].PKlass);
+                if (PList[i].PName != null) 
+                { PNode.Nodes.Add("Code", PList[i].PName).ToolTipText = "Номер, тип пункта опорной межевой сети"; }
             }
-
         }
 
 
@@ -3043,8 +3038,9 @@ LV.Items.Add(LVipP);
 
             if (NodeName.Contains("OMSPoints"))
             {
-                return this.DocInfo.District.OMSPoints;
+                return this.DocInfo.District.OMSPoints.ES;
             }
+
             return null;
         }
         
@@ -3249,7 +3245,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("OMSPoints"))
             {
-                OMSPointsToListView(listView1, this.DocInfo.District.OMSPoints.AsPointList);
+             OMSPointsToListView(listView1, this.DocInfo.District.OMSPoints);
             }
 
             if (STrN.Name.Contains("ZNode"))
