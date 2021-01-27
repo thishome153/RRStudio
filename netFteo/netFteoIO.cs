@@ -263,6 +263,12 @@ namespace netFteo.IO
                         items.Add(line.Split(DotCommaDelimiter.ToCharArray()));
                         LinesTotal++;
                     }
+                    // just comma delimiter ',' - got FAKE csv
+                    if (line.Contains(CommaDelimiter)) //feature arrived
+                    {
+                        //return  ImportXYZDNikon(); // TODO inify func to read (string[])
+                        return null;
+                    }
                 }
 
                 //now parse strings[]
@@ -313,6 +319,7 @@ namespace netFteo.IO
 
                 return resES;
             }
+
             catch (IOException ex)
             {
                 //  MessageBox.Show(ex.ToString());
