@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("XMLReaderCS")]
 [assembly: AssemblyDescription("Утилита для файлов Росреестра")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Fixosoft , home153@mail.ru")]
+[assembly: AssemblyCompany("Fixosoft , serg.home153@gmail.com")]
 [assembly: AssemblyProduct("XMLReader .NET")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-20")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2015-21")]
 [assembly: AssemblyTrademark("Fixosoft")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.1.217")]
-[assembly: AssemblyFileVersion("3.0.1.217")]
+[assembly: AssemblyVersion("3.0.1.218")]
+[assembly: AssemblyFileVersion("3.0.1.218")]

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Horns & Hooves")]
 [assembly: AssemblyProduct("RosreestrTypes")]
-[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2015-2020")]
+[assembly: AssemblyCopyright("Copyright © Horns & Hooves 2015-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.115")]
-[assembly: AssemblyFileVersion("1.0.0.115")]
+[assembly: AssemblyVersion("1.0.0.116")]
+[assembly: AssemblyFileVersion("1.0.0.116")]

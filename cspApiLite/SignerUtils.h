@@ -42,6 +42,7 @@ namespace SignerUtils {
 	namespace wincrypt {
 		int    SignFileWinCrypt(LPCSTR FileName, PCCERT_CONTEXT  SignerCert);
 		PCCERT_CONTEXT GetCertificat(LPCSTR lpszCertSubject);
+		LPTSTR GetCertOUAtributes(PCCERT_CONTEXT Certificat);
 		PCCERT_CONTEXT GetCert(PCCERT_CONTEXT SignerCert); //With getparam
 		DWORD   GetCertParam(PCCERT_CONTEXT SignerCert);
 		DWORD   GetCertALGID(PCCERT_CONTEXT SignerCert);

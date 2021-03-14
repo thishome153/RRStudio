@@ -239,7 +239,7 @@ namespace SignerUtils {
 			DWORD       dwType;
 			DWORD       cbName;
 			DWORD       dwIndex = 0;
-	
+
 			static LPTSTR      pszName = NULL;
 			std::vector<SignerUtils::CSPItem> ProvidersTypes;
 
@@ -294,7 +294,7 @@ namespace SignerUtils {
 			ALG_ID      aiAlgid;
 			DWORD       dwBits;
 			DWORD       dwNameLen;
-	//		CHAR        szName[1024];//[NAME_LENGTH]; // Распределены динамически
+			//		CHAR        szName[1024];//[NAME_LENGTH]; // Распределены динамически
 			BYTE        pbData[1024];// Распределены динамически
 			DWORD       cbData = 1024;
 			DWORD       dwIncrement = sizeof(DWORD);
@@ -305,7 +305,7 @@ namespace SignerUtils {
 			DWORD       cbProvName;
 			std::vector<std::string> Providers;
 
-		
+
 			dwIndex = 0;
 			while (CryptEnumProviders(
 				dwIndex,     // in -- dwIndex
@@ -343,7 +343,7 @@ namespace SignerUtils {
 					//	HandleError("ERROR - CryptEnumProviders");
 				}
 
-			} 
+			}
 			return Providers;
 		}
 
@@ -406,7 +406,7 @@ namespace SignerUtils {
 			static HCRYPTPROV hProvSender = 0;         // CryptoAPI provider handle
 			DWORD dwKeySpecSender;
 			HCRYPTKEY hKey;
-			
+
 			//obtains the private key for a certificate
 			if (CryptAcquireCertificatePrivateKey(SignerCert,
 				0,
@@ -476,6 +476,57 @@ namespace SignerUtils {
 			return ret;
 		}
 
+
+		/// <summary>
+		/// Read all atributes, like "C=US, S=California, L=San Jose, O="Adobe Systems, Incorporated", OU=Digital ID Class 3 "
+		/// </summary>
+		/// <param name="Certificat"></param>
+		/// <returns></returns>
+		LPTSTR GetCertOUAtributes(PCCERT_CONTEXT Certificat)
+		{
+			LPWSTR pszName;
+			DWORD cbSize;
+			//get size
+			cbSize = CertNameToStr(X509_ASN_ENCODING,
+				&(Certificat->pCertInfo->Subject),
+				CERT_X500_NAME_STR,
+				NULL,
+				0);
+
+			//empty
+			if (1 == cbSize)
+			{
+				return (LPTSTR)L"Subject name is an empty string.";
+			}
+
+			if (!(pszName = (LPTSTR)malloc(cbSize * sizeof(TCHAR))))
+			{
+				return (LPTSTR)L"Memory allocation failed.";
+			}
+
+			//get names with ASN:
+			cbSize = CertNameToStr(X509_ASN_ENCODING,
+				&(Certificat->pCertInfo->Subject),
+				CERT_X500_NAME_STR,
+				pszName,
+				cbSize);
+
+			if (1 == cbSize)
+			{
+				return (LPTSTR)L"Subject name is an empty string.";
+			}
+
+			else
+			{
+				return  pszName;
+
+				//-------------------------------------------------------
+				// Free the memory allocated for the string.
+				free(pszName);
+			}
+
+		}
+
 		LPTSTR GetCertIssuerName(PCCERT_CONTEXT Certificat)
 		{
 			DWORD cbSize;
@@ -515,6 +566,7 @@ namespace SignerUtils {
 				return (LPTSTR)L"CertGetName failed.";
 			}
 		}
+
 
 		// GetCertEmail - Get and display the e-mail of Issuer of the certificate.
 		LPTSTR GetCertEmail(PCCERT_CONTEXT Certificat)
@@ -591,11 +643,11 @@ namespace SignerUtils {
 
 
 		}
-*/
+	*/
 
-// usage
-//     CHAR msgText[256];
-//     getLastErrorText(msgText,sizeof(msgText));
+	// usage
+	//     CHAR msgText[256];
+	//     getLastErrorText(msgText,sizeof(msgText));
 		CHAR* GetLastErrorText(                  // converts "Lasr Error" code into text
 			CHAR* pBuf,                        //   message buffer
 			ULONG bufSize)                     //   buffer size
@@ -615,7 +667,7 @@ namespace SignerUtils {
 				NULL,
 				GetLastError(),
 				LANG_NEUTRAL,
-				(LPTSTR)& pTemp,
+				(LPTSTR)&pTemp,
 				0,
 				NULL);
 

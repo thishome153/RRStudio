@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("netFteo Class Library")]
 [assembly: AssemblyDescription("netFteo NET4 Class Library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("home153@mail.ru")]
+[assembly: AssemblyCompany("Fixosoft")]
 [assembly: AssemblyProduct("netFteo")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-20")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-21")]
 [assembly: AssemblyTrademark("Fteo Projects")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.0.119")]
-[assembly: AssemblyFileVersion("1.4.0.119")]
+[assembly: AssemblyVersion("1.4.0.120")]
+[assembly: AssemblyFileVersion("1.4.0.120")]

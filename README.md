@@ -8,5 +8,5 @@ Main purpose - parse several datafiles of rosreestr.ru (xml of several types, na
 Background purpose - help work for self, and keep up my skills in these directions and for .NET of coarse.
 
 
-##### @07E4 Fixosoft 
+##### @2021 Fixosoft 
 ###### [feedback](mailto:serg.home153@gmail.com)

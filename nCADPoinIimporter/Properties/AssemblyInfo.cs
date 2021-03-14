@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fixosoft")]
 [assembly: AssemblyProduct("nanoCAD PointsImporter (import xml)")]
-[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-2020")]
+[assembly: AssemblyCopyright("Copyright © Fixosoft 2014-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.107")]
-[assembly: AssemblyFileVersion("1.0.1.107")]
+[assembly: AssemblyVersion("1.0.1.108")]
+[assembly: AssemblyFileVersion("1.0.1.108")]
