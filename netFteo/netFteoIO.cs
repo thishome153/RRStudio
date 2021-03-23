@@ -109,6 +109,10 @@ namespace netFteo.IO
     {
         public List<DataColumn> DataColumns;
         public const string TabDelimiter = "\t";  // tab
+        /// <summary>
+        /// decimal point
+        /// </summary>
+        public const string DotDelimiter = ".";  
         public const string DotCommaDelimiter = ";";  // tab
         public const string CommaDelimiter = ",";  // tab
                                                    //		public string FileType = "";  // tab
@@ -162,19 +166,23 @@ namespace netFteo.IO
             FileName = Filename;
         }
 
-        private TPoint CSV_Parse_point(string[] src)
+        private TPoint CSV_Parse_point(string[] CSVsrc)
         {
             TPoint FilePoint = new TPoint();
-            FilePoint.Definition = src[2].ToString(); // PointName
+            FilePoint.Definition = CSVsrc[2].ToString(); // PointName
             //FilePoint.Pref = src[1].ToString(); // Point name prefix, z.b. "n"
-            if (src.Length > 11)
-                FilePoint.Description = src[11].ToString();
-
+            if (CSVsrc.Length > 11)
+                FilePoint.Description = CSVsrc[11].ToString();
+            //check decimal values has correct delimiter
+            //string[] src = CSVsrc.Select(x => x.Replace(CommaDelimiter, DotDelimiter)).ToArray();
+            string[] src = CSVsrc;
             try
             {
+
                 FilePoint.x = StringUtils.TryDouble(src[5]);
                 FilePoint.y = StringUtils.TryDouble(src[6]);
             }
+
             catch (FormatException ex)
             {
                 FilePoint.Description = ex.Message;
@@ -263,7 +271,7 @@ namespace netFteo.IO
                         items.Add(line.Split(DotCommaDelimiter.ToCharArray()));
                         LinesTotal++;
                     }
-                    // just comma delimiter ',' - got FAKE csv
+                    else      // just comma delimiter ',' - got FAKE csv
                     if (line.Contains(CommaDelimiter)) //feature arrived
                     {
                         //return  ImportXYZDNikon(); // TODO inify func to read (string[])

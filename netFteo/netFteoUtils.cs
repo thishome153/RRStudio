@@ -38,12 +38,28 @@ namespace netFteo
 			return Result;
         }
 
-
+		/// <summary>
+		/// Convert string to double with checking dot and comma
+		/// </summary>
+		/// <param name="src"></param>
+		/// <returns></returns>
         public static double TryDouble(string src)
         {
-            if ((src.Length > 0) && (!src.Contains("-")))
-                return Convert.ToDouble(src.Replace(',', '.'));
-            else throw new FormatException("Invalid input string while ToDouble convert");
+			if ((src.Length > 0) && (!src.Contains("-")))
+			{
+				string Convsrc = src.Replace(',','.');
+				try
+				{
+					double res = Convert.ToDouble(Convsrc);
+					return res;
+				}
+				catch (Exception ex)
+                {
+					string msg = ex.Message;
+					throw new Exception("Exception ToDouble convert:" + msg);
+				}
+			}
+			else throw new FormatException("Invalid input string while ToDouble convert");
         }
 
 		public static void RemoveParentCN(string ParentCN, Spatial.TEntitySpatial Target)
