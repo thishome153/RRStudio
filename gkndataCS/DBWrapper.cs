@@ -678,6 +678,8 @@ namespace GKNData
                    " OCTET_LENGTH(xml_file_body)/1024 as xml_size_kb from kpt where block_id = " + block_id.ToString() +
                                       " order by kpt_id asc", conn);
 
+            //here maybe "MySql.Data.MySqlClient.MySqlException"
+            //as server not ready/sleeping
             da.Fill(data);
             foreach (DataRow row in data.Rows)
             {

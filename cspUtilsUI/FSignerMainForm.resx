@@ -169,16 +169,16 @@
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIXSURBVDhP3Y/NaxNBHIbn4L03/wQP1tSP2Kh48CKIJ0GL
-        XhQPImgJKBEKiqA9pI0IkZK0BxFFKC3YWhElIh6Cp2prs0mzNtskjd22hiS02e+P7G72dbZdJb14FRzm
-        YWYOz/v+hvwna+l9MMunzltrH/o6uGCVUsdXyq979q68Cnbt4lOwK50+tcfXCclMhkzXbQNw6fbYudtG
-        Axvp/tb67FXzN9WFWwY/G+G5t0cu+joh7Jte0XUMmBtxaJURaKsvoPPTcG2BZqlwHYUi7bztJhSp2eJm
-        QqyvE1KcOCy3LYnKSajlBOTvg9ia60djPgwhH4Ww+BBC9h6azAAlQierozhzVPF1GjDVa9l6DQKbRDMT
-        Q/3zHej1r7RV9tu9U/wzgfc9Zuqg4eveBMes7f+3TYoOONq26OgczGoSxnoU+o8BaKUbULnLcNQCmPHO
-        gNFQy3V0OPIX2MJHWJvTaNWeUfEx9NX70MthaMtXoC6dg5I/DUfJgkl0BGSehsy2JcPaeodWfZy2jsJY
-        o60Vr/U61MIlKOxZyLmTkDKHYMvfwDzpCPAeriVQ+SXMnyMw+EEqR6AVr1G5j7aegZw9AWmhB+L8Phow
-        tztg+VGgqousWMtNttXScyjFMShcHEphCDL7AHL+LqTFCKRsGBJzE5uVlMvGg6KvE8INdd/mYgcm2OH9
-        DSYWMP7KcMDIxQISF+1O+Po/XYT8Ah426AnEUnYCAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIWSURBVDhP3Y/LaxNBHMfn4L03/wQP1tRHbFQ8eBHEk/hA
+        L+pFBC0BJUJBEbSHtBEhUhs9iChCiWBrRbQF8RA8VVvT3TZrs82jNm2NTTTZ9yP7+jrbrpJevAoO82Fm
+        Dp/v9zfkP1nzb8NsZfy4tTxxso0TVnFif7n0smtr+UW4YxPvwx2ZzKEtgU5INh0xPc8F4NHts3G3jTpW
+        Mz2tlcnz5m+q2StGZTJW4V/vOR3ohHCvukXPMWCuJqEtDkJbegq9MgrPFmiWCs9RKNLG225CFhstfizC
+        BTohhfRu2bUkKqegloYgf+lDY6oH9ekohFwcwtxtCOwNNJleSoxOVkNhbK8S6DRgpNuy9TUIXArNmQRq
+        H65Br32irXLQ7p/inwn87zEjO41A9yfYZ63/3zUpOuBo66Kj8zCrKRgrcehfe6EVL0Hlz8JR82CG2wNS
+        kZbn6HDkj7CFd7B+jqK19piKd6Ev3YReikJbOAd1/hiU3GE4CgvmfltA9lHEdC0ZVuMNWrVh2voAxjJt
+        XfRbL0LNn4HCHYU8exDSzC7Y8mcw99oC/IdnCVR+BvPbIIxKH5Vj0AoXqHyKth6BzB6AlO2COL2NBkxt
+        Dli4E6rqIid+Z5+7avEJlMJDKHwSSr4fMncLcu46pLkYJDYKibmMH+Vxj0uGxUAnhO/vvMondqS5ge11
+        JhEy/spAyJhNhCQ+3jkU6P90EfIL3knn7/FDl/IAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="toolStripButton_Sign.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
