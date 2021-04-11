@@ -1333,7 +1333,7 @@ namespace netFteo.IO
                 if (feature.GetType().ToString() == NetFteoTypes.Polygon)
                 {
                     TPolygon Poly = (TPolygon)feature;
-                    for (int i = 0; i <= Poly.PointCount - 1; i++)
+                    for (int i = 0; i <= Poly.PointCount - 2; i++)
                     {
                         if (Poly[i].Code != null)
                             writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s + "," + Poly[i].Code);
@@ -1343,6 +1343,21 @@ namespace netFteo.IO
                         else
                             writer.WriteLine(Poly[i].Definition + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
                     }
+
+                    for (int ci = 0; ci <= Poly.Childs.Count - 1; ci++)
+                    {
+                        for (int i = 0; i <= Poly.Childs[ci].PointCount - 2; i++)
+                        {
+                            if (Poly.Childs[ci][i].Code != null)
+                                writer.WriteLine(Poly.Childs[ci][i].Definition + "," + Poly.Childs[ci][i].x_s + "," + Poly.Childs[ci][i].y_s + "," + Poly.Childs[ci][i].z_s + "," + Poly.Childs[ci][i].Code);
+                            else
+                            if (Poly.Childs[ci][i].Description != null)
+                                writer.WriteLine(Poly.Childs[ci][i].Description + "," + Poly.Childs[ci][i].x_s + "," + Poly.Childs[ci][i].y_s + "," + Poly.Childs[ci][i].z_s);
+                            else
+                                writer.WriteLine(Poly.Childs[ci][i].Definition + "," + Poly.Childs[ci][i].x_s + "," + Poly.Childs[ci][i].y_s + "," + Poly.Childs[ci][i].z_s);
+                        }
+                    }
+
                 }
             }
             writer.Close();
