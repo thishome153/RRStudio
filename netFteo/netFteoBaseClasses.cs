@@ -253,16 +253,16 @@ namespace netFteo.Spatial
     /// <summary>
     /// Special class for geodetics point - OMS...etc
     /// </summary>
-    public class GeodesicBase : Geometry, IGeometry
+    public class GeodethicBase : Geometry, IGeometry
     {
         private Coordinate Ord;
 
-        public GeodesicBase()
+        public GeodethicBase()
         {
             this.Ord = new Coordinate();
         }
         
-        public GeodesicBase(double x, double y)
+        public GeodethicBase(double x, double y)
         {
             this.Ord = new Coordinate();
             this.x = x;
@@ -280,7 +280,7 @@ namespace netFteo.Spatial
             set { this.Ord.Y = value; }
         }
 
-        public double Z
+        public double z
         {
             get { return this.Ord.Z; }
             set { this.Ord.Z = value; }
@@ -293,7 +293,7 @@ namespace netFteo.Spatial
         public double Mt { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
-    public class GeodethicBases : List<GeodesicBase>
+    public class GeodethicBases : List<GeodethicBase>
     {
         /// <summary>
         /// Present oms points as spatial points (ordinates prior)
@@ -303,7 +303,7 @@ namespace netFteo.Spatial
             get
             {
                 TEntitySpatial res = new TEntitySpatial();
-                foreach (GeodesicBase point in this)
+                foreach (GeodethicBase point in this)
                 {
                     res.Add(point);
                 }

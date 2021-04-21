@@ -2599,7 +2599,7 @@ LV.Items.Add(LVipP);
         }
 
         //--------------Листинг ОМС --------------
-        private void ListGeoBases(TreeNode Node, List<GeodesicBase> PList)
+        private void ListGeoBases(TreeNode Node, List<GeodethicBase> PList)
         {
             if (PList.Count == 0) return;
             string BName;

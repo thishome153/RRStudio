@@ -429,11 +429,7 @@ namespace netFteo.IO
         private EntityObject CreatePointZ(DxfDocument dxfDoc, netDxf.Tables.Layer LayerPoints, Layer LayerText, Layer LayerTextZ, netFteo.Spatial.TPoint point)
         {
 
-
-
             netDxf.Blocks.Block block = new netDxf.Blocks.Block("PointZ" + point.id.ToString());
-
-
             netDxf.Entities.Point Pt = new Point(point.y, point.x, point.z);
             Pt.Layer = LayerPoints;
             dxfDoc.AddEntity(Pt);
@@ -493,8 +489,6 @@ namespace netFteo.IO
             Insert insDm = new Insert(block);
             insDm.Layer = LayerPoints;
             dxfDoc.AddEntity(insDm);
-
-            
             return Pt;
         }
 
@@ -605,7 +599,22 @@ namespace netFteo.IO
                     PointList Plines = (PointList)feature;
                     foreach (TPoint pt in Plines)
                     {
-                       CreatePointZ(dxfDoc, LayerPoints, LayerText,LayerElevText, pt);
+                        CreatePointZ(dxfDoc, LayerPoints, LayerText, LayerElevText, pt);
+                    }
+                }
+
+                if (feature.TypeName == "netFteo.Spatial.GeodethicBase")
+
+                {
+                    GeodethicBase oms = (GeodethicBase)feature;
+                    {
+                        TPoint pt = new TPoint();
+                        pt.x = oms.x;
+                        pt.y = oms.y;
+                        pt.z = oms.z;
+                        pt.Code = oms.PNmb;
+                        pt.Definition = oms.PName;
+                        CreatePointZ(dxfDoc, LayerPoints, LayerText, LayerElevText, pt);
                     }
                 }
 
@@ -662,10 +671,8 @@ namespace netFteo.IO
                     dxfDoc.AddEntity(DxfCircle);//CreatePoint(dxfDoc, LayerPoints, LayerText, circle));
                 }
 
-                //
-
-                if ((feature.TypeName == "netFteo.Spatial.TMyPoints") ||
-                    (feature.TypeName == "netFteo.Spatial.OMSPoints"))
+                //REally needed case ??:
+                if (feature.TypeName == "netFteo.Spatial.TMyPoints") 
                 {
                     PointList Points = (PointList)feature;
                     for (int i = 0; i <= Points.PointCount - 1; i++)

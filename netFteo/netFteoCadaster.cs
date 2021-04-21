@@ -65,7 +65,7 @@ namespace netFteo
                 {
                     TEntitySpatial res = new TEntitySpatial();
                     foreach (TCadastralBlock bl in Blocks)
-                        foreach(GeodesicBase basePoint in bl.OMSPoints)
+                        foreach(GeodethicBase basePoint in bl.OMSPoints)
                         res.Add(basePoint);
                     return res;
                 }
@@ -77,7 +77,7 @@ namespace netFteo
                 {
                     GeodethicBases res = new GeodethicBases();
                     foreach (TCadastralBlock bl in Blocks)
-                        foreach (GeodesicBase basePoint in bl.OMSPoints)
+                        foreach (GeodethicBase basePoint in bl.OMSPoints)
                             res.Add(basePoint);
                     return res;
                 }
@@ -438,7 +438,7 @@ namespace netFteo
             /// </summary>
             public TRealtys ObjectRealtys;
             //public PointList OMSPoints;
-            public List<GeodesicBase> OMSPoints;
+            public List<GeodethicBase> OMSPoints;
             public TBoundsList GKNBounds;
             public TZonesList Zones;
             public TFiles KPTXmlBodyList;
@@ -448,7 +448,7 @@ namespace netFteo
             public TCadastralBlock()
             {
                 //OMSPoints = new PointList();
-                OMSPoints = new List<GeodesicBase>();
+                OMSPoints = new List<GeodethicBase>();
                 Parcels = new TParcels();
                 ObjectRealtys = new TRealtys();
                 GKNBounds = new TBoundsList();
@@ -462,16 +462,16 @@ namespace netFteo
             }
 
             /*
-            public PointList AddOmsPoint(List<GeodesicBase> oms)
+            public PointList AddOmsPoint(List<GeodethicBase> oms)
             {
                 PointList res = new PointList();
-                foreach (GeodesicBase pt in oms)
+                foreach (GeodethicBase pt in oms)
                     res.AddPoint(AddOmsPoint(pt));
                 return res;
             }
             */
 
-            public GeodesicBase AddOmsPoint(GeodesicBase OMS)
+            public GeodethicBase AddOmsPoint(GeodethicBase OMS)
             {
                 this.OMSPoints.Add(OMS);
                 return this.OMSPoints[this.OMSPoints.Count() - 1];

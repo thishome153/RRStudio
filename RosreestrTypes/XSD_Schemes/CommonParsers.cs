@@ -3015,10 +3015,10 @@ namespace RRTypes.CommonParsers
                     }
 
                 }
-                if (MP.InputData.GeodesicBases != null)
+                if (MP.InputData.GeodesicBases  != null)
                     foreach (MP_V05.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
-                        GeodesicBase pt = new GeodesicBase(); 
+                        GeodethicBase pt = new GeodethicBase(); 
                         pt.x = Convert.ToDouble(oms.OrdX);
                         pt.y = Convert.ToDouble(oms.OrdY);
                         pt.PName = oms.PName;
@@ -3307,7 +3307,7 @@ namespace RRTypes.CommonParsers
                 if (MP.InputData.GeodesicBases != null)
                     foreach (MP_V06.tSetOfPoint oms in MP.InputData.GeodesicBases)
                     {
-                        GeodesicBase pt = new GeodesicBase((double)oms.OrdX, (double)oms.OrdY);
+                        GeodethicBase pt = new GeodethicBase((double)oms.OrdX, (double)oms.OrdY);
                         pt.PName = oms.PName;
                         pt.PKind = oms.PKind; //Type
                         pt.PKlass = oms.PKlass; // NetWork class
@@ -3465,22 +3465,22 @@ namespace RRTypes.CommonParsers
 
 
 
-        private List<GeodesicBase> ParseInputDataTP06(XmlNode InputDataNode)
+        private List<GeodethicBase> ParseInputDataTP06(XmlNode InputDataNode)
         {
-            List<GeodesicBase> res = new List<GeodesicBase>();
+            List<GeodethicBase> res = new List<GeodethicBase>();
             /*
-             // TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PName/#text
+             // TP/Building/InputData/GeodethicBases/GeodethicBase[1]/PName/#text
 
-            if (inpData.GeodesicBases != null)
-                foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
+            if (inpData.GeodethicBases != null)
+                foreach (V03_TP.tSetOfPoint oms in inpData.GeodethicBases)
                 {
-            // TP/Building/InputData/GeodesicBases/GeodesicBase[1]/OrdX/#text
-            / /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/OrdY
+            // TP/Building/InputData/GeodethicBases/GeodethicBase[1]/OrdX/#text
+            / /TP/Building/InputData/GeodethicBases/GeodethicBase[1]/OrdY
                     TPoint pt = new TPoint((double)oms.OrdX, (double)oms.OrdY);
-            // /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PName
+            // /TP/Building/InputData/GeodethicBases/GeodethicBase[1]/PName
                     pt.Definition = oms.PName;
-            // /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PKind/#text ...1Б
-            / /TP/Building/InputData/GeodesicBases/GeodesicBase[1]/PKlass/#text
+            // /TP/Building/InputData/GeodethicBases/GeodethicBase[1]/PKind/#text ...1Б
+            / /TP/Building/InputData/GeodethicBases/GeodethicBase[1]/PKlass/#text
                     pt.Description = oms.PKlass;
                     pt.Code = oms.PName;
                     res.AddPoint(pt);
@@ -3489,13 +3489,13 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        private List<GeodesicBase> ParseInputData(V03_TP.tInputData inpData)
+        private List<GeodethicBase> ParseInputData(V03_TP.tInputData inpData)
         {
-            List<GeodesicBase> res = new List<GeodesicBase>();
+            List<GeodethicBase> res = new List<GeodethicBase>();
             if (inpData.GeodesicBases != null)
                 foreach (V03_TP.tSetOfPoint oms in inpData.GeodesicBases)
                 {
-                    GeodesicBase pt = new GeodesicBase((double)oms.OrdX, (double)oms.OrdY);
+                    GeodethicBase pt = new GeodethicBase((double)oms.OrdX, (double)oms.OrdY);
                     pt.PName = oms.PName;
                     pt.PKlass = oms.PKlass;
                     pt.PName = oms.PName;
@@ -3972,7 +3972,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
                         OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
                         OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
@@ -4149,7 +4149,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
                         OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
                         OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
@@ -4324,7 +4324,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
                         OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
                         OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
@@ -4498,7 +4498,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= OMSs.ChildNodes.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         System.Xml.XmlNode xmloms = OMSs.ChildNodes[iP];
                         OMS.PNmb = xmloms.SelectSingleNode("PNmb").FirstChild.Value;
                         OMS.PKlass = xmloms.SelectSingleNode("PKlass").FirstChild.Value;
@@ -4861,7 +4861,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= KPT09.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         OMS.PNmb = KPT09.CadastralBlocks[i].OMSPoints[iP].PNmb;
                         OMS.PKlass = KPT09.CadastralBlocks[i].OMSPoints[iP].PKlass;
                         OMS.PName = KPT09.CadastralBlocks[i].OMSPoints[iP].PName;
@@ -5077,7 +5077,7 @@ namespace RRTypes.CommonParsers
                 {
                     for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
                     {
-                        GeodesicBase OMS = new GeodesicBase();
+                        GeodethicBase OMS = new GeodethicBase();
                         OMS.PNmb = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;       //94873
                         OMS.PKlass = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;    //Класс ОМС – "; Система координат - МСК-26 от СК-95, зона 1
                         OMS.PName = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;            //OMZ-117; 1Б; Труновский р-н, с. Донское, на пересечении ул. Кооперативная и ул. Ленина.

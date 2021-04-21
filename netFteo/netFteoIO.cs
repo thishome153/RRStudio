@@ -1237,6 +1237,27 @@ namespace netFteo.IO
                     writer.WriteLine("EndPointList");
                 }
 
+
+                if (feature.TypeName == "netFteo.Spatial.GeodethicBase")
+
+                {
+                    writer.WriteLine("GeodethicBase" + "\t" + feature.Name);
+                    GeodethicBase oms = (GeodethicBase)feature;
+                    {
+                        TPoint pt = new TPoint();
+                        pt.x = oms.x;
+                        pt.y = oms.y;
+                        pt.z = oms.z;
+                        pt.Code = oms.PNmb;
+                        pt.Definition = oms.PName;
+                        writer.WriteLine(oms.PName+ "\t" +
+                                                               oms.x + "\t" +
+                                                               oms.y + "\t" +
+                                                               oms.z + "\t" +
+                                                               oms.PNmb);
+                    }
+                }
+
                 if (feature.GetType().ToString() == "netFteo.Spatial.TPolygon")
                 {
                     TPolygon Poly = (TPolygon)feature;
