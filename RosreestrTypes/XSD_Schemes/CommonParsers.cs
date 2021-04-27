@@ -1097,6 +1097,7 @@ namespace RRTypes.CommonCast
             TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
               netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
             MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
+            if (parcel.SelectSingleNode("params/category") != null)
             MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
             if (parcel.SelectSingleNode("params/permitted_use") != null)
                 MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("params/permitted_use/permitted_use_established/by_document").FirstChild.Value;
