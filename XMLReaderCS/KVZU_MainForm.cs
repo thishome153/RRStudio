@@ -296,9 +296,9 @@ namespace XMLReaderCS
 
 
         /// <summary>
-        /// Читать документ из файла
+        /// Read doc from file
         /// </summary>
-        /// <param name="FileName">Имя файла</param>
+        /// <param name="FileName">Name of file</param>
         /// <param name="NeedListing">Надо ли отображать коллекции после чтения</param>
         public void Read(string FileName, bool NeedListing)
         {
@@ -1254,7 +1254,7 @@ namespace XMLReaderCS
 
                 if (BlockList.Blocks[bc].GKNBounds.Count > 0)
                 {
-                    TreeNode BNDsNode_ = TopNode_.Nodes.Add("BNDsNode", "Границы ГКН");
+                    TreeNode BNDsNode_ = TopNode_.Nodes.Add("BNDsNode", "Границы ЕГРН");
                     for (int i = 0; i <= BlockList.Blocks[bc].GKNBounds.Count - 1; i++)
                     {
                         ListBound(BNDsNode_, BlockList.Blocks[bc].GKNBounds[i]);
@@ -1587,13 +1587,20 @@ namespace XMLReaderCS
             string CN = Parcel.Description;
             TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.Description);
             TreeNode AddressNode = PNode.Nodes.Add("BNDTypeNode", Parcel.TypeName);
-            if (Parcel.EntitySpatial != null)
-                if (Parcel.EntitySpatial.Count > 0)
+            /*
+            if (Parcel.SpatialElement != null)
+                if (Parcel.SpatialElement.Count > 0)
                 {
                     //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Parcel.EntitySpatial.Layer_id.ToString(), "Границы");
                     // netFteo.ObjectLister.ListEntSpat(ESNode, Parcel.EntitySpatial);
-                    netFteo.ObjectLister.ListEntSpat(PNode, Parcel.EntitySpatial, "SPElem.", "Границы", 6);
+                    netFteo.ObjectLister.ListEntSpat(PNode, Parcel.SpatialElement, "SPElem.", "Границы", 6);
                 }
+            */
+            //list both spatial fileds. For Further deprecations
+            netFteo.ObjectLister.ListEntSpat(PNode, Parcel.SpatialElement, "SPElem.", "Границы", 6);
+            netFteo.ObjectLister.ListES(PNode, Parcel.EntitySpatial);
+
+
         }
 
         private void ListZone(TreeNode Node, TZone Parcel)

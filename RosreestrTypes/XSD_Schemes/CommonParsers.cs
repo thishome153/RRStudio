@@ -1046,6 +1046,7 @@ namespace RRTypes.CommonCast
             switch (Boundtype)
             {
                 case "3": return "Граница муниципального образования";
+                case "4": return "Граница нп";
             }
             // if (GKNBound.SubjectsBoundary != null) return "Граница между субъектами Российской Федерации";
             // if (GKNBound.InhabitedLocalityBoundary != null) return "Граница населенного пункта";
@@ -4913,7 +4914,7 @@ namespace RRTypes.CommonParsers
                         TBound BoundItem = new TBound(KPT09.CadastralBlocks[i].Bounds[ib].Description, KPT_v09Utils.BoundToName(KPT09.CadastralBlocks[i].Bounds[ib]));
                         for (int ibb = 0; ibb <= KPT09.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
                         {
-                            BoundItem.EntitySpatial = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
+                            BoundItem.SpatialElement = KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
                             res.District.SpatialData.AddRange(KPT_v09Utils.KPT09LandEntSpatToFteo(KPT09.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT09.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
                         }
                         Bl.AddBound(BoundItem);
@@ -5136,7 +5137,7 @@ namespace RRTypes.CommonParsers
                         TBound BoundItem = new TBound(KPT10.CadastralBlocks[i].Bounds[ib].Description, KPT_v10Utils.BoundToName(KPT10.CadastralBlocks[i].Bounds[ib]));
                         for (int ibb = 0; ibb <= KPT10.CadastralBlocks[i].Bounds[ib].Boundaries.Count - 1; ibb++)
                         {
-                            BoundItem.EntitySpatial = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
+                            BoundItem.SpatialElement = KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial);
                             res.District.SpatialData.AddRange(KPT_v10Utils.KPT10LandEntSpatToFteo(KPT10.CadastralBlocks[i].Bounds[ib].AccountNumber, KPT10.CadastralBlocks[i].Bounds[ib].Boundaries[ibb].EntitySpatial));
                         }
                         Bl.AddBound(BoundItem);
@@ -5521,6 +5522,7 @@ namespace RRTypes.CommonParsers
                     var construction_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records");
                     var under_constr_records = Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records");
                     var boundary = Blocksnodes[i].SelectSingleNode("municipal_boundaries");
+                    var inhabited_locality_boundaries = Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries");
                     //  zones_and_territories_boundaries/zones_and_territories_record
                     var zones = Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries");
 
@@ -5609,7 +5611,20 @@ namespace RRTypes.CommonParsers
                             TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_municipal_boundary/b_object/reg_numb_border").FirstChild.Value,
                                 CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_municipal_boundary /b_object/type_boundary/code").FirstChild.Value));
                             //TODO - spatial detecting:
-                            BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            BoundItem.SpatialElement = CasterKPT11.LandEntSpatToFteo(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            res.District.SpatialData.AddRange(BoundItem.SpatialElement);
+                            Bl.AddBound(BoundItem);
+                        }
+                    }
+                    
+                    if (inhabited_locality_boundaries!= null)
+                    {
+                        for (int iP = 0; iP <= inhabited_locality_boundaries.ChildNodes.Count - 1; iP++)
+                        {
+                            XmlNode bound = inhabited_locality_boundaries.ChildNodes[iP];
+                            TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/reg_numb_border").FirstChild.Value,
+                                  CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/type_boundary/code").FirstChild.Value));
+                            BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                             res.District.SpatialData.AddRange(BoundItem.EntitySpatial);
                             Bl.AddBound(BoundItem);
                         }

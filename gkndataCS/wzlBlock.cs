@@ -334,6 +334,13 @@ namespace GKNData
             }
         }
 
+        /// <summary>
+        /// Add file record into database,
+        /// next into file collection of block
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="TargetBlock"></param>
+        /// <param name="conn"></param>
         public void ImportXMLKPT(string FileName, TCadastralBlock TargetBlock, MySqlConnection conn)
         {
             FileInfo fi = new FileInfo(FileName);

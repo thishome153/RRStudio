@@ -502,8 +502,8 @@ namespace netFteo
                 if (this.Parcels.GetEs(Layer_id) != null)
                     return this.Parcels.GetEs(Layer_id);
 
-                if (this.GKNBounds.GetEs(Layer_id) != null)
-                    return this.GKNBounds.GetEs(Layer_id);
+                if (this.GKNBounds.GetEsId(Layer_id) != null)
+                    return this.GKNBounds.GetEsId(Layer_id);
 
                 if (this.Zones.GetEsId(Layer_id) != null)
                     return this.Zones.GetEsId(Layer_id);
@@ -1703,7 +1703,13 @@ namespace netFteo
                 this.TypeName = typename;
                 this.id = Gen_id.newId;
             }
-            public TPolygon EntitySpatial;
+
+            public TEntitySpatial EntitySpatial;
+            /// <summary>
+            /// As single geometry - polygon, obsolete field. Instead use EntitySpatial
+            /// </summary>
+            [Obsolete]
+            public TPolygon SpatialElement;
         }
 
         public class TZone
@@ -1819,16 +1825,37 @@ namespace netFteo
 
         public class TBoundsList : List<TBound>
         {
+            /*
             public TPolygon GetEs(int Layer_id)
             {
                 for (int i = 0; i <= this.Count - 1; i++)
                 {
-                    if (this[i].EntitySpatial.id == Layer_id)
-                        return this[i].EntitySpatial;
+                    if (this[i].SpatialElement.id == Layer_id)
+                        return this[i].SpatialElement;
                 }
 
                 return null;
             }
+            */
+            public Object GetEsId(int Layer_id)
+            {
+
+                for (int i = 0; i <= this.Count - 1; i++)
+                {
+                    if ((this[i].SpatialElement != null) && (this[i].SpatialElement.id == Layer_id))
+                        return this[i].SpatialElement;
+                    if ((this[i].EntitySpatial != null) && (this[i].EntitySpatial.FeatureExists(Layer_id)))
+                        return this[i].EntitySpatial.GetFeature(Layer_id);
+                    if ((this[i].EntitySpatial != null) && (this[i].EntitySpatial.id == Layer_id))
+                        return this[i].EntitySpatial;
+                }
+                return null;
+            }
+
+
+
+
+
         }
         #endregion
 

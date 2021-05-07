@@ -81,6 +81,7 @@ namespace GKNData
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.loadingCircleToolStripMenuItem1 = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.SearchPrevButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -90,10 +91,10 @@ namespace GKNData
             this.button1 = new System.Windows.Forms.Button();
             this.Button_Exit = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.History_ListBox = new System.Windows.Forms.ListBox();
             this.Explorer_listView = new System.Windows.Forms.ListView();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.SearchPrevButton = new System.Windows.Forms.Button();
-            this.History_ListBox = new System.Windows.Forms.ListBox();
+            this.обновитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenu1.SuspendLayout();
@@ -321,22 +322,23 @@ namespace GKNData
             this.свойстваToolStripMenuItem,
             this.онлайнToolStripMenuItem,
             this.поискToolStripMenuItem,
-            this.копироватьToolStripMenuItem});
+            this.копироватьToolStripMenuItem,
+            this.обновитьToolStripMenuItem});
             this.contextMenu1.Name = "contextMenu1";
-            this.contextMenu1.Size = new System.Drawing.Size(150, 92);
+            this.contextMenu1.Size = new System.Drawing.Size(181, 136);
             // 
             // свойстваToolStripMenuItem
             // 
             this.свойстваToolStripMenuItem.Image = global::GKNData.Properties.Resources.Свойства;
             this.свойстваToolStripMenuItem.Name = "свойстваToolStripMenuItem";
-            this.свойстваToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.свойстваToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.свойстваToolStripMenuItem.Text = "Свойства";
             this.свойстваToolStripMenuItem.Click += new System.EventHandler(this.свойстваToolStripMenuItem_Click);
             // 
             // онлайнToolStripMenuItem
             // 
             this.онлайнToolStripMenuItem.Name = "онлайнToolStripMenuItem";
-            this.онлайнToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.онлайнToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.онлайнToolStripMenuItem.Text = "Он-лайн";
             this.онлайнToolStripMenuItem.Click += new System.EventHandler(this.онлайнToolStripMenuItem_Click);
             // 
@@ -344,14 +346,14 @@ namespace GKNData
             // 
             this.поискToolStripMenuItem.Name = "поискToolStripMenuItem";
             this.поискToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.поискToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.поискToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.поискToolStripMenuItem.Text = "Поиск";
             this.поискToolStripMenuItem.Click += new System.EventHandler(this.поискToolStripMenuItem_Click);
             // 
             // копироватьToolStripMenuItem
             // 
             this.копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
-            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.копироватьToolStripMenuItem.Text = "Копировать";
             this.копироватьToolStripMenuItem.Click += new System.EventHandler(this.КопироватьToolStripMenuItem_Click);
             // 
@@ -517,6 +519,17 @@ namespace GKNData
             this.panel1.Visible = false;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // SearchPrevButton
+            // 
+            this.SearchPrevButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.SearchPrevButton.FlatAppearance.BorderSize = 10;
+            this.SearchPrevButton.Image = global::GKNData.Properties.Resources.arrow_left;
+            this.SearchPrevButton.Location = new System.Drawing.Point(5, 5);
+            this.SearchPrevButton.Name = "SearchPrevButton";
+            this.SearchPrevButton.Size = new System.Drawing.Size(23, 23);
+            this.SearchPrevButton.TabIndex = 12;
+            this.SearchPrevButton.UseVisualStyleBackColor = true;
+            // 
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Right;
@@ -645,6 +658,22 @@ namespace GKNData
             this.panel3.Size = new System.Drawing.Size(773, 490);
             this.panel3.TabIndex = 13;
             // 
+            // History_ListBox
+            // 
+            this.History_ListBox.FormattingEnabled = true;
+            this.History_ListBox.Items.AddRange(new object[] {
+            "hgnhn.h",
+            "",
+            "hn",
+            "n",
+            "n",
+            "n",
+            "x"});
+            this.History_ListBox.Location = new System.Drawing.Point(35, 262);
+            this.History_ListBox.Name = "History_ListBox";
+            this.History_ListBox.Size = new System.Drawing.Size(159, 134);
+            this.History_ListBox.TabIndex = 5;
+            // 
             // Explorer_listView
             // 
             this.Explorer_listView.Activation = System.Windows.Forms.ItemActivation.OneClick;
@@ -693,32 +722,12 @@ namespace GKNData
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             this.treeView1.Leave += new System.EventHandler(this.TreeView1_Leave);
             // 
-            // SearchPrevButton
+            // обновитьToolStripMenuItem
             // 
-            this.SearchPrevButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.SearchPrevButton.FlatAppearance.BorderSize = 10;
-            this.SearchPrevButton.Image = global::GKNData.Properties.Resources.arrow_left;
-            this.SearchPrevButton.Location = new System.Drawing.Point(5, 5);
-            this.SearchPrevButton.Name = "SearchPrevButton";
-            this.SearchPrevButton.Size = new System.Drawing.Size(23, 23);
-            this.SearchPrevButton.TabIndex = 12;
-            this.SearchPrevButton.UseVisualStyleBackColor = true;
-            // 
-            // History_ListBox
-            // 
-            this.History_ListBox.FormattingEnabled = true;
-            this.History_ListBox.Items.AddRange(new object[] {
-            "hgnhn.h",
-            "",
-            "hn",
-            "n",
-            "n",
-            "n",
-            "x"});
-            this.History_ListBox.Location = new System.Drawing.Point(35, 262);
-            this.History_ListBox.Name = "History_ListBox";
-            this.History_ListBox.Size = new System.Drawing.Size(159, 134);
-            this.History_ListBox.TabIndex = 5;
+            this.обновитьToolStripMenuItem.Enabled = false;
+            this.обновитьToolStripMenuItem.Name = "обновитьToolStripMenuItem";
+            this.обновитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.обновитьToolStripMenuItem.Text = "Обновить";
             // 
             // MainGKNForm
             // 
@@ -817,6 +826,7 @@ namespace GKNData
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.Button SearchPrevButton;
         private System.Windows.Forms.ListBox History_ListBox;
+        private System.Windows.Forms.ToolStripMenuItem обновитьToolStripMenuItem;
     }
 }
 

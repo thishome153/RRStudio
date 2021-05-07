@@ -496,7 +496,7 @@ namespace GKNData
                 District.AddBlock(Block);
                 //wzlBlockEd blEd = new wzlBlockEd();
                 TreeNode NewBlockNode = insertItem(Block, tv);
-                StatusLabel_AllMessages.Text = Block.CN + " добавлен ";
+                StatusLabel_AllMessages.Text = NewBlockNode.Text + " добавлен ";
                 return true;
             }
             else return false;
@@ -1165,14 +1165,14 @@ namespace GKNData
                         // Need new Block
                         TCadastralBlock Block = new TCadastralBlock(ParsedDoc.District.SingleCN);
                         Block.Parent_id = CF.Cfg.District_id;
-                        wzParcelfrm ParcelEd = new wzParcelfrm();
-                        ParcelEd.CF.conn = CF.conn;
+                        //wzParcelfrm ParcelEd = new wzParcelfrm();
+                        //ParcelEd.CF.conn = CF.conn;
                         if (AddBlock(Block, CadBloksList, treeView1))
                         {
                             TreeNode NewBlockNode = SearchInTreeNodes(Block.CN, treeView1);
                             wzlBlockEd blEd = new wzlBlockEd();
                             blEd.ImportXMLKPT(FileName, Block, CF.conn);
-                            insertItem(Block, treeView1);
+                            //insertItem(Block, treeView1);
                         }
                         else
                             MessageBox.Show(DBWrapper.LastErrorMsg, "Database error", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -1276,7 +1276,6 @@ namespace GKNData
                 frmReader.ShowDialog();
             }
             */
-
         }
 
         private void UnZipit(object sender, DoWorkEventArgs e)
@@ -1518,6 +1517,7 @@ namespace GKNData
                 }
             }
         }
+
         private void импортToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
