@@ -1095,6 +1095,7 @@ namespace RRTypes.CommonCast
 
         public static TParcel Parse_Parcel(XmlNode parcel)
         {
+         
             TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
               netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
             MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
@@ -1112,7 +1113,9 @@ namespace RRTypes.CommonCast
             if (parcel.SelectSingleNode("special_notes") != null)
                 MainObj.SpecialNote = parcel.SelectSingleNode("special_notes").FirstChild.Value;
 
+            int TestSpatCount = parcel.SelectNodes("contours_location/contours/contour").Count;
             //SignleSpatial
+            if (parcel.SelectNodes("contours_location/contours/contour").Count == 1)
             if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
             {
                 TPolygon ents = CasterKPT11.LandEntSpatToFteo(MainObj.CN,
@@ -1125,25 +1128,23 @@ namespace RRTypes.CommonCast
             }
 
             //TODO:
-            //Многоконтурный TODO: нет примеров
+            //Многоконтурный TODO: Got examples!!!
             // contours_location
-            if (parcel.SelectSingleNode("Contours") != null)
+            if (parcel.SelectNodes("contours_location/contours/contour").Count > 1)
             {
-                //26:04:090203:258
-                System.Xml.XmlNode contours = parcel.SelectSingleNode("Contours");
-                string cn = parcel.Attributes.GetNamedItem("CadastralNumber").Value;
-                for (int ic = 0; ic <= parcel.SelectSingleNode("Contours").ChildNodes.Count - 1; ic++)
+                XmlNode contours = parcel.SelectSingleNode("contours_location/contours");
+
+                for (int ic = 0; ic <= contours.ChildNodes.Count - 1; ic++)
                 {
-                    /*
-                    TPolygon NewCont = KPT08LandEntSpatToFteo(parcel.Attributes.GetNamedItem("CadastralNumber").Value + "(" +
-                                                          parcel.SelectSingleNode("Contours").ChildNodes[ic].Attributes.GetNamedItem("Number_Record").Value + ")",
-                                                          contours.ChildNodes[ic].SelectSingleNode("Entity_Spatial"));
-                    */
-                    MainObj.EntSpat.Add(new TPolygon("TODO Same empty feature"));
+                     TPolygon ents = CasterKPT11.LandEntSpatToFteo(contours.ChildNodes[ic].SelectSingleNode("number_pp").Value,
+                                                                          contours.ChildNodes[ic].SelectSingleNode("entity_spatial"));
+                    ents.Definition = contours.ChildNodes[ic].SelectSingleNode("number_pp").Value;
+                    MainObj.EntSpat.Add(ents);
                 }
             }
             return MainObj;
         }
+
         //Разбор ordinate KPT11
         private static TPoint ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
         {
