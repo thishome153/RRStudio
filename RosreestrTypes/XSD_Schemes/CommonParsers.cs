@@ -1098,6 +1098,15 @@ namespace RRTypes.CommonCast
          
             TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
               netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
+            //subtype:
+            string SubTypeCode = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/subtype/code");
+            //case 02 - EZP
+            if (SubTypeCode == "02")
+            {
+                MainObj.CompozitionEZ = new TCompozitionEZ();
+            }
+            //case 05 mk
+
             MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
             if (parcel.SelectSingleNode("params/category") != null)
             MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
@@ -1115,6 +1124,7 @@ namespace RRTypes.CommonCast
 
             int TestSpatCount = parcel.SelectNodes("contours_location/contours/contour").Count;
             //SignleSpatial
+            /*
             if (parcel.SelectNodes("contours_location/contours/contour").Count == 1)
             if (parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial") != null)
             {
@@ -1126,20 +1136,34 @@ namespace RRTypes.CommonCast
                 ents.Definition = MainObj.CN;
                 MainObj.EntSpat.Add(ents);
             }
-
+            */
             //TODO:
             //Многоконтурный TODO: Got examples!!!
             // contours_location
-            if (parcel.SelectNodes("contours_location/contours/contour").Count > 1)
-            {
-                XmlNode contours = parcel.SelectSingleNode("contours_location/contours");
+            XmlNode contours = parcel.SelectSingleNode("contours_location/contours");
 
+            if (contours != null)
+            {
                 for (int ic = 0; ic <= contours.ChildNodes.Count - 1; ic++)
                 {
-                     TPolygon ents = CasterKPT11.LandEntSpatToFteo(contours.ChildNodes[ic].SelectSingleNode("number_pp").Value,
-                                                                          contours.ChildNodes[ic].SelectSingleNode("entity_spatial"));
-                    ents.Definition = contours.ChildNodes[ic].SelectSingleNode("number_pp").Value;
-                    MainObj.EntSpat.Add(ents);
+                    if (contours.ChildNodes.Count > 1)
+                    {
+                        //multiContours
+                        TPolygon ents = CasterKPT11.LandEntSpatToFteo(contours.ChildNodes[ic].SelectSingleNode("number_pp").Value,
+                                                                             contours.ChildNodes[ic].SelectSingleNode("entity_spatial"));
+                        ents.Definition = "("+  contours.ChildNodes[ic].SelectSingleNode("number_pp").FirstChild.Value + ")";
+                        MainObj.EntSpat.Add(ents);
+                    }
+                    else
+                    { //single:
+                        TPolygon ents = CasterKPT11.LandEntSpatToFteo(MainObj.CN,
+                                                                          parcel.SelectSingleNode("contours_location/contours/contour/entity_spatial"));
+
+                        ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
+                        ents.Parent_Id = MainObj.id;
+                        ents.Definition = "Границы";
+                        MainObj.EntSpat.Add(ents);
+                    }
                 }
             }
             return MainObj;
