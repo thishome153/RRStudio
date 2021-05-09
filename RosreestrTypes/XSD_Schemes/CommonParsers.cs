@@ -1103,9 +1103,14 @@ namespace RRTypes.CommonCast
             //case 02 - EZP
             if (SubTypeCode == "02")
             {
+                MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item02");
                 MainObj.CompozitionEZ = new TCompozitionEZ();
             }
             //case 05 mk
+            if (SubTypeCode == "05")
+            {
+                MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item05");
+            }
 
             MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
             if (parcel.SelectSingleNode("params/category") != null)
@@ -1151,7 +1156,7 @@ namespace RRTypes.CommonCast
                         //multiContours
                         TPolygon ents = CasterKPT11.LandEntSpatToFteo(contours.ChildNodes[ic].SelectSingleNode("number_pp").Value,
                                                                              contours.ChildNodes[ic].SelectSingleNode("entity_spatial"));
-                        ents.Definition = "("+  contours.ChildNodes[ic].SelectSingleNode("number_pp").FirstChild.Value + ")";
+                        ents.Definition = ":" + MainObj.CN.Split(':')[3]+"(" +  contours.ChildNodes[ic].SelectSingleNode("number_pp").FirstChild.Value + ")";
                         MainObj.EntSpat.Add(ents);
                     }
                     else
@@ -1161,11 +1166,14 @@ namespace RRTypes.CommonCast
 
                         ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
                         ents.Parent_Id = MainObj.id;
-                        ents.Definition = "Границы";
+                        ents.Definition = ":"+ MainObj.CN.Split(':')[3];
                         MainObj.EntSpat.Add(ents);
                     }
                 }
             }
+            // TODO: Parsing CompozitionEZ for case subtype =02
+            // KPT11, like kpt10, does not contain spatial data for EZP.....
+
             return MainObj;
         }
 
@@ -4785,8 +4793,6 @@ namespace RRTypes.CommonParsers
         //   /Package/Cadastral_Blocks/Cadastral_Block
         private TCadastralBlock Parse_KTP08Block(System.Xml.XmlNode xmlBlock)
         {
-
-
             return null;
         }
 
@@ -5078,7 +5084,7 @@ namespace RRTypes.CommonParsers
                             ents.Definition = KPT10.CadastralBlocks[i].Parcels[iP].CadastralNumber;
                             MainObj.EntSpat.Add(ents);
                         }
-                    //Многоконтурный
+                    //mc
                     if (KPT10.CadastralBlocks[i].Parcels[iP].Contours != null)
                     {
                         for (int ic = 0; ic <= KPT10.CadastralBlocks[i].Parcels[iP].Contours.Count - 1; ic++)
@@ -5090,8 +5096,8 @@ namespace RRTypes.CommonParsers
                         }
                     }
                     //ЕЗП - В КПТ нет ОИПД!!
-
                 }
+
                 //ОИПД Квартала:
                 //Виртуальный OIPD типа "Квартал":
                 //TPolygon BlockSpat = new TPolygon();
@@ -5505,6 +5511,8 @@ namespace RRTypes.CommonParsers
         /// <returns></returns>
         public netFteo.IO.FileInfo ParseKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
+            // Simplifiyeng func: 
+            //SplitKPT11(fi, xmldoc);
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";
             res.DocType = "Кадастровый план территории";
@@ -5550,7 +5558,8 @@ namespace RRTypes.CommonParsers
                     var inhabited_locality_boundaries = Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries");
                     //  zones_and_territories_boundaries/zones_and_territories_record
                     var zones = Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries");
-
+                    var coastline_boundaries = Blocksnodes[i].SelectSingleNode("coastline_boundaries");
+                    var surveying_project = Blocksnodes[i].SelectSingleNode("surveying_project");
                     if (parcels != null)
                     {
                         for (int iP = 0; iP <= parcels.ChildNodes.Count - 1; iP++)
@@ -5655,6 +5664,37 @@ namespace RRTypes.CommonParsers
                         }
                     }
 
+                    if (coastline_boundaries != null)
+                    {
+                        for (int iP = 0; iP <= coastline_boundaries.ChildNodes.Count - 1; iP++)
+                        {
+                            XmlNode bound = coastline_boundaries.ChildNodes[iP];
+                            /*
+                            TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/reg_numb_border").FirstChild.Value,
+                                  CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/type_boundary/code").FirstChild.Value));
+                            BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            res.District.SpatialData.AddRange(BoundItem.EntitySpatial);
+                            Bl.AddBound(BoundItem);
+                            */
+                        }
+                    }
+                    
+                    if (surveying_project != null)
+                    {
+                        for (int iP = 0; iP <= surveying_project.ChildNodes.Count - 1; iP++)
+                        {
+                            XmlNode bound = surveying_project.ChildNodes[iP];
+                            /*
+                            TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/reg_numb_border").FirstChild.Value,
+                                  CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/type_boundary/code").FirstChild.Value));
+                            BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
+                            res.District.SpatialData.AddRange(BoundItem.EntitySpatial);
+                            Bl.AddBound(BoundItem);
+                            */
+                        }
+                    }
+
+
                     //Zones:
                     if (zones != null)
                     {
@@ -5693,10 +5733,47 @@ namespace RRTypes.CommonParsers
             }
             return res;
         }
-        #endregion
 
-        #region  SchemaParcels V2.0
-        public netFteo.IO.FileInfo ParseSchemaParcels(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
+        /// <summary>
+        /// Split Xml file by its subNodes to several files
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        public List<XmlDocument> SplitKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
+        {
+            //netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            List<XmlDocument> res = new List<XmlDocument>();
+
+
+            XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
+            if (Blocksnodes != null)
+                 for (int i = 0; i <= Blocksnodes.Count - 1; i++)
+                {
+                    //TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
+                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records") != null)
+                        Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records") != null)
+                        Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records") != null)
+                        Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records") != null)
+                        Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("municipal_boundaries") != null)
+                        Blocksnodes[i].SelectSingleNode("municipal_boundaries").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries") != null)
+                        Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries").RemoveAll();
+                    if (Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries") != null)
+                        Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries").RemoveAll();
+                }                
+                res.Add(xmldoc);
+                return res;
+        }
+
+                #endregion
+
+                #region  SchemaParcels V2.0
+                public netFteo.IO.FileInfo ParseSchemaParcels(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
             res.CommentsType = "-";

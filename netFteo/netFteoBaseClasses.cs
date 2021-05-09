@@ -3476,7 +3476,13 @@ namespace netFteo.Spatial
         {
             if (AreaSpatial > 0)
             {
-                if (ReturnCount) return AreaSpatial.ToString(format) + "  (1.." + this.Count.ToString() + ") ";
+                if (ReturnCount)
+                {
+                    string CountingLabel = "";
+                    if (this.Count > 1)
+                        CountingLabel = "  (1.." + this.Count.ToString() + ") ";
+                    return AreaSpatial.ToString(format) + CountingLabel;
+                }
                 else return AreaSpatial.ToString(format);
             }
             else return "";

@@ -442,6 +442,8 @@ namespace netFteo
             public TBoundsList GKNBounds;
             public TZonesList Zones;
             public TFiles KPTXmlBodyList;
+            public TBoundsList Coastline_boundaries;//TODO: need class
+            public Object Surveying_project; // need class
             public string CN;
             public string Name;
             public string Comments;
@@ -451,6 +453,7 @@ namespace netFteo
                 OMSPoints = new List<GeodethicBase>();
                 Parcels = new TParcels();
                 ObjectRealtys = new TRealtys();
+                Coastline_boundaries = new TBoundsList();
                 GKNBounds = new TBoundsList();
                 Zones = new TZonesList();
                 Entity_Spatial = new TPolygon();
