@@ -1584,23 +1584,13 @@ namespace XMLReaderCS
 
         private void ListBound(TreeNode Node, TBound Parcel)
         {
-            string CN = Parcel.Description;
-            TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.Description);
+            TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.AccountNumber);
             TreeNode AddressNode = PNode.Nodes.Add("BNDTypeNode", Parcel.TypeName);
-            /*
-            if (Parcel.SpatialElement != null)
-                if (Parcel.SpatialElement.Count > 0)
-                {
-                    //TreeNode ESNode = PNode.Nodes.Add("SPElem." + Parcel.EntitySpatial.Layer_id.ToString(), "Границы");
-                    // netFteo.ObjectLister.ListEntSpat(ESNode, Parcel.EntitySpatial);
-                    netFteo.ObjectLister.ListEntSpat(PNode, Parcel.SpatialElement, "SPElem.", "Границы", 6);
-                }
-            */
+            AddressNode.Nodes.Add("BNDTypeNode", Parcel.Description);
+      
             //list both spatial fileds. For Further deprecations
             netFteo.ObjectLister.ListEntSpat(PNode, Parcel.SpatialElement, "SPElem.", "Границы", 6);
             netFteo.ObjectLister.ListES(PNode, Parcel.EntitySpatial);
-
-
         }
 
         private void ListZone(TreeNode Node, TZone Parcel)

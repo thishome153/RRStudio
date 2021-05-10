@@ -1700,9 +1700,9 @@ namespace netFteo
             public string TypeName;
             public string AccountNumber;
             public int id;
-            public TBound(string Descr, string typename)
+            public TBound(string AccNumb, string typename)
             {
-                this.Description = Descr;
+                this.AccountNumber = AccNumb;
                 this.TypeName = typename;
                 this.id = Gen_id.newId;
             }

@@ -1047,6 +1047,7 @@ namespace RRTypes.CommonCast
             {
                 case "3": return "Граница муниципального образования";
                 case "4": return "Граница нп";
+                case "5": return "Береговая линия (граница водного объекта)";
             }
             // if (GKNBound.SubjectsBoundary != null) return "Граница между субъектами Российской Федерации";
             // if (GKNBound.InhabitedLocalityBoundary != null) return "Граница населенного пункта";
@@ -5158,9 +5159,6 @@ namespace RRTypes.CommonParsers
                     }
                 }
 
-
-
-
                 //Bounds 
                 if (KPT10.CadastralBlocks[i].Bounds.Count > 0)
                     for (int ib = 0; ib <= KPT10.CadastralBlocks[i].Bounds.Count - 1; ib++)
@@ -5626,12 +5624,12 @@ namespace RRTypes.CommonParsers
                             System.Xml.XmlNode under = under_constr_records.ChildNodes[iP];
                             //   object/common_data/cad_number
                             //TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, RRTypes.CommonCast.CasterOKS.ObjectTypeToStr(netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code")));
-                            TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code"));
+                            TRealEstate UnderConstruct = new TRealEstate(under.SelectSingleNode("object/common_data/cad_number").FirstChild.Value, netFteo.XML.XMLWrapper.SelectNodeChildValue(under, "object/common_data/type/code"));
                             UnderConstruct.Location = CasterKPT11.Parse_Location(under.SelectSingleNode("address_location"));
                             if (under.SelectSingleNode("cost/value") != null)
                                 UnderConstruct.CadastralCost = Convert.ToDecimal(under.SelectSingleNode("cost/value").FirstChild.Value);
                             if (under.SelectSingleNode("params/purpose") != null)
-                            UnderConstruct.Uncompleted.AssignationName = under.SelectSingleNode("params/purpose").FirstChild.Value;
+                                UnderConstruct.Uncompleted.AssignationName = under.SelectSingleNode("params/purpose").FirstChild.Value;
                             Bl.AddOKS(UnderConstruct);
                             XMLParsingProc("xml", ++FileParsePosition, null);
                         }
@@ -5650,8 +5648,8 @@ namespace RRTypes.CommonParsers
                             Bl.AddBound(BoundItem);
                         }
                     }
-                    
-                    if (inhabited_locality_boundaries!= null)
+
+                    if (inhabited_locality_boundaries != null)
                     {
                         for (int iP = 0; iP <= inhabited_locality_boundaries.ChildNodes.Count - 1; iP++)
                         {
@@ -5669,16 +5667,17 @@ namespace RRTypes.CommonParsers
                         for (int iP = 0; iP <= coastline_boundaries.ChildNodes.Count - 1; iP++)
                         {
                             XmlNode bound = coastline_boundaries.ChildNodes[iP];
-                            /*
-                            TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/reg_numb_border").FirstChild.Value,
-                                  CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_inhabited_locality_boundary/b_object/type_boundary/code").FirstChild.Value));
+
+                            TBound BoundItem = new TBound(bound.SelectSingleNode("b_object_zones_and_territories/b_object/reg_numb_border").FirstChild.Value,
+                                  CasterKPT11.BoundToName(bound.SelectSingleNode("b_object_zones_and_territories/b_object/type_boundary/code").FirstChild.Value));
+                            BoundItem.AccountNumber = bound.SelectSingleNode("b_object_zones_and_territories/b_object/reg_numb_border").FirstChild.Value;
+                            BoundItem.Description = bound.SelectSingleNode("b_object_zones_and_territories /water/water_object_name").FirstChild.Value;
                             BoundItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(BoundItem.AccountNumber, bound.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                             res.District.SpatialData.AddRange(BoundItem.EntitySpatial);
                             Bl.AddBound(BoundItem);
-                            */
                         }
                     }
-                    
+
                     if (surveying_project != null)
                     {
                         for (int iP = 0; iP <= surveying_project.ChildNodes.Count - 1; iP++)
@@ -5716,7 +5715,6 @@ namespace RRTypes.CommonParsers
                     //ОИПД Квартала:
                     //Виртуальный OIPD типа "Квартал":
                     if (Blocksnodes[i].SelectSingleNode("spatial_data") != null)
-
                     {
                         Bl.Entity_Spatial.ImportPolygon(CasterKPT11.LandEntSpatToFteo(Bl.CN,
                                                                                Blocksnodes[i].SelectSingleNode("spatial_data/entity_spatial")));
@@ -5728,6 +5726,42 @@ namespace RRTypes.CommonParsers
                         res.District.CSs.Add(new TCoordSystem("СК",
                             Blocksnodes[i].SelectSingleNode("spatial_data/entity_spatial/sk_id").FirstChild.Value));
                     }
+
+                    var oms_points = Blocksnodes[i].SelectSingleNode("oms_points");
+                    if ( oms_points!= null)
+                    {
+                        for (int iP = 0; iP <= oms_points.ChildNodes.Count - 1; iP++)
+                        {
+                            XmlNode oms_point = oms_points.ChildNodes[iP];
+                            GeodethicBase OMS = new GeodethicBase();
+                            OMS.Name = iP.ToString();
+                            OMS.PName = oms_point.SelectSingleNode("p_name").FirstChild.Value;
+                            OMS.PNmb = oms_point.SelectSingleNode("p_nmb").FirstChild.Value;
+                            OMS.PKlass = oms_point.SelectSingleNode("p_klass").FirstChild.Value;
+                            OMS.x = Convert.ToDouble(oms_point.SelectSingleNode("ord_x").FirstChild.Value);
+                            OMS.y = Convert.ToDouble(oms_point.SelectSingleNode("ord_y").FirstChild.Value);
+                            Bl.AddOmsPoint(null);
+                        }
+
+                        /*
+                          //Пункты в Квартале
+                if (KPT10.CadastralBlocks[i].OMSPoints.Count > 0)
+                {
+                    for (int iP = 0; iP <= KPT10.CadastralBlocks[i].OMSPoints.Count - 1; iP++)
+                    {
+                        GeodethicBase OMS = new GeodethicBase();
+                        OMS.PNmb = KPT10.CadastralBlocks[i].OMSPoints[iP].PNmb;       //94873
+                        OMS.PKlass = KPT10.CadastralBlocks[i].OMSPoints[iP].PKlass;   //Класс ОМС – "; Система координат - МСК-26 от СК-95, зона 1
+                        OMS.PName = KPT10.CadastralBlocks[i].OMSPoints[iP].PName;     //OMZ-117; 1Б; Труновский р-н, с. Донское, на пересечении ул. Кооперативная и ул. Ленина.
+                        OMS.x = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdX;
+                        OMS.y = (double)KPT10.CadastralBlocks[i].OMSPoints[iP].OrdY;
+                        Bl.AddOmsPoint(OMS);
+                    }
+                }
+                         */
+
+                    }
+
                     res.District.Blocks.Add(Bl);
                 }
             }
