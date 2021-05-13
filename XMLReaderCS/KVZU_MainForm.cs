@@ -31,7 +31,7 @@ namespace XMLReaderCS
 {
 
     public partial class KVZU_Form : Form
-    { 
+    {
         IntPtr Ptr;
         string TextDefault; // Текст заголовока по умолчанию
 
@@ -61,9 +61,9 @@ namespace XMLReaderCS
         string Folder_Unzip;
 
         string ArchiveFolder; //Текущий файл архива
-                              /// <summary>
-                              /// Default WorkingDirectory 
-                              /// </summary>
+        /// <summary>
+        /// Default WorkingDirectory 
+        /// </summary>
         string Folder_AppStart;
         string Folder_XSD;
         /// <summary>
@@ -317,7 +317,7 @@ namespace XMLReaderCS
             label_FileSize.Text = FileSizeAdapter.FileSizeToString(FileName);
             this.DocInfo.FileName = Path.GetFileName(FileName);
             this.DocInfo.FilePath = Path.GetFullPath(FileName);
-            this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName)/1024; // kBytes
+            this.DocInfo.FileSize = FileSizeAdapter.FileSize(FileName) / 1024; // kBytes
             this.Text = DocInfo.FileName;
             tabPage5.Text = DocInfo.FileName;
             linkLabel_FileName.Text = DocInfo.FileName;
@@ -368,9 +368,9 @@ namespace XMLReaderCS
             {
                 netFteo.IO.TextReader mifreader = new netFteo.IO.TextReader(FileName);
                 DocInfo = mifreader.ImportTxtFile(FileName);
-   
-                 //   DocInfo.MyBlocks.ParsedSpatial.Clear();
-                   // DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
+
+                //   DocInfo.MyBlocks.ParsedSpatial.Clear();
+                // DocInfo.MyBlocks.ParsedSpatial = polyfromMIF;// not Add, need assume to update Layers
 
                 if (mifreader.isNikonRaw(FileName))
                 {
@@ -427,17 +427,17 @@ namespace XMLReaderCS
 
             // We recieve archive package GKUOKS, GKUZU:
             if (Path.GetExtension(FileName).Equals(".zip"))
-                /*if ((FileName.Contains("GKU"))  ||
-                    (FileName.Contains("SchemaParcels"))) */
-                {
-                    ClearFiles();
-                    BackgroundWorker w1 = new BackgroundWorker();
-                    w1.WorkerSupportsCancellation = false;
-                    w1.WorkerReportsProgress = true;
-                    w1.DoWork += this.UnZipit;
-                    w1.RunWorkerCompleted += this.UnZipComplete;
-                    w1.RunWorkerAsync(FileName);
-                }
+            /*if ((FileName.Contains("GKU"))  ||
+                (FileName.Contains("SchemaParcels"))) */
+            {
+                ClearFiles();
+                BackgroundWorker w1 = new BackgroundWorker();
+                w1.WorkerSupportsCancellation = false;
+                w1.WorkerReportsProgress = true;
+                w1.DoWork += this.UnZipit;
+                w1.RunWorkerCompleted += this.UnZipComplete;
+                w1.RunWorkerAsync(FileName);
+            }
 
 
 
@@ -508,7 +508,7 @@ namespace XMLReaderCS
             fs.Dispose();
             GC.Collect();
         }
-    
+
 
         private void InitSchemas(string folder_xsd)
         {
@@ -594,7 +594,7 @@ namespace XMLReaderCS
             {
                 try
                 {
-                   //ZipFile  zip_Test = ZipFile.Read((string)e.Argument);
+                    //ZipFile  zip_Test = ZipFile.Read((string)e.Argument);
                     //zip_Test.AlternateEncoding
 
                     ReadOptions ro = new ReadOptions();
@@ -602,13 +602,13 @@ namespace XMLReaderCS
                     Encoding win1251 = Encoding.GetEncoding("windows-1251");
                     Encoding dos866 = Encoding.GetEncoding(866);
                     ro.Encoding = dos866;
-                    
+
                     //ro.ReadProgress += ZipReadProgress;
 
 
 
                     zip = ZipFile.Read((string)e.Argument, ro);
-                   // zip.AlternateEncoding = dos866;
+                    // zip.AlternateEncoding = dos866;
 
                     this.toolStripProgressBar1.Maximum = zip.Count();
                     this.toolStripProgressBar1.Value = 0;
@@ -1273,7 +1273,7 @@ namespace XMLReaderCS
                 //ОМС: все  в один,,,.
                 if ((BlockList.OMSPoints.Count()) > 0)
                 {
-                    TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС");
+                    TreeNode OMSNode = TopNode_.Nodes.Add("OMSPoints", "Пункты ОМС [" + BlockList.OMSPoints.Count()+"]");
                     OMSNode.SelectedImageIndex = 5;
                     OMSNode.ImageIndex = 5;
                     ListGeoBases(OMSNode, BlockList.OMSPoints);
@@ -1313,6 +1313,7 @@ namespace XMLReaderCS
                     netFteo.ObjectLister.ListES(TV_Parcels.Nodes.Add("TopNode"), BlockList.ParsedSpatial);
             }
 
+            this.Text = this.Text + " "+ DocInfo.DocType+ " "+DocInfo.Number+" " +DocInfo.Date;
             if (TopNode_ != null) TopNode_.Expand();
             TV_Parcels.EndUpdate();
             contextMenuStrip_SaveAs.Enabled = true;
@@ -1587,7 +1588,7 @@ namespace XMLReaderCS
             TreeNode PNode = Node.Nodes.Add("BNDNode" + Parcel.id, Parcel.AccountNumber);
             TreeNode AddressNode = PNode.Nodes.Add("BNDTypeNode", Parcel.TypeName);
             AddressNode.Nodes.Add("BNDTypeNode", Parcel.Description);
-      
+
             //list both spatial fileds. For Further deprecations
             netFteo.ObjectLister.ListEntSpat(PNode, Parcel.SpatialElement, "SPElem.", "Границы", 6);
             netFteo.ObjectLister.ListES(PNode, Parcel.EntitySpatial);
@@ -2254,7 +2255,7 @@ return res;
                     }
                 }
 
-                
+
                 if (Obj.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
                     TRealEstate P = (TRealEstate)Obj;
@@ -2397,7 +2398,7 @@ return res;
                 }
 
                 //  Если это часть: 
-           
+
                 if (Obj.ToString() == "netFteo.Cadaster.TSlot")
                 {
                     TSlot P = (TSlot)Obj;
@@ -2413,7 +2414,7 @@ return res;
                         LVipg.SubItems.Add(P.SpatialElement.AreaSpatialFmt("#0.00"));
                     else
                         LVipg.SubItems.Add(P.ES.AreaSpatialFmt("#0.00", true));
-                        LVipg.SubItems.Add("кв.м.");
+                    LVipg.SubItems.Add("кв.м.");
                     LV.Items.Add(LVipg);
 
                     ListViewItem LVip = new ListViewItem();
@@ -2604,18 +2605,18 @@ LV.Items.Add(LVipP);
             {
                 TreeNode PNode = Node.Nodes.Add("PointNode", PList[i].PName);
                 PNode.ToolTipText = "Номер пункта опорной межевой сети на плане";
-                PNode.Nodes.Add("Ordinate","x="+ PList[i].x.ToString());
-                PNode.Nodes.Add("Ordinate", "y="+PList[i].y.ToString());
-               // if (PList[i].Mt_s != null)
-                 //   if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
+                PNode.Nodes.Add("Ordinate", "x=" + PList[i].x.ToString());
+                PNode.Nodes.Add("Ordinate", "y=" + PList[i].y.ToString());
+                // if (PList[i].Mt_s != null)
+                //   if (PList[i].Mt != 0) PNode.Nodes.Add("Ordinate", "Mt = " + PList[i].Mt_s);
                 if (PList[i].PKlass != null) PNode.Nodes.Add("Pklass", PList[i].PKlass);
-                if (PList[i].PName != null) 
+                if (PList[i].PName != null)
                 { PNode.Nodes.Add("Code", PList[i].PName).ToolTipText = "Номер, тип пункта опорной межевой сети"; }
             }
         }
 
 
-  
+
 
         private enum NodeGeometryTypes
         {
@@ -2986,7 +2987,7 @@ LV.Items.Add(LVipP);
 
                 }
             }
-            
+
             if (NodeName.Contains("PointList."))
             {
                 PointList Pl = (PointList)this.DocInfo.District.GetEs(Convert.ToInt32(NodeName.Substring(10)));
@@ -3040,7 +3041,7 @@ LV.Items.Add(LVipP);
 
             return null;
         }
-        
+
         /// <summary>
         /// Called in case keyup, mouse click etc. When changed context (treeview node)
         /// </summary>
@@ -3064,7 +3065,7 @@ LV.Items.Add(LVipP);
                 IGeometry Entity = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(STrN.Name.Substring(3)));
                 if (Entity != null)
                 {
-                    if (Entity.State  == 14)
+                    if (Entity.State == 14)
                     {
                         ParsetoolStripButton.Enabled = true;
                         ParsetoolStripMenuItem.Enabled = true;
@@ -3179,7 +3180,7 @@ LV.Items.Add(LVipP);
                 if (Entity != null)
                 {
                     GeometryToSpatialView(listView1, Entity);
-                   // Entity.ShowasListItems(listView1, true);
+                    // Entity.ShowasListItems(listView1, true);
                     PropertiesToListView(listView_Properties, Entity);
                 }
             }
@@ -3242,7 +3243,7 @@ LV.Items.Add(LVipP);
 
             if (STrN.Name.Contains("OMSPoints"))
             {
-             OMSPointsToListView(listView1, this.DocInfo.District.OMSPoints);
+                OMSPointsToListView(listView1, this.DocInfo.District.OMSPoints);
             }
 
             if (STrN.Name.Contains("ZNode"))
@@ -3374,7 +3375,7 @@ LV.Items.Add(LVipP);
 
         }
 
- 
+
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -3747,7 +3748,7 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(6));
                 object O = this.DocInfo.District.GetObject(id);
-                
+
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
@@ -4015,7 +4016,7 @@ LV.Items.Add(LVipP);
 
 
                 }
-                
+
                 if (O.ToString() == "netFteo.Cadaster.TRealEstate") //далее - добавим ОКС. 
                 {
                     cn = ((TRealEstate)O).CN;
@@ -4104,12 +4105,12 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(5));
                 object O = this.DocInfo.District.GetObject(id);
-                
+
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     GotoPKK5(((TParcel)O).CN);
                 }
-                
+
                 if (O.ToString() == "netFteo.Cadaster.TRealEstate")
                 {
                     GotoPKK5(((TRealEstate)O).CN);
@@ -4182,7 +4183,7 @@ LV.Items.Add(LVipP);
             {
                 Int32 id = Convert.ToInt32(TV_Parcels.SelectedNode.Name.Substring(10));
                 object O = this.DocInfo.District.GetObject(id);
-                
+
                 if (O.ToString() == "netFteo.Cadaster.TParcel")
                 {
                     TParcel P = (TParcel)O;
@@ -4784,7 +4785,7 @@ LV.Items.Add(LVipP);
         /// </summary>
         private void TopoCheck(TreeNode STrN)
         {
-             TPoint test = new netFteo.Spatial.TPoint();
+            TPoint test = new netFteo.Spatial.TPoint();
 
             openFileDialog1.Filter = "Про$транственные данные|*.mif";
             openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
@@ -5126,7 +5127,7 @@ LV.Items.Add(LVipP);
             }
         }
 
-    
+
         // Format points for cadastral usage
         private void округлитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5376,7 +5377,7 @@ LV.Items.Add(LVipP);
             if (((ListView)sender).SelectedItems.Count == 1)
             {
                 if (((ListView)sender).SelectedItems[0].Tag is string)
-                EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
+                    EditGeometryNode((ListView)sender, (string)((ListView)sender).SelectedItems[0].Tag);
             }
         }
 
@@ -5400,7 +5401,7 @@ LV.Items.Add(LVipP);
         private void разобратьПДToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ParseClick(TV_Parcels.SelectedNode, TV_Parcels);
-   
+
         }
 
         private void ParseClick(TreeNode Node, TreeView TV)
@@ -5473,6 +5474,40 @@ LV.Items.Add(LVipP);
                 }
             }
         }
+
+        private void saveOnlyGeodethicBasesomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Сведения ЕГРН (KPT10)|*.xml;*.zip;";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                if (Path.GetExtension(openFileDialog1.FileName).Equals(".xml"))
+                {
+                    XmlDocument xmldoc = new XmlDocument();
+                    xmldoc.Load(openFileDialog1.FileName);
+
+                    string DocRootName = xmldoc.DocumentElement.Name; //  netFteo.XML.XMLWrapper.XMLReader_GetRoot(ms);
+                    string Namespace = xmldoc.DocumentElement.NamespaceURI; // //netFteo.XML.XMLWrapper.XMLReader_GetNameSpace(ms);
+                    netFteo.Rosreestr.dFileTypes FileType = netFteo.Rosreestr.dFileTypes.Undefined;
+                    if ((DocRootName == "KPT") && (Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+                    {
+                        FileType = netFteo.Rosreestr.dFileTypes.KPT10;
+                    }
+
+                    if ((DocRootName == "extract_cadastral_plan_territory"))
+                    {
+                        FileType = netFteo.Rosreestr.dFileTypes.KPT11;
+                    }
+
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(dutilizations_v01, dAllowedUse_v02);
+                    parser.KPTSplitFolders(FileType, xmldoc);
+                    string NewName = Path.GetDirectoryName(openFileDialog1.FileName) + "\\OMS_" + Path.GetFileNameWithoutExtension(openFileDialog1.FileName)  + Path.GetExtension(openFileDialog1.FileName);
+                    xmldoc.Save(NewName);
+                }
+            }
+        }
     }
 }
+
 

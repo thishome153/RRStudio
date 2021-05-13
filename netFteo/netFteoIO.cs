@@ -1236,7 +1236,22 @@ namespace netFteo.IO
                     }
                     writer.WriteLine("EndPointList");
                 }
-
+                
+                if (feature.GetType().ToString() == "netFteo.Spatial.TPoint")
+                {
+                    TPoint Poly = (TPoint)feature;
+                    //writer.WriteLine("# Номер;  Старый X;   Старый Y;   Новый X;    Новый Y;  Z; Mt;    Описание закрепления");
+                    writer.WriteLine("Point");
+                    writer.WriteLine(((Poly.Status == 0) ? Poly.Pref + Poly.Definition : Poly.Definition) + "\t" +
+                                         Poly.oldX_s + "\t" +
+                                         Poly.oldY_s + "\t" +
+                                         Poly.x_s + "\t" +
+                                         Poly.y_s + "\t" +
+                                         Poly.z_s + "\t" +
+                                         Poly.Mt_s + "\t" +
+                                         Poly.Description + "\t" +
+                                         Poly.OrdIdent);
+                }
 
                 if (feature.TypeName == "netFteo.Spatial.GeodethicBase")
 
@@ -1350,7 +1365,25 @@ namespace netFteo.IO
                             writer.WriteLine(Poly[i].Description + "," + Poly[i].x_s + "," + Poly[i].y_s + "," + Poly[i].z_s);
                     }
                 }
-                
+
+                if (feature.GetType().ToString() == NetFteoTypes.Point)
+                {
+                    TPoint oms = (TPoint)feature;
+                    if (!Double.IsNaN(oms.z))
+                        writer.WriteLine(oms.Definition    + "," + oms.x_s + "," + oms.y_s + "," + oms.z_s);
+                    else
+                        writer.WriteLine(oms.Definition + "," + oms.x_s + "," + oms.y_s);
+                }
+
+                if (feature.GetType().ToString() == NetFteoTypes.GeodethicBase)
+                {
+                    GeodethicBase oms = (GeodethicBase)feature;
+                    if (!Double.IsNaN(oms.z))
+                        writer.WriteLine(oms.PNmb + "," + oms.x.ToString() + "," + oms.y.ToString() + "," + oms.z.ToString() + "," + oms.PName.Substring(0, 10));
+                    else
+                        writer.WriteLine(oms.PNmb + "," + oms.x.ToString() + "," + oms.y.ToString() + ",," + oms.PName.Substring(0, 10));
+                }
+
                 if (feature.GetType().ToString() == NetFteoTypes.Polygon)
                 {
                     TPolygon Poly = (TPolygon)feature;

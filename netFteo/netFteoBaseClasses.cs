@@ -19,6 +19,8 @@ public static class NetFteoTypes
     public static string Block = new netFteo.Cadaster.TCadastralBlock().GetType().ToString();
     public static string Point = new netFteo.Spatial.TPoint().GetType().ToString();
     public static string PointList = new netFteo.Spatial.PointList().GetType().ToString();
+    public static string GeodethicBase = new netFteo.Spatial.GeodethicBase().GetType().ToString();
+
     public static string Border = new netFteo.Spatial.TBorder("fake border", 3.14).GetType().ToString();//  "netFteo.Spatial.TBorder";
     public static string BorderLength = "Length";
     //public static string Border = new netFteo.Spatial.TBorder.GetType().ToString();

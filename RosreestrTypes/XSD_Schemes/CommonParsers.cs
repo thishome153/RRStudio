@@ -5045,7 +5045,74 @@ namespace RRTypes.CommonParsers
         #endregion
 
         #region  Разбор КПТ 10
-        public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, Stream xmldocStream) //RRTypes.kpt10_un.KPT KPT10)
+
+        /// <summary>
+        /// Kill big data (z.B. Zones) and save only OMS folder data
+        /// </summary>
+        /// <param name="fileType">KPT v10, v11 (untested)</param>
+        /// <param name="res"></param>
+        public void KPTSplitFolders(dFileTypes fileType, XmlDocument res)
+        {
+
+            if (fileType == dFileTypes.KPT10)
+            {    //due KPT10 use namespace, we use ns: :
+                XmlNamespaceManager nmgr = new XmlNamespaceManager(res.NameTable);
+                nmgr.AddNamespace("ns", res.DocumentElement.NamespaceURI);
+                XmlNodeList Blocksnodes = res.DocumentElement.SelectNodes("ns:CadastralBlocks/ns:CadastralBlock", nmgr);   //"/" + res.DocumentElement.Name + "/CadastralBlocks");
+                                                                                                                                      //Create a comment.
+                XmlComment newComment;
+                newComment = res.CreateComment("file wiped: Zones,Parcels,ObjectsRealty,Bounds");
+                
+                if (Blocksnodes != null)
+                    for (int i = 0; i <= Blocksnodes.Count - 1; i++)
+                    {
+                        Blocksnodes[i].AppendChild(newComment);
+                        if (Blocksnodes[i].SelectSingleNode("ns:Zones", nmgr) != null)
+                            Blocksnodes[i].SelectSingleNode("ns:Zones", nmgr).RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("ns:Parcels", nmgr) != null)
+                            Blocksnodes[i].SelectSingleNode("ns:Parcels", nmgr).RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("ns:ObjectsRealty", nmgr) != null)
+                            Blocksnodes[i].SelectSingleNode("ns:ObjectsRealty", nmgr).RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("ns:Bounds", nmgr) != null)
+                            Blocksnodes[i].SelectSingleNode("ns:Bounds", nmgr).RemoveAll();
+                        
+
+                        //Add the new node to the document.
+                        //XmlElement root = res.DocumentElement;
+                        //res.InsertBefore(newComment, root);
+                    }
+            }
+
+            if (fileType == dFileTypes.KPT11) //this case are not checked(debugged and bugFixed)
+            {
+                XmlNodeList Blocksnodes = res.DocumentElement.SelectNodes("/" + res.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
+                if (Blocksnodes != null)
+                    for (int i = 0; i <= Blocksnodes.Count - 1; i++)
+                    {
+                        //TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
+                        if (Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records") != null)
+                            Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records") != null)
+                            Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records") != null)
+                            Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records") != null)
+                            Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("municipal_boundaries") != null)
+                            Blocksnodes[i].SelectSingleNode("municipal_boundaries").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries") != null)
+                            Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries").RemoveAll();
+                        if (Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries") != null)
+                            Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries").RemoveAll();
+                    }
+            }
+
+
+            //return res;
+        }
+
+
+            public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, Stream xmldocStream) //RRTypes.kpt10_un.KPT KPT10)
         {
             netFteo.IO.FileInfo res = InitFileInfo(fi, null);
             res.CommentsType = "-";
@@ -5768,43 +5835,7 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        /// <summary>
-        /// Split Xml file by its subNodes to several files
-        /// </summary>
-        /// <param name="fi"></param>
-        /// <param name="xmldoc"></param>
-        /// <returns></returns>
-        public List<XmlDocument> SplitKPT11(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
-        {
-            //netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
-            List<XmlDocument> res = new List<XmlDocument>();
-
-
-            XmlNodeList Blocksnodes = xmldoc.DocumentElement.SelectNodes("/" + xmldoc.DocumentElement.Name + "/cadastral_blocks/cadastral_block");
-            if (Blocksnodes != null)
-                 for (int i = 0; i <= Blocksnodes.Count - 1; i++)
-                {
-                    //TCadastralBlock Bl = new TCadastralBlock(Blocksnodes[i].SelectSingleNode("cadastral_number").FirstChild.Value);
-                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records") != null)
-                        Blocksnodes[i].SelectSingleNode("record_data/base_data/land_records").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records") != null)
-                        Blocksnodes[i].SelectSingleNode("record_data/base_data/build_records").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records") != null)
-                        Blocksnodes[i].SelectSingleNode("record_data/base_data/construction_records").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records") != null)
-                        Blocksnodes[i].SelectSingleNode("record_data/base_data/object_under_construction_records").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("municipal_boundaries") != null)
-                        Blocksnodes[i].SelectSingleNode("municipal_boundaries").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries") != null)
-                        Blocksnodes[i].SelectSingleNode("inhabited_locality_boundaries").RemoveAll();
-                    if (Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries") != null)
-                        Blocksnodes[i].SelectSingleNode("zones_and_territories_boundaries").RemoveAll();
-                }                
-                res.Add(xmldoc);
-                return res;
-        }
-
-                #endregion
+        #endregion
 
                 #region  SchemaParcels V2.0
                 public netFteo.IO.FileInfo ParseSchemaParcels(netFteo.IO.FileInfo fi, System.Xml.XmlDocument xmldoc)

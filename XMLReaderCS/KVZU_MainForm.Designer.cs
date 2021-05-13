@@ -194,6 +194,8 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.xMLFileSplitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -331,7 +333,8 @@
             this.validateToolStripMenuItem,
             this.traverserToolStripMenuItem,
             this.проверкаГеометрииустановкаЕГРНТочекToolStripMenuItem,
-            this.contractorEditorToolStripMenuItem});
+            this.contractorEditorToolStripMenuItem,
+            this.xMLFileSplitterToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(79, 22);
             this.toolStripMenuItem1.Text = "Утилиты";
@@ -1671,6 +1674,21 @@
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
             // 
+            // xMLFileSplitterToolStripMenuItem
+            // 
+            this.xMLFileSplitterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem});
+            this.xMLFileSplitterToolStripMenuItem.Name = "xMLFileSplitterToolStripMenuItem";
+            this.xMLFileSplitterToolStripMenuItem.Size = new System.Drawing.Size(388, 22);
+            this.xMLFileSplitterToolStripMenuItem.Text = "XML file splitter";
+            // 
+            // saveOnlyGeodethicBasesomsToolStripMenuItem
+            // 
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem.Name = "saveOnlyGeodethicBasesomsToolStripMenuItem";
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem.Size = new System.Drawing.Size(294, 22);
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem.Text = "Save only geodethic bases (oms)";
+            this.saveOnlyGeodethicBasesomsToolStripMenuItem.Click += new System.EventHandler(this.saveOnlyGeodethicBasesomsToolStripMenuItem_Click);
+            // 
             // KVZU_Form
             // 
             this.AllowDrop = true;
@@ -1883,6 +1901,8 @@
         private System.Windows.Forms.ToolStripMenuItem ParsetoolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem сделатьПервойВершинойToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem xMLFileSplitterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveOnlyGeodethicBasesomsToolStripMenuItem;
     }
 }
 
