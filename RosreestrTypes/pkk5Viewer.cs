@@ -309,18 +309,24 @@ namespace RRTypes
 
 			private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
             {
-               if (this.NeedRecall)
-                {
-                    this.OnQueryStart(new EventArgs());
-                    label_MapScale.SetTextInThread("    M 1:" + this.Server.mapScale.ToString() + "        Work started: ");
-                    if (!backgroundWorkerCounter.IsBusy) { backgroundWorkerCounter.CancelAsync(); backgroundWorkerCounter.RunWorkerAsync(); }
-					if (Mode ==ServiceMode.pkk5)
-					this.Server.Get_WebOnline_th(this.QueryValue, this.QueryObjectType);
-					if (Mode == ServiceMode.fir)
-						this.ServerFIR.GET_WebOnline_th(this.QueryValue);
-				}
-
-			}
+                if (this.NeedRecall)
+                    try
+                    {
+                        this.OnQueryStart(new EventArgs());
+                        if (label_MapScale != null)
+                            label_MapScale.SetTextInThread("    M 1:" + this.Server.mapScale.ToString() + "        Work started: ");
+                        if (!backgroundWorkerCounter.IsBusy) { backgroundWorkerCounter.CancelAsync(); backgroundWorkerCounter.RunWorkerAsync(); }
+                        if (Mode == ServiceMode.pkk5)
+                            this.Server.Get_WebOnline_th(this.QueryValue, this.QueryObjectType);
+                        if (Mode == ServiceMode.fir)
+                            this.ServerFIR.GET_WebOnline_th(this.QueryValue);
+                    }
+                    catch (Exception ex)
+                    {
+                        //  res.CommentsType = "Exception";
+                        string res_Comments = ex.Message;
+                    }
+            }
 
 
 

@@ -5058,15 +5058,27 @@ namespace RRTypes.CommonParsers
             {    //due KPT10 use namespace, we use ns: :
                 XmlNamespaceManager nmgr = new XmlNamespaceManager(res.NameTable);
                 nmgr.AddNamespace("ns", res.DocumentElement.NamespaceURI);
-                XmlNodeList Blocksnodes = res.DocumentElement.SelectNodes("ns:CadastralBlocks/ns:CadastralBlock", nmgr);   //"/" + res.DocumentElement.Name + "/CadastralBlocks");
+                nmgr.AddNamespace("ns6", "urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0");
+
+                XmlComment newComment = res.CreateComment("File has wiped "+ DateTime.Now.ToString() + " to reduce file size");
+                XmlComment newComment1 = res.CreateComment("Cleared childs of: Zones,Parcels,ObjectsRealty,Bounds");
+                XmlComment newComment2 = res.CreateComment("Child nodes has wiped: Zones,Parcels,ObjectsRealty,Bounds");
+
+                XmlNode NumberNode = res.DocumentElement.SelectSingleNode("ns:CertificationDoc/ns6:Number", nmgr);
+                NumberNode.InnerText += " (ОМС)";
+
+                 XmlNodeList Blocksnodes = res.DocumentElement.SelectNodes("ns:CadastralBlocks/ns:CadastralBlock", nmgr);   //"/" + res.DocumentElement.Name + "/CadastralBlocks");
                                                                                                                                       //Create a comment.
-                XmlComment newComment;
-                newComment = res.CreateComment("file wiped: Zones,Parcels,ObjectsRealty,Bounds");
-                
+                res.DocumentElement.AppendChild(newComment);
+                XmlNode NumberNode3 = res.DocumentElement.SelectSingleNode("ns:CadastralBlocks", nmgr);
+                NumberNode3.AppendChild(newComment2);
+                //XmlNode CertNode = res.DocumentElement.SelectSingleNode("ns:CertificationDoc", nmgr);
+                //CertNode.AppendChild(newComment3);
+
                 if (Blocksnodes != null)
                     for (int i = 0; i <= Blocksnodes.Count - 1; i++)
                     {
-                        Blocksnodes[i].AppendChild(newComment);
+                        Blocksnodes[i].AppendChild(newComment1);
                         if (Blocksnodes[i].SelectSingleNode("ns:Zones", nmgr) != null)
                             Blocksnodes[i].SelectSingleNode("ns:Zones", nmgr).RemoveAll();
                         if (Blocksnodes[i].SelectSingleNode("ns:Parcels", nmgr) != null)
@@ -5075,11 +5087,6 @@ namespace RRTypes.CommonParsers
                             Blocksnodes[i].SelectSingleNode("ns:ObjectsRealty", nmgr).RemoveAll();
                         if (Blocksnodes[i].SelectSingleNode("ns:Bounds", nmgr) != null)
                             Blocksnodes[i].SelectSingleNode("ns:Bounds", nmgr).RemoveAll();
-                        
-
-                        //Add the new node to the document.
-                        //XmlElement root = res.DocumentElement;
-                        //res.InsertBefore(newComment, root);
                     }
             }
 
