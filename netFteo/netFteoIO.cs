@@ -1613,7 +1613,7 @@ namespace netFteo.IO
             }
             writer.WriteLine("Pen (1,2,0)");
             writer.WriteLine("Brush (1,0,16777215)");
-            writerMIDA.WriteLine("\"" + Poly.Definition + "\"$");
+           // writerMIDA.WriteLine("\"" + Poly.Definition + "\"$");
 
         } // Polygon
 
@@ -1721,13 +1721,15 @@ namespace netFteo.IO
                         for (int cc = 0; cc <= poly.Childs.Count - 1; cc++)
                             WriteMifPoints(writer, writerMID, poly.Childs[cc]);
                         WriteMifRegion(writerP, writerMIDP, poly);
+                        writerMIDP.WriteLine(feature.Definition + "$" + feature.LayerHandle + "$" + feature.id.ToString());
                     }
 
                     if (feature.TypeName == "netFteo.Spatial.TPolyLine")
                     {
                         WriteMifPline(writerP, (TPolyLine)feature);
+                        writerMIDP.WriteLine(feature.Definition + "$" + feature.LayerHandle + "$" + feature.id.ToString());
                     }
-                    writerMIDP.Write(feature.Definition + "$" + feature.LayerHandle + "$" + feature.id.ToString());
+                    
                 }
 
                 writer.Close();
