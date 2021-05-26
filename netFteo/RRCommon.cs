@@ -52,10 +52,26 @@ namespace netFteo.Rosreestr
         public static string KVZU_05 = "urn://fake/kvzu/5.0.0";
         public static string KVZU_06 = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/6.0.9";
         public static string KVZU_07  = "urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1";
+        /// <summary>
+        /// spec extract_about_property_land
+        /// </summary>
         public static string KVZU_08 = "urn://fake/ir_egrn/kvzu/8.0.0";
+        /// <summary>
+        /// spec for extract_base_params_land
+        /// </summary>
+        public static string KVZU_081 = "urn://fake/ir_egrn/kvzu/8.0.1"; 
+
         public static string KPZU_06  = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/6.0.1";
         public static string KPZU_05 = "urn://x-artefacts-rosreestr-ru/outgoing/kpzu/5.0.8";
         public static string KVOKS_07 = "urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1";
+        /// <summary>
+        /// new FGIS 2021
+        /// </summary>
+        public static string KVOKS_08 = "urn://fake/ir_egrn/kvoks/8.0.0";
+        /// <summary>
+        /// new FGIS 2021:extract_base_params_under_construction
+        /// </summary>
+        public static string KVOKS_081 = "urn://fake/ir_egrn/kvoks/8.0.1";
         public static string KPOKS_03 = "urn://fake/kpoks/3.0.0";
         public static string KPOKS_04 = "urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1";
         public static string KPT05    = "urn://fake/kpt/5.0.0";
@@ -160,6 +176,7 @@ namespace netFteo.Rosreestr
                 { "ItemMIF","Полигоны mif"},
                 { "Itemnefteo::TMyPolygon","Полигон"},
                 { "Item06","Значение отсутствует"},
+                { "Item002001005000", "under develop"},
 				// KPT11 types:
 				{ "Item002001001000","Землепользование"},
             };

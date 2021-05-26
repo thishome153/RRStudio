@@ -1038,6 +1038,8 @@ namespace RRTypes.CommonCast
             res.Date = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/date_formation");
             res.Number = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/registration_number");
             res.Cert_Doc_Organization = netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "details_statement/group_top_requisites/organ_registr_rights");
+            //recipient_statement
+            res.ReceivName =  netFteo.XML.XMLWrapper.Parse_NodeValue(xmldoc, "recipient_statement");
         }
         //TODO types 1, 2, 0
 
@@ -1177,7 +1179,74 @@ namespace RRTypes.CommonCast
 
             return MainObj;
         }
+        public static TParcel Parse_OKS(XmlNode parcel)
+        {
 
+            TParcel MainObj = new TParcel(parcel.SelectSingleNode("object/common_data/cad_number").FirstChild.Value,
+              netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/common_data/type/code"));
+            //subtype:
+            string SubTypeCode = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "object/subtype/code");
+            //case 02 - EZP
+            if (SubTypeCode == "02")
+            {
+                MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item02");
+                MainObj.CompozitionEZ = new TCompozitionEZ();
+            }
+            //case 05 mk
+            if (SubTypeCode == "05")
+            {
+                MainObj.Name = netFteo.Rosreestr.dParcelsv01.ItemToName("Item05");
+            }
+
+           /* MainObj.AreaGKN = parcel.SelectSingleNode("params/area/value").FirstChild.Value;
+            if (parcel.SelectSingleNode("params/category") != null)
+                MainObj.Category = parcel.SelectSingleNode("params/category/type/code").FirstChild.Value;
+            if (parcel.SelectSingleNode("params/permitted_use") != null)
+                MainObj.Utilization.UtilbyDoc = parcel.SelectSingleNode("params/permitted_use/permitted_use_established/by_document").FirstChild.Value;
+            MainObj.Utilization.Untilization = netFteo.XML.XMLWrapper.SelectNodeChildValue(parcel, "params/permitted_use/permitted_use_established/land_use/code");
+            MainObj.Location = Parse_Location(parcel.SelectSingleNode("address_location"));
+            if (parcel.SelectSingleNode("cost/value") != null)
+                MainObj.CadastralCost = Convert.ToDecimal(parcel.SelectSingleNode("cost/value").FirstChild.Value);
+            //in case of 'KPT' document date not specified. So check, if exist
+            if (parcel.SelectSingleNode("record_info/registration_date") != null)
+                MainObj.DateCreated = parcel.SelectSingleNode("record_info/registration_date").FirstChild.Value;// .ToString("dd.MM.yyyy") 
+            if (parcel.SelectSingleNode("special_notes") != null)
+                MainObj.SpecialNote = parcel.SelectSingleNode("special_notes").FirstChild.Value;
+           */
+            int TestSpatCount = parcel.SelectNodes("contours/contour").Count;
+ 
+            // contours_location
+            XmlNode contours = parcel.SelectSingleNode("contours");
+
+            if (contours != null)
+            {
+                for (int ic = 0; ic <= contours.ChildNodes.Count - 1; ic++)
+                {
+                    if (contours.ChildNodes.Count > 1)
+                    {
+                        //multiContours
+                        TPolygon ents = CasterKPT11.LandEntSpatToFteo(contours.ChildNodes[ic].SelectSingleNode("number_pp").Value,
+                                                                             contours.ChildNodes[ic].SelectSingleNode("entity_spatial"));
+                        ents.Definition = ":" + MainObj.CN.Split(':')[3] + "(" + contours.ChildNodes[ic].SelectSingleNode("number_pp").FirstChild.Value + ")";
+                        MainObj.EntSpat.Add(ents);
+                    }
+                    else
+                    { //single:
+                        TPolygon ents = CasterKPT11.LandEntSpatToFteo(MainObj.CN,
+                                                                          parcel.SelectSingleNode("contours/contour/entity_spatial"));
+
+                        ents.AreaValue = (decimal)Convert.ToDouble(MainObj.AreaGKN);
+                        ents.Parent_Id = MainObj.id;
+                        ents.Definition = ":" + MainObj.CN.Split(':')[3];
+                        MainObj.EntSpat.Add(ents);
+                    }
+                }
+            }
+            // TODO: Parsing CompozitionEZ for case subtype =02
+            // KPT11, like kpt10, does not contain spatial data for EZP.....
+
+            return MainObj;
+        }
         //Разбор ordinate KPT11
         private static TPoint ParseOrdinate(System.Xml.XmlNode Spelement_Unit)
         {
@@ -5569,6 +5638,42 @@ namespace RRTypes.CommonParsers
             //parse Parcel nodes:
             TCadastralBlock Bl = new TCadastralBlock(parcel.SelectSingleNode("object/common_data/quarter_cad_number").FirstChild.Value);
             Bl.Parcels.AddParcel(CasterKPT11.Parse_Parcel(parcel));
+            XmlNode parcel_Rights = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name
+                                       + "/right_records");
+            XmlNode parcel_Restrict = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name
+                                       + "/restrict_records");
+            res.District.Blocks.Add(Bl);
+            return res;
+        }
+        #endregion
+
+
+        #region KVOKS 8 FGIS EGRN
+        /// <summary>
+        ///  FGIS EGRN 
+        /// Name this KVOKS8
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        public netFteo.IO.FileInfo ParseKVOKS8(netFteo.IO.FileInfo fi, XmlDocument xmldoc)
+        {
+            netFteo.IO.FileInfo res = InitFileInfo(fi, xmldoc);
+            res.CommentsType = "-";
+            res.DocType = "Выписка ФГИС (ир) ЕГРН";
+            res.DocTypeNick = "КВ";
+            res.Namespace = NameSpaces.KVOKS_081;
+            CasterKPT11.Parse_KTP11Info(xmldoc, res);
+            res.Version = "8";
+            XmlNode parcel = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name
+                                        + "/object_under_construction_record");
+            //parse Parcel nodes:
+            TCadastralBlock Bl = new TCadastralBlock(parcel.SelectSingleNode("object/common_data/quarter_cad_number").FirstChild.Value);
+            Bl.Parcels.AddParcel(CasterKPT11.Parse_OKS(parcel));
+            XmlNode parcel_Rights = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name
+                                       + "/right_records");
+            XmlNode parcel_Restrict = xmldoc.DocumentElement.SelectSingleNode("/" + xmldoc.DocumentElement.Name
+                                       + "/restrict_records");
             res.District.Blocks.Add(Bl);
             return res;
         }
@@ -7677,6 +7782,14 @@ namespace RRTypes.CommonParsers
                 DocInfo = parser.ParseKV8(DocInfo, xmldoc);
             }
 
+
+            //extract_base_params_land
+            if (DocInfo.DocRootName == "extract_base_params_land")
+            {
+                //toolStripStatusLabel2.Image = XMLReaderCS.Properties.Resources.asterisk_orange;
+                DocInfo = parser.ParseKV8(DocInfo, xmldoc);
+            }
+
             //Если это КВЗУ V04/V05
             if (DocInfo.DocRootName == "Region_Cadastr_Vidimus_KV")
             {
@@ -7782,6 +7895,14 @@ namespace RRTypes.CommonParsers
                     DocInfo = parser.ParseKVOKS07(DocInfo, xmldoc);
                 }
             }
+
+
+            //extract_base_params_under_construction
+            if (DocInfo.DocRootName == "extract_base_params_under_construction")
+            {
+                DocInfo = parser.ParseKVOKS8(DocInfo, xmldoc);
+            }
+
 
             if (DocInfo.DocRootName == "KPOKS")
             {
