@@ -1781,7 +1781,10 @@ return res;
 
         private void ListToListView(ListView LV, List<string> list)
         {
-            if (list.Count == 0) return;
+            if ((list == null) || (list.Count == 0))
+            {
+                return;
+            }
             LV.BeginUpdate();
             LV.View = System.Windows.Forms.View.Details;
             for (int i = 0; i <= list.Count - 1; i++)
@@ -1833,7 +1836,10 @@ return res;
 
         private void PermittedUsesToListView(ListView LV, List<string> list, string Caption)
         {
-            if (list.Count == 0) return;
+            if ((list == null) || (list.Count == 0))
+            {
+                return;
+            }
             LV.Columns[0].Text = "ВРИ " + Caption;
             LV.Columns[1].Text = "-";
             LV.Columns[2].Text = "-";

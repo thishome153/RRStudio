@@ -5392,22 +5392,7 @@ namespace RRTypes.CommonParsers
             return res;
         }
 
-        public netFteo.IO.FileInfo ParseKPT10WithReader(netFteo.IO.FileInfo fi, Stream xmlStream)
-        {
-            
-            using (XmlReader reader = XmlReader.Create(xmlStream))
-            {
-                while (reader.Read())
-                {
-                    if (reader.IsStartElement())
-                    {
-
-                    }
-                }
-            }
-            return null;
-        }
-
+   
         /*
         public netFteo.IO.FileInfo ParseKPT10(netFteo.IO.FileInfo fi, XmlDocument xmldoc) //RRTypes.kpt10_un.KPT KPT10)
         {
@@ -5882,10 +5867,12 @@ namespace RRTypes.CommonParsers
                             TZone ZoneItem;
 
                             ZoneItem = new TZone(zone.SelectSingleNode("b_object_zones_and_territories/b_object/reg_numb_border").FirstChild.Value); //KPT10.CadastralBlocks[i].Zones[iP].AccountNumber);
-
-                            ZoneItem.Description = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/b_object/type_boundary/value") + " " +
+                            
+                            ZoneItem.Description = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value") + " " +
                                                    netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/number");
-                            ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value");
+                            
+                            //ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/type_zone/value");
+                            ZoneItem.TypeName = netFteo.XML.XMLWrapper.SelectNodeChildValue(zone, "b_object_zones_and_territories/b_object/type_boundary/value");
                             ZoneItem.EntitySpatial = CasterKPT11.LandEntSpatToES2(ZoneItem.AccountNumber, zone.SelectSingleNode("b_contours_location/contours/contour/entity_spatial"));
                             Bl.AddZone(ZoneItem);
                         }
