@@ -888,6 +888,12 @@ namespace netFteo.Spatial
         /// Установка "ГКН" точек
         /// </summary>
         void DetectSpins(IPointList src);
+
+        /// <summary>
+        /// Enumerate points
+        /// </summary>
+        /// <param name="StartNumber"></param>
+        /// <returns></returns>
         int ReorderPoints(int StartNumber);
 
         /// <summary>
@@ -1047,6 +1053,7 @@ namespace netFteo.Spatial
             {
                 pt.Definition = StartIndex++.ToString();
             }
+
             return StartIndex;
         }
 
@@ -2142,9 +2149,29 @@ namespace netFteo.Spatial
 
         public new int ReorderPoints(int StartIndex = 1)
         {
-            base.ReorderPoints();
+            //int Index = base.ReorderPoints(StartIndex);
+
+            foreach (TPoint pt in this)
+            {
+                pt.Definition = StartIndex++.ToString();
+            }
+
+            if (this.Closed) this.Last().Definition = this.First().Definition;
+
+
             foreach (TRing child in this.Childs)
-                StartIndex += child.ReorderPoints(StartIndex);
+            {
+                StartIndex--;
+                foreach (TPoint pt in child)
+                {
+                    pt.Definition = StartIndex++.ToString();
+                }
+                if (child.Closed)
+                {
+                    child.Last().Definition = child.First().Definition;
+                }
+            }
+            //StartIndex += child.ReorderPoints(StartIndex);
             return StartIndex;
         }
 
@@ -3903,9 +3930,15 @@ namespace netFteo.Spatial
 
         public int ReorderPoints(int Startindex = 1)
         {
-            foreach (IPointList feature in this)
+
+            foreach (IGeometry feature in this)
             {
-                Startindex += feature.ReorderPoints(Startindex);
+                if (feature.TypeName == NetFteoTypes.Polygon)
+                {
+                    TPolygon Poly = (TPolygon)feature;
+                    Startindex = Poly.ReorderPoints(Startindex);
+                }
+                Startindex--;
             }
             return Startindex;
         }

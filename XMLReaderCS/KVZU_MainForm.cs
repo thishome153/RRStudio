@@ -5148,15 +5148,7 @@ LV.Items.Add(LVipP);
             }
         }
 
-        private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IPointList Feature = (IPointList)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
-            if (Feature != null)
-            {
-                Feature.ReorderPoints(1);
-                Feature.ShowasListItems(listView1, true);
-            }
-        }
+   
 
         /// <summary>
         /// Only for polyline. Close polyline`ll convert it to polygon
@@ -5510,6 +5502,39 @@ LV.Items.Add(LVipP);
                     parser.KPTSplitFolders(FileType, xmldoc);
                     string NewName = Path.GetDirectoryName(openFileDialog1.FileName) + "\\OMS_" + Path.GetFileNameWithoutExtension(openFileDialog1.FileName)  + Path.GetExtension(openFileDialog1.FileName);
                     xmldoc.Save(NewName);
+                }
+            }
+        }
+
+
+        private void перенумероватьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+
+            IGeometry Feature = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Feature.TypeName == NetFteoTypes.Polygon)
+            {
+                TPolygon Poly = (TPolygon)Feature;
+                if (Poly != null)
+                {
+                    Poly.ReorderPoints(1);
+                    Poly.ShowasListItems(listView1, true);
+                }
+            }
+
+
+        }
+
+        private void перенумероватьвсеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IGeometry Feature = (IGeometry)this.DocInfo.District.GetEs(Convert.ToInt32(listView1.Tag));
+            if (Feature.TypeName == "netFteo.Spatial.TEntitySpatial")
+            {
+                TEntitySpatial ES = (TEntitySpatial)Feature;
+                if (ES != null)
+                {
+                    ES.ReorderPoints(1);
+                    ES.ShowasListItems(listView1, true);
                 }
             }
         }
