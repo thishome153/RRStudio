@@ -411,6 +411,8 @@ namespace netFteo.IO
             if (point.Definition == null)
                 PointName.Value = "-";
             else PointName.Value = point.Definition;
+            if ((point.Status == 0) && (point.Pref == "н")) //if points with specified status
+                PointName.Value = point.Pref + PointName.Value;
             PointName.Height = 2;
             PointName.Position = new Vector3(point.y, point.x, point.z);
             PointName.Layer = LayerText;
@@ -493,7 +495,7 @@ namespace netFteo.IO
         }
 
         /// <summary>
-        /// Запись пространственных данных в файл dxf
+        /// Write spatial data to  dxf file
         /// </summary>
         /// <param name="Filename">File name, of coarse</param>
         /// <param name="ES">Spatial data</param>

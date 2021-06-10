@@ -124,11 +124,12 @@
             this.eSViewerlibmcvcdllF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mSVCESCheckerFunc2Int1975ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.writeDXFSingleEntitydxfPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.добавитьПДКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.документToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.онлайнЗапросToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьГеометриюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.добавитьПДКПТToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.перенумероватьвсеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.удалитьГеометриюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обновитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imList_dStates = new System.Windows.Forms.ImageList(this.components);
@@ -197,7 +198,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PreloaderMenuItem = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
             this.tPointBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.м12000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -893,6 +894,7 @@
             this.dxfфайлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m1500ToolStripMenuItem,
             this.m11000ToolStripMenuItem,
+            this.м12000ToolStripMenuItem,
             this.m5000ToolStripMenuItem,
             this.m110000ToolStripMenuItem,
             this.m133333ToolStripMenuItem});
@@ -904,35 +906,35 @@
             // m1500ToolStripMenuItem
             // 
             this.m1500ToolStripMenuItem.Name = "m1500ToolStripMenuItem";
-            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m1500ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m1500ToolStripMenuItem.Text = "M 1 :500";
             this.m1500ToolStripMenuItem.Click += new System.EventHandler(this.m1500ToolStripMenuItem_Click);
             // 
             // m11000ToolStripMenuItem
             // 
             this.m11000ToolStripMenuItem.Name = "m11000ToolStripMenuItem";
-            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m11000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m11000ToolStripMenuItem.Text = "M 1:1000";
             this.m11000ToolStripMenuItem.Click += new System.EventHandler(this.m11000ToolStripMenuItem_Click);
             // 
             // m5000ToolStripMenuItem
             // 
             this.m5000ToolStripMenuItem.Name = "m5000ToolStripMenuItem";
-            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m5000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m5000ToolStripMenuItem.Text = "M 1:5000";
             this.m5000ToolStripMenuItem.Click += new System.EventHandler(this.m5000ToolStripMenuItem_Click);
             // 
             // m110000ToolStripMenuItem
             // 
             this.m110000ToolStripMenuItem.Name = "m110000ToolStripMenuItem";
-            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m110000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m110000ToolStripMenuItem.Text = "M 1:10000";
             this.m110000ToolStripMenuItem.Click += new System.EventHandler(this.m110000ToolStripMenuItem_Click);
             // 
             // m133333ToolStripMenuItem
             // 
             this.m133333ToolStripMenuItem.Name = "m133333ToolStripMenuItem";
-            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.m133333ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.m133333ToolStripMenuItem.Text = "M 1:33333";
             this.m133333ToolStripMenuItem.Click += new System.EventHandler(this.m133333ToolStripMenuItem_Click);
             // 
@@ -1010,12 +1012,6 @@
             this.writeDXFSingleEntitydxfPointToolStripMenuItem.Text = "Write DXF Single Entity (dxfPoint)";
             this.writeDXFSingleEntitydxfPointToolStripMenuItem.Click += new System.EventHandler(this.writeDXFSingleEntitydxfPointToolStripMenuItem_Click);
             // 
-            // добавитьПДКПТToolStripMenuItem
-            // 
-            this.добавитьПДКПТToolStripMenuItem.Name = "добавитьПДКПТToolStripMenuItem";
-            this.добавитьПДКПТToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.добавитьПДКПТToolStripMenuItem.Text = "Добавить ПД ( КПТ)";
-            // 
             // документToolStripMenuItem
             // 
             this.документToolStripMenuItem.Name = "документToolStripMenuItem";
@@ -1028,13 +1024,16 @@
             this.онлайнЗапросToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
             this.онлайнЗапросToolStripMenuItem.Text = "ПКК-Онлайн";
             // 
-            // удалитьГеометриюToolStripMenuItem
+            // toolStripSeparator7
             // 
-            this.удалитьГеометриюToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
-            this.удалитьГеометриюToolStripMenuItem.Name = "удалитьГеометриюToolStripMenuItem";
-            this.удалитьГеометриюToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
-            this.удалитьГеометриюToolStripMenuItem.Text = "Удалить геометрию";
-            this.удалитьГеометриюToolStripMenuItem.Click += new System.EventHandler(this.удалитьГеометриюToolStripMenuItem_Click);
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(293, 6);
+            // 
+            // добавитьПДКПТToolStripMenuItem
+            // 
+            this.добавитьПДКПТToolStripMenuItem.Name = "добавитьПДКПТToolStripMenuItem";
+            this.добавитьПДКПТToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.добавитьПДКПТToolStripMenuItem.Text = "Добавить ПД ( КПТ)";
             // 
             // перенумероватьвсеToolStripMenuItem
             // 
@@ -1042,6 +1041,14 @@
             this.перенумероватьвсеToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
             this.перенумероватьвсеToolStripMenuItem.Text = "Перенумеровать (все)";
             this.перенумероватьвсеToolStripMenuItem.Click += new System.EventHandler(this.перенумероватьвсеToolStripMenuItem_Click);
+            // 
+            // удалитьГеометриюToolStripMenuItem
+            // 
+            this.удалитьГеометриюToolStripMenuItem.Image = global::XMLReaderCS.Properties.Resources.cross;
+            this.удалитьГеометриюToolStripMenuItem.Name = "удалитьГеометриюToolStripMenuItem";
+            this.удалитьГеометриюToolStripMenuItem.Size = new System.Drawing.Size(296, 22);
+            this.удалитьГеометриюToolStripMenuItem.Text = "Удалить геометрию";
+            this.удалитьГеометриюToolStripMenuItem.Click += new System.EventHandler(this.удалитьГеометриюToolStripMenuItem_Click);
             // 
             // поискToolStripMenuItem
             // 
@@ -1700,10 +1707,12 @@
             // 
             this.tPointBindingSource.DataSource = typeof(netFteo.Spatial.TPoint);
             // 
-            // toolStripSeparator7
+            // м12000ToolStripMenuItem
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(293, 6);
+            this.м12000ToolStripMenuItem.Name = "м12000ToolStripMenuItem";
+            this.м12000ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.м12000ToolStripMenuItem.Text = "М 1:2000";
+            this.м12000ToolStripMenuItem.Click += new System.EventHandler(this.м12000ToolStripMenuItem_Click);
             // 
             // KVZU_Form
             // 
@@ -1921,6 +1930,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveOnlyGeodethicBasesomsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem перенумероватьвсеToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem м12000ToolStripMenuItem;
     }
 }
 

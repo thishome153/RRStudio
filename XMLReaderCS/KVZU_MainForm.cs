@@ -2910,6 +2910,9 @@ LV.Items.Add(LVipP);
                                 case 5000:
                                     ScaleRaduis = 3.75;
                                     break;
+                                case 2000:
+                                    ScaleRaduis = 1.5;
+                                    break;
                                 case 1000:
                                     ScaleRaduis = 0.75;
                                     break;
@@ -5537,6 +5540,11 @@ LV.Items.Add(LVipP);
                     ES.ShowasListItems(listView1, true);
                 }
             }
+        }
+
+        private void м12000ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveAs("DXF", TV_Parcels.SelectedNode.Name, 2000);
         }
     }
 }
