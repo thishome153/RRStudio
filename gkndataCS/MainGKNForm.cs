@@ -39,7 +39,7 @@ namespace GKNData
         /// Current archive folder
         /// </summary>
         string Archive_Folder;
-
+        bool UnzipinPorgressFlag;
         AutoCompleteStringCollection SearchAutoComplete = new AutoCompleteStringCollection();
 
         /// <summary>
@@ -1250,14 +1250,18 @@ namespace GKNData
             {
                 //1: unzip files to tmp
                 {
-                    //   ClearFiles();
                     CurrentDraggedFile = FileName; // store to global var
+                    /*
                     BackgroundWorker w1 = new BackgroundWorker();
                     w1.WorkerSupportsCancellation = false;
                     w1.WorkerReportsProgress = true;
                     w1.DoWork += this.UnZipit;
                     w1.RunWorkerCompleted += this.UnZipComplete;
-                    w1.RunWorkerAsync(FileName);
+                    w1.RunWorkerAsync(CurrentDraggedFile);
+                    */
+                    
+                    UnZipitNoBackgrounds(FileName);
+                    UnZipToCNFolders(FileName);
                 }
                 //2: parse xml, get CN of Block
                 //3: make dir, copy archive files onto
@@ -1318,9 +1322,32 @@ namespace GKNData
             }
         }
 
+        private void UnZipitNoBackgrounds(string Argument)
+        {
+            try
+            {
+                ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
+
+
+                zip = ZipFile.Read(Argument, ro);
+
+                Archive_Folder = CF.Cfg.Folder_Unzip + "\\" + Path.GetFileNameWithoutExtension(Argument);
+                {
+                    zip.ExtractAll(Archive_Folder);
+                }
+
+            }
+            catch (Exception ex1)
+            {
+                string CatchText = ex1.ToString();
+            }
+        }
+
         //Распаковка окончена, читаем результаты:
         private void UnZipComplete(object sender, RunWorkerCompletedEventArgs e)
         {
+            
+            Console.WriteLine("Parse archieve file "+ Path.GetFileName( CurrentDraggedFile));
             if (Directory.Exists(Archive_Folder))
             {
                 DirectoryInfo di = new DirectoryInfo(Archive_Folder);
@@ -1330,11 +1357,11 @@ namespace GKNData
                     &&
                      (Path.GetExtension(firstFileName.ToUpper()).Equals(".XML")))
                 {
-                    TextReader reader = new StreamReader(Archive_Folder + "\\" + firstFileName);
-                    XmlDocument XMLDocFromFile = new XmlDocument();
-                    XMLDocFromFile.Load(reader);
-                    string TargetDirectoryName = ParseResponse(XMLDocFromFile);
-                    reader.Close();
+
+                    Stream fs = new MemoryStream(File.ReadAllBytes(Archive_Folder + "\\" + firstFileName));
+                    string TargetDirectoryName = ParseResponse(fs);
+                    if (TargetDirectoryName.Contains("FILE TYPE WRONG"))
+                    Console.WriteLine(firstFileName + " " + TargetDirectoryName);
 
                     string[] CNs = TargetDirectoryName.Split(':');
 
@@ -1346,7 +1373,7 @@ namespace GKNData
                         string Target_Folder_Path = DraggedFromPath + "\\" + CNs[0] + "\\" + CNs[1] + "\\" + CNs[2];
                         if (Directory.Exists(Target_Folder_Path))
                         {
-                            Console.WriteLine("That path exists already.");
+                            Console.WriteLine(CNs[0] + "\\" + CNs[1] + "\\" + CNs[2] + " - That path exists already.");
                             // return;
                         }
 
@@ -1363,6 +1390,8 @@ namespace GKNData
                             if (!File.Exists(str))
                             {
                                 File.Copy(filename, str);
+                                Console.WriteLine("write to folder " + Target_Folder_Path);
+                                Console.WriteLine("write file "+ Path.GetFileName(filename));
                             }
                         }
                     }
@@ -1371,25 +1400,88 @@ namespace GKNData
             }
         }
 
+        private void UnZipToCNFolders(string CurrentDraggedFile)
+        {
+            Console.WriteLine("Parse archieve file " + Path.GetFileName(CurrentDraggedFile));
+            if (Directory.Exists(Archive_Folder))
+            {
+                DirectoryInfo di = new DirectoryInfo(Archive_Folder);
+                string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+
+                if ((File.Exists(Archive_Folder + "\\" + firstFileName))
+                    &&
+                     (Path.GetExtension(firstFileName.ToUpper()).Equals(".XML")))
+                {
+
+                    Stream fs = new MemoryStream(File.ReadAllBytes(Archive_Folder + "\\" + firstFileName));
+                    string TargetDirectoryName = ParseResponse(fs);
+                    if (TargetDirectoryName.Contains("FILE TYPE WRONG"))
+                        Console.WriteLine(firstFileName + " " + TargetDirectoryName);
+
+                    string[] CNs = TargetDirectoryName.Split(':');
+
+                    string DraggedFromPath = Path.GetDirectoryName(CurrentDraggedFile);
+
+
+                    if ((CNs != null) && (CNs.Count() == 3)) // check CN corrects
+                    {
+                        string Target_Folder_Path = DraggedFromPath + "\\" + CNs[0] + "\\" + CNs[1] + "\\" + CNs[2];
+                        if (Directory.Exists(Target_Folder_Path))
+                        {
+                            Console.WriteLine(CNs[0] + "\\" + CNs[1] + "\\" + CNs[2] + " - That path exists already.");
+                            // return;
+                        }
+
+                        // Try to create the directory.
+                        DirectoryInfo Target_Folder_Info = Directory.CreateDirectory(Target_Folder_Path);
+
+                        //Copy files from disarchivedPlace to TargetDir
+                        //TODO:
+                        string[] filePaths = Directory.GetFiles(Archive_Folder);
+                        foreach (string filename in filePaths)
+                        {
+                            //Do job for "filename"  
+                            string str = Target_Folder_Path + "\\" + Path.GetFileName(filename);
+                            if (!File.Exists(str))
+                            {
+                                File.Copy(filename, str);
+                                Console.WriteLine("write to folder " + Target_Folder_Path);
+                                Console.WriteLine("write file " + Path.GetFileName(filename));
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
         /// <summary>
         /// Parse xml document to detect CN of block
         /// </summary>
         /// <param name="xmldoc"></param>
-        /// <returns></returns>
-        private string ParseResponse(XmlDocument xmldoc)
+        /// <returns></retu
+        private string ParseResponse(Stream fs)
         {
 
             RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); // construct instance without  classificators {dutilizations_v01, dAllowedUse_v02}
+            netFteo.IO.FileInfo DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(fs);
 
             // КПТ v10 is here?
-            if ((xmldoc.DocumentElement.Name == "KPT") && (xmldoc.DocumentElement.NamespaceURI == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+            if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
             {
-                netFteo.IO.FileInfo DocInfo = new netFteo.IO.FileInfo();
-                /// DocInfo = parser.ParseKPT10(DocInfo, xmldoc);
                 if (DocInfo.District.Blocks.Count() == 1)
                     return DocInfo.District.SingleCN;
             }
-            return "FILE TYPE WRONG";
+
+            //kpt11
+            if ((DocInfo.DocRootName == "extract_cadastral_plan_territory") && ( DocInfo.Namespace == "urn://fake/kpt/11.0.0"))
+            {
+                if (DocInfo.District.Blocks.Count() == 1)
+                    return DocInfo.District.SingleCN;
+            }
+            
+            return "FILE TYPE WRONG: " + DocInfo.DocType;
         }
 
         private void ClearFiles()
