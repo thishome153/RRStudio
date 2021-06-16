@@ -700,7 +700,7 @@ namespace XMLReaderCS
                 ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
                 zip = ZipFile.Read(Argument, ro);
                 string  CF_Cfg_Folder_Unzip = Path.GetTempPath() + Application.ProductName + "-tmp-zip";
-
+                //  "C:\\Users\\this\\AppData\\Local\\Temp\\XMLReader .NET-tmp-zip"
                 if (Directory.Exists(CF_Cfg_Folder_Unzip))
                 {
                     Directory.Delete(CF_Cfg_Folder_Unzip, true);
