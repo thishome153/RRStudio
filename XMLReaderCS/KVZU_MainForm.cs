@@ -701,7 +701,13 @@ namespace XMLReaderCS
                 zip = ZipFile.Read(Argument, ro);
                 string  CF_Cfg_Folder_Unzip = Path.GetTempPath() + Application.ProductName + "-tmp-zip";
 
+                if (Directory.Exists(CF_Cfg_Folder_Unzip))
+                {
+                    Directory.Delete(CF_Cfg_Folder_Unzip, true);
+                }
+
                 string Archive_Folder = CF_Cfg_Folder_Unzip + "\\" + Path.GetFileNameWithoutExtension(Argument);
+
                 {
                     zip.ExtractAll(Archive_Folder);
                 }
