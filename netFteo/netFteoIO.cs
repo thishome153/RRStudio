@@ -469,6 +469,10 @@ namespace netFteo.IO
 
 
 
+    
+
+
+
         //TODO : Very heavy work: !!
         /// <summary>
         ///  Detect Encoding name, encoding Body field

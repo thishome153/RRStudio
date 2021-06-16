@@ -3961,6 +3961,88 @@ namespace RRTypes.CommonParsers
         }
         #endregion
 
+
+        /// <summary>
+        /// Create subfolders by CN of xml files content - CN of cadastral blocks
+        /// </summary>
+        /// <param name="CurrentDraggedFile"></param>
+        /// <param name="Archive_Folder">Path to extracted archive with xml</param>
+        public void UnZipToCNFolders(string CurrentDraggedFile, string Archive_Folder)
+        {
+            Console.WriteLine("Parse archieve file " + Path.GetFileName(CurrentDraggedFile));
+            if (Directory.Exists(Archive_Folder))
+            {
+                DirectoryInfo di = new DirectoryInfo(Archive_Folder);
+                string firstFileName = di.GetFiles().Select(fi => fi.Name).FirstOrDefault(name => name != "*.xml");
+
+                if ((File.Exists(Archive_Folder + "\\" + firstFileName))
+                    &&
+                     (Path.GetExtension(firstFileName.ToUpper()).Equals(".XML")))
+                {
+
+                    Stream fs = new MemoryStream(File.ReadAllBytes(Archive_Folder + "\\" + firstFileName));
+                    string TargetDirectoryName="NC";
+
+                    netFteo.IO.FileInfo DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(fs);
+
+                    // КПТ v10 is here?
+                    if ((DocInfo.DocRootName == "KPT") && (DocInfo.Namespace == "urn://x-artefacts-rosreestr-ru/outgoing/kpt/10.0.1"))
+                    {
+                        if (DocInfo.District.Blocks.Count() == 1)
+                            TargetDirectoryName = DocInfo.District.SingleCN;
+                    }
+
+                    //kpt11
+                    if ((DocInfo.DocRootName == "extract_cadastral_plan_territory") && (DocInfo.Namespace == "urn://fake/kpt/11.0.0"))
+                    {
+                        if (DocInfo.District.Blocks.Count() == 1)
+                            TargetDirectoryName = DocInfo.District.SingleCN;
+                    }
+
+
+                    if (TargetDirectoryName.Contains("FILE TYPE WRONG"))
+                        Console.WriteLine(firstFileName + " " + TargetDirectoryName);
+
+
+
+                    string[] CNs = TargetDirectoryName.Split(':');
+
+                    string DraggedFromPath = Path.GetDirectoryName(CurrentDraggedFile);
+
+
+                    if ((CNs != null) && (CNs.Count() == 3)) // check CN corrects
+                    {
+                        string Target_Folder_Path = DraggedFromPath + "\\" + CNs[0] + "\\" + CNs[1] + "\\" + CNs[2];
+                        if (Directory.Exists(Target_Folder_Path))
+                        {
+                            Console.WriteLine(CNs[0] + "\\" + CNs[1] + "\\" + CNs[2] + " - That path exists already.");
+                            // return;
+                        }
+
+                        // Try to create the directory.
+                        DirectoryInfo Target_Folder_Info = Directory.CreateDirectory(Target_Folder_Path);
+
+                        //Copy files from disarchivedPlace to TargetDir
+                        //TODO:
+                        string[] filePaths = Directory.GetFiles(Archive_Folder);
+                        foreach (string filename in filePaths)
+                        {
+                            //Do job for "filename"  
+                            string str = Target_Folder_Path + "\\" + Path.GetFileName(filename);
+                            if (!File.Exists(str))
+                            {
+                                File.Copy(filename, str);
+                                Console.WriteLine("write to folder " + Target_Folder_Path);
+                                Console.WriteLine("write file " + Path.GetFileName(filename));
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
         #region  Разбор КПТ 08
 
         public netFteo.IO.FileInfo ParseKPT05(netFteo.IO.FileInfo fi, Stream ms)

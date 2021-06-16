@@ -39,7 +39,7 @@ namespace GKNData
         /// Current archive folder
         /// </summary>
         string Archive_Folder;
-        bool UnzipinPorgressFlag;
+        //bool UnzipinPorgressFlag;
         AutoCompleteStringCollection SearchAutoComplete = new AutoCompleteStringCollection();
 
         /// <summary>
@@ -1259,9 +1259,8 @@ namespace GKNData
                     w1.RunWorkerCompleted += this.UnZipComplete;
                     w1.RunWorkerAsync(CurrentDraggedFile);
                     */
-                    
-                    UnZipitNoBackgrounds(FileName);
-                    UnZipToCNFolders(FileName);
+                    RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                    parser.UnZipToCNFolders(FileName, UnZipitNoBackgrounds(FileName));
                 }
                 //2: parse xml, get CN of Block
                 //3: make dir, copy archive files onto
@@ -1322,24 +1321,22 @@ namespace GKNData
             }
         }
 
-        private void UnZipitNoBackgrounds(string Argument)
+        private string UnZipitNoBackgrounds(string Argument)
         {
             try
             {
                 ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
-
-
                 zip = ZipFile.Read(Argument, ro);
-
                 Archive_Folder = CF.Cfg.Folder_Unzip + "\\" + Path.GetFileNameWithoutExtension(Argument);
                 {
                     zip.ExtractAll(Archive_Folder);
                 }
-
+                return Archive_Folder;
             }
             catch (Exception ex1)
             {
                 string CatchText = ex1.ToString();
+                return "fuck up";
             }
         }
 
@@ -1400,6 +1397,10 @@ namespace GKNData
             }
         }
 
+        /// <summary>
+        /// Moved to public class Doc2Type
+        /// </summary>
+        /// <param name="CurrentDraggedFile"></param>
         private void UnZipToCNFolders(string CurrentDraggedFile)
         {
             Console.WriteLine("Parse archieve file " + Path.GetFileName(CurrentDraggedFile));
@@ -1464,7 +1465,7 @@ namespace GKNData
         private string ParseResponse(Stream fs)
         {
 
-            RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); // construct instance without  classificators {dutilizations_v01, dAllowedUse_v02}
+           // RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type(); // construct instance without  classificators {dutilizations_v01, dAllowedUse_v02}
             netFteo.IO.FileInfo DocInfo = RRTypes.CommonParsers.ParserCommon.ParseXMLDocument(fs);
 
             // КПТ v10 is here?

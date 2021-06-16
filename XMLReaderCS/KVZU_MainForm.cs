@@ -693,6 +693,26 @@ namespace XMLReaderCS
             timer1.Elapsed += this.OnTimerEvent; */
         }
 
+        private string UnZipitNoBackgrounds(string Argument)
+        {
+            try
+            {
+                ReadOptions ro = new ReadOptions() { Encoding = Encoding.ASCII };
+                zip = ZipFile.Read(Argument, ro);
+                string  CF_Cfg_Folder_Unzip = Path.GetTempPath() + Application.ProductName + "-tmp-zip";
+
+                string Archive_Folder = CF_Cfg_Folder_Unzip + "\\" + Path.GetFileNameWithoutExtension(Argument);
+                {
+                    zip.ExtractAll(Archive_Folder);
+                }
+                return Archive_Folder;
+            }
+            catch (Exception ex1)
+            {
+                string CatchText = ex1.ToString();
+                return "fuck up while unzipping -" + ex1.Message;
+            }
+        }
 
 
         //------------Запись xml-файла-спутника  pinfo_......xml---------------------------------------------------------------
@@ -5545,6 +5565,28 @@ LV.Items.Add(LVipP);
         private void м12000ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs("DXF", TV_Parcels.SelectedNode.Name, 2000);
+        }
+
+
+        private void разобратьАрхивыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            openFileDialog1.Filter = "Сведения ЕГРН (zipped)|*.zip;";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.FileName = XMLReaderCS.Properties.Settings.Default.Recent0;
+            openFileDialog1.Multiselect = true;
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                foreach (String file in openFileDialog1.FileNames)
+                {
+                    if (Path.GetExtension(file).ToUpper().Equals(".ZIP"))
+                    {
+                        RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                        parser.UnZipToCNFolders(file, UnZipitNoBackgrounds(file));
+                    }
+                }
+            }
+            openFileDialog1.Multiselect = false;
         }
     }
 }
