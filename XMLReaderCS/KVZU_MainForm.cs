@@ -437,9 +437,11 @@ namespace XMLReaderCS
                 w1.DoWork += this.UnZipit;
                 w1.RunWorkerCompleted += this.UnZipComplete;
                 w1.RunWorkerAsync(FileName);
+
+                //split on to folders by CN:
+                RRTypes.CommonParsers.Doc2Type parser = new RRTypes.CommonParsers.Doc2Type();
+                parser.UnZipToCNFolders(FileName, UnZipitNoBackgrounds(FileName));
             }
-
-
 
             // file is signature
 #if DEBUG
@@ -662,9 +664,6 @@ namespace XMLReaderCS
                 }
 
             }
-
-
-
         }
 
         private void Zipit(object sender, DoWorkEventArgs e)
